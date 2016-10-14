@@ -3,14 +3,14 @@
   "version": "5.4.2",
   "main": "./index.js",
   "dependencies": {
-    "ut-error": "^5.3.12"
-  },
-  "devDependencies": {
-    "ut-tools": "^5.7.1",
+    "ut-error": "^5.3.12",
     "react": "15.2.1",
     "react-redux": "4.4.5",
     "react-router": "2.5.2",
     "joi":"9.0.4"
+  },
+  "devDependencies": {
+    "ut-tools": "^5.7.1"
   },
   "peerDependencies": {
     "ut-bus": "~5.4.7"

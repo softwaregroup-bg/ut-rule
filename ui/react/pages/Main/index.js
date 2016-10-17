@@ -23,7 +23,7 @@ const Home = React.createClass({
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        data: state.home
+        data: state.main
     };
 };
 

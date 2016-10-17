@@ -1,2 +1,2 @@
-import home from './pages/Home/reducer';
-export default {home};
+import main from './pages/Main/reducer';
+export default {main};

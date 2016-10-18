@@ -1,3 +1,14 @@
+<a name="5.5.2"></a>
+## [5.5.2](https://github.com/softwaregroup-bg/ut-rule/compare/v5.5.1...v5.5.2) (2016-10-18)
+
+
+### Bug Fixes
+
+* add missing dependency ([c8e68b6](https://github.com/softwaregroup-bg/ut-rule/commit/c8e68b6))
+* front-end preparation ([da15d13](https://github.com/softwaregroup-bg/ut-rule/commit/da15d13))
+
+
+
 <a name="5.5.1"></a>
 ## [5.5.1](https://github.com/softwaregroup-bg/ut-rule/compare/v5.5.0...v5.5.1) (2016-10-17)
 

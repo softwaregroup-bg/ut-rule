@@ -5,6 +5,7 @@
   "dependencies": {
     "ut-error": "^5.3.12",
     "react": "15.2.1",
+    "redux": "3.5.2",
     "react-redux": "4.4.5",
     "react-router": "2.5.2",
     "joi": "9.0.4"

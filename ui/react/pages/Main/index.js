@@ -1,12 +1,21 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fetchData } from './actions';
+import { bindActionCreators } from 'redux';
+import * as actionTypes from './actionTypes';
+import * as actionCreators from './actionCreators';
 
-const Home = React.createClass({
+const Main = React.createClass({
     propTypes: {
-        data: PropTypes.object
+        data: PropTypes.object,
+        actions: PropTypes.object
+    },
+    componentWillMount() {
+        this.props.actions.fetch();
     },
     render() {
+        if (this.props.data) {
+            // handle data e.g. render in grid
+        }
         return (
             <div style={{
                 height: '100%',
@@ -15,36 +24,17 @@ const Home = React.createClass({
                 color: '#555',
                 fontSize: '30px'
             }}>
-               UT-Rule Module Web Interface
+                UT-Rule Web Interface
             </div>
         );
     }
 });
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        data: state.main
-    };
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        fetchData: (params) => dispatch(fetchData(params))
-    };
-};
-
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-    return Object.assign({}, ownProps, stateProps, dispatchProps);
-};
-
-const options = {
-    pure: true,
-    withRef: false
-};
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps,
-  options
-)(Home);
+    (state) => ({
+        data: state.main[actionTypes.FETCH].result && state.main[actionTypes.FETCH].result.data
+    }),
+    (dispatch) => ({
+        actions: bindActionCreators(actionCreators, dispatch)
+    })
+)(Main);

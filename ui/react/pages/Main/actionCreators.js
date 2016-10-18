@@ -1,8 +1,9 @@
 import * as actionTypes from './actionTypes';
 
-export const fetchData = (params) => {
+export function fetch(params) {
     return {
         type: actionTypes.FETCH,
-        params: params
+        method: 'rule.rule.fetch',
+        params: params || {}
     };
 };

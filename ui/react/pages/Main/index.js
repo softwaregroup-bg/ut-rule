@@ -6,7 +6,7 @@ import * as actionCreators from './actionCreators';
 
 const Main = React.createClass({
     propTypes: {
-        data: PropTypes.object,
+        data: PropTypes.array,
         actions: PropTypes.object
     },
     componentWillMount() {

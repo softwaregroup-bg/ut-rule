@@ -28,7 +28,7 @@ CREATE OR REPLACE FUNCTION rule."decision.fetch"(
   IN "@destinationId" bigint,
   IN "@destinationProductId" bigint,
   IN "@destinationAccountId" bigint,
-  IN "@amount" money,
+  IN "@amount" numeric(20,2),
   IN "@currency" char(3),
   IN "@isSourceAmount" boolean
 )
@@ -95,9 +95,9 @@ $BODY$
             LEAST(
                 f."maxValue",
                 GREATEST(
-                    CAST(0 AS MONEY),
+                    0,
                     f."minValue",
-                    COALESCE(f."percent", CAST(0 AS float)) * (GREATEST("@amount", f."percentBase") - COALESCE(f."percentBase", CAST(0 AS MONEY))) / 100))::numeric AS "amount"
+                    COALESCE(f."percent", CAST(0 AS float)) * (GREATEST("@amount", f."percentBase") - COALESCE(f."percentBase", 0)) / 100)) AS "amount"
         FROM
             matches AS c
         JOIN

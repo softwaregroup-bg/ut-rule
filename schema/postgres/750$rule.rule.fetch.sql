@@ -3,28 +3,27 @@ CREATE OR REPLACE FUNCTION rule."rule.fetch"(
 )
 RETURNS TABLE(
     "isSingleResult" boolean,
-    "data" json
+    "condition" json,
+    "fee" json,
+    "limit" json,
+    "commission" json
 ) AS
 $BODY$
-    WITH
-        result AS (
-            SELECT
-                *
-            FROM
-                rule.condition con
-            LEFT JOIN
-                rule.commission com ON con."conditionId" = com."conditionId"
-            LEFT JOIN
-                rule.fee f ON con."conditionId" = f."conditionId"
-            LEFT JOIN
-                rule.limit l ON f."conditionId" = l."conditionId"
-            WHERE "@conditionId" IS NULL OR con."conditionId" = "@conditionId"
-
-        )
-        SELECT
-            true AS "isSingleResult",
-            array_to_json(array_agg(result)) as "data"
-        FROM result
-
+    SELECT
+        true AS "isSingleResult",
+        json_agg("condition".*) AS "condition",
+        json_agg("fee".*) AS "fee",
+        json_agg("limit".*) AS "limit",
+        json_agg("commission".*) AS "commission"
+    FROM
+        rule.condition AS "condition"
+    LEFT JOIN
+        rule.fee AS "fee" ON "fee"."conditionId" = "condition"."conditionId"
+    LEFT JOIN
+        rule.limit AS "limit" ON "limit"."conditionId" = "fee"."conditionId"
+    LEFT JOIN
+        rule.commission AS "commission" ON "commission"."conditionId" = "limit"."conditionId"
+    WHERE
+        "@conditionId" IS NULL OR "condition"."conditionId" = "@conditionId"
 $BODY$
 LANGUAGE SQL

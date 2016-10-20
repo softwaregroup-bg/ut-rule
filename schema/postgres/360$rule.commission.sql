@@ -2,12 +2,12 @@ CREATE TABLE rule.commission(
   "commissionId" serial NOT NULL,
   "conditionId" integer NOT NULL,
 
-  "startAmount" money NOT NULL,
+  "startAmount" numeric NOT NULL,
   "startAmountCurrency" char(3) NOT NULL,
   "isSourceAmount" boolean NOT NULL,
 
-  "minValue" money,
-  "maxValue" money,
+  "minValue" numeric,
+  "maxValue" numeric,
   "percent" float,
   "percentBase" float,
 

@@ -3,16 +3,16 @@ CREATE TABLE rule."limit"(
   "conditionId" integer NOT NULL,
   "currency" char(3) NOT NULL,
 
-  "minAmount" money,
-  "maxAmount" money,
+  "minAmount" numeric,
+  "maxAmount" numeric,
 
-  "maxAmountDaily" money,
+  "maxAmountDaily" numeric,
   "maxCountDaily" bigint,
 
-  "maxAmountWeekly" money,
+  "maxAmountWeekly" numeric,
   "maxCountWeekly" bigint,
 
-  "maxAmountMonthly" money,
+  "maxAmountMonthly" numeric,
   "maxCountMonthly" bigint,
 
   CONSTRAINT "pkRuleLimit" PRIMARY KEY ("limitId"),

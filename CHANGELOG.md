@@ -1,3 +1,13 @@
+<a name="5.5.8"></a>
+## [5.5.8](https://github.com/softwaregroup-bg/ut-rule/compare/v5.5.7...v5.5.8) (2016-10-20)
+
+
+### Bug Fixes
+
+* swap all money types with numeric and add rule.rule.fetch function ([#1](https://github.com/softwaregroup-bg/ut-rule/issues/1)) ([206a599](https://github.com/softwaregroup-bg/ut-rule/commit/206a599))
+
+
+
 <a name="5.5.7"></a>
 ## [5.5.7](https://github.com/softwaregroup-bg/ut-rule/compare/v5.5.6...v5.5.7) (2016-10-20)
 

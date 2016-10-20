@@ -28,7 +28,7 @@ CREATE OR REPLACE FUNCTION rule."decision.fetch"(
   IN "@destinationId" bigint,
   IN "@destinationProductId" bigint,
   IN "@destinationAccountId" bigint,
-  IN "@amount" numeric,
+  IN "@amount" numeric(20,2),
   IN "@currency" char(3),
   IN "@isSourceAmount" boolean
 )

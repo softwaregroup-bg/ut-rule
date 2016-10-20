@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "5.5.4",
+  "version": "5.5.5",
   "main": "./index.js",
   "dependencies": {
     "ut-error": "^5.3.12",

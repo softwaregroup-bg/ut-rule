@@ -96,6 +96,89 @@ set
 FROM   json_array_elements( "@fee" ) as "feeT"
 where f."feeId"= CAST("feeT"->>'feeId'as integer)
 AND f."conditionId"= CAST("feeT"->>'conditionId'as integer) ;
+
+
+
+
+INSERT INTO
+  rule.commission
+(
+  "conditionId",
+  "startAmount",
+  "startAmountCurrency",
+  "isSourceAmount",
+  "minValue",
+  "maxValue",
+  percent,
+  "percentBase"
+)
+SELECT
+ CAST("commissionT"->>'conditionId'as integer),
+CAST("commissionT"->>'startAmount' as numeric(20,2)),
+  CAST("commissionT"->>'startAmountCurrency' as char(3)),
+  CAST("commissionT"->>'isSourceAmount' as BOOLEAN),
+  CAST("commissionT"->>'minValue'as numeric(20,2)),
+  CAST("commissionT"->>'maxValue'as numeric(20,2)),
+  CAST("commissionT"->>'percent' as double precision),
+  CAST("commissionT"->>'percentBase' as double precision)
+FROM   json_array_elements( "@commission" ) as "commissionT"
+ where CAST("commissionT"->>'commissionId'as integer) is null;
+
+
+
+INSERT INTO
+  rule."limit"
+(
+  "conditionId",
+  currency,
+  "minAmount",
+  "maxAmount",
+  "maxAmountDaily",
+  "maxCountDaily",
+  "maxAmountWeekly",
+  "maxCountWeekly",
+  "maxAmountMonthly",
+  "maxCountMonthly"
+)
+SELECT
+	CAST("limitT"->>'conditionId'as integer),
+	CAST( "limitT"->>'currency'as char(3)),
+    CAST("limitT"->>'minAmount'as numeric(20,2)),
+    CAST("limitT"->>'maxAmount'as numeric(20,2)),
+    CAST("limitT"->>'maxAmountDaily'as numeric(20,2)),
+    CAST("limitT"->>'maxCountDaily'as bigint),
+    CAST("limitT"->>'maxAmountWeekly'as numeric(20,2)),
+    CAST("limitT"->>'maxCountWeekly'as bigint),
+    CAST("limitT"->>'maxAmountMonthly'as numeric(20,2)),
+    CAST("limitT"->>'maxCountMonthly'as bigint)
+FROM   json_array_elements( "@limit" ) as "limitT"
+where CAST("limitT"->>'limitId'as integer) IS NULL  ;
+
+
+INSERT INTO
+  rule.fee
+(
+  "conditionId",
+  "startAmount",
+  "startAmountCurrency",
+  "isSourceAmount",
+  "minValue",
+  "maxValue",
+  percent,
+  "percentBase"
+)
+SELECT
+CAST("feeT"->>'conditionId'as integer),
+  CAST("feeT"->>'startAmount'as numeric(20,2)),
+  CAST("feeT"->>'startAmountCurrency' as char(3)),
+  CAST("feeT"->>'isSourceAmount' as BOOLEAN),
+  CAST("feeT"->>'minValue'as numeric(20,2)),
+  CAST("feeT"->>'maxValue'as numeric(20,2)),
+  CAST("feeT"->>'percent' as double PRECISION),
+  CAST("feeT"->>'percentBase' as double PRECISION)
+FROM   json_array_elements( "@fee" ) as "feeT"
+where  CAST("feeT"->>'feeId'as integer) IS NULL;
+
 RETURN QUERY
 select * from rule."rule.fetch"(
     "@conditionId"

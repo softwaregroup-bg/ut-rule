@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actionTypes from './actionTypes';
 import * as actionCreators from './actionCreators';
 
 const Main = React.createClass({
@@ -11,6 +10,9 @@ const Main = React.createClass({
     },
     componentWillMount() {
         this.props.actions.fetch();
+    },
+    componenntWillReceiveProps(nextProps) {
+
     },
     render() {
         if (this.props.data) {
@@ -30,9 +32,31 @@ const Main = React.createClass({
     }
 });
 
+function formatData(data) {
+    var grouped = Object.keys(data).reduce(function(all, key) {
+        data[key].forEach(function(record) {
+            if (!record) {
+                return;
+            }
+            if (!all[record.conditionId]) {
+                all[record.conditionId] = {};
+            }
+            if (!all[record.conditionId][key]) {
+                all[record.conditionId][key] = [];
+            }
+            all[record.conditionId][key].push(record);
+        });
+        return all;
+    }, {});
+
+    return Object.keys(grouped).map(function(key) {
+        return grouped[key];
+    });
+}
+
 export default connect(
     (state) => ({
-        data: state.main[actionTypes.FETCH].result && state.main[actionTypes.FETCH].result.data
+        data: state.main.fetch && formatData(state.main.fetch)
     }),
     (dispatch) => ({
         actions: bindActionCreators(actionCreators, dispatch)

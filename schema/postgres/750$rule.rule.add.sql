@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE FUNCTION rule."rule.add"("@condition" json,
+CREATE OR REPLACE FUNCTION rule."rule.add"("@condition" json,
 "@fee" json,
 "@limit" json,
 "@commission" json)

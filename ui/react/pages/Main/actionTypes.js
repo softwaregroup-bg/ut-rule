@@ -1,1 +1,1 @@
-export const FETCH = Symbol('FETCH');
+export const fetch = Symbol.for('fetch');

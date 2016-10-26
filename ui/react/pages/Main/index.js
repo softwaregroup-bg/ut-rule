@@ -1,38 +1,73 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actionTypes from './actionTypes';
+import RulesTable from '../../components/RulesTable';
 import * as actionCreators from './actionCreators';
 
 const Main = React.createClass({
     propTypes: {
-        data: PropTypes.array,
+        rules: PropTypes.array,
+        nomenclatures: PropTypes.object,
         actions: PropTypes.object
     },
     componentWillMount() {
-        this.props.actions.fetch();
+        return this.props.actions.fetchRules()
+            .then(() => {
+                return this.props.actions.fetchNomenclatures([
+                    'country',
+                    'region',
+                    'city'
+                ]);
+            });
     },
     render() {
-        if (this.props.data) {
-            // handle data e.g. render in grid
+        if (this.props.rules && this.props.nomenclatures) {
+            return <div>
+                <RulesTable data={this.props.rules} />
+                <div style={{width: '50%'}}><pre>{JSON.stringify(this.props.rules, null, 2)}</pre></div>
+                <div style={{width: '50%'}}><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre></div>
+            </div>;
         }
-        return (
-            <div style={{
-                height: '100%',
-                padding: '50px',
-                textAlign: 'center',
-                color: '#555',
-                fontSize: '30px'
-            }}>
-                UT-Rule Web Interface
-            </div>
-        );
+        return null;
     }
 });
 
+const formatRules = function(data) {
+    var grouped = Object.keys(data).reduce(function(all, key) {
+        data[key].forEach(function(record) {
+            if (!record) {
+                return;
+            }
+            if (!all[record.conditionId]) {
+                all[record.conditionId] = {};
+            }
+            if (!all[record.conditionId][key]) {
+                all[record.conditionId][key] = [];
+            }
+            all[record.conditionId][key].push(record);
+        });
+        return all;
+    }, {});
+
+    return Object.keys(grouped).map(function(key) {
+        return grouped[key];
+    });
+};
+
+const formatNomenclatures = function(data) {
+    return data.reduce(function(all, record) {
+        if (!all[record.type]) {
+            all[record.type] = {};
+        }
+        all[record.type][record.value] = record.display;
+        return all;
+    }, {});
+};
+
 export default connect(
     (state) => ({
-        data: state.main[actionTypes.FETCH].result && state.main[actionTypes.FETCH].result.data
+        rules: state.main.rules && formatRules(state.main.rules),
+        nomenclatures: state.main.nomenclatures && formatNomenclatures(state.main.nomenclatures)
     }),
     (dispatch) => ({
         actions: bindActionCreators(actionCreators, dispatch)

@@ -1,18 +1,8 @@
 import * as actionTypes from './actionTypes';
-function setState(state, action) {
-    return Object.assign({}, state, {[action.type]: action});
-}
-const defaultState = {
-    [actionTypes.FETCH]: {}
-};
+const defaultState = {};
 export default (state = defaultState, action) => {
-    if (action.methodRequestState === 'requested') { // dont't rerender anything when request is still pending
-        return state;
+    if (action.result && typeof action.type === 'symbol' && actionTypes[Symbol.keyFor(action.type)]) {
+        return Object.assign({}, state, {[Symbol.keyFor(action.type)]: action.result});
     }
-    switch (action.type) {
-        case actionTypes.FETCH:
-            return setState(state, action);
-        default:
-            return state;
-    }
+    return state;
 };

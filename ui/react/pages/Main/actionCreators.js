@@ -2,7 +2,7 @@ import * as actionTypes from './actionTypes';
 
 export function fetch(params) {
     return {
-        type: actionTypes.FETCH,
+        type: actionTypes.fetch,
         method: 'rule.rule.fetch',
         params: params || {}
     };

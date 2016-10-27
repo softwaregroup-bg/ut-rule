@@ -11,7 +11,7 @@ export function fetchRules(params) {
 export function fetchNomenclatures(params) {
     return {
         type: actionTypes.nomenclatures,
-        method: 'core.item.fetch',
+        method: 'rule.item.fetch',
         params: params || []
     };
 };

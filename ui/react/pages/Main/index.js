@@ -13,19 +13,21 @@ const Main = React.createClass({
     componentWillMount() {
         return this.props.actions.fetchRules()
             .then(() => {
-                return this.props.actions.fetchNomenclatures([
-                    'country',
-                    'region',
-                    'city'
-                ]);
+                return this.props.actions.fetchNomenclatures();
             });
     },
     render() {
         if (this.props.rules && this.props.nomenclatures) {
             return <div>
-                <RulesTable data={this.props.rules} />
-                <div style={{width: '50%'}}><pre>{JSON.stringify(this.props.rules, null, 2)}</pre></div>
-                <div style={{width: '50%'}}><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre></div>
+                <RulesTable data={this.props.rules} nomenclatures={this.props.nomenclatures} />
+                <div>
+                    <div style={{float: 'left', padding: '50px'}}>
+                        RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>
+                    </div>
+                    <div style={{float: 'left', padding: '50px'}}>
+                        NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre>
+                    </div>
+                </div>
             </div>;
         }
         return null;

@@ -15,3 +15,9 @@ export function fetchNomenclatures(params) {
         params: params || []
     };
 };
+
+export function reset() {
+    return {
+        type: actionTypes.reset
+    };
+};

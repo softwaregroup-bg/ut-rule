@@ -25,6 +25,7 @@ export default React.createClass({
                 <table >
                     <thead>
                         <tr>
+                            <th><input type='checkbox' name='all' /></th>
                             <th>Priority</th>
                             <th>Channel</th>
                             <th>Operation</th>
@@ -41,6 +42,9 @@ export default React.createClass({
                                 let condition = record.condition[0];
                                 return (
                                     <tr key={condition.conditionId}>
+                                        <td>
+                                            <input type='checkbox' name={condition.conditionId} value={condition.conditionId} />
+                                        </td>
                                         <td>
                                             {condition.priority}
                                         </td>

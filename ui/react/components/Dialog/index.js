@@ -11,14 +11,14 @@ export default React.createClass({
     },
     render() {
         return <Dialog
-            title={'Title'}
-            open={this.props.open}
-            autoScrollBodyContent
-            contentStyle={style}
-            actions={[
-                <button onClick={this.props.onSave}>Save</button>,
-                <button onClick={this.props.onClose}>Cancel</button>
-            ]}
+          title={'Title'}
+          open={this.props.open}
+          autoScrollBodyContent
+          contentStyle={style}
+          actions={[
+              <button onClick={this.props.onSave}>Save</button>,
+              <button onClick={this.props.onClose}>Cancel</button>
+          ]}
         >
             {JSON.stringify(this.props.data)}
         </Dialog>;

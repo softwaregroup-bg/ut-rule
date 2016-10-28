@@ -5,6 +5,7 @@
   "dependencies": {
     "ut-error": "^5.3.12",
     "ut-front-react": "^5.32.8",
+    "material-ui": "0.15.2",
     "ut-front": "^5.8.4",
     "react": "15.2.1",
     "redux": "3.5.2",

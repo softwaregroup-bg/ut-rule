@@ -1,20 +1,33 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import RulesTable from '../../components/RulesTable';
+import Grid from '../../components/Grid';
+import Dialog from '../../components/Dialog';
+import mainStyle from 'ut-front-react/assets/index.css';
 // import style from './style.css';
 import * as actionCreators from './actionCreators';
 
 const Main = React.createClass({
     propTypes: {
         data: PropTypes.shape({
-            rules: PropTypes.array,
+            rules: PropTypes.object,
             nomenclatures: PropTypes.object
         }),
         actions: PropTypes.object
     },
-    fetchData(id) {
-        this.props.actions.fetchRules(id);
+    getInitialState() {
+        return {
+            selectedConditions: {},
+            canEdit: false,
+            canDelete: false,
+            dialog: {
+                open: false,
+                conditionId: null
+            }
+        };
+    },
+    fetchData() {
+        this.props.actions.fetchRules();
         this.props.actions.fetchNomenclatures();
     },
     componentWillMount() {
@@ -22,28 +35,102 @@ const Main = React.createClass({
     },
     componentWillReceiveProps(nextProps) {
         if (!nextProps.data) {
-            this.fetchData({conditionId: 1});
+            this.fetchData();
         }
     },
     shouldComponentUpdate(nextProps, nextState) {
         return !!nextProps.data;
     },
-    buttons: {
-        create: <button>Create Rule</button>,
-        edit: <button >Edit</button>,
-        delete: <button>Delete</button>
+    handleCheckboxSelect(isSelected, data) {
+        let selectedConditions = this.state.selectedConditions;
+        if (isSelected) {
+            delete selectedConditions[data.id];
+        } else {
+            selectedConditions[data.id] = true;
+        }
+        let count = Object.keys(selectedConditions).length;
+        this.setState({
+            selectedConditions: selectedConditions,
+            canEdit: count === 1,
+            canDelete: count > 0
+        });
+        return !isSelected;
+    },
+    handleHeaderCheckboxSelect(isSelected, data) {
+        this.setState({
+            selectedConditions: isSelected ? {} : data.reduce((all, item) => { all[item.id] = true; return all; }, {}),
+            canEdit: false,
+            canDelete: !isSelected
+        });
+    },
+    createBtnOnClick() {
+        this.setState({
+            dialog: {
+                open: true,
+                conditionId: null
+            }
+        });
+    },
+    editBtnOnClick() {
+        this.setState({
+            dialog: {
+                open: true,
+                conditionId: Object.keys(this.state.selectedConditions)[0]
+            }
+        });
+    },
+    dialogOnClose() {
+        this.setState({
+            dialog: {
+                open: false,
+                conditionId: null
+            }
+        });
+    },
+    dialogOnSave() {
+        this.dialogOnClose();
+    },
+    deleteBtnOnClick() {
+        return this.props.actions.removeRules({
+            conditionId: Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)))
+        }).then(() => this.props.actions.fetchRules());
     },
     render() {
         if (!this.props.data) {
             return null;
         }
-        return <div>
-            <button onClick={this.props.actions.reset}>Reset</button>
-            <RulesTable
-              ref='rules'
-              data={this.props.data.rules}
-              nomenclatures={this.props.data.nomenclatures}
-            />
+        return <div className={mainStyle.contentTableWrap}>
+            <div className={mainStyle.actionBarWrap}>
+                <div style={{padding: '15px 10px 0 0', float: 'right'}}>
+                    <button onClick={this.createBtnOnClick}>Create Rule</button>
+                </div>
+            </div>
+            <div className={mainStyle.tableWrap} style={{margin: 0, position: 'static'}}>
+                <div style={{float: 'right', padding: '20px 0'}}>
+                    <button onClick={this.editBtnOnClick} style={{visibility: this.state.canEdit ? 'visible' : 'hidden'}}>
+                      Edit
+                    </button>
+                    <button onClick={this.deleteBtnOnClick} style={{marginLeft: '20px', visibility: this.state.canDelete ? 'visible' : 'hidden'}}>
+                      Delete
+                    </button>
+                </div>
+                { this.state.dialog.open &&
+                    <Dialog
+                      ref='dialog'
+                      open={this.state.dialog.open}
+                      data={this.props.data.rules[this.state.dialog.conditionId]}
+                      onSave={this.dialogOnSave}
+                      onClose={this.dialogOnClose}
+                    />
+                }
+                <Grid
+                  ref='grid'
+                  data={this.props.data.rules}
+                  nomenclatures={this.props.data.nomenclatures}
+                  handleCheckboxSelect={this.handleCheckboxSelect}
+                  handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                />
+            </div>
             {true &&
                 <div>
                     <div style={{float: 'left', padding: '50px'}}>
@@ -59,7 +146,7 @@ const Main = React.createClass({
 });
 
 const formatRules = function(data) {
-    var grouped = Object.keys(data).reduce(function(all, key) {
+    return Object.keys(data).reduce(function(all, key) {
         data[key].forEach(function(record) {
             if (!record) {
                 return;
@@ -74,10 +161,6 @@ const formatRules = function(data) {
         });
         return all;
     }, {});
-
-    return Object.keys(grouped).map(function(key) {
-        return grouped[key];
-    });
 };
 
 const formatNomenclatures = function(data) {
@@ -92,11 +175,11 @@ const formatNomenclatures = function(data) {
 
 export default connect(
     (state, ownProps) => {
-        if (state.main.rules && state.main.nomenclatures) {
+        if (state.main.fetchRules && state.main.fetchNomenclatures) {
             return {
                 data: {
-                    rules: formatRules(state.main.rules),
-                    nomenclatures: formatNomenclatures(state.main.nomenclatures)
+                    rules: formatRules(state.main.fetchRules),
+                    nomenclatures: formatNomenclatures(state.main.fetchNomenclatures)
                 }
             };
         }

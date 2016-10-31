@@ -89,17 +89,14 @@ const Main = React.createClass({
     },
     dialogOnSave(data) {
         let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
-        this.setState(this.getInitialState(), () => {
-            this.props.actions[action](data);
-        });
+        this.setState(this.getInitialState(), () => this.props.actions[action](data));
     },
     deleteBtnOnClick() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
-        this.setState(this.getInitialState(), () => {
-            this.props.actions.removeRules({
-                conditionId: conditionsArray
-            });
-        });
+        this.refs.grid.clearSelected();
+        this.setState(this.getInitialState(), () => this.props.actions.removeRules({
+            conditionId: conditionsArray
+        }));
     },
     render() {
         if (!this.props.ready) {

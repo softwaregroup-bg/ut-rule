@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
-// import style from './style.css';
+import style from './style.css';
 
 export default React.createClass({
     propTypes: {
@@ -25,8 +25,12 @@ export default React.createClass({
             );
         });
     },
+    clearSelected() {
+        this.refs.grid.handleResetCheckedTo(false);
+    },
     render() {
         return <SimpleGrid
+          ref='grid'
           multiSelect
           fields={[
               {title: 'Priority', name: 'priority'},
@@ -40,6 +44,8 @@ export default React.createClass({
           ]}
           handleCheckboxSelect={this.props.handleCheckboxSelect}
           handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
+          externalStyle={style}
+          mainClassName='dataGridTable'
           data={Object.keys(this.props.data).map((conditionId, i) => {
               let record = this.props.data[conditionId];
               let condition = record.condition[0];

@@ -125,6 +125,7 @@ const Main = React.createClass({
                       ref='dialog'
                       open={this.state.dialog.open}
                       data={this.props.rules[this.state.dialog.conditionId]}
+                      nomenclatures={this.props.nomenclatures}
                       onSave={this.dialogOnSave}
                       onClose={this.dialogOnClose}
                     />

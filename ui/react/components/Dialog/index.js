@@ -9,6 +9,7 @@ export default React.createClass({
     propTypes: {
         open: PropTypes.bool,
         data: PropTypes.object,
+        nomenclatures: PropTypes.object,
         onSave: PropTypes.func,
         onClose: PropTypes.func
     },

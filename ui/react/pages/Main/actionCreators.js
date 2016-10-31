@@ -9,18 +9,38 @@ export function fetchRules(params) {
 };
 
 export function removeRules(params) {
-    return {
-        type: actionTypes.removeRules,
-        method: 'rule.rule.remove',
-        params: params || {}
+    return function(dispatch) {
+        return dispatch({
+            type: actionTypes.removeRules,
+            method: 'rule.rule.remove',
+            params: params || {}
+        }).then(() => {
+            return dispatch(fetchRules());
+        });
     };
 };
 
 export function editRule(params) {
-    return {
-        type: actionTypes.editRule,
-        method: 'rule.rule.edit',
-        params: params || {}
+    return function(dispatch) {
+        return dispatch({
+            type: actionTypes.editRule,
+            method: 'rule.rule.edit',
+            params: params || {}
+        }).then(() => {
+            return dispatch(fetchRules());
+        });
+    };
+};
+
+export function addRule(params) {
+    return function(dispatch) {
+        return dispatch({
+            type: actionTypes.addRule,
+            method: 'rule.rule.add',
+            params: params || {}
+        }).then(() => {
+            return dispatch(fetchRules());
+        });
     };
 };
 

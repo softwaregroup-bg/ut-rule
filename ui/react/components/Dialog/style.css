@@ -1,0 +1,12 @@
+.wrapper {
+    padding-top: 20px;
+}
+
+.content {
+    padding: 20px;
+}
+
+.topSection {
+    border-bottom: 1px solid grey;
+    padding: 20px;
+}

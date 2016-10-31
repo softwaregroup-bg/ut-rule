@@ -9,10 +9,10 @@ import * as actionCreators from './actionCreators';
 
 const Main = React.createClass({
     propTypes: {
-        data: PropTypes.shape({
-            rules: PropTypes.object,
-            nomenclatures: PropTypes.object
-        }),
+        rules: PropTypes.object,
+        nomenclatures: PropTypes.object,
+        ready: PropTypes.bool,
+        empty: PropTypes.bool,
         actions: PropTypes.object
     },
     getInitialState() {
@@ -34,12 +34,12 @@ const Main = React.createClass({
         this.fetchData();
     },
     componentWillReceiveProps(nextProps) {
-        if (!nextProps.data) {
+        if (nextProps.empty) {
             this.fetchData();
         }
     },
     shouldComponentUpdate(nextProps, nextState) {
-        return !!nextProps.data;
+        return nextProps.ready;
     },
     handleCheckboxSelect(isSelected, data) {
         let selectedConditions = this.state.selectedConditions;
@@ -58,7 +58,7 @@ const Main = React.createClass({
     },
     handleHeaderCheckboxSelect(isSelected, data) {
         this.setState({
-            selectedConditions: isSelected ? {} : data.reduce((all, item) => { all[item.id] = true; return all; }, {}),
+            selectedConditions: isSelected ? {} : data.reduce((all, item) => { all[item.record.id] = true; return all; }, {}),
             canEdit: false,
             canDelete: !isSelected
         });
@@ -87,16 +87,22 @@ const Main = React.createClass({
             }
         });
     },
-    dialogOnSave() {
-        this.dialogOnClose();
+    dialogOnSave(data) {
+        let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
+        this.setState(this.getInitialState(), () => {
+            this.props.actions[action](data);
+        });
     },
     deleteBtnOnClick() {
-        return this.props.actions.removeRules({
-            conditionId: Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)))
-        }).then(() => this.props.actions.fetchRules());
+        let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
+        this.setState(this.getInitialState(), () => {
+            this.props.actions.removeRules({
+                conditionId: conditionsArray
+            });
+        });
     },
     render() {
-        if (!this.props.data) {
+        if (!this.props.ready) {
             return null;
         }
         return <div className={mainStyle.contentTableWrap}>
@@ -114,19 +120,19 @@ const Main = React.createClass({
                       Delete
                     </button>
                 </div>
-                { this.state.dialog.open &&
+                {this.state.dialog.open &&
                     <Dialog
                       ref='dialog'
                       open={this.state.dialog.open}
-                      data={this.props.data.rules[this.state.dialog.conditionId]}
+                      data={this.props.rules[this.state.dialog.conditionId]}
                       onSave={this.dialogOnSave}
                       onClose={this.dialogOnClose}
                     />
                 }
                 <Grid
                   ref='grid'
-                  data={this.props.data.rules}
-                  nomenclatures={this.props.data.nomenclatures}
+                  data={this.props.rules}
+                  nomenclatures={this.props.nomenclatures}
                   handleCheckboxSelect={this.handleCheckboxSelect}
                   handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
                 />
@@ -134,10 +140,10 @@ const Main = React.createClass({
             {true &&
                 <div>
                     <div style={{float: 'left', padding: '50px'}}>
-                        RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.data.rules, null, 2)}</pre>
+                        RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>
                     </div>
                     <div style={{float: 'left', padding: '50px'}}>
-                        NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.data.nomenclatures, null, 2)}</pre>
+                        NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre>
                     </div>
                 </div>
             }
@@ -145,49 +151,18 @@ const Main = React.createClass({
     }
 });
 
-const formatRules = function(data) {
-    return Object.keys(data).reduce(function(all, key) {
-        data[key].forEach(function(record) {
-            if (!record) {
-                return;
-            }
-            if (!all[record.conditionId]) {
-                all[record.conditionId] = {};
-            }
-            if (!all[record.conditionId][key]) {
-                all[record.conditionId][key] = [];
-            }
-            all[record.conditionId][key].push(record);
-        });
-        return all;
-    }, {});
-};
-
-const formatNomenclatures = function(data) {
-    return data.reduce(function(all, record) {
-        if (!all[record.type]) {
-            all[record.type] = {};
-        }
-        all[record.type][record.value] = record.display;
-        return all;
-    }, {});
-};
-
 export default connect(
     (state, ownProps) => {
-        if (state.main.fetchRules && state.main.fetchNomenclatures) {
-            return {
-                data: {
-                    rules: formatRules(state.main.fetchRules),
-                    nomenclatures: formatNomenclatures(state.main.fetchNomenclatures)
-                }
-            };
-        }
         return {
-            data: ownProps.data
+            rules: state.main.fetchRules,
+            nomenclatures: state.main.fetchNomenclatures,
+            ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
+            empty: Object.keys(state.main).length === 0
         };
     },
-    (dispatch) => ({
-        actions: bindActionCreators(actionCreators, dispatch)
-    })
+    (dispatch) => {
+        return {
+            actions: bindActionCreators(actionCreators, dispatch)
+        };
+    }
 )(Main);

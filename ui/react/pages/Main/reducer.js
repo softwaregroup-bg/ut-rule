@@ -1,21 +1,48 @@
 import * as actionTypes from './actionTypes';
 const defaultState = {};
 export default (state = defaultState, action) => {
-    if (typeof action.type === 'symbol' && actionTypes[Symbol.keyFor(action.type)]) {
-        if (action.result) {
-            switch (Symbol.keyFor(action.type)) {
-                case 'fetchNomenclatures':
-                    return Object.assign({}, state, {'fetchNomenclatures': action.result});
-                case 'fetchRules':
-                    return Object.assign({}, state, {'fetchRules': action.result});
-                case 'removeRules':
-                    return state;
-                case 'editRule':
-                    return state;
-            }
-        } else if (action.type === actionTypes.reset) {
+    switch (action.type) {
+        case actionTypes.fetchNomenclatures:
+            return action.result ? Object.assign({}, state, {'fetchNomenclatures': formatNomenclatures(action.result)}) : state;
+        case actionTypes.fetchRules:
+            return action.result ? Object.assign({}, state, {'fetchRules': formatRules(action.result)}) : state;
+        case actionTypes.editRule:
+            return Object.assign({}, state, {'fetchRules': null});
+        case actionTypes.addRule:
+            return Object.assign({}, state, {'fetchRules': null});
+        case actionTypes.removeRules:
+            return Object.assign({}, state, {'fetchRules': null});
+        case actionTypes.reset:
             return defaultState;
-        }
+        default:
+            return state;
     }
-    return state;
+};
+
+const formatRules = function(data) {
+    return Object.keys(data).reduce(function(all, key) {
+        data[key].forEach(function(record) {
+            if (!record) {
+                return;
+            }
+            if (!all[record.conditionId]) {
+                all[record.conditionId] = {};
+            }
+            if (!all[record.conditionId][key]) {
+                all[record.conditionId][key] = [];
+            }
+            all[record.conditionId][key].push(record);
+        });
+        return all;
+    }, {});
+};
+
+const formatNomenclatures = function(data) {
+    return data.reduce(function(all, record) {
+        if (!all[record.type]) {
+            all[record.type] = {};
+        }
+        all[record.type][record.value] = record.display;
+        return all;
+    }, {});
 };

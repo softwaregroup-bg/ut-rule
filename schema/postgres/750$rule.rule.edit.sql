@@ -13,6 +13,29 @@ $BODY$
 declare
       "@conditionId" INT:=(SELECT CAST("conditionT"->>'conditionId'as integer) FROM   json_array_elements("@condition" ) as "conditionT");
 BEGIN
+
+DELETE FROM rule.fee f
+WHERE f."conditionId"="@conditionId"
+AND f."feeId" NOT IN(SELECT CAST("feeT"->>'feeId'as integer)
+							FROM   json_array_elements( "@fee" ) as "feeT"
+                           --WHERE   CAST("feeT"->>'conditionId'as integer)="@conditionId"
+						);
+
+
+DELETE FROM rule.commission  c
+WHERE c."conditionId"="@conditionId"
+AND c."commissionId" NOT IN(SELECT CAST("commissionT"->>'commissionId'as integer)
+							FROM   json_array_elements( "@commission" ) as "commissionT"
+                            --WHERE   CAST("commissionT"->>'conditionId'as integer)="@conditionId"
+                              );
+
+DELETE FROM rule."limit"  l
+WHERE l."conditionId"="@conditionId"
+AND l."limitId" NOT IN(SELECT CAST("limitT"->>'limitId'as integer)
+							FROM   json_array_elements( "@limit" ) as "limitT"
+                        	--WHERE   CAST("limitT"->>'conditionId'as integer)="@conditionId"
+                              );
+
 update
   rule.condition c
 set

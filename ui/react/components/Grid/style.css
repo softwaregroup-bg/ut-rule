@@ -1,0 +1,23 @@
+.dataGridTable {
+    width: 100%;
+    font-family: Roboto,Arial;
+    border: 1px solid #D7D6D6;
+    font-size: 14px;
+}
+
+.dataGridTable a {
+    color: #0074ba;
+    text-decoration: none;
+}
+
+.dataGridTable a:hover {
+    text-decoration: underline;
+}
+
+.dataGridTable tr td, .dataGridTable tr th {
+    padding: .75rem;
+}
+
+.dataGridTable tr.checked{
+    background: #FFFCE5;
+}

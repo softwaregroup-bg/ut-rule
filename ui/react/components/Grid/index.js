@@ -1,11 +1,39 @@
 import React, { PropTypes } from 'react';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
 import style from './style.css';
+import classnames from 'classnames';
+
+const nestedTable = function(arr, className) {
+    return <div>
+        <table className={classnames(style.nested, className)}>
+            <tbody>
+                {
+                    arr.map((tr, i) => {
+                        return <tr key={i}>
+                            {
+                                (Array.isArray(tr) ? tr : [tr]).map((td, j) => {
+                                    return <td key={j}>{td}</td>;
+                                })
+                            }
+                        </tr>;
+                    })
+                }
+            </tbody>
+        </table>
+    </div>;
+};
+
+const buildCSV = function(arr) {
+    return arr.map((record) => {
+        return record.value ? ((record.key ? record.key + ': ' : '') + record.value) : '';
+    }).filter(val => val).join(', ');
+};
 
 export default React.createClass({
     propTypes: {
         data: PropTypes.object,
         nomenclatures: PropTypes.object,
+        refresh: PropTypes.func,
         handleCheckboxSelect: PropTypes.func,
         handleHeaderCheckboxSelect: PropTypes.func
     },
@@ -38,9 +66,9 @@ export default React.createClass({
               {title: 'Operation', name: 'operation'},
               {title: 'Source', name: 'source'},
               {title: 'Destination', name: 'destination'},
-              {title: 'Amount', name: 'amount'},
               {title: 'Fee', name: 'fee'},
-              {title: 'Limit', name: 'limit'}
+              {title: 'Limit', name: 'limit'},
+              {title: <span onClick={this.props.refresh} className={style.refresh}></span>, name: 'refresh'}
           ]}
           handleCheckboxSelect={this.props.handleCheckboxSelect}
           handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
@@ -49,9 +77,6 @@ export default React.createClass({
           data={Object.keys(this.props.data).map((conditionId, i) => {
               let record = this.props.data[conditionId];
               let condition = record.condition[0];
-              // let fees = record.fee;
-              // let commissions = record.commission;
-              // let limits = record.limit;
               return {
                   id: conditionId,
                   priority: condition.priority,
@@ -83,11 +108,34 @@ export default React.createClass({
                       ['Organization', condition.destinationOrganizationId, 'organization'],
                       ['Supervisor', condition.destinationSupervisorId, 'supervisor']
                   ]),
-                  amount: 'Amount',
-                  fee: 'Fee',
+                  fee: nestedTable(record.fee.reduce((all, record) => {
+                      all.push([
+                          '>= ' + record.startAmount + ' ' + record.startAmountCurrency,
+                          buildCSV([
+                              {
+                                  key: '',
+                                  value: record.percent ? record.percent + '%' : ''
+                              },
+                              {
+                                  key: 'base',
+                                  value: record.base
+                              },
+                              {
+                                  key: 'min',
+                                  value: record.minValue
+                              },
+                              {
+                                  key: 'max',
+                                  value: record.maxValue
+                              }
+                          ])
+                      ]);
+                      return all;
+                  }, []), style.fee),
                   limit: this.buildList([
-                      ['Transaction', 'max 400 USD min 10 USD']
-                  ])
+                      ['Transaction', 'max 400 USD min 10 USD'],['Transaction', 'max 400 USD min 10 USD']
+                  ]),
+                  refresh: ''
               };
           })}
         />;

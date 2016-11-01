@@ -98,6 +98,10 @@ const Main = React.createClass({
             conditionId: conditionsArray
         }));
     },
+    refresh() {
+        this.refs.grid.clearSelected();
+        this.props.actions.reset();
+    },
     render() {
         if (!this.props.ready) {
             return null;
@@ -129,6 +133,7 @@ const Main = React.createClass({
                 }
                 <Grid
                   ref='grid'
+                  refresh={this.refresh}
                   data={this.props.rules}
                   nomenclatures={this.props.nomenclatures}
                   handleCheckboxSelect={this.handleCheckboxSelect}

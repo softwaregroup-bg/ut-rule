@@ -11,6 +11,7 @@
     "redux": "3.5.2",
     "react-redux": "4.4.5",
     "react-router": "2.5.2",
+    "classnames": "2.2.5",
     "joi": "9.0.4"
   },
   "devDependencies": {

@@ -68,7 +68,7 @@ export default React.createClass({
               {title: 'Destination', name: 'destination'},
               {title: 'Fee', name: 'fee'},
               {title: 'Limit', name: 'limit'},
-              {title: <span onClick={this.props.refresh} className={style.refresh}></span>, name: 'refresh'}
+              {title: <span onClick={this.props.refresh} className={style.refresh} />, name: 'refresh'}
           ]}
           handleCheckboxSelect={this.props.handleCheckboxSelect}
           handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}

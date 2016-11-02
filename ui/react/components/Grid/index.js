@@ -37,6 +37,21 @@ export default React.createClass({
         handleCheckboxSelect: PropTypes.func,
         handleHeaderCheckboxSelect: PropTypes.func
     },
+    getInitialState() {
+        return {
+            columns: {
+                priority: true,
+                channel: true,
+                operation: true,
+                source: true,
+                destination: false,
+                fee: true,
+                commission: true,
+                limit: true,
+                refresh: true
+            }
+        };
+    },
     shouldComponentUpdate(nextProps, nextState) {
         return true;
     },
@@ -69,7 +84,7 @@ export default React.createClass({
               {title: 'Commission', name: 'commission'},
               {title: 'Limit', name: 'limit'},
               {title: <div onClick={this.props.refresh} className={style.refresh} />, name: 'refresh'}
-          ]}
+          ].filter((column) => (this.state.columns[column.name]))}
           handleCheckboxSelect={this.props.handleCheckboxSelect}
           handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
           externalStyle={style}
@@ -77,10 +92,11 @@ export default React.createClass({
           data={Object.keys(this.props.data).map((conditionId, i) => {
               let record = this.props.data[conditionId];
               let condition = record.condition[0];
+              let columns = this.state.columns;
               return {
                   id: conditionId,
-                  priority: condition.priority,
-                  channel: this.buildList([
+                  priority: columns.priority && condition.priority,
+                  channel: columns.channel && this.buildList([
                       ['Channel', condition.channelId, 'channel'],
                       ['Country', condition.channelCountryId, 'country'],
                       ['Region', condition.channelRegionId, 'region'],
@@ -89,12 +105,12 @@ export default React.createClass({
                       ['Supervisor', condition.channelSupervisorId, 'supervisor'],
                       ['Role', condition.channelRoleId, 'role']
                   ]),
-                  operation: this.buildList([
+                  operation: columns.operation && this.buildList([
                       ['Operation', condition.operationId, 'operation'],
                       ['Start Date', condition.operationStartDate],
                       ['End Date', condition.operationEndDate]
                   ]),
-                  source: this.buildList([
+                  source: columns.source && this.buildList([
                       ['Country', condition.sourceCountryId, 'country'],
                       ['Region', condition.sourceRegionId, 'region'],
                       ['City', condition.sourceCityId, 'city'],
@@ -102,7 +118,15 @@ export default React.createClass({
                       ['Supervisor', condition.sourceSupervisorId, 'supervisor'],
                       ['Tag', condition.sourceTag]
                   ]),
-                  fee: record.fee && nestedTable(record.fee.reduce((all, record) => {
+                  destination: columns.destination && this.buildList([
+                      ['Country', condition.destinationCountryId, 'country'],
+                      ['Region', condition.destinationRegionId, 'region'],
+                      ['City', condition.destinationCityId, 'city'],
+                      ['Organization', condition.destinationOrganizationId, 'organization'],
+                      ['Supervisor', condition.destinationSupervisorId, 'supervisor'],
+                      ['Tag', condition.destinationTag]
+                  ]),
+                  fee: columns.fee && record.fee && nestedTable(record.fee.reduce((all, record) => {
                       all.push([
                           '>= ' + record.startAmount + ' ' + record.startAmountCurrency,
                           buildCSV([
@@ -126,7 +150,7 @@ export default React.createClass({
                       ]);
                       return all;
                   }, []), style.fee),
-                  commission: record.commission && nestedTable(record.commission.reduce((all, record) => {
+                  commission: columns.commission && record.commission && nestedTable(record.commission.reduce((all, record) => {
                       all.push([
                           '>= ' + record.startAmount + ' ' + record.startAmountCurrency,
                           buildCSV([
@@ -150,7 +174,7 @@ export default React.createClass({
                       ]);
                       return all;
                   }, []), style.commission),
-                  limit: record.limit && record.limit.map((limit, i) => {
+                  limit: columns.limit && record.limit && record.limit.map((limit, i) => {
                       return this.buildList([
                           [
                               '',

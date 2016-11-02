@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Grid from '../../components/Grid';
 import Dialog from '../../components/Dialog';
+import Prompt from '../../components/Prompt';
 import mainStyle from 'ut-front-react/assets/index.css';
 // import style from './style.css';
 import * as actionCreators from './actionCreators';
@@ -20,6 +21,7 @@ const Main = React.createClass({
             selectedConditions: {},
             canEdit: false,
             canDelete: false,
+            prompt: false,
             dialog: {
                 open: false,
                 conditionId: null
@@ -91,7 +93,7 @@ const Main = React.createClass({
         let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
         this.setState(this.getInitialState(), () => this.props.actions[action](data));
     },
-    deleteBtnOnClick() {
+    removeRules() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
         this.refs.grid.clearSelected();
         this.setState(this.getInitialState(), () => this.props.actions.removeRules({
@@ -101,6 +103,16 @@ const Main = React.createClass({
     refresh() {
         this.refs.grid.clearSelected();
         this.props.actions.reset();
+    },
+    showPrompt() {
+        this.setState({
+            prompt: true
+        });
+    },
+    hidePrompt() {
+        this.setState({
+            prompt: false
+        });
     },
     render() {
         if (!this.props.ready) {
@@ -117,7 +129,7 @@ const Main = React.createClass({
                     <button onClick={this.editBtnOnClick} style={{visibility: this.state.canEdit ? 'visible' : 'hidden'}}>
                       Edit
                     </button>
-                    <button onClick={this.deleteBtnOnClick} style={{marginLeft: '20px', visibility: this.state.canDelete ? 'visible' : 'hidden'}}>
+                    <button onClick={this.showPrompt} style={{marginLeft: '20px', visibility: this.state.canDelete ? 'visible' : 'hidden'}}>
                       Delete
                     </button>
                 </div>
@@ -129,6 +141,23 @@ const Main = React.createClass({
                       nomenclatures={this.props.nomenclatures}
                       onSave={this.dialogOnSave}
                       onClose={this.dialogOnClose}
+                    />
+                }
+                {this.state.prompt &&
+                    <Prompt
+                      ref='prompt'
+                      open={this.state.prompt}
+                      message={
+                        'You are about to delete ' +
+                        (
+                            Object.keys(this.state.selectedConditions).length === 1
+                                ? '1 rule'
+                                : Object.keys(this.state.selectedConditions).length + ' rules'
+                        ) +
+                        '. Would you like to proceed?'
+                      }
+                      onOk={this.removeRules}
+                      onCancel={this.hidePrompt}
                     />
                 }
                 <Grid

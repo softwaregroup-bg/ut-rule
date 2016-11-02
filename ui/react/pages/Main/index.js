@@ -91,6 +91,7 @@ const Main = React.createClass({
     },
     dialogOnSave(data) {
         let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
+        this.refs.grid.clearSelected();
         this.setState(this.getInitialState(), () => this.props.actions[action](data));
     },
     removeRules() {

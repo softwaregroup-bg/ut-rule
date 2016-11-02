@@ -73,6 +73,17 @@ const emptyLimit = {
     maxCountMonthly: null
 };
 
+// const emptyCommission = {
+//     commissionId: null,
+//     startAmount: null,
+//     startAmountCurrency: null,
+//     isSourceAmount: null,
+//     minValue: null,
+//     maxValue: null,
+//     percent: null,
+//     percentBase: null
+// };
+
 export default React.createClass({
     propTypes: {
         open: PropTypes.bool.isRequired,
@@ -97,6 +108,9 @@ export default React.createClass({
                 ],
                 limit: [
                     Object.assign({}, emptyLimit)
+                ],
+                commission: [
+                    // Object.assign({}, emptyCommission)
                 ]
             }
         };
@@ -139,6 +153,9 @@ export default React.createClass({
             data: this.state.data
         });
     },
+    save() {
+        this.props.onSave(this.state.data);
+    },
     render() {
         return (
             <Dialog
@@ -147,7 +164,7 @@ export default React.createClass({
               autoScrollBodyContent
               contentStyle={style}
               actions={[
-                  <button onClick={this.props.onSave} style={{ marginRight: '10px' }}>Save</button>,
+                  <button onClick={this.save} style={{ marginRight: '10px' }}>Save</button>,
                   <button onClick={this.props.onClose}>Cancel</button>
               ]}
             >

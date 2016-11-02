@@ -80,6 +80,7 @@ export default React.createClass({
               {title: 'Channel', name: 'channel'},
               {title: 'Operation', name: 'operation'},
               {title: 'Source', name: 'source'},
+              {title: 'Destination', name: 'destination'},
               {title: 'Fee', name: 'fee', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
               {title: 'Commission', name: 'commission', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
               {title: 'Limit', name: 'limit'},

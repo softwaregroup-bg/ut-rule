@@ -65,10 +65,10 @@ export default React.createClass({
               {title: 'Channel', name: 'channel'},
               {title: 'Operation', name: 'operation'},
               {title: 'Source', name: 'source'},
-              {title: 'Destination', name: 'destination'},
               {title: 'Fee', name: 'fee'},
+              {title: 'Commission', name: 'commission'},
               {title: 'Limit', name: 'limit'},
-              {title: <span onClick={this.props.refresh} className={style.refresh} />, name: 'refresh'}
+              {title: <div onClick={this.props.refresh} className={style.refresh} />, name: 'refresh'}
           ]}
           handleCheckboxSelect={this.props.handleCheckboxSelect}
           handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
@@ -102,14 +102,7 @@ export default React.createClass({
                       ['Supervisor', condition.sourceSupervisorId, 'supervisor'],
                       ['Tag', condition.sourceTag]
                   ]),
-                  destination: this.buildList([
-                      ['Country', condition.destinationCountryId, 'country'],
-                      ['Region', condition.destinationRegionId, 'region'],
-                      ['City', condition.destinationCityId, 'city'],
-                      ['Organization', condition.destinationOrganizationId, 'organization'],
-                      ['Supervisor', condition.destinationSupervisorId, 'supervisor']
-                  ]),
-                  fee: nestedTable(record.fee.reduce((all, record) => {
+                  fee: record.fee && nestedTable(record.fee.reduce((all, record) => {
                       all.push([
                           '>= ' + record.startAmount + ' ' + record.startAmountCurrency,
                           buildCSV([
@@ -133,6 +126,30 @@ export default React.createClass({
                       ]);
                       return all;
                   }, []), style.fee),
+                  commission: record.commission && nestedTable(record.commission.reduce((all, record) => {
+                      all.push([
+                          '>= ' + record.startAmount + ' ' + record.startAmountCurrency,
+                          buildCSV([
+                              {
+                                  key: '',
+                                  value: record.percent ? record.percent + '%' : ''
+                              },
+                              {
+                                  key: 'base',
+                                  value: record.percentBase
+                              },
+                              {
+                                  key: 'min',
+                                  value: record.minValue
+                              },
+                              {
+                                  key: 'max',
+                                  value: record.maxValue
+                              }
+                          ])
+                      ]);
+                      return all;
+                  }, []), style.commission),
                   limit: record.limit && record.limit.map((limit, i) => {
                       return this.buildList([
                           [

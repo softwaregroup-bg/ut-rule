@@ -8,6 +8,10 @@
     padding: 0.5 rem;
 }
 
+.dataGridTable th span{
+    display: block;
+}
+
 .dataGridTable input[type=checkbox] + label{
     margin: 0;
 }
@@ -35,14 +39,15 @@
     background: #FFFCE5;
 }
 
-/*.dataGridTable tr td:nth-child(6),*/
+.dataGridTable tr td:nth-child(6),
 .dataGridTable tr td:nth-child(7) {
     padding: 0;
     position: relative;
-    min-width: 360px;
+    width: 360px;
+    min-width: 220px;
 }
 
-/*.dataGridTable tr td:nth-child(6)  div,*/
+.dataGridTable tr td:nth-child(6) div,
 .dataGridTable tr td:nth-child(7) div {
     position: absolute;
     top: 0;
@@ -58,11 +63,8 @@
 }
 
 .dataGridTable table.nested tr td:nth-child(1){
-    width: 120px;
-}
-
-.dataGridTable table.nested tr td:nth-child(2){
-    width: 240px;
+    width: 100px;
+    padding-right: 0;
 }
 
 .dataGridTable table.nested.fee tr{
@@ -91,11 +93,11 @@
 }
 
 .dataGridTable tr.checked table.nested.commission tr{
-    background: #FEECCF;
+    background: #f9ddae;
 }
 
 .dataGridTable tr.checked table.nested.commission tr:nth-child(even){
-    background: #FFE5BC;
+    background: #fcd08d;
 }
 
 .dataGridTable tr th .refresh {
@@ -105,6 +107,4 @@
     cursor: pointer;
     background: url('./images/refresh.png') no-repeat center center;
     background-size: contain;
-    display: block;
-    float: right;
 }

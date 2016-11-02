@@ -47,7 +47,7 @@ export default React.createClass({
             return (
                 value
                 ? <div key={i}>
-                    <b>{record[0]}: </b>{value}
+                    <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
                 </div>
                 : null
             );
@@ -99,7 +99,8 @@ export default React.createClass({
                       ['Region', condition.sourceRegionId, 'region'],
                       ['City', condition.sourceCityId, 'city'],
                       ['Organization', condition.sourceOrganizationId, 'organization'],
-                      ['Supervisor', condition.sourceSupervisorId, 'supervisor']
+                      ['Supervisor', condition.sourceSupervisorId, 'supervisor'],
+                      ['Tag', condition.sourceTag]
                   ]),
                   destination: this.buildList([
                       ['Country', condition.destinationCountryId, 'country'],
@@ -118,7 +119,7 @@ export default React.createClass({
                               },
                               {
                                   key: 'base',
-                                  value: record.base
+                                  value: record.percentBase
                               },
                               {
                                   key: 'min',
@@ -132,9 +133,34 @@ export default React.createClass({
                       ]);
                       return all;
                   }, []), style.fee),
-                  limit: this.buildList([
-                      ['Transaction', 'max 400 USD min 10 USD'],['Transaction', 'max 400 USD min 10 USD']
-                  ]),
+                  limit: record.limit && record.limit.map((limit, i) => {
+                      return this.buildList([
+                          [
+                              '',
+                              i === 0 ? '' : <hr />
+                          ],
+                          [
+                              'Currency',
+                              limit.currency || ''
+                          ],
+                          [
+                              'Transaction',
+                              '' + (limit.maxAmount ? 'max ' + limit.maxAmount + ' ' : '') + (limit.minAmount ? 'min ' + limit.minAmount + ' ' : '')
+                          ],
+                          [
+                              'Daily',
+                              '' + (limit.maxAmountDaily ? 'max ' + limit.maxAmountDaily + ' ' : '') + (limit.maxCountDaily ? 'count ' + limit.maxCountDaily + ' ' : '')
+                          ],
+                          [
+                              'Weekly',
+                              '' + (limit.maxAmountWeekly ? 'max ' + limit.maxAmountWeekly + ' ' : '') + (limit.maxCountWeekly ? 'count ' + limit.maxCountWeekly + ' ' : '')
+                          ],
+                          [
+                              'Monthly',
+                              '' + (limit.maxAmountMonthly ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (limit.maxCountMonthly ? 'count ' + limit.maxCountMonthly + ' ' : '')
+                          ]
+                      ]);
+                  }),
                   refresh: ''
               };
           })}

@@ -140,7 +140,7 @@ const Main = React.createClass({
                   handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
                 />
             </div>
-            {true &&
+            {false &&
                 <div>
                     <div style={{float: 'left', padding: '50px'}}>
                         RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>

@@ -28,7 +28,7 @@ const Source = React.createClass({
                       label='Country'
                       data={country}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.sourceCountryId || ''}
+                      defaultSelected={'' + (this.props.data.sourceCountryId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -37,7 +37,7 @@ const Source = React.createClass({
                       label='Region'
                       data={region}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.sourceRegionId || ''}
+                      defaultSelected={'' + (this.props.data.sourceRegionId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -46,7 +46,7 @@ const Source = React.createClass({
                       label='City'
                       data={city}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.sourceCityId || ''}
+                      defaultSelected={'' + (this.props.data.sourceCityId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -54,7 +54,7 @@ const Source = React.createClass({
                       keyProp='sourceOrganizationId'
                       label='Organization'
                       onChange={onChangeInput}
-                      value={this.props.data.sourceOrganizationId || ''}
+                      value={'' + (this.props.data.sourceOrganizationId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -62,7 +62,7 @@ const Source = React.createClass({
                       keyProp='sourceSupervisorId'
                       label='Supervisor'
                       onChange={onChangeInput}
-                      value={this.props.data.sourceSupervisorId || ''}
+                      value={'' + (this.props.data.sourceSupervisorId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -70,7 +70,7 @@ const Source = React.createClass({
                       keyProp='sourceTag'
                       label='Tag'
                       onChange={onChangeInput}
-                      value={this.props.data.sourceTag || ''}
+                      value={'' + (this.props.data.sourceTag || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -79,7 +79,7 @@ const Source = React.createClass({
                       label='Product'
                       data={product}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.sourceProductId || ''}
+                      defaultSelected={'' + (this.props.data.sourceProductId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -88,7 +88,7 @@ const Source = React.createClass({
                       label='Account'
                       data={account}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.sourceAccountId || ''}
+                      defaultSelected={'' + (this.props.data.sourceAccountId || '')}
                     />
                 </div>
             </div>

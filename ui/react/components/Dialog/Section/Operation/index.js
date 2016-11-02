@@ -34,7 +34,7 @@ const Operation = React.createClass({
                       label='Tag'
                       data={region}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.operationTag || ''}
+                      defaultSelected={'' + (this.props.data.operationTag || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -42,7 +42,7 @@ const Operation = React.createClass({
                       hintText='Landscape Dialog'
                       mode='landscape'
                       onChange={onChangeStartDate}
-                      value={this.props.data.operationStartDate || null}
+                      value={new Date(this.props.data.operationStartDate) || null}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -50,7 +50,7 @@ const Operation = React.createClass({
                       hintText='Landscape Dialog'
                       mode='landscape'
                       onChange={onChangeEndDate}
-                      value={this.props.data.operationEndDate || null}
+                      value={new Date(this.props.data.operationEndDate) || ''}
                     />
                 </div>
             </div>

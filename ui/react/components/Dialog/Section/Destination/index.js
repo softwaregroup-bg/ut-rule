@@ -28,7 +28,7 @@ const Destination = React.createClass({
                       label='Country'
                       data={country}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.destinationCountryId || ''}
+                      defaultSelected={'' + (this.props.data.destinationCountryId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -37,7 +37,7 @@ const Destination = React.createClass({
                       label='Region'
                       data={region}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.destinationRegionId || ''}
+                      defaultSelected={'' + (this.props.data.destinationRegionId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -46,7 +46,7 @@ const Destination = React.createClass({
                       label='City'
                       data={city}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.destinationCityId || ''}
+                      defaultSelected={'' + (this.props.data.destinationCityId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -54,7 +54,7 @@ const Destination = React.createClass({
                       keyProp='destinationOrganizationId'
                       label='Organization'
                       onChange={onChangeInput}
-                      value={this.props.data.destinationOrganizationId || ''}
+                      value={'' + (this.props.data.destinationOrganizationId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -62,7 +62,7 @@ const Destination = React.createClass({
                       keyProp='destinationSupervisorId'
                       label='Supervisor'
                       onChange={onChangeInput}
-                      value={this.props.data.destinationSupervisorId || ''}
+                      value={'' + (this.props.data.destinationSupervisorId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -70,7 +70,7 @@ const Destination = React.createClass({
                       keyProp='destinationTag'
                       label='Tag'
                       onChange={onChangeInput}
-                      value={this.props.data.destinationTag || ''}
+                      value={'' + (this.props.data.destinationTag || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -79,7 +79,7 @@ const Destination = React.createClass({
                       label='Product'
                       data={product}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.destinationProductId || ''}
+                      defaultSelected={'' + (this.props.data.destinationProductId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -88,7 +88,7 @@ const Destination = React.createClass({
                       label='Account'
                       data={account}
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.destinationAccountId || ''}
+                      defaultSelected={'' + (this.props.data.destinationAccountId || '')}
                     />
                 </div>
             </div>

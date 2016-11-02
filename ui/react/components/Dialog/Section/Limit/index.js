@@ -32,7 +32,7 @@ const SectionLimit = React.createClass({
                 <td>
                     <Dropdown
                       keyProp='currency'
-                      data={this.props.nomenclatures.country}
+                      data={this.props.nomenclatures.currency}
                       defaultSelected={'' + (limit.currency || '')}
                       onSelect={this.onSelectDropdown(index)}
                     />

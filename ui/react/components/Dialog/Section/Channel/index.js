@@ -25,7 +25,7 @@ const Channel = React.createClass({
                 <div className={style.inputWrapper}>
                     <Dropdown
                       data={channel}
-                      defaultSelected={this.props.data.channelId || ''}
+                      defaultSelected={'' + (this.props.data.channelId || '')}
                       keyProp='channelId'
                       placeholder='Channel type'
                       onSelect={onSelectDropdown}
@@ -35,7 +35,7 @@ const Channel = React.createClass({
                 <div className={style.inputWrapper}>
                     <Dropdown
                       data={country}
-                      defaultSelected={this.props.data.channelCountryId || ''}
+                      defaultSelected={'' + (this.props.data.channelCountryId || '')}
                       keyProp='channelCountryId'
                       placeholder='Select Country'
                       onSelect={onSelectDropdown}
@@ -45,7 +45,7 @@ const Channel = React.createClass({
                 <div className={style.inputWrapper}>
                     <Dropdown
                       data={region}
-                      defaultSelected={this.props.data.channelRegionId || ''}
+                      defaultSelected={'' + (this.props.data.channelRegionId || '')}
                       keyProp='channelRegionId'
                       placeholder='Select Region'
                       onSelect={onSelectDropdown}
@@ -55,7 +55,7 @@ const Channel = React.createClass({
                 <div className={style.inputWrapper}>
                     <Dropdown
                       data={city}
-                      defaultSelected={this.props.data.channelCityId || ''}
+                      defaultSelected={'' + (this.props.data.channelCityId || '')}
                       keyProp='channelCityId'
                       placeholder='Select City'
                       onSelect={onSelectDropdown}
@@ -66,7 +66,7 @@ const Channel = React.createClass({
                     <Input
                       keyProp='channelOrganizationId'
                       label='Organization'
-                      value={this.props.data.channelOrganizationId || ''}
+                      value={'' + (this.props.data.channelOrganizationId || '')}
                       onChange={onChangeInput}
                     />
                 </div>
@@ -75,7 +75,7 @@ const Channel = React.createClass({
                       keyProp='channelSupervisorId'
                       label='Supervisor'
                       onChange={onChangeInput}
-                      value={this.props.data.channelSupervisorId || ''}
+                      value={'' + (this.props.data.channelSupervisorId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -83,7 +83,7 @@ const Channel = React.createClass({
                       keyProp='channelTag'
                       label='Tag'
                       onChange={onChangeInput}
-                      value={this.props.data.channelTag || ''}
+                      value={'' + (this.props.data.channelTag || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -93,7 +93,7 @@ const Channel = React.createClass({
                       data={role}
                       placeholder='Channel role'
                       onSelect={onSelectDropdown}
-                      defaultSelected={this.props.data.channelRoleId || ''}
+                      defaultSelected={'' + (this.props.data.channelRoleId || '')}
                     />
                 </div>
             </div>

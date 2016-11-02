@@ -52,7 +52,7 @@ const SectionFee = React.createClass({
                 <td style={{minWidth: '100px'}}>
                     <Dropdown
                       keyProp='startAmountCurrency'
-                      data={this.props.nomenclatures.country}
+                      data={this.props.nomenclatures.currency}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (fee.startAmountCurrency || '')}
                     />

@@ -4,7 +4,7 @@ import style from './style.css';
 import classnames from 'classnames';
 
 const nestedTable = function(arr, className) {
-    return <div>
+    return <div className={style.nestedTableWrapper}>
         <table className={classnames(style.nested, className)}>
             <tbody>
                 {
@@ -44,9 +44,9 @@ export default React.createClass({
                 channel: true,
                 operation: true,
                 source: true,
-                destination: false,
+                destination: true,
                 fee: true,
-                commission: true,
+                commission: false,
                 limit: true,
                 refresh: true
             }
@@ -80,8 +80,8 @@ export default React.createClass({
               {title: 'Channel', name: 'channel'},
               {title: 'Operation', name: 'operation'},
               {title: 'Source', name: 'source'},
-              {title: 'Fee', name: 'fee'},
-              {title: 'Commission', name: 'commission'},
+              {title: 'Fee', name: 'fee', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
+              {title: 'Commission', name: 'commission', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
               {title: 'Limit', name: 'limit'},
               {title: <div onClick={this.props.refresh} className={style.refresh} />, name: 'refresh'}
           ].filter((column) => (this.state.columns[column.name]))}

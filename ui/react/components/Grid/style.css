@@ -39,16 +39,7 @@
     background: #FFFCE5;
 }
 
-.dataGridTable tr td:nth-child(6),
-.dataGridTable tr td:nth-child(7) {
-    padding: 0;
-    position: relative;
-    width: 360px;
-    min-width: 220px;
-}
-
-.dataGridTable tr td:nth-child(6) div,
-.dataGridTable tr td:nth-child(7) div {
+.dataGridTable div.nestedTableWrapper{
     position: absolute;
     top: 0;
     display: inline-block;

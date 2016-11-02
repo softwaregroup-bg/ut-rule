@@ -1,100 +1,99 @@
 import React, { PropTypes } from 'react';
-import style from '../style.css';
+import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 
-const SectionChannel = React.createClass({
+const Channel = React.createClass({
     propTypes: {
-        errors: PropTypes.object,
-        channels: PropTypes.array,
-        countries: PropTypes.array,
-        regions: PropTypes.array,
-        cities: PropTypes.array,
-        roles: PropTypes.array
+        nomenclatures: PropTypes.object.isRequired,
+        data: PropTypes.object.isRequired
     },
-    onSelectDropdown() {},
-    onChangeInput() {},
+    contextTypes: {
+        onFieldChange: PropTypes.func
+    },
+    onSelectDropdown(field) {
+        this.context.onFieldChange('condition', 0, field.key, field.value);
+    },
+    onChangeInput(field) {
+        this.context.onFieldChange('condition', 0, field.key, field.value);
+    },
     render() {
-        let { channels, countries, regions, cities, roles, errors } = this.props;
+        let { channel, country, region, city, role } = this.props.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
         return (
             <div className={style.content}>
                 <div className={style.inputWrapper}>
                     <Dropdown
-                      data={channels}
-                      keyProp='ruleTypeId'
-                      placeholder='Select Rule Type'
+                      data={channel}
+                      defaultSelected={this.props.data.channelId || ''}
+                      keyProp='channelId'
+                      placeholder='Channel type'
                       onSelect={onSelectDropdown}
-                      isValid={!errors.ruleType}
                       label='Type'
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
-                      data={countries}
-                      keyProp='countryId'
+                      data={country}
+                      defaultSelected={this.props.data.channelCountryId || ''}
+                      keyProp='channelCountryId'
                       placeholder='Select Country'
                       onSelect={onSelectDropdown}
-                      isValid={!errors.country}
                       label='Country'
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
-                      data={regions}
-                      keyProp='regionId'
+                      data={region}
+                      defaultSelected={this.props.data.channelRegionId || ''}
+                      keyProp='channelRegionId'
                       placeholder='Select Region'
                       onSelect={onSelectDropdown}
-                      isValid={!errors.region}
                       label='Region'
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
-                      data={cities}
-                      keyProp='cityId'
+                      data={city}
+                      defaultSelected={this.props.data.channelCityId || ''}
+                      keyProp='channelCityId'
                       placeholder='Select City'
                       onSelect={onSelectDropdown}
-                      isValid={!errors.city}
                       label='City'
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Input
-                      keyProp='organization'
+                      keyProp='channelOrganizationId'
+                      label='Organization'
+                      value={this.props.data.channelOrganizationId || ''}
                       onChange={onChangeInput}
-                      label='Name'
-                      placeholder='Please enter Organization'
-                      isValid={!errors.organization}
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Input
-                      keyProp='supervisor'
-                      onChange={onChangeInput}
+                      keyProp='channelSupervisorId'
                       label='Supervisor'
-                      placeholder='Please enter a supervisor'
-                      isValid={!errors.supervisor}
+                      onChange={onChangeInput}
+                      value={this.props.data.channelSupervisorId || ''}
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Input
                       keyProp='channelTag'
-                      onChange={onChangeInput}
                       label='Tag'
-                      placeholder='Please enter channel tag'
-                      isValid={!errors.channelTag}
+                      onChange={onChangeInput}
+                      value={this.props.data.channelTag || ''}
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
-                      data={roles}
-                      keyProp='regionId'
-                      placeholder='Select role'
-                      onSelect={onSelectDropdown}
-                      isValid={!errors.role}
+                      keyProp='channelRoleId'
                       label='Role'
-                      errorMessage={errors.role}
+                      data={role}
+                      placeholder='Channel role'
+                      onSelect={onSelectDropdown}
+                      defaultSelected={this.props.data.channelRoleId || ''}
                     />
                 </div>
             </div>
@@ -102,4 +101,4 @@ const SectionChannel = React.createClass({
     }
 });
 
-export default SectionChannel;
+export default Channel;

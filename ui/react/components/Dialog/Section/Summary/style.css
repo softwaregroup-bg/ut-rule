@@ -4,22 +4,21 @@
 
 .summary td {
     vertical-align: top;
-}
-
-.summary td div {
-    padding: 0 0 20px 0;
+    padding: 0 20px;
 }
 
 .summary td div.heading {
     font-size: 18px;
-    padding-bottom: 0 0 10px 0;
-    color: black;
+    border: 1px solid #E6E6E6;
+    margin: 20px 0;
+    background: #FAFAFA;
+    padding: 10px;
+}
+
+.summary td div {
+    padding: 5px 0;
 }
 
 .summary td div div {
-    border-top: 1px dotted grey;
-}
-
-.summary td div div:nth-child(1) {
-    border: none;
+    padding: 10px;
 }

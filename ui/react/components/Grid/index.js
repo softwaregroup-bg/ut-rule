@@ -99,6 +99,7 @@ export default React.createClass({
                   priority: columns.priority && condition.priority,
                   channel: columns.channel && this.buildList([
                       ['Channel', condition.channelId, 'channel'],
+                      ['Tag', condition.channelTag],
                       ['Country', condition.channelCountryId, 'country'],
                       ['Region', condition.channelRegionId, 'region'],
                       ['City', condition.channelCityId, 'city'],
@@ -108,6 +109,7 @@ export default React.createClass({
                   ]),
                   operation: columns.operation && this.buildList([
                       ['Operation', condition.operationId, 'operation'],
+                      ['Tag', condition.operationTag],
                       ['Start Date', condition.operationStartDate],
                       ['End Date', condition.operationEndDate]
                   ]),

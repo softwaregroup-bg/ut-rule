@@ -12,25 +12,35 @@ const Summary = React.createClass({
             let value = record[2] && this.props.nomenclatures[record[2]] ? this.props.nomenclatures[record[2]][record[1]] : record[1];
             return (
                 value
-                ? <div key={i + 1}>
-                    {(record[0] ? record[0] + ': ' : '') + value}
+                ? <div key={i + 2}>
+                    <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
                 </div>
                 : null
             );
         }).filter(val => val);
         if (list.length) {
-            list.unshift(<div key={0} className={style.heading}>{heading}</div>);
+            if (heading) {
+                list.unshift(<div key={1} className={style.heading}>{heading}</div>);
+            }
             return list;
         }
         return null;
     },
-    buildCSV(arr) {
-        return arr.map((record) => {
-            return record.value ? ((record.key ? record.key + ': ' : '') + record.value) : '';
-        }).filter(val => val).join(', ');
+    buildCSV(arr, label, key) {
+        return <div key={key}>
+            <b>{label}: </b>
+            {
+                arr.map((record) => {
+                    return record.value ? ((record.key ? record.key + ': ' : '') + record.value) : '';
+                }).filter(val => val).join(' | ')
+            }
+        </div>;
     },
     render() {
         let condition = this.props.data.condition[0];
+        let fee = this.props.data.fee;
+        let limit = this.props.data.limit;
+        let commission = this.props.data.commission;
         return (
            <table className={style.summary}>
                 <tbody>
@@ -38,6 +48,7 @@ const Summary = React.createClass({
                         <td>
                             {this.buildList([
                                 ['Channel', condition.channelId, 'channel'],
+                                ['Tag', condition.channelTag],
                                 ['Country', condition.channelCountryId, 'country'],
                                 ['Region', condition.channelRegionId, 'region'],
                                 ['City', condition.channelCityId, 'city'],
@@ -45,59 +56,103 @@ const Summary = React.createClass({
                                 ['Supervisor', condition.channelSupervisorId, 'supervisor'],
                                 ['Role', condition.channelRoleId, 'role']
                             ], 'Condition')}
+                            {this.buildList([
+                                ['Operation', condition.operationId, 'operation'],
+                                ['Tag', condition.operationTag],
+                                ['Start Date', condition.operationStartDate],
+                                ['End Date', condition.operationEndDate]
+                            ], 'Operation')}
+                            {this.buildList([
+                                ['Country', condition.sourceCountryId, 'country'],
+                                ['Region', condition.sourceRegionId, 'region'],
+                                ['City', condition.sourceCityId, 'city'],
+                                ['Organization', condition.sourceOrganizationId, 'organization'],
+                                ['Supervisor', condition.sourceSupervisorId, 'supervisor'],
+                                ['Tag', condition.sourceTag]
+                            ], 'Source')}
+                            {this.buildList([
+                                ['Country', condition.destinationCountryId, 'country'],
+                                ['Region', condition.destinationRegionId, 'region'],
+                                ['City', condition.destinationCityId, 'city'],
+                                ['Organization', condition.destinationOrganizationId, 'organization'],
+                                ['Supervisor', condition.destinationSupervisorId, 'supervisor'],
+                                ['Tag', condition.destinationTag]
+                            ], 'Destination')}
                         </td>
-                        <td rowSpan='4'>
-                            <div className={style.heading}>
-                                Fees
-                            </div>
-                        </td>
-                        <td rowSpan='4'>
-                            <div className={style.heading}>
-                                Commissions
-                            </div>
-                        </td>
-                        <td rowSpan='4'>
-                            <div className={style.heading}>
-                                Limits
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>
                             {
-                                this.buildList([
-                                    ['Operation', condition.operationId, 'operation'],
-                                    ['Start Date', condition.operationStartDate],
-                                    ['End Date', condition.operationEndDate]
-                                ], 'Operation')
+                                limit.length > 0 && [<div key={0} className={style.heading}>Limits</div>].concat(limit.map((item, i) => {
+                                    return this.buildList([
+                                        [
+                                            '',
+                                            i === 0 ? null : <hr />
+                                        ],
+                                        [
+                                            'Currency',
+                                            item.currency || ''
+                                        ],
+                                        [
+                                            'Transaction',
+                                            '' + (item.maxAmount ? 'max ' + item.maxAmount + ' ' : '') + (item.minAmount ? 'min ' + item.minAmount + ' ' : '')
+                                        ],
+                                        [
+                                            'Daily',
+                                            '' + (item.maxAmountDaily ? 'max ' + item.maxAmountDaily + ' ' : '') + (item.maxCountDaily ? 'count ' + item.maxCountDaily + ' ' : '')
+                                        ],
+                                        [
+                                            'Weekly',
+                                            '' + (item.maxAmountWeekly ? 'max ' + item.maxAmountWeekly + ' ' : '') + (item.maxCountWeekly ? 'count ' + item.maxCountWeekly + ' ' : '')
+                                        ],
+                                        [
+                                            'Monthly',
+                                            '' + (item.maxAmountMonthly ? 'max ' + item.maxAmountMonthly + ' ' : '') + (item.maxCountMonthly ? 'count ' + item.maxCountMonthly + ' ' : '')
+                                        ]
+                                    ]);
+                                }))
                             }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             {
-                                this.buildList([
-                                    ['Country', condition.sourceCountryId, 'country'],
-                                    ['Region', condition.sourceRegionId, 'region'],
-                                    ['City', condition.sourceCityId, 'city'],
-                                    ['Organization', condition.sourceOrganizationId, 'organization'],
-                                    ['Supervisor', condition.sourceSupervisorId, 'supervisor'],
-                                    ['Tag', condition.sourceTag]
-                                ], 'Source')
+                                fee.length > 0 && [<div key={0} className={style.heading}>Fees</div>].concat(fee.map((record, i) => {
+                                    return this.buildCSV([
+                                        {
+                                            key: '',
+                                            value: record.percent ? record.percent + '%' : ''
+                                        },
+                                        {
+                                            key: 'base',
+                                            value: record.percentBase
+                                        },
+                                        {
+                                            key: 'min',
+                                            value: record.minValue
+                                        },
+                                        {
+                                            key: 'max',
+                                            value: record.maxValue
+                                        }
+                                    ], record.startAmount + ' ' + record.startAmountCurrency + ' ', i + 1);
+                                }))
                             }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             {
-                                this.buildList([
-                                    ['Country', condition.destinationCountryId, 'country'],
-                                    ['Region', condition.destinationRegionId, 'region'],
-                                    ['City', condition.destinationCityId, 'city'],
-                                    ['Organization', condition.destinationOrganizationId, 'organization'],
-                                    ['Supervisor', condition.destinationSupervisorId, 'supervisor'],
-                                    ['Tag', condition.destinationTag]
-                                ], 'Destination')
+                                commission.length > 0 && [<div key={0} className={style.heading}>Commissions</div>].concat(commission.map((record, i) => {
+                                    return this.buildCSV([
+                                        {
+                                            key: '',
+                                            value: record.percent ? record.percent + '%' : ''
+                                        },
+                                        {
+                                            key: 'base',
+                                            value: record.percentBase
+                                        },
+                                        {
+                                            key: 'min',
+                                            value: record.minValue
+                                        },
+                                        {
+                                            key: 'max',
+                                            value: record.maxValue
+                                        }
+                                    ], '>= ' + record.startAmount + ' ' + record.startAmountCurrency + ' ');
+                                }))
                             }
                         </td>
                     </tr>

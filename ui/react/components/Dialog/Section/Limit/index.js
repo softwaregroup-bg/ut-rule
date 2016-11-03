@@ -123,21 +123,21 @@ const SectionLimit = React.createClass({
                             <th rowSpan={2}>&nbsp;</th>
                         </tr>
                         <tr>
-                            <th>Min</th>
                             <th>Max</th>
-                            <th>Min</th>
+                            <th>Count</th>
                             <th>Max</th>
-                            <th>Min</th>
+                            <th>Count</th>
                             <th>Max</th>
-                            <th>Min</th>
+                            <th>Count</th>
                             <th>Max</th>
+                            <th>Count</th>
                         </tr>
                     </thead>
                     <tbody>
                         {this.createLimitRows()}
                     </tbody>
                 </table>
-                <button type='button' onClick={this.props.addLimitRow}>Add another limit</button>
+                <a href='#' className={style.link} onClick={this.props.addLimitRow}><span>+</span>Add another limit</a>
             </div>
         );
     }

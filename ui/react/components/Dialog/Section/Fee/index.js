@@ -35,7 +35,7 @@ const SectionFee = React.createClass({
     },
     createHeaderCells() {
         return [
-            {name: 'Type', key: 'feeType'},
+            {name: 'Amount', key: 'startAmount'},
             {name: 'Currency', key: 'feeCurrency'},
             {name: '%', key: 'feePercent'},
             {name: '% Base', key: 'feePercentBase'},
@@ -114,7 +114,7 @@ const SectionFee = React.createClass({
                         {this.createFeeRows()}
                     </tbody>
                 </table>
-                <button type='button' onClick={this.props.addFeeRow}>Add another fee</button>
+                <a href='#' className={style.link} onClick={this.props.addFeeRow}><span>+</span>Add another fee</a>
             </div>
         );
     }

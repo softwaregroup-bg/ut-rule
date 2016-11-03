@@ -42,6 +42,10 @@
 .dataGridTable tr td {
     padding: .25rem;
 }
+.dataGridTable tr th {
+    border-right: 1px solid #D7D6D6;
+    text-align: center;
+}
 .dataGridTable tr {
     background: #FFFFFF;
     cursor: pointer;
@@ -105,4 +109,19 @@
 .errorWrap .errorMessage {
     color: #ff3333;
     margin: 5px 0 0;
+}
+
+.link {
+    color: rgb(233, 53, 145) !important;
+    display: block;
+    padding: 10px 5px;
+    text-decoration: none;
+}
+.link:hover {
+    text-decoration: none;
+}
+.link > span {
+    border: 1px solid rgb(233, 53, 145);
+    padding: 0 5px;
+    margin-right: 10px;
 }

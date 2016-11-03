@@ -1,0 +1,25 @@
+.summary {
+    width: 100%
+}
+
+.summary td {
+    vertical-align: top;
+}
+
+.summary td div {
+    padding: 0 0 20px 0;
+}
+
+.summary td div.heading {
+    font-size: 18px;
+    padding-bottom: 0 0 10px 0;
+    color: black;
+}
+
+.summary td div div {
+    border-top: 1px dotted grey;
+}
+
+.summary td div div:nth-child(1) {
+    border: none;
+}

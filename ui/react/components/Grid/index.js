@@ -26,7 +26,7 @@ const nestedTable = function(arr, className) {
 const buildCSV = function(arr) {
     return arr.map((record) => {
         return record.value ? ((record.key ? record.key + ': ' : '') + record.value) : '';
-    }).filter(val => val).join(', ');
+    }).filter(val => val).join(' | ');
 };
 
 export default React.createClass({

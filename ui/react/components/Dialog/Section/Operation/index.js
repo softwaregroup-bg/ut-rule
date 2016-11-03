@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import style from '../../style.css';
-import DatePicker from 'material-ui/DatePicker';
 import Input from 'ut-front-react/components/Input';
+import DatePicker from '../../../DatePicker';
 
 const Operation = React.createClass({
     propTypes: {
@@ -10,20 +10,17 @@ const Operation = React.createClass({
     contextTypes: {
         onFieldChange: PropTypes.func
     },
-    onSelectDropdown(field) {
-        this.context.onFieldChange('condition', 0, field.key, field.value);
-    },
     onChangeInput(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
-    onChangeStartDate(event, date) {
-        this.context.onFieldChange('condition', 0, 'operationStartDate', date.toString());
-    },
-    onChangeEndDate(event, date) {
-        this.context.onFieldChange('condition', 0, 'operationEndDate', date.toString());
+    onChangeDate(fieldKey) {
+        var self = this;
+        return (field) => {
+            self.context.onFieldChange('condition', 0, fieldKey, field.value);
+        }
     },
     render() {
-        let { onChangeInput, onChangeStartDate, onChangeEndDate } = this;
+        let { onChangeInput, onChangeDate } = this;
         return (
             <div className={style.content}>
                 <div className={style.inputWrapper}>
@@ -35,20 +32,30 @@ const Operation = React.createClass({
                     />
                 </div>
                 <div className={style.inputWrapper}>
-                    <DatePicker
-                      hintText='Landscape Dialog'
-                      mode='landscape'
-                      onChange={onChangeStartDate}
-                      value={this.props.data.operationStartDate ? new Date(this.props.data.operationStartDate) : null}
-                    />
+                    <div className={style.outerWrap}>
+                        <div className={style.lableWrap}>Start Date</div>
+                        <div className={style.inputWrap}>
+                            <DatePicker
+                              keyProp="operationStartDate"
+                              mode='landscape'
+                              onChange={onChangeDate('operationStartDate')}
+                              defaultValue={this.props.data.operationStartDate ? new Date(this.props.data.operationStartDate) : null}
+                            />
+                        </div>
+                    </div>
                 </div>
                 <div className={style.inputWrapper}>
-                    <DatePicker
-                      hintText='Landscape Dialog'
-                      mode='landscape'
-                      onChange={onChangeEndDate}
-                      value={this.props.data.operationEndDate ? new Date(this.props.data.operationEndDate) : null}
-                    />
+                    <div className={style.outerWrap}>
+                        <div className={style.lableWrap}>Start Date</div>
+                        <div className={style.inputWrap}>
+                            <DatePicker
+                              keyProp="operationEndDate"
+                              mode='landscape'
+                              onChange={onChangeDate('operationEndDate')}
+                              defaultValue={this.props.data.operationEndDate ? new Date(this.props.data.operationEndDate) : null}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         );

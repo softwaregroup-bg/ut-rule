@@ -1,7 +1,7 @@
 import Dialog from 'material-ui/Dialog';
 import React, { PropTypes } from 'react';
 import Accordion from 'ut-front-react/components/Accordion';
-// import { validationTypes, textValidations, arrayValidations, dropdownValidations } from 'ut-front-react/validator/constants.js';
+import Input from 'ut-front-react/components/Input';
 import style from './style.css';
 import Channel from './Section/Channel';
 import Operation from './Section/Operation';
@@ -9,15 +9,7 @@ import Source from './Section/Source';
 import Destination from './Section/Destination';
 import SectionFee from './Section/Fee';
 import SectionLimit from './Section/Limit';
-
-// var validations = {
-//     ruleTypeId: [
-//         { type: textValidations.isRequired, errorMessage: 'Rule Type is required' }
-//     ],
-//     organization: [
-//         { type: textValidations.length, minVal: 3, maxVal: 5, errorMessage: 'organization should be between 3 and 5 symbols long' }
-//     ]
-// };
+import merge from 'lodash.merge';
 
 const emptyCondition = {
     priority: null,
@@ -73,17 +65,6 @@ const emptyLimit = {
     maxCountMonthly: null
 };
 
-// const emptyCommission = {
-//     commissionId: null,
-//     startAmount: null,
-//     startAmountCurrency: null,
-//     isSourceAmount: null,
-//     minValue: null,
-//     maxValue: null,
-//     percent: null,
-//     percentBase: null
-// };
-
 export default React.createClass({
     propTypes: {
         open: PropTypes.bool.isRequired,
@@ -93,29 +74,32 @@ export default React.createClass({
         onClose: PropTypes.func.isRequired
     },
     childContextTypes: {
-        onFieldChange: PropTypes.func
+        onFieldChange: PropTypes.func,
+        nomenclatures: PropTypes.object
     },
     getInitialState() {
         return {
-            errors: {},
-            nomenclatures: {},
             data: {
                 condition: [
                     Object.assign({}, emptyCondition)
                 ],
                 fee: [
-                    Object.assign({}, emptyFee)
+                    // Object.assign({}, emptyFee)
                 ],
                 limit: [
-                    Object.assign({}, emptyLimit)
+                    // Object.assign({}, emptyLimit)
                 ],
-                commission: [
-                    // Object.assign({}, emptyCommission)
-                ]
+                commission: []
             }
         };
     },
     componentWillMount() {
+        this.setState({
+            data: merge({}, this.state.data, this.props.data),
+            isEditing: this.props.data !== undefined
+        });
+    },
+    getChildContext() {
         let { nomenclatures } = this.props;
         let formattedNomenclatures = {};
         Object.keys(nomenclatures).map((nomKey) => {
@@ -126,14 +110,9 @@ export default React.createClass({
                 };
             });
         });
-        this.setState({
-            nomenclatures: formattedNomenclatures,
-            data: Object.assign({}, this.state.data, this.props.data)
-        });
-    },
-    getChildContext() {
         return {
-            onFieldChange: this.onFieldChange
+            onFieldChange: this.onFieldChange,
+            nomenclatures: formattedNomenclatures
         };
     },
     onFieldChange(category, index, key, value) {
@@ -142,19 +121,44 @@ export default React.createClass({
         this.setState({ data });
     },
     addFeeRow() {
-        this.state.data.fee.push(Object.assign({}, emptyFee));
+        let feeObject = Object.assign({}, emptyFee);
+        if (this.state.isEditing) {
+            feeObject.conditionId = this.state.data.condition[0].conditionId;
+        }
+        this.state.data.fee.push(feeObject);
         this.setState({
             data: this.state.data
         });
     },
     addLimitRow() {
-        this.state.data.limit.push(Object.assign({}, emptyLimit));
+        let limitObject = Object.assign({}, emptyLimit);
+        if (this.state.isEditing) {
+            limitObject.conditionId = this.state.data.condition[0].conditionId;
+        }
+        this.state.data.limit.push(limitObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteFeeRow(index) {
+        let fee = this.state.data.fee;
+        this.state.data.fee = fee.slice(0, index).concat(fee.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteLimitRow(index) {
+        let limit = this.state.data.limit;
+        this.state.data.limit = limit.slice(0, index).concat(limit.slice(index + 1));
         this.setState({
             data: this.state.data
         });
     },
     save() {
         this.props.onSave(this.state.data);
+    },
+    onChangeInput(field) {
+        this.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
         return (
@@ -170,48 +174,49 @@ export default React.createClass({
             >
                 <div>
                     <div className={style.topSection}>
-                        Status
+                        <Input
+                          keyProp='priority'
+                          label='Priority'
+                          onChange={this.onChangeInput}
+                          value={'' + (this.state.data.condition[0].priority || '')}
+                        />
                     </div>
                     <div className={style.wrapper}>
                         <Accordion title='Channel' fullWidth>
                             <Channel
-                              nomenclatures={this.state.nomenclatures}
                               data={this.state.data.condition[0]}
                             />
                         </Accordion>
                         <Accordion title='Operation' fullWidth>
                             <Operation
-                              nomenclatures={this.state.nomenclatures}
                               data={this.state.data.condition[0]}
                             />
                         </Accordion>
                         <Accordion title='Source' fullWidth>
                             <Source
-                              nomenclatures={this.state.nomenclatures}
                               data={this.state.data.condition[0]}
                             />
                         </Accordion>
                         <Accordion title='Destination' fullWidth>
                             <Destination
-                              nomenclatures={this.state.nomenclatures}
                               data={this.state.data.condition[0]}
                             />
                         </Accordion>
                         <Accordion title='Fee' fullWidth>
                             <div className={style.content}>
                                 <SectionFee
-                                  nomenclatures={this.state.nomenclatures}
                                   data={this.state.data.fee}
                                   addFeeRow={this.addFeeRow}
+                                  deleteFeeRow={this.deleteFeeRow}
                                 />
                             </div>
                         </Accordion>
                         <Accordion title='Limit' fullWidth>
                             <div className={style.content}>
                                 <SectionLimit
-                                  nomenclatures={this.state.nomenclatures}
                                   data={this.state.data.limit}
                                   addLimitRow={this.addLimitRow}
+                                  deleteLimitRow={this.deleteLimitRow}
                                 />
                             </div>
                         </Accordion>

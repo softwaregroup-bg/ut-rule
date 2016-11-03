@@ -7,12 +7,13 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 const SectionFee = React.createClass({
     propTypes: {
-        nomenclatures: PropTypes.object.isRequired,
         data: PropTypes.array.isRequired,
-        addFeeRow: PropTypes.func.isRequired
+        addFeeRow: PropTypes.func.isRequired,
+        deleteFeeRow: PropTypes.func.isRequired
     },
     contextTypes: {
-        onFieldChange: PropTypes.func
+        onFieldChange: PropTypes.func,
+        nomenclatures: PropTypes.object
     },
     onSelectDropdown(index) {
         let self = this;
@@ -25,6 +26,12 @@ const SectionFee = React.createClass({
         return (field) => {
             self.context.onFieldChange('fee', index, field.key, field.value);
         };
+    },
+    onDeleteRow(index) {
+        let self = this;
+        return () => {
+            self.props.deleteFeeRow(index);
+        }
     },
     createHeaderCells() {
         return [
@@ -40,6 +47,7 @@ const SectionFee = React.createClass({
         ));
     },
     createFeeRows() {
+        let nomenclatures = this.context.nomenclatures;
         return this.props.data.map((fee, index) => (
             <tr key={index}>
                 <td>
@@ -52,7 +60,7 @@ const SectionFee = React.createClass({
                 <td style={{minWidth: '100px'}}>
                     <Dropdown
                       keyProp='startAmountCurrency'
-                      data={this.props.nomenclatures.currency}
+                      data={nomenclatures.currency}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (fee.startAmountCurrency || '')}
                     />
@@ -86,7 +94,7 @@ const SectionFee = React.createClass({
                     />
                 </td>
                 <td>
-                    <IconButton>
+                    <IconButton onClick={this.onDeleteRow(index)}>
                         <ActionDelete />
                     </IconButton>
                 </td>

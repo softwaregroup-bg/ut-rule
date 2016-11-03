@@ -5,11 +5,11 @@ import Dropdown from 'ut-front-react/components/Input/Dropdown';
 
 const Destination = React.createClass({
     propTypes: {
-        nomenclatures: PropTypes.object.isRequired,
         data: PropTypes.object.isRequired
     },
     contextTypes: {
-        onFieldChange: PropTypes.func
+        onFieldChange: PropTypes.func,
+        nomenclatures: PropTypes.object
     },
     onSelectDropdown(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
@@ -18,7 +18,7 @@ const Destination = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        let { country, region, city, product, account } = this.props.nomenclatures;
+        let { country, region, city, product, account, organization, supervisor } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
         return (
            <div className={style.content}>
@@ -50,19 +50,21 @@ const Destination = React.createClass({
                     />
                 </div>
                 <div className={style.inputWrapper}>
-                    <Input
+                    <Dropdown
                       keyProp='destinationOrganizationId'
                       label='Organization'
-                      onChange={onChangeInput}
-                      value={'' + (this.props.data.destinationOrganizationId || '')}
+                      data={organization}
+                      onSelect={onSelectDropdown}
+                      defaultSelected={'' + (this.props.data.destinationOrganizationId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>
-                    <Input
+                    <Dropdown
                       keyProp='destinationSupervisorId'
                       label='Supervisor'
-                      onChange={onChangeInput}
-                      value={'' + (this.props.data.destinationSupervisorId || '')}
+                      data={supervisor}
+                      onSelect={onSelectDropdown}
+                      defaultSelected={'' + (this.props.data.destinationSupervisorId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>

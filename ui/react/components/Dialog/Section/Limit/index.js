@@ -7,12 +7,13 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 const SectionLimit = React.createClass({
     propTypes: {
-        nomenclatures: PropTypes.object.isRequired,
         data: PropTypes.array.isRequired,
-        addLimitRow: PropTypes.func.isRequired
+        addLimitRow: PropTypes.func.isRequired,
+        deleteLimitRow: PropTypes.func.isRequired
     },
     contextTypes: {
-        onFieldChange: PropTypes.func
+        onFieldChange: PropTypes.func,
+        nomenclatures: PropTypes.object
     },
     onSelectDropdown(index) {
         let self = this;
@@ -26,13 +27,20 @@ const SectionLimit = React.createClass({
             self.context.onFieldChange('limit', index, field.key, field.value);
         };
     },
+    onDeleteRow(index) {
+        let self = this;
+        return () => {
+            self.props.deleteLimitRow(index);
+        }
+    },
     createLimitRows() {
+        let nomenclatures = this.context.nomenclatures;
         return this.props.data.map((limit, index) => (
             <tr key={index}>
                 <td>
                     <Dropdown
                       keyProp='currency'
-                      data={this.props.nomenclatures.currency}
+                      data={nomenclatures.currency}
                       defaultSelected={'' + (limit.currency || '')}
                       onSelect={this.onSelectDropdown(index)}
                     />
@@ -94,7 +102,7 @@ const SectionLimit = React.createClass({
                     />
                 </td>
                 <td>
-                    <IconButton>
+                    <IconButton onClick={this.onDeleteRow(index)}>
                         <ActionDelete />
                     </IconButton>
                 </td>

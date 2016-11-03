@@ -5,11 +5,11 @@ import Dropdown from 'ut-front-react/components/Input/Dropdown';
 
 const Channel = React.createClass({
     propTypes: {
-        nomenclatures: PropTypes.object.isRequired,
         data: PropTypes.object.isRequired
     },
     contextTypes: {
-        onFieldChange: PropTypes.func
+        onFieldChange: PropTypes.func,
+        nomenclatures: PropTypes.object
     },
     onSelectDropdown(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
@@ -18,7 +18,7 @@ const Channel = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        let { channel, country, region, city, role } = this.props.nomenclatures;
+        let { channel, country, region, city, role, organization, supervisor } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
         return (
             <div className={style.content}>
@@ -63,19 +63,23 @@ const Channel = React.createClass({
                     />
                 </div>
                 <div className={style.inputWrapper}>
-                    <Input
+                    <Dropdown
+                      data={organization}
+                      defaultSelected={'' + (this.props.data.channelOrganizationId || '')}
                       keyProp='channelOrganizationId'
+                      placeholder='Organization'
+                      onSelect={onSelectDropdown}
                       label='Organization'
-                      value={'' + (this.props.data.channelOrganizationId || '')}
-                      onChange={onChangeInput}
                     />
                 </div>
                 <div className={style.inputWrapper}>
-                    <Input
+                    <Dropdown
+                      data={supervisor}
+                      defaultSelected={'' + (this.props.data.channelSupervisorId || '')}
                       keyProp='channelSupervisorId'
+                      placeholder='Supervisor'
+                      onSelect={onSelectDropdown}
                       label='Supervisor'
-                      onChange={onChangeInput}
-                      value={'' + (this.props.data.channelSupervisorId || '')}
                     />
                 </div>
                 <div className={style.inputWrapper}>

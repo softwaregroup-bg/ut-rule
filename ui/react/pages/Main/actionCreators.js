@@ -14,8 +14,8 @@ export function removeRules(params) {
             type: actionTypes.removeRules,
             method: 'rule.rule.remove',
             params: params || {}
-        }).then(() => {
-            return dispatch(fetchRules());
+        }).then((result) => {
+            return result.error ? result : dispatch(fetchRules());
         });
     };
 };
@@ -26,8 +26,8 @@ export function editRule(params) {
             type: actionTypes.editRule,
             method: 'rule.rule.edit',
             params: params || {}
-        }).then(() => {
-            return dispatch(fetchRules());
+        }).then((result) => {
+            return result.error ? result : dispatch(fetchRules());
         });
     };
 };
@@ -38,8 +38,8 @@ export function addRule(params) {
             type: actionTypes.addRule,
             method: 'rule.rule.add',
             params: params || {}
-        }).then(() => {
-            return dispatch(fetchRules());
+        }).then((result) => {
+            return result.error ? result : dispatch(fetchRules());
         });
     };
 };

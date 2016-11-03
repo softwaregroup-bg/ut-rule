@@ -7,11 +7,11 @@ export default (state = defaultState, action) => {
         case actionTypes.fetchRules:
             return action.result ? Object.assign({}, state, {'fetchRules': formatRules(action.result)}) : state;
         case actionTypes.editRule:
-            return Object.assign({}, state, {'fetchRules': null});
+            return action.result ? Object.assign({}, state, {'fetchRules': null}) : state;
         case actionTypes.addRule:
-            return Object.assign({}, state, {'fetchRules': null});
+            return action.result ? Object.assign({}, state, {'fetchRules': null}) : state;
         case actionTypes.removeRules:
-            return Object.assign({}, state, {'fetchRules': null});
+            return action.result ? Object.assign({}, state, {'fetchRules': null}) : state;
         case actionTypes.reset:
             return defaultState;
         default:

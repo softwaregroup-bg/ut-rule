@@ -1,22 +1,19 @@
 import * as actionTypes from './actionTypes';
 const defaultState = {};
 export default (state = defaultState, action) => {
-    switch (action.type) {
-        case actionTypes.fetchNomenclatures:
-            return action.result ? Object.assign({}, state, {'fetchNomenclatures': formatNomenclatures(action.result)}) : state;
-        case actionTypes.fetchRules:
-            return action.result ? Object.assign({}, state, {'fetchRules': formatRules(action.result)}) : state;
-        case actionTypes.editRule:
-            return Object.assign({}, state, {'fetchRules': null});
-        case actionTypes.addRule:
-            return Object.assign({}, state, {'fetchRules': null});
-        case actionTypes.removeRules:
-            return Object.assign({}, state, {'fetchRules': null});
-        case actionTypes.reset:
-            return defaultState;
-        default:
-            return state;
+    if (action.type === actionTypes.reset) {
+        return defaultState;
+    } else if (action.result) {
+        switch (action.type) {
+            case actionTypes.fetchNomenclatures:
+                return Object.assign({}, state, {'fetchNomenclatures': formatNomenclatures(action.result)});
+            case actionTypes.fetchRules:
+                return Object.assign({}, state, {'fetchRules': formatRules(action.result)});
+            default:
+                break;
+        }
     }
+    return state;
 };
 
 const formatRules = function(data) {

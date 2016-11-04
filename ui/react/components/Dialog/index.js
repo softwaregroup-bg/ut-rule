@@ -167,7 +167,7 @@ export default React.createClass({
               title={this.props.data ? 'Edit Rule' : 'Add Rule'}
               open={this.props.open}
               autoScrollBodyContent
-              contentStyle={style}
+              contentStyle={{minWidth: '730px', maxWidth: '50%'}}
               actions={[
                   <button onClick={this.save} style={{ marginRight: '10px' }}>Save</button>,
                   <button onClick={this.props.onClose}>Cancel</button>

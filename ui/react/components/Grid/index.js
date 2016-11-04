@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
+import ContextMenu from '../ContextMenu';
 import style from './style.css';
 import classnames from 'classnames';
 
@@ -40,15 +41,38 @@ export default React.createClass({
     getInitialState() {
         return {
             columns: {
-                priority: true,
-                channel: true,
-                operation: true,
-                source: true,
-                destination: true,
-                fee: true,
-                commission: false,
-                limit: true,
-                refresh: true
+                priority: {
+                    visible: true,
+                    title: 'Priority'
+                },
+                channel: {
+                    visible: true,
+                    title: 'Channel'
+                },
+                operation: {
+                    visible: true,
+                    title: 'Operation'
+                },
+                source: {
+                    visible: true,
+                    title: 'Source'
+                },
+                destination: {
+                    visible: true,
+                    title: 'Destination'
+                },
+                fee: {
+                    visible: true,
+                    title: 'Fee'
+                },
+                commission: {
+                    visible: false,
+                    title: 'Commission'
+                },
+                limit: {
+                    visible: true,
+                    title: 'Limit'
+                }
             }
         };
     },
@@ -71,6 +95,11 @@ export default React.createClass({
     clearSelected() {
         this.refs.grid.handleResetCheckedTo(false);
     },
+    updateColumns(columns) {
+        this.setState({
+            columns: columns
+        });
+    },
     render() {
         return <SimpleGrid
           ref='grid'
@@ -84,8 +113,15 @@ export default React.createClass({
               {title: 'Fee', name: 'fee', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
               {title: 'Commission', name: 'commission', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
               {title: 'Limit', name: 'limit'},
-              {title: <div onClick={this.props.refresh} className={style.refresh} />, name: 'refresh'}
-          ].filter((column) => (this.state.columns[column.name]))}
+              {title: <div style={{float: 'right', width: '50px'}}>
+                <div onClick={this.props.refresh} className={style.refresh} />
+                <ContextMenu
+                  refresh={this.props.refresh}
+                  onClose={this.updateColumns}
+                  data={this.state.columns}
+                />
+              </div>, name: 'refresh'}
+          ].filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
           handleCheckboxSelect={this.props.handleCheckboxSelect}
           handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
           externalStyle={style}
@@ -96,8 +132,8 @@ export default React.createClass({
               let columns = this.state.columns;
               return {
                   id: conditionId,
-                  priority: columns.priority && condition.priority,
-                  channel: columns.channel && this.buildList([
+                  priority: columns.priority.visible && condition.priority,
+                  channel: columns.channel.visible && this.buildList([
                       ['Channel', condition.channelId, 'channel'],
                       ['Tag', condition.channelTag],
                       ['Country', condition.channelCountryId, 'country'],
@@ -107,13 +143,13 @@ export default React.createClass({
                       ['Supervisor', condition.channelSupervisorId, 'supervisor'],
                       ['Role', condition.channelRoleId, 'role']
                   ]),
-                  operation: columns.operation && this.buildList([
+                  operation: columns.operation.visible && this.buildList([
                       ['Operation', condition.operationId, 'operation'],
                       ['Tag', condition.operationTag],
                       ['Start Date', condition.operationStartDate],
                       ['End Date', condition.operationEndDate]
                   ]),
-                  source: columns.source && this.buildList([
+                  source: columns.source.visible && this.buildList([
                       ['Country', condition.sourceCountryId, 'country'],
                       ['Region', condition.sourceRegionId, 'region'],
                       ['City', condition.sourceCityId, 'city'],
@@ -121,7 +157,7 @@ export default React.createClass({
                       ['Supervisor', condition.sourceSupervisorId, 'supervisor'],
                       ['Tag', condition.sourceTag]
                   ]),
-                  destination: columns.destination && this.buildList([
+                  destination: columns.destination.visible && this.buildList([
                       ['Country', condition.destinationCountryId, 'country'],
                       ['Region', condition.destinationRegionId, 'region'],
                       ['City', condition.destinationCityId, 'city'],
@@ -129,7 +165,7 @@ export default React.createClass({
                       ['Supervisor', condition.destinationSupervisorId, 'supervisor'],
                       ['Tag', condition.destinationTag]
                   ]),
-                  fee: columns.fee && record.fee && nestedTable(record.fee.reduce((all, record) => {
+                  fee: columns.fee.visible && record.fee && nestedTable(record.fee.reduce((all, record) => {
                       all.push([
                           '>= ' + record.startAmount + ' ' + record.startAmountCurrency,
                           buildCSV([
@@ -153,7 +189,7 @@ export default React.createClass({
                       ]);
                       return all;
                   }, []), style.fee),
-                  commission: columns.commission && record.commission && nestedTable(record.commission.reduce((all, record) => {
+                  commission: columns.commission.visible && record.commission && nestedTable(record.commission.reduce((all, record) => {
                       all.push([
                           '>= ' + record.startAmount + ' ' + record.startAmountCurrency,
                           buildCSV([
@@ -177,7 +213,7 @@ export default React.createClass({
                       ]);
                       return all;
                   }, []), style.commission),
-                  limit: columns.limit && record.limit && record.limit.map((limit, i) => {
+                  limit: columns.limit.visible && record.limit && record.limit.map((limit, i) => {
                       return this.buildList([
                           [
                               '',

@@ -92,15 +92,6 @@
     background: #fcd08d;
 }
 
-.dataGridTable tr th .refresh {
-    width: 23px;
-    height: 23px;
-    margin: 0 auto;
-    cursor: pointer;
-    background: url('./images/refresh.png') no-repeat center center;
-    background-size: contain;
-}
-
 .dataGridTable .noWrap {
     white-space: nowrap
 }

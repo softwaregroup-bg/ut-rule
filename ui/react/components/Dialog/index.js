@@ -11,6 +11,7 @@ import SectionFee from './Section/Fee';
 import SectionLimit from './Section/Limit';
 import SectionSummary from './Section/Summary';
 import merge from 'lodash.merge';
+import validations from './validations.js';
 
 const emptyCondition = {
     priority: null,
@@ -80,6 +81,10 @@ export default React.createClass({
     },
     getInitialState() {
         return {
+            form: {
+                errors: [],
+                errorDialogOpen: false
+            },
             data: {
                 condition: [
                     Object.assign({}, emptyCondition)
@@ -156,10 +161,25 @@ export default React.createClass({
         });
     },
     save() {
-        this.props.onSave(this.state.data);
+        let formValidation = validations.run(this.state.data);
+        if (formValidation.isValid) {
+            this.props.onSave(this.state.data);
+        }
+
+        this.state.form.errorDialogOpen = true;
+        this.state.form.errors = formValidation.errors;
+        this.setState({
+            form: this.state.form
+        });
     },
     onChangeInput(field) {
         this.onFieldChange('condition', 0, field.key, field.value);
+    },
+    closeFormErrorDialog() {
+        this.state.form.errorDialogOpen = false;
+        this.setState({
+            form: this.state.form
+        });
     },
     render() {
         return (
@@ -174,6 +194,17 @@ export default React.createClass({
               ]}
             >
                 <div>
+                    <Dialog
+                      title='Error'
+                      open={this.state.form.errorDialogOpen}
+                      autoScrollBodyContent
+                      contentStyle={style}
+                      onRequestClose={this.closeFormErrorDialog}
+                    >
+                        <div className={style.content}>
+                            {this.state.form.errors && this.state.form.errors.map((error, i) => <div key={i}>{error}</div>)}
+                        </div>
+                    </Dialog>
                     <div className={style.topSection}>
                         <Input
                           keyProp='priority'

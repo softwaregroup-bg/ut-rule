@@ -31,11 +31,11 @@ const SectionFee = React.createClass({
         let self = this;
         return () => {
             self.props.deleteFeeRow(index);
-        }
+        };
     },
     createHeaderCells() {
         return [
-            {name: 'Amount', key: 'startAmount'},
+            {name: 'Start Amount', key: 'startAmount'},
             {name: 'Currency', key: 'feeCurrency'},
             {name: '%', key: 'feePercent'},
             {name: '% Base', key: 'feePercentBase'},

@@ -31,7 +31,7 @@ const SectionLimit = React.createClass({
         let self = this;
         return () => {
             self.props.deleteLimitRow(index);
-        }
+        };
     },
     createLimitRows() {
         let nomenclatures = this.context.nomenclatures;

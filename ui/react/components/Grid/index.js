@@ -3,7 +3,6 @@ import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
 import ContextMenu from '../ContextMenu';
 import style from './style.css';
 import classnames from 'classnames';
-import SettingsIcon from 'material-ui/svg-icons/action/settings';
 
 const nestedTable = function(arr, className) {
     return <div className={style.nestedTableWrapper}>
@@ -114,13 +113,16 @@ export default React.createClass({
               {title: 'Fee', name: 'fee', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
               {title: 'Commission', name: 'commission', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
               {title: 'Limit', name: 'limit'},
-              {title: <div style={{float: 'right'}}>
-                <ContextMenu
-                  refresh={this.props.refresh}
-                  onClose={this.updateColumns}
-                  data={this.state.columns}
-                />
-              </div>, name: 'refresh'}
+              {
+                  title: <div style={{float: 'right'}}>
+                    <ContextMenu
+                      refresh={this.props.refresh}
+                      onClose={this.updateColumns}
+                      data={this.state.columns}
+                    />
+                  </div>,
+                  name: 'refresh'
+              }
           ].filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
           handleCheckboxSelect={this.props.handleCheckboxSelect}
           handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}

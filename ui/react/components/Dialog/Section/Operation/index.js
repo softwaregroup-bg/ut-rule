@@ -17,7 +17,7 @@ const Operation = React.createClass({
         var self = this;
         return (field) => {
             self.context.onFieldChange('condition', 0, fieldKey, field.value);
-        }
+        };
     },
     render() {
         let { onChangeInput, onChangeDate } = this;
@@ -36,7 +36,7 @@ const Operation = React.createClass({
                         <div className={style.lableWrap}>Start Date</div>
                         <div className={style.inputWrap}>
                             <DatePicker
-                              keyProp="operationStartDate"
+                              keyProp='operationStartDate'
                               mode='landscape'
                               onChange={onChangeDate('operationStartDate')}
                               defaultValue={this.props.data.operationStartDate ? new Date(this.props.data.operationStartDate) : null}
@@ -49,7 +49,7 @@ const Operation = React.createClass({
                         <div className={style.lableWrap}>Start Date</div>
                         <div className={style.inputWrap}>
                             <DatePicker
-                              keyProp="operationEndDate"
+                              keyProp='operationEndDate'
                               mode='landscape'
                               onChange={onChangeDate('operationEndDate')}
                               defaultValue={this.props.data.operationEndDate ? new Date(this.props.data.operationEndDate) : null}

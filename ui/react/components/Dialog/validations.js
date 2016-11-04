@@ -4,7 +4,7 @@ import joi from 'joi-browser';
 let schema = joi.object().keys({
     condition: joi.array().items(
         joi.object().keys({
-            priority: joi.string().min(1).required().options({
+            priority: joi.number().min(1).required().options({
                 language: {
                     key: '"Priority" ',
                     string: {
@@ -55,7 +55,9 @@ module.exports = {
             abortEarly: false
         }, options), (err, value) => {
             if (!err) {
-                return true;
+                return {
+                    isValid: true
+                };
             }
             let errors = err.details.reduce((errorArray, current) => {
                 if (errorArray.indexOf(current.message) === -1) {

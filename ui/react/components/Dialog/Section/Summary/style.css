@@ -1,0 +1,24 @@
+.summary {
+    width: 100%
+}
+
+.summary td {
+    vertical-align: top;
+    padding: 0 20px;
+}
+
+.summary td div.heading {
+    font-size: 18px;
+    border: 1px solid #E6E6E6;
+    margin: 20px 0;
+    background: #FAFAFA;
+    padding: 10px;
+}
+
+.summary td div {
+    padding: 5px 0;
+}
+
+.summary td div div {
+    padding: 10px;
+}

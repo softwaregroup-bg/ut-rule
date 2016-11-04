@@ -9,6 +9,7 @@ import Source from './Section/Source';
 import Destination from './Section/Destination';
 import SectionFee from './Section/Fee';
 import SectionLimit from './Section/Limit';
+import SectionSummary from './Section/Summary';
 import merge from 'lodash.merge';
 import validations from './validations.js';
 
@@ -253,7 +254,10 @@ export default React.createClass({
                         </Accordion>
                         <Accordion title='Summary' fullWidth>
                             <div className={style.content}>
-                                TODO Summary
+                                <SectionSummary
+                                  data={this.state.data}
+                                  nomenclatures={this.props.nomenclatures}
+                                />
                             </div>
                         </Accordion>
                     </div>

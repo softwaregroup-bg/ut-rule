@@ -2,6 +2,7 @@
     width: 100%;
     border: 1px solid #D7D6D6;
     font-size: 14px;
+    color: #444;
 }
 
 .dataGridTable th{
@@ -98,4 +99,8 @@
     cursor: pointer;
     background: url('./images/refresh.png') no-repeat center center;
     background-size: contain;
+}
+
+.dataGridTable .noWrap {
+    white-space: nowrap
 }

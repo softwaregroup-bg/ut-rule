@@ -2,8 +2,10 @@ import React, { PropTypes } from 'react';
 import Popover from 'material-ui/Popover';
 import {List, ListItem} from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
-import style from './style.css';
-import ContentInbox from 'material-ui/svg-icons/content/inbox';
+import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import ReloadIcon from 'material-ui/svg-icons/action/autorenew';
+import Subheader from 'material-ui/Subheader';
+import Divider from 'material-ui/Divider';
 
 export default React.createClass({
     propTypes: {
@@ -57,8 +59,8 @@ export default React.createClass({
         });
     },
     render() {
-        return <div className={style.contextMenu}>
-            <div onClick={this.show} className={style.icon} />
+        return <div style={{float: 'left'}}>
+            <SettingsIcon onClick={this.show} />
             <Popover
               open={this.state.contextMenu.open}
               anchorEl={this.state.contextMenu.anchorEl}
@@ -67,19 +69,25 @@ export default React.createClass({
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
               onRequestClose={this.hide}
             >
-                <div className={style.menu}>
+                <div style={{width: '200px'}}>
                     <List ref='list'>
-                        {[<ListItem primaryText='Manage Columns' leftIcon={<ContentInbox />} />].concat(Object.keys(this.state.data).map((record, i) => {
-                            let checkBoxCkecked = (event, checked) => this.checkBoxChecked(event, checked, record);
-                            return <ListItem
-                              key={i}
-                              leftCheckbox={<Checkbox
-                                defaultChecked={this.state.data[record].visible}
-                                onCheck={checkBoxCkecked}
-                              />}
-                              primaryText={this.state.data[record].title}
-                            />;
-                        }))}
+                        {
+                            [
+                                <ListItem key={0} primaryText='Reload Grid' onClick={this.props.refresh} leftIcon={<ReloadIcon />} />,
+                                <Divider key={1} />,
+                                <Subheader key={2}>Manage Columns</Subheader>
+                            ].concat(Object.keys(this.state.data).map((record, i) => {
+                                let checkBoxCkecked = (event, checked) => this.checkBoxChecked(event, checked, record);
+                                return <ListItem
+                                  key={i + 3}
+                                  leftCheckbox={<Checkbox
+                                    defaultChecked={this.state.data[record].visible}
+                                    onCheck={checkBoxCkecked}
+                                  />}
+                                  primaryText={this.state.data[record].title}
+                                />;
+                            }))
+                        }
                     </List>
                 </div>
             </Popover>

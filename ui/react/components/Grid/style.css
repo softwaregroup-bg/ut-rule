@@ -36,12 +36,16 @@
     padding: .75rem;
 }
 
+.dataGridTable tr td {
+    vertical-align: top;
+}
+
 .dataGridTable tr.checked{
     background: #FFFCE5;
 }
 
 .dataGridTable div.nestedTableWrapper{
-    position: absolute;
+    /*position: absolute;*/
     top: 0;
     display: inline-block;
     width: 100%;
@@ -57,7 +61,14 @@
 .dataGridTable table.nested tr td:nth-child(1){
     width: 100px;
     padding-right: 0;
+    text-align: right;
 }
+
+
+.dataGridTable table.nested td{
+    vertical-align: middle;
+}
+
 
 .dataGridTable table.nested.fee tr{
     background: #EEFBFF;
@@ -90,8 +101,4 @@
 
 .dataGridTable tr.checked table.nested.commission tr:nth-child(even){
     background: #fcd08d;
-}
-
-.dataGridTable .noWrap {
-    white-space: nowrap
 }

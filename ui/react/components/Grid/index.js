@@ -5,23 +5,21 @@ import style from './style.css';
 import classnames from 'classnames';
 
 const nestedTable = function(arr, className) {
-    return <div className={style.nestedTableWrapper}>
-        <table className={classnames(style.nested, className)}>
-            <tbody>
-                {
-                    arr.map((tr, i) => {
-                        return <tr key={i}>
-                            {
-                                (Array.isArray(tr) ? tr : [tr]).map((td, j) => {
-                                    return <td key={j}>{td}</td>;
-                                })
-                            }
-                        </tr>;
-                    })
-                }
-            </tbody>
-        </table>
-    </div>;
+    return <table className={classnames(style.nested, className)}>
+        <tbody>
+            {
+                arr.map((tr, i) => {
+                    return <tr key={i}>
+                        {
+                            (Array.isArray(tr) ? tr : [tr]).map((td, j) => {
+                                return <td key={j}>{td}</td>;
+                            })
+                        }
+                    </tr>;
+                })
+            }
+        </tbody>
+    </table>;
 };
 
 const buildCSV = function(arr) {

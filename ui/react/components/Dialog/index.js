@@ -123,7 +123,7 @@ export default React.createClass({
     },
     onFieldChange(category, index, key, value) {
         let data = this.state.data;
-        data[category][index][key] = value;
+        data[category][index][key] = value === '__placeholder__' ? undefined : value;
         this.setState({ data });
     },
     addFeeRow() {

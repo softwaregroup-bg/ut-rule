@@ -24,6 +24,7 @@ const Channel = React.createClass({
             <div className={style.content}>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       data={channel}
                       defaultSelected={'' + (this.props.data.channelId || '')}
                       keyProp='channelId'
@@ -34,6 +35,7 @@ const Channel = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       data={country}
                       defaultSelected={'' + (this.props.data.channelCountryId || '')}
                       keyProp='channelCountryId'
@@ -44,6 +46,7 @@ const Channel = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       data={region}
                       defaultSelected={'' + (this.props.data.channelRegionId || '')}
                       keyProp='channelRegionId'
@@ -54,6 +57,7 @@ const Channel = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       data={city}
                       defaultSelected={'' + (this.props.data.channelCityId || '')}
                       keyProp='channelCityId'
@@ -64,6 +68,7 @@ const Channel = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       data={organization}
                       defaultSelected={'' + (this.props.data.channelOrganizationId || '')}
                       keyProp='channelOrganizationId'
@@ -74,6 +79,7 @@ const Channel = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       data={supervisor}
                       defaultSelected={'' + (this.props.data.channelSupervisorId || '')}
                       keyProp='channelSupervisorId'
@@ -92,6 +98,7 @@ const Channel = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='channelRoleId'
                       label='Role'
                       data={role}

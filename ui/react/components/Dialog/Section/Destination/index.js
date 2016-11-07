@@ -24,6 +24,7 @@ const Destination = React.createClass({
            <div className={style.content}>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='destinationCountryId'
                       label='Country'
                       data={country}
@@ -33,6 +34,7 @@ const Destination = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='destinationRegionId'
                       label='Region'
                       data={region}
@@ -42,6 +44,7 @@ const Destination = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='destinationCityId'
                       label='City'
                       data={city}
@@ -51,6 +54,7 @@ const Destination = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='destinationOrganizationId'
                       label='Organization'
                       data={organization}
@@ -60,6 +64,7 @@ const Destination = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='destinationSupervisorId'
                       label='Supervisor'
                       data={supervisor}
@@ -77,6 +82,7 @@ const Destination = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='destinationProductId'
                       label='Product'
                       data={product}
@@ -86,6 +92,7 @@ const Destination = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='destinationAccountId'
                       label='Account'
                       data={account}

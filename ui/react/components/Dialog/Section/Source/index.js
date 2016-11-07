@@ -24,6 +24,7 @@ const Source = React.createClass({
            <div className={style.content}>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='sourceCountryId'
                       label='Country'
                       data={country}
@@ -33,6 +34,7 @@ const Source = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='sourceRegionId'
                       label='Region'
                       data={region}
@@ -42,6 +44,7 @@ const Source = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='sourceCityId'
                       label='City'
                       data={city}
@@ -51,6 +54,7 @@ const Source = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='sourceOrganizationId'
                       label='Organization'
                       data={organization}
@@ -60,6 +64,7 @@ const Source = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='sourceSupervisorId'
                       label='Organization'
                       data={supervisor}
@@ -77,6 +82,7 @@ const Source = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='sourceProductId'
                       label='Product'
                       data={product}
@@ -86,6 +92,7 @@ const Source = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      canSelectPlaceholder
                       keyProp='sourceAccountId'
                       label='Account'
                       data={account}

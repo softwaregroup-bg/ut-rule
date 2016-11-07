@@ -33,7 +33,12 @@ CREATE OR REPLACE FUNCTION rule."decision.fetch"(
   IN "@isSourceAmount" boolean
 )
 RETURNS
-    TABLE("isSingleResult" boolean, "limit" json, "fee" json) AS
+    TABLE(
+        "isSingleResult" boolean,
+        "limit" json,
+        "fee" json,
+        "commission" json
+    ) AS
 $BODY$
     WITH
     matches AS (
@@ -111,10 +116,33 @@ $BODY$
             f."startAmount" DESC,
             f."feeId"
         LIMIT 1
+    ),
+    commissions AS (
+        SELECT
+            LEAST(
+                com."maxValue",
+                GREATEST(
+                    0,
+                    com."minValue",
+                    COALESCE(com."percent", CAST(0 AS float)) * (GREATEST("@amount", com."percentBase") - COALESCE(com."percentBase", 0)) / 100)) AS "amount"
+        FROM
+            matches AS c
+        JOIN
+            rule.commission AS com on com."conditionId" = c."conditionId"
+        WHERE
+            "@currency" = com."startAmountCurrency" AND
+            COALESCE("@isSourceAmount", TRUE) = com."isSourceAmount" AND
+            "@amount" >= com."startAmount"
+        ORDER BY
+            c."priority",
+            com."startAmount" DESC,
+            com."commissionId"
+        LIMIT 1
     )
     SELECT
         TRUE "isSingleResult",
         (SELECT json_agg(limits)->0 FROM limits) AS "limit",
-        (SELECT json_agg(fees)->0 FROM fees) AS "fee"
+        (SELECT json_agg(fees)->0 FROM fees) AS "fee",
+        (SELECT json_agg(commissions)->0 FROM commissions) AS "commission"
 $BODY$
 LANGUAGE SQL

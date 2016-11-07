@@ -108,7 +108,7 @@ $BODY$
             "@amount" >= f."startAmount"
         ORDER BY
             c."priority",
-            f."startAmount",
+            f."startAmount" DESC,
             f."feeId"
         LIMIT 1
     )

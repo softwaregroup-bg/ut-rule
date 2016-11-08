@@ -16,7 +16,7 @@ module.exports = {
             operationId: joi.number().integer().allow(null).default(null),
             operationTags: joi.string().max(255),
             operationDate: joi.date().iso(),
-            sourceCountrxyId: joi.number().integer().allow(null).default(null),
+            sourceCountryId: joi.number().integer().allow(null).default(null),
             sourceRegionId: joi.number().integer().allow(null).default(null),
             sourceCityId: joi.number().integer().allow(null).default(null),
             sourceOrganizationId: joi.number().integer().allow(null).default(null),

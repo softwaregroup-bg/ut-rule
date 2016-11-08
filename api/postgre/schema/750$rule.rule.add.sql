@@ -1,9 +1,14 @@
-CREATE OR REPLACE FUNCTION rule."rule.add"(
-    IN "@condition" json,
-    IN "@fee" json,
-    IN "@limit" json,
-    IN "@commission" json)
-  RETURNS TABLE("isSingleResult" boolean, condition json, fee json, "limit" json, commission json) AS
+CREATE OR REPLACE FUNCTION rule."rule.add"("@condition" json,
+"@fee" json,
+"@limit" json,
+"@commission" json)
+RETURNS TABLE(
+    "isSingleResult" boolean,
+    "condition" json,
+    "fee" json,
+    "limit" json,
+    "commission" json
+) AS
 $BODY$
 	declare
       "@conditionId" INT:=(SELECT nextval('rule."condition_conditionId_seq"'));
@@ -159,4 +164,4 @@ select * from rule."rule.fetch"(
 );
  END;
 $BODY$
-LANGUAGE plpgsql;
+LANGUAGE plpgsql

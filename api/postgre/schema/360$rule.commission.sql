@@ -9,7 +9,7 @@ CREATE TABLE rule.commission(
   "minValue" numeric(20,2),
   "maxValue" numeric(20,2),
   "percent" float,
-  "percentBase" float,
+  "percentBase" numeric(20,2),
 
   CONSTRAINT "pkRuleCommission" PRIMARY KEY ("commissionId"),
   CONSTRAINT "fkRuleCommission_condition" FOREIGN KEY ("conditionId") REFERENCES rule.condition ("conditionId") MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION

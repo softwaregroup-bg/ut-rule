@@ -1,0 +1,97 @@
+.dataGridTable {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #D7D6D6;
+    font-size: 14px;
+    color: #444;
+}
+
+.dataGridTable th{
+    padding: 0.5 rem;
+}
+
+.dataGridTable th span{
+    display: block;
+}
+
+.dataGridTable input[type=checkbox] + label{
+    margin: 0;
+}
+
+.dataGridTable input[type=checkbox] + label span{
+    background-size: 16px 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.dataGridTable a {
+    color: #0074ba;
+    text-decoration: none;
+}
+
+.dataGridTable a:hover {
+    text-decoration: underline;
+}
+
+.dataGridTable tr td, .dataGridTable tr th {
+    padding: .75rem;
+}
+
+.dataGridTable tr td {
+    vertical-align: top;
+}
+
+.dataGridTable tr.checked{
+    background: #FFFCE5;
+}
+
+.dataGridTable table.nested{
+    height: 100%;
+    width: 100%;
+    border-bottom: 1px solid transparent;
+}
+
+.dataGridTable table.nested tr td:nth-child(1){
+    width: 100px;
+    padding-right: 0;
+    text-align: right;
+}
+
+
+.dataGridTable table.nested td{
+    vertical-align: middle;
+}
+
+
+.dataGridTable table.nested.fee tr{
+    background: #EEFBFF;
+}
+
+.dataGridTable table.nested.fee tr:nth-child(even){
+    background: #E4F4F9;
+}
+
+.dataGridTable tr.checked table.nested.fee tr{
+    background: #FEECCF;
+}
+
+.dataGridTable tr.checked table.nested.fee tr:nth-child(even){
+    background: #FFE5BC;
+}
+
+
+.dataGridTable table.nested.commission tr{
+    background: #FEF1FE;
+}
+
+.dataGridTable table.nested.commission tr:nth-child(even){
+    background: #F9E9F9;
+}
+
+.dataGridTable tr.checked table.nested.commission tr{
+    background: #f9ddae;
+}
+
+.dataGridTable tr.checked table.nested.commission tr:nth-child(even){
+    background: #fcd08d;
+}

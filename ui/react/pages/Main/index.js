@@ -1,64 +1,215 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Grid from '../../components/Grid';
+import Dialog from '../../components/Dialog';
+import Prompt from '../../components/Prompt';
+import mainStyle from 'ut-front-react/assets/index.css';
+// import style from './style.css';
 import * as actionCreators from './actionCreators';
 
 const Main = React.createClass({
     propTypes: {
-        data: PropTypes.array,
+        rules: PropTypes.object,
+        nomenclatures: PropTypes.object,
+        ready: PropTypes.bool,
+        empty: PropTypes.bool,
         actions: PropTypes.object
     },
-    componentWillMount() {
-        this.props.actions.fetch();
+    getInitialState() {
+        return {
+            selectedConditions: {},
+            canEdit: false,
+            canDelete: false,
+            prompt: false,
+            dialog: {
+                open: false,
+                conditionId: null
+            }
+        };
     },
-    componenntWillReceiveProps(nextProps) {
-
+    fetchData() {
+        this.props.actions.fetchRules();
+        this.props.actions.fetchNomenclatures({
+            typeList: [
+                'currency',
+                'channel',
+                'country',
+                'region',
+                'city',
+                'organization',
+                'role',
+                'operation',
+                'supervisor',
+                'product',
+                'account'
+            ]
+        });
+    },
+    componentWillMount() {
+        this.fetchData();
+    },
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.empty) {
+            this.fetchData();
+        }
+    },
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextProps.ready;
+    },
+    handleCheckboxSelect(isSelected, data) {
+        let selectedConditions = this.state.selectedConditions;
+        if (isSelected) {
+            delete selectedConditions[data.id];
+        } else {
+            selectedConditions[data.id] = true;
+        }
+        let count = Object.keys(selectedConditions).length;
+        this.setState({
+            selectedConditions: selectedConditions,
+            canEdit: count === 1,
+            canDelete: count > 0
+        });
+        return !isSelected;
+    },
+    handleHeaderCheckboxSelect(isSelected, data) {
+        this.setState({
+            selectedConditions: isSelected ? {} : data.reduce((all, item) => { all[item.record.id] = true; return all; }, {}),
+            canEdit: false,
+            canDelete: !isSelected
+        });
+    },
+    createBtnOnClick() {
+        this.setState({
+            dialog: {
+                open: true,
+                conditionId: null
+            }
+        });
+    },
+    editBtnOnClick() {
+        this.setState({
+            dialog: {
+                open: true,
+                conditionId: Object.keys(this.state.selectedConditions)[0]
+            }
+        });
+    },
+    dialogOnClose() {
+        this.setState({
+            dialog: {
+                open: false,
+                conditionId: null
+            }
+        });
+    },
+    dialogOnSave(data) {
+        let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
+        this.refs.grid.clearSelected();
+        this.setState(this.getInitialState(), () => this.props.actions[action](data));
+    },
+    removeRules() {
+        let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
+        this.refs.grid.clearSelected();
+        this.setState(this.getInitialState(), () => this.props.actions.removeRules({
+            conditionId: conditionsArray
+        }));
+    },
+    refresh() {
+        this.refs.grid.clearSelected();
+        this.props.actions.reset();
+    },
+    showPrompt() {
+        this.setState({
+            prompt: true
+        });
+    },
+    hidePrompt() {
+        this.setState({
+            prompt: false
+        });
     },
     render() {
-        if (this.props.data) {
-            // handle data e.g. render in grid
+        if (!this.props.ready) {
+            return null;
         }
-        return (
-            <div style={{
-                height: '100%',
-                padding: '50px',
-                textAlign: 'center',
-                color: '#555',
-                fontSize: '30px'
-            }}>
-                UT-Rule Web Interface
+        return <div className={mainStyle.contentTableWrap}>
+            <div className={mainStyle.actionBarWrap}>
+                <div style={{padding: '15px 10px 0 0', float: 'right'}}>
+                    <button onClick={this.createBtnOnClick}>Create Rule</button>
+                </div>
             </div>
-        );
+            <div className={mainStyle.tableWrap} style={{margin: 0, position: 'static'}}>
+                <div style={{float: 'right', padding: '20px 0'}}>
+                    <button onClick={this.editBtnOnClick} style={{visibility: this.state.canEdit ? 'visible' : 'hidden'}}>
+                      Edit
+                    </button>
+                    <button onClick={this.showPrompt} style={{marginLeft: '20px', visibility: this.state.canDelete ? 'visible' : 'hidden'}}>
+                      Delete
+                    </button>
+                </div>
+                {this.state.dialog.open &&
+                    <Dialog
+                      ref='dialog'
+                      open={this.state.dialog.open}
+                      data={this.props.rules[this.state.dialog.conditionId]}
+                      nomenclatures={this.props.nomenclatures}
+                      onSave={this.dialogOnSave}
+                      onClose={this.dialogOnClose}
+                    />
+                }
+                {this.state.prompt &&
+                    <Prompt
+                      ref='prompt'
+                      open={this.state.prompt}
+                      message={
+                        'You are about to delete ' +
+                        (
+                            Object.keys(this.state.selectedConditions).length === 1
+                                ? '1 rule'
+                                : Object.keys(this.state.selectedConditions).length + ' rules'
+                        ) +
+                        '. Would you like to proceed?'
+                      }
+                      onOk={this.removeRules}
+                      onCancel={this.hidePrompt}
+                    />
+                }
+                <Grid
+                  ref='grid'
+                  refresh={this.refresh}
+                  data={this.props.rules}
+                  nomenclatures={this.props.nomenclatures}
+                  handleCheckboxSelect={this.handleCheckboxSelect}
+                  handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                />
+            </div>
+            {false &&
+                <div>
+                    <div style={{float: 'left', padding: '50px'}}>
+                        RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>
+                    </div>
+                    <div style={{float: 'left', padding: '50px'}}>
+                        NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre>
+                    </div>
+                </div>
+            }
+        </div>;
     }
 });
 
-function formatData(data) {
-    var grouped = Object.keys(data).reduce(function(all, key) {
-        data[key].forEach(function(record) {
-            if (!record) {
-                return;
-            }
-            if (!all[record.conditionId]) {
-                all[record.conditionId] = {};
-            }
-            if (!all[record.conditionId][key]) {
-                all[record.conditionId][key] = [];
-            }
-            all[record.conditionId][key].push(record);
-        });
-        return all;
-    }, {});
-
-    return Object.keys(grouped).map(function(key) {
-        return grouped[key];
-    });
-}
-
 export default connect(
-    (state) => ({
-        data: state.main.fetch && formatData(state.main.fetch)
-    }),
-    (dispatch) => ({
-        actions: bindActionCreators(actionCreators, dispatch)
-    })
+    (state, ownProps) => {
+        return {
+            rules: state.main.fetchRules,
+            nomenclatures: state.main.fetchNomenclatures,
+            ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
+            empty: Object.keys(state.main).length === 0
+        };
+    },
+    (dispatch) => {
+        return {
+            actions: bindActionCreators(actionCreators, dispatch)
+        };
+    }
 )(Main);

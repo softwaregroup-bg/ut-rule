@@ -1,9 +1,59 @@
 import * as actionTypes from './actionTypes';
 
-export function fetch(params) {
+export function fetchRules(params) {
     return {
-        type: actionTypes.fetch,
+        type: actionTypes.fetchRules,
         method: 'rule.rule.fetch',
         params: params || {}
+    };
+};
+
+export function removeRules(params) {
+    return function(dispatch) {
+        return dispatch({
+            type: actionTypes.removeRules,
+            method: 'rule.rule.remove',
+            params: params || {}
+        }).then((result) => {
+            return result.error ? result : dispatch(fetchRules());
+        });
+    };
+};
+
+export function editRule(params) {
+    return function(dispatch) {
+        return dispatch({
+            type: actionTypes.editRule,
+            method: 'rule.rule.edit',
+            params: params || {}
+        }).then((result) => {
+            return result.error ? result : dispatch(fetchRules());
+        });
+    };
+};
+
+export function addRule(params) {
+    return function(dispatch) {
+        return dispatch({
+            type: actionTypes.addRule,
+            method: 'rule.rule.add',
+            params: params || {}
+        }).then((result) => {
+            return result.error ? result : dispatch(fetchRules());
+        });
+    };
+};
+
+export function fetchNomenclatures(params) {
+    return {
+        type: actionTypes.fetchNomenclatures,
+        method: 'rule.item.fetch',
+        params: params
+    };
+};
+
+export function reset() {
+    return {
+        type: actionTypes.reset
     };
 };

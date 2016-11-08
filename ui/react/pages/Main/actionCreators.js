@@ -48,7 +48,7 @@ export function fetchNomenclatures(params) {
     return {
         type: actionTypes.fetchNomenclatures,
         method: 'rule.item.fetch',
-        params: params || []
+        params: params
     };
 };
 

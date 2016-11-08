@@ -30,7 +30,21 @@ const Main = React.createClass({
     },
     fetchData() {
         this.props.actions.fetchRules();
-        this.props.actions.fetchNomenclatures();
+        this.props.actions.fetchNomenclatures({
+            typeList: [
+                'currency',
+                'channel',
+                'country',
+                'region',
+                'city',
+                'organization',
+                'role',
+                'operation',
+                'supervisor',
+                'product',
+                'account'
+            ]
+        });
     },
     componentWillMount() {
         this.fetchData();

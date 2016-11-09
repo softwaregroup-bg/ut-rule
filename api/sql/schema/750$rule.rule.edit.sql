@@ -1,9 +1,8 @@
-﻿ALTER PROCEDURE [rule].[rule.edit] (
+﻿ALTER PROCEDURE [rule].[rule.edit]
 	@condition [rule].conditionTT READONLY
 	,@fee [rule].feeTT READONLY
 	,@limit [rule].limitTT READONLY
 	,@commission [rule].commissionTT READONLY
-	)
 AS
 BEGIN TRY
 	DECLARE @conditionId INT
@@ -180,8 +179,6 @@ BEGIN CATCH
 	IF @@TRANCOUNT > 0
 		ROLLBACK TRANSACTION
 
-	SELECT 2001 errorCode
-		,'SQL Error' errorMessage
-
-	RETURN
+	EXEC core.error
+    RETURN 55555
 END CATCH

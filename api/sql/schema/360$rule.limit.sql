@@ -1,4 +1,4 @@
-CREATE TABLE [rule].[limit] (
+ALTER TABLE [rule].[limit] (
 	limitId INT IDENTITY(1, 1) NOT NULL
 	,conditionId INT NOT NULL
 	,currency CHAR(3) NOT NULL
@@ -10,6 +10,6 @@ CREATE TABLE [rule].[limit] (
 	,maxCountWeekly BIGINT
 	,maxAmountMonthly NUMERIC(20, 2)
 	,maxCountMonthly BIGINT
-	,CONSTRAINT [pkRuleLimit] PRIMARY KEY CLUSTERED (limitId ASC) 
+	,CONSTRAINT [pkRuleLimit] PRIMARY KEY CLUSTERED (limitId ASC)
 	,CONSTRAINT [fkRuleLimit_condition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId)
-	)
+)

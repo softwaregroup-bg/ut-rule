@@ -1,6 +1,6 @@
-CREATE TABLE [rule].[condition] (
+ALTER TABLE [rule].[condition] (
 	conditionId INT IDENTITY(1, 1) NOT NULL
-	,[priority] INTEGER
+	,[priority] INT
 	,channelCountryId BIGINT
 	,channelRegionId BIGINT
 	,channelCityId BIGINT
@@ -31,5 +31,5 @@ CREATE TABLE [rule].[condition] (
 	,destinationId BIGINT
 	,destinationProductId BIGINT
 	,destinationAccountId BIGINT
-	,CONSTRAINT [pkRuleCondition] PRIMARY KEY CLUSTERED ([conditionId] ASC) 
-	)
+	,CONSTRAINT [pkRuleCondition] PRIMARY KEY CLUSTERED ([conditionId] ASC)
+)

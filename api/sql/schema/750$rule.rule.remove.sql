@@ -1,4 +1,5 @@
-﻿ALTER PROCEDURE [rule].[rule.remove] (@condition [rule].conditionTT READONLY)
+﻿ALTER PROCEDURE [rule].[rule.remove]
+	@condition [rule].conditionTT READONLY
 AS
 BEGIN TRY
 	IF OBJECT_ID('tempdb..#tmpCondition') IS NOT NULL
@@ -155,8 +156,6 @@ BEGIN CATCH
 	IF @@TRANCOUNT > 0
 		ROLLBACK TRANSACTION
 
-	SELECT 2001 errorCode
-		,'SQL Error' errorMessage
-
-	RETURN
+	EXEC core.error
+    RETURN 55555
 END CATCH

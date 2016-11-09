@@ -5,6 +5,7 @@ import Grid from '../../components/Grid';
 import Dialog from '../../components/Dialog';
 import Prompt from '../../components/Prompt';
 import mainStyle from 'ut-front-react/assets/index.css';
+import { AddTab } from 'ut-front-react/containers/TabMenu';
 // import style from './style.css';
 import * as actionCreators from './actionCreators';
 
@@ -14,7 +15,8 @@ const Main = React.createClass({
         nomenclatures: PropTypes.object,
         ready: PropTypes.bool,
         empty: PropTypes.bool,
-        actions: PropTypes.object
+        actions: PropTypes.object,
+        location: PropTypes.object
     },
     getInitialState() {
         return {
@@ -134,6 +136,7 @@ const Main = React.createClass({
             return null;
         }
         return <div className={mainStyle.contentTableWrap}>
+            <AddTab pathname={this.props.location.pathname} title='Rule Management' />
             <div className={mainStyle.actionBarWrap}>
                 <div style={{padding: '15px 10px 0 0', float: 'right'}}>
                     <button onClick={this.createBtnOnClick}>Create Rule</button>

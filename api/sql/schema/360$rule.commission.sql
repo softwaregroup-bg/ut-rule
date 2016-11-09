@@ -8,18 +8,6 @@ CREATE TABLE [rule].[commission] (
 	,maxValue NUMERIC(20, 2)
 	,[percent] NUMERIC(5, 2)
 	,percentBase NUMERIC(20, 2)
-	,CONSTRAINT pkRuleCommission PRIMARY KEY CLUSTERED (commissionId ASC) WITH (
-		PAD_INDEX = OFF
-		,STATISTICS_NORECOMPUTE = OFF
-		,IGNORE_DUP_KEY = OFF
-		,ALLOW_ROW_LOCKS = ON
-		,ALLOW_PAGE_LOCKS = ON
-		) ON [PRIMARY]
+	,CONSTRAINT pkRuleCommission PRIMARY KEY CLUSTERED (commissionId ASC)  
+	,CONSTRAINT [fkRuleCommission_condition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId)
 	)
-GO
-
-ALTER TABLE [rule].[commission]
-	WITH CHECK ADD CONSTRAINT [fkRuleCommission_condition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId)
-GO
-
-ALTER TABLE [rule].[commission] CHECK CONSTRAINT [fkRuleCommission_condition]

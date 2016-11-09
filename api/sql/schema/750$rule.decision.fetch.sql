@@ -1,4 +1,4 @@
-ALTER PROCEDURE [rule].[decision.fetch] (
+ALTER PROCEDURE [rule].[decision.fetch]
 	@channelCountryId BIGINT
 	,@channelRegionId BIGINT
 	,@channelCityId BIGINT
@@ -31,7 +31,6 @@ ALTER PROCEDURE [rule].[decision.fetch] (
 	,@amount NUMERIC(20, 2)
 	,@currency CHAR(3)
 	,@isSourceAmount BIT
-	)
 AS
 BEGIN
 	IF OBJECT_ID('tempdb..#matches') IS NOT NULL
@@ -105,7 +104,7 @@ BEGIN
 	SELECT TOP 1 f.minValue
 		,f.maxValue
 		,COALESCE(f.[percent], CAST(0 AS FLOAT)) * (
-			CASE 
+			CASE
 				WHEN @amount > f.percentBase
 					THEN @amount
 				ELSE f.percentBase
@@ -122,13 +121,13 @@ BEGIN
 
 	SELECT 'fee' AS resultSetName, 1 AS single
 
-	SELECT CASE 
+	SELECT CASE
 			WHEN r.maxValue < greatestValue
 				THEN r.maxValue
 			ELSE greatestValue
 			END amount
 	FROM (
-		SELECT CASE 
+		SELECT CASE
 				WHEN f.minValue > percentAmount
 					THEN f.minValue
 				ELSE percentAmount
@@ -141,7 +140,7 @@ BEGIN
 	SELECT TOP 1 com.minValue
 		,com.maxValue
 		,COALESCE(com.[percent], CAST(0 AS FLOAT)) * (
-			CASE 
+			CASE
 				WHEN @amount > com.percentBase
 					THEN @amount
 				ELSE com.percentBase
@@ -158,13 +157,13 @@ BEGIN
 
 	SELECT 'commission' AS resultSetName, 1 AS single
 
-	SELECT CASE 
+	SELECT CASE
 			WHEN r.maxValue < r.greatestValue
 				THEN r.maxValue
 			ELSE r.greatestValue
 			END amount
 	FROM (
-		SELECT CASE 
+		SELECT CASE
 				WHEN com.minValue > com.percentAmount
 					THEN com.minValue
 				ELSE com.percentAmount

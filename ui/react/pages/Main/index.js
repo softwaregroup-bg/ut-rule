@@ -59,10 +59,15 @@ const Main = React.createClass({
     shouldComponentUpdate(nextProps, nextState) {
         return nextProps.ready;
     },
-    handleCheckboxSelect(isSelected, data) {
+    handleCheckboxSelect(isSelected, data, callback) {
         let selectedConditions = this.state.selectedConditions;
+        if (isSelected === null) {
+            isSelected = selectedConditions[data.id];
+        }
         if (isSelected) {
             delete selectedConditions[data.id];
+        } else if (selectedConditions[data.id]) {
+            return;
         } else {
             selectedConditions[data.id] = true;
         }
@@ -72,6 +77,7 @@ const Main = React.createClass({
             canEdit: count === 1,
             canDelete: count > 0
         });
+        typeof callback === 'function' && callback(!isSelected);
         return !isSelected;
     },
     handleHeaderCheckboxSelect(isSelected, data) {

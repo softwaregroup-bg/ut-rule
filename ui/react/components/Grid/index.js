@@ -98,6 +98,9 @@ export default React.createClass({
             columns: columns
         });
     },
+    handleRowClick(record, index) {
+        this.props.handleCheckboxSelect(null, record, (isSelected) => this.refs.grid.handleResetCheckedTo(isSelected, index));
+    },
     render() {
         return <SimpleGrid
           ref='grid'
@@ -124,6 +127,7 @@ export default React.createClass({
           ].filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
           handleCheckboxSelect={this.props.handleCheckboxSelect}
           handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
+          handleRowClick={this.handleRowClick}
           externalStyle={style}
           mainClassName='dataGridTable'
           data={Object.keys(this.props.data).map((conditionId, i) => {

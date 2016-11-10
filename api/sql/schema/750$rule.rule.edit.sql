@@ -172,6 +172,8 @@ BEGIN TRY
 	JOIN [rule].fee f ON f.feeId = f1.feeId
 	WHERE f.feeId IS NULL
 
+	COMMIT TRANSACTION
+
 	EXEC [rule].[rule.fetch] @conditionId = @conditionId
 END TRY
 

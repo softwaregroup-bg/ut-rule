@@ -40,7 +40,7 @@ const SectionLimit = React.createClass({
                 <td>
                     <Dropdown
                       keyProp='currency'
-                      data={nomenclatures.currency}
+                      data={nomenclatures.currency || []}
                       defaultSelected={'' + (limit.currency || '')}
                       onSelect={this.onSelectDropdown(index)}
                     />
@@ -137,7 +137,7 @@ const SectionLimit = React.createClass({
                         {this.createLimitRows()}
                     </tbody>
                 </table>
-                <a href='#' className={style.link} onClick={this.props.addLimitRow}><span>+</span>Add another limit</a>
+                <span className={style.link} onClick={this.props.addLimitRow}><span>+</span>Add another limit</span>
             </div>
         );
     }

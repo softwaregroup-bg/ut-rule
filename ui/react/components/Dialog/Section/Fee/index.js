@@ -60,7 +60,7 @@ const SectionFee = React.createClass({
                 <td style={{minWidth: '100px'}}>
                     <Dropdown
                       keyProp='startAmountCurrency'
-                      data={nomenclatures.currency}
+                      data={nomenclatures.currency || []}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (fee.startAmountCurrency || '')}
                     />
@@ -114,7 +114,7 @@ const SectionFee = React.createClass({
                         {this.createFeeRows()}
                     </tbody>
                 </table>
-                <a href='#' className={style.link} onClick={this.props.addFeeRow}><span>+</span>Add another fee</a>
+                <span className={style.link} onClick={this.props.addFeeRow}><span>+</span>Add another fee</span>
             </div>
         );
     }

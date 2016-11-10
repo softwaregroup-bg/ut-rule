@@ -6,11 +6,11 @@ ALTER TABLE [rule].[condition] (
 	,channelCityId BIGINT
 	,channelOrganizationId BIGINT
 	,channelSupervisorId BIGINT
-	,channelTag VARCHAR(255)
+	,channelTag NVARCHAR(255)
 	,channelRoleId BIGINT
 	,channelId BIGINT
 	,operationId BIGINT
-	,operationTag VARCHAR(255)
+	,operationTag NVARCHAR(255)
 	,operationStartDate DATETIME2(7)
 	,operationEndDate DATETIME2(7)
 	,sourceCountryId BIGINT
@@ -18,7 +18,7 @@ ALTER TABLE [rule].[condition] (
 	,sourceCityId BIGINT
 	,sourceOrganizationId BIGINT
 	,sourceSupervisorId BIGINT
-	,sourceTag VARCHAR(255)
+	,sourceTag NVARCHAR(255)
 	,sourceId BIGINT
 	,sourceProductId BIGINT
 	,sourceAccountId BIGINT
@@ -27,7 +27,7 @@ ALTER TABLE [rule].[condition] (
 	,destinationCityId BIGINT
 	,destinationOrganizationId BIGINT
 	,destinationSupervisorId BIGINT
-	,destinationTag VARCHAR(255)
+	,destinationTag NVARCHAR(255)
 	,destinationId BIGINT
 	,destinationProductId BIGINT
 	,destinationAccountId BIGINT

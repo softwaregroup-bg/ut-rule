@@ -1,7 +1,7 @@
 ALTER TABLE [rule].[limit] (
 	limitId INT IDENTITY(1, 1) NOT NULL
 	,conditionId INT NOT NULL
-	,currency CHAR(3) NOT NULL
+	,currency NVARCHAR(3) NOT NULL
 	,minAmount NUMERIC(20, 2)
 	,maxAmount NUMERIC(20, 2)
 	,maxAmountDaily NUMERIC(20, 2)

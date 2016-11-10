@@ -2,7 +2,7 @@ ALTER TABLE [rule].[fee] (
 	feeId INT IDENTITY(1, 1) NOT NULL
 	,conditionId INT NOT NULL
 	,startAmount NUMERIC(20, 2) NOT NULL
-	,startAmountCurrency CHAR(3) NOT NULL
+	,startAmountCurrency NVARCHAR(3) NOT NULL
 	,isSourceAmount BIT NOT NULL
 	,minValue NUMERIC(20, 2)
 	,maxValue NUMERIC(20, 2)

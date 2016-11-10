@@ -29,7 +29,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
 	,@destinationProductId BIGINT
 	,@destinationAccountId BIGINT
 	,@amount NUMERIC(20, 2)
-	,@currency CHAR(3)
+	,@currency NVARCHAR(3)
 	,@isSourceAmount BIT
 AS
 BEGIN

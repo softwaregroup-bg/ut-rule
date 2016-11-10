@@ -66,8 +66,6 @@ const Main = React.createClass({
         }
         if (isSelected) {
             delete selectedConditions[data.id];
-        } else if (selectedConditions[data.id]) {
-            return;
         } else {
             selectedConditions[data.id] = true;
         }

@@ -169,7 +169,7 @@ BEGIN TRY
 		,f1.[percent]
 		,f1.percentBase
 	FROM @fee f1
-	JOIN [rule].fee f ON f.feeId = f1.feeId
+	LEFT JOIN [rule].fee f ON f.feeId = f1.feeId
 	WHERE f.feeId IS NULL
 
 	COMMIT TRANSACTION

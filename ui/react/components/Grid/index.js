@@ -171,7 +171,7 @@ export default React.createClass({
                   ]),
                   fee: columns.fee.visible && record.fee && nestedTable(record.fee.reduce((all, record) => {
                       all.push([
-                          '>= ' + record.startAmount + ' ' + record.startAmountCurrency,
+                          '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
                           buildCSV([
                               {
                                   key: '',
@@ -195,7 +195,7 @@ export default React.createClass({
                   }, []), style.fee),
                   commission: columns.commission.visible && record.commission && nestedTable(record.commission.reduce((all, record) => {
                       all.push([
-                          '>= ' + record.startAmount + ' ' + record.startAmountCurrency,
+                          '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
                           buildCSV([
                               {
                                   key: '',

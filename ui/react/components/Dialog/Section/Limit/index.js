@@ -8,8 +8,8 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 const SectionLimit = React.createClass({
     propTypes: {
         data: PropTypes.array.isRequired,
-        addLimitRow: PropTypes.func.isRequired,
-        deleteLimitRow: PropTypes.func.isRequired
+        addRow: PropTypes.func.isRequired,
+        deleteRow: PropTypes.func.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
@@ -30,7 +30,7 @@ const SectionLimit = React.createClass({
     onDeleteRow(index) {
         let self = this;
         return () => {
-            self.props.deleteLimitRow(index);
+            self.props.deleteRow(index);
         };
     },
     createLimitRows() {
@@ -137,7 +137,7 @@ const SectionLimit = React.createClass({
                         {this.createLimitRows()}
                     </tbody>
                 </table>
-                <span className={style.link} onClick={this.props.addLimitRow}><span>+</span>Add another limit</span>
+                <span className={style.link} onClick={this.props.addRow}><span>+</span>Add another limit</span>
             </div>
         );
     }

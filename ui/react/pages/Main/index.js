@@ -186,6 +186,7 @@ const Main = React.createClass({
                   ref='grid'
                   refresh={this.refresh}
                   data={this.props.rules}
+                  selectedConditions={this.state.selectedConditions}
                   nomenclatures={this.props.nomenclatures}
                   handleCheckboxSelect={this.handleCheckboxSelect}
                   handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}

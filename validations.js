@@ -51,5 +51,40 @@ module.exports = {
                 count: joi.number().integer().allow(null)
             }).allow(null)
         })
+    },
+    'item.fetch': {
+        auth: false,
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
+    },
+    'rule.fetch': {
+        auth: false,
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
+    },
+    'rule.add': {
+        auth: false,
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
+    },
+    'rule.remove': {
+        auth: false,
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
+    },
+    'rule.edit': {
+        auth: false,
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
     }
 };

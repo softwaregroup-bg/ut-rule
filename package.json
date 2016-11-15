@@ -13,12 +13,12 @@
     "react-router": "2.5.2",
     "redux": "3.5.2",
     "lodash.merge": "4.4.0",
-    "ut-error": "^5.3.12",
-    "ut-front": "^5.8.4",
-    "ut-front-react": "^5.32.8"
+    "ut-error": "^5.3.16",
+    "ut-front": "^5.10.0",
+    "ut-front-react": "^5.40.0"
   },
   "devDependencies": {
-    "ut-tools": "^5.7.1"
+    "ut-tools": "^5.10.6"
   },
   "peerDependencies": {
     "ut-bus": "~5.4.7"

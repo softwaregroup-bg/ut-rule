@@ -1,7 +1,6 @@
 var joi = require('joi');
 module.exports = {
     'decision.fetch': {
-        auth: false,
         description: 'Fetch applicable fee, limit and commission, based on passed properties of the transfer',
         notes: '',
         params: joi.object().keys({
@@ -53,35 +52,30 @@ module.exports = {
         })
     },
     'item.fetch': {
-        auth: false,
         description: '',
         notes: '',
         params: joi.any(),
         result: joi.any()
     },
     'rule.fetch': {
-        auth: false,
         description: '',
         notes: '',
         params: joi.any(),
         result: joi.any()
     },
     'rule.add': {
-        auth: false,
         description: '',
         notes: '',
         params: joi.any(),
         result: joi.any()
     },
     'rule.remove': {
-        auth: false,
         description: '',
         notes: '',
         params: joi.any(),
         result: joi.any()
     },
     'rule.edit': {
-        auth: false,
         description: '',
         notes: '',
         params: joi.any(),

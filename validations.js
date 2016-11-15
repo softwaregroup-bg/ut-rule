@@ -37,7 +37,7 @@ module.exports = {
             amount: joi.number().required().default(0),
             currency: joi.string().length(3).required().default('TZS'),
             isSourceAmount: joi.boolean()
-        }),
+        }).unknown(),
         result: joi.object().keys({
             fee: joi.object().keys({
                 amount: joi.number()

@@ -91,16 +91,13 @@ export default React.createClass({
             );
         });
     },
-    clearSelected() {
-        this.refs.grid.handleResetCheckedTo(false);
-    },
     updateColumns(columns) {
         this.setState({
             columns: columns
         });
     },
     handleRowClick(record, index) {
-        this.props.handleCheckboxSelect(null, record, (isSelected) => this.refs.grid.handleResetCheckedTo(isSelected, index));
+        this.props.handleCheckboxSelect(null, record);
     },
     getData() {
         return Object.keys(this.props.data).map((conditionId, i) => {
@@ -238,6 +235,8 @@ export default React.createClass({
                         ]
                     ]);
                 });
+            default:
+                return value;
         }
     },
     render() {

@@ -59,7 +59,7 @@ const Main = React.createClass({
     shouldComponentUpdate(nextProps, nextState) {
         return nextProps.ready;
     },
-    handleCheckboxSelect(isSelected, data, callback) {
+    handleCheckboxSelect(isSelected, data) {
         let selectedConditions = this.state.selectedConditions;
         if (isSelected === null) {
             isSelected = selectedConditions[data.id];
@@ -75,12 +75,11 @@ const Main = React.createClass({
             canEdit: count === 1,
             canDelete: count > 0
         });
-        typeof callback === 'function' && callback(!isSelected);
         return !isSelected;
     },
-    handleHeaderCheckboxSelect(isSelected, data) {
+    handleHeaderCheckboxSelect(isSelected) {
         this.setState({
-            selectedConditions: isSelected ? {} : data.reduce((all, item) => { all[item.record.id] = true; return all; }, {}),
+            selectedConditions: isSelected ? {} : Object.keys(this.props.rules).reduce((all, key) => { all[key] = true; return all; }, {}),
             canEdit: false,
             canDelete: !isSelected
         });
@@ -111,19 +110,16 @@ const Main = React.createClass({
     },
     dialogOnSave(data) {
         let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
-        this.refs.grid.clearSelected();
         this.setState(this.getInitialState(), () => this.props.actions[action](data));
     },
     removeRules() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
-        this.refs.grid.clearSelected();
         this.setState(this.getInitialState(), () => this.props.actions.removeRules({
             conditionId: conditionsArray
         }));
     },
     refresh() {
-        this.refs.grid.clearSelected();
-        this.props.actions.reset();
+        this.setState(this.getInitialState(), () => this.props.actions.reset());
     },
     showPrompt() {
         this.setState({

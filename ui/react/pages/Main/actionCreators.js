@@ -15,7 +15,10 @@ export function removeRules(params) {
             method: 'rule.rule.remove',
             params: params || {}
         }).then((result) => {
-            return result.error ? result : dispatch(fetchRules());
+            if (result.error) {
+                return result;
+            }
+            return dispatch(fetchRules());
         });
     };
 };
@@ -27,7 +30,10 @@ export function editRule(params) {
             method: 'rule.rule.edit',
             params: params || {}
         }).then((result) => {
-            return result.error ? result : dispatch(fetchRules());
+            if (result.error) {
+                return result;
+            }
+            return dispatch(fetchRules());
         });
     };
 };
@@ -39,7 +45,10 @@ export function addRule(params) {
             method: 'rule.rule.add',
             params: params || {}
         }).then((result) => {
-            return result.error ? result : dispatch(fetchRules());
+            if (result.error) {
+                return result;
+            }
+            return dispatch(fetchRules());
         });
     };
 };

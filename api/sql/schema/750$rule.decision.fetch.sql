@@ -105,7 +105,7 @@ BEGIN
 		,f.maxValue
 		,COALESCE(f.[percent], CAST(0 AS FLOAT)) * (
 			CASE
-				WHEN @amount > f.percentBase
+				WHEN @amount > COALESCE(f.percentBase, 0)
 					THEN @amount
 				ELSE f.percentBase
 				END - COALESCE(f.percentBase, 0)
@@ -113,7 +113,7 @@ BEGIN
 	FROM #matches AS c
 	JOIN [rule].fee AS f ON f.conditionId = c.conditionId
 	WHERE @currency = f.startAmountCurrency
-		AND COALESCE(@isSourceAmount, TRUE) = f.isSourceAmount
+		AND COALESCE(@isSourceAmount, 1) = f.isSourceAmount
 		AND @amount >= f.startAmount
 	ORDER BY c.priority
 		,f.startAmount DESC
@@ -149,7 +149,7 @@ BEGIN
 	FROM #matches AS c
 	JOIN [rule].commission AS com ON com."conditionId" = c."conditionId"
 	WHERE @currency = com.startAmountCurrency
-		AND COALESCE(@isSourceAmount, TRUE) = com.isSourceAmount
+		AND COALESCE(@isSourceAmount, 1) = com.isSourceAmount
 		AND @amount >= com.startAmount
 	ORDER BY c.priority
 		,com.startAmount DESC

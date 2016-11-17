@@ -33,7 +33,7 @@ const Main = React.createClass({
     fetchData() {
         this.props.actions.fetchRules();
         this.props.actions.fetchNomenclatures({
-            typeList: [
+            alias: [
                 'currency',
                 'channel',
                 'country',

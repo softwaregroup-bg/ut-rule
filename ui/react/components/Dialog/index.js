@@ -8,6 +8,7 @@ import Operation from './Section/Operation';
 import Source from './Section/Source';
 import Destination from './Section/Destination';
 import SectionFee from './Section/Fee';
+import SectionCommission from './Section/Commission';
 import SectionLimit from './Section/Limit';
 import SectionSummary from './Section/Summary';
 import merge from 'lodash.merge';
@@ -47,6 +48,15 @@ const emptyCondition = {
     destinationAccountId: null
 };
 const emptyFee = {
+    startAmount: null,
+    startAmountCurrency: null,
+    isSourceAmount: true,
+    minValue: null,
+    maxValue: null,
+    percent: null,
+    percentBase: null
+};
+const emptyCommission = {
     startAmount: null,
     startAmountCurrency: null,
     isSourceAmount: true,
@@ -136,19 +146,36 @@ export default React.createClass({
             data: this.state.data
         });
     },
+    deleteFeeRow(index) {
+        let fee = this.state.data.fee;
+        this.state.data.fee = fee.slice(0, index).concat(fee.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
+    addCommissionRow() {
+        let commissionObject = Object.assign({}, emptyCommission);
+        if (this.state.isEditing) {
+            commissionObject.conditionId = this.state.data.condition[0].conditionId;
+        }
+        this.state.data.commission.push(commissionObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteCommissionRow(index) {
+        let commission = this.state.data.commission;
+        this.state.data.commission = commission.slice(0, index).concat(commission.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
     addLimitRow() {
         let limitObject = Object.assign({}, emptyLimit);
         if (this.state.isEditing) {
             limitObject.conditionId = this.state.data.condition[0].conditionId;
         }
         this.state.data.limit.push(limitObject);
-        this.setState({
-            data: this.state.data
-        });
-    },
-    deleteFeeRow(index) {
-        let fee = this.state.data.fee;
-        this.state.data.fee = fee.slice(0, index).concat(fee.slice(index + 1));
         this.setState({
             data: this.state.data
         });
@@ -238,8 +265,17 @@ export default React.createClass({
                             <div className={style.content}>
                                 <SectionFee
                                   data={this.state.data.fee}
-                                  addFeeRow={this.addFeeRow}
-                                  deleteFeeRow={this.deleteFeeRow}
+                                  addRow={this.addFeeRow}
+                                  deleteRow={this.deleteFeeRow}
+                                />
+                            </div>
+                        </Accordion>
+                        <Accordion title='Commission' fullWidth>
+                            <div className={style.content}>
+                                <SectionCommission
+                                  data={this.state.data.commission}
+                                  addRow={this.addCommissionRow}
+                                  deleteRow={this.deleteCommissionRow}
                                 />
                             </div>
                         </Accordion>
@@ -247,8 +283,8 @@ export default React.createClass({
                             <div className={style.content}>
                                 <SectionLimit
                                   data={this.state.data.limit}
-                                  addLimitRow={this.addLimitRow}
-                                  deleteLimitRow={this.deleteLimitRow}
+                                  addRow={this.addLimitRow}
+                                  deleteRow={this.deleteLimitRow}
                                 />
                             </div>
                         </Accordion>

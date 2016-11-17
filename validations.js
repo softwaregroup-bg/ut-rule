@@ -1,7 +1,6 @@
 var joi = require('joi');
 module.exports = {
     'decision.fetch': {
-        auth: false,
         description: 'Fetch applicable fee, limit and commission, based on passed properties of the transfer',
         notes: '',
         params: joi.object().keys({
@@ -37,7 +36,7 @@ module.exports = {
             amount: joi.number().required().default(0),
             currency: joi.string().length(3).required().default('TZS'),
             isSourceAmount: joi.boolean()
-        }),
+        }).unknown(),
         result: joi.object().keys({
             fee: joi.object().keys({
                 amount: joi.number()
@@ -51,5 +50,35 @@ module.exports = {
                 count: joi.number().integer().allow(null)
             }).allow(null)
         })
+    },
+    'item.fetch': {
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
+    },
+    'rule.fetch': {
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
+    },
+    'rule.add': {
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
+    },
+    'rule.remove': {
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
+    },
+    'rule.edit': {
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
     }
 };

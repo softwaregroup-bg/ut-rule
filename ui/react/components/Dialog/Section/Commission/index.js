@@ -5,7 +5,7 @@ import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 
-const SectionFee = React.createClass({
+const SectionCommission = React.createClass({
     propTypes: {
         data: PropTypes.array.isRequired,
         addRow: PropTypes.func.isRequired,
@@ -18,13 +18,13 @@ const SectionFee = React.createClass({
     onSelectDropdown(index) {
         let self = this;
         return (field) => {
-            self.context.onFieldChange('fee', index, field.key, field.value);
+            self.context.onFieldChange('commission', index, field.key, field.value);
         };
     },
     onChangeInput(index) {
         let self = this;
         return (field) => {
-            self.context.onFieldChange('fee', index, field.key, field.value);
+            self.context.onFieldChange('commission', index, field.key, field.value);
         };
     },
     onDeleteRow(index) {
@@ -36,25 +36,25 @@ const SectionFee = React.createClass({
     createHeaderCells() {
         return [
             {name: 'Start Amount', key: 'startAmount'},
-            {name: 'Currency', key: 'feeCurrency'},
-            {name: '%', key: 'feePercent'},
-            {name: '% Base', key: 'feePercentBase'},
-            {name: 'Min Amount', key: 'feeMinAmount'},
-            {name: 'Max Amount', key: 'feeMaxAmount'},
-            {name: ' ', key: 'feeActions'}
+            {name: 'Currency', key: 'commissionCurrency'},
+            {name: '%', key: 'commissionPercent'},
+            {name: '% Base', key: 'commissionPercentBase'},
+            {name: 'Min Amount', key: 'commissionMinAmount'},
+            {name: 'Max Amount', key: 'commissionMaxAmount'},
+            {name: ' ', key: 'commissionActions'}
         ].map((cell, i) => (
             <th key={i}>{cell.name}</th>
         ));
     },
-    createFeeRows() {
+    createCommissionRows() {
         let nomenclatures = this.context.nomenclatures;
-        return this.props.data.map((fee, index) => (
+        return this.props.data.map((commission, index) => (
             <tr key={index}>
                 <td>
                     <Input
                       keyProp='startAmount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (fee.startAmount || '')}
+                      value={'' + (commission.startAmount || '')}
                     />
                 </td>
                 <td style={{minWidth: '100px'}}>
@@ -62,35 +62,35 @@ const SectionFee = React.createClass({
                       keyProp='startAmountCurrency'
                       data={nomenclatures.currency || []}
                       onSelect={this.onSelectDropdown(index)}
-                      defaultSelected={'' + (fee.startAmountCurrency || '')}
+                      defaultSelected={'' + (commission.startAmountCurrency || '')}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='percent'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (fee.percent || '')}
+                      value={'' + (commission.percent || '')}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='percentBase'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (fee.percentBase || '')}
+                      value={'' + (commission.percentBase || '')}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='minValue'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (fee.minValue || '')}
+                      value={'' + (commission.minValue || '')}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='maxValue'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (fee.maxValue || '')}
+                      value={'' + (commission.maxValue || '')}
                     />
                 </td>
                 <td>
@@ -111,13 +111,13 @@ const SectionFee = React.createClass({
                         </tr>
                     </thead>
                     <tbody className={style.limitTableBody}>
-                        {this.createFeeRows()}
+                        {this.createCommissionRows()}
                     </tbody>
                 </table>
-                <span className={style.link} onClick={this.props.addRow}><span>+</span>Add another fee</span>
+                <span className={style.link} onClick={this.props.addRow}><span>+</span>Add another commission</span>
             </div>
         );
     }
 });
 
-export default SectionFee;
+export default SectionCommission;

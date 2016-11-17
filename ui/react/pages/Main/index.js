@@ -5,6 +5,7 @@ import Grid from '../../components/Grid';
 import Dialog from '../../components/Dialog';
 import Prompt from '../../components/Prompt';
 import mainStyle from 'ut-front-react/assets/index.css';
+import { AddTab } from 'ut-front-react/containers/TabMenu';
 // import style from './style.css';
 import * as actionCreators from './actionCreators';
 
@@ -14,7 +15,8 @@ const Main = React.createClass({
         nomenclatures: PropTypes.object,
         ready: PropTypes.bool,
         empty: PropTypes.bool,
-        actions: PropTypes.object
+        actions: PropTypes.object,
+        location: PropTypes.object
     },
     getInitialState() {
         return {
@@ -59,6 +61,9 @@ const Main = React.createClass({
     },
     handleCheckboxSelect(isSelected, data) {
         let selectedConditions = this.state.selectedConditions;
+        if (isSelected === null) {
+            isSelected = selectedConditions[data.id];
+        }
         if (isSelected) {
             delete selectedConditions[data.id];
         } else {
@@ -72,9 +77,9 @@ const Main = React.createClass({
         });
         return !isSelected;
     },
-    handleHeaderCheckboxSelect(isSelected, data) {
+    handleHeaderCheckboxSelect(isSelected) {
         this.setState({
-            selectedConditions: isSelected ? {} : data.reduce((all, item) => { all[item.record.id] = true; return all; }, {}),
+            selectedConditions: isSelected ? {} : Object.keys(this.props.rules).reduce((all, key) => { all[key] = true; return all; }, {}),
             canEdit: false,
             canDelete: !isSelected
         });
@@ -105,19 +110,16 @@ const Main = React.createClass({
     },
     dialogOnSave(data) {
         let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
-        this.refs.grid.clearSelected();
         this.setState(this.getInitialState(), () => this.props.actions[action](data));
     },
     removeRules() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
-        this.refs.grid.clearSelected();
         this.setState(this.getInitialState(), () => this.props.actions.removeRules({
             conditionId: conditionsArray
         }));
     },
     refresh() {
-        this.refs.grid.clearSelected();
-        this.props.actions.reset();
+        this.setState(this.getInitialState(), () => this.props.actions.reset());
     },
     showPrompt() {
         this.setState({
@@ -134,6 +136,7 @@ const Main = React.createClass({
             return null;
         }
         return <div className={mainStyle.contentTableWrap}>
+            <AddTab pathname={this.props.location.pathname} title='Rule Management' />
             <div className={mainStyle.actionBarWrap}>
                 <div style={{padding: '15px 10px 0 0', float: 'right'}}>
                     <button onClick={this.createBtnOnClick}>Create Rule</button>
@@ -179,6 +182,7 @@ const Main = React.createClass({
                   ref='grid'
                   refresh={this.refresh}
                   data={this.props.rules}
+                  selectedConditions={this.state.selectedConditions}
                   nomenclatures={this.props.nomenclatures}
                   handleCheckboxSelect={this.handleCheckboxSelect}
                   handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}

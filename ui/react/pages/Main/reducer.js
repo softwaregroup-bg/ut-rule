@@ -6,7 +6,7 @@ export default (state = defaultState, action) => {
     } else if (action.result) {
         switch (action.type) {
             case actionTypes.fetchNomenclatures:
-                return Object.assign({}, state, {'fetchNomenclatures': formatNomenclatures(action.result)});
+                return Object.assign({}, state, {'fetchNomenclatures': formatNomenclatures(action.result.items)});
             case actionTypes.fetchRules:
                 return Object.assign({}, state, {'fetchRules': formatRules(action.result)});
             default:

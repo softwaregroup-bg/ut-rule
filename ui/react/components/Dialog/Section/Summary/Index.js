@@ -112,6 +112,9 @@ const Summary = React.createClass({
                             }
                             {
                                 fee.length > 0 && [<div key={0} className={style.heading}>Fees</div>].concat(fee.map((record, i) => {
+                                    if (!(record.startAmount && record.startAmountCurrency)) {
+                                        return null;
+                                    }
                                     return this.buildCSV([
                                         {
                                             key: '',
@@ -129,11 +132,14 @@ const Summary = React.createClass({
                                             key: 'max',
                                             value: record.maxValue
                                         }
-                                    ], record.startAmount + ' ' + record.startAmountCurrency + ' ', i + 1);
+                                    ], record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency] + ' ', i + 1);
                                 }))
                             }
                             {
                                 commission.length > 0 && [<div key={0} className={style.heading}>Commissions</div>].concat(commission.map((record, i) => {
+                                    if (!(record.startAmount && record.startAmountCurrency)) {
+                                        return null;
+                                    }
                                     return this.buildCSV([
                                         {
                                             key: '',
@@ -151,7 +157,7 @@ const Summary = React.createClass({
                                             key: 'max',
                                             value: record.maxValue
                                         }
-                                    ], '>= ' + record.startAmount + ' ' + record.startAmountCurrency + ' ');
+                                    ], '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency] + ' ');
                                 }))
                             }
                         </td>

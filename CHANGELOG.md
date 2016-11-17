@@ -1,3 +1,13 @@
+<a name="5.6.1"></a>
+## [5.6.1](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.0...v5.6.1) (2016-11-17)
+
+
+### Bug Fixes
+
+* remove .npmrc and .npmignore ([48d43a9](https://github.com/softwaregroup-bg/ut-rule/commit/48d43a9))
+
+
+
 <a name="5.6.0"></a>
 # [5.6.0](https://github.com/softwaregroup-bg/ut-rule/compare/v5.5.9...v5.6.0) (2016-11-17)
 

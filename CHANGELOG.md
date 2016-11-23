@@ -1,3 +1,13 @@
+<a name="5.6.3"></a>
+## [5.6.3](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.2...v5.6.3) (2016-11-23)
+
+
+### Bug Fixes
+
+* versions bump ([00d09ac](https://github.com/softwaregroup-bg/ut-rule/commit/00d09ac))
+
+
+
 <a name="5.6.2"></a>
 ## [5.6.2](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.1...v5.6.2) (2016-11-21)
 

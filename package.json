@@ -4,24 +4,24 @@
   "main": "api/sql/index.js",
   "dependencies": {
     "classnames": "2.2.5",
-    "joi": "9.0.4",
+    "joi": "10.0.1",
     "joi-browser": "^9.1.0",
     "material-ui": "0.15.2",
     "moment": "^2.15.2",
-    "react": "15.2.1",
-    "react-redux": "4.4.5",
+    "react": "15.3.2",
+    "react-redux": "4.4.6",
     "react-router": "2.5.2",
-    "redux": "3.5.2",
-    "lodash.merge": "4.4.0",
+    "redux": "3.6.0",
+    "lodash.merge": "4.6.0",
     "ut-error": "^5.3.16",
-    "ut-front": "^5.10.5",
-    "ut-front-react": "^5.42.5"
+    "ut-front": "^6.0.0",
+    "ut-front-react": "^5.42.9"
   },
   "devDependencies": {
-    "ut-tools": "^5.10.7"
+    "ut-tools": "^5.10.8"
   },
   "peerDependencies": {
-    "ut-bus": "~5.6.1"
+    "ut-bus": "~5.6.2"
   },
   "description": "UT Rule",
   "scripts": {

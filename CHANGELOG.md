@@ -1,3 +1,13 @@
+<a name="5.6.4"></a>
+## [5.6.4](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.3...v5.6.4) (2016-11-25)
+
+
+### Bug Fixes
+
+* boolean ([6002975](https://github.com/softwaregroup-bg/ut-rule/commit/6002975))
+
+
+
 <a name="5.6.3"></a>
 ## [5.6.3](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.2...v5.6.3) (2016-11-23)
 

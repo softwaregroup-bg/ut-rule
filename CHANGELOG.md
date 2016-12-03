@@ -1,3 +1,13 @@
+<a name="5.6.5"></a>
+## [5.6.5](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.4...v5.6.5) (2016-12-02)
+
+
+### Bug Fixes
+
+* remove redirects ([191ac00](https://github.com/softwaregroup-bg/ut-rule/commit/191ac00))
+
+
+
 <a name="5.6.4"></a>
 ## [5.6.4](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.3...v5.6.4) (2016-11-25)
 

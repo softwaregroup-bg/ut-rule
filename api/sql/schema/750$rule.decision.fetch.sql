@@ -1,62 +1,57 @@
 ALTER PROCEDURE [rule].[decision.fetch]
-	@channelCountryId BIGINT
-	,@channelRegionId BIGINT
-	,@channelCityId BIGINT
-	,@channelOrganizationId BIGINT
-	,@channelSupervisorId BIGINT
-	,@channelTags VARCHAR(255)
-	,@channelRoleId BIGINT
-	,@channelId BIGINT
-	,@operationId BIGINT
-	,@operationTags VARCHAR(255)
-	,@operationDate DATETIME2(0)
-	,@sourceCountryId BIGINT
-	,@sourceRegionId BIGINT
-	,@sourceCityId BIGINT
-	,@sourceOrganizationId BIGINT
-	,@sourceSupervisorId BIGINT
-	,@sourceTags VARCHAR(255)
-	,@sourceId BIGINT
-	,@sourceProductId BIGINT
-	,@sourceAccountId BIGINT
-	,@destinationCountryId BIGINT
-	,@destinationRegionId BIGINT
-	,@destinationCityId BIGINT
-	,@destinationOrganizationId BIGINT
-	,@destinationSupervisorId BIGINT
-	,@destinationTags VARCHAR(255)
-	,@destinationId BIGINT
-	,@destinationProductId BIGINT
-	,@destinationAccountId BIGINT
-	,@amount NUMERIC(20, 2)
-	,@currency NVARCHAR(3)
-	,@isSourceAmount BIT
+    @channelCountryId BIGINT,
+    @channelRegionId BIGINT,
+    @channelCityId BIGINT,
+    @channelOrganizationId BIGINT,
+    @channelSupervisorId BIGINT,
+    @channelTags VARCHAR(255),
+    @channelRoleId BIGINT,
+    @channelId BIGINT,
+    @operationId BIGINT,
+    @operationTags VARCHAR(255),
+    @operationDate DATETIME,
+    @sourceCountryId BIGINT,
+    @sourceRegionId BIGINT,
+    @sourceCityId BIGINT,
+    @sourceOrganizationId BIGINT,
+    @sourceSupervisorId BIGINT,
+    @sourceTags VARCHAR(255),
+    @sourceId BIGINT,
+    @sourceProductId BIGINT,
+    @sourceAccountId BIGINT,
+    @destinationCountryId BIGINT,
+    @destinationRegionId BIGINT,
+    @destinationCityId BIGINT,
+    @destinationOrganizationId BIGINT,
+    @destinationSupervisorId BIGINT,
+    @destinationTags VARCHAR(255),
+    @destinationId BIGINT,
+    @destinationProductId BIGINT,
+    @destinationAccountId BIGINT,
+    @amount MONEY,
+    @currency VARCHAR(3),
+    @isSourceAmount BIT
 AS
 BEGIN
-	IF OBJECT_ID('tempdb..#matches') IS NOT NULL
-		/*Then it exists*/
-		DROP TABLE #matches
+    DECLARE @matches TABLE (
+        priority INT
+        ,conditionId BIGINT
+    )
 
-	DECLARE @fee TABLE (
-		minValue NUMERIC(20, 2)
-		,maxValue NUMERIC(20, 2)
-		,percentAmount NUMERIC(20, 2)
-		)
-	DECLARE @commission TABLE (
-		minValue NUMERIC(20, 2)
-		,maxValue NUMERIC(20, 2)
-		,percentAmount NUMERIC(20, 2)
-		)
+    SET @operationDate = IsNull(@operationDate, GETDATE())
 
-	CREATE TABLE #matches (
-		priority INT
-		,conditionId BIGINT
-		)
+    DECLARE
+        @calc MONEY,
+        @minAmount MONEY,
+        @maxAmount MONEY,
+        @id BIGINT
 
-	INSERT INTO #matches
-	SELECT [priority]
-		,conditionId
-	FROM [rule].condition c
+    INSERT INTO
+        @matches
+    SELECT
+        [priority],conditionId
+    FROM
+        [rule].condition c
     WHERE
         (@channelCountryId IS NULL OR c.channelCountryId IS NULL OR @channelCountryId = c.channelCountryId) AND
         (@channelRegionId IS NULL OR c.channelRegionId IS NULL OR @channelRegionId = c.channelRegionId) AND
@@ -89,86 +84,82 @@ BEGIN
         (@destinationProductId IS NULL OR c.destinationProductId IS NULL OR @destinationProductId = c.destinationProductId) AND
         (@destinationAccountId IS NULL OR c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)
 
-	SELECT 'limit' AS resultSetName, 1 AS single
+    SELECT 'limit' AS resultSetName, 1 AS single
+    SELECT TOP 1
+        l.minAmount,
+        l.maxAmount,
+        l.maxCountDaily AS [count]
+    FROM
+        @matches AS c
+    JOIN
+        [rule].limit AS l ON l.conditionId = c.conditionId
+    WHERE
+        l.currency = @currency
+    ORDER BY
+        c.priority,
+        l.limitId
 
-	SELECT TOP 1 l.minAmount
-		,l.maxAmount
-		,l.maxCountDaily AS count
-	FROM #matches AS c
-	JOIN [rule].limit AS l ON l.conditionId = c.conditionId
-	WHERE l.currency = @currency
-	ORDER BY c.priority
-		,l.limitId
+    SELECT @calc=0, @minAmount=0, @maxAmount=0
+    SELECT TOP 1
+        @id = f.feeId,
+        @minAmount = f.minValue,
+        @maxAmount = f.maxValue,
+        @calc = ISNULL(f.[percent], 0) * CASE
+            WHEN @amount > ISNULL(f.percentBase, 0) THEN @amount - ISNULL(f.percentBase, 0)
+            ELSE 0
+        END / 100
+    FROM
+        @matches AS c
+    JOIN
+        [rule].fee AS f ON f.conditionId = c.conditionId
+    WHERE
+        @currency = f.startAmountCurrency AND
+        COALESCE(@isSourceAmount, 1) = f.isSourceAmount AND
+        @amount >= f.startAmount
+    ORDER BY
+        c.priority,
+        f.startAmount DESC,
+        f.feeId
 
-	INSERT INTO @fee
-	SELECT TOP 1 f.minValue
-		,f.maxValue
-		,COALESCE(f.[percent], CAST(0 AS FLOAT)) * (
-			CASE
-				WHEN @amount > COALESCE(f.percentBase, 0)
-					THEN @amount
-				ELSE f.percentBase
-				END - COALESCE(f.percentBase, 0)
-			) / 100 percentAmount
-	FROM #matches AS c
-	JOIN [rule].fee AS f ON f.conditionId = c.conditionId
-	WHERE @currency = f.startAmountCurrency
-		AND COALESCE(@isSourceAmount, 1) = f.isSourceAmount
-		AND @amount >= f.startAmount
-	ORDER BY c.priority
-		,f.startAmount DESC
-		,f.feeId
+    SELECT 'fee' AS resultSetName, 1 AS single
+    SELECT
+        CASE
+            WHEN @calc>@maxAmount THEN @maxAmount
+            WHEN @calc<@minAmount THEN @minAmount
+            ELSE @calc
+        END amount,
+        @id id,
+        @operationDate transferDateTime
 
-	SELECT 'fee' AS resultSetName, 1 AS single
+    SELECT @calc=0, @minAmount=0, @maxAmount=0
+    SELECT TOP 1
+        @id = f.commissionId,
+        @minAmount = f.minValue,
+        @maxAmount = f.maxValue,
+        @calc = ISNULL(f.[percent], 0) * CASE
+            WHEN @amount > ISNULL(f.percentBase, 0) THEN @amount - ISNULL(f.percentBase, 0)
+            ELSE 0
+        END / 100
+    FROM
+        @matches AS c
+    JOIN
+        [rule].commission AS f ON f.conditionId = c.conditionId
+    WHERE
+        @currency = f.startAmountCurrency AND
+        COALESCE(@isSourceAmount, 1) = f.isSourceAmount AND
+        @amount >= f.startAmount
+    ORDER BY
+        c.priority,
+        f.startAmount DESC,
+        f.commissionId
 
-	SELECT CASE
-			WHEN r.maxValue < greatestValue
-				THEN r.maxValue
-			ELSE greatestValue
-			END amount
-	FROM (
-		SELECT CASE
-				WHEN f.minValue > percentAmount
-					THEN f.minValue
-				ELSE percentAmount
-				END greatestValue
-			,f.maxValue
-		FROM @fee f
-		) r
+    SELECT 'commission' AS resultSetName, 1 AS single
+    SELECT
+        CASE
+            WHEN @calc>@maxAmount THEN @maxAmount
+            WHEN @calc<@minAmount THEN @minAmount
+            ELSE @calc
+        END amount,
+        @id id
 
-	INSERT INTO @commission
-	SELECT TOP 1 com.minValue
-		,com.maxValue
-		,COALESCE(com.[percent], CAST(0 AS FLOAT)) * (
-			CASE
-				WHEN @amount > com.percentBase
-					THEN @amount
-				ELSE com.percentBase
-				END - COALESCE(com.percentBase, 0)
-			) / 100 percentAmount
-	FROM #matches AS c
-	JOIN [rule].commission AS com ON com."conditionId" = c."conditionId"
-	WHERE @currency = com.startAmountCurrency
-		AND COALESCE(@isSourceAmount, 1) = com.isSourceAmount
-		AND @amount >= com.startAmount
-	ORDER BY c.priority
-		,com.startAmount DESC
-		,com.commissionId
-
-	SELECT 'commission' AS resultSetName, 1 AS single
-
-	SELECT CASE
-			WHEN r.maxValue < r.greatestValue
-				THEN r.maxValue
-			ELSE r.greatestValue
-			END amount
-	FROM (
-		SELECT CASE
-				WHEN com.minValue > com.percentAmount
-					THEN com.minValue
-				ELSE com.percentAmount
-				END greatestValue
-			,com.maxValue
-		FROM @commission com
-		) r
 END

@@ -1,28 +1,40 @@
 ALTER PROCEDURE [rule].[rule.fetch]
-	@conditionId INT
+    @conditionId INT
 AS
 BEGIN
-	SELECT 'condition' AS resultSetName
+    SELECT 'condition' AS resultSetName
 
-	SELECT *
-	FROM [rule].condition
-	WHERE @conditionId IS NULL OR conditionId = @conditionId
+    SELECT
+        *
+    FROM
+        [rule].condition
+    WHERE
+        @conditionId IS NULL OR conditionId = @conditionId
 
-	SELECT 'limit' AS resultSetName
+    SELECT 'limit' AS resultSetName
 
-	SELECT *
-	FROM [rule].limit
-	WHERE @conditionId IS NULL OR conditionId = @conditionId
+    SELECT
+        *
+    FROM
+        [rule].limit
+    WHERE
+        @conditionId IS NULL OR conditionId = @conditionId
 
-	SELECT 'commission' AS resultSetName
+    SELECT 'commission' AS resultSetName
 
-	SELECT *
-	FROM [rule].commission
-	WHERE @conditionId IS NULL OR conditionId = @conditionId
+    SELECT
+        *
+    FROM
+        [rule].commission
+    WHERE
+        @conditionId IS NULL OR conditionId = @conditionId
 
-	SELECT 'fee' AS resultSetName
+    SELECT 'fee' AS resultSetName
 
-	SELECT *
-	FROM [rule].fee
-	WHERE @conditionId IS NULL OR conditionId = @conditionId
+    SELECT
+        *
+    FROM
+        [rule].fee
+    WHERE
+        @conditionId IS NULL OR conditionId = @conditionId
 END

@@ -1,3 +1,14 @@
+<a name="5.6.7"></a>
+## [5.6.7](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.6...v5.6.7) (2016-12-03)
+
+
+### Bug Fixes
+
+* add constraints ([2f0feae](https://github.com/softwaregroup-bg/ut-rule/commit/2f0feae))
+* proper tag handling ([4cf4af1](https://github.com/softwaregroup-bg/ut-rule/commit/4cf4af1))
+
+
+
 <a name="5.6.6"></a>
 ## [5.6.6](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.5...v5.6.6) (2016-12-03)
 

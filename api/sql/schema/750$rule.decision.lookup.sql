@@ -15,18 +15,15 @@ BEGIN
         @channelCityId BIGINT,
         @channelOrganizationId BIGINT,
         @channelSupervisorId BIGINT,
-        @channelTags VARCHAR(255),
         @channelRoleId BIGINT,
 
         @operationId BIGINT,
-        @operationTags VARCHAR(255),
 
         @sourceCountryId BIGINT,
         @sourceRegionId BIGINT,
         @sourceCityId BIGINT,
         @sourceOrganizationId BIGINT,
         @sourceSupervisorId BIGINT,
-        @sourceTags VARCHAR(255),
         @sourceId BIGINT,
         @sourceProductId BIGINT,
         @sourceAccountId BIGINT,
@@ -36,7 +33,6 @@ BEGIN
         @destinationCityId BIGINT,
         @destinationOrganizationId BIGINT,
         @destinationSupervisorId BIGINT,
-        @destinationTags VARCHAR(255),
         @destinationId BIGINT,
         @destinationProductId BIGINT,
         @destinationAccountId BIGINT
@@ -47,7 +43,6 @@ BEGIN
         @channelCityId = cityId,
         @channelOrganizationId = organizationId,
         @channelSupervisorId = supervisorId,
-        @channelTags = tags,
         @channelRoleId = roleId
     FROM
         [integration].[vChannel]
@@ -55,7 +50,6 @@ BEGIN
         channelId = @channelId
 
     SELECT
-        -- @operationTags = n.operationTags, // TODO
         @operationId = n.itemNameId
     FROM
         [core].[itemName] n
@@ -70,7 +64,6 @@ BEGIN
         @sourceCityId = cityId,
         @sourceOrganizationId = organizationId,
         @sourceSupervisorId = supervisorId,
-        @sourceTags = tags,
         @sourceId = holderId,
         @sourceProductId = productId,
         @sourceAccountId = accountId
@@ -85,7 +78,6 @@ BEGIN
         @destinationCityId = cityId,
         @destinationOrganizationId = organizationId,
         @destinationSupervisorId = supervisorId,
-        @destinationTags = tags,
         @destinationId = holderId,
         @destinationProductId = productId,
         @destinationAccountId = accountId
@@ -100,18 +92,15 @@ BEGIN
         @channelCityId = @channelCityId,
         @channelOrganizationId = @channelOrganizationId,
         @channelSupervisorId = @channelSupervisorId,
-        @channelTags = @channelTags,
         @channelRoleId = @channelRoleId,
         @channelId = @channelId,
         @operationId = @operationId,
-        @operationTags = @operationTags,
         @operationDate = @operationDate,
         @sourceCountryId = @sourceCountryId,
         @sourceRegionId = @sourceRegionId,
         @sourceCityId = @sourceCityId,
         @sourceOrganizationId = @sourceOrganizationId,
         @sourceSupervisorId = @sourceSupervisorId,
-        @sourceTags = @sourceTags,
         @sourceId = @sourceId,
         @sourceProductId = @sourceProductId,
         @sourceAccountId = @sourceAccountId,
@@ -120,7 +109,6 @@ BEGIN
         @destinationCityId = @destinationCityId,
         @destinationOrganizationId = @destinationOrganizationId,
         @destinationSupervisorId = @destinationSupervisorId,
-        @destinationTags = @destinationTags,
         @destinationId = @destinationId,
         @destinationProductId = @destinationProductId,
         @destinationAccountId = @destinationAccountId,

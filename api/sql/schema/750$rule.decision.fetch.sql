@@ -4,18 +4,15 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @channelCityId BIGINT,
     @channelOrganizationId BIGINT,
     @channelSupervisorId BIGINT,
-    @channelTags VARCHAR(255),
     @channelRoleId BIGINT,
     @channelId BIGINT,
     @operationId BIGINT,
-    @operationTags VARCHAR(255),
     @operationDate DATETIME,
     @sourceCountryId BIGINT,
     @sourceRegionId BIGINT,
     @sourceCityId BIGINT,
     @sourceOrganizationId BIGINT,
     @sourceSupervisorId BIGINT,
-    @sourceTags VARCHAR(255),
     @sourceId BIGINT,
     @sourceProductId BIGINT,
     @sourceAccountId BIGINT,
@@ -24,7 +21,6 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @destinationCityId BIGINT,
     @destinationOrganizationId BIGINT,
     @destinationSupervisorId BIGINT,
-    @destinationTags VARCHAR(255),
     @destinationId BIGINT,
     @destinationProductId BIGINT,
     @destinationAccountId BIGINT,
@@ -58,11 +54,11 @@ BEGIN
         (@channelCityId IS NULL OR c.channelCityId IS NULL OR @channelCityId = c.channelCityId) AND
         (@channelOrganizationId IS NULL OR c.channelOrganizationId IS NULL OR @channelOrganizationId = c.channelOrganizationId) AND
         (@channelSupervisorId IS NULL OR c.channelSupervisorId IS NULL OR @channelSupervisorId = c.channelSupervisorId) AND
-        (@channelTags IS NULL OR c.channelTag IS NULL OR @channelTags LIKE ('%|' + c.channelTag + '|%')) AND
+        (c.channelTag IS NULL OR @channelId IS NULL OR EXISTS(SELECT * from core.actorTag t WHERE t.actorId = @channelId AND c.channelTag LIKE '%|' + t.tag + '|%')) AND
         (@channelRoleId IS NULL OR c.channelRoleId IS NULL OR @channelRoleId = c.channelRoleId) AND
         (@channelId IS NULL OR c.channelId IS NULL OR @channelId = c.channelId) AND
         (@operationId IS NULL OR c.operationId IS NULL OR @operationId = c.operationId) AND
-        (@operationTags IS NULL OR c.operationTag IS NULL OR @operationTags LIKE ('%|' + c.operationTag + '|%')) AND
+        (c.operationTag IS NULL OR @operationId IS NULL OR EXISTS(SELECT * from core.itemTag t WHERE t.itemNameId = @operationId AND c.operationTag LIKE '%|' + t.tag + '|%')) AND
         (@operationDate IS NULL OR c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
         (@operationDate IS NULL OR c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
         (@sourceCountryId IS NULL OR c.sourceCountryId IS NULL OR @sourceCountryId = c.sourceCountryId) AND
@@ -70,7 +66,7 @@ BEGIN
         (@sourceCityId IS NULL OR c.sourceCityId IS NULL OR @sourceCityId = c.sourceCityId) AND
         (@sourceOrganizationId IS NULL OR c.sourceOrganizationId IS NULL OR @sourceOrganizationId = c.sourceOrganizationId) AND
         (@sourceSupervisorId IS NULL OR c.sourceSupervisorId IS NULL OR @sourceSupervisorId = c.sourceSupervisorId) AND
-        (@sourceTags IS NULL OR c.sourceTag IS NULL OR @sourceTags LIKE ('%|' + c.sourceTag + '|%')) AND
+        (c.sourceTag IS NULL OR @sourceId IS NULL OR EXISTS(SELECT * from core.actorTag t WHERE t.actorId = @sourceId AND c.sourceTag LIKE '%|' + t.tag + '|%')) AND
         (@sourceId IS NULL OR c.sourceId IS NULL OR @sourceId = c.sourceId) AND
         (@sourceProductId IS NULL OR c.sourceProductId IS NULL OR @sourceProductId = c.sourceProductId) AND
         (@sourceAccountId IS NULL OR c.sourceAccountId IS NULL OR @sourceAccountId = c.sourceAccountId) AND
@@ -79,7 +75,7 @@ BEGIN
         (@destinationCityId IS NULL OR c.destinationCityId IS NULL OR @destinationCityId = c.destinationCityId) AND
         (@destinationOrganizationId IS NULL OR c.destinationOrganizationId IS NULL OR @destinationOrganizationId = c.destinationOrganizationId) AND
         (@destinationSupervisorId IS NULL OR c.destinationSupervisorId IS NULL OR @destinationSupervisorId = c.destinationSupervisorId) AND
-        (@destinationTags IS NULL OR c.destinationTag IS NULL OR @destinationTags LIKE ('%|' + c.destinationTag + '|%')) AND
+        (c.destinationTag IS NULL OR @destinationId IS NULL OR EXISTS(SELECT * from core.actorTag t WHERE t.actorId = @destinationId AND c.destinationTag LIKE '%|' + t.tag + '|%')) AND
         (@destinationId IS NULL OR c.destinationId IS NULL OR @destinationId = c.destinationId) AND
         (@destinationProductId IS NULL OR c.destinationProductId IS NULL OR @destinationProductId = c.destinationProductId) AND
         (@destinationAccountId IS NULL OR c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)

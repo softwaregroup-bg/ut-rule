@@ -9,5 +9,6 @@ CREATE TABLE [rule].[fee] (
     [percent] FLOAT,
     percentBase MONEY,
     CONSTRAINT [pkRuleFee] PRIMARY KEY CLUSTERED (feeId ASC),
+    CONSTRAINT ukRuleFeeConditionStartAmount UNIQUE (conditionId, startAmount, startAmountCurrency),
     CONSTRAINT [fkRuleFee_condition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId)
 )

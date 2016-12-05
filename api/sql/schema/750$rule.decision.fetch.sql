@@ -25,6 +25,12 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @destinationProductId BIGINT,
     @destinationAccountId BIGINT,
     @amount MONEY,
+	@amountDaily MONEY,
+	@countDaily BIGINT,
+	@amountWeekly MONEY,
+	@countWeekly BIGINT,
+	@amountMonthly MONEY,
+	@countMonthly BIGINT,
     @currency VARCHAR(3),
     @isSourceAmount BIT
 AS
@@ -37,10 +43,22 @@ BEGIN
     SET @operationDate = IsNull(@operationDate, GETDATE())
 
     DECLARE
-        @calc MONEY,
+        @calcFee MONEY,
+        @minFee MONEY,
+        @maxFee MONEY,
+        @idFee BIGINT,
+        @calcCommission MONEY,
+        @minCommission MONEY,
+        @maxCommission MONEY,
+        @idCommission BIGINT,
         @minAmount MONEY,
         @maxAmount MONEY,
-        @id BIGINT
+        @maxAmountDaily MONEY,
+        @maxCountDaily BIGINT,
+        @maxAmountWeekly MONEY,
+        @maxCountWeekly BIGINT,
+        @maxAmountMonthly MONEY,
+        @maxCountMonthly BIGINT
 
     INSERT INTO
         @matches
@@ -80,11 +98,25 @@ BEGIN
         (@destinationProductId IS NULL OR c.destinationProductId IS NULL OR @destinationProductId = c.destinationProductId) AND
         (@destinationAccountId IS NULL OR c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)
 
-    SELECT 'limit' AS resultSetName, 1 AS single
+    SELECT
+        @minAmount = NULL,
+        @maxAmount = NULL,
+        @maxAmountDaily = NULL,
+        @maxCountDaily = NULL,
+        @maxAmountWeekly = NULL,
+        @maxCountWeekly = NULL,
+        @maxAmountMonthly = NULL,
+        @maxCountMonthly = NULL
+
     SELECT TOP 1
-        l.minAmount,
-        l.maxAmount,
-        l.maxCountDaily AS [count]
+        @minAmount = l.minAmount,
+        @maxAmount = l.maxAmount,
+        @maxAmountDaily = l.maxAmountDaily,
+        @maxCountDaily = l.maxCountDaily,
+        @maxAmountWeekly = l.maxAmountWeekly,
+        @maxCountWeekly = l.maxCountWeekly,
+        @maxAmountMonthly = l.maxAmountMonthly,
+        @maxCountMonthly = l.maxCountMonthly
     FROM
         @matches AS c
     JOIN
@@ -95,12 +127,60 @@ BEGIN
         c.priority,
         l.limitId
 
-    SELECT @calc=0, @minAmount=0, @maxAmount=0
+    IF @amount < @minAmount
+    BEGIN
+        RAISERROR('rule.exceedMinLimitAmount', 16, 1)
+        RETURN
+    END
+
+    IF @amount > @maxAmount
+    BEGIN
+        RAISERROR('rule.exceedMaxLimitAmount', 16, 1)
+        RETURN
+    END
+
+    IF @amount + @amountDaily > @maxAmountDaily
+    BEGIN
+        RAISERROR('rule.exceedDailyLimitAmount', 16, 1)
+        RETURN
+    END
+
+    IF @amount + @amountWeekly > @maxAmountWeekly
+    BEGIN
+        RAISERROR('rule.exceedWeeklyLimitAmount', 16, 1)
+        RETURN
+    END
+
+    IF @amount + @amountMonthly > @maxAmountMonthly
+    BEGIN
+        RAISERROR('rule.exceedMonthlyLimitAmount', 16, 1)
+        RETURN
+    END
+
+    IF @countDaily >= @maxCountDaily
+    BEGIN
+        RAISERROR('rule.exceedDailyLimitCount', 16, 1)
+        RETURN
+    END
+
+    IF @countWeekly >= @maxCountWeekly
+    BEGIN
+        RAISERROR('rule.exceedWeeklyLimitCount', 16, 1)
+        RETURN
+    END
+
+    IF @countMonthly >= @maxCountMonthly
+    BEGIN
+        RAISERROR('rule.exceedMonthlyLimitCount', 16, 1)
+        RETURN
+    END
+
+    SELECT @calcFee=0, @minFee=0, @maxFee=NULL, @idFee=NULL
     SELECT TOP 1
-        @id = f.feeId,
-        @minAmount = f.minValue,
-        @maxAmount = f.maxValue,
-        @calc = ISNULL(f.[percent], 0) * CASE
+        @idFee = f.feeId,
+        @minFee = f.minValue,
+        @maxFee = f.maxValue,
+        @calcFee = ISNULL(f.[percent], 0) * CASE
             WHEN @amount > ISNULL(f.percentBase, 0) THEN @amount - ISNULL(f.percentBase, 0)
             ELSE 0
         END / 100
@@ -117,22 +197,12 @@ BEGIN
         f.startAmount DESC,
         f.feeId
 
-    SELECT 'fee' AS resultSetName, 1 AS single
-    SELECT
-        CASE
-            WHEN @calc>@maxAmount THEN @maxAmount
-            WHEN @calc<@minAmount THEN @minAmount
-            ELSE @calc
-        END amount,
-        @id id,
-        @operationDate transferDateTime
-
-    SELECT @calc=0, @minAmount=0, @maxAmount=0
+    SELECT @calcCommission=0, @minCommission=0, @maxCommission=NULL
     SELECT TOP 1
-        @id = f.commissionId,
-        @minAmount = f.minValue,
-        @maxAmount = f.maxValue,
-        @calc = ISNULL(f.[percent], 0) * CASE
+        @idCommission = f.commissionId,
+        @minCommission = f.minValue,
+        @maxCommission = f.maxValue,
+        @calcCommission = ISNULL(f.[percent], 0) * CASE
             WHEN @amount > ISNULL(f.percentBase, 0) THEN @amount - ISNULL(f.percentBase, 0)
             ELSE 0
         END / 100
@@ -149,13 +219,20 @@ BEGIN
         f.startAmount DESC,
         f.commissionId
 
-    SELECT 'commission' AS resultSetName, 1 AS single
+    SELECT 'amount' AS resultSetName, 1 AS single
     SELECT
         CASE
-            WHEN @calc>@maxAmount THEN @maxAmount
-            WHEN @calc<@minAmount THEN @minAmount
-            ELSE @calc
-        END amount,
-        @id id
-
+            WHEN @calcFee>@maxFee THEN @maxFee
+            WHEN @calcFee<@minFee THEN @minFee
+            ELSE @calcFee
+        END fee,
+        @idFee idFee,
+        CASE
+            WHEN @calcCommission>@maxCommission THEN @maxCommission
+            WHEN @calcCommission<@minCommission THEN @minCommission
+            ELSE @calcCommission
+        END Commission,
+        @idCommission idCommission,
+        @operationDate transferDateTime,
+        @operationId transferTypeId
 END

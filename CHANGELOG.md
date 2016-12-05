@@ -1,3 +1,13 @@
+<a name="5.6.9"></a>
+## [5.6.9](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.8...v5.6.9) (2016-12-05)
+
+
+### Bug Fixes
+
+* calculate the accumulated amounts and counts ([f426c27](https://github.com/softwaregroup-bg/ut-rule/commit/f426c27))
+
+
+
 <a name="5.6.8"></a>
 ## [5.6.8](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.7...v5.6.8) (2016-12-05)
 

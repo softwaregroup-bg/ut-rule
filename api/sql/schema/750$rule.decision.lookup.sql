@@ -35,7 +35,14 @@ BEGIN
         @destinationSupervisorId BIGINT,
         @destinationId BIGINT,
         @destinationProductId BIGINT,
-        @destinationAccountId BIGINT
+        @destinationAccountId BIGINT,
+
+        @amountDaily MONEY,
+        @countDaily BIGINT,
+        @amountWeekly MONEY,
+        @countWeekly BIGINT,
+        @amountMonthly MONEY,
+        @countMonthly BIGINT
 
     SELECT
         @channelCountryId = countryId,
@@ -86,6 +93,30 @@ BEGIN
     WHERE
         accountNumber = @destinationAccount
 
+    SELECT @amountDaily = 0,
+        @countDaily = 0,
+        @amountWeekly = 0,
+        @countWeekly = 0,
+        @amountMonthly = 0,
+        @countMonthly = 0,
+        @operationDate = ISNULL(@operationDate, GETDATE())
+
+    SELECT
+        @amountDaily = SUM(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END),
+        @countDaily = COUNT(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END),
+        @amountWeekly = SUM(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END),--week starts on Mon
+        @countWeekly = COUNT(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END),--week starts on Mon
+        @amountMonthly = SUM(transferAmount),
+        @countMonthly = COUNT(transferAmount)
+    FROM
+        [integration].[vTransfer]
+    WHERE
+        sourceAccount = @sourceAccount AND
+        transferTypeId = @operationId AND
+        transferCurrency = @currency AND
+        transferDateTime < @operationDate AND -- look ony at earlier transfers
+        transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
+
     EXEC [rule].[decision.fetch]
         @channelCountryId = @channelCountryId,
         @channelRegionId = @channelRegionId,
@@ -113,6 +144,12 @@ BEGIN
         @destinationProductId = @destinationProductId,
         @destinationAccountId = @destinationAccountId,
         @amount = @amount,
+        @amountDaily = @amountDaily,
+        @countDaily = @countDaily,
+        @amountWeekly = @amountWeekly,
+        @countWeekly = @countWeekly,
+        @amountMonthly = @amountMonthly,
+        @countMonthly = @countMonthly,
         @currency = @currency,
         @isSourceAmount = @isSourceAmount
 END

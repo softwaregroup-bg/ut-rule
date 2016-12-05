@@ -1,3 +1,13 @@
+<a name="5.6.8"></a>
+## [5.6.8](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.7...v5.6.8) (2016-12-05)
+
+
+### Bug Fixes
+
+* check limits ([93cbbba](https://github.com/softwaregroup-bg/ut-rule/commit/93cbbba))
+
+
+
 <a name="5.6.7"></a>
 ## [5.6.7](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.6...v5.6.7) (2016-12-03)
 

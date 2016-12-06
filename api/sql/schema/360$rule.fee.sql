@@ -6,7 +6,7 @@ CREATE TABLE [rule].[fee] (
     isSourceAmount BIT NOT NULL,
     minValue MONEY,
     maxValue MONEY,
-    [percent] FLOAT,
+    [percent] DECIMAL,
     percentBase MONEY,
     CONSTRAINT [pkRuleFee] PRIMARY KEY CLUSTERED (feeId ASC),
     CONSTRAINT ukRuleFeeConditionStartAmount UNIQUE (conditionId, startAmount, startAmountCurrency),

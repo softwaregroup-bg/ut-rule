@@ -31,6 +31,7 @@ const Destination = React.createClass({
                           data={country}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.destinationCountryId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -43,6 +44,7 @@ const Destination = React.createClass({
                           data={region}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.destinationRegionId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -55,6 +57,7 @@ const Destination = React.createClass({
                           data={city}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.destinationCityId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -67,6 +70,7 @@ const Destination = React.createClass({
                           data={organization}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.destinationOrganizationId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -79,6 +83,7 @@ const Destination = React.createClass({
                           data={supervisor}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.destinationSupervisorId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -99,6 +104,7 @@ const Destination = React.createClass({
                           data={product}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.destinationProductId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -111,6 +117,7 @@ const Destination = React.createClass({
                           data={account}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.destinationAccountId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }

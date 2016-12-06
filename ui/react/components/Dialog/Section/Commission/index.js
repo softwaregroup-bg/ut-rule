@@ -63,6 +63,7 @@ const SectionCommission = React.createClass({
                       data={nomenclatures.currency || []}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (commission.startAmountCurrency || '')}
+                      mergeStyles={{dropDownRoot: style.dropDownRoot}}
                     />
                 </td>
                 <td>

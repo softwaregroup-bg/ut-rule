@@ -46,7 +46,7 @@ const Operation = React.createClass({
                 </div>
                 <div className={style.inputWrapper}>
                     <div className={style.outerWrap}>
-                        <div className={style.lableWrap}>Start Date</div>
+                        <div className={style.lableWrap}>End Date</div>
                         <div className={style.inputWrap}>
                             <DatePicker
                               keyProp='operationEndDate'

@@ -20,7 +20,8 @@ export default class DatePicker extends Component {
     render() {
         let dpStyles = {
             border: '1px solid #D6D6D6',
-            height: '30px'
+            height: '30px',
+            backgroundColor: 'white'
         };
         let textFieldStyle = {
             cursor: 'pointer',

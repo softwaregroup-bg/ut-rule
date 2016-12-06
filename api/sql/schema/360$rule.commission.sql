@@ -6,7 +6,7 @@ CREATE TABLE [rule].[commission] (
     isSourceAmount BIT NOT NULL,
     minValue MONEY,
     maxValue MONEY,
-    [percent] FLOAT,
+    [percent] DECIMAL,
     percentBase MONEY,
     CONSTRAINT pkRuleCommission PRIMARY KEY CLUSTERED (commissionId ASC),
     CONSTRAINT ukRuleCommissionConditionStartAmount UNIQUE (conditionId, startAmount, startAmountCurrency),

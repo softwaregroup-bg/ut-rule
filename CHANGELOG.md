@@ -1,3 +1,13 @@
+<a name="5.6.10"></a>
+## [5.6.10](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.9...v5.6.10) (2016-12-06)
+
+
+### Bug Fixes
+
+* change float types to decimal as mssql modules doesn't recognize the float type when calling linked stored procedures ([82a5fed](https://github.com/softwaregroup-bg/ut-rule/commit/82a5fed))
+
+
+
 <a name="5.6.9"></a>
 ## [5.6.9](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.8...v5.6.9) (2016-12-05)
 

@@ -6,10 +6,8 @@ import Dialog from '../../components/Dialog';
 import Prompt from '../../components/Prompt';
 import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
-import style from './style.css';
 import Header from 'ut-front-react/components/PageLayout/Header';
 import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
-import classnames from 'classnames';
 import * as actionCreators from './actionCreators';
 
 const Main = React.createClass({
@@ -153,7 +151,7 @@ const Main = React.createClass({
                         </button>
                     </GridToolbox>
                 </div>
-                <div style={{padding: '20px'}} >
+                <div style={{padding: '20px', backgroundColor: '#A5A5A5'}} >
                     {this.state.dialog.open &&
                         <Dialog
                           ref='dialog'

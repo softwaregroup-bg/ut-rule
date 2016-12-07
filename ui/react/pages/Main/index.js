@@ -143,15 +143,15 @@ const Main = React.createClass({
             <div className={mainStyle.tableWrap} style={{margin: '0', position: 'static'}}>
                 <div className={mainStyle.actionBarWrap} style={{border: '1px solid #e7e7e7'}}>
                     <GridToolbox opened title='' >
-                        <button onClick={this.editBtnOnClick} className='button btn btn-primary' style={{visibility: this.state.canEdit ? 'visible' : 'hidden'}}>
+                        <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
                             Edit
                         </button>
-                        <button onClick={this.showPrompt} className='button btn btn-primary' style={{marginLeft: '15px', visibility: this.state.canDelete ? 'visible' : 'hidden'}}>
+                        <button onClick={this.showPrompt} className='button btn btn-primary' disabled={!this.state.canEdit} style={{marginLeft: '15px'}}>
                             Delete
                         </button>
                     </GridToolbox>
                 </div>
-                <div style={{padding: '20px', backgroundColor: '#A5A5A5'}} >
+                <div style={{padding: '20px', backgroundColor: '#ededed'}} >
                     {this.state.dialog.open &&
                         <Dialog
                           ref='dialog'

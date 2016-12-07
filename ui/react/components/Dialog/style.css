@@ -1,13 +1,14 @@
 .inputWrapper {
-    padding: 5px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #E2E1E1;
 }
 
 .inputWrapper:first-child {
-    padding: 20px 0 5px 0;
+    padding: 20px 0 10px 0;
 }
 
 .inputWrapper:last-child {
-    padding: 10px 0 20px 0;
+    padding: 10px 0 10px 0;
 }
 
 .wrapper {

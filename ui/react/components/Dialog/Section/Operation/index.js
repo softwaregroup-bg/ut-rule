@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
-import DatePicker from '../../../DatePicker';
+import DatePicker from 'ut-front-react/components/DatePicker/Simple';
 
 const Operation = React.createClass({
     propTypes: {
@@ -36,6 +36,7 @@ const Operation = React.createClass({
                         <div className={style.lableWrap}>Start Date</div>
                         <div className={style.inputWrap}>
                             <DatePicker
+                              wrapperStyles={{backgroundColor: 'white'}}
                               keyProp='operationStartDate'
                               mode='landscape'
                               onChange={onChangeDate('operationStartDate')}
@@ -49,9 +50,11 @@ const Operation = React.createClass({
                         <div className={style.lableWrap}>End Date</div>
                         <div className={style.inputWrap}>
                             <DatePicker
+                              wrapperStyles={{backgroundColor: 'white'}}
                               keyProp='operationEndDate'
                               mode='landscape'
                               onChange={onChangeDate('operationEndDate')}
+                              minDate={this.props.data.operationStartDate ? new Date(this.props.data.operationStartDate) : {}}
                               defaultValue={this.props.data.operationEndDate ? new Date(this.props.data.operationEndDate) : null}
                             />
                         </div>

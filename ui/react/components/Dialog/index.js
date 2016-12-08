@@ -13,6 +13,7 @@ import SectionLimit from './Section/Limit';
 import SectionSummary from './Section/Summary';
 import merge from 'lodash.merge';
 import validations from './validations.js';
+import classnames from 'classnames';
 
 const emptyCondition = {
     priority: null,
@@ -208,15 +209,19 @@ export default React.createClass({
             form: this.state.form
         });
     },
+    contentStyle: {
+        minWidth: '730px',
+        maxWidth: '50%'
+    },
     render() {
         return (
             <Dialog
               title={this.props.data ? 'Edit Rule' : 'Add Rule'}
               open={this.props.open}
               autoScrollBodyContent
-              contentStyle={{minWidth: '730px', maxWidth: '50%'}}
+              contentStyle={this.contentStyle}
               actions={[
-                  <button onClick={this.save} style={{ marginRight: '10px' }} className='button btn btn-primary' >Save</button>,
+                  <button onClick={this.save} className={classnames(style.save, 'button btn btn-primary')} >Save</button>,
                   <button onClick={this.props.onClose} className='button btn btn-primary'>Cancel</button>
               ]}
             >

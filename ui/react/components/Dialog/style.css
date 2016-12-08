@@ -166,3 +166,12 @@ div.dropDownRoot {
     padding-right: 1px !important;
     background-color: white;
 }
+
+.contentStyle {
+    min-width: '730px';
+    max-width: '50%';
+}
+
+.save {
+    margin-right: 10px;
+}

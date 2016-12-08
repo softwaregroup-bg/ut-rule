@@ -1,0 +1,22 @@
+.grid {
+    padding: 20px;
+    background-color: #ededed;
+}
+
+.actionBarWrap {
+    border: 1px solid #e7e7e7;
+}
+
+.contentTableWrap {
+    margin: 0;
+    position: static;
+}
+
+.rulesNomenclatures {
+    float: left;
+    padding: 50px;
+}
+
+.deleteButton {
+    margin-left: 15px;
+}

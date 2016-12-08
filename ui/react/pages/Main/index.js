@@ -8,9 +8,9 @@ import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
 import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
-import * as actionCreators from './actionCreators';
-import style from './style.css';
 import classnames from 'classnames';
+import style from './style.css';
+import * as actionCreators from './actionCreators';
 
 const Main = React.createClass({
     propTypes: {
@@ -138,22 +138,22 @@ const Main = React.createClass({
         if (!this.props.ready) {
             return null;
         }
-        return <div className={classnames(mainStyle.contentTableWrap, style.contentTableWrap)}>
+        return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
             <Header text='Rule Management' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick}]} />
 
-            <div className={mainStyle.tableWrap}>
+            <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
                 <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                     <GridToolbox opened title='' >
                         <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
                             Edit
                         </button>
-                        <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit} >
+                        <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
                             Delete
                         </button>
                     </GridToolbox>
                 </div>
-                <div className={style.grid} >
+                <div classnames={style.grid} >
                     {this.state.dialog.open &&
                         <Dialog
                           ref='dialog'
@@ -194,10 +194,10 @@ const Main = React.createClass({
             </div>
             {false &&
                 <div>
-                    <div classNames={style.rulesNomenclatures}>
+                    <div className={style.rulesNomenclatures}>
                         RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>
                     </div>
-                    <div classNames={style.rulesNomenclatures}>
+                    <div className={style.rulesNomenclatures}>
                         NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre>
                     </div>
                 </div>

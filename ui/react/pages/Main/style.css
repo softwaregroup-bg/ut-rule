@@ -1,6 +1,6 @@
 .grid {
     padding: 20px;
-    background-color: #ededed;
+    background-color: transparent;
 }
 
 .actionBarWrap {
@@ -9,6 +9,7 @@
 
 .tableWrap {
     margin: 0 !important;
+    padding: 0 !important;
     position: static !important;
 }
 
@@ -19,4 +20,8 @@
 
 .deleteButton {
     margin-left: 15px;
+}
+
+.header {
+    background-color: white;
 }

@@ -1,4 +1,4 @@
-import Dialog from 'material-ui/Dialog';
+import Dialog from '../ActionDialog';
 import React, { PropTypes } from 'react';
 import Accordion from 'ut-front-react/components/Accordion';
 import Input from 'ut-front-react/components/Input';
@@ -13,6 +13,7 @@ import SectionLimit from './Section/Limit';
 import SectionSummary from './Section/Summary';
 import merge from 'lodash.merge';
 import validations from './validations.js';
+import classnames from 'classnames';
 
 const emptyCondition = {
     priority: null,
@@ -210,16 +211,20 @@ export default React.createClass({
             form: this.state.form
         });
     },
+    contentStyle: {
+        minWidth: '730px',
+        maxWidth: '50%'
+    },
     render() {
         return (
             <Dialog
               title={this.props.data ? 'Edit Rule' : 'Add Rule'}
               open={this.props.open}
               autoScrollBodyContent
-              contentStyle={{minWidth: '730px', maxWidth: '50%'}}
+              contentStyle={this.contentStyle}
               actions={[
-                  <button onClick={this.save} style={{ marginRight: '10px' }}>Save</button>,
-                  <button onClick={this.props.onClose}>Cancel</button>
+                  <button onClick={this.save} className={classnames(style.save, 'button btn btn-primary')} >Save</button>,
+                  <button onClick={this.props.onClose} className='button btn btn-primary'>Cancel</button>
               ]}
             >
                 <div>
@@ -243,27 +248,27 @@ export default React.createClass({
                         />
                     </div>
                     <div className={style.wrapper}>
-                        <Accordion title='Channel' fullWidth>
+                        <Accordion title='Channel' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
                             <Channel
                               data={this.state.data.condition[0]}
                             />
                         </Accordion>
-                        <Accordion title='Operation' fullWidth>
+                        <Accordion title='Operation' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                             <Operation
                               data={this.state.data.condition[0]}
                             />
                         </Accordion>
-                        <Accordion title='Source' fullWidth>
+                        <Accordion title='Source' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                             <Source
                               data={this.state.data.condition[0]}
                             />
                         </Accordion>
-                        <Accordion title='Destination' fullWidth>
+                        <Accordion title='Destination' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                             <Destination
                               data={this.state.data.condition[0]}
                             />
                         </Accordion>
-                        <Accordion title='Fee' fullWidth>
+                        <Accordion title='Fee' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                             <div className={style.content}>
                                 <SectionFee
                                   data={this.state.data.fee}
@@ -272,7 +277,7 @@ export default React.createClass({
                                 />
                             </div>
                         </Accordion>
-                        <Accordion title='Commission' fullWidth>
+                        <Accordion title='Commission' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                             <div className={style.content}>
                                 <SectionCommission
                                   data={this.state.data.commission}
@@ -281,7 +286,7 @@ export default React.createClass({
                                 />
                             </div>
                         </Accordion>
-                        <Accordion title='Limit' fullWidth>
+                        <Accordion title='Limit' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                             <div className={style.content}>
                                 <SectionLimit
                                   data={this.state.data.limit}
@@ -290,7 +295,7 @@ export default React.createClass({
                                 />
                             </div>
                         </Accordion>
-                        <Accordion title='Summary' fullWidth>
+                        <Accordion title='Summary' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                             <div className={style.content}>
                                 <SectionSummary
                                   data={this.state.data}

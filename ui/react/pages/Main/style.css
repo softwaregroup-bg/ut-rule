@@ -1,0 +1,27 @@
+.grid {
+    padding: 20px;
+    background-color: transparent;
+}
+
+.actionBarWrap {
+    border: 1px solid #e7e7e7;
+}
+
+.tableWrap {
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+}
+
+.rulesNomenclatures {
+    float: left;
+    padding: 50px;
+}
+
+.deleteButton {
+    margin-left: 15px;
+}
+
+.header {
+    background-color: white;
+}

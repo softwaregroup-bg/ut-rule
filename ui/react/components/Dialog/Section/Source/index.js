@@ -31,6 +31,7 @@ const Source = React.createClass({
                           data={country}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceCountryId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -43,6 +44,7 @@ const Source = React.createClass({
                           data={region}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceRegionId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -55,6 +57,7 @@ const Source = React.createClass({
                           data={city}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceCityId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -67,6 +70,7 @@ const Source = React.createClass({
                           data={organization}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceOrganizationId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -79,6 +83,7 @@ const Source = React.createClass({
                           data={supervisor}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceSupervisorId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -99,6 +104,7 @@ const Source = React.createClass({
                           data={product}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceProductId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -111,6 +117,7 @@ const Source = React.createClass({
                           data={account}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceAccountId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }

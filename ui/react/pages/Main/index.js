@@ -6,7 +6,10 @@ import Dialog from '../../components/Dialog';
 import Prompt from '../../components/Prompt';
 import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
-// import style from './style.css';
+import Header from 'ut-front-react/components/PageLayout/Header';
+import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
+import classnames from 'classnames';
+import style from './style.css';
 import * as actionCreators from './actionCreators';
 
 const Main = React.createClass({
@@ -137,63 +140,65 @@ const Main = React.createClass({
         }
         return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
-            <div className={mainStyle.actionBarWrap}>
-                <div style={{padding: '15px 10px 0 0', float: 'right'}}>
-                    <button onClick={this.createBtnOnClick}>Create Rule</button>
-                </div>
+            <div className={style.header}>
+                <Header text='Rule Management' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick}]} />
             </div>
-            <div className={mainStyle.tableWrap} style={{margin: 0, position: 'static'}}>
-                <div style={{float: 'right', padding: '20px 0'}}>
-                    <button onClick={this.editBtnOnClick} style={{visibility: this.state.canEdit ? 'visible' : 'hidden'}}>
-                      Edit
-                    </button>
-                    <button onClick={this.showPrompt} style={{marginLeft: '20px', visibility: this.state.canDelete ? 'visible' : 'hidden'}}>
-                      Delete
-                    </button>
+            <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
+                <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
+                    <GridToolbox opened title='' >
+                        <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
+                            Edit
+                        </button>
+                        <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
+                            Delete
+                        </button>
+                    </GridToolbox>
                 </div>
-                {this.state.dialog.open &&
-                    <Dialog
-                      ref='dialog'
-                      open={this.state.dialog.open}
-                      data={this.props.rules[this.state.dialog.conditionId]}
+                <div className={style.grid} >
+                    {this.state.dialog.open &&
+                        <Dialog
+                          ref='dialog'
+                          open={this.state.dialog.open}
+                          data={this.props.rules[this.state.dialog.conditionId]}
+                          nomenclatures={this.props.nomenclatures}
+                          onSave={this.dialogOnSave}
+                          onClose={this.dialogOnClose}
+                        />
+                    }
+                    {this.state.prompt &&
+                        <Prompt
+                          ref='prompt'
+                          open={this.state.prompt}
+                          message={
+                            'You are about to delete ' +
+                            (
+                                Object.keys(this.state.selectedConditions).length === 1
+                                    ? '1 rule'
+                                    : Object.keys(this.state.selectedConditions).length + ' rules'
+                            ) +
+                            '. Would you like to proceed?'
+                        }
+                          onOk={this.removeRules}
+                          onCancel={this.hidePrompt}
+                        />
+                    }
+                    <Grid
+                      ref='grid'
+                      refresh={this.refresh}
+                      data={this.props.rules}
+                      selectedConditions={this.state.selectedConditions}
                       nomenclatures={this.props.nomenclatures}
-                      onSave={this.dialogOnSave}
-                      onClose={this.dialogOnClose}
+                      handleCheckboxSelect={this.handleCheckboxSelect}
+                      handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
                     />
-                }
-                {this.state.prompt &&
-                    <Prompt
-                      ref='prompt'
-                      open={this.state.prompt}
-                      message={
-                        'You are about to delete ' +
-                        (
-                            Object.keys(this.state.selectedConditions).length === 1
-                                ? '1 rule'
-                                : Object.keys(this.state.selectedConditions).length + ' rules'
-                        ) +
-                        '. Would you like to proceed?'
-                      }
-                      onOk={this.removeRules}
-                      onCancel={this.hidePrompt}
-                    />
-                }
-                <Grid
-                  ref='grid'
-                  refresh={this.refresh}
-                  data={this.props.rules}
-                  selectedConditions={this.state.selectedConditions}
-                  nomenclatures={this.props.nomenclatures}
-                  handleCheckboxSelect={this.handleCheckboxSelect}
-                  handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
-                />
+                    </div>
             </div>
             {false &&
                 <div>
-                    <div style={{float: 'left', padding: '50px'}}>
+                    <div className={style.rulesNomenclatures}>
                         RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>
                     </div>
-                    <div style={{float: 'left', padding: '50px'}}>
+                    <div className={style.rulesNomenclatures}>
                         NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre>
                     </div>
                 </div>

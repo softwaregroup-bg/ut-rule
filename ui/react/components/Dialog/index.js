@@ -194,10 +194,11 @@ export default React.createClass({
             this.props.onSave(this.state.data);
         }
 
-        this.state.form.errorDialogOpen = true;
-        this.state.form.errors = formValidation.errors;
         this.setState({
-            form: this.state.form
+            form: Object.assign({}, this.state.form, {
+                errorDialogOpen: true,
+                errors: formValidation.errors
+            })
         });
     },
     onChangeInput(field) {
@@ -232,6 +233,7 @@ export default React.createClass({
                       autoScrollBodyContent
                       contentStyle={style}
                       onRequestClose={this.closeFormErrorDialog}
+                      actions={[]}
                     >
                         <div className={style.content}>
                             {this.state.form.errors && this.state.form.errors.map((error, i) => <div key={i}>{error}</div>)}

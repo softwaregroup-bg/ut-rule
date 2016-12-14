@@ -54,7 +54,8 @@ const emptyFee = {
     minValue: null,
     maxValue: null,
     percent: null,
-    percentBase: null
+    percentBase: null,
+    split: null
 };
 const emptyCommission = {
     startAmount: null,
@@ -63,7 +64,8 @@ const emptyCommission = {
     minValue: null,
     maxValue: null,
     percent: null,
-    percentBase: null
+    percentBase: null,
+    split: null
 };
 const emptyLimit = {
     currency: null,

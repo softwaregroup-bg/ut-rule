@@ -85,7 +85,8 @@ BEGIN TRY
         minValue,
         maxValue,
         [percent],
-        percentBase
+        percentBase,
+        split
     )
     SELECT @conditionId,
         [startAmount],
@@ -94,7 +95,8 @@ BEGIN TRY
         [minValue],
         [maxValue],
         [percent],
-        [percentBase]
+        [percentBase],
+        [split]
     FROM @commission;
 
     INSERT INTO [rule].limit (
@@ -129,7 +131,8 @@ BEGIN TRY
         minValue,
         maxValue,
         [percent],
-        percentBase
+        percentBase,
+        split
     )
     SELECT @conditionId,
         [startAmount],
@@ -138,7 +141,8 @@ BEGIN TRY
         [minValue],
         [maxValue],
         [percent],
-        [percentBase]
+        [percentBase],
+        [split]
     FROM @fee
 
     COMMIT TRANSACTION

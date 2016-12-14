@@ -8,6 +8,7 @@ CREATE TABLE [rule].[fee] (
     maxValue MONEY,
     [percent] DECIMAL,
     percentBase MONEY,
+    split NVARCHAR(max),
     CONSTRAINT [pkRuleFee] PRIMARY KEY CLUSTERED (feeId ASC),
     CONSTRAINT ukRuleFeeConditionStartAmount UNIQUE (conditionId, startAmount, startAmountCurrency),
     CONSTRAINT [fkRuleFee_condition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId)

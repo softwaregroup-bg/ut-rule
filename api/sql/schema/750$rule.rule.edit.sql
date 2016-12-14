@@ -92,7 +92,8 @@ BEGIN TRY
         minValue = c1.minValue,
         maxValue = c1.maxValue,
         [percent] = c1.[percent],
-        percentBase = c1.percentBase
+        percentBase = c1.percentBase,
+        split = c1.split
     FROM
         [rule].commission c
     JOIN
@@ -118,13 +119,14 @@ BEGIN TRY
     UPDATE
         f
     SET
-        startAmount = f.startAmount,
-        startAmountCurrency = f.startAmountCurrency,
-        isSourceAmount = f.isSourceAmount,
-        minValue = f.minValue,
-        maxValue = f.maxValue,
-        [percent] = f.[percent],
-        percentBase = f.percentBase
+        startAmount = f1.startAmount,
+        startAmountCurrency = f1.startAmountCurrency,
+        isSourceAmount = f1.isSourceAmount,
+        minValue = f1.minValue,
+        maxValue = f1.maxValue,
+        [percent] = f1.[percent],
+        percentBase = f1.percentBase,
+        split = f1.split
     FROM
         [rule].fee f
     JOIN
@@ -139,7 +141,8 @@ BEGIN TRY
             minValue,
             maxValue,
             [percent],
-            percentBase
+            percentBase,
+            split
         )
     SELECT
         c1.conditionId,
@@ -149,7 +152,8 @@ BEGIN TRY
         c1.minValue,
         c1.maxValue,
         c1.[percent],
-        c1.percentBase
+        c1.percentBase,
+        c1.split
     FROM
         @commission c1
     LEFT JOIN
@@ -197,7 +201,8 @@ BEGIN TRY
             minValue,
             maxValue,
             [percent],
-            percentBase
+            percentBase,
+            split
         )
     SELECT
         f1.conditionId,
@@ -207,7 +212,8 @@ BEGIN TRY
         f1.minValue,
         f1.maxValue,
         f1.[percent],
-        f1.percentBase
+        f1.percentBase,
+        f1.split
     FROM
         @fee f1
     LEFT JOIN

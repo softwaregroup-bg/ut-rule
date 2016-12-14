@@ -32,6 +32,7 @@ const Channel = React.createClass({
                           placeholder='Channel type'
                           onSelect={onSelectDropdown}
                           label='Type'
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -45,6 +46,7 @@ const Channel = React.createClass({
                           placeholder='Select Country'
                           onSelect={onSelectDropdown}
                           label='Country'
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -58,6 +60,7 @@ const Channel = React.createClass({
                           placeholder='Select Region'
                           onSelect={onSelectDropdown}
                           label='Region'
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -71,6 +74,7 @@ const Channel = React.createClass({
                           placeholder='Select City'
                           onSelect={onSelectDropdown}
                           label='City'
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -84,6 +88,7 @@ const Channel = React.createClass({
                           placeholder='Organization'
                           onSelect={onSelectDropdown}
                           label='Organization'
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -97,6 +102,7 @@ const Channel = React.createClass({
                           placeholder='Supervisor'
                           onSelect={onSelectDropdown}
                           label='Supervisor'
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
@@ -118,6 +124,7 @@ const Channel = React.createClass({
                           placeholder='Channel role'
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.channelRoleId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }

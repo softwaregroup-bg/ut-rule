@@ -1,3 +1,13 @@
+<a name="5.7.1"></a>
+## [5.7.1](https://github.com/softwaregroup-bg/ut-rule/compare/v5.7.0...v5.7.1) (2016-12-15)
+
+
+### Bug Fixes
+
+* UI-468 cannot close of error dialog ([9fe0837](https://github.com/softwaregroup-bg/ut-rule/commit/9fe0837))
+
+
+
 <a name="5.7.0"></a>
 # [5.7.0](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.10...v5.7.0) (2016-12-15)
 

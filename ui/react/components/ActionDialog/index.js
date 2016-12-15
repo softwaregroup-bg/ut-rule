@@ -11,14 +11,12 @@ class ActionDialog extends Component {
 
         return (
             <Dialog
-              actions={this.props.actions}
-              autoScrollBodyContent={this.props.autoScrollBodyContent}
-              actionsContainerClassName={dialogStyles.actionButtons}
-              modal
+              {...this.props}
               bodyStyle={{padding: '0px', minHeight: '80px'}}
               title={getDialogTitle(this.props.title)}
               titleStyle={titleStyle}
-              open={this.props.open}>
+              open={this.props.open}
+              >
               {this.props.header && <div className={dialogStyles.headerWrap}>
                 {this.props.header}
               </div>}

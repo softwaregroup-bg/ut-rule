@@ -1,3 +1,27 @@
+<a name="5.7.0"></a>
+# [5.7.0](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.10...v5.7.0) (2016-12-15)
+
+
+### Bug Fixes
+
+* deps versions bump ([1463d23](https://github.com/softwaregroup-bg/ut-rule/commit/1463d23))
+* UI-467 make style changes ([96f6aae](https://github.com/softwaregroup-bg/ut-rule/commit/96f6aae))
+* UI-468 add background color to the datepicker component ([b18b58f](https://github.com/softwaregroup-bg/ut-rule/commit/b18b58f))
+* UI-468 change main page of rule to accomodate the new changes ([b575bcc](https://github.com/softwaregroup-bg/ut-rule/commit/b575bcc))
+* UI-468 inline styles ([66dbdd3](https://github.com/softwaregroup-bg/ut-rule/commit/66dbdd3))
+* UI-468 inline styles ([ec24779](https://github.com/softwaregroup-bg/ut-rule/commit/ec24779))
+* UI-468 remove datepicker from rules ([68ea763](https://github.com/softwaregroup-bg/ut-rule/commit/68ea763))
+* UI-468 styles and remove visibility porperty ([bc0cb02](https://github.com/softwaregroup-bg/ut-rule/commit/bc0cb02))
+
+
+### Features
+
+* UI-468 add actionDialog wrapper for consistency ([55c4e80](https://github.com/softwaregroup-bg/ut-rule/commit/55c4e80))
+* UI-468 add new styles for accordion body and title ([1972868](https://github.com/softwaregroup-bg/ut-rule/commit/1972868))
+* UI-468 make dropdowns not inherit the grey parent color ([2d324a1](https://github.com/softwaregroup-bg/ut-rule/commit/2d324a1))
+
+
+
 <a name="5.6.10"></a>
 ## [5.6.10](https://github.com/softwaregroup-bg/ut-rule/compare/v5.6.9...v5.6.10) (2016-12-06)
 

@@ -5,23 +5,22 @@
   "dependencies": {
     "classnames": "2.2.5",
     "joi": "10.0.6",
-    "joi-browser": "^10.0.5-1",
-    "material-ui": "0.15.2",
-    "moment": "^2.15.2",
-    "react": "15.3.2",
+    "joi-browser": "^10.0.6",
+    "material-ui": "0.16.5",
+    "react": "15.4.1",
     "react-redux": "4.4.6",
-    "react-router": "2.5.2",
+    "react-router": "3.0.0",
     "redux": "3.6.0",
     "lodash.merge": "4.6.0",
     "ut-error": "^5.3.16",
-    "ut-front": "^6.1.2",
-    "ut-front-react": "^5.49.50"
+    "ut-front": "^6.4.2",
+    "ut-front-react": "^6.0.2"
   },
   "devDependencies": {
-    "ut-tools": "^5.10.8"
+    "ut-tools": "^5.11.1"
   },
   "peerDependencies": {
-    "ut-bus": "~5.7.0"
+    "ut-bus": "~5.8.0"
   },
   "description": "UT Rule",
   "scripts": {

@@ -74,7 +74,7 @@ BEGIN
         @sourceSupervisorId = supervisorId,
         @sourceId = holderId,
         @sourceCardProductId = cardProductId,
-        @sourceProductId = accountProductId,
+        @sourceAccountProductId = accountProductId,
         @sourceAccountId = accountId
     FROM
         [integration].[vAccount]

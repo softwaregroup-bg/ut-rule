@@ -37,7 +37,8 @@ INSERT INTO
   "sourceSupervisorId",
   "sourceTag",
   "sourceId",
-  "sourceProductId",
+  "sourceCardProductId",
+  "sourceAccountProductId",
   "sourceAccountId",
   "destinationCountryId",
   "destinationRegionId",
@@ -46,7 +47,7 @@ INSERT INTO
   "destinationSupervisorId",
   "destinationTag",
   "destinationId",
-  "destinationProductId",
+  "destinationAccountProductId",
   "destinationAccountId"
 )
 SELECT
@@ -71,7 +72,8 @@ SELECT
   CAST("conditionT"->>'sourceSupervisorId'as integer),
   "conditionT"->>'sourceTag',
   CAST("conditionT"->>'sourceId'as integer),
-  CAST("conditionT"->>'sourceProductId'as integer),
+  CAST("conditionT"->>'sourceCardProductId'as integer),
+  CAST("conditionT"->>'sourceAccountProductId'as integer),
   CAST("conditionT"->>'sourceAccountId'as integer),
   CAST("conditionT"->>'destinationCountryId'as integer),
   CAST("conditionT"->>'destinationRegionId'as integer),
@@ -80,7 +82,7 @@ SELECT
   CAST("conditionT"->>'destinationSupervisorId'as integer),
   "conditionT"->>'destinationTag',
   CAST("conditionT"->>'destinationId'as integer),
-  CAST("conditionT"->>'destinationProductId'as integer),
+  CAST("conditionT"->>'destinationAccountProductId'as integer),
   CAST("conditionT"->>'destinationAccountId'as integer)
 FROM   json_array_elements( "@condition" ) as "conditionT" ;
 

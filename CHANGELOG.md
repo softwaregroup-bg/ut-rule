@@ -1,3 +1,13 @@
+<a name="5.9.0"></a>
+# [5.9.0](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.0...v5.9.0) (2016-12-23)
+
+
+### Features
+
+* remove productId and add cardProductId and accountProductId instead ([bd06d18](https://github.com/softwaregroup-bg/ut-rule/commit/bd06d18))
+
+
+
 <a name="5.8.0"></a>
 # [5.8.0](https://github.com/softwaregroup-bg/ut-rule/compare/v5.7.1...v5.8.0) (2016-12-22)
 

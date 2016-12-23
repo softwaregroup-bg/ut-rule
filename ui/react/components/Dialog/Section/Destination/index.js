@@ -18,7 +18,7 @@ const Destination = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        let { country, region, city, product, account, organization, supervisor } = this.context.nomenclatures;
+        let { country, region, city, accountProduct, account, organization, supervisor } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
         return (
            <div className={style.content}>
@@ -95,15 +95,15 @@ const Destination = React.createClass({
                       value={'' + (this.props.data.destinationTag || '')}
                     />
                 </div>
-                {product &&
+                {accountProduct &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
-                          keyProp='destinationProductId'
-                          label='Product'
-                          data={product}
+                          keyProp='destinationAccountProductId'
+                          label='Account Product'
+                          data={accountProduct}
                           onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.destinationProductId || '')}
+                          defaultSelected={'' + (this.props.data.destinationAccountProductId || '')}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>

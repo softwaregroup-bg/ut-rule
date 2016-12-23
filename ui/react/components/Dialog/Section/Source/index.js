@@ -18,7 +18,7 @@ const Source = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        let { country, region, city, product, account, organization, supervisor } = this.context.nomenclatures;
+        let { country, region, city, cardProduct, accountProduct, account, organization, supervisor } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
         return (
            <div className={style.content}>
@@ -95,15 +95,28 @@ const Source = React.createClass({
                       value={'' + (this.props.data.sourceTag || '')}
                     />
                 </div>
-                {product &&
+                {cardProduct &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
-                          keyProp='sourceProductId'
-                          label='Product'
-                          data={product}
+                          keyProp='sourceCardProductId'
+                          label='Card Product'
+                          data={cardProduct}
                           onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.sourceProductId || '')}
+                          defaultSelected={'' + (this.props.data.sourceCardProductId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                        />
+                    </div>
+                }
+                {accountProduct &&
+                    <div className={style.inputWrapper}>
+                        <Dropdown
+                          canSelectPlaceholder
+                          keyProp='sourceAccountProductId'
+                          label='Account Product'
+                          data={accountProduct}
+                          onSelect={onSelectDropdown}
+                          defaultSelected={'' + (this.props.data.sourceAccountProductId || '')}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>

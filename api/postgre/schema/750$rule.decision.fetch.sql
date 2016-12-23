@@ -17,7 +17,8 @@ CREATE OR REPLACE FUNCTION rule."decision.fetch"(
   IN "@sourceSupervisorId" bigint,
   IN "@sourceTags" varchar(255),
   IN "@sourceId" bigint,
-  IN "@sourceProductId" bigint,
+  IN "@sourceCardProductId" bigint,
+  IN "@sourceAccountProductId" bigint,
   IN "@sourceAccountId" bigint,
   IN "@destinationCountryId" bigint,
   IN "@destinationRegionId" bigint,
@@ -26,7 +27,7 @@ CREATE OR REPLACE FUNCTION rule."decision.fetch"(
   IN "@destinationSupervisorId" bigint,
   IN "@destinationTags" varchar(255),
   IN "@destinationId" bigint,
-  IN "@destinationProductId" bigint,
+  IN "@destinationAccountProductId" bigint,
   IN "@destinationAccountId" bigint,
   IN "@amount" numeric(20,2),
   IN "@currency" char(3),
@@ -67,7 +68,8 @@ $BODY$
             ("@sourceSupervisorId" IS NULL OR c."sourceSupervisorId" IS NULL OR "@sourceSupervisorId" = c."sourceSupervisorId") AND
             ("@sourceTags" IS NULL OR c."sourceTag" IS NULL OR "@sourceTags" LIKE ('%|' || c."sourceTag" || '|%')) AND
             ("@sourceId" IS NULL OR c."sourceId" IS NULL OR "@sourceId" = c."sourceId") AND
-            ("@sourceProductId" IS NULL OR c."sourceProductId" IS NULL OR "@sourceProductId" = c."sourceProductId") AND
+            ("@sourceCardProductId" IS NULL OR c."sourceCardProductId" IS NULL OR "@sourceCardProductId" = c."sourceCardProductId") AND
+            ("@sourceAccountProductId" IS NULL OR c."sourceAccountProductId" IS NULL OR "@sourceAccountProductId" = c."sourceAccountProductId") AND
             ("@sourceAccountId" IS NULL OR c."sourceAccountId" IS NULL OR "@sourceAccountId" = c."sourceAccountId") AND
             ("@destinationCountryId" IS NULL OR c."destinationCountryId" IS NULL OR "@destinationCountryId" = c."destinationCountryId") AND
             ("@destinationRegionId" IS NULL OR c."destinationRegionId" IS NULL OR "@destinationRegionId" = c."destinationRegionId") AND
@@ -76,7 +78,7 @@ $BODY$
             ("@destinationSupervisorId" IS NULL OR c."destinationSupervisorId" IS NULL OR "@destinationSupervisorId" = c."destinationSupervisorId") AND
             ("@destinationTags" IS NULL OR c."destinationTag" IS NULL OR "@destinationTags" LIKE ('%|' || c."destinationTag" || '|%')) AND
             ("@destinationId" IS NULL OR c."destinationId" IS NULL OR "@destinationId" = c."destinationId") AND
-            ("@destinationProductId" IS NULL OR c."destinationProductId" IS NULL OR "@destinationProductId" = c."destinationProductId") AND
+            ("@destinationAccountProductId" IS NULL OR c."destinationAccountProductId" IS NULL OR "@destinationAccountProductId" = c."destinationAccountProductId") AND
             ("@destinationAccountId" IS NULL OR c."destinationAccountId" IS NULL OR "@destinationAccountId" = c."destinationAccountId")
     ),
     limits AS (

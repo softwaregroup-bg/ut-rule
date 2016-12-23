@@ -46,7 +46,8 @@ const Main = React.createClass({
                 'role',
                 'operation',
                 'supervisor',
-                'product',
+                'cardProduct',
+                'accountProduct',
                 'account'
             ]
         });

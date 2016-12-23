@@ -67,7 +67,8 @@ BEGIN TRY
         sourceSupervisorId = c1.sourceSupervisorId,
         sourceTag = c1.sourceTag,
         sourceId = c1.sourceId,
-        sourceProductId = c1.sourceProductId,
+        sourceCardProductId = c1.sourceCardProductId,
+        sourceAccountProductId = c1.sourceAccountProductId,
         sourceAccountId = c1.sourceAccountId,
         destinationCountryId = c1.destinationCountryId,
         destinationRegionId = c1.destinationRegionId,
@@ -76,7 +77,7 @@ BEGIN TRY
         destinationSupervisorId = c1.destinationSupervisorId,
         destinationTag = c1.destinationTag,
         destinationId = c1.destinationId,
-        destinationProductId = c1.destinationProductId,
+        destinationAccountProductId = c1.destinationAccountProductId,
         destinationAccountId = c1.destinationAccountId
     FROM
         [rule].condition c

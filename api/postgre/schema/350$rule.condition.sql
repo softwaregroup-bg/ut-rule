@@ -23,7 +23,8 @@ CREATE TABLE rule.condition(
   "sourceSupervisorId" bigint,
   "sourceTag" varchar(255),
   "sourceId" bigint,
-  "sourceProductId" bigint,
+  "sourceCardProductId" bigint,
+  "sourceAccountProductId" bigint,
   "sourceAccountId" bigint,
 
   "destinationCountryId" bigint,
@@ -33,7 +34,7 @@ CREATE TABLE rule.condition(
   "destinationSupervisorId" bigint,
   "destinationTag" varchar(255),
   "destinationId" bigint,
-  "destinationProductId" bigint,
+  "destinationAccountProductId" bigint,
   "destinationAccountId" bigint,
 
   CONSTRAINT "pkRuleCondition" PRIMARY KEY ("conditionId")

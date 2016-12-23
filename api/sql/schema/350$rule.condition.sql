@@ -20,7 +20,8 @@ CREATE TABLE [rule].[condition] (
     sourceSupervisorId BIGINT,
     sourceTag NVARCHAR(255),
     sourceId BIGINT,
-    sourceProductId BIGINT,
+    sourceCardProductId BIGINT,
+    sourceAccountProductId BIGINT,
     sourceAccountId BIGINT,
     destinationCountryId BIGINT,
     destinationRegionId BIGINT,
@@ -29,7 +30,7 @@ CREATE TABLE [rule].[condition] (
     destinationSupervisorId BIGINT,
     destinationTag NVARCHAR(255),
     destinationId BIGINT,
-    destinationProductId BIGINT,
+    destinationAccountProductId BIGINT,
     destinationAccountId BIGINT,
     CONSTRAINT [pkRuleCondition] PRIMARY KEY CLUSTERED ([conditionId] ASC),
     CONSTRAINT [ukRuleCondtitionPriority] UNIQUE ([priority] ASC)

@@ -60,7 +60,8 @@ set
   "sourceSupervisorId"=CAST("conditionT"->>'sourceSupervisorId'as integer),
   "sourceTag"="conditionT"->>'sourceTag',
   "sourceId"=CAST("conditionT"->>'sourceId'as integer),
-  "sourceProductId"=CAST("conditionT"->>'sourceProductId'as integer),
+  "sourceCardProductId"=CAST("conditionT"->>'sourceCardProductId'as integer),
+  "sourceAccountProductId"=CAST("conditionT"->>'sourceAccountProductId'as integer),
   "sourceAccountId"=CAST("conditionT"->>'sourceAccountId'as integer),
   "destinationCountryId"=CAST("conditionT"->>'destinationCountryId'as integer),
   "destinationRegionId"=CAST("conditionT"->>'destinationRegionId'as integer),
@@ -69,7 +70,7 @@ set
   "destinationSupervisorId"=CAST("conditionT"->>'destinationSupervisorId'as integer),
   "destinationTag"="conditionT"->>'destinationTag',
   "destinationId"=CAST("conditionT"->>'destinationId'as integer),
-  "destinationProductId"=CAST("conditionT"->>'destinationProductId'as integer),
+  "destinationAccountProductId"=CAST("conditionT"->>'destinationAccountProductId'as integer),
   "destinationAccountId"=CAST("conditionT"->>'destinationAccountId'as integer)
   FROM   json_array_elements( "@condition" ) as "conditionT"
 where   c."conditionId"= CAST("conditionT"->>'conditionId'as integer);

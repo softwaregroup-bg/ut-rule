@@ -25,7 +25,8 @@ BEGIN
         @sourceOrganizationId BIGINT,
         @sourceSupervisorId BIGINT,
         @sourceId BIGINT,
-        @sourceProductId BIGINT,
+        @sourceCardProductId BIGINT,
+        @sourceAccountProductId BIGINT,
         @sourceAccountId BIGINT,
 
         @destinationCountryId BIGINT,
@@ -34,7 +35,7 @@ BEGIN
         @destinationOrganizationId BIGINT,
         @destinationSupervisorId BIGINT,
         @destinationId BIGINT,
-        @destinationProductId BIGINT,
+        @destinationAccountProductId BIGINT,
         @destinationAccountId BIGINT,
 
         @amountDaily MONEY,
@@ -72,7 +73,8 @@ BEGIN
         @sourceOrganizationId = organizationId,
         @sourceSupervisorId = supervisorId,
         @sourceId = holderId,
-        @sourceProductId = productId,
+        @sourceCardProductId = cardProductId,
+        @sourceProductId = accountProductId,
         @sourceAccountId = accountId
     FROM
         [integration].[vAccount]
@@ -86,7 +88,7 @@ BEGIN
         @destinationOrganizationId = organizationId,
         @destinationSupervisorId = supervisorId,
         @destinationId = holderId,
-        @destinationProductId = productId,
+        @destinationAccountProductId = accountProductId,
         @destinationAccountId = accountId
     FROM
         [integration].[vAccount]
@@ -133,7 +135,8 @@ BEGIN
         @sourceOrganizationId = @sourceOrganizationId,
         @sourceSupervisorId = @sourceSupervisorId,
         @sourceId = @sourceId,
-        @sourceProductId = @sourceProductId,
+        @sourceCardProductId = @sourceCardProductId,
+        @sourceAccountProductId = @sourceAccountProductId,
         @sourceAccountId = @sourceAccountId,
         @destinationCountryId = @destinationCountryId,
         @destinationRegionId = @destinationRegionId,
@@ -141,7 +144,7 @@ BEGIN
         @destinationOrganizationId = @destinationOrganizationId,
         @destinationSupervisorId = @destinationSupervisorId,
         @destinationId = @destinationId,
-        @destinationProductId = @destinationProductId,
+        @destinationAccountProductId = @destinationAccountProductId,
         @destinationAccountId = @destinationAccountId,
         @amount = @amount,
         @amountDaily = @amountDaily,

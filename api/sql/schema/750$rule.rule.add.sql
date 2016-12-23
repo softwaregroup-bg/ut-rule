@@ -30,7 +30,8 @@ BEGIN TRY
         sourceSupervisorId,
         sourceTag,
         sourceId,
-        sourceProductId,
+        sourceCardProductId,
+        sourceAccountProductId,
         sourceAccountId,
         destinationCountryId,
         destinationRegionId,
@@ -39,7 +40,7 @@ BEGIN TRY
         destinationSupervisorId,
         destinationTag,
         destinationId,
-        destinationProductId,
+        destinationAccountProductId,
         destinationAccountId
         )
     SELECT [priority],
@@ -62,7 +63,8 @@ BEGIN TRY
         [sourceSupervisorId],
         [sourceTag],
         [sourceId],
-        [sourceProductId],
+        [sourceCardProductId],
+        [sourceAccountProductId],
         [sourceAccountId],
         [destinationCountryId],
         [destinationRegionId],
@@ -71,7 +73,7 @@ BEGIN TRY
         [destinationSupervisorId],
         [destinationTag],
         [destinationId],
-        [destinationProductId],
+        [destinationAccountProductId],
         [destinationAccountId]
     FROM @condition;
 

@@ -36,7 +36,8 @@ const emptyCondition = {
     sourceSupervisorId: null,
     sourceTag: null,
     sourceId: null,
-    sourceProductId: null,
+    sourceCardProductId: null,
+    sourceAccountProductId: null,
     sourceAccountId: null,
     destinationCountryId: null,
     destinationRegionId: null,
@@ -45,7 +46,7 @@ const emptyCondition = {
     destinationSupervisorId: null,
     destinationTag: null,
     destinationId: null,
-    destinationProductId: null,
+    destinationAccountProductId: null,
     destinationAccountId: null
 };
 const emptyFee = {

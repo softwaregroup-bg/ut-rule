@@ -1,3 +1,14 @@
+<a name="5.9.1"></a>
+## [5.9.1](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.0...v5.9.1) (2016-12-23)
+
+
+### Bug Fixes
+
+* typo ([47ee8d0](https://github.com/softwaregroup-bg/ut-rule/commit/47ee8d0))
+* update dependencies ([e035fd7](https://github.com/softwaregroup-bg/ut-rule/commit/e035fd7))
+
+
+
 <a name="5.9.0"></a>
 # [5.9.0](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.0...v5.9.0) (2016-12-23)
 

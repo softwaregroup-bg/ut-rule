@@ -1,3 +1,14 @@
+<a name="5.9.2"></a>
+## [5.9.2](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.1...v5.9.2) (2017-01-03)
+
+
+### Bug Fixes
+
+* linting errors ([53bbdad](https://github.com/softwaregroup-bg/ut-rule/commit/53bbdad))
+* UIS-606 empty dropdowns and missing fields ([732db6f](https://github.com/softwaregroup-bg/ut-rule/commit/732db6f))
+
+
+
 <a name="5.9.1"></a>
 ## [5.9.1](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.0...v5.9.1) (2016-12-23)
 

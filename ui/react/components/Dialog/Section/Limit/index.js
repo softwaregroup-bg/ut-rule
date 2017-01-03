@@ -4,6 +4,8 @@ import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
+import plusImage from '../../assets/add_new.png';
+
 
 const SectionLimit = React.createClass({
     propTypes: {
@@ -40,7 +42,7 @@ const SectionLimit = React.createClass({
                 <td>
                     <Dropdown
                       keyProp='currency'
-                      data={nomenclatures.currency || []}
+                      data={nomenclatures.Currency || []}
                       defaultSelected={'' + (limit.currency || '')}
                       onSelect={this.onSelectDropdown(index)}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}
@@ -138,7 +140,10 @@ const SectionLimit = React.createClass({
                         {this.createLimitRows()}
                     </tbody>
                 </table>
-                <span className={style.link} onClick={this.props.addRow}><span>+</span>Add another limit</span>
+                <span className={style.link} onClick={this.props.addRow}>
+                    <img src={plusImage} className={style.plus} />
+                    Add another commission
+                </span>
             </div>
         );
     }

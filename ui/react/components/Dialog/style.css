@@ -113,17 +113,19 @@
 }
 
 .link {
-    color: rgb(233, 53, 145) !important;
+    padding-top: 5px;
+    color: #4096FD !important;
     display: block;
     padding: 10px 5px;
     text-decoration: none;
     cursor: pointer;
 }
 .link:hover {
-    text-decoration: none;
+    text-decoration: underline;
 }
+
 .link > span {
-    border: 1px solid rgb(233, 53, 145);
+    border: 1px solid #4096FD;
     padding: 0 5px;
     margin-right: 10px;
 }
@@ -173,5 +175,9 @@ div.dropDownRoot {
 }
 
 .save {
+    margin-right: 10px;
+}
+
+.plus {
     margin-right: 10px;
 }

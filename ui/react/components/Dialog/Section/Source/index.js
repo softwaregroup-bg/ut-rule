@@ -18,17 +18,17 @@ const Source = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        let { country, region, city, cardProduct, accountProduct, account, organization, supervisor } = this.context.nomenclatures;
+        let { Country, region, City, cardProduct, accountProduct, account, organization, supervisor } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
         return (
            <div className={style.content}>
-                {country &&
+                {Country &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='sourceCountryId'
                           label='Country'
-                          data={country}
+                          data={Country}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceCountryId || '')}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
@@ -48,13 +48,13 @@ const Source = React.createClass({
                         />
                     </div>
                 }
-                {city &&
+                {City &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='sourceCityId'
                           label='City'
-                          data={city}
+                          data={City}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceCityId || '')}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}

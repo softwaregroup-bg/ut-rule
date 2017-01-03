@@ -4,6 +4,7 @@ import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
+import plusImage from '../../assets/add_new.png';
 
 const SectionCommission = React.createClass({
     propTypes: {
@@ -60,7 +61,7 @@ const SectionCommission = React.createClass({
                 <td style={{minWidth: '100px'}}>
                     <Dropdown
                       keyProp='startAmountCurrency'
-                      data={nomenclatures.currency || []}
+                      data={nomenclatures.Currency || []}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (commission.startAmountCurrency || '')}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}
@@ -115,7 +116,10 @@ const SectionCommission = React.createClass({
                         {this.createCommissionRows()}
                     </tbody>
                 </table>
-                <span className={style.link} onClick={this.props.addRow}><span>+</span>Add another commission</span>
+                <span className={style.link} onClick={this.props.addRow}>
+                    <img src={plusImage} className={style.plus} />
+                    Add another commission
+                </span>
             </div>
         );
     }

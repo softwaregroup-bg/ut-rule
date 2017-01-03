@@ -6,7 +6,6 @@ import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import plusImage from '../../assets/add_new.png';
 
-
 const SectionLimit = React.createClass({
     propTypes: {
         data: PropTypes.array.isRequired,

@@ -18,7 +18,7 @@ const Channel = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        let { channel, country, region, city, role, organization, supervisor } = this.context.nomenclatures;
+        let { channel, Country, region, City, role, organization, supervisor } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
         return (
             <div className={style.content}>
@@ -36,11 +36,11 @@ const Channel = React.createClass({
                         />
                     </div>
                 }
-                {country &&
+                {Country &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
-                          data={country}
+                          data={Country}
                           defaultSelected={'' + (this.props.data.channelCountryId || '')}
                           keyProp='channelCountryId'
                           placeholder='Select Country'
@@ -64,11 +64,11 @@ const Channel = React.createClass({
                         />
                     </div>
                 }
-                {city &&
+                {City &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
-                          data={city}
+                          data={City}
                           defaultSelected={'' + (this.props.data.channelCityId || '')}
                           keyProp='channelCityId'
                           placeholder='Select City'

@@ -1,3 +1,17 @@
+<a name="5.9.5"></a>
+## [5.9.5](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.4...v5.9.5) (2017-01-04)
+
+
+### Bug Fixes
+
+* linting errors ([e179fec](https://github.com/softwaregroup-bg/ut-rule/commit/e179fec))
+* removed default selected ([883f846](https://github.com/softwaregroup-bg/ut-rule/commit/883f846))
+* UIS-606 ([1f8f008](https://github.com/softwaregroup-bg/ut-rule/commit/1f8f008))
+* UIS-606 empty dropdowns and missing fields ([2d8a33e](https://github.com/softwaregroup-bg/ut-rule/commit/2d8a33e))
+* upper case characters ([6e6e182](https://github.com/softwaregroup-bg/ut-rule/commit/6e6e182))
+
+
+
 <a name="5.9.4"></a>
 ## [5.9.4](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.3...v5.9.4) (2017-01-03)
 

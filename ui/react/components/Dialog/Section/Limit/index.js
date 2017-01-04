@@ -41,7 +41,7 @@ const SectionLimit = React.createClass({
                 <td>
                     <Dropdown
                       keyProp='currency'
-                      data={nomenclatures.Currency || []}
+                      data={nomenclatures.currency || []}
                       defaultSelected={'' + (limit.currency || '')}
                       onSelect={this.onSelectDropdown(index)}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}

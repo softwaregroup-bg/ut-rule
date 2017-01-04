@@ -61,7 +61,7 @@ const SectionFee = React.createClass({
                 <td style={{minWidth: '100px'}}>
                     <Dropdown
                       keyProp='startAmountCurrency'
-                      data={nomenclatures.Currency || []}
+                      data={nomenclatures.currency || []}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (fee.startAmountCurrency || '')}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}

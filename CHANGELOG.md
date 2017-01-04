@@ -1,3 +1,13 @@
+<a name="5.9.6"></a>
+## [5.9.6](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.5...v5.9.6) (2017-01-04)
+
+
+### Bug Fixes
+
+* new simple gid design changes  ([8d3021a](https://github.com/softwaregroup-bg/ut-rule/commit/8d3021a))
+
+
+
 <a name="5.9.5"></a>
 ## [5.9.5](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.4...v5.9.5) (2017-01-04)
 

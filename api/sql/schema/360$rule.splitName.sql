@@ -3,5 +3,6 @@ CREATE TABLE [rule].[splitName] (
     conditionId INT NOT NULL,
     name VARCHAR(50) NOT NULL,
     CONSTRAINT [pkRuleSplitName] PRIMARY KEY CLUSTERED (splitNameId ASC),
-    CONSTRAINT [fkRuleSplitName_ruleCondition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId)
+    CONSTRAINT [fkRuleSplitName_ruleCondition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId),
+    CONSTRAINT [ukRuleSplitNameConditionIdName] UNIQUE (conditionId, name)
 )

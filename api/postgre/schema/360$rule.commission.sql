@@ -11,6 +11,8 @@ CREATE TABLE rule.commission(
   "percent" float,
   "percentBase" numeric(20,2),
 
+  "split" varchar,
+
   CONSTRAINT "pkRuleCommission" PRIMARY KEY ("commissionId"),
   CONSTRAINT "fkRuleCommission_condition" FOREIGN KEY ("conditionId") REFERENCES rule.condition ("conditionId") MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
 )

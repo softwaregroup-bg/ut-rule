@@ -17,7 +17,7 @@ INSERT INTO
   rule.condition
 (
   "conditionId",
-  priority,
+  "priority",
   "channelCountryId",
   "channelRegionId",
   "channelCityId",
@@ -51,7 +51,7 @@ INSERT INTO
   "destinationAccountId"
 )
 SELECT
-"@conditionId",
+  "@conditionId",
   CAST("conditionT"->>'priority'as integer),
   CAST("conditionT"->>'channelCountryId'as integer),
   CAST("conditionT"->>'channelRegionId'as integer),
@@ -60,10 +60,10 @@ SELECT
   CAST("conditionT"->>'channelSupervisorId'as integer),
   "conditionT"->>'channelTag',
   CAST("conditionT"->>'channelRoleId'as integer),
- CAST( "conditionT"->>'channelId'as integer),
- CAST( "conditionT"->>'operationId'as integer),
+  CAST( "conditionT"->>'channelId'as integer),
+  CAST( "conditionT"->>'operationId'as integer),
   "conditionT"->>'operationTag',
- CAST( "conditionT"->>'operationStartDate' as "timestamp"),
+  CAST( "conditionT"->>'operationStartDate' as "timestamp"),
   CAST("conditionT"->>'operationEndDate'as "timestamp"),
   CAST("conditionT"->>'sourceCountryId'as integer),
   CAST("conditionT"->>'sourceRegionId'as integer),
@@ -84,7 +84,8 @@ SELECT
   CAST("conditionT"->>'destinationId'as integer),
   CAST("conditionT"->>'destinationAccountProductId'as integer),
   CAST("conditionT"->>'destinationAccountId'as integer)
-FROM   json_array_elements( "@condition" ) as "conditionT" ;
+FROM
+  json_array_elements( "@condition" ) as "conditionT";
 
 INSERT INTO
   rule.commission
@@ -95,18 +96,20 @@ INSERT INTO
   "isSourceAmount",
   "minValue",
   "maxValue",
-  percent,
-  "percentBase"
+  "percent",
+  "percentBase",
+  "split"
 )
 SELECT
-"@conditionId",
-CAST("commissionT"->>'startAmount' as numeric(20,2)),
+  "@conditionId",
+  CAST("commissionT"->>'startAmount' as numeric(20,2)),
   CAST("commissionT"->>'startAmountCurrency' as char(3)),
   CAST("commissionT"->>'isSourceAmount' as BOOLEAN),
   CAST("commissionT"->>'minValue'as numeric(20,2)),
   CAST("commissionT"->>'maxValue'as numeric(20,2)),
   CAST("commissionT"->>'percent' as double precision),
-  CAST("commissionT"->>'percentBase' as double precision)
+  CAST("commissionT"->>'percentBase' as double precision),
+  CAST("commissionT"->>'split' as varchar)
 FROM   json_array_elements( "@commission" ) as "commissionT" ;
 
 
@@ -114,7 +117,7 @@ INSERT INTO
   rule."limit"
 (
   "conditionId",
-  currency,
+  "currency",
   "minAmount",
   "maxAmount",
   "maxAmountDaily",
@@ -125,8 +128,8 @@ INSERT INTO
   "maxCountMonthly"
 )
 SELECT
-"@conditionId",
-CAST( "limitT"->>'currency'as char(3)),
+  "@conditionId",
+  CAST( "limitT"->>'currency'as char(3)),
   CAST("limitT"->>'minAmount'as numeric(20,2)),
   CAST("limitT"->>'maxAmount'as numeric(20,2)),
   CAST("limitT"->>'maxAmountDaily'as numeric(20,2)),
@@ -146,19 +149,22 @@ INSERT INTO
   "isSourceAmount",
   "minValue",
   "maxValue",
-  percent,
-  "percentBase"
+  "percent",
+  "percentBase",
+  "split"
 )
 SELECT
-"@conditionId",
+  "@conditionId",
   CAST("feeT"->>'startAmount'as numeric(20,2)),
   CAST("feeT"->>'startAmountCurrency' as char(3)),
   CAST("feeT"->>'isSourceAmount' as BOOLEAN),
   CAST("feeT"->>'minValue'as numeric(20,2)),
   CAST("feeT"->>'maxValue'as numeric(20,2)),
   CAST("feeT"->>'percent' as double PRECISION),
-  CAST("feeT"->>'percentBase' as double PRECISION)
-FROM   json_array_elements( "@fee" ) as "feeT" ;
+  CAST("feeT"->>'percentBase' as double PRECISION),
+  CAST("feeT"->>'split' as varchar)
+FROM
+  json_array_elements( "@fee" ) as "feeT" ;
 
 RETURN QUERY
 select * from rule."rule.fetch"(

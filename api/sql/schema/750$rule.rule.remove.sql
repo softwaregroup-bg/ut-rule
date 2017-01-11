@@ -3,44 +3,58 @@
 AS
 BEGIN TRY
     BEGIN TRANSACTION
-        SELECT 'fee' AS resultSetName
-        DELETE
-            f
-        OUTPUT
-            deleted.*
-        FROM
-            [rule].fee f
-        JOIN
-            @conditionId item ON f.conditionId = item.value
-
         SELECT 'limit' AS resultSetName
-        DELETE l
+        DELETE x
         OUTPUT
             deleted.*
         FROM
-            [rule].limit l
+            [rule].limit x
         JOIN
-            @conditionId item ON l.conditionId = item.value
+            @conditionId item ON x.conditionId = item.value
 
-        SELECT 'commission' AS resultSetName
+        SELECT 'splitRange' AS resultSetName
         DELETE
-            c
+            x
         OUTPUT
             deleted.*
         FROM
-            [rule].commission c
+            [rule].splitRange x
         JOIN
-            @conditionId item ON c.conditionId = item.value
+            [rule].splitName s ON s.splitNameId = x.splitNameId
+        JOIN
+            @conditionId item ON s.conditionId = item.value
+
+        SELECT 'splitAssignment' AS resultSetName
+        DELETE
+            x
+        OUTPUT
+            deleted.*
+        FROM
+            [rule].splitAssignment x
+        JOIN
+            [rule].splitName s ON s.splitNameId = x.splitNameId
+        JOIN
+            @conditionId item ON s.conditionId = item.value
+
+        SELECT 'splitName' AS resultSetName
+        DELETE
+            x
+        OUTPUT
+            deleted.*
+        FROM
+            [rule].splitName x
+        JOIN
+            @conditionId item ON x.conditionId = item.value
 
         SELECT 'condition' AS resultSetName
         DELETE
-            c
+            x
         OUTPUT
             deleted.*
         FROM
-            [rule].condition c
+            [rule].condition x
         JOIN
-            @conditionId item ON c.conditionId = item.value
+            @conditionId item ON x.conditionId = item.value
     COMMIT TRANSACTION
 END TRY
 BEGIN CATCH

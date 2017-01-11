@@ -1,38 +1,13 @@
 ﻿ALTER PROCEDURE [rule].[rule.edit]
     @condition [rule].conditionTT READONLY,
-    @fee [rule].feeTT READONLY,
     @limit [rule].limitTT READONLY,
-    @commission [rule].commissionTT READONLY
+    @split XML
 AS
+DECLARE @splitName [rule].splitNameTT,
+        @conditionId INT
 BEGIN TRY
-    DECLARE @conditionId INT
-
-    SET @conditionId = (
-            SELECT conditionId
-            FROM @condition
-            )
-
     BEGIN TRANSACTION
-
-    DELETE
-        f
-    FROM
-        [rule].fee f
-    LEFT JOIN
-        @fee f1 ON f1.feeId = f.feeId
-    WHERE
-        f.conditionId = @conditionId
-        AND f1.feeId IS NULL
-
-    DELETE
-        c
-    FROM
-        [rule].commission c
-    LEFT JOIN
-        @commission c1 ON c.commissionId = c1.commissionId
-    WHERE
-        c.conditionId = @conditionId
-        AND c1.commissionId IS NULL
+    SET @conditionId = (SELECT conditionId FROM @condition)
 
     DELETE
         l
@@ -43,6 +18,37 @@ BEGIN TRY
     WHERE
         l.conditionId = @conditionId
         AND l1.limitId IS NULL
+
+    DELETE
+        x
+    FROM
+        [rule].splitRange x
+    LEFT JOIN
+        @split.nodes('/*/*/splitRange') AS records(x) ON x.splitRangeId = records.x.value('(splitRangeId)[1]', 'int')
+    JOIN
+        [rule].splitName sn ON x.splitNameId = sn.splitNameId
+    WHERE
+        sn.conditionId = @conditionId AND records.x.value('(splitRangeId)[1]', 'int') IS NULL
+
+    DELETE
+        x
+    FROM
+        [rule].splitAssignment x
+    LEFT JOIN
+        @split.nodes('/*/*/splitAssignment') AS records(x) ON x.splitAssignmentId = records.x.value('(splitAssignmentId)[1]', 'int')
+    JOIN
+        [rule].splitName sn ON x.splitNameId = sn.splitNameId
+    WHERE
+        sn.conditionId = @conditionId AND records.x.value('(splitAssignmentId)[1]', 'int') IS NULL
+
+    DELETE
+        x
+    FROM
+        [rule].splitName x
+    LEFT JOIN
+        @split.nodes('/*/*/splitName') AS records(x) ON x.splitNameId = records.x.value('(splitNameId)[1]', 'int')
+    WHERE
+        x.conditionId = @conditionId AND records.x.value('(splitNameId)[1]', 'int') IS NULL
 
     UPDATE
         c
@@ -84,20 +90,80 @@ BEGIN TRY
     JOIN
         @condition c1 ON c.conditionId = c1.conditionId
 
-    UPDATE
-        c
-    SET
-        startAmount = c1.startAmount,
-        startAmountCurrency = c1.startAmountCurrency,
-        isSourceAmount = c1.isSourceAmount,
-        minValue = c1.minValue,
-        maxValue = c1.maxValue,
-        [percent] = c1.[percent],
-        percentBase = c1.percentBase
-    FROM
-        [rule].commission c
-    JOIN
-        @commission c1 ON c.commissionId = c1.commissionId
+    MERGE INTO [rule].splitName x
+    USING @split.nodes('/*/*/splitName') AS records(r)
+    ON x.splitNameId = records.r.value('(splitNameId)[1]', 'int')
+    WHEN NOT MATCHED THEN
+      INSERT (conditionId, name) VALUES (@conditionId, records.r.value('(name)[1]', 'nvarchar(50)'))
+    WHEN MATCHED THEN
+      UPDATE SET name = records.r.value('(name)[1]', 'nvarchar(50)')
+    OUTPUT INSERTED.* INTO @splitName;
+
+    MERGE INTO [rule].splitRange x
+    USING (
+      SELECT
+          sn.splitNameId AS splitNameId,
+          splitRange.x.query('*').value('(startAmount)[1]', 'money') AS startAmount,
+          splitRange.x.query('*').value('(startAmountCurrency)[1]', 'varchar(3)') AS startAmountCurrency,
+          ISNULL(splitRange.x.query('*').value('(isSourceAmount)[1]', 'bit'), 1) AS isSourceAmount,
+          splitRange.x.query('*').value('(minValue)[1]', 'money') AS minValue,
+          splitRange.x.query('*').value('(maxValue)[1]', 'money') AS maxValue,
+          splitRange.x.query('*').value('(percent)[1]', 'money') AS [percent],
+          splitRange.x.query('*').value('(percentBase)[1]', 'money') AS percentBase
+      FROM
+          @split.nodes('/*/*') AS records(x)
+      CROSS APPLY
+          records.x.nodes('splitRange') AS splitRange(x)
+      JOIN
+          @splitName sn
+      ON
+          records.x.value('(splitName/name)[1]', 'nvarchar(50)') = sn.name
+    ) AS r
+    ON x.splitNameId = r.splitNameId
+    WHEN NOT MATCHED THEN
+      INSERT (splitNameId, startAmount, startAmountCurrency, isSourceAmount, minValue, maxValue, [percent], percentBase)
+      VALUES (r.splitNameId, r.startAmount, r.startAmountCurrency, r.isSourceAmount, r.minValue, r.maxValue, r.[percent], r.percentBase)
+    WHEN MATCHED THEN
+        UPDATE SET
+            startAmount = r.startAmount,
+            startAmountCurrency = r.startAmountCurrency,
+            isSourceAmount = r.isSourceAmount,
+            minValue = r.minValue,
+            maxValue = r.maxValue,
+            [percent] = r.[percent],
+            percentBase = r.percentBase;
+
+    MERGE INTO [rule].splitAssignment x
+    USING (
+      SELECT
+          sn.splitNameId AS splitNameId,
+          splitAssignment.x.query('*').value('(debit)[1]', 'varchar(50)') AS debit,
+          splitAssignment.x.query('*').value('(credit)[1]', 'varchar(50)') AS credit,
+          splitAssignment.x.query('*').value('(minValue)[1]', 'money') AS minValue,
+          splitAssignment.x.query('*').value('(maxValue)[1]', 'money') AS maxValue,
+          splitAssignment.x.query('*').value('(percent)[1]', 'decimal') AS [percent],
+          splitAssignment.x.query('*').value('(description)[1]', 'varchar(50)') AS description
+      FROM
+          @split.nodes('/*/*') AS records(x)
+      CROSS APPLY
+          records.x.nodes('splitAssignment') AS splitAssignment(x)
+      JOIN
+          @splitName sn
+      ON
+          records.x.value('(splitName/name)[1]', 'nvarchar(50)') = sn.name
+    ) AS r
+    ON x.splitNameId = r.splitNameId
+    WHEN NOT MATCHED THEN
+      INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
+      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
+    WHEN MATCHED THEN
+      UPDATE SET
+          debit = r.debit,
+          credit = r.credit,
+          minValue = r.minValue,
+          maxValue = r.maxValue,
+          [percent] = r.[percent],
+          description = r.description;
 
     UPDATE
         l
@@ -115,48 +181,6 @@ BEGIN TRY
         [rule].limit l
     JOIN
         @limit l1 ON l.limitId = l1.limitId
-
-    UPDATE
-        f
-    SET
-        startAmount = f.startAmount,
-        startAmountCurrency = f.startAmountCurrency,
-        isSourceAmount = f.isSourceAmount,
-        minValue = f.minValue,
-        maxValue = f.maxValue,
-        [percent] = f.[percent],
-        percentBase = f.percentBase
-    FROM
-        [rule].fee f
-    JOIN
-        @fee f1 ON f.feeId = f1.feeId
-
-    INSERT INTO
-        [rule].commission (
-            conditionId,
-            startAmount,
-            startAmountCurrency,
-            isSourceAmount,
-            minValue,
-            maxValue,
-            [percent],
-            percentBase
-        )
-    SELECT
-        c1.conditionId,
-        c1.startAmount,
-        c1.startAmountCurrency,
-        c1.isSourceAmount,
-        c1.minValue,
-        c1.maxValue,
-        c1.[percent],
-        c1.percentBase
-    FROM
-        @commission c1
-    LEFT JOIN
-        [rule].commission c ON c.commissionId = c1.commissionId
-    WHERE
-        c.commissionId IS NULL
 
     INSERT INTO
         [rule].limit (
@@ -189,32 +213,6 @@ BEGIN TRY
     WHERE
         l.limitId IS NULL
 
-    INSERT INTO
-        [rule].fee (
-            conditionId,
-            startAmount,
-            startAmountCurrency,
-            isSourceAmount,
-            minValue,
-            maxValue,
-            [percent],
-            percentBase
-        )
-    SELECT
-        f1.conditionId,
-        f1.startAmount,
-        f1.startAmountCurrency,
-        f1.isSourceAmount,
-        f1.minValue,
-        f1.maxValue,
-        f1.[percent],
-        f1.percentBase
-    FROM
-        @fee f1
-    LEFT JOIN
-        [rule].fee f ON f.feeId = f1.feeId
-    WHERE
-        f.feeId IS NULL
 
     COMMIT TRANSACTION
 

@@ -4,8 +4,6 @@ ALTER PROCEDURE [rule].[rule.add]
     @split XML
 AS
 DECLARE @splitName [rule].splitNameTT,
-        @splitRange [rule].splitRangeTT,
-        @splitAssignment [rule].splitAssignmentTT,
         @conditionId INT
 BEGIN TRY
 
@@ -135,8 +133,7 @@ BEGIN TRY
     ON 1 = 0
     WHEN NOT MATCHED THEN
       INSERT (splitNameId, startAmount, startAmountCurrency, isSourceAmount, minValue, maxValue, [percent], percentBase)
-      VALUES (r.splitNameId, r.startAmount, r.startAmountCurrency, r.isSourceAmount, r.minValue, r.maxValue, r.[percent], r.percentBase)
-    OUTPUT INSERTED.* INTO @splitRange;
+      VALUES (r.splitNameId, r.startAmount, r.startAmountCurrency, r.isSourceAmount, r.minValue, r.maxValue, r.[percent], r.percentBase);
 
     MERGE INTO [rule].splitAssignment
     USING (
@@ -160,8 +157,7 @@ BEGIN TRY
     ON 1 = 0
     WHEN NOT MATCHED THEN
       INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
-      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
-    OUTPUT INSERTED.* INTO @splitAssignment;
+      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description);
 
     COMMIT TRANSACTION
 

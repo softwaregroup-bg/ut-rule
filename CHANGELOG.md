@@ -1,3 +1,8 @@
+<a name="5.9.13"></a>
+## [5.9.13](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.12...v5.9.13) (2017-01-11)
+
+
+
 <a name="5.9.12"></a>
 ## [5.9.12](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.11...v5.9.12) (2017-01-11)
 

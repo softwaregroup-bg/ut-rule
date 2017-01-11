@@ -94,9 +94,19 @@ BEGIN TRY
     USING @split.nodes('/*/*/splitName') AS records(r)
     ON x.splitNameId = records.r.value('(splitNameId)[1]', 'int')
     WHEN NOT MATCHED THEN
-      INSERT (conditionId, name) VALUES (@conditionId, records.r.value('(name)[1]', 'nvarchar(50)'))
+      INSERT (
+          conditionId,
+          name,
+          tag
+      ) VALUES (
+          @conditionId,
+          records.r.value('(name)[1]', 'nvarchar(50)'),
+          records.r.value('(tag)[1]', 'nvarchar(max)')
+      )
     WHEN MATCHED THEN
-      UPDATE SET name = records.r.value('(name)[1]', 'nvarchar(50)')
+      UPDATE SET
+        name = records.r.value('(name)[1]', 'nvarchar(50)'),
+        tag = records.r.value('(tag)[1]', 'nvarchar(max)')
     OUTPUT INSERTED.* INTO @splitName;
 
     MERGE INTO [rule].splitRange x

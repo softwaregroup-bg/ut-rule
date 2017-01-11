@@ -107,7 +107,7 @@ BEGIN TRY
     USING @split.nodes('/*/*/splitName') AS records(r)
     ON 1 = 0
     WHEN NOT MATCHED THEN
-      INSERT (conditionId, name) VALUES (@conditionId, r.value('(name)[1]', 'nvarchar(50)'))
+      INSERT (conditionId, name, tag) VALUES (@conditionId, r.value('(name)[1]', 'nvarchar(50)'), r.value('(tag)[1]', 'nvarchar(max)'))
     OUTPUT INSERTED.* INTO @splitName;
 
     MERGE INTO [rule].splitRange

@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "5.9.14",
+  "version": "6.0.0",
   "main": "api/sql/index.js",
   "dependencies": {
     "classnames": "2.2.5",

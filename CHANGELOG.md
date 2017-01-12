@@ -1,3 +1,27 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.14...v6.0.0) (2017-01-12)
+
+
+### Bug Fixes
+
+* add tag column in rule.splitName ([7ab4bb1](https://github.com/softwaregroup-bg/ut-rule/commit/7ab4bb1))
+* fix rule.rule.add according to new redesign ([7c1390b](https://github.com/softwaregroup-bg/ut-rule/commit/7c1390b))
+* prepare rule.rule.edit procedure ([2fcb92d](https://github.com/softwaregroup-bg/ut-rule/commit/2fcb92d))
+* rule.rule.remove according to latest architecture changes ([40bcb8a](https://github.com/softwaregroup-bg/ut-rule/commit/40bcb8a))
+
+
+### Features
+
+* add tables splitRange, splitAssigment and splitName ([26cd519](https://github.com/softwaregroup-bg/ut-rule/commit/26cd519))
+* support splits in decision.fetch ([d09d4d9](https://github.com/softwaregroup-bg/ut-rule/commit/d09d4d9))
+
+
+### BREAKING CHANGES
+
+* tables fee and commission are removed and replaced by the new ones splitName, splitRange and splitAssignment
+
+
+
 <a name="5.9.14"></a>
 ## [5.9.14](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.13...v5.9.14) (2017-01-11)
 

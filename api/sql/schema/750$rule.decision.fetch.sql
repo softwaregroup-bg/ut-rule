@@ -26,28 +26,24 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @destinationAccountProductId BIGINT,
     @destinationAccountId BIGINT,
     @amount MONEY,
-	@amountDaily MONEY,
-	@countDaily BIGINT,
-	@amountWeekly MONEY,
-	@countWeekly BIGINT,
-	@amountMonthly MONEY,
-	@countMonthly BIGINT,
+    @amountDaily MONEY,
+    @countDaily BIGINT,
+    @amountWeekly MONEY,
+    @countWeekly BIGINT,
+    @amountMonthly MONEY,
+    @countMonthly BIGINT,
     @currency VARCHAR(3),
     @isSourceAmount BIT
 AS
 BEGIN
     DECLARE @matches TABLE (
-        priority INT
-        ,conditionId BIGINT
+        priority INT,
+        conditionId BIGINT
     )
 
     SET @operationDate = IsNull(@operationDate, GETDATE())
 
     DECLARE
-        @calcFee MONEY,
-        @minFee MONEY,
-        @maxFee MONEY,
-        @idFee BIGINT,
         @calcCommission MONEY,
         @minCommission MONEY,
         @maxCommission MONEY,
@@ -177,64 +173,75 @@ BEGIN
         RETURN
     END
 
-    SELECT @calcFee=0, @minFee=0, @maxFee=NULL, @idFee=NULL
-    SELECT TOP 1
-        @idFee = f.feeId,
-        @minFee = f.minValue,
-        @maxFee = f.maxValue,
-        @calcFee = ISNULL(f.[percent], 0) * CASE
-            WHEN @amount > ISNULL(f.percentBase, 0) THEN @amount - ISNULL(f.percentBase, 0)
-            ELSE 0
-        END / 100
-    FROM
-        @matches AS c
-    JOIN
-        [rule].fee AS f ON f.conditionId = c.conditionId
-    WHERE
-        @currency = f.startAmountCurrency AND
-        COALESCE(@isSourceAmount, 1) = f.isSourceAmount AND
-        @amount >= f.startAmount
-    ORDER BY
-        c.priority,
-        f.startAmount DESC,
-        f.feeId
+    DECLARE @fee TABLE(
+        conditionId int,
+        splitNameId int,
+        fee MONEY,
+        tag VARCHAR(MAX)
+    );
 
-    SELECT @calcCommission=0, @minCommission=0, @maxCommission=NULL
-    SELECT TOP 1
-        @idCommission = f.commissionId,
-        @minCommission = f.minValue,
-        @maxCommission = f.maxValue,
-        @calcCommission = ISNULL(f.[percent], 0) * CASE
-            WHEN @amount > ISNULL(f.percentBase, 0) THEN @amount - ISNULL(f.percentBase, 0)
-            ELSE 0
-        END / 100
-    FROM
-        @matches AS c
-    JOIN
-        [rule].commission AS f ON f.conditionId = c.conditionId
-    WHERE
-        @currency = f.startAmountCurrency AND
-        COALESCE(@isSourceAmount, 1) = f.isSourceAmount AND
-        @amount >= f.startAmount
-    ORDER BY
-        c.priority,
-        f.startAmount DESC,
-        f.commissionId
-
-    SELECT 'amount' AS resultSetName, 1 AS single
+    WITH split(conditionId, splitNameId, tag, minFee, maxFee, calcFee, rnk) AS (
+        SELECT
+            c.conditionId,
+            r.splitNameId,
+            n.tag,
+            r.minValue,
+            r.maxValue,
+            ISNULL(r.[percent], 0) * CASE
+                WHEN @amount > ISNULL(r.percentBase, 0) THEN @amount - ISNULL(r.percentBase, 0)
+                ELSE 0
+            END / 100,
+            RANK() OVER (PARTITION BY n.splitNameId ORDER BY c.priority, r.startAmount DESC, r.splitRangeId)
+        FROM
+            @matches AS c
+        JOIN
+            [rule].splitName AS n ON n.conditionId = c.conditionId
+        JOIN
+            [rule].splitRange AS r ON r.splitNameId = n.splitNameId
+        WHERE
+            @currency = r.startAmountCurrency AND
+            COALESCE(@isSourceAmount, 0) = r.isSourceAmount AND
+            @amount >= r.startAmount
+    )
+    INSERT INTO
+        @fee(conditionId, splitNameId, fee, tag)
     SELECT
+        s.conditionId,
+        s.splitNameId,
         CASE
-            WHEN @calcFee>@maxFee THEN @maxFee
-            WHEN @calcFee<@minFee THEN @minFee
-            ELSE @calcFee
+            WHEN s.calcFee>s.maxFee THEN s.maxFee
+            WHEN s.calcFee<s.minFee THEN s.minFee
+            ELSE s.calcFee
         END fee,
-        @idFee idFee,
-        CASE
-            WHEN @calcCommission>@maxCommission THEN @maxCommission
-            WHEN @calcCommission<@minCommission THEN @minCommission
-            ELSE @calcCommission
-        END Commission,
-        @idCommission idCommission,
+        s.tag
+    FROM
+        split s
+    WHERE
+        s.rnk = 1
+
+    SELECT 'amount' AS resultSetName, 1 single
+    SELECT
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|acquirer|%') acquirerFee,
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|issuer|%') issuerFee,
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|commission|%') commission,
         @operationDate transferDateTime,
         @operationId transferTypeId
+
+    SELECT 'split' AS resultSetName
+    SELECT
+        a.conditionId,
+        a.splitNameId,
+        a.tag,
+        CAST(CASE
+            WHEN assignment.[percent] * a.fee / 100 > maxValue THEN maxValue
+            WHEN assignment.[percent] * a.fee / 100 < minValue THEN minValue
+            ELSE assignment.[percent] * a.fee / 100
+        END AS MONEY) amount,
+        assignment.debit,
+        assignment.credit,
+        assignment.description
+    FROM
+        @fee a
+    JOIN
+        [rule].splitAssignment assignment ON assignment.splitNameId = a.splitNameId
 END

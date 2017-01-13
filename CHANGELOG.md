@@ -1,3 +1,14 @@
+<a name="6.0.1"></a>
+## [6.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v6.0.0...v6.0.1) (2017-01-13)
+
+
+### Bug Fixes
+
+* gridToolBoxButtons wrapper ([f5e0dba](https://github.com/softwaregroup-bg/ut-rule/commit/f5e0dba))
+* rule.rule.edit ([a9246f2](https://github.com/softwaregroup-bg/ut-rule/commit/a9246f2))
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.14...v6.0.0) (2017-01-12)
 

@@ -147,12 +147,14 @@ const Main = React.createClass({
             <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
                 <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                     <GridToolbox opened title='' >
-                        <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
-                            Edit
-                        </button>
-                        <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
-                            Delete
-                        </button>
+                        <div className={style.gridToolBoxButtons}>
+                            <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
+                                Edit
+                            </button>
+                            <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
+                                Delete
+                            </button>
+                        </div>
                     </GridToolbox>
                 </div>
                 <div className={style.grid} >

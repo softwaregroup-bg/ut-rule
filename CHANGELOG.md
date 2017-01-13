@@ -1,3 +1,98 @@
+<a name="6.0.2"></a>
+## [6.0.2](https://github.com/softwaregroup-bg/ut-rule/compare/v6.0.1...v6.0.2) (2017-01-13)
+
+
+### Bug Fixes
+
+* typo - missing semicolon ([ef38dc4](https://github.com/softwaregroup-bg/ut-rule/commit/ef38dc4))
+
+
+
+<a name="6.0.1"></a>
+## [6.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v6.0.0...v6.0.1) (2017-01-13)
+
+
+### Bug Fixes
+
+* gridToolBoxButtons wrapper ([f5e0dba](https://github.com/softwaregroup-bg/ut-rule/commit/f5e0dba))
+* rule.rule.edit ([a9246f2](https://github.com/softwaregroup-bg/ut-rule/commit/a9246f2))
+
+
+
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.14...v6.0.0) (2017-01-12)
+
+
+### Bug Fixes
+
+* add tag column in rule.splitName ([7ab4bb1](https://github.com/softwaregroup-bg/ut-rule/commit/7ab4bb1))
+* fix rule.rule.add according to new redesign ([7c1390b](https://github.com/softwaregroup-bg/ut-rule/commit/7c1390b))
+* prepare rule.rule.edit procedure ([2fcb92d](https://github.com/softwaregroup-bg/ut-rule/commit/2fcb92d))
+* rule.rule.remove according to latest architecture changes ([40bcb8a](https://github.com/softwaregroup-bg/ut-rule/commit/40bcb8a))
+
+
+### Features
+
+* add tables splitRange, splitAssigment and splitName ([26cd519](https://github.com/softwaregroup-bg/ut-rule/commit/26cd519))
+* support splits in decision.fetch ([d09d4d9](https://github.com/softwaregroup-bg/ut-rule/commit/d09d4d9))
+
+
+### BREAKING CHANGES
+
+* tables fee and commission are removed and replaced by the new ones splitName, splitRange and splitAssignment
+
+
+
+<a name="5.9.14"></a>
+## [5.9.14](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.13...v5.9.14) (2017-01-11)
+
+
+
+<a name="5.9.13"></a>
+## [5.9.13](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.12...v5.9.13) (2017-01-11)
+
+
+
+<a name="5.9.12"></a>
+## [5.9.12](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.11...v5.9.12) (2017-01-11)
+
+
+
+<a name="5.9.11"></a>
+## [5.9.11](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.10...v5.9.11) (2017-01-11)
+
+
+
+<a name="5.9.10"></a>
+## [5.9.10](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.9...v5.9.10) (2017-01-10)
+
+
+
+<a name="5.9.9"></a>
+## [5.9.9](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.8...v5.9.9) (2017-01-10)
+
+
+
+<a name="5.9.8"></a>
+## [5.9.8](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.7...v5.9.8) (2017-01-10)
+
+
+
+<a name="5.9.7"></a>
+## [5.9.7](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.6...v5.9.7) (2017-01-10)
+
+
+
+<a name="5.9.6"></a>
+## [5.9.6](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.5...v5.9.6) (2017-01-04)
+
+
+### Bug Fixes
+
+* new simple gid design changes  ([8d3021a](https://github.com/softwaregroup-bg/ut-rule/commit/8d3021a))
+
+
+
 <a name="5.9.5"></a>
 ## [5.9.5](https://github.com/softwaregroup-bg/ut-rule/compare/v5.9.4...v5.9.5) (2017-01-04)
 

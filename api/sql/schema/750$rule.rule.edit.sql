@@ -124,8 +124,7 @@ BEGIN TRY
             percentBase = r.percentBase
     WHEN NOT MATCHED by target THEN
       INSERT (splitNameId, startAmount, startAmountCurrency, isSourceAmount, minValue, maxValue, [percent], percentBase)
-      VALUES (r.splitNameId, r.startAmount, r.startAmountCurrency, r.isSourceAmount, r.minValue, r.maxValue, r.[percent], r.percentBase)
-
+      VALUES (r.splitNameId, r.startAmount, r.startAmountCurrency, r.isSourceAmount, r.minValue, r.maxValue, r.[percent], r.percentBase);
 
     MERGE INTO [rule].splitAssignment x
     USING
@@ -151,8 +150,7 @@ BEGIN TRY
           description = r.description
     WHEN NOT MATCHED BY TARGET THEN
       INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
-      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
-    ;
+      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description);
 
     COMMIT TRANSACTION
 

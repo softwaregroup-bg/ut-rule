@@ -7,8 +7,6 @@ import Channel from './Section/Channel';
 import Operation from './Section/Operation';
 import Source from './Section/Source';
 import Destination from './Section/Destination';
-import SectionFee from './Section/Fee';
-import SectionCommission from './Section/Commission';
 import SectionLimit from './Section/Limit';
 import SectionSummary from './Section/Summary';
 import merge from 'lodash.merge';
@@ -49,24 +47,6 @@ const emptyCondition = {
     destinationAccountProductId: null,
     destinationAccountId: null
 };
-const emptyFee = {
-    startAmount: null,
-    startAmountCurrency: null,
-    isSourceAmount: true,
-    minValue: null,
-    maxValue: null,
-    percent: null,
-    percentBase: null
-};
-const emptyCommission = {
-    startAmount: null,
-    startAmountCurrency: null,
-    isSourceAmount: true,
-    minValue: null,
-    maxValue: null,
-    percent: null,
-    percentBase: null
-};
 const emptyLimit = {
     currency: null,
     minAmount: null,
@@ -101,13 +81,9 @@ export default React.createClass({
                 condition: [
                     Object.assign({}, emptyCondition)
                 ],
-                fee: [
-                    // Object.assign({}, emptyFee)
-                ],
                 limit: [
                     // Object.assign({}, emptyLimit)
-                ],
-                commission: []
+                ]
             }
         };
     },
@@ -137,40 +113,6 @@ export default React.createClass({
         let data = this.state.data;
         data[category][index][key] = value === '__placeholder__' ? undefined : value;
         this.setState({ data });
-    },
-    addFeeRow() {
-        let feeObject = Object.assign({}, emptyFee);
-        if (this.state.isEditing) {
-            feeObject.conditionId = this.state.data.condition[0].conditionId;
-        }
-        this.state.data.fee.push(feeObject);
-        this.setState({
-            data: this.state.data
-        });
-    },
-    deleteFeeRow(index) {
-        let fee = this.state.data.fee;
-        this.state.data.fee = fee.slice(0, index).concat(fee.slice(index + 1));
-        this.setState({
-            data: this.state.data
-        });
-    },
-    addCommissionRow() {
-        let commissionObject = Object.assign({}, emptyCommission);
-        if (this.state.isEditing) {
-            commissionObject.conditionId = this.state.data.condition[0].conditionId;
-        }
-        this.state.data.commission.push(commissionObject);
-        this.setState({
-            data: this.state.data
-        });
-    },
-    deleteCommissionRow(index) {
-        let commission = this.state.data.commission;
-        this.state.data.commission = commission.slice(0, index).concat(commission.slice(index + 1));
-        this.setState({
-            data: this.state.data
-        });
     },
     addLimitRow() {
         let limitObject = Object.assign({}, emptyLimit);
@@ -268,24 +210,6 @@ export default React.createClass({
                             <Destination
                               data={this.state.data.condition[0]}
                             />
-                        </Accordion>
-                        <Accordion title='Fee' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <SectionFee
-                                  data={this.state.data.fee}
-                                  addRow={this.addFeeRow}
-                                  deleteRow={this.deleteFeeRow}
-                                />
-                            </div>
-                        </Accordion>
-                        <Accordion title='Commission' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <SectionCommission
-                                  data={this.state.data.commission}
-                                  addRow={this.addCommissionRow}
-                                  deleteRow={this.deleteCommissionRow}
-                                />
-                            </div>
                         </Accordion>
                         <Accordion title='Limit' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                             <div className={style.content}>

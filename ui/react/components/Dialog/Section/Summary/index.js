@@ -110,56 +110,6 @@ const Summary = React.createClass({
                                     ]);
                                 }))
                             }
-                            {
-                                fee.length > 0 && [<div key={0} className={style.heading}>Fees</div>].concat(fee.map((record, i) => {
-                                    if (!(record.startAmount && record.startAmountCurrency)) {
-                                        return null;
-                                    }
-                                    return this.buildCSV([
-                                        {
-                                            key: '',
-                                            value: record.percent ? record.percent + '%' : ''
-                                        },
-                                        {
-                                            key: 'base',
-                                            value: record.percentBase
-                                        },
-                                        {
-                                            key: 'min',
-                                            value: record.minValue
-                                        },
-                                        {
-                                            key: 'max',
-                                            value: record.maxValue
-                                        }
-                                    ], record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency] + ' ', i + 1);
-                                }))
-                            }
-                            {
-                                commission.length > 0 && [<div key={0} className={style.heading}>Commissions</div>].concat(commission.map((record, i) => {
-                                    if (!(record.startAmount && record.startAmountCurrency)) {
-                                        return null;
-                                    }
-                                    return this.buildCSV([
-                                        {
-                                            key: '',
-                                            value: record.percent ? record.percent + '%' : ''
-                                        },
-                                        {
-                                            key: 'base',
-                                            value: record.percentBase
-                                        },
-                                        {
-                                            key: 'min',
-                                            value: record.minValue
-                                        },
-                                        {
-                                            key: 'max',
-                                            value: record.maxValue
-                                        }
-                                    ], '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency] + ' ');
-                                }))
-                            }
                         </td>
                     </tr>
                 </tbody>

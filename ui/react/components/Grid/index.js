@@ -60,14 +60,6 @@ export default React.createClass({
                     visible: true,
                     title: 'Destination'
                 },
-                fee: {
-                    visible: true,
-                    title: 'Fee'
-                },
-                commission: {
-                    visible: false,
-                    title: 'Commission'
-                },
                 limit: {
                     visible: true,
                     title: 'Limit'
@@ -139,8 +131,6 @@ export default React.createClass({
                     ['Supervisor', condition.destinationSupervisorId, 'supervisor'],
                     ['Tag', condition.destinationTag]
                 ],
-                fee: columns.fee.visible && record.fee,
-                commission: columns.commission.visible && record.commission,
                 limit: columns.limit.visible && record.limit,
                 refresh: ''
             };
@@ -159,56 +149,6 @@ export default React.createClass({
                 case 'source':
                 case 'destination':
                     return this.buildList(value);
-                case 'fee':
-                    return nestedTable(value.reduce((all, record) => {
-                        all.push([
-                            '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
-                            buildCSV([
-                                {
-                                    key: '',
-                                    value: record.percent ? record.percent + '%' : ''
-                                },
-                                {
-                                    key: 'base',
-                                    value: record.percentBase
-                                },
-                                {
-                                    key: 'min',
-                                    value: record.minValue
-                                },
-                                {
-                                    key: 'max',
-                                    value: record.maxValue
-                                }
-                            ])
-                        ]);
-                        return all;
-                    }, []), style.fee);
-                case 'commission':
-                    return nestedTable(value.reduce((all, record) => {
-                        all.push([
-                            '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
-                            buildCSV([
-                                {
-                                    key: '',
-                                    value: record.percent ? record.percent + '%' : ''
-                                },
-                                {
-                                    key: 'base',
-                                    value: record.percentBase
-                                },
-                                {
-                                    key: 'min',
-                                    value: record.minValue
-                                },
-                                {
-                                    key: 'max',
-                                    value: record.maxValue
-                                }
-                            ])
-                        ]);
-                        return all;
-                    }, []), style.commission);
                 case 'limit':
                     return value.map((limit, i) => {
                         return this.buildList([
@@ -254,8 +194,6 @@ export default React.createClass({
               {title: 'Operation', name: 'operation'},
               {title: 'Source', name: 'source'},
               {title: 'Destination', name: 'destination'},
-              {title: 'Fee', name: 'fee', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
-              {title: 'Commission', name: 'commission', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
               {title: 'Limit', name: 'limit'},
               {
                   title: <div style={{float: 'right'}}>

@@ -1,3 +1,13 @@
+<a name="6.0.2"></a>
+## [6.0.2](https://github.com/softwaregroup-bg/ut-rule/compare/v6.0.1...v6.0.2) (2017-01-13)
+
+
+### Bug Fixes
+
+* typo - missing semicolon ([ef38dc4](https://github.com/softwaregroup-bg/ut-rule/commit/ef38dc4))
+
+
+
 <a name="6.0.1"></a>
 ## [6.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v6.0.0...v6.0.1) (2017-01-13)
 

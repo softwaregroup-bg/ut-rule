@@ -181,3 +181,25 @@ div.dropDownRoot {
 .plus {
     margin-right: 10px;
 }
+
+.statusActionButtonDisabled,
+.statusActionButton{
+    border: 1px solid #ccc;
+    background: deepskyblue;
+    border-radius: 2px;
+    padding: 4px 15px;
+    width: 100%;
+    color: white;
+}
+
+.statusActionButtonDisabled{
+    color: #ccc;
+}
+
+.splitInput {
+    padding: 15px 10px;
+}
+
+.border {
+    border: 1px solid #e6e6e6;
+}

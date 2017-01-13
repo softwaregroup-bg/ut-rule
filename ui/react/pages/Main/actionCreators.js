@@ -40,6 +40,16 @@ export function editRule(params) {
 
 export function addRule(params) {
     return function(dispatch) {
+        let split = JSON.parse(JSON.stringify(params.split));
+        split.map(s => {
+            s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
+                tags += tag.key + '|';
+                return tags;
+            }, '|');
+            return s;
+        });
+        params.split = {data: {rows: split}};
+        debugger;
         return dispatch({
             type: actionTypes.addRule,
             method: 'rule.rule.add',

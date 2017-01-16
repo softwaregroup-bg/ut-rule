@@ -6,9 +6,13 @@ export default (state = defaultState, action) => {
     } else if (action.result) {
         switch (action.type) {
             case actionTypes.fetchNomenclatures:
-                return Object.assign({}, state, {'fetchNomenclatures': formatNomenclatures(action.result.items)});
+                return Object.assign({}, state, {
+                    'fetchNomenclatures': formatNomenclatures(action.result.items)
+                });
             case actionTypes.fetchRules:
-                return Object.assign({}, state, {'fetchRules': formatRules(action.result)});
+                return Object.assign({}, state, {
+                    'fetchRules': formatRules(action.result)
+                });
             default:
                 break;
         }
@@ -16,22 +20,40 @@ export default (state = defaultState, action) => {
     return state;
 };
 
-const formatRules = function(data) {
-    return Object.keys(data).reduce(function(all, key) {
-        data[key].forEach(function(record) {
-            if (!record) {
-                return;
-            }
-            if (!all[record.conditionId]) {
-                all[record.conditionId] = {};
-            }
-            if (!all[record.conditionId][key]) {
-                all[record.conditionId][key] = [];
-            }
-            all[record.conditionId][key].push(record);
-        });
-        return all;
-    }, {});
+var formatRules = function(data) {
+    if (!data.condition.length) {
+        return {};
+    }
+    var result = {};
+    var splitNameConditionMap = {};
+    ['condition', 'limit', 'splitName'].forEach(function(prop) {
+        if (data[prop].length) {
+            data[prop].forEach(function(record) {
+                if (!result[record.conditionId]) {
+                    result[record.conditionId] = {};
+                }
+                if (!result[record.conditionId][prop]) {
+                    result[record.conditionId][prop] = [];
+                }
+                if (record.splitNameId) {
+                    splitNameConditionMap[record.splitNameId] = record.conditionId;
+                }
+                result[record.conditionId][prop].push(record);
+            })
+        }
+    });
+    ['splitRange', 'splitAssignment'].forEach(function(prop) {
+        if (data[prop].length) {
+            data[prop].forEach(function(record) {
+                if (!result[splitNameConditionMap[record.splitNameId]][prop]) {
+                    result[splitNameConditionMap[record.splitNameId]][prop] = [];
+                }
+                result[splitNameConditionMap[record.splitNameId]][prop].push(record);
+            })
+        }
+    });
+    debugger;
+    return result;
 };
 
 const formatNomenclatures = function(data) {

@@ -1,5 +1,13 @@
 import * as actionTypes from './actionTypes';
 
+const removeEmpty = (obj) => {
+    Object.keys(obj).forEach(key => {
+        if (obj[key] && typeof obj[key] === 'object') removeEmpty(obj[key]);
+        else if (obj[key] == null) delete obj[key];
+    });
+    return obj;
+};
+
 export function fetchRules(params) {
     return {
         type: actionTypes.fetchRules,
@@ -41,7 +49,9 @@ export function editRule(params) {
 export function addRule(params) {
     return function(dispatch) {
         let split = JSON.parse(JSON.stringify(params.split));
+
         split.map(s => {
+            removeEmpty(s);
             s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
                 tags += tag.key + '|';
                 return tags;

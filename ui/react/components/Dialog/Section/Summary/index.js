@@ -38,9 +38,7 @@ const Summary = React.createClass({
     },
     render() {
         let condition = this.props.data.condition[0];
-        let fee = this.props.data.fee;
         let limit = this.props.data.limit;
-        let commission = this.props.data.commission;
         return (
            <table className={style.summary}>
                 <tbody>

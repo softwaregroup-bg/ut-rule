@@ -32,6 +32,17 @@ export function removeRules(params) {
 };
 
 export function editRule(params) {
+    let split = JSON.parse(JSON.stringify(params.split));
+
+    split.map(s => {
+        removeEmpty(s);
+        s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
+            tags += tag.key + '|';
+            return tags;
+        }, '|');
+        return s;
+    });
+    params.split = {data: {rows: split}};
     return function(dispatch) {
         return dispatch({
             type: actionTypes.editRule,
@@ -59,7 +70,6 @@ export function addRule(params) {
             return s;
         });
         params.split = {data: {rows: split}};
-        debugger;
         return dispatch({
             type: actionTypes.addRule,
             method: 'rule.rule.add',

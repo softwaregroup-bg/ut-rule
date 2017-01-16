@@ -121,7 +121,7 @@ export default React.createClass({
     },
     componentWillMount() {
         this.setState({
-            data: merge({}, this.state.data, this.props.data),
+            data: merge({}, this.state.data, this.props.data), // here we get the data
             isEditing: this.props.data !== undefined
         });
     },

@@ -36,7 +36,7 @@ var formatRules = function(data) {
                     result[record.conditionId][prop] = [];
                 }
                 result[record.conditionId][prop].push(record);
-            })
+            });
         }
     });
     data.splitName.forEach(function(record) {
@@ -46,9 +46,11 @@ var formatRules = function(data) {
         splitNameConditionMap[record.splitNameId] = {
             index: result[record.conditionId].split.length,
             conditionId: record.conditionId
-        }
+        };
         result[record.conditionId].split.push({
-            splitName: record
+            splitName: record,
+            splitAssignment: [],
+            splitRange: []
         });
     });
     ['splitRange', 'splitAssignment'].forEach(function(prop) {
@@ -56,13 +58,15 @@ var formatRules = function(data) {
         if (data[prop].length) {
             data[prop].forEach(function(record) {
                 mappedData = splitNameConditionMap[record.splitNameId];
-                if (!result[mappedData.conditionId].split[mappedData.index][prop]) {
-                    result[mappedData.conditionId].split[mappedData.index][prop] = [];
-                }
                 result[mappedData.conditionId].split[mappedData.index][prop].push(record);
-            })
+            });
         }
     });
+    for (var resultKey in result) {
+        for (var splitKey in result[resultKey].split) {
+            result[resultKey].split[splitKey].splitName.tag = result[resultKey].split[splitKey].splitName.tag.split('|').filter((v) => (v !== '')).map((v) => ({key: v, name: v}));
+        }
+    }
     return result;
 };
 

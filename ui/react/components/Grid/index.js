@@ -2,31 +2,6 @@ import React, { PropTypes } from 'react';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
 import ContextMenu from '../ContextMenu';
 import style from './style.css';
-import classnames from 'classnames';
-
-const nestedTable = function(arr, className) {
-    return <table className={classnames(style.nested, className)}>
-        <tbody>
-            {
-                arr.map((tr, i) => {
-                    return <tr key={i}>
-                        {
-                            (Array.isArray(tr) ? tr : [tr]).map((td, j) => {
-                                return <td key={j}>{td}</td>;
-                            })
-                        }
-                    </tr>;
-                })
-            }
-        </tbody>
-    </table>;
-};
-
-const buildCSV = function(arr) {
-    return arr.map((record) => {
-        return record.value ? ((record.key ? record.key + ': ' : '') + record.value) : '';
-    }).filter(val => val).join(' | ');
-};
 
 export default React.createClass({
     propTypes: {

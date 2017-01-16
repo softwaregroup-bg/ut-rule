@@ -26,7 +26,7 @@ var formatRules = function(data) {
     }
     var result = {};
     var splitNameConditionMap = {};
-    ['condition', 'limit', 'splitName'].forEach(function(prop) {
+    ['condition', 'limit'].forEach(function(prop) {
         if (data[prop].length) {
             data[prop].forEach(function(record) {
                 if (!result[record.conditionId]) {
@@ -35,24 +35,34 @@ var formatRules = function(data) {
                 if (!result[record.conditionId][prop]) {
                     result[record.conditionId][prop] = [];
                 }
-                if (record.splitNameId) {
-                    splitNameConditionMap[record.splitNameId] = record.conditionId;
-                }
                 result[record.conditionId][prop].push(record);
             })
         }
     });
+    data.splitName.forEach(function(record) {
+        if (!result[record.conditionId].split) {
+            result[record.conditionId].split = [];
+        }
+        splitNameConditionMap[record.splitNameId] = {
+            index: result[record.conditionId].split.length,
+            conditionId: record.conditionId
+        }
+        result[record.conditionId].split.push({
+            splitName: record
+        });
+    });
     ['splitRange', 'splitAssignment'].forEach(function(prop) {
+        var mappedData;
         if (data[prop].length) {
             data[prop].forEach(function(record) {
-                if (!result[splitNameConditionMap[record.splitNameId]][prop]) {
-                    result[splitNameConditionMap[record.splitNameId]][prop] = [];
+                mappedData = splitNameConditionMap[record.splitNameId];
+                if (!result[mappedData.conditionId].split[mappedData.index][prop]) {
+                    result[mappedData.conditionId].split[mappedData.index][prop] = [];
                 }
-                result[splitNameConditionMap[record.splitNameId]][prop].push(record);
+                result[mappedData.conditionId].split[mappedData.index][prop].push(record);
             })
         }
     });
-    debugger;
     return result;
 };
 

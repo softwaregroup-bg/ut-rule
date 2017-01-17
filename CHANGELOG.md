@@ -1,3 +1,28 @@
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v6.0.2...v6.1.0) (2017-01-17)
+
+
+### Bug Fixes
+
+* add tag column in rule.splitName ([5e16406](https://github.com/softwaregroup-bg/ut-rule/commit/5e16406))
+* fix rule.rule.add according to new redesign ([81b0dc3](https://github.com/softwaregroup-bg/ut-rule/commit/81b0dc3))
+* formatRules ([ea86ba7](https://github.com/softwaregroup-bg/ut-rule/commit/ea86ba7))
+* prepare rule.rule.edit procedure ([8561c38](https://github.com/softwaregroup-bg/ut-rule/commit/8561c38))
+* remove null properties when sending data to the server ([a99ce33](https://github.com/softwaregroup-bg/ut-rule/commit/a99ce33))
+* removing fee and commision ([cc6f151](https://github.com/softwaregroup-bg/ut-rule/commit/cc6f151))
+* restructure data returned by formatRule function in reducer ([781cadb](https://github.com/softwaregroup-bg/ut-rule/commit/781cadb))
+* rule.rule.remove according to latest architecture changes ([a48adba](https://github.com/softwaregroup-bg/ut-rule/commit/a48adba))
+* typo ([96cc9ad](https://github.com/softwaregroup-bg/ut-rule/commit/96cc9ad))
+
+
+### Features
+
+* add split ([f8aafa4](https://github.com/softwaregroup-bg/ut-rule/commit/f8aafa4))
+* add tables splitRange, splitAssigment and splitName ([0900e10](https://github.com/softwaregroup-bg/ut-rule/commit/0900e10))
+* edit split ([294c0ba](https://github.com/softwaregroup-bg/ut-rule/commit/294c0ba))
+
+
+
 <a name="6.0.2"></a>
 ## [6.0.2](https://github.com/softwaregroup-bg/ut-rule/compare/v6.0.1...v6.0.2) (2017-01-13)
 

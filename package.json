@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "6.0.2",
+  "version": "6.1.0",
   "main": "api/sql/index.js",
   "dependencies": {
     "classnames": "2.2.5",
@@ -14,7 +14,6 @@
     "react-redux": "4.4.6",
     "react-router": "3.0.0",
     "redux": "3.6.0",
-    "lodash.merge": "4.6.0",
     "ut-error": "^5.3.16"
   },
   "devDependencies": {

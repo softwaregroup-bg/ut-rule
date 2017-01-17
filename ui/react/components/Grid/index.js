@@ -2,31 +2,6 @@ import React, { PropTypes } from 'react';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
 import ContextMenu from '../ContextMenu';
 import style from './style.css';
-import classnames from 'classnames';
-
-const nestedTable = function(arr, className) {
-    return <table className={classnames(style.nested, className)}>
-        <tbody>
-            {
-                arr.map((tr, i) => {
-                    return <tr key={i}>
-                        {
-                            (Array.isArray(tr) ? tr : [tr]).map((td, j) => {
-                                return <td key={j}>{td}</td>;
-                            })
-                        }
-                    </tr>;
-                })
-            }
-        </tbody>
-    </table>;
-};
-
-const buildCSV = function(arr) {
-    return arr.map((record) => {
-        return record.value ? ((record.key ? record.key + ': ' : '') + record.value) : '';
-    }).filter(val => val).join(' | ');
-};
 
 export default React.createClass({
     propTypes: {
@@ -59,14 +34,6 @@ export default React.createClass({
                 destination: {
                     visible: true,
                     title: 'Destination'
-                },
-                fee: {
-                    visible: true,
-                    title: 'Fee'
-                },
-                commission: {
-                    visible: false,
-                    title: 'Commission'
                 },
                 limit: {
                     visible: true,
@@ -139,8 +106,6 @@ export default React.createClass({
                     ['Supervisor', condition.destinationSupervisorId, 'supervisor'],
                     ['Tag', condition.destinationTag]
                 ],
-                fee: columns.fee.visible && record.fee,
-                commission: columns.commission.visible && record.commission,
                 limit: columns.limit.visible && record.limit,
                 refresh: ''
             };
@@ -159,56 +124,6 @@ export default React.createClass({
                 case 'source':
                 case 'destination':
                     return this.buildList(value);
-                case 'fee':
-                    return nestedTable(value.reduce((all, record) => {
-                        all.push([
-                            '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
-                            buildCSV([
-                                {
-                                    key: '',
-                                    value: record.percent ? record.percent + '%' : ''
-                                },
-                                {
-                                    key: 'base',
-                                    value: record.percentBase
-                                },
-                                {
-                                    key: 'min',
-                                    value: record.minValue
-                                },
-                                {
-                                    key: 'max',
-                                    value: record.maxValue
-                                }
-                            ])
-                        ]);
-                        return all;
-                    }, []), style.fee);
-                case 'commission':
-                    return nestedTable(value.reduce((all, record) => {
-                        all.push([
-                            '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
-                            buildCSV([
-                                {
-                                    key: '',
-                                    value: record.percent ? record.percent + '%' : ''
-                                },
-                                {
-                                    key: 'base',
-                                    value: record.percentBase
-                                },
-                                {
-                                    key: 'min',
-                                    value: record.minValue
-                                },
-                                {
-                                    key: 'max',
-                                    value: record.maxValue
-                                }
-                            ])
-                        ]);
-                        return all;
-                    }, []), style.commission);
                 case 'limit':
                     return value.map((limit, i) => {
                         return this.buildList([
@@ -254,8 +169,6 @@ export default React.createClass({
               {title: 'Operation', name: 'operation'},
               {title: 'Source', name: 'source'},
               {title: 'Destination', name: 'destination'},
-              {title: 'Fee', name: 'fee', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
-              {title: 'Commission', name: 'commission', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
               {title: 'Limit', name: 'limit'},
               {
                   title: <div style={{float: 'right'}}>

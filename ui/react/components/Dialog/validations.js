@@ -8,27 +8,8 @@ let schema = joi.object().keys({
                 language: {
                     key: '"Priority" ',
                     string: {
-                        min: 'is required for all conditions'
-                    }
-                }
-            })
-        })
-    ),
-    fee: joi.array().items(
-        joi.object().keys({
-            startAmount: joi.number().required().options({
-                language: {
-                    key: '"Amount" ',
-                    number: {
-                        base: 'is required for all fees'
-                    }
-                }
-            }),
-            startAmountCurrency: joi.string().required().options({
-                language: {
-                    key: '"Currency" ',
-                    string: {
-                        base: 'is required for all fees'
+                        min: 'is required for all conditions',
+                        number: 'is required for all conditions'
                     }
                 }
             })
@@ -46,7 +27,68 @@ let schema = joi.object().keys({
             })
         })
     ),
-    commission: joi.array().required()
+    split: joi.array().items(
+        joi.object().keys({
+            splitName: joi.object().keys({
+                name: joi.string().required().options({
+                    language: {
+                        key: '"Split Name" ',
+                        string: {
+                            base: 'is required for all splits'
+                        }
+                    }
+                })
+            }),
+            splitRange: joi.array().items(
+                 joi.object().keys({
+                     startAmount: joi.number().min(1).required().options({
+                         language: {
+                             key: '"Range Start Amount" ',
+                             number: {
+                                 base: 'is required for all splits'
+                             }
+                         }
+                     }),
+                     startAmountCurrency: joi.string().required().options({
+                         language: {
+                             key: '"Range Start Amount Currency" ',
+                             string: {
+                                 base: 'is required for all splits'
+                             }
+                         }
+                     })
+                 })
+            ),
+            splitAssignment: joi.array().items(
+                joi.object().keys({
+                    debit: joi.string().required().options({
+                        language: {
+                            key: '"Assignment Debit" ',
+                            string: {
+                                base: 'is required for all splits'
+                            }
+                        }
+                    }),
+                    credit: joi.string().required().options({
+                        language: {
+                            key: '"Assignment Credit" ',
+                            string: {
+                                base: 'is required for all splits'
+                            }
+                        }
+                    }),
+                    description: joi.string().required().options({
+                        language: {
+                            key: '"Assignment Description" ',
+                            string: {
+                                base: 'is required for all splits'
+                            }
+                        }
+                    })
+                })
+            )
+        })
+    )
 });
 module.exports = {
     run: (objToValidate, options = {}) => {

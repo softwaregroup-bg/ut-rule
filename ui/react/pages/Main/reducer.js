@@ -6,9 +6,13 @@ export default (state = defaultState, action) => {
     } else if (action.result) {
         switch (action.type) {
             case actionTypes.fetchNomenclatures:
-                return Object.assign({}, state, {'fetchNomenclatures': formatNomenclatures(action.result.items)});
+                return Object.assign({}, state, {
+                    'fetchNomenclatures': formatNomenclatures(action.result.items)
+                });
             case actionTypes.fetchRules:
-                return Object.assign({}, state, {'fetchRules': formatRules(action.result)});
+                return Object.assign({}, state, {
+                    'fetchRules': formatRules(action.result)
+                });
             default:
                 break;
         }
@@ -16,22 +20,54 @@ export default (state = defaultState, action) => {
     return state;
 };
 
-const formatRules = function(data) {
-    return Object.keys(data).reduce(function(all, key) {
-        data[key].forEach(function(record) {
-            if (!record) {
-                return;
-            }
-            if (!all[record.conditionId]) {
-                all[record.conditionId] = {};
-            }
-            if (!all[record.conditionId][key]) {
-                all[record.conditionId][key] = [];
-            }
-            all[record.conditionId][key].push(record);
+var formatRules = function(data) {
+    if (!data.condition.length) {
+        return {};
+    }
+    var result = {};
+    var splitNameConditionMap = {};
+    ['condition', 'limit'].forEach(function(prop) {
+        if (data[prop].length) {
+            data[prop].forEach(function(record) {
+                if (!result[record.conditionId]) {
+                    result[record.conditionId] = {};
+                }
+                if (!result[record.conditionId][prop]) {
+                    result[record.conditionId][prop] = [];
+                }
+                result[record.conditionId][prop].push(record);
+            });
+        }
+    });
+    data.splitName.forEach(function(record) {
+        if (!result[record.conditionId].split) {
+            result[record.conditionId].split = [];
+        }
+        splitNameConditionMap[record.splitNameId] = {
+            index: result[record.conditionId].split.length,
+            conditionId: record.conditionId
+        };
+        result[record.conditionId].split.push({
+            splitName: record,
+            splitAssignment: [],
+            splitRange: []
         });
-        return all;
-    }, {});
+    });
+    ['splitRange', 'splitAssignment'].forEach(function(prop) {
+        var mappedData;
+        if (data[prop].length) {
+            data[prop].forEach(function(record) {
+                mappedData = splitNameConditionMap[record.splitNameId];
+                result[mappedData.conditionId].split[mappedData.index][prop].push(record);
+            });
+        }
+    });
+    for (var resultKey in result) {
+        for (var splitKey in result[resultKey].split) {
+            result[resultKey].split[splitKey].splitName.tag = result[resultKey].split[splitKey].splitName.tag.split('|').filter((v) => (v !== '')).map((v) => ({key: v, name: v}));
+        }
+    }
+    return result;
 };
 
 const formatNomenclatures = function(data) {

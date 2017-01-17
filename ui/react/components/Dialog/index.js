@@ -5,15 +5,15 @@ import Input from 'ut-front-react/components/Input';
 import style from './style.css';
 import Channel from './Section/Channel';
 import Operation from './Section/Operation';
+import Split from './Section/Splits';
 import Source from './Section/Source';
 import Destination from './Section/Destination';
-import SectionFee from './Section/Fee';
-import SectionCommission from './Section/Commission';
 import SectionLimit from './Section/Limit';
 import SectionSummary from './Section/Summary';
 import merge from 'lodash.merge';
 import validations from './validations.js';
 import classnames from 'classnames';
+import set from 'lodash.set';
 
 const emptyCondition = {
     priority: null,
@@ -49,24 +49,6 @@ const emptyCondition = {
     destinationAccountProductId: null,
     destinationAccountId: null
 };
-const emptyFee = {
-    startAmount: null,
-    startAmountCurrency: null,
-    isSourceAmount: true,
-    minValue: null,
-    maxValue: null,
-    percent: null,
-    percentBase: null
-};
-const emptyCommission = {
-    startAmount: null,
-    startAmountCurrency: null,
-    isSourceAmount: true,
-    minValue: null,
-    maxValue: null,
-    percent: null,
-    percentBase: null
-};
 const emptyLimit = {
     currency: null,
     minAmount: null,
@@ -77,6 +59,33 @@ const emptyLimit = {
     maxCountWeekly: null,
     maxAmountMonthly: null,
     maxCountMonthly: null
+};
+
+const emptySplit = {
+    splitName: {
+        name: '',
+        tag: [] // varchar -> string with , -> multiselect with hardcoded values
+    },
+    splitRange: [],
+    splitAssignment: []
+};
+
+const emptySplitRange = {
+    startAmount: null, // required
+    startAmountCurrency: null, // required
+    isSourceAmount: false,
+    minValue: null,
+    maxValue: null,
+    percent: null
+};
+
+const emptySplitAssignment = {
+    debit: null,
+    credit: null,
+    minValue: null,
+    maxValue: null,
+    percent: null,
+    description: null
 };
 
 export default React.createClass({
@@ -101,19 +110,18 @@ export default React.createClass({
                 condition: [
                     Object.assign({}, emptyCondition)
                 ],
-                fee: [
-                    // Object.assign({}, emptyFee)
-                ],
                 limit: [
                     // Object.assign({}, emptyLimit)
                 ],
-                commission: []
+                split: [
+
+                ]
             }
         };
     },
     componentWillMount() {
         this.setState({
-            data: merge({}, this.state.data, this.props.data),
+            data: merge({}, this.state.data, this.props.data), // here we get the data
             isEditing: this.props.data !== undefined
         });
     },
@@ -134,43 +142,11 @@ export default React.createClass({
         };
     },
     onFieldChange(category, index, key, value) {
-        let data = this.state.data;
-        data[category][index][key] = value === '__placeholder__' ? undefined : value;
+        let path = [category, index, key].join('.');
+        // creating a deep copy, needed for set()
+        let data = JSON.parse(JSON.stringify(this.state.data));
+        set(data, path, value === '__placeholder__' ? undefined : value);
         this.setState({ data });
-    },
-    addFeeRow() {
-        let feeObject = Object.assign({}, emptyFee);
-        if (this.state.isEditing) {
-            feeObject.conditionId = this.state.data.condition[0].conditionId;
-        }
-        this.state.data.fee.push(feeObject);
-        this.setState({
-            data: this.state.data
-        });
-    },
-    deleteFeeRow(index) {
-        let fee = this.state.data.fee;
-        this.state.data.fee = fee.slice(0, index).concat(fee.slice(index + 1));
-        this.setState({
-            data: this.state.data
-        });
-    },
-    addCommissionRow() {
-        let commissionObject = Object.assign({}, emptyCommission);
-        if (this.state.isEditing) {
-            commissionObject.conditionId = this.state.data.condition[0].conditionId;
-        }
-        this.state.data.commission.push(commissionObject);
-        this.setState({
-            data: this.state.data
-        });
-    },
-    deleteCommissionRow(index) {
-        let commission = this.state.data.commission;
-        this.state.data.commission = commission.slice(0, index).concat(commission.slice(index + 1));
-        this.setState({
-            data: this.state.data
-        });
     },
     addLimitRow() {
         let limitObject = Object.assign({}, emptyLimit);
@@ -188,6 +164,48 @@ export default React.createClass({
         this.setState({
             data: this.state.data
         });
+    },
+    addSplitRow() {
+        let splitObject = JSON.parse(JSON.stringify(emptySplit));
+        this.state.data.split.push(splitObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteSplitRow(index) {
+        let {split} = this.state.data;
+        this.state.data.split = split.slice(0, index).concat(split.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
+    addSplitRangeRow(splitIndex) {
+        return () => {
+            let tempState = Object.assign({}, this.state);
+            let splitRow = tempState.data.split[splitIndex];
+            splitRow.splitRange.push(emptySplitRange);
+            this.setState(tempState);
+        };
+    },
+    deleteSplitRangeRow(splitIndex, rangeIndex) {
+        let tempState = Object.assign({}, this.state);
+        let splitRow = tempState.data.split[splitIndex];
+        splitRow.splitRange = splitRow.splitRange.slice(0, rangeIndex).concat(splitRow.splitRange.slice(rangeIndex + 1));
+        this.setState(tempState);
+    },
+    addSplitAssignmentRow(splitIndex) {
+        return () => {
+            let tempState = Object.assign({}, this.state);
+            let splitRow = tempState.data.split[splitIndex];
+            splitRow.splitAssignment.push(emptySplitAssignment);
+            this.setState(tempState);
+        };
+    },
+    deleteSplitAssignmentRow(splitIndex, assignmentIndex) {
+        let tempState = Object.assign({}, this.state);
+        let splitRow = tempState.data.split[splitIndex];
+        splitRow.splitAssignment = splitRow.splitAssignment.slice(0, assignmentIndex).concat(splitRow.splitAssignment.slice(assignmentIndex + 1));
+        this.setState(tempState);
     },
     save() {
         let formValidation = validations.run(this.state.data);
@@ -269,30 +287,26 @@ export default React.createClass({
                               data={this.state.data.condition[0]}
                             />
                         </Accordion>
-                        <Accordion title='Fee' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <SectionFee
-                                  data={this.state.data.fee}
-                                  addRow={this.addFeeRow}
-                                  deleteRow={this.deleteFeeRow}
-                                />
-                            </div>
-                        </Accordion>
-                        <Accordion title='Commission' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <SectionCommission
-                                  data={this.state.data.commission}
-                                  addRow={this.addCommissionRow}
-                                  deleteRow={this.deleteCommissionRow}
-                                />
-                            </div>
-                        </Accordion>
                         <Accordion title='Limit' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                             <div className={style.content}>
                                 <SectionLimit
                                   data={this.state.data.limit}
                                   addRow={this.addLimitRow}
                                   deleteRow={this.deleteLimitRow}
+                                />
+                            </div>
+                        </Accordion>
+                        <Accordion title='Split' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                            <div className={style.content}>
+                                <Split
+                                  data={this.state.data.split}
+                                  nomenclatures={this.props.nomenclatures}
+                                  addSplitRow={this.addSplitRow}
+                                  deleteSplitRow={this.deleteSplitRow}
+                                  addSplitRangeRow={this.addSplitRangeRow}
+                                  deleteSplitRangeRow={this.deleteSplitRangeRow}
+                                  addSplitAssignmentRow={this.addSplitAssignmentRow}
+                                  deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
                                 />
                             </div>
                         </Accordion>

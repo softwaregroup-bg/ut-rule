@@ -1,5 +1,13 @@
 import * as actionTypes from './actionTypes';
 
+const removeEmpty = (obj) => {
+    Object.keys(obj).forEach(key => {
+        if (obj[key] && typeof obj[key] === 'object') removeEmpty(obj[key]);
+        else if (obj[key] == null) delete obj[key];
+    });
+    return obj;
+};
+
 export function fetchRules(params) {
     return {
         type: actionTypes.fetchRules,
@@ -24,6 +32,17 @@ export function removeRules(params) {
 };
 
 export function editRule(params) {
+    let split = JSON.parse(JSON.stringify(params.split));
+
+    split.map(s => {
+        removeEmpty(s);
+        s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
+            tags += tag.key + '|';
+            return tags;
+        }, '|');
+        return s;
+    });
+    params.split = {data: {rows: split}};
     return function(dispatch) {
         return dispatch({
             type: actionTypes.editRule,
@@ -40,6 +59,17 @@ export function editRule(params) {
 
 export function addRule(params) {
     return function(dispatch) {
+        let split = JSON.parse(JSON.stringify(params.split));
+
+        split.map(s => {
+            removeEmpty(s);
+            s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
+                tags += tag.key + '|';
+                return tags;
+            }, '|');
+            return s;
+        });
+        params.split = {data: {rows: split}};
         return dispatch({
             type: actionTypes.addRule,
             method: 'rule.rule.add',

@@ -10,6 +10,7 @@ declare @conditionId INT = (SELECT conditionId FROM @condition)
 
 BEGIN TRY
     BEGIN TRANSACTION
+    SET @conditionId = (SELECT conditionId FROM @condition)
 
     UPDATE c
     SET [priority] = c1.[priority],

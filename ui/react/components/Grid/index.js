@@ -1,18 +1,20 @@
 import React, { PropTypes } from 'react';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
+import {fromJS} from 'immutable';
 import ContextMenu from '../ContextMenu';
 import style from './style.css';
 
 export default React.createClass({
     propTypes: {
         data: PropTypes.object,
+        columns: PropTypes.object,
         nomenclatures: PropTypes.object,
         selectedConditions: PropTypes.object,
         refresh: PropTypes.func,
         handleCheckboxSelect: PropTypes.func,
         handleHeaderCheckboxSelect: PropTypes.func
     },
-    getInitialState() {
+    getInitialState(state) {
         return {
             columns: {
                 priority: {
@@ -41,6 +43,11 @@ export default React.createClass({
                 }
             }
         };
+    },
+    componentDidMount() {
+        if (this.props.columns !== undefined) {
+            this.state.columns = this.props.columns.toJS();
+        }
     },
     shouldComponentUpdate(nextProps, nextState) {
         return true;
@@ -160,6 +167,7 @@ export default React.createClass({
     },
     render() {
         let data = this.getData();
+
         return <SimpleGrid
           ref='grid'
           multiSelect

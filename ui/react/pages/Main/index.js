@@ -19,7 +19,9 @@ const Main = React.createClass({
         ready: PropTypes.bool,
         empty: PropTypes.bool,
         actions: PropTypes.object,
-        location: PropTypes.object
+        location: PropTypes.object,
+        uiConfig: PropTypes.object,
+        columns: PropTypes.object
     },
     getInitialState() {
         return {
@@ -139,6 +141,10 @@ const Main = React.createClass({
         if (!this.props.ready) {
             return null;
         }
+
+        let uiConfig = this.props.uiConfig.get('main');
+        let columns = uiConfig !== undefined ? uiConfig.getIn(['grid', 'columns']) : undefined;
+
         return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
             <div className={style.header}>
@@ -193,6 +199,7 @@ const Main = React.createClass({
                       nomenclatures={this.props.nomenclatures}
                       handleCheckboxSelect={this.handleCheckboxSelect}
                       handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                      columns={columns}
                     />
                     </div>
             </div>
@@ -216,7 +223,8 @@ export default connect(
             rules: state.main.fetchRules,
             nomenclatures: state.main.fetchNomenclatures,
             ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
-            empty: Object.keys(state.main).length === 0
+            empty: Object.keys(state.main).length === 0,
+            uiConfig: state.uiConfig
         };
     },
     (dispatch) => {

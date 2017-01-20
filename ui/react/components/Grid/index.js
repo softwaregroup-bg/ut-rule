@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
-import {fromJS} from 'immutable';
 import ContextMenu from '../ContextMenu';
 import style from './style.css';
 

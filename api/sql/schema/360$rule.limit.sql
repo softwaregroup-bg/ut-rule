@@ -1,5 +1,5 @@
 CREATE TABLE [rule].[limit] (
-	limitId INT IDENTITY NOT NULL,
+	limitId INT IDENTITY(1000,1) NOT NULL,
 	conditionId INT NOT NULL,
 	currency VARCHAR(3) NOT NULL,
 	minAmount MONEY,

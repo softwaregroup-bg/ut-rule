@@ -1,3 +1,13 @@
+<a name="5.8.1"></a>
+## [5.8.1](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.0...v5.8.1) (2017-01-23)
+
+
+### Bug Fixes
+
+* update dependencies ([255d3c6](https://github.com/softwaregroup-bg/ut-rule/commit/255d3c6))
+
+
+
 <a name="5.8.0"></a>
 # [5.8.0](https://github.com/softwaregroup-bg/ut-rule/compare/v5.7.1...v5.8.0) (2016-12-22)
 

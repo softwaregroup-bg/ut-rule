@@ -94,6 +94,7 @@ export default React.createClass({
         data: PropTypes.object,
         nomenclatures: PropTypes.object.isRequired,
         roles: PropTypes.object,
+        aliases: PropTypes.object,
         onSave: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
         sections: PropTypes.object
@@ -101,7 +102,8 @@ export default React.createClass({
     childContextTypes: {
         onFieldChange: PropTypes.func,
         nomenclatures: PropTypes.object,
-        roles: PropTypes.object
+        roles: PropTypes.array,
+        aliases: PropTypes.array
     },
     getInitialState() {
         return {
@@ -130,9 +132,10 @@ export default React.createClass({
         });
     },
     getChildContext() {
-        let {nomenclatures, roles} = this.props;
+        let {nomenclatures, roles, aliases} = this.props;
         let formattedNomenclatures = {};
-        let formattedRoles = {};
+        let formattedRoles = [];
+        let formattedAliases = [];
 
         Object.keys(nomenclatures).map((nomKey) => {
             formattedNomenclatures[nomKey] = Object.keys(nomenclatures[nomKey]).map((key) => {
@@ -144,7 +147,7 @@ export default React.createClass({
         });
 
         if (roles !== undefined) {
-            formattedRoles.role = Object.keys(roles.role).map((key) => {
+            formattedRoles = Object.keys(roles.role).map((key) => {
                 return {
                     key,
                     name: roles.role[key]
@@ -152,10 +155,20 @@ export default React.createClass({
             });
         }
 
+        if (aliases !== undefined) {
+            formattedAliases = Object.keys(aliases.aliasAccount).map((key) => {
+                return {
+                    key,
+                    name: aliases.aliasAccount[key]
+                };
+            });
+        }
+
         return {
             onFieldChange: this.onFieldChange,
             nomenclatures: formattedNomenclatures,
-            roles: formattedRoles
+            roles: formattedRoles,
+            aliases: formattedAliases
         };
     },
     onFieldChange(category, index, key, value) {
@@ -337,6 +350,7 @@ export default React.createClass({
                                       deleteSplitRangeRow={this.deleteSplitRangeRow}
                                       addSplitAssignmentRow={this.addSplitAssignmentRow}
                                       deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
+                                      config={sections.split}
                                     />
                                 </div>
                         </Accordion>}

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import style from '../../../style.css';
 import Input from 'ut-front-react/components/Input';
+import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import plusImage from '../../../assets/add_new.png';
@@ -10,11 +11,24 @@ const Assignment = React.createClass({
         data: PropTypes.array.isRequired,
         splitIndex: PropTypes.number.isRequired,
         addSplitAssignmentRow: PropTypes.func.isRequired,
-        deleteSplitAssignmentRow: PropTypes.func.isRequired
+        deleteSplitAssignmentRow: PropTypes.func.isRequired,
+        fields: PropTypes.object
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
-        nomenclatures: PropTypes.object
+        nomenclatures: PropTypes.object,
+        aliases: PropTypes.array
+    },
+    getInitialState() {
+        return {
+            fields: this.props.fields
+        };
+    },
+    onSelectDropdown(index) {
+        let self = this;
+        return (field) => {
+            self.context.onFieldChange('split.' + self.props.splitIndex + '.splitAssignment', index, field.key, field.value);
+        };
     },
     onChangeInput(index) {
         let self = this;
@@ -31,19 +45,25 @@ const Assignment = React.createClass({
     createHeaderCells() {
         return [
             {name: 'Description', key: 'description'},
+            {name: 'Debit', key: 'debitAlias'},
             {name: 'Debit', key: 'debit'},
+            {name: 'Credit', key: 'creditAlias'},
             {name: 'Credit', key: 'credit'},
             {name: '%', key: 'percent'},
             {name: 'Min Amount', key: 'minValue'},
             {name: 'Max Amount', key: 'maxValue'},
             {name: ' ', key: 'assignmentActions'}
-        ].map((cell, i) => (
+        ].filter((column) => (!this.state.fields[column.key] || this.state.fields[column.key].visible)).map((cell, i) => (
             <th key={i}>{cell.name}</th>
         ));
     },
     createAssignmentRows() {
+        let fields = this.state.fields;
+        let aliases = this.context.aliases;
+
         return this.props.data.map((splitAssignment, index) => (
             <tr key={index}>
+                {fields.description.visible &&
                 <td>
                     <Input
                       keyProp='description'
@@ -51,6 +71,8 @@ const Assignment = React.createClass({
                       value={'' + (splitAssignment.description || '')}
                     />
                 </td>
+                }
+                {fields.debit.visible &&
                 <td>
                     <Input
                       keyProp='debit'
@@ -58,6 +80,19 @@ const Assignment = React.createClass({
                       value={'' + (splitAssignment.debit || '')}
                     />
                 </td>
+                }
+                {fields.debitAlias.visible &&
+                <td style={{minWidth: '200px'}}>
+                    <Dropdown
+                      keyProp='debit'
+                      data={aliases}
+                      onSelect={this.onSelectDropdown(index)}
+                      defaultSelected={'' + (splitAssignment.debit || '')}
+                      mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                    />
+                </td>
+                }
+                {fields.credit.visible &&
                 <td>
                     <Input
                       keyProp='credit'
@@ -65,6 +100,19 @@ const Assignment = React.createClass({
                       value={'' + (splitAssignment.credit || '')}
                     />
                 </td>
+                }
+                {fields.creditAlias.visible &&
+                <td style={{minWidth: '200px'}}>
+                    <Dropdown
+                      keyProp='credit'
+                      data={aliases}
+                      onSelect={this.onSelectDropdown(index)}
+                      defaultSelected={'' + (splitAssignment.credit || '')}
+                      mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                    />
+                </td>
+                }
+                {fields.percent.visible &&
                 <td>
                     <Input
                       keyProp='percent'
@@ -72,6 +120,8 @@ const Assignment = React.createClass({
                       value={'' + (splitAssignment.percent || '')}
                     />
                 </td>
+                }
+                {fields.minValue.visible &&
                 <td>
                     <Input
                       keyProp='minValue'
@@ -79,6 +129,8 @@ const Assignment = React.createClass({
                       value={'' + (splitAssignment.minValue || '')}
                     />
                 </td>
+                }
+                {fields.maxValue.visible &&
                 <td>
                     <Input
                       keyProp='maxValue'
@@ -86,6 +138,7 @@ const Assignment = React.createClass({
                       value={'' + (splitAssignment.maxValue || '')}
                     />
                 </td>
+                }
                 <td>
                     <IconButton onClick={this.onDeleteRow(index)}>
                         <ActionDelete />

@@ -18,6 +18,10 @@ export default (state = defaultState, action) => {
                 return Object.assign({}, state, {
                     'fetchRoles': formatRoles(action.result)
                 });
+            case actionTypes.fetchAliases:
+                return Object.assign({}, state, {
+                    'fetchAliases': formatAliases(action.result)
+                });
             default:
                 break;
         }
@@ -89,12 +93,23 @@ const formatNomenclatures = function(data) {
 };
 
 const formatRoles = function(data) {
-    return data.role.reduce(function(all, record) {
-        if (!all['role']) {
-            all.role = {};
+    return data.role.reduce(function(result, record) {
+        if (!result['role']) {
+            result.role = {};
         }
-        all.role[record.actorId] = record.name;
+        result.role[record.actorId] = record.name;
 
-        return all;
+        return result;
+    }, {});
+};
+
+const formatAliases = function(data) {
+    return data.aliasAccount.reduce(function(result, record) {
+        if (!result['aliasAccount']) {
+            result.aliasAccount = {};
+        }
+        result.aliasAccount[record.code] = record.code;
+
+        return result;
     }, {});
 };

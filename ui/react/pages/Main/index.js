@@ -17,6 +17,7 @@ const Main = React.createClass({
         rules: PropTypes.object,
         nomenclatures: PropTypes.object,
         roles: PropTypes.object,
+        aliases: PropTypes.object,
         ready: PropTypes.bool,
         empty: PropTypes.bool,
         actions: PropTypes.object,
@@ -58,6 +59,10 @@ const Main = React.createClass({
 
         if (this.state.uiConfig.fetchUserRoles) {
             this.props.actions.fetchRoles({});
+        }
+
+        if (this.state.uiConfig.fetchAliases) {
+            this.props.actions.fetchAliases({'method': this.state.uiConfig.fetchAliasesMethod});
         }
     },
     componentWillMount() {
@@ -182,6 +187,7 @@ const Main = React.createClass({
                           data={this.props.rules[this.state.dialog.conditionId]}
                           nomenclatures={this.props.nomenclatures}
                           roles={this.props.roles}
+                          aliases={this.props.aliases}
                           onSave={this.dialogOnSave}
                           onClose={this.dialogOnClose}
                           sections={sections}
@@ -236,6 +242,7 @@ export default connect(
             rules: state.main.fetchRules,
             nomenclatures: state.main.fetchNomenclatures,
             roles: state.main.fetchRoles,
+            aliases: state.main.fetchAliases,
             ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
             empty: Object.keys(state.main).length === 0,
             uiConfig: state.uiConfig

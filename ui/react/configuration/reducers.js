@@ -3,6 +3,8 @@ import immutable from 'immutable';
 
 const defaultUiState = {
     fetchUserRoles: false,
+    fetchAliases: false,
+    fetchAliasesMethod: 'db/integration.aliasAccount.list',
     main: {
         grid: {
             columns: {
@@ -185,7 +187,41 @@ const defaultUiState = {
             },
             split: {
                 visible: true,
-                title: 'Split'
+                title: 'Split',
+                assignmentFields: {
+                    description: {
+                        visible: true,
+                        title: 'Description'
+                    },
+                    debit: {
+                        visible: true,
+                        title: 'Debit'
+                    },
+                    debitAlias: {
+                        visible: false,
+                        title: 'Debit'
+                    },
+                    credit: {
+                        visible: true,
+                        title: 'Credit'
+                    },
+                    creditAlias: {
+                        visible: false,
+                        title: 'Credit'
+                    },
+                    percent: {
+                        visible: true,
+                        title: '%'
+                    },
+                    minValue: {
+                        visible: true,
+                        title: 'Min Amount'
+                    },
+                    maxValue: {
+                        visible: true,
+                        title: 'Max Amount'
+                    }
+                }
             },
             summary: {
                 visible: true,

@@ -49,7 +49,7 @@ const Range = React.createClass({
             {name: '%', key: 'percent'},
             {name: 'Min Amount', key: 'minValue'},
             {name: 'Max Amount', key: 'maxValue'},
-            {name: 'isSourceAmount', key: 'isSourceAmount'},
+            // {name: 'isSourceAmount', key: 'isSourceAmount'},
             {name: ' ', key: 'rangeActions'}
         ].map((cell, i) => (
             <th key={i}>{cell.name}</th>
@@ -66,7 +66,7 @@ const Range = React.createClass({
                       value={'' + (splitRange.startAmount || '')}
                     />
                 </td>
-                <td style={{minWidth: '100px'}}>
+                <td style={{minWidth: '150px'}}>
                     <Dropdown
                       keyProp='startAmountCurrency'
                       data={nomenclatures.currency || []}
@@ -96,12 +96,14 @@ const Range = React.createClass({
                       value={'' + (splitRange.maxValue || '')}
                     />
                 </td>
-                <td style={{textAlign: 'center'}}>
-                    <Checkbox
-                      onClick={this.onCheckboxCheck(index, splitRange)}
-                      checked={splitRange.isSourceAmount}
-                    />
-                </td>
+                {false &&
+                    <td style={{textAlign: 'center'}}>
+                        <Checkbox
+                          onClick={this.onCheckboxCheck(index, splitRange)}
+                          checked={splitRange.isSourceAmount}
+                        />
+                    </td>
+                }
                 <td>
                     <IconButton onClick={this.onDeleteRow(index)}>
                         <ActionDelete />

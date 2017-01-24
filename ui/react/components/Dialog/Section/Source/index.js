@@ -14,44 +14,7 @@ const Source = React.createClass({
     },
     getInitialState() {
         return {
-            fields: {
-                country: {
-                    visible: true,
-                    title: 'Country'
-                },
-                region: {
-                    visible: true,
-                    title: 'Region'
-                },
-                city: {
-                    visible: true,
-                    title: 'City'
-                },
-                organization: {
-                    visible: true,
-                    title: 'Organization'
-                },
-                supervisor: {
-                    visible: true,
-                    title: 'Supervisor'
-                },
-                tag: {
-                    visible: true,
-                    title: 'Tag'
-                },
-                cardProduct: {
-                    visible: true,
-                    title: 'Card Product'
-                },
-                accountProduct: {
-                    visible: true,
-                    title: 'Account Product'
-                },
-                account: {
-                    visible: true,
-                    title: 'Account'
-                }
-            }
+            fields: this.props.fields
         };
     },
     componentWillMount() {

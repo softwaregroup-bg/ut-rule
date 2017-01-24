@@ -15,46 +15,8 @@ const Channel = React.createClass({
     },
     getInitialState() {
         return {
-            fields: {
-                channel: {
-                    visible: true,
-                    title: 'Type'
-                },
-                country: {
-                    visible: true,
-                    title: 'Country'
-                },
-                region: {
-                    visible: true,
-                    title: 'Region'
-                },
-                city: {
-                    visible: true,
-                    title: 'City'
-                },
-                organization: {
-                    visible: true,
-                    title: 'Organization'
-                },
-                supervisor: {
-                    visible: true,
-                    title: 'Supervisor'
-                },
-                tag: {
-                    visible: true,
-                    title: 'Tag'
-                },
-                role: {
-                    visible: true,
-                    title: 'Channel role'
-                }
-            }
+            fields: this.props.fields
         };
-    },
-    componentWillMount() {
-        if (this.props.fields !== undefined) {
-            this.state.fields = this.props.fields;
-        }
     },
     onSelectDropdown(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);

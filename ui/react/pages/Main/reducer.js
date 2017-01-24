@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 const defaultState = {};
+
 export default (state = defaultState, action) => {
     if (action.type === actionTypes.reset) {
         return defaultState;

@@ -15,38 +15,8 @@ export default React.createClass({
     },
     getInitialState(state) {
         return {
-            columns: {
-                priority: {
-                    visible: true,
-                    title: 'Priority'
-                },
-                channel: {
-                    visible: true,
-                    title: 'Channel'
-                },
-                operation: {
-                    visible: true,
-                    title: 'Operation'
-                },
-                source: {
-                    visible: true,
-                    title: 'Source'
-                },
-                destination: {
-                    visible: true,
-                    title: 'Destination'
-                },
-                limit: {
-                    visible: true,
-                    title: 'Limit'
-                }
-            }
+            columns: this.props.columns
         };
-    },
-    componentDidMount() {
-        if (this.props.columns !== undefined) {
-            this.state.columns = this.props.columns.toJS();
-        }
     },
     shouldComponentUpdate(nextProps, nextState) {
         return true;

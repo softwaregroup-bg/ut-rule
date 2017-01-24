@@ -15,24 +15,7 @@ const Operation = React.createClass({
     },
     getInitialState() {
         return {
-            fields: {
-                tag: {
-                    visible: true,
-                    title: 'Tag'
-                },
-                operationStartDate: {
-                    visible: true,
-                    title: 'Start Date'
-                },
-                operationEndDate: {
-                    visible: true,
-                    title: 'End Date'
-                },
-                operationId: {
-                    visible: true,
-                    title: 'Operation'
-                }
-            }
+            fields: this.props.fields
         };
     },
     componentWillMount() {

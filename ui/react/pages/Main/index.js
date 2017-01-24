@@ -39,7 +39,6 @@ const Main = React.createClass({
     },
     fetchData() {
         this.props.actions.fetchRules();
-        this.props.actions.fetchRoles({});
         this.props.actions.fetchNomenclatures({
             alias: [
                 'currency',
@@ -56,8 +55,16 @@ const Main = React.createClass({
                 'account'
             ]
         });
+
+        if (this.state.uiConfig.fetchUserRoles) {
+            this.props.actions.fetchRoles({});
+        }
     },
     componentWillMount() {
+        if (this.props.uiConfig !== undefined) {
+            this.state.uiConfig = this.props.uiConfig.toJS();
+        }
+
         this.fetchData();
     },
     componentWillReceiveProps(nextProps) {
@@ -145,9 +152,9 @@ const Main = React.createClass({
             return null;
         }
 
-        let uiConfig = this.props.uiConfig;
-        let columns = uiConfig !== undefined ? uiConfig.getIn(['main', 'grid', 'columns']) : undefined;
-        let sections = uiConfig !== undefined ? uiConfig.getIn(['dialog', 'sections']) : undefined;
+        let uiConfig = this.state.uiConfig;
+        let columns = uiConfig.main.grid.columns;
+        let sections = uiConfig.dialog.sections;
 
         return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
@@ -229,7 +236,7 @@ export default connect(
             rules: state.main.fetchRules,
             nomenclatures: state.main.fetchNomenclatures,
             roles: state.main.fetchRoles,
-            ready: !!(state.main.fetchRules && state.main.fetchNomenclatures && state.main.fetchRoles),
+            ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
             empty: Object.keys(state.main).length === 0,
             uiConfig: state.uiConfig
         };

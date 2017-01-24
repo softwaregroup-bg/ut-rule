@@ -120,80 +120,7 @@ export default React.createClass({
 
                 ]
             },
-            sections: {
-                channel: {
-                    visible: true,
-                    title: 'Channel',
-                    fields: {
-                        country: {
-                            visible: true,
-                            title: 'Country'
-                        },
-                        tag: {
-                            visible: true,
-                            title: 'Tag'
-                        }
-                    }
-                },
-                operation: {
-                    visible: true,
-                    title: 'Operation',
-                    fields: {
-                        tag: {
-                            visible: true,
-                            title: 'Tag'
-                        },
-                        startDate: {
-                            visible: true,
-                            title: 'Start Date'
-                        },
-                        endDate: {
-                            visible: true,
-                            title: 'End Date'
-                        }
-                    }
-                },
-                source: {
-                    visible: true,
-                    title: 'Source',
-                    fields: {
-                        country: {
-                            visible: true,
-                            title: 'Country'
-                        },
-                        tag: {
-                            visible: true,
-                            title: 'Tag'
-                        }
-                    }
-                },
-                destination: {
-                    visible: true,
-                    title: 'Destination',
-                    fields: {
-                        country: {
-                            visible: true,
-                            title: 'Country'
-                        },
-                        tag: {
-                            visible: true,
-                            title: 'Tag'
-                        }
-                    }
-                },
-                limit: {
-                    visible: true,
-                    title: 'Limit`'
-                },
-                split: {
-                    visible: true,
-                    title: 'Split'
-                },
-                summary: {
-                    visible: true,
-                    title: 'Summary'
-                }
-            }
+            sections: this.props.sections
         };
     },
     componentWillMount() {
@@ -201,10 +128,6 @@ export default React.createClass({
             data: merge({}, this.state.data, this.props.data), // here we get the data
             isEditing: this.props.data !== undefined
         });
-
-        if (this.props.sections !== undefined) {
-            this.state.sections = this.props.sections.toJS();
-        }
     },
     getChildContext() {
         let {nomenclatures, roles} = this.props;
@@ -220,12 +143,14 @@ export default React.createClass({
             });
         });
 
-        formattedRoles.role = Object.keys(roles.role).map((key) => {
-            return {
-                key,
-                name: roles.role[key]
-            };
-        });
+        if (roles !== undefined) {
+            formattedRoles.role = Object.keys(roles.role).map((key) => {
+                return {
+                    key,
+                    name: roles.role[key]
+                };
+            });
+        }
 
         return {
             onFieldChange: this.onFieldChange,

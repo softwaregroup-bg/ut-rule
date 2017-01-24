@@ -77,6 +77,7 @@ export default React.createClass({
             let record = this.props.data[conditionId];
             let condition = record.condition[0];
             let columns = this.state.columns;
+
             return {
                 id: conditionId,
                 priority: columns.priority.visible && condition.priority,
@@ -88,7 +89,7 @@ export default React.createClass({
                     ['City', condition.channelCityId, 'city'],
                     ['Organization', condition.channelOrganizationId, 'organization'],
                     ['Supervisor', condition.channelSupervisorId, 'supervisor'],
-                    ['Role', condition.channelRoleId, 'role']
+                    ['Role', condition.channelRoleIds, 'roles']
                 ],
                 operation: columns.operation.visible && [
                     ['Operation', condition.operationId, 'operation'],
@@ -166,17 +167,18 @@ export default React.createClass({
     },
     render() {
         let data = this.getData();
+        let columns = this.state.columns;
 
         return <SimpleGrid
           ref='grid'
           multiSelect
           fields={[
-              {title: 'Priority', name: 'priority'},
-              {title: 'Channel', name: 'channel'},
-              {title: 'Operation', name: 'operation'},
-              {title: 'Source', name: 'source'},
-              {title: 'Destination', name: 'destination'},
-              {title: 'Limit', name: 'limit'},
+              {title: columns.priority.title, name: 'priority'},
+              {title: columns.channel.title, name: 'channel'},
+              {title: columns.operation.title, name: 'operation'},
+              {title: columns.source.title, name: 'source'},
+              {title: columns.destination.title, name: 'destination'},
+              {title: columns.limit.title, name: 'limit'},
               {
                   title: <div style={{float: 'right'}}>
                     <ContextMenu

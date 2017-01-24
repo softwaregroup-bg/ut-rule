@@ -93,12 +93,15 @@ export default React.createClass({
         open: PropTypes.bool.isRequired,
         data: PropTypes.object,
         nomenclatures: PropTypes.object.isRequired,
+        roles: PropTypes.object,
         onSave: PropTypes.func.isRequired,
-        onClose: PropTypes.func.isRequired
+        onClose: PropTypes.func.isRequired,
+        sections: PropTypes.object
     },
     childContextTypes: {
         onFieldChange: PropTypes.func,
-        nomenclatures: PropTypes.object
+        nomenclatures: PropTypes.object,
+        roles: PropTypes.object
     },
     getInitialState() {
         return {
@@ -116,6 +119,80 @@ export default React.createClass({
                 split: [
 
                 ]
+            },
+            sections: {
+                channel: {
+                    visible: true,
+                    title: 'Channel',
+                    fields: {
+                        country: {
+                            visible: true,
+                            title: 'Country'
+                        },
+                        tag: {
+                            visible: true,
+                            title: 'Tag'
+                        }
+                    }
+                },
+                operation: {
+                    visible: true,
+                    title: 'Operation',
+                    fields: {
+                        tag: {
+                            visible: true,
+                            title: 'Tag'
+                        },
+                        startDate: {
+                            visible: true,
+                            title: 'Start Date'
+                        },
+                        endDate: {
+                            visible: true,
+                            title: 'End Date'
+                        }
+                    }
+                },
+                source: {
+                    visible: true,
+                    title: 'Source',
+                    fields: {
+                        country: {
+                            visible: true,
+                            title: 'Country'
+                        },
+                        tag: {
+                            visible: true,
+                            title: 'Tag'
+                        }
+                    }
+                },
+                destination: {
+                    visible: true,
+                    title: 'Destination',
+                    fields: {
+                        country: {
+                            visible: true,
+                            title: 'Country'
+                        },
+                        tag: {
+                            visible: true,
+                            title: 'Tag'
+                        }
+                    }
+                },
+                limit: {
+                    visible: true,
+                    title: 'Limit`'
+                },
+                split: {
+                    visible: true,
+                    title: 'Split'
+                },
+                summary: {
+                    visible: true,
+                    title: 'Summary'
+                }
             }
         };
     },
@@ -124,10 +201,16 @@ export default React.createClass({
             data: merge({}, this.state.data, this.props.data), // here we get the data
             isEditing: this.props.data !== undefined
         });
+
+        if (this.props.sections !== undefined) {
+            this.state.sections = this.props.sections.toJS();
+        }
     },
     getChildContext() {
-        let { nomenclatures } = this.props;
+        let {nomenclatures, roles} = this.props;
         let formattedNomenclatures = {};
+        let formattedRoles = {};
+
         Object.keys(nomenclatures).map((nomKey) => {
             formattedNomenclatures[nomKey] = Object.keys(nomenclatures[nomKey]).map((key) => {
                 return {
@@ -136,9 +219,18 @@ export default React.createClass({
                 };
             });
         });
+
+        formattedRoles.role = Object.keys(roles.role).map((key) => {
+            return {
+                key,
+                name: roles.role[key]
+            };
+        });
+
         return {
             onFieldChange: this.onFieldChange,
-            nomenclatures: formattedNomenclatures
+            nomenclatures: formattedNomenclatures,
+            roles: formattedRoles
         };
     },
     onFieldChange(category, index, key, value) {
@@ -234,6 +326,8 @@ export default React.createClass({
         maxWidth: '50%'
     },
     render() {
+        let sections = this.state.sections;
+
         return (
             <Dialog
               title={this.props.data ? 'Edit Rule' : 'Add Rule'}
@@ -267,57 +361,69 @@ export default React.createClass({
                         />
                     </div>
                     <div className={style.wrapper}>
-                        <Accordion title='Channel' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
-                            <Channel
-                              data={this.state.data.condition[0]}
-                            />
-                        </Accordion>
-                        <Accordion title='Operation' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Operation
-                              data={this.state.data.condition[0]}
-                            />
-                        </Accordion>
-                        <Accordion title='Source' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Source
-                              data={this.state.data.condition[0]}
-                            />
-                        </Accordion>
-                        <Accordion title='Destination' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Destination
-                              data={this.state.data.condition[0]}
-                            />
-                        </Accordion>
-                        <Accordion title='Limit' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <SectionLimit
-                                  data={this.state.data.limit}
-                                  addRow={this.addLimitRow}
-                                  deleteRow={this.deleteLimitRow}
+                        {sections.channel.visible &&
+                            <Accordion title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
+                                <Channel
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.channel.fields}
                                 />
-                            </div>
-                        </Accordion>
-                        <Accordion title='Split' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <Split
-                                  data={this.state.data.split}
-                                  nomenclatures={this.props.nomenclatures}
-                                  addSplitRow={this.addSplitRow}
-                                  deleteSplitRow={this.deleteSplitRow}
-                                  addSplitRangeRow={this.addSplitRangeRow}
-                                  deleteSplitRangeRow={this.deleteSplitRangeRow}
-                                  addSplitAssignmentRow={this.addSplitAssignmentRow}
-                                  deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
+                            </Accordion>
+                        }
+                        {sections.operation.visible &&
+                            <Accordion title={sections.operation.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <Operation
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.operation.fields}
                                 />
-                            </div>
-                        </Accordion>
-                        <Accordion title='Summary' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <SectionSummary
-                                  data={this.state.data}
-                                  nomenclatures={this.props.nomenclatures}
+                        </Accordion>}
+                        {sections.source.visible &&
+                            <Accordion title={sections.source.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <Source
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.source.fields}
                                 />
-                            </div>
-                        </Accordion>
+                        </Accordion>}
+                        {sections.destination.visible &&
+                            <Accordion title={sections.destination.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <Destination
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.destination.fields}
+                                />
+                        </Accordion>}
+                        {sections.limit.visible &&
+                            <Accordion title={sections.limit.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <div className={style.content}>
+                                    <SectionLimit
+                                      data={this.state.data.limit}
+                                      addRow={this.addLimitRow}
+                                      deleteRow={this.deleteLimitRow}
+                                    />
+                                </div>
+                        </Accordion>}
+                        {sections.split.visible &&
+                            <Accordion title={sections.split.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <div className={style.content}>
+                                    <Split
+                                      data={this.state.data.split}
+                                      nomenclatures={this.props.nomenclatures}
+                                      addSplitRow={this.addSplitRow}
+                                      deleteSplitRow={this.deleteSplitRow}
+                                      addSplitRangeRow={this.addSplitRangeRow}
+                                      deleteSplitRangeRow={this.deleteSplitRangeRow}
+                                      addSplitAssignmentRow={this.addSplitAssignmentRow}
+                                      deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
+                                    />
+                                </div>
+                        </Accordion>}
+                        {sections.summary.visible &&
+                            <Accordion title={sections.summary.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <div className={style.content}>
+                                    <SectionSummary
+                                      data={this.state.data}
+                                      nomenclatures={this.props.nomenclatures}
+                                    />
+                                </div>
+                        </Accordion>}
                     </div>
                 </div>
             </Dialog>

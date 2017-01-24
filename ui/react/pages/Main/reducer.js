@@ -13,6 +13,10 @@ export default (state = defaultState, action) => {
                 return Object.assign({}, state, {
                     'fetchRules': formatRules(action.result)
                 });
+            case actionTypes.fetchRoles:
+                return Object.assign({}, state, {
+                    'fetchRoles': formatRoles(action.result)
+                });
             default:
                 break;
         }
@@ -78,6 +82,18 @@ const formatNomenclatures = function(data) {
             all[record.type] = {};
         }
         all[record.type][record.value] = record.display;
+
+        return all;
+    }, {});
+};
+
+const formatRoles = function(data) {
+    return data.role.reduce(function(all, record) {
+        if (!all['role']) {
+            all.role = {};
+        }
+        all.role[record.actorId] = record.name;
+
         return all;
     }, {});
 };

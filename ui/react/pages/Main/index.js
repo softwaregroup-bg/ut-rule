@@ -16,12 +16,14 @@ const Main = React.createClass({
     propTypes: {
         rules: PropTypes.object,
         nomenclatures: PropTypes.object,
+        roles: PropTypes.object,
         ready: PropTypes.bool,
         empty: PropTypes.bool,
         actions: PropTypes.object,
         location: PropTypes.object,
         uiConfig: PropTypes.object,
-        columns: PropTypes.object
+        columns: PropTypes.object,
+        sections: PropTypes.object
     },
     getInitialState() {
         return {
@@ -37,6 +39,7 @@ const Main = React.createClass({
     },
     fetchData() {
         this.props.actions.fetchRules();
+        this.props.actions.fetchRoles({});
         this.props.actions.fetchNomenclatures({
             alias: [
                 'currency',
@@ -142,8 +145,9 @@ const Main = React.createClass({
             return null;
         }
 
-        let uiConfig = this.props.uiConfig.get('main');
-        let columns = uiConfig !== undefined ? uiConfig.getIn(['grid', 'columns']) : undefined;
+        let uiConfig = this.props.uiConfig;
+        let columns = uiConfig !== undefined ? uiConfig.getIn(['main', 'grid', 'columns']) : undefined;
+        let sections = uiConfig !== undefined ? uiConfig.getIn(['dialog', 'sections']) : undefined;
 
         return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
@@ -170,8 +174,10 @@ const Main = React.createClass({
                           open={this.state.dialog.open}
                           data={this.props.rules[this.state.dialog.conditionId]}
                           nomenclatures={this.props.nomenclatures}
+                          roles={this.props.roles}
                           onSave={this.dialogOnSave}
                           onClose={this.dialogOnClose}
+                          sections={sections}
                         />
                     }
                     {this.state.prompt &&
@@ -222,7 +228,8 @@ export default connect(
         return {
             rules: state.main.fetchRules,
             nomenclatures: state.main.fetchNomenclatures,
-            ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
+            roles: state.main.fetchRoles,
+            ready: !!(state.main.fetchRules && state.main.fetchNomenclatures && state.main.fetchRoles),
             empty: Object.keys(state.main).length === 0,
             uiConfig: state.uiConfig
         };

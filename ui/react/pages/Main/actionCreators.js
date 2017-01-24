@@ -91,6 +91,14 @@ export function fetchNomenclatures(params) {
     };
 };
 
+export function fetchRoles(params) {
+    return {
+        type: actionTypes.fetchRoles,
+        method: 'user.role.fetch',
+        params: params
+    };
+};
+
 export function reset() {
     return {
         type: actionTypes.reset

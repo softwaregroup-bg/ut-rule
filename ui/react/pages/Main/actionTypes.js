@@ -4,3 +4,5 @@ export const editRule = Symbol.for('editRule');
 export const addRule = Symbol.for('addRule');
 export const fetchNomenclatures = Symbol.for('fetchNomenclatures');
 export const reset = Symbol.for('reset');
+export const fetchRoles = Symbol.for('fetchRoles');
+export const fetchAliases = Symbol.for('fetchAliases');

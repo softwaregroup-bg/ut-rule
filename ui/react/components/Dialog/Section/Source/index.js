@@ -5,11 +5,22 @@ import Dropdown from 'ut-front-react/components/Input/Dropdown';
 
 const Source = React.createClass({
     propTypes: {
-        data: PropTypes.object.isRequired
+        data: PropTypes.object.isRequired,
+        fields: PropTypes.object
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
         nomenclatures: PropTypes.object
+    },
+    getInitialState() {
+        return {
+            fields: this.props.fields
+        };
+    },
+    componentWillMount() {
+        if (this.props.fields !== undefined) {
+            this.state.fields = this.props.fields;
+        }
     },
     onSelectDropdown(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
@@ -20,14 +31,16 @@ const Source = React.createClass({
     render() {
         let { country, region, city, cardProduct, accountProduct, account, organization, supervisor } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
+        let fields = this.state.fields;
+
         return (
            <div className={style.content}>
-                {country &&
+                {fields.country.visible && country &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='sourceCountryId'
-                          label='Country'
+                          label={fields.country.title}
                           data={country}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceCountryId || '')}
@@ -35,12 +48,12 @@ const Source = React.createClass({
                         />
                     </div>
                 }
-                {region &&
+                {fields.region.visible && region &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='sourceRegionId'
-                          label='Region'
+                          label={fields.region.title}
                           data={region}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceRegionId || '')}
@@ -48,12 +61,12 @@ const Source = React.createClass({
                         />
                     </div>
                 }
-                {city &&
+                {fields.city.visible && city &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='sourceCityId'
-                          label='City'
+                          label={fields.city.title}
                           data={city}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceCityId || '')}
@@ -61,12 +74,12 @@ const Source = React.createClass({
                         />
                     </div>
                 }
-                {organization &&
+                {fields.organization.visible && organization &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='sourceOrganizationId'
-                          label='Organization'
+                          label={fields.organization.title}
                           data={organization}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceOrganizationId || '')}
@@ -74,12 +87,12 @@ const Source = React.createClass({
                         />
                     </div>
                 }
-                {supervisor &&
+                {fields.supervisor.visible && supervisor &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='sourceSupervisorId'
-                          label='Organization'
+                          label={fields.supervisor.title}
                           data={supervisor}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceSupervisorId || '')}
@@ -87,20 +100,22 @@ const Source = React.createClass({
                         />
                     </div>
                 }
-                <div className={style.inputWrapper}>
-                    <Input
-                      keyProp='sourceTag'
-                      label='Tag'
-                      onChange={onChangeInput}
-                      value={'' + (this.props.data.sourceTag || '')}
-                    />
-                </div>
-                {cardProduct &&
+                {fields.tag.visible &&
+                    <div className={style.inputWrapper}>
+                        <Input
+                          keyProp='sourceTag'
+                          label={fields.tag.title}
+                          onChange={onChangeInput}
+                          value={'' + (this.props.data.sourceTag || '')}
+                        />
+                    </div>
+                }
+                {fields.cardProduct.visible && cardProduct &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='sourceCardProductId'
-                          label='Card Product'
+                          label={fields.cardProduct.title}
                           data={cardProduct}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceCardProductId || '')}
@@ -108,12 +123,12 @@ const Source = React.createClass({
                         />
                     </div>
                 }
-                {accountProduct &&
+                {fields.accountProduct.visible && accountProduct &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='sourceAccountProductId'
-                          label='Account Product'
+                          label={fields.accountProduct.title}
                           data={accountProduct}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceAccountProductId || '')}
@@ -121,12 +136,12 @@ const Source = React.createClass({
                         />
                     </div>
                 }
-                {account &&
+                {fields.account.visible && account &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='sourceAccountId'
-                          label='Account'
+                          label={fields.account.title}
                           data={account}
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceAccountId || '')}

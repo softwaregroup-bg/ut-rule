@@ -15,11 +15,17 @@ const Splits = React.createClass({
         addSplitRangeRow: PropTypes.func.isRequired,
         deleteSplitRangeRow: PropTypes.func.isRequired,
         addSplitAssignmentRow: PropTypes.func.isRequired,
-        deleteSplitAssignmentRow: PropTypes.func.isRequired
+        deleteSplitAssignmentRow: PropTypes.func.isRequired,
+        config: PropTypes.object
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
         nomenclatures: PropTypes.object
+    },
+    getInitialState() {
+        return {
+            config: this.props.config
+        };
     },
     onSelectDropdown(index) {
         let self = this;
@@ -84,6 +90,7 @@ const Splits = React.createClass({
                           data={split.splitAssignment}
                           addSplitAssignmentRow={self.props.addSplitAssignmentRow}
                           deleteSplitAssignmentRow={self.props.deleteSplitAssignmentRow}
+                          fields={this.state.config.assignmentFields}
                         />
                     </div>
                 </Accordion>

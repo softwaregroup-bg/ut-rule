@@ -57,6 +57,18 @@ module.exports = {
         params: joi.any(),
         result: joi.any()
     },
+    'role.fetch': {
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
+    },
+    'alias.fetch': {
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
+    },
     'rule.fetch': {
         description: '',
         notes: '',

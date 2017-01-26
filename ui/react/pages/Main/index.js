@@ -16,10 +16,15 @@ const Main = React.createClass({
     propTypes: {
         rules: PropTypes.object,
         nomenclatures: PropTypes.object,
+        roles: PropTypes.object,
+        aliases: PropTypes.object,
         ready: PropTypes.bool,
         empty: PropTypes.bool,
         actions: PropTypes.object,
-        location: PropTypes.object
+        location: PropTypes.object,
+        uiConfig: PropTypes.object,
+        columns: PropTypes.object,
+        sections: PropTypes.object
     },
     getInitialState() {
         return {
@@ -51,8 +56,20 @@ const Main = React.createClass({
                 'account'
             ]
         });
+
+        if (this.state.uiConfig.fetchUserRoles) {
+            this.props.actions.fetchRoles({'method': this.state.uiConfig.fetchRolesMethod});
+        }
+
+        if (this.state.uiConfig.fetchAliases) {
+            this.props.actions.fetchAliases({'method': this.state.uiConfig.fetchAliasesMethod});
+        }
     },
     componentWillMount() {
+        if (this.props.uiConfig !== undefined) {
+            this.state.uiConfig = this.props.uiConfig.toJS();
+        }
+
         this.fetchData();
     },
     componentWillReceiveProps(nextProps) {
@@ -139,6 +156,11 @@ const Main = React.createClass({
         if (!this.props.ready) {
             return null;
         }
+
+        let uiConfig = this.state.uiConfig;
+        let columns = uiConfig.main.grid.columns;
+        let sections = uiConfig.dialog.sections;
+
         return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
             <div className={style.header}>
@@ -164,8 +186,11 @@ const Main = React.createClass({
                           open={this.state.dialog.open}
                           data={this.props.rules[this.state.dialog.conditionId]}
                           nomenclatures={this.props.nomenclatures}
+                          roles={this.props.roles}
+                          aliases={this.props.aliases}
                           onSave={this.dialogOnSave}
                           onClose={this.dialogOnClose}
+                          sections={sections}
                         />
                     }
                     {this.state.prompt &&
@@ -193,6 +218,7 @@ const Main = React.createClass({
                       nomenclatures={this.props.nomenclatures}
                       handleCheckboxSelect={this.handleCheckboxSelect}
                       handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                      columns={columns}
                     />
                     </div>
             </div>
@@ -215,8 +241,11 @@ export default connect(
         return {
             rules: state.main.fetchRules,
             nomenclatures: state.main.fetchNomenclatures,
+            roles: state.main.fetchRoles,
+            aliases: state.main.fetchAliases,
             ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
-            empty: Object.keys(state.main).length === 0
+            empty: Object.keys(state.main).length === 0,
+            uiConfig: state.uiConfig
         };
     },
     (dispatch) => {

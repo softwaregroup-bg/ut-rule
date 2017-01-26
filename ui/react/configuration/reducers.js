@@ -3,6 +3,7 @@ import immutable from 'immutable';
 
 const defaultUiState = {
     fetchUserRoles: false,
+    fetchRolesMethod: 'user.role.fetch',
     fetchAliases: false,
     fetchAliasesMethod: 'db/integration.aliasAccount.list',
     main: {

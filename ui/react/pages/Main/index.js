@@ -58,7 +58,7 @@ const Main = React.createClass({
         });
 
         if (this.state.uiConfig.fetchUserRoles) {
-            this.props.actions.fetchRoles({});
+            this.props.actions.fetchRoles({'method': this.state.uiConfig.fetchRolesMethod});
         }
 
         if (this.state.uiConfig.fetchAliases) {

@@ -167,8 +167,8 @@ export default React.createClass({
         return {
             onFieldChange: this.onFieldChange,
             nomenclatures: formattedNomenclatures,
-            roles: formattedRoles.length > 0 ? formattedRoles: undefined,
-            aliases: formattedAliases.length > 0 ? formattedAliases: undefined
+            roles: formattedRoles.length > 0 ? formattedRoles : undefined,
+            aliases: formattedAliases.length > 0 ? formattedAliases : undefined
         };
     },
     onFieldChange(category, index, key, value) {

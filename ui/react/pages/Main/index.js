@@ -33,7 +33,8 @@ const Main = React.createClass({
             dialog: {
                 open: false,
                 conditionId: null
-            }
+            },
+            uiConfig: this.props.uiConfig.toJS()
         };
     },
     fetchData() {
@@ -41,10 +42,6 @@ const Main = React.createClass({
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     },
     componentWillMount() {
-        if (this.props.uiConfig !== undefined) {
-            this.state.uiConfig = this.props.uiConfig.toJS();
-        }
-
         this.fetchData();
     },
     componentWillReceiveProps(nextProps) {

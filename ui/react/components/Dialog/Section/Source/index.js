@@ -17,11 +17,6 @@ const Source = React.createClass({
             fields: this.props.fields
         };
     },
-    componentWillMount() {
-        if (this.props.fields !== undefined) {
-            this.state.fields = this.props.fields;
-        }
-    },
     onSelectDropdown(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },

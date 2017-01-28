@@ -158,6 +158,7 @@ export default React.createClass({
             limitObject.conditionId = this.state.data.condition[0].conditionId;
         }
         this.state.data.limit.push(limitObject);
+
         this.setState({
             data: this.state.data
         });

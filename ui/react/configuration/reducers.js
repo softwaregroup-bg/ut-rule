@@ -2,10 +2,27 @@ import * as actionTypes from './actionTypes';
 import immutable from 'immutable';
 
 const defaultUiState = {
-    fetchUserRoles: false,
-    fetchRolesMethod: 'user.role.fetch',
-    fetchAliases: false,
-    fetchAliasesMethod: 'db/integration.aliasAccount.list',
+    nomenclatures: {
+        itemName: [
+            'country',
+            'channel',
+            'region',
+            'city',
+            'organization',
+            'role',
+            'operation',
+            'supervisor',
+            'cardProduct',
+            'accountProduct',
+            'account'
+        ],
+        itemCode: [
+        ],
+        agentRole: [
+        ],
+        accountAlias: [
+        ]
+    },
     main: {
         grid: {
             columns: {

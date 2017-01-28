@@ -10,8 +10,7 @@ const Channel = React.createClass({
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
-        nomenclatures: PropTypes.object,
-        roles: PropTypes.array
+        nomenclatures: PropTypes.object
     },
     getInitialState() {
         return {
@@ -25,8 +24,7 @@ const Channel = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        let { channel, country, region, city, organization, supervisor } = this.context.nomenclatures;
-        let role = this.context.roles;
+        let { channel, country, region, city, organization, supervisor, role } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
         let fields = this.state.fields;
 

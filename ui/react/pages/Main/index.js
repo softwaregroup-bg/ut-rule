@@ -16,8 +16,6 @@ const Main = React.createClass({
     propTypes: {
         rules: PropTypes.object,
         nomenclatures: PropTypes.object,
-        roles: PropTypes.object,
-        aliases: PropTypes.object,
         ready: PropTypes.bool,
         empty: PropTypes.bool,
         actions: PropTypes.object,
@@ -40,30 +38,7 @@ const Main = React.createClass({
     },
     fetchData() {
         this.props.actions.fetchRules();
-        this.props.actions.fetchNomenclatures({
-            alias: [
-                'currency',
-                'channel',
-                'country',
-                'region',
-                'city',
-                'organization',
-                'role',
-                'operation',
-                'supervisor',
-                'cardProduct',
-                'accountProduct',
-                'account'
-            ]
-        });
-
-        if (this.state.uiConfig.fetchUserRoles) {
-            this.props.actions.fetchRoles({'method': this.state.uiConfig.fetchRolesMethod});
-        }
-
-        if (this.state.uiConfig.fetchAliases) {
-            this.props.actions.fetchAliases({'method': this.state.uiConfig.fetchAliasesMethod});
-        }
+        this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     },
     componentWillMount() {
         if (this.props.uiConfig !== undefined) {
@@ -186,8 +161,6 @@ const Main = React.createClass({
                           open={this.state.dialog.open}
                           data={this.props.rules[this.state.dialog.conditionId]}
                           nomenclatures={this.props.nomenclatures}
-                          roles={this.props.roles}
-                          aliases={this.props.aliases}
                           onSave={this.dialogOnSave}
                           onClose={this.dialogOnClose}
                           sections={sections}
@@ -241,8 +214,6 @@ export default connect(
         return {
             rules: state.main.fetchRules,
             nomenclatures: state.main.fetchNomenclatures,
-            roles: state.main.fetchRoles,
-            aliases: state.main.fetchAliases,
             ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
             empty: Object.keys(state.main).length === 0,
             uiConfig: state.uiConfig

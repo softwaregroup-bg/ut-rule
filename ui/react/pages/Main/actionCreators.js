@@ -91,22 +91,6 @@ export function fetchNomenclatures(params) {
     };
 };
 
-export function fetchRoles(params) {
-    return {
-        type: actionTypes.fetchRoles,
-        method: 'rule.role.fetch',
-        params: params
-    };
-};
-
-export function fetchAliases(params) {
-    return {
-        type: actionTypes.fetchAliases,
-        method: 'rule.alias.fetch',
-        params: params
-    };
-};
-
 export function reset() {
     return {
         type: actionTypes.reset

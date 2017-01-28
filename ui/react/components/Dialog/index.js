@@ -93,17 +93,13 @@ export default React.createClass({
         open: PropTypes.bool.isRequired,
         data: PropTypes.object,
         nomenclatures: PropTypes.object.isRequired,
-        roles: PropTypes.object,
-        aliases: PropTypes.object,
         onSave: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
         sections: PropTypes.object
     },
     childContextTypes: {
         onFieldChange: PropTypes.func,
-        nomenclatures: PropTypes.object,
-        roles: PropTypes.array,
-        aliases: PropTypes.array
+        nomenclatures: PropTypes.object
     },
     getInitialState() {
         return {
@@ -132,10 +128,8 @@ export default React.createClass({
         });
     },
     getChildContext() {
-        let {nomenclatures, roles, aliases} = this.props;
+        let {nomenclatures} = this.props;
         let formattedNomenclatures = {};
-        let formattedRoles = [];
-        let formattedAliases = [];
 
         Object.keys(nomenclatures).map((nomKey) => {
             formattedNomenclatures[nomKey] = Object.keys(nomenclatures[nomKey]).map((key) => {
@@ -146,29 +140,9 @@ export default React.createClass({
             });
         });
 
-        if (roles !== undefined) {
-            formattedRoles = Object.keys(roles.role).map((key) => {
-                return {
-                    key,
-                    name: roles.role[key]
-                };
-            });
-        }
-
-        if (aliases !== undefined) {
-            formattedAliases = Object.keys(aliases.aliasAccount).map((key) => {
-                return {
-                    key,
-                    name: aliases.aliasAccount[key]
-                };
-            });
-        }
-
         return {
             onFieldChange: this.onFieldChange,
-            nomenclatures: formattedNomenclatures,
-            roles: formattedRoles.length > 0 ? formattedRoles : undefined,
-            aliases: formattedAliases.length > 0 ? formattedAliases : undefined
+            nomenclatures: formattedNomenclatures
         };
     },
     onFieldChange(category, index, key, value) {

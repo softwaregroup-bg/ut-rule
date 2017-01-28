@@ -16,8 +16,7 @@ const Assignment = React.createClass({
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
-        nomenclatures: PropTypes.object,
-        aliases: PropTypes.array
+        nomenclatures: PropTypes.object
     },
     getInitialState() {
         return {
@@ -59,7 +58,7 @@ const Assignment = React.createClass({
     },
     createAssignmentRows() {
         let fields = this.state.fields;
-        let aliases = this.context.aliases;
+        let {alias} = this.context.nomenclatures;
 
         return this.props.data.map((splitAssignment, index) => (
             <tr key={index}>
@@ -81,11 +80,11 @@ const Assignment = React.createClass({
                     />
                 </td>
                 }
-                {fields.debitAlias.visible &&
+                {fields.debitAlias.visible && alias &&
                 <td style={{minWidth: '200px'}}>
                     <Dropdown
                       keyProp='debit'
-                      data={aliases}
+                      data={alias}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (splitAssignment.debit || '')}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}
@@ -101,11 +100,11 @@ const Assignment = React.createClass({
                     />
                 </td>
                 }
-                {fields.creditAlias.visible &&
+                {fields.creditAlias.visible && alias &&
                 <td style={{minWidth: '200px'}}>
                     <Dropdown
                       keyProp='credit'
-                      data={aliases}
+                      data={alias}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (splitAssignment.credit || '')}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}

@@ -23,9 +23,11 @@ const nestedTable = function(arr, className) {
 };
 
 const buildCSV = function(arr) {
-    return arr.map((record) => {
-        return record.value ? ((record.key ? record.key + ': ' : '') + record.value) : '';
-    }).filter(val => val).join(' | ');
+    if (typeof arr === 'object') { 
+        return arr.map((record) => {
+            return record.value ? ((record.key ? record.key + ': ' : '') + record.value) : '';
+        }).filter(val => val).join(' | ');
+    }
 };
 
 export default React.createClass({
@@ -80,16 +82,18 @@ export default React.createClass({
     },
     buildList(arr) {
         // label, value, nomenclatureKey
-        return arr.map((record, i) => {
-            let value = record[2] && this.props.nomenclatures[record[2]] ? this.props.nomenclatures[record[2]][record[1]] : record[1];
-            return (
-                value
-                ? <div key={i}>
-                    <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
-                </div>
-                : null
-            );
-        });
+        if (typeof arr === 'object') { 
+            return arr.map((record, i) => {
+                let value = record[2] && this.props.nomenclatures[record[2]] ? this.props.nomenclatures[record[2]][record[1]] : record[1];
+                return (
+                    value
+                    ? <div key={i}>
+                        <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
+                    </div>
+                    : null
+                );
+            });
+        }
     },
     updateColumns(columns) {
         this.setState({
@@ -157,6 +161,7 @@ export default React.createClass({
             case 'destination':
                 return this.buildList(value);
             case 'fee':
+             if (typeof value === 'object') { 
                 return nestedTable(value.reduce((all, record) => {
                     all.push([
                         '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
@@ -181,7 +186,9 @@ export default React.createClass({
                     ]);
                     return all;
                 }, []), style.fee);
+             }
             case 'commission':
+            if (typeof value === 'object') { 
                 return nestedTable(value.reduce((all, record) => {
                     all.push([
                         '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
@@ -206,7 +213,9 @@ export default React.createClass({
                     ]);
                     return all;
                 }, []), style.commission);
+            }
             case 'limit':
+            if (typeof value === 'object') { 
                 return value.map((limit, i) => {
                     return this.buildList([
                         [
@@ -235,6 +244,7 @@ export default React.createClass({
                         ]
                     ]);
                 });
+            }
             default:
                 return value;
         }

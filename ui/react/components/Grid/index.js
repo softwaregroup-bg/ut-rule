@@ -23,7 +23,7 @@ const nestedTable = function(arr, className) {
 };
 
 const buildCSV = function(arr) {
-    if (typeof arr === 'object') { 
+    if (typeof arr === 'object') {
         return arr.map((record) => {
             return record.value ? ((record.key ? record.key + ': ' : '') + record.value) : '';
         }).filter(val => val).join(' | ');
@@ -82,7 +82,7 @@ export default React.createClass({
     },
     buildList(arr) {
         // label, value, nomenclatureKey
-        if (typeof arr === 'object') { 
+        if (typeof arr === 'object') {
             return arr.map((record, i) => {
                 let value = record[2] && this.props.nomenclatures[record[2]] ? this.props.nomenclatures[record[2]][record[1]] : record[1];
                 return (
@@ -161,90 +161,93 @@ export default React.createClass({
             case 'destination':
                 return this.buildList(value);
             case 'fee':
-             if (typeof value === 'object') { 
-                return nestedTable(value.reduce((all, record) => {
-                    all.push([
-                        '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
-                        buildCSV([
-                            {
-                                key: '',
-                                value: record.percent ? record.percent + '%' : ''
-                            },
-                            {
-                                key: 'base',
-                                value: record.percentBase
-                            },
-                            {
-                                key: 'min',
-                                value: record.minValue
-                            },
-                            {
-                                key: 'max',
-                                value: record.maxValue
-                            }
-                        ])
-                    ]);
-                    return all;
-                }, []), style.fee);
-             }
+                if (typeof value === 'object') {
+                    return nestedTable(value.reduce((all, record) => {
+                        all.push([
+                            '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
+                            buildCSV([
+                                {
+                                    key: '',
+                                    value: record.percent ? record.percent + '%' : ''
+                                },
+                                {
+                                    key: 'base',
+                                    value: record.percentBase
+                                },
+                                {
+                                    key: 'min',
+                                    value: record.minValue
+                                },
+                                {
+                                    key: 'max',
+                                    value: record.maxValue
+                                }
+                            ])
+                        ]);
+                        return all;
+                    }, []), style.fee);
+                }
+                break;
             case 'commission':
-            if (typeof value === 'object') { 
-                return nestedTable(value.reduce((all, record) => {
-                    all.push([
-                        '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
-                        buildCSV([
-                            {
-                                key: '',
-                                value: record.percent ? record.percent + '%' : ''
-                            },
-                            {
-                                key: 'base',
-                                value: record.percentBase
-                            },
-                            {
-                                key: 'min',
-                                value: record.minValue
-                            },
-                            {
-                                key: 'max',
-                                value: record.maxValue
-                            }
-                        ])
-                    ]);
-                    return all;
-                }, []), style.commission);
-            }
+                if (typeof value === 'object') {
+                    return nestedTable(value.reduce((all, record) => {
+                        all.push([
+                            '>= ' + record.startAmount + ' ' + this.props.nomenclatures.currency[record.startAmountCurrency],
+                            buildCSV([
+                                {
+                                    key: '',
+                                    value: record.percent ? record.percent + '%' : ''
+                                },
+                                {
+                                    key: 'base',
+                                    value: record.percentBase
+                                },
+                                {
+                                    key: 'min',
+                                    value: record.minValue
+                                },
+                                {
+                                    key: 'max',
+                                    value: record.maxValue
+                                }
+                            ])
+                        ]);
+                        return all;
+                    }, []), style.commission);
+                }
+                break;
             case 'limit':
-            if (typeof value === 'object') { 
-                return value.map((limit, i) => {
-                    return this.buildList([
-                        [
-                            '',
-                            i === 0 ? '' : <hr />
-                        ],
-                        [
-                            'Currency',
-                            limit.currency || ''
-                        ],
-                        [
-                            'Transaction',
-                            '' + (limit.maxAmount ? 'max ' + limit.maxAmount + ' ' : '') + (limit.minAmount ? 'min ' + limit.minAmount + ' ' : '')
-                        ],
-                        [
-                            'Daily',
-                            '' + (limit.maxAmountDaily ? 'max ' + limit.maxAmountDaily + ' ' : '') + (limit.maxCountDaily ? 'count ' + limit.maxCountDaily + ' ' : '')
-                        ],
-                        [
-                            'Weekly',
-                            '' + (limit.maxAmountWeekly ? 'max ' + limit.maxAmountWeekly + ' ' : '') + (limit.maxCountWeekly ? 'count ' + limit.maxCountWeekly + ' ' : '')
-                        ],
-                        [
-                            'Monthly',
-                            '' + (limit.maxAmountMonthly ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (limit.maxCountMonthly ? 'count ' + limit.maxCountMonthly + ' ' : '')
-                        ]
-                    ]);
-                });
-            }
+                if (typeof value === 'object') {
+                    return value.map((limit, i) => {
+                        return this.buildList([
+                            [
+                                '',
+                                i === 0 ? '' : <hr />
+                            ],
+                            [
+                                'Currency',
+                                limit.currency || ''
+                            ],
+                            [
+                                'Transaction',
+                                '' + (limit.maxAmount ? 'max ' + limit.maxAmount + ' ' : '') + (limit.minAmount ? 'min ' + limit.minAmount + ' ' : '')
+                            ],
+                            [
+                                'Daily',
+                                '' + (limit.maxAmountDaily ? 'max ' + limit.maxAmountDaily + ' ' : '') + (limit.maxCountDaily ? 'count ' + limit.maxCountDaily + ' ' : '')
+                            ],
+                            [
+                                'Weekly',
+                                '' + (limit.maxAmountWeekly ? 'max ' + limit.maxAmountWeekly + ' ' : '') + (limit.maxCountWeekly ? 'count ' + limit.maxCountWeekly + ' ' : '')
+                            ],
+                            [
+                                'Monthly',
+                                '' + (limit.maxAmountMonthly ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (limit.maxCountMonthly ? 'count ' + limit.maxCountMonthly + ' ' : '')
+                            ]
+                        ]);
+                    });
+                }
+                break;
             default:
                 return value;
         }

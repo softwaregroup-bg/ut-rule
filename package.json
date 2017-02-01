@@ -20,7 +20,7 @@
     "ut-front-react": "~8.1.25"
   },
   "peerDependencies": {
-    "ut-bus": "~5.8.0"
+    "ut-bus": "~5.8.1"
   },
   "description": "UT Rule",
   "scripts": {

@@ -15,7 +15,7 @@
     "ut-error": "^5.3.16"
   },
   "devDependencies": {
-    "ut-tools": "^5.11.3",
+    "ut-tools": "^5.13.5",
     "ut-front": "~6.4.4",
     "ut-front-react": "~8.1.25"
   },

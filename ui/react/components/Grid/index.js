@@ -147,8 +147,8 @@ export default React.createClass({
         });
     },
     transformCellValue(value, header, row) {
-        if (!value) {
-            return;
+        if (!value || typeof value === 'string') {
+            return value;
         }
         switch (header.name) {
             case 'channel':

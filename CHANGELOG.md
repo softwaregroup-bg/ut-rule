@@ -1,3 +1,15 @@
+<a name="5.8.2"></a>
+## [5.8.2](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.1...v5.8.2) (2017-02-01)
+
+
+### Bug Fixes
+
+* don't transform string cell values ([e5e1f1f](https://github.com/softwaregroup-bg/ut-rule/commit/e5e1f1f))
+* update dependency to ut-bus ([32804af](https://github.com/softwaregroup-bg/ut-rule/commit/32804af))
+* update dependency to ut-tools ([c79d935](https://github.com/softwaregroup-bg/ut-rule/commit/c79d935))
+
+
+
 <a name="5.8.1"></a>
 ## [5.8.1](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.0...v5.8.1) (2017-01-23)
 

@@ -1,3 +1,23 @@
+<a name="6.2.0"></a>
+# [6.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v6.1.4...v6.2.0) (2017-02-02)
+
+
+### Bug Fixes
+
+* config provider refactor ([d62e042](https://github.com/softwaregroup-bg/ut-rule/commit/d62e042))
+* lint errors ([0786f4f](https://github.com/softwaregroup-bg/ut-rule/commit/0786f4f))
+* lint errors ([0219f41](https://github.com/softwaregroup-bg/ut-rule/commit/0219f41))
+* split if tag is not null ([25f12b6](https://github.com/softwaregroup-bg/ut-rule/commit/25f12b6))
+
+
+### Features
+
+* config provider ([e826ec2](https://github.com/softwaregroup-bg/ut-rule/commit/e826ec2))
+* config provider implemented ([644d30d](https://github.com/softwaregroup-bg/ut-rule/commit/644d30d))
+* configProvider implemented ([5fc3ea2](https://github.com/softwaregroup-bg/ut-rule/commit/5fc3ea2))
+
+
+
 <a name="6.1.4"></a>
 ## [6.1.4](https://github.com/softwaregroup-bg/ut-rule/compare/v6.1.3...v6.1.4) (2017-01-23)
 

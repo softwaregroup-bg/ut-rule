@@ -1,2 +1,7 @@
+import uiConfig from './configuration/reducers';
 import main from './pages/Main/reducer';
-export default {main};
+
+export default {
+    ...uiConfig,
+    main
+};

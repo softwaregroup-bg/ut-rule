@@ -141,7 +141,7 @@ const SectionLimit = React.createClass({
                 </table>
                 <span className={style.link} onClick={this.props.addRow}>
                     <img src={plusImage} className={style.plus} />
-                    Add another commission
+                    Add another limit
                 </span>
             </div>
         );

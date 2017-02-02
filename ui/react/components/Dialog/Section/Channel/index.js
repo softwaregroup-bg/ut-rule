@@ -5,11 +5,17 @@ import Dropdown from 'ut-front-react/components/Input/Dropdown';
 
 const Channel = React.createClass({
     propTypes: {
-        data: PropTypes.object.isRequired
+        data: PropTypes.object.isRequired,
+        fields: PropTypes.object
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
         nomenclatures: PropTypes.object
+    },
+    getInitialState() {
+        return {
+            fields: this.props.fields
+        };
     },
     onSelectDropdown(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
@@ -18,108 +24,112 @@ const Channel = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        let { channel, country, region, city, role, organization, supervisor } = this.context.nomenclatures;
+        let { channel, country, region, city, organization, supervisor, role } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
+        let fields = this.state.fields;
+
         return (
             <div className={style.content}>
-                {channel &&
+                {fields.channel.visible && channel &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           data={channel}
                           defaultSelected={'' + (this.props.data.channelId || '')}
                           keyProp='channelId'
-                          placeholder='Channel type'
+                          placeholder={fields.channel.title}
                           onSelect={onSelectDropdown}
-                          label='Type'
+                          label={fields.channel.title}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
-                {country &&
+                {fields.country.visible && country &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           data={country}
                           defaultSelected={'' + (this.props.data.channelCountryId || '')}
                           keyProp='channelCountryId'
-                          placeholder='Select Country'
+                          placeholder={fields.country.title}
                           onSelect={onSelectDropdown}
-                          label='Country'
+                          label={fields.country.title}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
-                {region &&
+                {fields.region.visible && region &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           data={region}
                           defaultSelected={'' + (this.props.data.channelRegionId || '')}
                           keyProp='channelRegionId'
-                          placeholder='Select Region'
+                          placeholder={fields.region.title}
                           onSelect={onSelectDropdown}
-                          label='Region'
+                          label={fields.region.title}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
-                {city &&
+                {fields.city.visible && city &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           data={city}
                           defaultSelected={'' + (this.props.data.channelCityId || '')}
                           keyProp='channelCityId'
-                          placeholder='Select City'
+                          placeholder={fields.city.title}
                           onSelect={onSelectDropdown}
-                          label='City'
+                          label={fields.city.title}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
-                {organization &&
+                {fields.organization.visible && organization &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           data={organization}
                           defaultSelected={'' + (this.props.data.channelOrganizationId || '')}
                           keyProp='channelOrganizationId'
-                          placeholder='Organization'
+                          placeholder={fields.organization.title}
                           onSelect={onSelectDropdown}
-                          label='Organization'
+                          label={fields.organization.title}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
-                {supervisor &&
+                {fields.supervisor.visible && supervisor &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           data={supervisor}
                           defaultSelected={'' + (this.props.data.channelSupervisorId || '')}
                           keyProp='channelSupervisorId'
-                          placeholder='Supervisor'
+                          placeholder={fields.supervisor.title}
                           onSelect={onSelectDropdown}
-                          label='Supervisor'
+                          label={fields.supervisor.title}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }
-                <div className={style.inputWrapper}>
-                    <Input
-                      keyProp='channelTag'
-                      label='Tag'
-                      onChange={onChangeInput}
-                      value={'' + (this.props.data.channelTag || '')}
-                    />
-                </div>
-                {role &&
+                {fields.tag.visible &&
+                    <div className={style.inputWrapper}>
+                        <Input
+                          keyProp='channelTag'
+                          label={fields.tag.title}
+                          onChange={onChangeInput}
+                          value={'' + (this.props.data.channelTag || '')}
+                        />
+                    </div>
+                }
+                {fields.role.visible && role &&
                     <div className={style.inputWrapper}>
                         <Dropdown
                           canSelectPlaceholder
                           keyProp='channelRoleId'
-                          label='Role'
+                          label={fields.role.title}
                           data={role}
                           placeholder='Channel role'
                           onSelect={onSelectDropdown}

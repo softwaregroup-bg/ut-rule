@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 const defaultState = {};
+
 export default (state = defaultState, action) => {
     if (action.type === actionTypes.reset) {
         return defaultState;
@@ -64,7 +65,9 @@ var formatRules = function(data) {
     });
     for (var resultKey in result) {
         for (var splitKey in result[resultKey].split) {
-            result[resultKey].split[splitKey].splitName.tag = result[resultKey].split[splitKey].splitName.tag.split('|').filter((v) => (v !== '')).map((v) => ({key: v, name: v}));
+            if (result[resultKey].split[splitKey].splitName.tag !== null) {
+                result[resultKey].split[splitKey].splitName.tag = result[resultKey].split[splitKey].splitName.tag.split('|').filter((v) => (v !== '')).map((v) => ({key: v, name: v}));
+            }
         }
     }
     return result;
@@ -76,6 +79,7 @@ const formatNomenclatures = function(data) {
             all[record.type] = {};
         }
         all[record.type][record.value] = record.display;
+
         return all;
     }, {});
 };

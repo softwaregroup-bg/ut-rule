@@ -1,3 +1,8 @@
+<a name="6.2.8"></a>
+## [6.2.8](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.7...v6.2.8) (2017-02-04)
+
+
+
 <a name="6.2.7"></a>
 ## [6.2.7](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.6...v6.2.7) (2017-02-04)
 

@@ -59,7 +59,7 @@ const Splits = React.createClass({
 
         selected.forEach(function(row) {
             result.push(origin.filter(function(r) {
-                return r.key == row.key;
+                return r.key === row.key;
             })[0]);
         });
 

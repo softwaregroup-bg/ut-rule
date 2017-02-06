@@ -1,5 +1,5 @@
 CREATE TABLE [rule].[splitName] (
-    splitNameId INT IDENTITY NOT NULL,
+    splitNameId INT IDENTITY(1000,1) NOT NULL,
     conditionId INT NOT NULL,
     name VARCHAR(50) NOT NULL,
     tag VARCHAR(max),

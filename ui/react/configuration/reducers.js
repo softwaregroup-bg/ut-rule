@@ -6,6 +6,7 @@ const defaultUiState = {
         itemName: [
             'country',
             'channel',
+            'currency',
             'region',
             'city',
             'organization',

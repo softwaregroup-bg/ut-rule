@@ -45,8 +45,29 @@ const Splits = React.createClass({
             self.props.deleteSplitRow(index);
         };
     },
+    getTagData() {
+        return [
+            {key: 'acquirer', name: 'Acquirer'},
+            {key: 'issuer', name: 'Issuer'},
+            {key: 'commission', name: 'Commission'},
+            {key: 'realtime', name: 'Realtime posting'},
+            {key: 'pending', name: 'Authorization required'}
+        ];
+    },
+    defaultSelected(origin, selected) {
+        let result = [];
+
+        selected.forEach(function(row) {
+            result.push(origin.filter(function(r) {
+                return r.key === row.key;
+            })[0]);
+        });
+
+        return result;
+    },
     createSplitRows() {
         var self = this;
+
         return this.props.data.map((split, index) => (
             <div key={index} style={{marginBottom: '20px'}}>
                 <div className={style.border}>
@@ -61,13 +82,9 @@ const Splits = React.createClass({
                     <div className={style.splitInput}>
                         <MultiSelect
                           placeholder='Select Tags'
-                          defaultSelected={split.splitName.tag}
+                          defaultSelected={self.defaultSelected(self.getTagData(), split.splitName.tag)}
                           onSelect={self.onChangeInput(index)}
-                          data={[
-                            {key: 'acquirer', name: 'Acquirer'},
-                            {key: 'issuer', name: 'Issuer'},
-                            {key: 'commission', name: 'Commission'}
-                          ]}
+                          data={self.getTagData()}
                           label='Tag'
                           keyProp='splitName.tag'
                         />

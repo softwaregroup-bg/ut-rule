@@ -1,3 +1,35 @@
+<a name="6.2.9"></a>
+## [6.2.9](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.8...v6.2.9) (2017-02-07)
+
+
+### Bug Fixes
+
+* lint error ([603ce2a](https://github.com/softwaregroup-bg/ut-rule/commit/603ce2a))
+* operation end date minDate fixed ([291297b](https://github.com/softwaregroup-bg/ut-rule/commit/291297b))
+* split tag fix ([4d20cd2](https://github.com/softwaregroup-bg/ut-rule/commit/4d20cd2))
+
+
+
+<a name="6.2.8"></a>
+## [6.2.8](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.7...v6.2.8) (2017-02-04)
+
+
+
+<a name="6.2.7"></a>
+## [6.2.7](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.6...v6.2.7) (2017-02-04)
+
+
+
+<a name="6.2.6"></a>
+## [6.2.6](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.5...v6.2.6) (2017-02-03)
+
+
+
+<a name="6.2.5"></a>
+## [6.2.5](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.4...v6.2.5) (2017-02-03)
+
+
+
 <a name="6.2.4"></a>
 ## [6.2.4](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.3...v6.2.4) (2017-02-02)
 

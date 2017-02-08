@@ -73,7 +73,6 @@ BEGIN
         @sourceOrganizationId = organizationId,
         @sourceSupervisorId = supervisorId,
         @sourceId = holderId,
-        @sourceCardProductId = cardProductId,
         @sourceAccountProductId = accountProductId,
         @sourceAccountId = accountId
     FROM

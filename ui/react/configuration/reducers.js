@@ -6,7 +6,6 @@ const defaultUiState = {
         itemName: [
             'country',
             'channel',
-            'currency',
             'region',
             'city',
             'organization',
@@ -18,6 +17,7 @@ const defaultUiState = {
             'account'
         ],
         itemCode: [
+            'currency'
         ],
         agentRole: [
         ],

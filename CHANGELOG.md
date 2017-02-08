@@ -1,3 +1,13 @@
+<a name="6.2.10"></a>
+## [6.2.10](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.9...v6.2.10) (2017-02-08)
+
+
+### Bug Fixes
+
+* remove invalid column reference ([d9e11e5](https://github.com/softwaregroup-bg/ut-rule/commit/d9e11e5))
+
+
+
 <a name="6.2.9"></a>
 ## [6.2.9](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.8...v6.2.9) (2017-02-07)
 

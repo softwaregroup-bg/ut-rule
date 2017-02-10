@@ -6,7 +6,8 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @destinationAccount varchar(100),
     @amount money,
     @currency varchar(3),
-    @isSourceAmount BIT=0
+    @isSourceAmount BIT=0,
+    @isSourceAccount BIT = 1
 AS
 BEGIN
     DECLARE
@@ -113,7 +114,7 @@ BEGIN
     FROM
         [integration].[vTransfer]
     WHERE
-        sourceAccount = @sourceAccount AND
+        ( (@isSourceAccount= 1 AND sourceAccount = @sourceAccount) OR (@isSourceAccount = 0 AND channelId = @channelId) ) AND
         transferTypeId = @operationId AND
         transferCurrency = @currency AND
         transferDateTime < @operationDate AND -- look ony at earlier transfers

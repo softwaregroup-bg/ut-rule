@@ -1,3 +1,18 @@
+<a name="7.0.0"></a>
+# [7.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.10...v7.0.0) (2017-02-10)
+
+
+### Features
+
+* handle expressions in split debit/credit ([a247c4a](https://github.com/softwaregroup-bg/ut-rule/commit/a247c4a))
+
+
+### BREAKING CHANGES
+
+* sql code now has dependency to ut-core and integration.vAssignment
+
+
+
 <a name="6.2.10"></a>
 ## [6.2.10](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.9...v6.2.10) (2017-02-08)
 

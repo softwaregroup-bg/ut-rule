@@ -1,3 +1,13 @@
+<a name="7.0.1"></a>
+## [7.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v7.0.0...v7.0.1) (2017-02-13)
+
+
+### Bug Fixes
+
+* dependencies ([14f0cd0](https://github.com/softwaregroup-bg/ut-rule/commit/14f0cd0))
+
+
+
 <a name="7.0.0"></a>
 # [7.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.10...v7.0.0) (2017-02-10)
 

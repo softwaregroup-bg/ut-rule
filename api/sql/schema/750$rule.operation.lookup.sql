@@ -1,11 +1,11 @@
 ALTER PROCEDURE [rule].[operation.lookup]
     @operation varchar(100),
-    @operationDate datetime
+    @operationDateTime datetime
 AS
     SELECT 'operation' AS resultSetName, 1 single
     SELECT
         n.itemNameId transferTypeId,
-        ISNULL(@operationDate, GETDATE()) transferDateTime
+        ISNULL(@operationDateTime, GETDATE()) transferDateTime
     FROM
         [core].[itemName] n
     JOIN

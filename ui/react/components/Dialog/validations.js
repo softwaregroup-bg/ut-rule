@@ -25,14 +25,14 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            minAmount: joi.number().optional(),
-            maxAmount: joi.number().optional(),
-            maxAmountDaily: joi.number().optional(),
-            maxCountDaily: joi.number().optional(),
-            maxAmountWeekly: joi.number().optional(),
-            maxCountWeekly: joi.number().optional(),
-            maxAmountMonthly: joi.number().optional(),
-            maxCountMonthly: joi.number().optional()
+            minAmount: joi.number().optional().allow(null),
+            maxAmount: joi.number().optional().allow(null),
+            maxAmountDaily: joi.number().optional().allow(null),
+            maxCountDaily: joi.number().optional().allow(null),
+            maxAmountWeekly: joi.number().optional().allow(null),
+            maxCountWeekly: joi.number().optional().allow(null),
+            maxAmountMonthly: joi.number().optional().allow(null),
+            maxCountMonthly: joi.number().optional().allow(null)
         })
     ),
     split: joi.array().items(
@@ -65,9 +65,9 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                     percent: joi.number().optional(),
-                     minValue: joi.number().optional(),
-                     maxValue: joi.number().optional()
+                     percent: joi.number().optional(null),
+                     minValue: joi.number().optional(null),
+                     maxValue: joi.number().optional(null)
                  })
             ),
             splitAssignment: joi.array().items(
@@ -96,9 +96,9 @@ let schema = joi.object().keys({
                             }
                         }
                     }),
-                    percent: joi.number().optional(),
-                    minValue: joi.number().optional(),
-                    maxValue: joi.number().optional()
+                    percent: joi.number().optional(null),
+                    minValue: joi.number().optional(null),
+                    maxValue: joi.number().optional(null)
                 })
             )
         })

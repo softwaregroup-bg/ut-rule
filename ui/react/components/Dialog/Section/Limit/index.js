@@ -125,8 +125,8 @@ const SectionLimit = React.createClass({
                             <th rowSpan={2}>&nbsp;</th>
                         </tr>
                         <tr>
+                            <th>Min</th>
                             <th>Max</th>
-                            <th>Count</th>
                             <th>Max</th>
                             <th>Count</th>
                             <th>Max</th>

@@ -24,7 +24,15 @@ let schema = joi.object().keys({
                         base: 'is required for all limits'
                     }
                 }
-            })
+            }),
+            minAmount: joi.number().optional(),
+            maxAmount: joi.number().optional(),
+            maxAmountDaily: joi.number().optional(),
+            maxCountDaily: joi.number().optional(),
+            maxAmountWeekly: joi.number().optional(),
+            maxCountWeekly: joi.number().optional(),
+            maxAmountMonthly: joi.number().optional(),
+            maxCountMonthly: joi.number().optional()
         })
     ),
     split: joi.array().items(
@@ -56,7 +64,10 @@ let schema = joi.object().keys({
                                  base: 'is required for all splits'
                              }
                          }
-                     })
+                     }),
+                     percent: joi.number().optional(),
+                     minValue: joi.number().optional(),
+                     maxValue: joi.number().optional()
                  })
             ),
             splitAssignment: joi.array().items(
@@ -84,7 +95,10 @@ let schema = joi.object().keys({
                                 base: 'is required for all splits'
                             }
                         }
-                    })
+                    }),
+                    percent: joi.number().optional(),
+                    minValue: joi.number().optional(),
+                    maxValue: joi.number().optional()
                 })
             )
         })

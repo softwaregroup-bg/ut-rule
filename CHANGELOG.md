@@ -1,3 +1,20 @@
+<a name="7.1.0"></a>
+# [7.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v7.0.1...v7.1.0) (2017-02-14)
+
+
+### Bug Fixes
+
+* improve errors ([0dc19c6](https://github.com/softwaregroup-bg/ut-rule/commit/0dc19c6))
+* param name ([ff326c7](https://github.com/softwaregroup-bg/ut-rule/commit/ff326c7))
+
+
+### Features
+
+* add operation.lookup method ([c424a02](https://github.com/softwaregroup-bg/ut-rule/commit/c424a02))
+* support amount/count aggregate conditions ([ae0b61d](https://github.com/softwaregroup-bg/ut-rule/commit/ae0b61d))
+
+
+
 <a name="7.0.1"></a>
 ## [7.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v7.0.0...v7.0.1) (2017-02-13)
 

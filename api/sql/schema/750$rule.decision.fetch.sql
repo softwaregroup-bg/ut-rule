@@ -193,7 +193,16 @@ BEGIN
                 WHEN @amount > ISNULL(r.percentBase, 0) THEN @amount - ISNULL(r.percentBase, 0)
                 ELSE 0
             END / 100,
-            RANK() OVER (PARTITION BY n.splitNameId ORDER BY c.priority, r.startAmount DESC, r.splitRangeId)
+            RANK() OVER (PARTITION BY n.splitNameId ORDER BY
+                c.priority,
+                r.startCountMonthly DESC,
+                r.startAmountMonthly DESC,
+                r.startCountWeekly DESC,
+                r.startAmountWeekly DESC,
+                r.startCountDaily DESC,
+                r.startAmountDaily DESC,
+                r.startAmount DESC,
+                r.splitRangeId)
         FROM
             @matches AS c
         JOIN
@@ -203,7 +212,13 @@ BEGIN
         WHERE
             @currency = r.startAmountCurrency AND
             COALESCE(@isSourceAmount, 0) = r.isSourceAmount AND
-            @amount >= r.startAmount
+            @amount >= r.startAmount AND
+            @amountDaily >= r.startAmountDaily AND
+            @countDaily >= r.startCountDaily AND
+            @amountWeekly >= r.startAmountWeekly AND
+            @countWeekly >= r.startCountWeekly AND
+            @amountMonthly >= r.startAmountMonthly AND
+            @countMonthly >= r.startCountMonthly
     )
     INSERT INTO
         @fee(conditionId, splitNameId, fee, tag)

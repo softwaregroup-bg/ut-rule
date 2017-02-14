@@ -103,12 +103,12 @@ BEGIN
         @operationDate = ISNULL(@operationDate, GETDATE())
 
     SELECT
-        @amountDaily = SUM(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END),
-        @countDaily = COUNT(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END),
-        @amountWeekly = SUM(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END),--week starts on Mon
-        @countWeekly = COUNT(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END),--week starts on Mon
-        @amountMonthly = SUM(transferAmount),
-        @countMonthly = COUNT(transferAmount)
+        @amountDaily = ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
+        @countDaily = ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
+        @amountWeekly = ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
+        @countWeekly = ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
+        @amountMonthly = ISNULL(SUM(transferAmount), 0),
+        @countMonthly = ISNULL(COUNT(transferAmount), 0)
     FROM
         [integration].[vTransfer]
     WHERE

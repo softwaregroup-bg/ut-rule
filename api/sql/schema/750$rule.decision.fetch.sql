@@ -33,7 +33,9 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @amountMonthly MONEY,
     @countMonthly BIGINT,
     @currency VARCHAR(3),
-    @isSourceAmount BIT
+    @isSourceAmount BIT,
+    @sourceAccount varchar(100),
+    @destinationAccount varchar(100)
 AS
 BEGIN
     DECLARE @matches TABLE (
@@ -191,7 +193,16 @@ BEGIN
                 WHEN @amount > ISNULL(r.percentBase, 0) THEN @amount - ISNULL(r.percentBase, 0)
                 ELSE 0
             END / 100,
-            RANK() OVER (PARTITION BY n.splitNameId ORDER BY c.priority, r.startAmount DESC, r.splitRangeId)
+            RANK() OVER (PARTITION BY n.splitNameId ORDER BY
+                c.priority,
+                r.startCountMonthly DESC,
+                r.startAmountMonthly DESC,
+                r.startCountWeekly DESC,
+                r.startAmountWeekly DESC,
+                r.startCountDaily DESC,
+                r.startAmountDaily DESC,
+                r.startAmount DESC,
+                r.splitRangeId)
         FROM
             @matches AS c
         JOIN
@@ -201,7 +212,13 @@ BEGIN
         WHERE
             @currency = r.startAmountCurrency AND
             COALESCE(@isSourceAmount, 0) = r.isSourceAmount AND
-            @amount >= r.startAmount
+            @amount >= r.startAmount AND
+            @amountDaily >= r.startAmountDaily AND
+            @countDaily >= r.startCountDaily AND
+            @amountWeekly >= r.startAmountWeekly AND
+            @countWeekly >= r.startCountWeekly AND
+            @amountMonthly >= r.startAmountMonthly AND
+            @countMonthly >= r.startCountMonthly
     )
     INSERT INTO
         @fee(conditionId, splitNameId, fee, tag)
@@ -227,21 +244,62 @@ BEGIN
         @operationDate transferDateTime,
         @operationId transferTypeId
 
+    DECLARE @map [core].map
+
+    INSERT INTO
+        @map([key], [value])
+    VALUES -- note that ${} is replaced by SQL port
+        ('$' + '{channel.country}', CAST(@channelCountryId AS VARCHAR(100))),
+        ('$' + '{channel.region}', CAST(@channelRegionId AS VARCHAR(100))),
+        ('$' + '{channel.city}', CAST(@channelCityId AS VARCHAR(100))),
+        ('$' + '{channel.organization}', CAST(@channelOrganizationId AS VARCHAR(100))),
+        ('$' + '{channel.supervisor}', CAST(@channelSupervisorId AS VARCHAR(100))),
+        ('$' + '{channel.role}', CAST(@channelRoleId AS VARCHAR(100))),
+        ('$' + '{channel.id}', CAST(@channelId AS VARCHAR(100))),
+        ('$' + '{operation.id}', CAST(@operationId AS VARCHAR(100))),
+        ('$' + '{operation.currency}', CAST(@currency AS VARCHAR(100))),
+        ('$' + '{source.country}', CAST(@sourceCountryId AS VARCHAR(100))),
+        ('$' + '{source.region}', CAST(@sourceRegionId AS VARCHAR(100))),
+        ('$' + '{source.city}', CAST(@sourceCityId AS VARCHAR(100))),
+        ('$' + '{source.organization}', CAST(@sourceOrganizationId AS VARCHAR(100))),
+        ('$' + '{source.supervisor}', CAST(@sourceSupervisorId AS VARCHAR(100))),
+        ('$' + '{source.id}', CAST(@sourceId AS VARCHAR(100))),
+        ('$' + '{source.account.id}', CAST(@sourceAccountId AS VARCHAR(100))),
+        ('$' + '{source.account.product}', CAST(@sourceAccountProductId AS VARCHAR(100))),
+        ('$' + '{source.account.number}', CAST(@sourceAccount AS VARCHAR(100))),
+        ('$' + '{source.card.product}', CAST(@sourceCardProductId AS VARCHAR(100))),
+        ('$' + '{destination.country}', CAST(@destinationCountryId AS VARCHAR(100))),
+        ('$' + '{destination.id}', CAST(@destinationId AS VARCHAR(100))),
+        ('$' + '{destination.region}', CAST(@destinationRegionId AS VARCHAR(100))),
+        ('$' + '{destination.city}', CAST(@destinationCityId AS VARCHAR(100))),
+        ('$' + '{destination.organization}', CAST(@destinationOrganizationId AS VARCHAR(100))),
+        ('$' + '{destination.supervisor}', CAST(@destinationSupervisorId AS VARCHAR(100))),
+        ('$' + '{destination.account.id}', CAST(@destinationAccountId AS VARCHAR(100))),
+        ('$' + '{destination.account.product}', CAST(@destinationAccountProductId AS VARCHAR(100))),
+        ('$' + '{destination.account.number}', CAST(@destinationAccount AS VARCHAR(100)))
+
+    DELETE FROM @map WHERE [value] IS NULL
+
     SELECT 'split' AS resultSetName
     SELECT
         a.conditionId,
         a.splitNameId,
         a.tag,
         CAST(CASE
-            WHEN assignment.[percent] * a.fee / 100 > maxValue THEN maxValue
-            WHEN assignment.[percent] * a.fee / 100 < minValue THEN minValue
+            WHEN assignment.[percent] * a.fee / 100 > assignment.maxValue THEN maxValue
+            WHEN assignment.[percent] * a.fee / 100 < assignment.minValue THEN minValue
             ELSE assignment.[percent] * a.fee / 100
         END AS MONEY) amount,
-        assignment.debit,
-        assignment.credit,
-        assignment.description
+        ISNULL(d.accountNumber, assignment.debit) debit,
+        ISNULL(c.accountNumber, assignment.credit) credit,
+        assignment.description,
+        assignment.analytics
     FROM
         @fee a
-    JOIN
-        [rule].splitAssignment assignment ON assignment.splitNameId = a.splitNameId
+    CROSS APPLY
+        [rule].assignment(a.splitNameId, @map) assignment
+    LEFT JOIN
+        integration.vAssignment d ON d.accountId = assignment.debit
+    LEFT JOIN
+        integration.vAssignment c ON c.accountId = assignment.credit
 END

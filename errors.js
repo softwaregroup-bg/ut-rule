@@ -2,14 +2,14 @@ var create = require('ut-error').define;
 
 var Rule = create('rule');
 var Generic = create('generic', Rule);
-var ExceedMinAmount = create('exceedMinLimitAmount', Rule);
-var ExceedMaxAmount = create('exceedMaxLimitAmount', Rule);
-var ExceedDailyLimitAmount = create('exceedDailyLimitAmount', Rule);
-var ExceedDailyLimitCount = create('exceedDailyLimitCount', Rule);
-var ExceedWeeklyLimitAmount = create('exceedWeeklyLimitAmount', Rule);
-var ExceedWeeklyLimitCount = create('exceedWeeklyLimitCount', Rule);
-var ExceedMonthlyLimitAmount = create('exceedMonthlyLimitAmount', Rule);
-var ExceedMonthlyLimitCount = create('exceedMonthlyLimitCount', Rule);
+var ExceedMinAmount = create('exceedMinLimitAmount', Rule, 'Transaction amount is below minimum');
+var ExceedMaxAmount = create('exceedMaxLimitAmount', Rule, 'Transaction amount is above maximum');
+var ExceedDailyLimitAmount = create('exceedDailyLimitAmount', Rule, 'Daily amount limit reached');
+var ExceedDailyLimitCount = create('exceedDailyLimitCount', Rule, 'Daily count limit reached');
+var ExceedWeeklyLimitAmount = create('exceedWeeklyLimitAmount', Rule, 'Weekly amount limit reached');
+var ExceedWeeklyLimitCount = create('exceedWeeklyLimitCount', Rule, 'Weekly count limit reached');
+var ExceedMonthlyLimitAmount = create('exceedMonthlyLimitAmount', Rule, 'Monthly amount limit reached');
+var ExceedMonthlyLimitCount = create('exceedMonthlyLimitCount', Rule, 'Monthly count limit reached');
 
 module.exports = {
     rule: cause => new Rule(cause),

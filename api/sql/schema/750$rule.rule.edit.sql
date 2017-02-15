@@ -106,6 +106,12 @@ BEGIN TRY
           sn.splitNameId as splitNameId,
           records.x.value('(./startAmount/text())[1]', 'money') AS startAmount,
           records.x.value('(./startAmountCurrency/text())[1]', 'varchar(3)') AS startAmountCurrency,
+          ISNULL(records.x.value('(./startAmountDaily/text())[1]', 'money'), 0) AS startAmountDaily,
+          ISNULL(records.x.value('(./startCountDaily/text())[1]', 'bigint'), 0) AS startCountDaily,
+          ISNULL(records.x.value('(./startAmountWeekly/text())[1]', 'money'), 0) AS startAmountWeekly,
+          ISNULL(records.x.value('(./startCountWeekly/text())[1]', 'bigint'), 0) AS startCountWeekly,
+          ISNULL(records.x.value('(./startAmountMonthly/text())[1]', 'money'), 0) AS startAmountMonthly,
+          ISNULL(records.x.value('(./startCountMonthly/text())[1]', 'bigint'), 0) AS startCountMonthly,
           ISNULL(records.x.value('(./isSourceAmount/text())[1]', 'bit'), 1) AS isSourceAmount,
           records.x.value('(./minValue/text())[1]', 'money') AS minValue,
           records.x.value('(./maxValue/text())[1]', 'money') AS maxValue,
@@ -118,14 +124,48 @@ BEGIN TRY
         UPDATE
         SET startAmount = r.startAmount,
             startAmountCurrency = r.startAmountCurrency,
+            startAmountDaily = r.startAmountDaily,
+            startCountDaily = r.startCountDaily,
+            startAmountWeekly = r.startAmountWeekly,
+            startCountWeekly = r.startCountWeekly,
+            startAmountMonthly = r.startAmountMonthly,
+            startCountMonthly = r.startCountMonthly,
             isSourceAmount = r.isSourceAmount,
             minValue = r.minValue,
             maxValue = r.maxValue,
             [percent] = r.[percent],
             percentBase = r.percentBase
     WHEN NOT MATCHED by target THEN
-      INSERT (splitNameId, startAmount, startAmountCurrency, isSourceAmount, minValue, maxValue, [percent], percentBase)
-      VALUES (r.splitNameId, r.startAmount, r.startAmountCurrency, r.isSourceAmount, r.minValue, r.maxValue, r.[percent], r.percentBase);
+      INSERT (
+          splitNameId,
+          startAmount,
+          startAmountCurrency,
+          startAmountDaily,
+          startCountDaily,
+          startAmountWeekly,
+          startCountWeekly,
+          startAmountMonthly,
+          startCountMonthly,
+          isSourceAmount,
+          minValue,
+          maxValue,
+          [percent],
+          percentBase)
+      VALUES (
+          r.splitNameId,
+          r.startAmount,
+          r.startAmountCurrency,
+          r.startAmountDaily,
+          r.startCountDaily,
+          r.startAmountWeekly,
+          r.startCountWeekly,
+          r.startAmountMonthly,
+          r.startCountMonthly,
+          r.isSourceAmount,
+          r.minValue,
+          r.maxValue,
+          r.[percent],
+          r.percentBase);
 
     MERGE INTO [rule].splitAssignment x
     USING

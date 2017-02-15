@@ -1,3 +1,65 @@
+<a name="7.2.0"></a>
+# [7.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v7.1.0...v7.2.0) (2017-02-15)
+
+
+### Features
+
+* attach arbitrary analytics to assignments ([5aa0826](https://github.com/softwaregroup-bg/ut-rule/commit/5aa0826))
+
+
+
+<a name="7.1.0"></a>
+# [7.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v7.0.1...v7.1.0) (2017-02-14)
+
+
+### Bug Fixes
+
+* improve errors ([0dc19c6](https://github.com/softwaregroup-bg/ut-rule/commit/0dc19c6))
+* param name ([ff326c7](https://github.com/softwaregroup-bg/ut-rule/commit/ff326c7))
+
+
+### Features
+
+* add operation.lookup method ([c424a02](https://github.com/softwaregroup-bg/ut-rule/commit/c424a02))
+* support amount/count aggregate conditions ([ae0b61d](https://github.com/softwaregroup-bg/ut-rule/commit/ae0b61d))
+
+
+
+<a name="7.0.1"></a>
+## [7.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v7.0.0...v7.0.1) (2017-02-13)
+
+
+### Bug Fixes
+
+* dependencies ([14f0cd0](https://github.com/softwaregroup-bg/ut-rule/commit/14f0cd0))
+
+
+
+<a name="7.0.0"></a>
+# [7.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.10...v7.0.0) (2017-02-10)
+
+
+### Features
+
+* handle expressions in split debit/credit ([a247c4a](https://github.com/softwaregroup-bg/ut-rule/commit/a247c4a))
+
+
+### BREAKING CHANGES
+
+* sql code now has dependency to ut-core and integration.vAssignment
+
+
+
+<a name="6.2.10"></a>
+## [6.2.10](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.9...v6.2.10) (2017-02-08)
+
+
+### Bug Fixes
+
+* remove invalid column reference ([d9e11e5](https://github.com/softwaregroup-bg/ut-rule/commit/d9e11e5))
+
+
+
 <a name="6.2.9"></a>
 ## [6.2.9](https://github.com/softwaregroup-bg/ut-rule/compare/v6.2.8...v6.2.9) (2017-02-07)
 

@@ -292,7 +292,8 @@ BEGIN
         END AS MONEY) amount,
         ISNULL(d.accountNumber, assignment.debit) debit,
         ISNULL(c.accountNumber, assignment.credit) credit,
-        assignment.description
+        assignment.description,
+        assignment.analytics
     FROM
         @fee a
     CROSS APPLY

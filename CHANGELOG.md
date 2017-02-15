@@ -1,3 +1,13 @@
+<a name="7.2.0"></a>
+# [7.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v7.1.0...v7.2.0) (2017-02-15)
+
+
+### Features
+
+* attach arbitrary analytics to assignments ([5aa0826](https://github.com/softwaregroup-bg/ut-rule/commit/5aa0826))
+
+
+
 <a name="7.1.0"></a>
 # [7.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v7.0.1...v7.1.0) (2017-02-14)
 

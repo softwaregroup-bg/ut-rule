@@ -112,7 +112,7 @@ const Assignment = React.createClass({
                 </td>
                 }
                 {fields.percent.visible &&
-                <td style={{minWidth: '70px'}}>
+                <td className={style.splitMinWidth}>
                     <Input
                       keyProp='percent'
                       onChange={this.onChangeInput(index)}

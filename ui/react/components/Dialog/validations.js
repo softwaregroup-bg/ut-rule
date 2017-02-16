@@ -65,9 +65,9 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                     percent: joi.number().optional(null),
-                     minValue: joi.number().optional(null),
-                     maxValue: joi.number().optional(null)
+                     percent: joi.number().optional().allow(null),
+                     minValue: joi.number().optional().allow(null),
+                     maxValue: joi.number().optional().allow(null)
                  })
             ),
             splitAssignment: joi.array().items(
@@ -96,9 +96,9 @@ let schema = joi.object().keys({
                             }
                         }
                     }),
-                    percent: joi.number().optional(null),
-                    minValue: joi.number().optional(null),
-                    maxValue: joi.number().optional(null)
+                    percent: joi.number().optional().allow(null),
+                    minValue: joi.number().optional().allow(null),
+                    maxValue: joi.number().optional().allow(null)
                 })
             )
         })
@@ -110,6 +110,7 @@ module.exports = {
             allowUnknown: true,
             abortEarly: false
         }, options), (err, value) => {
+            debugger;
             if (!err) {
                 return {
                     isValid: true

@@ -77,20 +77,6 @@ const SectionLimit = React.createClass({
                 </td>
                 <td>
                     <Input
-                      keyProp='maxAmountWeekly'
-                      value={'' + (limit.maxAmountWeekly || '')}
-                      onChange={this.onChangeInput(index)}
-                    />
-                </td>
-                <td>
-                    <Input
-                      keyProp='maxCountWeekly'
-                      value={'' + (limit.maxCountWeekly || '')}
-                      onChange={this.onChangeInput(index)}
-                    />
-                </td>
-                <td>
-                    <Input
                       keyProp='maxAmountMonthly'
                       value={'' + (limit.maxAmountMonthly || '')}
                       onChange={this.onChangeInput(index)}
@@ -120,15 +106,12 @@ const SectionLimit = React.createClass({
                             <th rowSpan={2} style={{ minWidth: '100px' }}>Currency</th>
                             <th colSpan={2}>Transactions</th>
                             <th colSpan={2}>Daily</th>
-                            <th colSpan={2}>Weekly</th>
                             <th colSpan={2}>Monthly</th>
                             <th rowSpan={2}>&nbsp;</th>
                         </tr>
                         <tr>
-                            <th>Min</th>
-                            <th>Max</th>
-                            <th>Max</th>
-                            <th>Count</th>
+                            <th>Min Value</th>
+                            <th>Max Value</th>
                             <th>Max</th>
                             <th>Count</th>
                             <th>Max</th>

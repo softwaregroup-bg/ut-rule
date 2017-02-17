@@ -1,3 +1,13 @@
+<a name="7.2.1"></a>
+## [7.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v7.2.0...v7.2.1) (2017-02-16)
+
+
+### Bug Fixes
+
+* look for fee tag ([36eb203](https://github.com/softwaregroup-bg/ut-rule/commit/36eb203))
+
+
+
 <a name="7.2.0"></a>
 # [7.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v7.1.0...v7.2.0) (2017-02-15)
 

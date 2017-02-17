@@ -1,3 +1,18 @@
+<a name="7.2.2"></a>
+## [7.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v7.2.1...v7.2.2) (2017-02-17)
+
+
+### Bug Fixes
+
+* add namespace to replaced values ([2766a8c](https://github.com/softwaregroup-bg/ut-rule/commit/2766a8c))
+* currency move to itemCode, not itemName ([9d245bc](https://github.com/softwaregroup-bg/ut-rule/commit/9d245bc))
+* lint errors ([5335588](https://github.com/softwaregroup-bg/ut-rule/commit/5335588))
+* not shown currency in split and limit ([9835974](https://github.com/softwaregroup-bg/ut-rule/commit/9835974))
+* percentage style to classname ([8ccf787](https://github.com/softwaregroup-bg/ut-rule/commit/8ccf787))
+* split assignment - percentage field width ([512024a](https://github.com/softwaregroup-bg/ut-rule/commit/512024a))
+
+
+
 <a name="7.2.1"></a>
 ## [7.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v7.2.0...v7.2.1) (2017-02-16)
 

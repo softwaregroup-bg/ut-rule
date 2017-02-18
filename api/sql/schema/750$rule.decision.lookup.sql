@@ -27,7 +27,7 @@ BEGIN
         @sourceId BIGINT,
         @sourceCardProductId BIGINT,
         @sourceAccountProductId BIGINT,
-        @sourceAccountId BIGINT,
+        @sourceAccountId NVARCHAR(255),
 
         @destinationCountryId BIGINT,
         @destinationRegionId BIGINT,
@@ -36,7 +36,7 @@ BEGIN
         @destinationSupervisorId BIGINT,
         @destinationId BIGINT,
         @destinationAccountProductId BIGINT,
-        @destinationAccountId BIGINT,
+        @destinationAccountId NVARCHAR(255),
 
         @amountDaily MONEY,
         @countDaily BIGINT,

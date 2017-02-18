@@ -1,3 +1,18 @@
+<a name="8.0.0"></a>
+# [8.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v7.2.2...v8.0.0) (2017-02-18)
+
+
+### Features
+
+* accept strings for account id ([9e473e1](https://github.com/softwaregroup-bg/ut-rule/commit/9e473e1))
+
+
+### BREAKING CHANGES
+
+* this requires database restructure in existing SQL databases
+
+
+
 <a name="7.2.2"></a>
 ## [7.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v7.2.1...v7.2.2) (2017-02-17)
 

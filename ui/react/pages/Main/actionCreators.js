@@ -60,7 +60,6 @@ export function editRule(params) {
 export function addRule(params) {
     return function(dispatch) {
         let split = JSON.parse(JSON.stringify(params.split));
-
         split.map(s => {
             removeEmpty(s);
             s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
@@ -69,6 +68,11 @@ export function addRule(params) {
             }, '|');
             return s;
         });
+
+        const operationTag = JSON.parse(JSON.stringify(params.condition[0].operationTag));
+        const tagKeys = operationTag.map(tag => tag.key);
+        params.condition[0].operationTag = tagKeys.length > 0 ? '|' + tagKeys.join('|') + '|' : null;
+
         params.split = {data: {rows: split}};
         return dispatch({
             type: actionTypes.addRule,

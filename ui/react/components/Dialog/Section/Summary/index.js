@@ -56,7 +56,7 @@ const Summary = React.createClass({
                             ], 'Condition')}
                             {this.buildList([
                                 ['Operation', condition.operationId, 'operation'],
-                                ['Tag', condition.operationTag],
+                                // ['Tag', condition.operationTag],
                                 ['Start Date', condition.operationStartDate],
                                 ['End Date', condition.operationEndDate]
                             ], 'Operation')}

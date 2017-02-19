@@ -10,13 +10,21 @@ const Summary = React.createClass({
         // label, value, nomenclatureKey
         var list = arr.map((record, i) => {
             let value = record[2] && this.props.nomenclatures[record[2]] ? this.props.nomenclatures[record[2]][record[1]] : record[1];
-            return (
-                value
-                ? <div key={i + 2}>
-                    <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
-                </div>
-                : null
-            );
+            if (Array.isArray(value)) {
+                return (
+                    <div key={`${heading || record[0]}${i}`}>
+                        <b>{record[0] ? record[0] + ': ' : ''}</b>{value.map(v => v.key).join('|')}
+                    </div>
+                );
+            } else if (value) {
+                return (
+                    <div key={`${heading || record[0]}${i}`}>
+                        <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
+                    </div>
+                );
+            } else {
+                return null;
+            }
         }).filter(val => val);
         if (list.length) {
             if (heading) {
@@ -56,7 +64,7 @@ const Summary = React.createClass({
                             ], 'Condition')}
                             {this.buildList([
                                 ['Operation', condition.operationId, 'operation'],
-                                // ['Tag', condition.operationTag],
+                                ['Tag', condition.operationTag],
                                 ['Start Date', condition.operationStartDate],
                                 ['End Date', condition.operationEndDate]
                             ], 'Operation')}

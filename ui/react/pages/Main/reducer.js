@@ -69,6 +69,12 @@ var formatRules = function(data) {
                 result[resultKey].split[splitKey].splitName.tag = result[resultKey].split[splitKey].splitName.tag.split('|').filter((v) => (v !== '')).map((v) => ({key: v, name: v}));
             }
         }
+
+        // for (var conditionKey in result[resultKey].condition) {
+        //     if (result[resultKey].condition[conditionKey].operationTag !== null) {
+        //         result[resultKey].condition[conditionKey].operationTag = result[resultKey].condition[conditionKey].operationTag.split('|').filter((v) => (v !== '')).map((v) => ({key: v, name: v}));
+        //     }
+        // }
     }
     return result;
 };

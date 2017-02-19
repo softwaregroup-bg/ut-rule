@@ -59,11 +59,11 @@ export default React.createClass({
                     ['City', condition.channelCityId, 'city'],
                     ['Organization', condition.channelOrganizationId, 'organization'],
                     ['Supervisor', condition.channelSupervisorId, 'supervisor'],
-                    ['Role', condition.channelRoleIds, 'roles']
+                    ['Role', condition.channelRoleId, 'role']
                 ],
                 operation: columns.operation.visible && [
                     ['Operation', condition.operationId, 'operation'],
-                    ['Tag', condition.operationTag],
+                    // ['Tag', condition.operationTag],
                     ['Start Date', condition.operationStartDate],
                     ['End Date', condition.operationEndDate]
                 ],

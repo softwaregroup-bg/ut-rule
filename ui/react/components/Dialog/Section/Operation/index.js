@@ -63,7 +63,7 @@ const Operation = React.createClass({
                     <div className={style.inputWrapper}>
                         <MultiSelect
                           placeholder='Select Tags'
-                          defaultSelected={this.defaultSelected(getTagData(), this.props.data.operationTag)}
+                          defaultSelected={this.defaultSelected(getTagData(), this.props.data.operationTag || [])}
                           onSelect={onChangeInput}
                           data={getTagData()}
                           label='Tag'

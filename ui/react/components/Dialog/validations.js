@@ -25,14 +25,46 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            minAmount: joi.number().optional().allow(null),
-            maxAmount: joi.number().optional().allow(null),
-            maxAmountDaily: joi.number().optional().allow(null),
-            maxCountDaily: joi.number().optional().allow(null),
-            maxAmountWeekly: joi.number().optional().allow(null),
-            maxCountWeekly: joi.number().optional().allow(null),
-            maxAmountMonthly: joi.number().optional().allow(null),
-            maxCountMonthly: joi.number().optional().allow(null)
+            minAmount: joi.number().optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Min Value" '
+                }
+            }),
+            maxAmount: joi.number().optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Value" '
+                }
+            }),
+            maxAmountDaily: joi.number().optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Daily Value" '
+                }
+            }),
+            maxCountDaily: joi.number().optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Count Daily Value" '
+                }
+            }),
+            maxAmountWeekly: joi.number().optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Weekly Value" '
+                }
+            }),
+            maxCountWeekly: joi.number().optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Count Weekly Value" '
+                }
+            }),
+            maxAmountMonthly: joi.number().optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Monthly Value" '
+                }
+            }),
+            maxCountMonthly: joi.number().optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Count Monthly Value" '
+                }
+            })
         })
     ),
     split: joi.array().items(
@@ -48,27 +80,39 @@ let schema = joi.object().keys({
                 })
             }),
             splitRange: joi.array().items(
-                 joi.object().keys({
-                     startAmount: joi.number().min(1).required().options({
-                         language: {
-                             key: '"Range Start Amount" ',
-                             number: {
-                                 base: 'is required for all splits'
-                             }
-                         }
-                     }),
-                     startAmountCurrency: joi.string().required().options({
-                         language: {
-                             key: '"Range Start Amount Currency" ',
-                             string: {
-                                 base: 'is required for all splits'
-                             }
-                         }
-                     }),
-                     percent: joi.number().optional().allow(null),
-                     minValue: joi.number().optional().allow(null),
-                     maxValue: joi.number().optional().allow(null)
-                 })
+                joi.object().keys({
+                    startAmount: joi.number().min(1).required().options({
+                        language: {
+                            key: '"Range Start Amount" ',
+                            number: {
+                                base: 'is required for all splits'
+                            }
+                        }
+                    }),
+                    startAmountCurrency: joi.string().required().options({
+                        language: {
+                            key: '"Range Start Amount Currency" ',
+                            string: {
+                                base: 'is required for all splits'
+                            }
+                        }
+                    }),
+                    percent: joi.number().optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Split Percentage Value" '
+                        }
+                    }),
+                    minValue: joi.number().optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Split Range Min Amount Value" '
+                        }
+                    }),
+                    maxValue: joi.number().optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Split Range Max Amount Value" '
+                        }
+                    })
+                })
             ),
             splitAssignment: joi.array().items(
                 joi.object().keys({
@@ -96,9 +140,21 @@ let schema = joi.object().keys({
                             }
                         }
                     }),
-                    percent: joi.number().optional().allow(null),
-                    minValue: joi.number().optional().allow(null),
-                    maxValue: joi.number().optional().allow(null)
+                    percent: joi.number().optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Assignment Percentage Value" '
+                        }
+                    }),
+                    minValue: joi.number().optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Assignment Range Min Amount Value" '
+                        }
+                    }),
+                    maxValue: joi.number().optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Assignment Range Max Amount Value" '
+                        }
+                    })
                 })
             )
         })
@@ -110,7 +166,6 @@ module.exports = {
             allowUnknown: true,
             abortEarly: false
         }, options), (err, value) => {
-            debugger;
             if (!err) {
                 return {
                     isValid: true

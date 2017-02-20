@@ -26,12 +26,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @destinationAccountProductId BIGINT,
     @destinationAccountId NVARCHAR(255),
     @amount MONEY,
-    @amountDaily MONEY,
-    @countDaily BIGINT,
-    @amountWeekly MONEY,
-    @countWeekly BIGINT,
-    @amountMonthly MONEY,
-    @countMonthly BIGINT,
+    @totals [rule].totals READONLY,
     @currency VARCHAR(3),
     @isSourceAmount BIT,
     @sourceAccount varchar(100),
@@ -39,8 +34,9 @@ ALTER PROCEDURE [rule].[decision.fetch]
 AS
 BEGIN
     DECLARE @matches TABLE (
-        priority INT,
-        conditionId BIGINT
+        [priority] INT,
+        conditionId BIGINT,
+        operationTag NVARCHAR(50)
     )
 
     SET @operationDate = IsNull(@operationDate, GETDATE())
@@ -52,6 +48,12 @@ BEGIN
         @idCommission BIGINT,
         @minAmount MONEY,
         @maxAmount MONEY,
+        @amountDaily MONEY,
+        @countDaily BIGINT,
+        @amountWeekly MONEY,
+        @countWeekly BIGINT,
+        @amountMonthly MONEY,
+        @countMonthly BIGINT,
         @maxAmountDaily MONEY,
         @maxCountDaily BIGINT,
         @maxAmountWeekly MONEY,
@@ -60,9 +62,9 @@ BEGIN
         @maxCountMonthly BIGINT
 
     INSERT INTO
-        @matches
+        @matches([priority], conditionId, operationTag)
     SELECT
-        [priority],conditionId
+        [priority], conditionId, operationTag
     FROM
         [rule].condition c
     WHERE
@@ -116,9 +118,17 @@ BEGIN
         @maxAmountWeekly = l.maxAmountWeekly,
         @maxCountWeekly = l.maxCountWeekly,
         @maxAmountMonthly = l.maxAmountMonthly,
-        @maxCountMonthly = l.maxCountMonthly
+        @maxCountMonthly = l.maxCountMonthly,
+        @amountDaily = ISNULL(t.amountDaily, 0),
+        @countDaily = ISNULL(t.countDaily, 0),
+        @amountWeekly = ISNULL(t.amountWeekly, 0),
+        @countWeekly = ISNULL(t.countWeekly, 0),
+        @amountMonthly = ISNULL(t.amountMonthly, 0),
+        @countMonthly = ISNULL(t.countMonthly, 0)
     FROM
         @matches AS c
+    LEFT JOIN
+        @totals t ON c.operationTag LIKE '%|' + t.tag + '|%' OR (t.tag IS NULL AND c.operationTag IS NULL)
     JOIN
         [rule].limit AS l ON l.conditionId = c.conditionId
     WHERE
@@ -205,6 +215,8 @@ BEGIN
                 r.splitRangeId)
         FROM
             @matches AS c
+        LEFT JOIN
+            @totals t ON c.operationTag LIKE '%|' + t.tag + '|%' OR (t.tag IS NULL AND c.operationTag IS NULL)
         JOIN
             [rule].splitName AS n ON n.conditionId = c.conditionId
         JOIN
@@ -213,12 +225,12 @@ BEGIN
             @currency = r.startAmountCurrency AND
             COALESCE(@isSourceAmount, 0) = r.isSourceAmount AND
             @amount >= r.startAmount AND
-            @amountDaily >= r.startAmountDaily AND
-            @countDaily >= r.startCountDaily AND
-            @amountWeekly >= r.startAmountWeekly AND
-            @countWeekly >= r.startCountWeekly AND
-            @amountMonthly >= r.startAmountMonthly AND
-            @countMonthly >= r.startCountMonthly
+            t.amountDaily >= r.startAmountDaily AND
+            t.countDaily >= r.startCountDaily AND
+            t.amountWeekly >= r.startAmountWeekly AND
+            t.countWeekly >= r.startCountWeekly AND
+            t.amountMonthly >= r.startAmountMonthly AND
+            t.countMonthly >= r.startCountMonthly
     )
     INSERT INTO
         @fee(conditionId, splitNameId, fee, tag)

@@ -38,12 +38,7 @@ BEGIN
         @destinationAccountProductId BIGINT,
         @destinationAccountId NVARCHAR(255),
 
-        @amountDaily MONEY,
-        @countDaily BIGINT,
-        @amountWeekly MONEY,
-        @countWeekly BIGINT,
-        @amountMonthly MONEY,
-        @countMonthly BIGINT
+        @totals [rule].totals
 
     SELECT
         @channelCountryId = countryId,
@@ -94,21 +89,18 @@ BEGIN
     WHERE
         accountNumber = @destinationAccount
 
-    SELECT @amountDaily = 0,
-        @countDaily = 0,
-        @amountWeekly = 0,
-        @countWeekly = 0,
-        @amountMonthly = 0,
-        @countMonthly = 0,
-        @operationDate = ISNULL(@operationDate, GETDATE())
+    SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
-    SELECT
-        @amountDaily = ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
-        @countDaily = ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
-        @amountWeekly = ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
-        @countWeekly = ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
-        @amountMonthly = ISNULL(SUM(transferAmount), 0),
-        @countMonthly = ISNULL(COUNT(transferAmount), 0)
+    INSERT INTO
+        @totals(tag, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
+    SELECT -- totals for that type
+        NULL,
+        ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
+        ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
+        ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
+        ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
+        ISNULL(SUM(transferAmount), 0),
+        ISNULL(COUNT(transferAmount), 0)
     FROM
         [integration].[vTransfer]
     WHERE
@@ -117,6 +109,25 @@ BEGIN
         transferCurrency = @currency AND
         transferDateTime < @operationDate AND -- look ony at earlier transfers
         transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
+    UNION SELECT -- totals by transfer tag
+        it.tag,
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount END), 0),
+        ISNULL(COUNT(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount END), 0),--week starts on Mon
+        ISNULL(COUNT(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount END), 0),--week starts on Mon
+        ISNULL(SUM(t.transferAmount), 0),
+        ISNULL(COUNT(t.transferAmount), 0)
+    FROM
+        [integration].[vTransfer] t
+    JOIN
+        core.itemTag it on it.itemNameId = t.transferTypeId
+    WHERE
+        t.sourceAccount = @sourceAccount AND
+        t.transferCurrency = @currency AND
+        t.transferDateTime < @operationDate AND -- look ony at earlier transfers
+        t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
+    GROUP BY
+        it.tag
 
     EXEC [rule].[decision.fetch]
         @channelCountryId = @channelCountryId,
@@ -146,12 +157,7 @@ BEGIN
         @destinationAccountProductId = @destinationAccountProductId,
         @destinationAccountId = @destinationAccountId,
         @amount = @amount,
-        @amountDaily = @amountDaily,
-        @countDaily = @countDaily,
-        @amountWeekly = @amountWeekly,
-        @countWeekly = @countWeekly,
-        @amountMonthly = @amountMonthly,
-        @countMonthly = @countMonthly,
+        @totals = @totals,
         @currency = @currency,
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,

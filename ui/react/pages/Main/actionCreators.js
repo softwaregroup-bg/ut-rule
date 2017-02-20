@@ -43,8 +43,8 @@ function prepareTags(params) {
         return s;
     });
     const operationTag = JSON.parse(JSON.stringify(params.condition[0].operationTag));
-    const tagKeys = operationTag.map(tag => tag.key);
-    params.condition[0].operationTag = tagKeys.length > 0 ? '|' + tagKeys.join('|') + '|' : null;
+    const tagKeys = Array.isArray(operationTag) ? operationTag.map(tag => tag.key) : [];
+    params.condition[0].operationTag = tagKeys.length > 0 ? ('|' + tagKeys.join('|') + '|') : null;
 
     params.split = {data: {rows: split}};
     return params;

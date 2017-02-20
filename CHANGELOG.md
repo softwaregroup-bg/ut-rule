@@ -1,3 +1,13 @@
+<a name="8.1.0"></a>
+# [8.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v8.0.0...v8.1.0) (2017-02-20)
+
+
+### Features
+
+* apply aggregates by operation id or tag ([69dca32](https://github.com/softwaregroup-bg/ut-rule/commit/69dca32))
+
+
+
 <a name="8.0.0"></a>
 # [8.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v7.2.2...v8.0.0) (2017-02-18)
 

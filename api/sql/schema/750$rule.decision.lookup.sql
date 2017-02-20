@@ -1,6 +1,7 @@
 ALTER PROCEDURE [rule].[decision.lookup]
     @channelId BIGINT,
     @operation varchar(100),
+    @operationTag VARCHAR(100) = NULL,
     @operationDate datetime,
     @sourceAccount varchar(100),
     @destinationAccount varchar(100),
@@ -130,6 +131,7 @@ BEGIN
         @channelId = @channelId,
         @operationId = @operationId,
         @operationDate = @operationDate,
+        @operationTag = @operationTag,
         @sourceCountryId = @sourceCountryId,
         @sourceRegionId = @sourceRegionId,
         @sourceCityId = @sourceCityId,

@@ -8,6 +8,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @channelId BIGINT,
     @operationId BIGINT,
     @operationDate DATETIME,
+    @operationTag VARCHAR(100),
     @sourceCountryId BIGINT,
     @sourceRegionId BIGINT,
     @sourceCityId BIGINT,
@@ -73,7 +74,8 @@ BEGIN
         (@channelRoleId IS NULL OR c.channelRoleId IS NULL OR @channelRoleId = c.channelRoleId) AND
         (@channelId IS NULL OR c.channelId IS NULL OR @channelId = c.channelId) AND
         (@operationId IS NULL OR c.operationId IS NULL OR @operationId = c.operationId) AND
-        (c.operationTag IS NULL OR @operationId IS NULL OR EXISTS(SELECT * from core.itemTag t WHERE t.itemNameId = @operationId AND c.operationTag LIKE '%|' + t.tag + '|%')) AND
+        (c.operationTag IS NULL OR (@operationTag IS NOT NULL AND c.operationTag LIKE '%|' + @operationTag + '|%')) AND
+        -- (c.operationTag IS NULL OR @operationId IS NULL OR EXISTS(SELECT * from core.itemTag t WHERE t.itemNameId = @operationId AND c.operationTag LIKE '%|' + t.tag + '|%')) AND
         (@operationDate IS NULL OR c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
         (@operationDate IS NULL OR c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
         (@sourceCountryId IS NULL OR c.sourceCountryId IS NULL OR @sourceCountryId = c.sourceCountryId) AND

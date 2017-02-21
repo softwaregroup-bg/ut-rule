@@ -20,11 +20,11 @@ const Operation = React.createClass({
     },
     getTagData() {
         return [
-            {key: 'AIRTEL', name: 'AIRTEL'},
-            {key: 'EXPRESSO', name: 'EXPRESSO'},
-            {key: 'MTN', name: 'MTN'},
-            {key: 'TIGO', name: 'TIGO'},
-            {key: 'VODAFONE', name: 'VODAFONE'},
+            {key: 'AT03', name: 'AIRTEL'},
+            {key: 'AT04', name: 'EXPRESSO'},
+            {key: 'AT00', name: 'MTN'},
+            {key: 'AT02', name: 'TIGO'},
+            {key: 'AT01', name: 'VODAFONE'},
             {key: 'DSTV', name: 'DSTV'},
             {key: 'ECG', name: 'ECG'}
         ];

@@ -109,7 +109,7 @@ BEGIN TRY
           ISNULL(records.x.value('(./isSourceAmount/text())[1]', 'bit'), 1) AS isSourceAmount,
           records.x.value('(./minValue/text())[1]', 'money') AS minValue,
           records.x.value('(./maxValue/text())[1]', 'money') AS maxValue,
-          records.x.value('(./percent/text())[1]', 'money') AS [percent],
+          records.x.value('(./percent/text())[1]', 'decimal(5,2)') AS [percent],
           records.x.value('(./percentBase/text())[1]', 'money') AS percentBase
       FROM @split.nodes('/data/rows/splitRange') AS records(x)
       JOIN @splitName sn on sn.rowPosition = records.x.value('for $a in .. return 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'int')
@@ -136,7 +136,7 @@ BEGIN TRY
             records.x.value('(./credit/text())[1]', 'varchar(50)') AS credit,
             records.x.value('(./minValue/text())[1]', 'money') AS minValue,
             records.x.value('(./maxValue/text())[1]', 'money') AS maxValue,
-            records.x.value('(./percent/text())[1]', 'decimal') AS [percent],
+            records.x.value('(./percent/text())[1]', 'decimal(5,2)') AS [percent],
             records.x.value('(./description/text())[1]', 'varchar(50)') AS description
         FROM @split.nodes('/data/rows/splitAssignment') AS records(x)
         JOIN @splitName sn on sn.rowPosition = records.x.value('for $a in .. return 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'int')

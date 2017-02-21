@@ -94,7 +94,7 @@ export default React.createClass({
                 limit: columns.limit.visible && record.limit,
                 refresh: ''
             };
-        });
+        }).sort((conditionA, conditionB) => Number(conditionA.priority) - Number(conditionB.priority));
     },
     transformCellValue(value, header, row, isHeader) {
         if (isHeader) {

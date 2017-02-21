@@ -106,7 +106,10 @@ const Main = React.createClass({
     },
     dialogOnSave(data) {
         let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
-        this.setState(this.getInitialState(), () => this.props.actions[action](data));
+        // Trigger the action & if it comes back with no error -> clear the dialog;
+        // otherwise - keep the data, as we don't want the user to have to input it again
+        return this.props.actions[action](data)
+            .then(result => !result.error && this.setState(this.getInitialState()));
     },
     removeRules() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));

@@ -3,6 +3,7 @@ import style from '../../style.css';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import MultiSelect from 'ut-front-react/components/Input/MultiSelectDropdown';
+import { getTagData } from '../../helpers';
 
 const Operation = React.createClass({
     propTypes: {
@@ -17,17 +18,6 @@ const Operation = React.createClass({
         return {
             fields: this.props.fields
         };
-    },
-    getTagData() {
-        return [
-            {key: 'AT03', name: 'AIRTEL'},
-            {key: 'AT04', name: 'EXPRESSO'},
-            {key: 'AT00', name: 'MTN'},
-            {key: 'AT02', name: 'TIGO'},
-            {key: 'AT01', name: 'VODAFONE'},
-            {key: 'DSTV', name: 'DSTV'},
-            {key: 'ECG', name: 'ECG'}
-        ];
     },
     defaultSelected(origin, selected) {
         let result = [];
@@ -53,10 +43,9 @@ const Operation = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        const { onChangeInput, onChangeDate, getTagData } = this;
+        const { onChangeInput, onChangeDate } = this;
         const { operation } = this.context.nomenclatures;
         const fields = this.state.fields;
-
         return (
             <div className={style.content}>
                 {fields.tag.visible &&

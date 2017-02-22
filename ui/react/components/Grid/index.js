@@ -28,7 +28,7 @@ export default React.createClass({
             if (Array.isArray(value)) {
                 return (
                     <div key={i}>
-                        <b>{record[0] ? record[0] + ': ' : ''}</b>{value.map(v => v.key).join('|')}
+                        <b>{record[0] ? record[0] + ': ' : ''}</b>{value.map(v => v.name).join('|')}
                     </div>
                 );
             } else if (value) {

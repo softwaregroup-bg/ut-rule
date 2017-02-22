@@ -215,9 +215,8 @@ export default React.createClass({
     save() {
         let formValidation = validations.run(this.state.data);
         if (formValidation.isValid) {
-            this.props.onSave(Object.assign({}, this.state.data));
+            this.props.onSave(JSON.parse(JSON.stringify(this.state.data)));
         }
-
         this.setState({
             form: Object.assign({}, this.state.form, {
                 errorDialogOpen: !formValidation.isValid,

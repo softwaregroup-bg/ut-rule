@@ -1,4 +1,6 @@
 import * as actionTypes from './actionTypes';
+import { getTagData } from '../../components/Dialog/helpers';
+
 const defaultState = {};
 
 export default (state = defaultState, action) => {
@@ -70,7 +72,10 @@ var formatRules = function(data) {
             }
         }
         if (result[resultKey].condition[0].operationTag !== null) {
-            result[resultKey].condition[0].operationTag = result[resultKey].condition[0].operationTag.split('|').filter((v) => (v !== '')).map((v) => ({key: v, name: v}));
+            const tags = getTagData();
+             // TODO: Maybe throw when not found?
+            const lookupKey = (key) => tags.find(tag => tag.key === key) || {key: key, name: key};
+            result[resultKey].condition[0].operationTag = result[resultKey].condition[0].operationTag.split('|').filter((v) => (v !== '')).map(lookupKey);
         }
 
         // for (var conditionKey in result[resultKey].condition) {

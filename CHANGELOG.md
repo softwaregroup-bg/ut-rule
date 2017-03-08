@@ -1,3 +1,13 @@
+<a name="8.1.1"></a>
+## [8.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v8.1.0...v8.1.1) (2017-03-08)
+
+
+### Bug Fixes
+
+* dependencies ([1e586dc](https://github.com/softwaregroup-bg/ut-rule/commit/1e586dc))
+
+
+
 <a name="8.1.0"></a>
 # [8.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v8.0.0...v8.1.0) (2017-02-20)
 

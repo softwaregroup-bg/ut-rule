@@ -1,3 +1,13 @@
+<a name="8.1.3"></a>
+## [8.1.3](https://github.com/softwaregroup-bg/ut-rule/compare/v8.1.2...v8.1.3) (2017-03-10)
+
+
+### Bug Fixes
+
+* linting ([e15d4dd](https://github.com/softwaregroup-bg/ut-rule/commit/e15d4dd))
+
+
+
 <a name="8.1.2"></a>
 ## [8.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v8.1.1...v8.1.2) (2017-03-08)
 

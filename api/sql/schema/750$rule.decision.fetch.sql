@@ -77,7 +77,7 @@ BEGIN
         (@channelRoleId IS NULL OR c.channelRoleId IS NULL OR @channelRoleId = c.channelRoleId) AND
         (@channelId IS NULL OR c.channelId IS NULL OR @channelId = c.channelId) AND
         (@operationId IS NULL OR c.operationId IS NULL OR @operationId = c.operationId) AND
-        (c.operationTag IS NULL OR @operationId IS NULL OR EXISTS(SELECT * from core.itemTag t WHERE t.itemNameId = @operationId AND c.operationTag LIKE '%|' + t.tag + '|%')) AND
+        (c.operationTag IS NULL OR @operationId IS NULL OR EXISTS(SELECT * from core.itemTag t WHERE t.itemNameId = @operationId AND c.operationTag = t.tag )) AND
         (@operationDate IS NULL OR c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
         (@operationDate IS NULL OR c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
         (@sourceCountryId IS NULL OR c.sourceCountryId IS NULL OR @sourceCountryId = c.sourceCountryId) AND
@@ -128,7 +128,7 @@ BEGIN
     FROM
         @matches AS c
     LEFT JOIN
-        @totals t ON c.operationTag LIKE '%|' + t.tag + '|%' OR (t.tag IS NULL AND c.operationTag IS NULL)
+        @totals t ON c.operationTag = t.tag OR (t.tag IS NULL AND c.operationTag IS NULL)
     JOIN
         [rule].limit AS l ON l.conditionId = c.conditionId
     WHERE
@@ -216,7 +216,7 @@ BEGIN
         FROM
             @matches AS c
         LEFT JOIN
-            @totals t ON c.operationTag LIKE '%|' + t.tag + '|%' OR (t.tag IS NULL AND c.operationTag IS NULL)
+            @totals t ON c.operationTag = t.tag  OR (t.tag IS NULL AND c.operationTag IS NULL)
         JOIN
             [rule].splitName AS n ON n.conditionId = c.conditionId
         JOIN

@@ -234,7 +234,20 @@ module.exports = function(opt, cache) {
                                         credit: 'channel.$' + '{channel.id}.fee',
                                         debit: '$' + '{source.account.number}',
                                         description: 'ATM fee - acquirer', // mandatory
-                                        percent: 100
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 145
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 145
+                                        }, {
+                                            name: 'debitNote',
+                                            value: null
+                                        }]
                                     }]
                                 }, {
                                     splitName: {
@@ -258,8 +271,21 @@ module.exports = function(opt, cache) {
                                     splitAssignment: [{
                                         credit: 'channel.$' + '{channel.id}.amount',
                                         debit: '$' + '{source.account.number}',
-                                        description: 'ATM fee - acquirer', // mandatory
-                                        percent: 100
+                                        description: 'ATM amount - acquirer', // mandatory
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 144
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 144
+                                        }, {
+                                            name: 'debitNote',
+                                            value: '$' + '{transfer.udfAcquirer.terminalName}; Txn#: $' + '{transfer.transferId}'
+                                        }]
                                     }]
                                 }]
                             }
@@ -313,7 +339,20 @@ module.exports = function(opt, cache) {
                                         credit: 'channel.$' + '{channel.id}.amount',
                                         debit: '$' + '{source.account.number}',
                                         description: 'ATM amount - issuer', // mandatory
-                                        percent: 100
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 144
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 144
+                                        }, {
+                                            name: 'debitNote',
+                                            value: '$' + '{transfer.udfAcquirer.terminalName}; Txn#: $' + '{transfer.transferId}'
+                                        }]
                                     }]
                                 }, {
                                     splitName: {
@@ -338,7 +377,20 @@ module.exports = function(opt, cache) {
                                         credit: 'channel.$' + '{channel.id}.fee',
                                         debit: '$' + '{source.account.number}',
                                         description: 'ATM fee - issuer', // mandatory
-                                        percent: 100
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 145
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 145
+                                        }, {
+                                            name: 'debitNote',
+                                            value: null
+                                        }]
                                     }]
                                 }, {
                                     splitName: {
@@ -362,7 +414,20 @@ module.exports = function(opt, cache) {
                                         credit: '$' + '{channel.id}.amount',
                                         debit: '$' + '{source.account.number}',
                                         description: 'ATM fee - acquirer', // mandatory
-                                        percent: 100
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 148
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 148
+                                        }, {
+                                            name: 'debitNote',
+                                            value: null
+                                        }]
                                     }]
                                 }]
                             }
@@ -402,7 +467,20 @@ module.exports = function(opt, cache) {
                                         credit: '$' + '{channel.id}.amount',
                                         debit: '$' + '{source.account.number}',
                                         description: 'PED amount - withdraw', // mandatory
-                                        percent: 100
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 739
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 738
+                                        }, {
+                                            name: 'debitNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }]
                                     }]
                                 }, {
                                     splitName: {
@@ -579,7 +657,20 @@ module.exports = function(opt, cache) {
                                         credit: '$' + '{channel.id}.amount',
                                         debit: '$' + '{source.account.number}',
                                         description: 'POS amount - issuer', // mandatory
-                                        percent: 100
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 149
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 149
+                                        }, {
+                                            name: 'debitNote',
+                                            value: '$' + '{transfer.udfAcquirer.terminalName}; Txn#: $' + '{transfer.transferId}'
+                                        }]
                                     }]
                                 }, {
                                     splitName: {
@@ -652,7 +743,20 @@ module.exports = function(opt, cache) {
                                         credit: '$' + '{source.account.number}',
                                         debit: '$' + '{channel.id}.amount',
                                         description: 'PED amount - deposit', // mandatory
-                                        percent: 100
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 973
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 972
+                                        }, {
+                                            name: 'debitNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }]
                                     }]
                                 }]
                             }
@@ -691,7 +795,20 @@ module.exports = function(opt, cache) {
                                         credit: '$' + '{destination.account.number}',
                                         debit: '$' + '{source.account.number}',
                                         description: 'Topup amount', // mandatory
-                                        percent: 100
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 146
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}; Ph: $' + '{transfer.merchantInvoice}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 146
+                                        }, {
+                                            name: 'debitNote',
+                                            value: '$' + '{transfer.udfAcquirer.terminalName}; Txn#: $' + '{transfer.transferId}'
+                                        }]
                                     }]
                                 }, {
                                     splitName: {
@@ -714,7 +831,20 @@ module.exports = function(opt, cache) {
                                         credit: '$' + '{channel.id}.commission',
                                         debit: '$' + '{destination.account.number}',
                                         description: 'Topup commission', // mandatory
-                                        percent: 100
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 147
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 147
+                                        }, {
+                                            name: 'debitNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}; Ph: $' + '{transfer.merchantInvoice}'
+                                        }]
                                     }]
                                 }]
                             }
@@ -752,7 +882,20 @@ module.exports = function(opt, cache) {
                                         credit: '$' + '{destination.account.number}',
                                         debit: '$' + '{source.account.number}',
                                         description: 'Transfer amount', // mandatory
-                                        percent: 100
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 143
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Account $' + '{source.account.number}; Txn# $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 142
+                                        }, {
+                                            name: 'debitNote',
+                                            value: 'Account $' + '{destination.account.number}; Txn# $' + '{transfer.transferId}'
+                                        }]
                                     }]
                                 }]
                             }

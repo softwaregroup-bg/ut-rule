@@ -18,7 +18,9 @@
     "immutable": "3.8.1"
   },
   "devDependencies": {
-    "ut-tools": "^5.13.5"
+    "ut-tools": "^5.13.5",
+    "ut-run": "^8.0.6",
+    "ut-test": "^5.4.2"
   },
   "peerDependencies": {
     "ut-front": "^6.4.7",

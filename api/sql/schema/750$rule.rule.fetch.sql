@@ -46,4 +46,17 @@ BEGIN
         [rule].limit
     WHERE
         @conditionId IS NULL OR conditionId = @conditionId
+
+    SELECT 'splitAnalytic' AS resultSetName
+    SELECT
+        san.*
+    FROM
+	   [rule].splitAnalytic san
+    JOIN
+        [rule].splitAssignment sa ON sa.splitAssignmentId = san.splitAssignmentId
+    JOIN
+        [rule].splitName sn ON sn.splitNameId = sa.splitNameId
+    WHERE
+        @conditionId IS NULL OR sn.conditionId = @conditionId
+
 END

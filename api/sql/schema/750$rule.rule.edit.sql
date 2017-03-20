@@ -6,6 +6,7 @@ AS
 SET NOCOUNT ON
 
 DECLARE @splitName table (splitNameId int, rowPosition int)
+DECLARE @splitAssignment [rule].splitAssignmentTT
 declare @conditionId INT = (SELECT conditionId FROM @condition)
 
 BEGIN TRY
@@ -71,6 +72,13 @@ BEGIN TRY
     FROM [rule].splitRange x
     JOIN [rule].splitName sn ON x.splitNameId = sn.splitNameId
     LEFT JOIN @split.nodes('/data/rows/splitRange/splitRangeId') AS records(x) ON x.splitRangeId = records.x.value('(./text())[1]', 'int')
+    WHERE sn.conditionId = @conditionId AND records.x.value('(./text())[1]', 'int') IS NULL
+
+    DELETE x
+    FROM [rule].splitAnalytic x
+    JOIN [rule].splitAssignment sa ON x.splitAssignmentId = sa.splitAssignmentId
+    JOIN [rule].splitName sn ON sa.splitNameId = sn.splitNameId
+    LEFT JOIN @split.nodes('/data/rows/splitAssignment/splitAnalytic/splitAnalyticId') AS records(x) ON x.splitAnalyticId = records.x.value('(./text())[1]', 'int')
     WHERE sn.conditionId = @conditionId AND records.x.value('(./text())[1]', 'int') IS NULL
 
     DELETE x
@@ -191,7 +199,62 @@ BEGIN TRY
           description = r.description
     WHEN NOT MATCHED BY TARGET THEN
       INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
-      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description);
+      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
+	OUTPUT INSERTED.* INTO @splitAssignment;
+
+    MERGE INTO [rule].splitAnalytic x
+    USING (
+	 SELECT	DISTINCT -- new splitAnalytic & new splitAssignment
+		NULL														AS [splitAnalyticId],
+		sn.splitAssignmentId										AS [splitAssignmentId],
+		splitAssignment.x.query('*').value('(name)[1]', 'nvarchar(50)')		AS [name],
+          splitAssignment.x.query('*').value('(value)[1]', 'nvarchar(150)')	AS [value]
+      FROM
+          @split.nodes('/data/rows/splitAssignment') AS records(x)
+      CROSS APPLY
+          records.x.nodes('splitAnalytic') AS splitAssignment(x)
+      LEFT JOIN @splitAssignment sn ON	 records.x.value('(debit)[1]', 'nvarchar(50)')				= sn.debit
+							 AND records.x.value('(credit)[1]', 'nvarchar(50)')				= sn.credit
+							 AND records.x.value('(description)[1]', 'nvarchar(50)')			= sn.description
+	 WHERE ISNULL(splitAssignment.x.query('*').value('(splitAnalyticId)[1]', 'bigint'), 0) = 0
+	 AND   ISNULL(records.x.value('(splitAssignmentId)[1]', 'bigint'), 0)				  = 0
+	 UNION ALL
+	 SELECT	DISTINCT -- new splitAnalytic & exist splitAssignment
+		NULL														AS [splitAnalyticId],
+		records.x.value('(splitAssignmentId)[1]', 'bigint')				AS [splitAssignmentId],
+		splitAssignment.x.query('*').value('(name)[1]', 'nvarchar(50)')		AS [name],
+          splitAssignment.x.query('*').value('(value)[1]', 'nvarchar(150)')	AS [value]
+      FROM
+          @split.nodes('/data/rows/splitAssignment') AS records(x)
+      CROSS APPLY
+          records.x.nodes('splitAnalytic') AS splitAssignment(x)
+	 WHERE ISNULL(splitAssignment.x.query('*').value('(splitAnalyticId)[1]', 'bigint'), 0) = 0
+	 AND   ISNULL(records.x.value('(splitAssignmentId)[1]', 'bigint'), 0)				 <> 0
+	 UNION ALL
+	 SELECT	 DISTINCT -- exist splitAnalytic & exist splitAssignment
+		splitAssignment.x.query('*').value('(splitAnalyticId)[1]', 'bigint')	AS [splitAnalyticId],
+		records.x.value('(splitAssignmentId)[1]', 'bigint')				AS [splitAssignmentId],
+		splitAssignment.x.query('*').value('(name)[1]', 'nvarchar(50)')		AS [name],
+          splitAssignment.x.query('*').value('(value)[1]', 'nvarchar(150)')	AS [value]
+      FROM
+          @split.nodes('/data/rows/splitAssignment') AS records(x)
+      CROSS APPLY
+          records.x.nodes('splitAnalytic') AS splitAssignment(x)
+	 WHERE ISNULL(splitAssignment.x.query('*').value('(splitAnalyticId)[1]', 'bigint'), 0) <> 0
+	 AND   ISNULL(records.x.value('(splitAssignmentId)[1]', 'bigint'), 0)				  <> 0
+    ) AS r ([splitAnalyticId], splitAssignmentId, [name], [value])
+    ON x.splitAnalyticId = r.splitAnalyticId -- AND ISNULL(r.splitAnalyticId, 0) > 0
+    WHEN MATCHED THEN
+      UPDATE
+      SET [splitAssignmentId]	  = r.[splitAssignmentId],
+          [name]			  = r.[name],
+          [value]			  = r.[value]
+    WHEN NOT MATCHED THEN
+      INSERT (splitAssignmentId, [name], [value])
+      VALUES (r.splitAssignmentId, r.[name], r.[value])
+    OUTPUT $action, DELETED.*, INSERTED.* 
+    ;
+
 
     COMMIT TRANSACTION
 

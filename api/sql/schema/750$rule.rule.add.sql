@@ -3,8 +3,9 @@ ALTER PROCEDURE [rule].[rule.add]
     @limit [rule].limitTT READONLY,
     @split XML
 AS
-DECLARE @splitName [rule].splitNameTT,
-        @conditionId INT
+DECLARE @splitName		   [rule].splitNameTT,
+	   @splitAssignment	   [rule].splitAssignmentTT,
+        @conditionId	   INT
 BEGIN TRY
 
     BEGIN TRANSACTION
@@ -191,7 +192,30 @@ BEGIN TRY
     ON 1 = 0
     WHEN NOT MATCHED THEN
       INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
-      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description);
+      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
+    OUTPUT INSERTED.* INTO @splitAssignment;
+
+
+    MERGE INTO [rule].splitAnalytic
+    USING (
+	 SELECT
+          sn.splitAssignmentId AS splitAssignmentId,
+		splitAssignment.x.query('*').value('(name)[1]', 'nvarchar(50)')		AS [name],
+          splitAssignment.x.query('*').value('(value)[1]', 'nvarchar(150)')	AS [value]
+      FROM
+          @split.nodes('/*/*') AS records(x)
+      CROSS APPLY
+          records.x.nodes('*/splitAnalytic') AS splitAssignment(x)
+      LEFT JOIN @splitAssignment sn ON	 records.x.value('(splitAssignment/debit)[1]', 'nvarchar(50)')	   = sn.debit
+									AND records.x.value('(splitAssignment/credit)[1]', 'nvarchar(50)')	   = sn.credit
+									AND records.x.value('(splitAssignment/description)[1]', 'nvarchar(50)') = sn.[description]
+    ) AS r (splitAssignmentId, [name], [value])
+    ON 1 = 0
+    WHEN NOT MATCHED THEN
+      INSERT (splitAssignmentId, [name], [value])
+      VALUES (r.splitAssignmentId, r.[name], r.[value])
+--    OUTPUT INSERTED.* 
+    ;
 
     COMMIT TRANSACTION
 

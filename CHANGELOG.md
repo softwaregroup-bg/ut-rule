@@ -1,3 +1,13 @@
+<a name="8.2.0"></a>
+# [8.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v8.1.3...v8.2.0) (2017-03-20)
+
+
+### Features
+
+* operationTag remove like ([#26](https://github.com/softwaregroup-bg/ut-rule/issues/26)) ([ad8862f](https://github.com/softwaregroup-bg/ut-rule/commit/ad8862f))
+
+
+
 <a name="8.1.3"></a>
 ## [8.1.3](https://github.com/softwaregroup-bg/ut-rule/compare/v8.1.2...v8.1.3) (2017-03-10)
 

@@ -5,7 +5,7 @@ CREATE TABLE [rule].[splitAssignment] (
     credit VARCHAR(50) NOT NULL,
     minValue MONEY,
     maxValue MONEY,
-    [percent] DECIMAL,
+    [percent] FLOAT,
     description VARCHAR(50) NOT NULL,
     CONSTRAINT [pkRuleSplitAssignment] PRIMARY KEY CLUSTERED (splitAssignmentId ASC),
     CONSTRAINT [fkRuleSplitAssignment_ruleSplitName] FOREIGN KEY (splitNameId) REFERENCES [rule].[splitName](splitNameId)

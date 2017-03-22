@@ -92,25 +92,9 @@ BEGIN
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
     INSERT INTO
-        @totals(tag, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
-    SELECT -- totals for that type
-        NULL,
-        ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
-        ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
-        ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
-        ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
-        ISNULL(SUM(transferAmount), 0),
-        ISNULL(COUNT(transferAmount), 0)
-    FROM
-        [integration].[vTransfer]
-    WHERE
-        sourceAccount = @sourceAccount AND
-        transferTypeId = @operationId AND
-        transferCurrency = @currency AND
-        transferDateTime < @operationDate AND -- look ony at earlier transfers
-        transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
-    UNION SELECT -- totals by transfer tag
-        it.tag,
+        @totals(operationId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
+    SELECT -- totals by transfer type
+        t.transferTypeId,
         ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount END), 0),
         ISNULL(COUNT(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount END), 0),
         ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount END), 0),--week starts on Mon
@@ -119,15 +103,13 @@ BEGIN
         ISNULL(COUNT(t.transferAmount), 0)
     FROM
         [integration].[vTransfer] t
-    JOIN
-        core.itemTag it on it.itemNameId = t.transferTypeId
     WHERE
         t.sourceAccount = @sourceAccount AND
         t.transferCurrency = @currency AND
         t.transferDateTime < @operationDate AND -- look ony at earlier transfers
         t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
     GROUP BY
-        it.tag
+        t.transferTypeId
 
     EXEC [rule].[decision.fetch]
         @channelCountryId = @channelCountryId,

@@ -12,7 +12,7 @@ CREATE TABLE [rule].[splitRange] (
     isSourceAmount BIT NOT NULL,
     minValue MONEY,
     maxValue MONEY,
-    [percent] DECIMAL,
+    [percent] FLOAT,
     percentBase MONEY,
     CONSTRAINT [pkRuleSplitRange] PRIMARY KEY CLUSTERED (splitRangeId ASC),
     CONSTRAINT [ukRuleSplitRange_splitNameId__startAmount__startAmountCurrency] UNIQUE (splitNameId, startAmount, startAmountCurrency, startAmountDaily, startCountDaily, startAmountWeekly, startCountWeekly, startAmountMonthly, startCountMonthly),

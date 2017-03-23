@@ -13,8 +13,6 @@ BEGIN
         @channelCountryId BIGINT,
         @channelRegionId BIGINT,
         @channelCityId BIGINT,
-        @channelOrganizationId BIGINT,
-        @channelSupervisorId BIGINT,
 
         @operationId BIGINT,
 
@@ -42,9 +40,7 @@ BEGIN
     SELECT
         @channelCountryId = countryId,
         @channelRegionId = regionId,
-        @channelCityId = cityId,
-        @channelOrganizationId = organizationId,
-        @channelSupervisorId = supervisorId
+        @channelCityId = cityId
     FROM
         [integration].[vChannel]
     WHERE
@@ -115,11 +111,15 @@ BEGIN
     INSERT INTO
         @operationProperties(factor, name, value)
     SELECT
-        'co', 'channel.role', r.actorId
+        'co', 'channel.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, r.actorId
     FROM
         core.actorGraph(@channelId,'memberOf','subject') g
     CROSS APPLY
         core.actorGraph(g.actorId,'role','subject') r
+    UNION SELECT
+        'co', 'channel.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
+    FROM
+        core.actorGraph(@channelId,'memberOf','subject') g
 
     INSERT INTO
         @operationProperties(factor, name, value)
@@ -128,10 +128,6 @@ BEGIN
         ('cs', 'channel.country', @channelCountryId),
         ('cs', 'channel.region', @channelRegionId),
         ('cs', 'channel.city', @channelCityId),
-        --channel organization
-        ('co', 'channel.organization', @channelOrganizationId),
-        ('co', 'channel.supervisor', @channelSupervisorId),
-        ('co', 'channel.id', @channelId),
         --operation category
         ('oc', 'operation.id', @operationId),
         --source spatial

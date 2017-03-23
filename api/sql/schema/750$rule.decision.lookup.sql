@@ -92,7 +92,7 @@ BEGIN
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
     INSERT INTO
-        @totals(operationId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
+        @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
     SELECT -- totals by transfer type
         t.transferTypeId,
         ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount END), 0),
@@ -111,32 +111,48 @@ BEGIN
     GROUP BY
         t.transferTypeId
 
+    DECLARE
+        @operationProperties [rule].properties
+    INSERT INTO
+        @operationProperties(factor, name, value)
+    VALUES
+        --channel spatial
+        ('cs', 'channel.country', @channelCountryId),
+        ('cs', 'channel.region', @channelRegionId),
+        ('cs', 'channel.city', @channelCityId),
+        --channel organization
+        ('co', 'channel.organization', @channelOrganizationId),
+        ('co', 'channel.supervisor', @channelSupervisorId),
+        ('co', 'channel.role', @channelRoleId),
+        ('co', 'channel.id', @channelId),
+        --operation category
+        ('oc', 'operation.id', @channelId),
+        --source spatial
+        ('ss', 'source.country', @sourceCountryId),
+        ('ss', 'source.region', @sourceRegionId),
+        ('ss', 'source.city', @sourceCityId),
+        --source organization
+        ('so', 'source.organization', @sourceOrganizationId),
+        ('so', 'source.supervisor', @sourceSupervisorId),
+        ('so', 'source.id', @sourceId),
+        --source category
+        ('sc', 'source.account.productId', @sourceAccountProductId),
+        ('sc', 'source.card.productId', @sourceCardProductId),
+        --destination spatial
+        ('ds', 'destination.country', @destinationCountryId),
+        ('ds', 'destination.region', @destinationRegionId),
+        ('ds', 'destination.city', @destinationCityId),
+        --destination organization
+        ('do', 'destination.organization', @destinationOrganizationId),
+        ('do', 'destination.supervisor', @destinationSupervisorId),
+        ('do', 'destination.id', @destinationId),
+        --destination category
+        ('dc', 'destination.account.productId', @destinationAccountProductId)
+
     EXEC [rule].[decision.fetch]
-        @channelCountryId = @channelCountryId,
-        @channelRegionId = @channelRegionId,
-        @channelCityId = @channelCityId,
-        @channelOrganizationId = @channelOrganizationId,
-        @channelSupervisorId = @channelSupervisorId,
-        @channelRoleId = @channelRoleId,
-        @channelId = @channelId,
-        @operationId = @operationId,
+        @operationProperties = @operationProperties,
         @operationDate = @operationDate,
-        @sourceCountryId = @sourceCountryId,
-        @sourceRegionId = @sourceRegionId,
-        @sourceCityId = @sourceCityId,
-        @sourceOrganizationId = @sourceOrganizationId,
-        @sourceSupervisorId = @sourceSupervisorId,
-        @sourceId = @sourceId,
-        @sourceCardProductId = @sourceCardProductId,
-        @sourceAccountProductId = @sourceAccountProductId,
         @sourceAccountId = @sourceAccountId,
-        @destinationCountryId = @destinationCountryId,
-        @destinationRegionId = @destinationRegionId,
-        @destinationCityId = @destinationCityId,
-        @destinationOrganizationId = @destinationOrganizationId,
-        @destinationSupervisorId = @destinationSupervisorId,
-        @destinationId = @destinationId,
-        @destinationAccountProductId = @destinationAccountProductId,
         @destinationAccountId = @destinationAccountId,
         @amount = @amount,
         @totals = @totals,

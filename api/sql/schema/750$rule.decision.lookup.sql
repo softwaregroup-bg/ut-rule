@@ -15,7 +15,6 @@ BEGIN
         @channelCityId BIGINT,
         @channelOrganizationId BIGINT,
         @channelSupervisorId BIGINT,
-        @channelRoleId BIGINT,
 
         @operationId BIGINT,
 
@@ -45,8 +44,7 @@ BEGIN
         @channelRegionId = regionId,
         @channelCityId = cityId,
         @channelOrganizationId = organizationId,
-        @channelSupervisorId = supervisorId,
-        @channelRoleId = roleId
+        @channelSupervisorId = supervisorId
     FROM
         [integration].[vChannel]
     WHERE
@@ -113,6 +111,16 @@ BEGIN
 
     DECLARE
         @operationProperties [rule].properties
+
+    INSERT INTO
+        @operationProperties(factor, name, value)
+    SELECT
+        'co', 'channel.role', r.actorId
+    FROM
+        core.actorGraph(@channelId,'memberOf','subject') g
+    CROSS APPLY
+        core.actorGraph(g.actorId,'role','subject') r
+
     INSERT INTO
         @operationProperties(factor, name, value)
     VALUES
@@ -123,7 +131,6 @@ BEGIN
         --channel organization
         ('co', 'channel.organization', @channelOrganizationId),
         ('co', 'channel.supervisor', @channelSupervisorId),
-        ('co', 'channel.role', @channelRoleId),
         ('co', 'channel.id', @channelId),
         --operation category
         ('oc', 'operation.id', @operationId),

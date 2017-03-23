@@ -53,14 +53,29 @@ BEGIN
         @maxCountMonthly BIGINT
 
     INSERT INTO
-        @matches([priority], conditionId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
+        @matches(
+            [priority],
+            conditionId,
+            amountDaily,
+            countDaily,
+            amountWeekly,
+            countWeekly,
+            amountMonthly,
+            countMonthly)
     SELECT
-        c.[priority], c.conditionId, SUM(t.amountDaily), SUM(t.countDaily), SUM(t.amountWeekly), SUM(t.countWeekly), SUM(t.amountMonthly), SUM(t.countMonthly)
+        c.[priority],
+        c.conditionId,
+        ISNULL(SUM(t.amountDaily), 0),
+        ISNULL(SUM(t.countDaily), 0),
+        ISNULL(SUM(t.amountWeekly), 0),
+        ISNULL(SUM(t.countWeekly), 0),
+        ISNULL(SUM(t.amountMonthly), 0),
+        ISNULL(SUM(t.countMonthly), 0)
     FROM
         [rule].condition c
     LEFT JOIN
-        vConditionOperation co ON co.conditionId = c.conditionId
-    JOIN
+        [rule].vConditionOperation co ON co.conditionId = c.conditionId
+    LEFT JOIN
         @totals t ON t.transferTypeId = ISNULL(co.transferTypeId, @transferTypeId)
     WHERE
         (@operationDate IS NULL OR c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND

@@ -126,7 +126,7 @@ BEGIN
         ('co', 'channel.role', @channelRoleId),
         ('co', 'channel.id', @channelId),
         --operation category
-        ('oc', 'operation.id', @channelId),
+        ('oc', 'operation.id', @operationId),
         --source spatial
         ('ss', 'source.country', @sourceCountryId),
         ('ss', 'source.region', @sourceRegionId),
@@ -148,6 +148,8 @@ BEGIN
         ('do', 'destination.id', @destinationId),
         --destination category
         ('dc', 'destination.account.productId', @destinationAccountProductId)
+
+    DELETE FROM @operationProperties WHERE value IS NULL
 
     EXEC [rule].[decision.fetch]
         @operationProperties = @operationProperties,

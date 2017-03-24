@@ -15,36 +15,9 @@ BEGIN TRY
 
     UPDATE c
     SET [priority] = c1.[priority],
-        channelCountryId = c1.channelCountryId,
-        channelRegionId = c1.channelRegionId,
-        channelCityId = c1.channelCityId,
-        channelOrganizationId = c1.channelOrganizationId,
-        channelSupervisorId = c1.channelSupervisorId,
-        channelTag = c1.channelTag,
-        channelRoleId = c1.channelRoleId,
-        channelId = c1.channelId,
-        operationId = c1.operationId,
-        operationTag = c1.operationTag,
         operationStartDate = c1.operationStartDate,
         operationEndDate = c1.operationEndDate,
-        sourceCountryId = c1.sourceCountryId,
-        sourceRegionId = c1.sourceRegionId,
-        sourceCityId = c1.sourceCityId,
-        sourceOrganizationId = c1.sourceOrganizationId,
-        sourceSupervisorId = c1.sourceSupervisorId,
-        sourceTag = c1.sourceTag,
-        sourceId = c1.sourceId,
-        sourceCardProductId = c1.sourceCardProductId,
-        sourceAccountProductId = c1.sourceAccountProductId,
         sourceAccountId = c1.sourceAccountId,
-        destinationCountryId = c1.destinationCountryId,
-        destinationRegionId = c1.destinationRegionId,
-        destinationCityId = c1.destinationCityId,
-        destinationOrganizationId = c1.destinationOrganizationId,
-        destinationSupervisorId = c1.destinationSupervisorId,
-        destinationTag = c1.destinationTag,
-        destinationId = c1.destinationId,
-        destinationAccountProductId = c1.destinationAccountProductId,
         destinationAccountId = c1.destinationAccountId
     FROM [rule].condition c
     JOIN @condition c1 ON c.conditionId = c1.conditionId
@@ -252,7 +225,7 @@ BEGIN TRY
     WHEN NOT MATCHED THEN
       INSERT (splitAssignmentId, [name], [value])
       VALUES (r.splitAssignmentId, r.[name], r.[value])
-    OUTPUT $action, DELETED.*, INSERTED.* 
+    OUTPUT $action, DELETED.*, INSERTED.*
     ;
 
 

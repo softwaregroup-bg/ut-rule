@@ -253,9 +253,9 @@ BEGIN
         @map([key], [value])
     VALUES -- note that ${} is replaced by SQL port
         ('$' + '{operation.currency}', CAST(@currency AS VARCHAR(100))),
-        ('$' + '{source.account.id}', CAST(@sourceAccountId AS VARCHAR(100))),
+        ('$' + '{source.account.id}', 'account:' + CAST(@sourceAccountId AS VARCHAR(100))),
         ('$' + '{source.account.number}', CAST(@sourceAccount AS VARCHAR(100))),
-        ('$' + '{destination.account.id}', CAST(@destinationAccountId AS VARCHAR(100))),
+        ('$' + '{destination.account.id}', 'account:' + CAST(@destinationAccountId AS VARCHAR(100))),
         ('$' + '{destination.account.number}', CAST(@destinationAccount AS VARCHAR(100)))
 
     DELETE FROM @map WHERE [value] IS NULL

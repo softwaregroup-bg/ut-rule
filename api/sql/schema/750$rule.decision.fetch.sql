@@ -178,7 +178,7 @@ BEGIN
         tag VARCHAR(MAX)
     );
 
-    WITH split(conditionId, splitNameId, tag, minFee, maxFee, calcFee, rnk) AS (
+    WITH split(conditionId, splitNameId, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
         SELECT
             c.conditionId,
             r.splitNameId,
@@ -198,7 +198,8 @@ BEGIN
                 r.startCountDaily DESC,
                 r.startAmountDaily DESC,
                 r.startAmount DESC,
-                r.splitRangeId)
+                r.splitRangeId),
+            RANK() OVER (ORDER BY c.priority, c.conditionId)
         FROM
             @matches AS c
         JOIN
@@ -230,7 +231,8 @@ BEGIN
     FROM
         split s
     WHERE
-        s.rnk = 1
+        s.rnk1 = 1 AND
+        s.rnk2 = 1
 
     SELECT 'amount' AS resultSetName, 1 single
     SELECT

@@ -3,6 +3,7 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @operation varchar(100),
     @operationDate datetime,
     @sourceAccount varchar(100),
+    @sourceCardProductId BIGINT = NULL,
     @destinationAccount varchar(100),
     @amount money,
     @currency varchar(3),
@@ -20,15 +21,12 @@ BEGIN
         @sourceRegionId BIGINT,
         @sourceCityId BIGINT,
         @sourceOwnerId BIGINT,
-        @sourceCardProductId BIGINT,
         @sourceAccountProductId BIGINT,
         @sourceAccountId NVARCHAR(255),
 
         @destinationCountryId BIGINT,
         @destinationRegionId BIGINT,
         @destinationCityId BIGINT,
-        @destinationOrganizationId BIGINT,
-        @destinationSupervisorId BIGINT,
         @destinationOwnerId BIGINT,
         @destinationAccountProductId BIGINT,
         @destinationAccountId NVARCHAR(255),
@@ -83,10 +81,10 @@ BEGIN
         @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
     SELECT -- totals by transfer type
         t.transferTypeId,
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount END), 0),
-        ISNULL(COUNT(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount END), 0),--week starts on Mon
-        ISNULL(COUNT(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount END), 0),--week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN 1 ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount ELSE 0 END), 0),--week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN 1 ELSE 0 END), 0),--week starts on Mon
         ISNULL(SUM(t.transferAmount), 0),
         ISNULL(COUNT(t.transferAmount), 0)
     FROM
@@ -147,7 +145,6 @@ BEGIN
         ('dc', 'destination.account.product', @destinationAccountProductId)
 
     DELETE FROM @operationProperties WHERE value IS NULL
-    SELECT * FROM @operationProperties
 
     EXEC [rule].[decision.fetch]
         @operationProperties = @operationProperties,

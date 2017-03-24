@@ -5,10 +5,16 @@ import DatePicker from 'ut-front-react/components/DatePicker/Simple';
 
 const Operation = React.createClass({
     propTypes: {
-        data: PropTypes.object.isRequired
+        data: PropTypes.object.isRequired,
+        fields: PropTypes.object
     },
     contextTypes: {
         onFieldChange: PropTypes.func
+    },
+    getInitialState() {
+        return {
+            fields: this.props.fields
+        };
     },
     onChangeInput(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
@@ -21,45 +27,52 @@ const Operation = React.createClass({
     },
     render() {
         let { onChangeInput, onChangeDate } = this;
+        let fields = this.state.fields;
         return (
             <div className={style.content}>
-                <div className={style.inputWrapper}>
-                    <Input
-                      keyProp='operationTag'
-                      label='Tag'
-                      onChange={onChangeInput}
-                      value={'' + (this.props.data.operationTag || '')}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
-                    <div className={style.outerWrap}>
-                        <div className={style.lableWrap}>Start Date</div>
-                        <div className={style.inputWrap}>
-                            <DatePicker
-                              wrapperStyles={{backgroundColor: 'white'}}
-                              keyProp='operationStartDate'
-                              mode='landscape'
-                              onChange={onChangeDate('operationStartDate')}
-                              defaultValue={this.props.data.operationStartDate ? new Date(this.props.data.operationStartDate) : null}
-                            />
+                {fields.tag.visible &&
+                    <div className={style.inputWrapper}>
+                        <Input
+                          keyProp='operationTag'
+                          label={fields.tag.title}
+                          onChange={onChangeInput}
+                          value={'' + (this.props.data.operationTag || '')}
+                        />
+                    </div>
+                }
+                {fields.operationStartDate.visible &&
+                    <div className={style.inputWrapper}>
+                        <div className={style.outerWrap}>
+                            <div className={style.lableWrap}>{fields.operationStartDate.title}</div>
+                            <div className={style.inputWrap}>
+                                <DatePicker
+                                  wrapperStyles={{backgroundColor: 'white'}}
+                                  keyProp='operationStartDate'
+                                  mode='landscape'
+                                  onChange={onChangeDate('operationStartDate')}
+                                  defaultValue={this.props.data.operationStartDate ? new Date(this.props.data.operationStartDate) : null}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className={style.inputWrapper}>
-                    <div className={style.outerWrap}>
-                        <div className={style.lableWrap}>End Date</div>
-                        <div className={style.inputWrap}>
-                            <DatePicker
-                              wrapperStyles={{backgroundColor: 'white'}}
-                              keyProp='operationEndDate'
-                              mode='landscape'
-                              onChange={onChangeDate('operationEndDate')}
-                              minDate={this.props.data.operationStartDate ? new Date(this.props.data.operationStartDate) : {}}
-                              defaultValue={this.props.data.operationEndDate ? new Date(this.props.data.operationEndDate) : null}
-                            />
+                }
+                {fields.operationEndDate.visible &&
+                    <div className={style.inputWrapper}>
+                        <div className={style.outerWrap}>
+                            <div className={style.lableWrap}>{fields.operationEndDate.title}</div>
+                            <div className={style.inputWrap}>
+                                <DatePicker
+                                  wrapperStyles={{backgroundColor: 'white'}}
+                                  keyProp='operationEndDate'
+                                  mode='landscape'
+                                  onChange={onChangeDate('operationEndDate')}
+                                  minDate={this.props.data.operationStartDate ? new Date(this.props.data.operationStartDate) : {}}
+                                  defaultValue={this.props.data.operationEndDate ? new Date(this.props.data.operationEndDate) : null}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
         );
     }

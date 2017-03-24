@@ -25,3 +25,7 @@
 .header {
     background-color: white;
 }
+
+.gridToolBoxButtons {
+    float: right;
+}

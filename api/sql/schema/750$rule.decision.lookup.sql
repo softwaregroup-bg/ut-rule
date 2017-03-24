@@ -19,9 +19,7 @@ BEGIN
         @sourceCountryId BIGINT,
         @sourceRegionId BIGINT,
         @sourceCityId BIGINT,
-        @sourceOrganizationId BIGINT,
-        @sourceSupervisorId BIGINT,
-        @sourceId BIGINT,
+        @sourceOwnerId BIGINT,
         @sourceCardProductId BIGINT,
         @sourceAccountProductId BIGINT,
         @sourceAccountId NVARCHAR(255),
@@ -31,7 +29,7 @@ BEGIN
         @destinationCityId BIGINT,
         @destinationOrganizationId BIGINT,
         @destinationSupervisorId BIGINT,
-        @destinationId BIGINT,
+        @destinationOwnerId BIGINT,
         @destinationAccountProductId BIGINT,
         @destinationAccountId NVARCHAR(255),
 
@@ -59,9 +57,7 @@ BEGIN
         @sourceCountryId = countryId,
         @sourceRegionId = regionId,
         @sourceCityId = cityId,
-        @sourceOrganizationId = organizationId,
-        @sourceSupervisorId = supervisorId,
-        @sourceId = holderId,
+        @sourceOwnerId = ownerId,
         @sourceAccountProductId = accountProductId,
         @sourceAccountId = accountId
     FROM
@@ -73,9 +69,7 @@ BEGIN
         @destinationCountryId = countryId,
         @destinationRegionId = regionId,
         @destinationCityId = cityId,
-        @destinationOrganizationId = organizationId,
-        @destinationSupervisorId = supervisorId,
-        @destinationId = holderId,
+        @destinationOwnerId = ownerId,
         @destinationAccountProductId = accountProductId,
         @destinationAccountId = accountId
     FROM
@@ -111,9 +105,17 @@ BEGIN
     INSERT INTO
         @operationProperties(factor, name, value)
     SELECT
-        'co', 'channel.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, r.actorId
+        'co', 'channel.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@channelId,'memberOf','subject') g
+    UNION SELECT
+        'so', 'source.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
+    FROM
+        core.actorGraph(@sourceOwnerId,'memberOf','subject') g
+    UNION SELECT
+        'do', 'destination.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
+    FROM
+        core.actorGraph(@destinationOwnerId,'memberOf','subject') g
     CROSS APPLY
         core.actorGraph(g.actorId,'role','subject') r
     UNION SELECT
@@ -134,25 +136,18 @@ BEGIN
         ('ss', 'source.country', @sourceCountryId),
         ('ss', 'source.region', @sourceRegionId),
         ('ss', 'source.city', @sourceCityId),
-        --source organization
-        ('so', 'source.organization', @sourceOrganizationId),
-        ('so', 'source.supervisor', @sourceSupervisorId),
-        ('so', 'source.id', @sourceId),
         --source category
-        ('sc', 'source.account.productId', @sourceAccountProductId),
-        ('sc', 'source.card.productId', @sourceCardProductId),
+        ('sc', 'source.account.product', @sourceAccountProductId),
+        ('sc', 'source.card.product', @sourceCardProductId),
         --destination spatial
         ('ds', 'destination.country', @destinationCountryId),
         ('ds', 'destination.region', @destinationRegionId),
         ('ds', 'destination.city', @destinationCityId),
-        --destination organization
-        ('do', 'destination.organization', @destinationOrganizationId),
-        ('do', 'destination.supervisor', @destinationSupervisorId),
-        ('do', 'destination.id', @destinationId),
         --destination category
-        ('dc', 'destination.account.productId', @destinationAccountProductId)
+        ('dc', 'destination.account.product', @destinationAccountProductId)
 
     DELETE FROM @operationProperties WHERE value IS NULL
+    SELECT * FROM @operationProperties
 
     EXEC [rule].[decision.fetch]
         @operationProperties = @operationProperties,

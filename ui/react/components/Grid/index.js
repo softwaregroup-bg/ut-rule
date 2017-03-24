@@ -35,44 +35,12 @@ export default React.createClass({
         selectedConditions: PropTypes.object,
         refresh: PropTypes.func,
         handleCheckboxSelect: PropTypes.func,
-        handleHeaderCheckboxSelect: PropTypes.func
+        handleHeaderCheckboxSelect: PropTypes.func,
+        columns: PropTypes.object
     },
     getInitialState() {
         return {
-            columns: {
-                priority: {
-                    visible: true,
-                    title: 'Priority'
-                },
-                channel: {
-                    visible: true,
-                    title: 'Channel'
-                },
-                operation: {
-                    visible: true,
-                    title: 'Operation'
-                },
-                source: {
-                    visible: true,
-                    title: 'Source'
-                },
-                destination: {
-                    visible: true,
-                    title: 'Destination'
-                },
-                fee: {
-                    visible: true,
-                    title: 'Fee'
-                },
-                commission: {
-                    visible: false,
-                    title: 'Commission'
-                },
-                limit: {
-                    visible: true,
-                    title: 'Limit'
-                }
-            }
+            columns: this.props.columns
         };
     },
     shouldComponentUpdate(nextProps, nextState) {
@@ -241,18 +209,19 @@ export default React.createClass({
     },
     render() {
         let data = this.getData();
+        let columns = this.state.columns;
         return <SimpleGrid
           ref='grid'
           multiSelect
           fields={[
-              {title: 'Priority', name: 'priority'},
-              {title: 'Channel', name: 'channel'},
-              {title: 'Operation', name: 'operation'},
-              {title: 'Source', name: 'source'},
-              {title: 'Destination', name: 'destination'},
-              {title: 'Fee', name: 'fee', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
-              {title: 'Commission', name: 'commission', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
-              {title: 'Limit', name: 'limit'},
+              {title: columns.priority.title, name: 'priority'},
+              {title: columns.channel.title, name: 'channel'},
+              {title: columns.operation.title, name: 'operation'},
+              {title: columns.source.title, name: 'source'},
+              {title: columns.destination.title, name: 'destination'},
+              {title: columns.fee.title, name: 'fee', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
+              {title: columns.commission.title, name: 'commission', style: {padding: '0', position: 'relative', width: '360px', minWidth: '220px'}},
+              {title: columns.limit.title, name: 'limit'},
               {
                   title: <div style={{float: 'right'}}>
                     <ContextMenu

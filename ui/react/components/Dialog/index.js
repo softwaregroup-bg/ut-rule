@@ -84,7 +84,8 @@ export default React.createClass({
         data: PropTypes.object,
         nomenclatures: PropTypes.object.isRequired,
         onSave: PropTypes.func.isRequired,
-        onClose: PropTypes.func.isRequired
+        onClose: PropTypes.func.isRequired,
+        sections: PropTypes.object
     },
     childContextTypes: {
         onFieldChange: PropTypes.func,
@@ -107,7 +108,8 @@ export default React.createClass({
                     // Object.assign({}, emptyLimit)
                 ],
                 commission: []
-            }
+            },
+            sections: this.props.sections
         };
     },
     componentWillMount() {
@@ -215,6 +217,7 @@ export default React.createClass({
         maxWidth: '50%'
     },
     render() {
+        let sections = this.state.sections;
         return (
             <Dialog
               title={this.props.data ? 'Edit Rule' : 'Add Rule'}
@@ -248,61 +251,81 @@ export default React.createClass({
                         />
                     </div>
                     <div className={style.wrapper}>
-                        <Accordion title='Channel' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
-                            <Channel
-                              data={this.state.data.condition[0]}
-                            />
-                        </Accordion>
-                        <Accordion title='Operation' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Operation
-                              data={this.state.data.condition[0]}
-                            />
-                        </Accordion>
-                        <Accordion title='Source' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Source
-                              data={this.state.data.condition[0]}
-                            />
-                        </Accordion>
-                        <Accordion title='Destination' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Destination
-                              data={this.state.data.condition[0]}
-                            />
-                        </Accordion>
-                        <Accordion title='Fee' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <SectionFee
-                                  data={this.state.data.fee}
-                                  addRow={this.addFeeRow}
-                                  deleteRow={this.deleteFeeRow}
+                        {sections.channel.visible &&
+                            <Accordion title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
+                                <Channel
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.channel.fields}
                                 />
-                            </div>
-                        </Accordion>
-                        <Accordion title='Commission' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <SectionCommission
-                                  data={this.state.data.commission}
-                                  addRow={this.addCommissionRow}
-                                  deleteRow={this.deleteCommissionRow}
+                            </Accordion>
+                        }
+                        {sections.operation.visible &&
+                            <Accordion title={sections.operation.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <Operation
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.operation.fields}
                                 />
-                            </div>
-                        </Accordion>
-                        <Accordion title='Limit' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <SectionLimit
-                                  data={this.state.data.limit}
-                                  addRow={this.addLimitRow}
-                                  deleteRow={this.deleteLimitRow}
+                            </Accordion>
+                        }
+                        {sections.source.visible &&
+                            <Accordion title={sections.source.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <Source
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.source.fields}
                                 />
-                            </div>
-                        </Accordion>
-                        <Accordion title='Summary' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                                <SectionSummary
-                                  data={this.state.data}
-                                  nomenclatures={this.props.nomenclatures}
+                            </Accordion>
+                        }
+                        {sections.destination.visible &&
+                            <Accordion title={sections.destination.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <Destination
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.destination.fields}
                                 />
-                            </div>
-                        </Accordion>
+                            </Accordion>
+                        }
+                        {sections.fee.visible &&
+                            <Accordion title={sections.fee.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <div className={style.content}>
+                                    <SectionFee
+                                      data={this.state.data.fee}
+                                      addRow={this.addFeeRow}
+                                      deleteRow={this.deleteFeeRow}
+                                    />
+                                </div>
+                            </Accordion>
+                        }
+                        {sections.commission.visible &&
+                            <Accordion title={sections.commission.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <div className={style.content}>
+                                    <SectionCommission
+                                      data={this.state.data.commission}
+                                      addRow={this.addCommissionRow}
+                                      deleteRow={this.deleteCommissionRow}
+                                    />
+                                </div>
+                            </Accordion>
+                        }
+                        {sections.limit.visible &&
+                            <Accordion title={sections.limit.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <div className={style.content}>
+                                    <SectionLimit
+                                      data={this.state.data.limit}
+                                      addRow={this.addLimitRow}
+                                      deleteRow={this.deleteLimitRow}
+                                    />
+                                </div>
+                            </Accordion>
+                        }
+                        {sections.summary.visible &&
+                            <Accordion title={sections.summary.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                                <div className={style.content}>
+                                    <SectionSummary
+                                      data={this.state.data}
+                                      nomenclatures={this.props.nomenclatures}
+                                    />
+                                </div>
+                            </Accordion>
+                        }
                     </div>
                 </div>
             </Dialog>

@@ -12,6 +12,33 @@ BEGIN TRY
         JOIN
             @conditionId item ON x.conditionId = item.value
 
+        SELECT 'conditionActor ' AS resultSetName
+        DELETE x
+        OUTPUT
+            deleted.*
+        FROM
+            [rule].conditionActor x
+        JOIN
+            @conditionId item ON x.conditionId = item.value
+
+        SELECT 'conditionItem ' AS resultSetName
+        DELETE x
+        OUTPUT 
+            deleted.*    
+        FROM 
+            [rule].conditionItem x
+        JOIN
+            @conditionId item ON x.conditionId = item.value
+    
+        SELECT 'conditionProperty ' AS resultSetName
+        DELETE x
+        OUTPUT 
+            deleted.*    
+        FROM 
+            [rule].conditionProperty x
+        JOIN
+            @conditionId item ON x.conditionId = item.value
+
         SELECT 'splitRange' AS resultSetName
         DELETE
             x

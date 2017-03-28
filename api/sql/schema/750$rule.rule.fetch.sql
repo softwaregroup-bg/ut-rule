@@ -9,6 +9,31 @@ BEGIN
         [rule].condition
     WHERE
         @conditionId IS NULL OR conditionId = @conditionId
+    
+    SELECT 'conditionActor ' AS resultSetName
+    SELECT 
+        *
+    FROM 
+        [rule].conditionActor
+    WHERE
+        @conditionId IS NULL OR conditionId = @conditionId
+
+    SELECT 'conditionItem ' AS resultSetName
+    SELECT 
+        *
+    FROM 
+        [rule].conditionItem 
+    WHERE
+        @conditionId IS NULL OR conditionId = @conditionId
+
+    
+    SELECT 'conditionProperty ' AS resultSetName
+    SELECT 
+        *
+    FROM 
+        [rule].conditionProperty 
+    WHERE
+        @conditionId IS NULL OR conditionId = @conditionId
 
     SELECT 'splitName' AS resultSetName
     SELECT

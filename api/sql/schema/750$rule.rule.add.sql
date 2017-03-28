@@ -1,5 +1,8 @@
 ALTER PROCEDURE [rule].[rule.add]
     @condition [rule].conditionTT READONLY,
+    @conditionActor [rule].conditionActorTT READONLY,
+    @conditionItem [rule].conditionItemTT READONLY,
+    @conditionProperty [rule].conditionPropertyTT READONLY,
     @limit [rule].limitTT READONLY,
     @split XML
 AS
@@ -27,6 +30,44 @@ BEGIN TRY
 
     SET @conditionId = SCOPE_IDENTITY()
 
+    INSERT INTO [rule].conditionActor 
+    (
+        conditionId,
+        factor,
+        actorId
+    )
+    SELECT
+        @conditionId, 
+        factor,
+        actorId
+    FROM @conditionActor
+
+    INSERT INTO [rule].conditionItem 
+    (
+        conditionId,
+        factor,
+        itemNameId
+    )
+    SELECT
+        @conditionId,
+        factor,
+        itemNameId
+    FROM @conditionItem
+
+    INSERT INTO [rule].conditionProperty
+    (
+        conditionId,
+        factor,
+        name,
+        value
+    )
+    SELECT
+        @conditionId,
+        factor,
+        name,
+        value    
+    FROM @conditionProperty
+
     INSERT INTO [rule].limit (
         conditionId,
         currency,
@@ -49,7 +90,7 @@ BEGIN TRY
         [maxCountWeekly],
         [maxAmountMonthly],
         [maxCountMonthly]
-    FROM @limit;
+    FROM @limit
 
     MERGE INTO [rule].splitName
     USING @split.nodes('/*/*/splitName') AS records(r)

@@ -1,3 +1,33 @@
+<a name="9.0.1"></a>
+## [9.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.0.0...v9.0.1) (2017-03-27)
+
+
+### Bug Fixes
+
+* standard structure ([505ae19](https://github.com/softwaregroup-bg/ut-rule/commit/505ae19))
+
+
+
+<a name="9.0.0"></a>
+# [9.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v8.2.2...v9.0.0) (2017-03-24)
+
+
+### Features
+
+* allow multiple values per condition factor ([384e796](https://github.com/softwaregroup-bg/ut-rule/commit/384e796))
+
+
+### BREAKING CHANGES
+
+* db structure and logic changed to match the model
+
+
+
+<a name="8.2.2"></a>
+## [8.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v8.2.1...v8.2.2) (2017-03-24)
+
+
+
 <a name="8.2.1"></a>
 ## [8.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v8.2.0...v8.2.1) (2017-03-20)
 

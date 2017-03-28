@@ -11,71 +11,18 @@ BEGIN TRY
     BEGIN TRANSACTION
 
     INSERT INTO [rule].condition (
+            [priority],
+            operationStartDate,
+            operationEndDate,
+            sourceAccountId,
+            destinationAccountId
+        )
+    SELECT
         [priority],
-        channelCountryId,
-        channelRegionId,
-        channelCityId,
-        channelOrganizationId,
-        channelSupervisorId,
-        channelTag,
-        channelRoleId,
-        channelId,
-        operationId,
-        operationTag,
         operationStartDate,
         operationEndDate,
-        sourceCountryId,
-        sourceRegionId,
-        sourceCityId,
-        sourceOrganizationId,
-        sourceSupervisorId,
-        sourceTag,
-        sourceId,
-        sourceCardProductId,
-        sourceAccountProductId,
         sourceAccountId,
-        destinationCountryId,
-        destinationRegionId,
-        destinationCityId,
-        destinationOrganizationId,
-        destinationSupervisorId,
-        destinationTag,
-        destinationId,
-        destinationAccountProductId,
         destinationAccountId
-        )
-    SELECT [priority],
-        [channelCountryId],
-        [channelRegionId],
-        [channelCityId],
-        [channelOrganizationId],
-        [channelSupervisorId],
-        [channelTag],
-        [channelRoleId],
-        [channelId],
-        [operationId],
-        [operationTag],
-        [operationStartDate],
-        [operationEndDate],
-        [sourceCountryId],
-        [sourceRegionId],
-        [sourceCityId],
-        [sourceOrganizationId],
-        [sourceSupervisorId],
-        [sourceTag],
-        [sourceId],
-        [sourceCardProductId],
-        [sourceAccountProductId],
-        [sourceAccountId],
-        [destinationCountryId],
-        [destinationRegionId],
-        [destinationCityId],
-        [destinationOrganizationId],
-        [destinationSupervisorId],
-        [destinationTag],
-        [destinationId],
-        [destinationAccountProductId],
-        [destinationAccountId]
     FROM @condition;
 
     SET @conditionId = SCOPE_IDENTITY()
@@ -214,7 +161,7 @@ BEGIN TRY
     WHEN NOT MATCHED THEN
       INSERT (splitAssignmentId, [name], [value])
       VALUES (r.splitAssignmentId, r.[name], r.[value])
---    OUTPUT INSERTED.* 
+--    OUTPUT INSERTED.*
     ;
 
     COMMIT TRANSACTION

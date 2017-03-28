@@ -1,7 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "8.2.1",
-  "main": "api/sql/index.js",
+  "version": "9.0.1",
   "dependencies": {
     "classnames": "2.2.5",
     "joi": "10.0.6",
@@ -18,7 +17,7 @@
     "immutable": "3.8.1"
   },
   "devDependencies": {
-    "ut-tools": "^5.13.5",
+    "ut-tools": "^5.15.0",
     "ut-run": "^8.0.6",
     "ut-test": "^5.4.2"
   },

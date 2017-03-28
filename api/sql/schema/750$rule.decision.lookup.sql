@@ -3,6 +3,7 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @operation varchar(100),
     @operationDate datetime,
     @sourceAccount varchar(100),
+    @sourceCardProductId BIGINT = NULL,
     @destinationAccount varchar(100),
     @amount money,
     @currency varchar(3),
@@ -13,28 +14,20 @@ BEGIN
         @channelCountryId BIGINT,
         @channelRegionId BIGINT,
         @channelCityId BIGINT,
-        @channelOrganizationId BIGINT,
-        @channelSupervisorId BIGINT,
-        @channelRoleId BIGINT,
 
         @operationId BIGINT,
 
         @sourceCountryId BIGINT,
         @sourceRegionId BIGINT,
         @sourceCityId BIGINT,
-        @sourceOrganizationId BIGINT,
-        @sourceSupervisorId BIGINT,
-        @sourceId BIGINT,
-        @sourceCardProductId BIGINT,
+        @sourceOwnerId BIGINT,
         @sourceAccountProductId BIGINT,
         @sourceAccountId NVARCHAR(255),
 
         @destinationCountryId BIGINT,
         @destinationRegionId BIGINT,
         @destinationCityId BIGINT,
-        @destinationOrganizationId BIGINT,
-        @destinationSupervisorId BIGINT,
-        @destinationId BIGINT,
+        @destinationOwnerId BIGINT,
         @destinationAccountProductId BIGINT,
         @destinationAccountId NVARCHAR(255),
 
@@ -43,10 +36,7 @@ BEGIN
     SELECT
         @channelCountryId = countryId,
         @channelRegionId = regionId,
-        @channelCityId = cityId,
-        @channelOrganizationId = organizationId,
-        @channelSupervisorId = supervisorId,
-        @channelRoleId = roleId
+        @channelCityId = cityId
     FROM
         [integration].[vChannel]
     WHERE
@@ -65,9 +55,7 @@ BEGIN
         @sourceCountryId = countryId,
         @sourceRegionId = regionId,
         @sourceCityId = cityId,
-        @sourceOrganizationId = organizationId,
-        @sourceSupervisorId = supervisorId,
-        @sourceId = holderId,
+        @sourceOwnerId = ownerId,
         @sourceAccountProductId = accountProductId,
         @sourceAccountId = accountId
     FROM
@@ -79,9 +67,7 @@ BEGIN
         @destinationCountryId = countryId,
         @destinationRegionId = regionId,
         @destinationCityId = cityId,
-        @destinationOrganizationId = organizationId,
-        @destinationSupervisorId = supervisorId,
-        @destinationId = holderId,
+        @destinationOwnerId = ownerId,
         @destinationAccountProductId = accountProductId,
         @destinationAccountId = accountId
     FROM
@@ -92,69 +78,78 @@ BEGIN
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
     INSERT INTO
-        @totals(tag, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
-    SELECT -- totals for that type
-        NULL,
-        ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
-        ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
-        ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
-        ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
-        ISNULL(SUM(transferAmount), 0),
-        ISNULL(COUNT(transferAmount), 0)
-    FROM
-        [integration].[vTransfer]
-    WHERE
-        sourceAccount = @sourceAccount AND
-        transferTypeId = @operationId AND
-        transferCurrency = @currency AND
-        transferDateTime < @operationDate AND -- look ony at earlier transfers
-        transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
-    UNION SELECT -- totals by transfer tag
-        it.tag,
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount END), 0),
-        ISNULL(COUNT(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount END), 0),--week starts on Mon
-        ISNULL(COUNT(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount END), 0),--week starts on Mon
+        @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
+    SELECT -- totals by transfer type
+        t.transferTypeId,
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN 1 ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount ELSE 0 END), 0),--week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN 1 ELSE 0 END), 0),--week starts on Mon
         ISNULL(SUM(t.transferAmount), 0),
         ISNULL(COUNT(t.transferAmount), 0)
     FROM
         [integration].[vTransfer] t
-    JOIN
-        core.itemTag it on it.itemNameId = t.transferTypeId
     WHERE
         t.sourceAccount = @sourceAccount AND
         t.transferCurrency = @currency AND
         t.transferDateTime < @operationDate AND -- look ony at earlier transfers
         t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
     GROUP BY
-        it.tag
+        t.transferTypeId
+
+    DECLARE
+        @operationProperties [rule].properties
+
+    INSERT INTO
+        @operationProperties(factor, name, value)
+    SELECT
+        'co', 'channel.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
+    FROM
+        core.actorGraph(@channelId,'memberOf','subject') g
+    UNION SELECT
+        'so', 'source.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
+    FROM
+        core.actorGraph(@sourceOwnerId,'memberOf','subject') g
+    UNION SELECT
+        'do', 'destination.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
+    FROM
+        core.actorGraph(@destinationOwnerId,'memberOf','subject') g
+    CROSS APPLY
+        core.actorGraph(g.actorId,'role','subject') r
+    UNION SELECT
+        'co', 'channel.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
+    FROM
+        core.actorGraph(@channelId,'memberOf','subject') g
+
+    INSERT INTO
+        @operationProperties(factor, name, value)
+    VALUES
+        --channel spatial
+        ('cs', 'channel.country', @channelCountryId),
+        ('cs', 'channel.region', @channelRegionId),
+        ('cs', 'channel.city', @channelCityId),
+        --operation category
+        ('oc', 'operation.id', @operationId),
+        --source spatial
+        ('ss', 'source.country', @sourceCountryId),
+        ('ss', 'source.region', @sourceRegionId),
+        ('ss', 'source.city', @sourceCityId),
+        --source category
+        ('sc', 'source.account.product', @sourceAccountProductId),
+        ('sc', 'source.card.product', @sourceCardProductId),
+        --destination spatial
+        ('ds', 'destination.country', @destinationCountryId),
+        ('ds', 'destination.region', @destinationRegionId),
+        ('ds', 'destination.city', @destinationCityId),
+        --destination category
+        ('dc', 'destination.account.product', @destinationAccountProductId)
+
+    DELETE FROM @operationProperties WHERE value IS NULL
 
     EXEC [rule].[decision.fetch]
-        @channelCountryId = @channelCountryId,
-        @channelRegionId = @channelRegionId,
-        @channelCityId = @channelCityId,
-        @channelOrganizationId = @channelOrganizationId,
-        @channelSupervisorId = @channelSupervisorId,
-        @channelRoleId = @channelRoleId,
-        @channelId = @channelId,
-        @operationId = @operationId,
+        @operationProperties = @operationProperties,
         @operationDate = @operationDate,
-        @sourceCountryId = @sourceCountryId,
-        @sourceRegionId = @sourceRegionId,
-        @sourceCityId = @sourceCityId,
-        @sourceOrganizationId = @sourceOrganizationId,
-        @sourceSupervisorId = @sourceSupervisorId,
-        @sourceId = @sourceId,
-        @sourceCardProductId = @sourceCardProductId,
-        @sourceAccountProductId = @sourceAccountProductId,
         @sourceAccountId = @sourceAccountId,
-        @destinationCountryId = @destinationCountryId,
-        @destinationRegionId = @destinationRegionId,
-        @destinationCityId = @destinationCityId,
-        @destinationOrganizationId = @destinationOrganizationId,
-        @destinationSupervisorId = @destinationSupervisorId,
-        @destinationId = @destinationId,
-        @destinationAccountProductId = @destinationAccountProductId,
         @destinationAccountId = @destinationAccountId,
         @amount = @amount,
         @totals = @totals,

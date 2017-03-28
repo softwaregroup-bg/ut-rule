@@ -245,8 +245,7 @@ module.exports = function(opt, cache) {
                                             name: 'debitCode',
                                             value: 145
                                         }, {
-                                            name: 'debitNote',
-                                            value: null
+                                            name: 'debitNote'
                                         }]
                                     }]
                                 }, {
@@ -388,8 +387,7 @@ module.exports = function(opt, cache) {
                                             name: 'debitCode',
                                             value: 145
                                         }, {
-                                            name: 'debitNote',
-                                            value: null
+                                            name: 'debitNote'
                                         }]
                                     }]
                                 }, {
@@ -425,8 +423,7 @@ module.exports = function(opt, cache) {
                                             name: 'debitCode',
                                             value: 148
                                         }, {
-                                            name: 'debitNote',
-                                            value: null
+                                            name: 'debitNote'
                                         }]
                                     }]
                                 }]

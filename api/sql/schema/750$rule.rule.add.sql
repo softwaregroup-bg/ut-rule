@@ -54,7 +54,7 @@ BEGIN TRY
         itemNameId
     FROM @conditionItem
 
-    INSERT INTO [rule].[conditionProperty] 
+    INSERT INTO [rule].conditionProperty
     (
         conditionId,
         factor,

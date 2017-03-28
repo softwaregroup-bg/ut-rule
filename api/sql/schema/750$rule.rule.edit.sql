@@ -1,5 +1,8 @@
 ﻿ALTER PROCEDURE [rule].[rule.edit]
     @condition [rule].conditionTT READONLY,
+    @conditionActor [rule].conditionActorTT READONLY,
+    @conditionItem [rule].conditionItemTT READONLY,
+    @conditionProperty [rule].conditionPropertyTT READONLY,
     @limit [rule].limitTT READONLY,
     @split XML
 AS
@@ -22,11 +25,41 @@ BEGIN TRY
     FROM [rule].condition c
     JOIN @condition c1 ON c.conditionId = c1.conditionId
 
-    merge into [rule].limit l
-    using @limit l1 on l.[limitId] = l1.limitId
-    when matched then
-        update
-        set currency = l1.currency,
+    MERGE INTO [rule].conditionActor ca
+    USING @conditionActor ca1 
+        ON ca.conditionId = ca1.conditionId AND ca.factor = ca1.factor AND ca.actorId = ca1.actorId
+    WHEN NOT MATCHED BY TARGET THEN
+        INSERT (conditionId, factor, actorId)
+        VALUES (@conditionId, ca1.factor, ca1.actorId)
+    WHEN NOT MATCHED by SOURCE AND ca.conditionId = @conditionId THEN
+        DELETE;
+  
+    MERGE INTO [rule].conditionItem ci
+    USING @conditionItem ci1 
+        ON ci.conditionId = ci1.conditionId AND ci.factor = ci1.factor AND ci.itemNameId = ci1.itemNameId
+    WHEN NOT MATCHED BY TARGET THEN
+        INSERT (conditionId, factor, itemNameId)
+        VALUES (@conditionId, ci1.factor, ci1.itemNameId)
+    WHEN NOT MATCHED by SOURCE AND ci.conditionId = @conditionId THEN
+        DELETE;
+
+    MERGE INTO [rule].conditionProperty cp
+    USING @conditionProperty  cp1 
+        ON cp.conditionId = cp1.conditionId AND cp.factor = cp1.factor AND cp.name = cp1.name
+    WHEN MATCHED THEN
+        UPDATE
+        SET value = cp1.value
+    WHEN NOT MATCHED BY TARGET THEN
+        INSERT (conditionId, factor, name, value)
+        VALUES (@conditionId, cp1.factor, cp1.name, cp1.value)
+    WHEN NOT MATCHED by SOURCE AND cp.conditionId = @conditionId THEN
+        DELETE;
+   
+    MERGE INTO [rule].limit l
+    USING @limit l1 ON l.[limitId] = l1.limitId
+    WHEN MATCHED THEN
+        UPDATE
+        SET currency = l1.currency,
             minAmount = l1.minAmount,
             maxAmount = l1.maxAmount,
             maxAmountDaily = l1.maxAmountDaily,
@@ -35,11 +68,11 @@ BEGIN TRY
             maxCountWeekly = l1.maxCountWeekly,
             maxAmountMonthly = l1.maxAmountMonthly,
             maxCountMonthly = l1.maxCountMonthly
-    when not matched by target then
-        insert (conditionId, currency, minAmount, maxAmount, maxAmountDaily, maxCountDaily, maxAmountWeekly, maxCountWeekly, maxAmountMonthly, maxCountMonthly)
-        values (@conditionId, l1.currency, l1.minAmount, l1.maxAmount, l1.maxAmountDaily, l1.maxCountDaily, l1.maxAmountWeekly, l1.maxCountWeekly, l1.maxAmountMonthly, l1.maxCountMonthly)
-    when not matched by source and l.conditionId = @conditionId then
-        delete;
+    WHEN NOT MATCHED BY TARGET THEN
+        INSERT (conditionId, currency, minAmount, maxAmount, maxAmountDaily, maxCountDaily, maxAmountWeekly, maxCountWeekly, maxAmountMonthly, maxCountMonthly)
+        VALUES (@conditionId, l1.currency, l1.minAmount, l1.maxAmount, l1.maxAmountDaily, l1.maxCountDaily, l1.maxAmountWeekly, l1.maxCountWeekly, l1.maxAmountMonthly, l1.maxCountMonthly)
+    WHEN NOT MATCHED by SOURCE AND l.conditionId = @conditionId THEN
+        DELETE;
 
     DELETE x
     FROM [rule].splitRange x
@@ -63,12 +96,12 @@ BEGIN TRY
     MERGE INTO [rule].splitName x
     USING
     (
-        select records.r.value('(./splitNameId)[1]', 'int') as splitNameId,
-            records.r.value('(./name/text())[1]', 'varchar(50)') as name,
-            records.r.value('(./tag/text())[1]', 'nvarchar(max)') as tag,
-            records.r.value('for $a in .. return 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'int') as rowPos
-        from @split.nodes('/data/rows/splitName') AS records(r)
-    ) as sn ON x.splitNameId = sn.splitNameId
+        SELECT records.r.value('(./splitNameId)[1]', 'int') AS splitNameId,
+            records.r.value('(./name/text())[1]', 'varchar(50)') AS name,
+            records.r.value('(./tag/text())[1]', 'nvarchar(max)') AS tag,
+            records.r.value('for $a in .. return 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'int') AS rowPos
+        FROM @split.nodes('/data/rows/splitName') AS records(r)
+    ) AS sn ON x.splitNameId = sn.splitNameId
     WHEN MATCHED THEN
       UPDATE
       SET name = sn.name,

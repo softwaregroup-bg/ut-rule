@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE [rule].[rule.remove]
+ALTER PROCEDURE [rule].[rule.remove]
     @conditionId core.arrayList READONLY
 AS
 BEGIN TRY

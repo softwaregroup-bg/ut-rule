@@ -1,3 +1,23 @@
+<a name="9.0.3"></a>
+## [9.0.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.0.2...v9.0.3) (2017-03-29)
+
+
+### Bug Fixes
+
+* change float to decimal, due to bad support ([a81604c](https://github.com/softwaregroup-bg/ut-rule/commit/a81604c))
+
+
+
+<a name="9.0.2"></a>
+## [9.0.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.0.1...v9.0.2) (2017-03-28)
+
+
+### Bug Fixes
+
+* handle CRUD of conditionActor, conditionItem, conditionProperty in SP ([42a481f](https://github.com/softwaregroup-bg/ut-rule/commit/42a481f))
+
+
+
 <a name="9.0.1"></a>
 ## [9.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.0.0...v9.0.1) (2017-03-27)
 

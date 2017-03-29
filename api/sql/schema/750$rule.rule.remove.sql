@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE [rule].[rule.remove]
+ALTER PROCEDURE [rule].[rule.remove]
     @conditionId core.arrayList READONLY
 AS
 BEGIN TRY
@@ -12,7 +12,7 @@ BEGIN TRY
         JOIN
             @conditionId item ON x.conditionId = item.value
 
-        SELECT 'conditionActor ' AS resultSetName
+        SELECT 'conditionActor' AS resultSetName
         DELETE x
         OUTPUT
             deleted.*
@@ -21,7 +21,7 @@ BEGIN TRY
         JOIN
             @conditionId item ON x.conditionId = item.value
 
-        SELECT 'conditionItem ' AS resultSetName
+        SELECT 'conditionItem' AS resultSetName
         DELETE x
         OUTPUT 
             deleted.*    
@@ -30,7 +30,7 @@ BEGIN TRY
         JOIN
             @conditionId item ON x.conditionId = item.value
     
-        SELECT 'conditionProperty ' AS resultSetName
+        SELECT 'conditionProperty' AS resultSetName
         DELETE x
         OUTPUT 
             deleted.*    

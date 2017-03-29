@@ -10,7 +10,7 @@ BEGIN
     WHERE
         @conditionId IS NULL OR conditionId = @conditionId
     
-    SELECT 'conditionActor ' AS resultSetName
+    SELECT 'conditionActor' AS resultSetName
     SELECT 
         *
     FROM 
@@ -18,7 +18,7 @@ BEGIN
     WHERE
         @conditionId IS NULL OR conditionId = @conditionId
 
-    SELECT 'conditionItem ' AS resultSetName
+    SELECT 'conditionItem' AS resultSetName
     SELECT 
         *
     FROM 
@@ -27,7 +27,7 @@ BEGIN
         @conditionId IS NULL OR conditionId = @conditionId
 
     
-    SELECT 'conditionProperty ' AS resultSetName
+    SELECT 'conditionProperty' AS resultSetName
     SELECT 
         *
     FROM 

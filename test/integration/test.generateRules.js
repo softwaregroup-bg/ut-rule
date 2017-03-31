@@ -97,10 +97,17 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('rule.rule.add', 'add rule for atm withdraw', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY, // mandatory
-                            channelTag: '|atm|',
-                            operationId: operationIdWithdraw
+                            priority: PRIORITY // mandatory
                         },
+                        conditionItem: [{
+                            factor: 'oc',
+                            itemNameId: operationIdWithdraw
+                        }],
+                        conditionProperty: [{
+                            factor: 'sc',
+                            name: 'atm',
+                            value: 1
+                        }],
                         split: {
                             data: {
                                 rows: [{
@@ -309,10 +316,17 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('rule.rule.add', 'add rule for iso withdraw', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 1, // mandatory
-                            channelTag: '|iso|',
-                            operationId: operationIdWithdraw
+                            priority: PRIORITY + 1 // mandatory
                         },
+                        conditionItem: [{
+                            factor: 'oc',
+                            itemNameId: operationIdWithdraw
+                        }],
+                        conditionProperty: [{
+                            factor: 'sc',
+                            name: 'iso',
+                            value: 1
+                        }],
                         split: {
                             data: {
                                 rows: [{
@@ -436,10 +450,17 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('rule.rule.add', 'add rule for ped withdraw', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 2, // mandatory
-                            channelTag: '|ped|',
-                            operationId: operationIdWithdraw
+                            priority: PRIORITY + 2 // mandatory
                         },
+                        conditionItem: [{
+                            factor: 'oc',
+                            itemNameId: operationIdWithdraw
+                        }],
+                        conditionProperty: [{
+                            factor: 'sc',
+                            name: 'ped',
+                            value: 1
+                        }],
                         split: {
                             data: {
                                 rows: [{
@@ -507,10 +528,17 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('rule.rule.add', 'add rule for agent withdraw', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 3, // mandatory
-                            channelTag: '|agent|',
-                            operationId: operationIdWithdraw
+                            priority: PRIORITY + 3 // mandatory
                         },
+                        conditionItem: [{
+                            factor: 'oc',
+                            itemNameId: operationIdWithdraw
+                        }],
+                        conditionProperty: [{
+                            factor: 'sc',
+                            name: 'agent',
+                            value: 1
+                        }],
                         split: {
                             data: {
                                 rows: [{
@@ -627,10 +655,17 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('rule.rule.add', 'add rule for iso sale', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 4, // mandatory
-                            channelTag: '|iso|',
-                            operationId: operationIdSale
+                            priority: PRIORITY + 4 // mandatory
                         },
+                        conditionItem: [{
+                            factor: 'oc',
+                            itemNameId: operationIdSale
+                        }],
+                        conditionProperty: [{
+                            factor: 'sc',
+                            name: 'iso',
+                            value: 1
+                        }],
                         split: {
                             data: {
                                 rows: [{
@@ -713,10 +748,17 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('rule.rule.add', 'add rule for ped deposit', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 5, // mandatory
-                            channelTag: '|ped|',
-                            operationId: operationIdDeposit
+                            priority: PRIORITY + 5 // mandatory
                         },
+                        conditionItem: [{
+                            factor: 'oc',
+                            itemNameId: operationIdDeposit
+                        }],
+                        conditionProperty: [{
+                            factor: 'sc',
+                            name: 'ped',
+                            value: 1
+                        }],
                         split: {
                             data: {
                                 rows: [{
@@ -765,10 +807,17 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('rule.rule.add', 'add rule for atm top up', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 6, // mandatory
-                            channelTag: '|atm|',
-                            operationId: operationIdTopUp
+                            priority: PRIORITY + 6 // mandatory
                         },
+                        conditionItem: [{
+                            factor: 'oc',
+                            itemNameId: operationIdTopUp
+                        }],
+                        conditionProperty: [{
+                            factor: 'sc',
+                            name: 'atm',
+                            value: 1
+                        }],
                         split: {
                             data: {
                                 rows: [{
@@ -850,12 +899,15 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for finds transfer', (context) => {
+                commonFunc.createStep('rule.rule.add', 'add rule for funds transfer', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 7, // mandatory
-                            operationId: operationIdFundsTransfer
+                            priority: PRIORITY + 7 // mandatory
                         },
+                        conditionItem: [{
+                            factor: 'oc',
+                            itemNameId: operationIdFundsTransfer
+                        }],
                         split: {
                             data: {
                                 rows: [{
@@ -904,9 +956,13 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('rule.rule.add', 'add rule for atm limit', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 8,
-                            operationTag: '|atm|'
+                            priority: PRIORITY + 8
                         },
+                        conditionProperty: [{
+                            factor: 'oc',
+                            name: 'atm',
+                            value: 1
+                        }],
                         limit: {
                             currency: currencyName1
                         }
@@ -917,9 +973,13 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('rule.rule.add', 'add rule for pos limit', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 9,
-                            operationTag: '|pos|'
+                            priority: PRIORITY + 9
                         },
+                        conditionProperty: [{
+                            factor: 'oc',
+                            name: 'pos',
+                            value: 1
+                        }],
                         limit: {
                             currency: currencyName1
                         }

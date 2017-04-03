@@ -7,7 +7,6 @@ var ruleJoiValidation = require('ut-test/lib/joiValidations/rule');
 var userConstants = require('ut-test/lib/constants/user').constants();
 var userMethods = require('ut-test/lib/methods/user');
 const PRIORITY = ruleConstants.PRIORITY;
-const OPERATIONENDDATE = ruleConstants.OPERATIONENDDATE;
 // var stdPolicy;
 const CITY = 'city';
 const REGION = 'region';
@@ -15,7 +14,7 @@ const COUNTRY = 'country';
 const CHANNEL = 'channel';
 const CURRENCY = 'currency';
 const OPERATION = 'operation';
-var channelId1, currencyName1, operationIdWithdraw, operationIdSale, operationIdDeposit, operationIdTopUp,
+var currencyName1, operationIdWithdraw, operationIdSale, operationIdDeposit, operationIdTopUp,
     operationIdFundsTransfer;
 
 module.exports = function(opt, cache) {
@@ -300,19 +299,6 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.decision.lookup', 'fetch decision rule', (context) => {
-                    return {
-                        channelId: channelId1,
-                        operation: 'Withdraw / cash out',
-                        operationDate: OPERATIONENDDATE,
-                        sourceAccount: '263042584650066',
-                        destinationAccount: '2630425846500661',
-                        amount: 10,
-                        currency: currencyName1,
-                        isSourceAmount: false
-                    };
-                }, (result, assert) => {
-                }),
                 commonFunc.createStep('rule.rule.add', 'add rule for iso withdraw', (context) => {
                     return {
                         condition: {
@@ -451,6 +437,85 @@ module.exports = function(opt, cache) {
                     return {
                         condition: {
                             priority: PRIORITY + 2 // mandatory
+                        },
+                        conditionItem: [{
+                            factor: 'oc',
+                            itemNameId: operationIdWithdraw
+                        }],
+                        conditionProperty: [{
+                            factor: 'sc',
+                            name: 'ped',
+                            value: 1
+                        }],
+                        split: {
+                            data: {
+                                rows: [{
+                                    splitName: {
+                                        name: 'Withdraw amount - PED', // mandatory
+                                        tag: '|acquirer|ped|'
+                                    },
+                                    splitRange: [{
+                                        isSourceAmount: false,
+                                        startAmount: 0, // mandatory
+                                        startAmountCurrency: currencyName1, // mandatory,
+                                        startAmountDaily: 0,
+                                        startCountDaily: 0,
+                                        startAmountWeekly: 0,
+                                        startCountWeekly: 0,
+                                        startAmountMonthly: 0,
+                                        startCountMonthly: 0,
+                                        percent: 100
+                                        // flatValue: 10!!!
+                                    }],
+                                    splitAssignment: [{
+                                        credit: '$' + '{channel.id}.amount',
+                                        debit: '$' + '{source.account.number}',
+                                        description: 'PED amount - withdraw', // mandatory
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 739
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 738
+                                        }, {
+                                            name: 'debitNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }]
+                                    }]
+                                }, {
+                                    splitName: {
+                                        name: 'Withdraw fee - PED', // mandatory
+                                        tag: '|acquirer|ped|fee|'
+                                    },
+                                    splitRange: [{
+                                        isSourceAmount: false,
+                                        maxValue: 0,
+                                        startAmount: 0, // mandatory
+                                        startAmountCurrency: currencyName1, // mandatory,
+                                        startAmountDaily: 0,
+                                        startCountDaily: 0,
+                                        startAmountWeekly: 0,
+                                        startCountWeekly: 0,
+                                        startAmountMonthly: 0,
+                                        startCountMonthly: 0
+                                        // flatValue: 10!!!
+                                    }]
+                                }]
+                            }
+                        }
+                    };
+                }, (result, assert) => {
+                    assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
+                }),
+                // add duplicated rule with different priority so we can test the decision.lookup for priority
+                commonFunc.createStep('rule.rule.add', 'add duplicated rule for ped withdraw', (context) => {
+                    return {
+                        condition: {
+                            priority: PRIORITY + 22 // mandatory
                         },
                         conditionItem: [{
                             factor: 'oc',

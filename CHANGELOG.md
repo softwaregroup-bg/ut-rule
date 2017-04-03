@@ -1,3 +1,13 @@
+<a name="5.8.7"></a>
+## [5.8.7](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.6...v5.8.7) (2017-03-24)
+
+
+### Bug Fixes
+
+* add configuration for turning on/off rules ([#29](https://github.com/softwaregroup-bg/ut-rule/issues/29)) ([2bf2054](https://github.com/softwaregroup-bg/ut-rule/commit/2bf2054))
+
+
+
 <a name="5.8.6"></a>
 ## [5.8.6](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.5...v5.8.6) (2017-02-02)
 

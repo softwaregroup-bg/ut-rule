@@ -18,11 +18,6 @@ const Operation = React.createClass({
             fields: this.props.fields
         };
     },
-    getInitialState() {
-        return {
-            fields: this.props.fields
-        };
-    },
     onChangeInput(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },

@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
+import Dropdown from 'ut-front-react/components/Input/Dropdown';
 
 const Operation = React.createClass({
     propTypes: {
@@ -9,7 +10,8 @@ const Operation = React.createClass({
         fields: PropTypes.object
     },
     contextTypes: {
-        onFieldChange: PropTypes.func
+        onFieldChange: PropTypes.func,
+        nomenclatures: PropTypes.object
     },
     getInitialState() {
         return {
@@ -25,8 +27,12 @@ const Operation = React.createClass({
             self.context.onFieldChange('condition', 0, fieldKey, field.value);
         };
     },
+    onSelectDropdown(field) {
+        this.context.onFieldChange('condition', 0, field.key, field.value);
+    },
     render() {
         let { onChangeInput, onChangeDate } = this;
+        let { operation } = this.context.nomenclatures;
         let fields = this.state.fields;
         return (
             <div className={style.content}>
@@ -37,6 +43,20 @@ const Operation = React.createClass({
                           label={fields.tag.title}
                           onChange={onChangeInput}
                           value={'' + (this.props.data.operationTag || '')}
+                        />
+                    </div>
+                }
+                {fields.operationId.visible &&
+                    <div className={style.inputWrapper}>
+                        <Dropdown
+                          canSelectPlaceholder
+                          keyProp='operationId'
+                          label={fields.operationId.title}
+                          data={operation}
+                          placeholder={fields.operationId.title}
+                          onSelect={this.onSelectDropdown}
+                          defaultSelected={'' + (this.props.data.operationId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         />
                     </div>
                 }

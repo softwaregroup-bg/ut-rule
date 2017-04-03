@@ -103,9 +103,13 @@ BEGIN
     INSERT INTO
         @operationProperties(factor, name, value)
     SELECT
-        'co', 'channel.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
+        'co', 'channel.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, r.actorId
     FROM
         core.actorGraph(@channelId,'memberOf','subject') g
+    CROSS APPLY
+        core.actorGraph(g.actorId,'role','subject') r
+    WHERE
+        g.actorId <> r.actorId
     UNION SELECT
         'so', 'source.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
@@ -114,8 +118,6 @@ BEGIN
         'do', 'destination.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@destinationOwnerId,'memberOf','subject') g
-    CROSS APPLY
-        core.actorGraph(g.actorId,'role','subject') r
     UNION SELECT
         'co', 'channel.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM

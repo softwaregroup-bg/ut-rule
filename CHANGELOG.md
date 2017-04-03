@@ -1,3 +1,15 @@
+<a name="5.8.8"></a>
+## [5.8.8](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.7...v5.8.8) (2017-04-03)
+
+
+### Bug Fixes
+
+* add configuration for turning on/off rules ([8dbe1c5](https://github.com/softwaregroup-bg/ut-rule/commit/8dbe1c5))
+* limit labels; add operation id select ([d0114f7](https://github.com/softwaregroup-bg/ut-rule/commit/d0114f7))
+* lint error ([62cfb5f](https://github.com/softwaregroup-bg/ut-rule/commit/62cfb5f))
+
+
+
 <a name="5.8.7"></a>
 ## [5.8.7](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.6...v5.8.7) (2017-03-24)
 

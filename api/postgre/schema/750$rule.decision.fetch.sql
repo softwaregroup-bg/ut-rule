@@ -83,7 +83,12 @@ $BODY$
         SELECT
             l."minAmount",
             l."maxAmount",
-            l."maxCountDaily" AS "count"
+            l."maxAmountDaily",
+            l."maxCountDaily",
+            l."maxAmountWeekly",
+            l."maxCountWeekly",
+            l."maxAmountMonthly",
+            l."maxCountMonthly"
         FROM
             matches AS c
         JOIN

@@ -1,3 +1,13 @@
+<a name="9.1.0"></a>
+# [9.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.0.5...v9.1.0) (2017-04-07)
+
+
+### Features
+
+* add predicate agentOf ([#34](https://github.com/softwaregroup-bg/ut-rule/issues/34)) ([02f222f](https://github.com/softwaregroup-bg/ut-rule/commit/02f222f))
+
+
+
 <a name="9.0.5"></a>
 ## [9.0.5](https://github.com/softwaregroup-bg/ut-rule/compare/v9.0.4...v9.0.5) (2017-04-03)
 

@@ -122,7 +122,7 @@ BEGIN
         'co', 'channel.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@channelId,'memberOf','subject') g
-     UNION SELECT
+    UNION SELECT
         'co', 'agentOf.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@channelId,'agentOf','subject') g

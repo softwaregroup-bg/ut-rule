@@ -92,5 +92,11 @@ module.exports = {
         notes: '',
         params: joi.any(),
         result: joi.any()
+    },
+    'decision.lookup': {
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
     }
 };

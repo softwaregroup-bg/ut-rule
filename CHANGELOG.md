@@ -1,3 +1,13 @@
+<a name="9.1.2"></a>
+## [9.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.1.1...v9.1.2) (2017-04-11)
+
+
+### Bug Fixes
+
+* update decision.lookup validations ([#36](https://github.com/softwaregroup-bg/ut-rule/issues/36)) ([4adf832](https://github.com/softwaregroup-bg/ut-rule/commit/4adf832))
+
+
+
 <a name="9.1.1"></a>
 ## [9.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.1.0...v9.1.1) (2017-04-10)
 

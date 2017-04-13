@@ -93,7 +93,7 @@ module.exports = function(opt, cache) {
                     operationIdTopUp = result.itemTranslationFetch.find(item => item.itemName === 'Top up').itemNameId;
                     operationIdFundsTransfer = result.itemTranslationFetch.find(item => item.itemName === 'Funds transfer to account').itemNameId;
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for atm withdraw', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add rule for atm withdraw', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY // mandatory
@@ -299,7 +299,7 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for iso withdraw', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add rule for iso withdraw', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY + 1 // mandatory
@@ -433,7 +433,7 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for ped withdraw', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add rule for ped withdraw', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY + 2 // mandatory
@@ -512,7 +512,7 @@ module.exports = function(opt, cache) {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
                 // add duplicated rule with different priority so we can test the decision.lookup for priority
-                commonFunc.createStep('rule.rule.add', 'add duplicated rule for ped withdraw', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add duplicated rule for ped withdraw', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY + 22 // mandatory
@@ -590,7 +590,7 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for agent withdraw', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add rule for agent withdraw', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY + 3 // mandatory
@@ -717,7 +717,7 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for iso sale', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add rule for iso sale', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY + 4 // mandatory
@@ -810,7 +810,7 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for ped deposit', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add rule for ped deposit', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY + 5 // mandatory
@@ -869,7 +869,7 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for atm top up', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add rule for atm top up', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY + 6 // mandatory
@@ -964,7 +964,7 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for funds transfer', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add rule for funds transfer', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY + 7 // mandatory
@@ -1018,7 +1018,7 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for atm limit', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add rule for atm limit', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY + 8
@@ -1035,7 +1035,7 @@ module.exports = function(opt, cache) {
                 }, (result, assert) => {
                     assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
                 }),
-                commonFunc.createStep('rule.rule.add', 'add rule for pos limit', (context) => {
+                commonFunc.createStep('db/rule.rule.add', 'add rule for pos limit', (context) => {
                     return {
                         condition: {
                             priority: PRIORITY + 9

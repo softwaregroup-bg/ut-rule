@@ -3,6 +3,7 @@ import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
+import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 
 const Operation = React.createClass({
     propTypes: {
@@ -49,17 +50,15 @@ const Operation = React.createClass({
                 }
                 {fields.operationId.visible &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='operationId'
-                          label={fields.operationId.title}
-                          data={operation}
-                          placeholder={fields.operationId.title}
-                          onSelect={this.onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.operationId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
-                        />
-                    </div>
+                      <MultiSelectBubble
+                        keyProp='operationIds'
+                        name='operationIds'
+                      label={fields.operationId.title}
+                      value={this.props.data.operationIds}
+                      options={operation}
+                      onChange={(val) => {this.onSelectDropdown({key: 'operationIds', value: val})}}
+                    />
+                  </div>
                 }
                 {fields.operationStartDate.visible &&
                     <div className={style.inputWrapper}>

@@ -39,6 +39,8 @@ const Main = React.createClass({
     },
     fetchData() {
         this.props.actions.fetchRules();
+        this.props.actions.fetchRoles();
+        this.props.actions.fetchOrganizations();
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     },
     componentWillMount() {
@@ -158,6 +160,8 @@ const Main = React.createClass({
                           open={this.state.dialog.open}
                           data={this.props.rules[this.state.dialog.conditionId]}
                           nomenclatures={this.props.nomenclatures}
+                          roles={this.props.roles}
+                          organizations={this.props.organizations}
                           onSave={this.dialogOnSave}
                           onClose={this.dialogOnClose}
                           sections={sections}
@@ -212,6 +216,8 @@ export default connect(
             rules: state.main.fetchRules,
             nomenclatures: state.main.fetchNomenclatures,
             ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
+            roles: state.main.fetchRoles,
+            organizations: state.main.fetchOrganizations,
             empty: Object.keys(state.main).length === 0,
             uiConfig: state.uiConfig
         };

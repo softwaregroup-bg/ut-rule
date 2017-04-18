@@ -14,12 +14,39 @@ export default (state = defaultState, action) => {
                 return Object.assign({}, state, {
                     'fetchRules': formatRules(action.result)
                 });
+            case actionTypes.fetchRoles:
+                return Object.assign({}, state, {
+                    'fetchRoles': formatRoles(action.result)
+                });
+            case actionTypes.fetchOrganizations:
+                return Object.assign({}, state, {
+                    'fetchOrganizations': formatOrganizations(action.result)
+                });
             default:
                 break;
         }
     }
     return state;
 };
+
+const formatRoles = (data) => {
+  return data.role.map(role => {
+    return {
+      name: role.name,
+      key: role.actorId
+    }
+  })
+}
+
+
+const formatOrganizations = (data) => {
+  return data.organization.map(role => {
+    return {
+      name: role.organizationName,
+      key: role.actorId
+    }
+  })
+}
 
 var formatRules = function(data) {
     if (!data.condition.length) {

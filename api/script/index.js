@@ -16,6 +16,20 @@ var wrapper = {
     'accountAlias': function(msg, $meta) {
         $meta.method = 'db/integration.alias.list';
         return bus.importMethod($meta.method)(msg, $meta);
+    },
+    'organization': function(msg, $meta) {
+        $meta.method = 'customer.organization.fetch';
+        return bus.importMethod($meta.method)(msg, $meta).then(result => {
+            let organization = result.organization;
+            return {items: organization.map(v => ({ type: 'organization', value: v.actorId, display: v.organizationName }))};
+        });
+    },
+    'role': function(msg, $meta) {
+        $meta.method = 'user.role.fetch';
+        return bus.importMethod($meta.method)(msg, $meta).then(result => {
+            let role = result.role;
+            return {items: role.map(v => ({ type: 'role', value: v.actorId, display: v.name }))}
+        });
     }
 };
 

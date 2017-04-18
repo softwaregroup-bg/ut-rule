@@ -16,6 +16,30 @@ export function fetchRules(params) {
     };
 };
 
+export function fetchRoles(params) {
+    return {
+        type: actionTypes.fetchRoles,
+        method: 'user.role.fetch',
+        params: params || {}
+    };
+};
+
+export function fetchOrganizations(params) {
+    return {
+        type: actionTypes.fetchOrganizations,
+        method: 'customer.organization.fetch',
+        params: params || {}
+    };
+};
+
+export function fetchSupervisor(params) {
+    return {
+        type: actionTypes.fetchRules,
+        method: '',
+        params: params || {}
+    };
+};
+
 export function removeRules(params) {
     return function(dispatch) {
         return dispatch({

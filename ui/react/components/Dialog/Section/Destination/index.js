@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
+import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 
 const Destination = React.createClass({
     propTypes: {
@@ -24,7 +25,7 @@ const Destination = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        let { country, region, city, accountProduct, account, organization, supervisor } = this.context.nomenclatures;
+        let { country, region, city, accountProduct, account, organization, supervisor, role } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
         let fields = this.state.fields;
 
@@ -32,40 +33,37 @@ const Destination = React.createClass({
            <div className={style.content}>
                 {fields.country.visible && country &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='destinationCountryId'
+                        <MultiSelectBubble
+                          keyProp='destinationCountryIds'
+                          name='destinationCountryIds'
                           label={fields.country.title}
-                          data={country}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.destinationCountryId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                          value={this.props.data.destinationCountryIds}
+                          options={country}
+                          onChange={(val) => {this.onSelectDropdown({key: 'destinationCountryIds', value: val})}}
                         />
                     </div>
                 }
                 {fields.region.visible && region &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='destinationRegionId'
+                        <MultiSelectBubble
+                          keyProp='destinationRegionIds'
+                          name='destinationRegionIds'
                           label={fields.region.title}
-                          data={region}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.destinationRegionId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                          value={this.props.data.destinationRegionIds}
+                          options={region}
+                          onChange={(val) => {this.onSelectDropdown({key: 'destinationRegionIds', value: val})}}
                         />
                     </div>
                 }
                 {fields.city.visible && city &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='destinationCityId'
+                        <MultiSelectBubble
+                          keyProp='destinationCityIds'
+                          name='destinationCityIds'
                           label={fields.city.title}
-                          data={city}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.destinationCityId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                          value={this.props.data.destinationCityIds}
+                          options={city}
+                          onChange={(val) => {this.onSelectDropdown({key: 'destinationCityIds', value: val})}}
                         />
                     </div>
                 }
@@ -82,6 +80,19 @@ const Destination = React.createClass({
                         />
                     </div>
                 }
+                {fields.role.visible && role &&
+                    <div className={style.inputWrapper}>
+                        <Dropdown
+                          canSelectPlaceholder
+                          keyProp='destinationRoleId'
+                          label={fields.role.title}
+                          data={role}
+                          onSelect={onSelectDropdown}
+                          defaultSelected={'' + (this.props.data.destinationRoleId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                        />
+                    </div>
+                }
                 {fields.supervisor.visible && supervisor &&
                     <div className={style.inputWrapper}>
                         <Dropdown
@@ -92,16 +103,6 @@ const Destination = React.createClass({
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.destinationSupervisorId || '')}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
-                        />
-                    </div>
-                }
-                {fields.tag.visible &&
-                    <div className={style.inputWrapper}>
-                        <Input
-                          keyProp='destinationTag'
-                          label={fields.tag.title}
-                          onChange={onChangeInput}
-                          value={'' + (this.props.data.destinationTag || '')}
                         />
                     </div>
                 }
@@ -128,6 +129,16 @@ const Destination = React.createClass({
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.destinationAccountId || '')}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                        />
+                    </div>
+                }
+                {fields.tag.visible &&
+                    <div className={style.inputWrapper}>
+                        <Input
+                          keyProp='destinationTag'
+                          label={fields.tag.title}
+                          onChange={onChangeInput}
+                          value={'' + (this.props.data.destinationTag || '')}
                         />
                     </div>
                 }

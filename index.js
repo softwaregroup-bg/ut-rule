@@ -1,10 +1,12 @@
-module.exports = () => ({
-    ports: [],
-    modules: {
-        rule: require('./api/script'),
-        'db/rule': require('./api/sql')
-    },
-    validations: {
-        rule: require('./validations')
-    }
-});
+module.exports = () => {
+    return () => ({
+        ports: [],
+        modules: {
+            rule: require('./api/script'),
+            'db/rule': require('./api/sql')
+        },
+        validations: {
+            rule: require('./validations')
+        }
+    });
+};

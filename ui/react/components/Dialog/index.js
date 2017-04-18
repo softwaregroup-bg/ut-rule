@@ -15,23 +15,24 @@ import validations from './validations.js';
 import classnames from 'classnames';
 import set from 'lodash.set';
 
+
 const emptyCondition = {
     priority: null,
-    channelCountryId: null,
-    channelRegionId: null,
-    channelCityId: null,
+    channelCountryIds: [],
+    channelRegionIds: [],
+    channelCityIds: [],
     channelOrganizationId: null,
     channelSupervisorId: null,
-    channelTag: null,
+    channelProperties: [],
     channelRoleId: null,
     channelId: null,
-    operationId: null,
+    operationIds: [],
     operationTag: null,
     operationStartDate: null,
     operationEndDate: null,
-    sourceCountryId: null,
-    sourceRegionId: null,
-    sourceCityId: null,
+    sourceCountryIds: [],
+    sourceRegionIds: [],
+    sourceCityIds: [],
     sourceOrganizationId: null,
     sourceSupervisorId: null,
     sourceTag: null,
@@ -39,9 +40,10 @@ const emptyCondition = {
     sourceCardProductId: null,
     sourceAccountProductId: null,
     sourceAccountId: null,
-    destinationCountryId: null,
-    destinationRegionId: null,
-    destinationCityId: null,
+    destinationCountryIds: [],
+    destinationRegionIds: [],
+    destinationCityIds: [],
+    destinationRoleId: null,
     destinationOrganizationId: null,
     destinationSupervisorId: null,
     destinationTag: null,
@@ -70,6 +72,11 @@ const emptySplit = {
     splitAssignment: []
 };
 
+const emptyProperty = {
+    key: null,
+    value: null
+};
+
 const emptySplitRange = {
     startAmount: null, // required
     startAmountCurrency: null, // required
@@ -93,6 +100,8 @@ export default React.createClass({
         open: PropTypes.bool.isRequired,
         data: PropTypes.object,
         nomenclatures: PropTypes.object.isRequired,
+        roles: PropTypes.arrayOf(PropTypes.object).isRequired,
+        organizations: PropTypes.arrayOf(PropTypes.object).isRequired,
         onSave: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
         sections: PropTypes.object
@@ -115,6 +124,18 @@ export default React.createClass({
                     // Object.assign({}, emptyLimit)
                 ],
                 split: [
+
+                ],
+                channelProperties: [
+
+                ],
+                sourceProperties: [
+
+                ],
+                destinationProperties: [
+
+                ],
+                operationProperties: [
 
                 ]
             },
@@ -173,6 +194,62 @@ export default React.createClass({
     addSplitRow() {
         let splitObject = JSON.parse(JSON.stringify(emptySplit));
         this.state.data.split.push(splitObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    addSourcePropertyRow() {
+        let propertyObject = JSON.parse(JSON.stringify(emptyProperty));
+        this.state.data.sourceProperties.push(propertyObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    addChannelPropertyRow() {
+        let propertyObject = JSON.parse(JSON.stringify(emptyProperty));
+        this.state.data.channelProperties.push(propertyObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    addDestinationPropertyRow() {
+        let propertyObject = JSON.parse(JSON.stringify(emptyProperty));
+        this.state.data.destinationProperties.push(propertyObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    addOperationPropertyRow() {
+        let propertyObject = JSON.parse(JSON.stringify(emptyProperty));
+        this.state.data.operationProperties.push(propertyObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteOperationPropertyRow(index) {
+        let {operationProperties} = this.state.data;
+        this.state.data.operationProperties = operationProperties.slice(0, index).concat(operationProperties.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteDestinationPropertyRow(index) {
+        let {destinationProperties} = this.state.data;
+        this.state.data.destinationProperties = destinationProperties.slice(0, index).concat(destinationProperties.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteChannelPropertyRow(index) {
+        let {channelProperties} = this.state.data;
+        this.state.data.channelProperties = channelProperties.slice(0, index).concat(channelProperties.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteSourcePropertyRow(index) {
+        let {sourceProperties} = this.state.data;
+        this.state.data.sourceProperties = sourceProperties.slice(0, index).concat(sourceProperties.slice(index + 1));
         this.setState({
             data: this.state.data
         });
@@ -279,6 +356,11 @@ export default React.createClass({
                                 <Channel
                                   data={this.state.data.condition[0]}
                                   fields={sections.channel.fields}
+                                  roles={this.props.roles}
+                                  organizations={this.props.organizations}
+                                  properties={this.state.data.channelProperties}
+                                  addPropertyRow={this.addChannelPropertyRow}
+                                  deletePropetyRow={this.deleteChannelPropertyRow}
                                 />
                             </Accordion>
                         }
@@ -294,6 +376,9 @@ export default React.createClass({
                                 <Source
                                   data={this.state.data.condition[0]}
                                   fields={sections.source.fields}
+                                  properties={this.state.data.sourceProperties}
+                                  addPropertyRow={this.addSourcePropertyRow}
+                                  deletePropetyRow={this.deleteSourcePropertyRow}
                                 />
                         </Accordion>}
                         {sections.destination.visible &&

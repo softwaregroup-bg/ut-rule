@@ -2,11 +2,18 @@ import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
+import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
+import plusImage from '../../assets/add_new.png';
+import IconButton from 'material-ui/IconButton';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 const Source = React.createClass({
     propTypes: {
         data: PropTypes.object.isRequired,
-        fields: PropTypes.object
+        fields: PropTypes.object,
+        addPropertyRow: PropTypes.func.isRequired,
+        properties: PropTypes.array.isRequired,
+        deletePropetyRow: PropTypes.func.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
@@ -23,8 +30,54 @@ const Source = React.createClass({
     onChangeInput(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
+    onChangePropertyInput(index) {
+        let self = this;
+        return (field) => {
+            self.context.onFieldChange('sourceProperties', index, field.key, field.value);
+        };
+    },
+    onDeletePropertyRow(index) {
+        let self = this;
+        return () => {
+            self.props.deletePropetyRow(index);
+        };
+    },
+    createPropertyHeaderCells() {
+        return [
+            {name: 'Key', key: 'key'},
+            {name: 'Value', key: 'value'},
+            {name: ' ', key: 'rangeActions'}
+        ].map((cell, i) => (
+            <th key={i}>{cell.name}</th>
+        ));
+    },
+    createPropetyRows() {
+        return this.props.properties.map((sourceProperty, index) => (
+            <tr key={index}>
+                <td>
+                    <Input
+                      keyProp='key'
+                      onChange={this.onChangePropertyInput(index)}
+                      value={'' + (sourceProperty.key || '')}
+                    />
+                </td>
+                <td>
+                    <Input
+                      keyProp='value'
+                      onChange={this.onChangePropertyInput(index)}
+                      value={'' + (sourceProperty.value || '')}
+                    />
+                </td>
+                 <td>
+                    <IconButton onClick={this.onDeletePropertyRow(index)}>
+                        <ActionDelete />
+                    </IconButton>
+                </td>
+            </tr>
+        ));
+    },
     render() {
-        let { country, region, city, cardProduct, accountProduct, account, organization, supervisor } = this.context.nomenclatures;
+        let { country, region, city, cardProduct, accountProduct, account, organization, supervisor, role } = this.context.nomenclatures;
         let { onChangeInput, onSelectDropdown } = this;
         let fields = this.state.fields;
 
@@ -32,42 +85,53 @@ const Source = React.createClass({
            <div className={style.content}>
                 {fields.country.visible && country &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='sourceCountryId'
+                        <MultiSelectBubble
+                          keyProp='sourceCountryIds'
+                          name='sourceCountryIds'
                           label={fields.country.title}
-                          data={country}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.sourceCountryId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                          value={this.props.data.sourceCountryIds}
+                          options={country}
+                          onChange={(val) => { this.onSelectDropdown({key: 'sourceCountryIds', value: val}); }}
                         />
                     </div>
                 }
                 {fields.region.visible && region &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='sourceRegionId'
+                        <MultiSelectBubble
+                          keyProp='sourceRegionIds'
+                          name='sourceRegionIds'
                           label={fields.region.title}
-                          data={region}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.sourceRegionId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                          value={this.props.data.sourceRegionIds}
+                          options={region}
+                          onChange={(val) => { this.onSelectDropdown({key: 'sourceRegionIds', value: val}); }}
                         />
                     </div>
                 }
                 {fields.city.visible && city &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='sourceCityId'
+                        <MultiSelectBubble
+                          keyProp='sourceCityIds'
+                          name='sourceCityIds'
                           label={fields.city.title}
-                          data={city}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.sourceCityId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                          value={this.props.data.sourceCityIds}
+                          options={city}
+                          onChange={(val) => { this.onSelectDropdown({key: 'sourceCityIds', value: val}) ;}}
                         />
                     </div>
+                }
+                {fields.role.visible && role &&
+                  <div className={style.inputWrapper}>
+                      <Dropdown
+                        canSelectPlaceholder
+                        data={role}
+                        defaultSelected={'' + (this.props.data.sourceRoleId || '')}
+                        keyProp='sourceRoleId'
+                        placeholder={fields.role.title}
+                        onSelect={onSelectDropdown}
+                        label={fields.role.title}
+                        mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                        />
+                  </div>
                 }
                 {fields.organization.visible && organization &&
                     <div className={style.inputWrapper}>
@@ -92,16 +156,6 @@ const Source = React.createClass({
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.sourceSupervisorId || '')}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
-                        />
-                    </div>
-                }
-                {fields.tag.visible &&
-                    <div className={style.inputWrapper}>
-                        <Input
-                          keyProp='sourceTag'
-                          label={fields.tag.title}
-                          onChange={onChangeInput}
-                          value={'' + (this.props.data.sourceTag || '')}
                         />
                     </div>
                 }
@@ -144,6 +198,24 @@ const Source = React.createClass({
                         />
                     </div>
                 }
+                {fields.properties.visible &&
+                  <div>
+                  <table className={style.dataGridTable}>
+                      <thead>
+                          <tr>
+                              {this.createPropertyHeaderCells()}
+                          </tr>
+                      </thead>
+                      <tbody >
+                          {this.createPropetyRows()}
+                      </tbody>
+                  </table>
+                  <span className={style.link} onClick={this.props.addPropertyRow}>
+                      <img src={plusImage} className={style.plus} />
+                      Add another property
+                  </span>
+                </div>
+              }
             </div>
         );
     }

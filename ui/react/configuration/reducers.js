@@ -19,10 +19,10 @@ const defaultUiState = {
         itemCode: [
             'currency'
         ],
-        agentRole: [
-        ],
-        accountAlias: [
-        ]
+        agentRole: [],
+        accountAlias: [],
+        organization: [''],
+        role: ['']
     },
     main: {
         grid: {
@@ -84,9 +84,9 @@ const defaultUiState = {
                         visible: true,
                         title: 'Supervisor'
                     },
-                    tag: {
+                    properties: {
                         visible: true,
-                        title: 'Tag'
+                        title: 'Properties'
                     },
                     role: {
                         visible: true,
@@ -113,6 +113,10 @@ const defaultUiState = {
                     operationId: {
                         visible: true,
                         title: 'Operation'
+                    },
+                    properties: {
+                        visible: true,
+                        title: 'Properties'
                     }
                 }
             },
@@ -131,6 +135,10 @@ const defaultUiState = {
                     city: {
                         visible: true,
                         title: 'City'
+                    },
+                    role: {
+                        visible: true,
+                        title: 'Channel role'
                     },
                     organization: {
                         visible: true,
@@ -155,6 +163,10 @@ const defaultUiState = {
                     account: {
                         visible: true,
                         title: 'Account'
+                    },
+                    properties: {
+                        visible: true,
+                        title: 'Properties'
                     }
                 }
             },
@@ -197,6 +209,14 @@ const defaultUiState = {
                     account: {
                         visible: true,
                         title: 'Account'
+                    },
+                    role: {
+                        visible: true,
+                        title: 'Channel role'
+                    },
+                    properties: {
+                        visible: true,
+                        title: 'Properties'
                     }
                 }
             },

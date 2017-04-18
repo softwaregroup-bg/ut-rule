@@ -369,6 +369,9 @@ export default React.createClass({
                                 <Operation
                                   data={this.state.data.condition[0]}
                                   fields={sections.operation.fields}
+                                  properties={this.state.data.operationProperties}
+                                  addPropertyRow={this.addDestinationPropertyRow}
+                                  deletePropetyRow={this.deleteDestinationPropertyRow}
                                 />
                         </Accordion>}
                         {sections.source.visible &&
@@ -386,6 +389,9 @@ export default React.createClass({
                                 <Destination
                                   data={this.state.data.condition[0]}
                                   fields={sections.destination.fields}
+                                  properties={this.state.data.destinationProperties}
+                                  addPropertyRow={this.addDestinationPropertyRow}
+                                  deletePropetyRow={this.deleteDestinationPropertyRow}
                                 />
                         </Accordion>}
                         {sections.limit.visible &&

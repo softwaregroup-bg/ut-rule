@@ -1,3 +1,33 @@
+<a name="9.1.2"></a>
+## [9.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.1.1...v9.1.2) (2017-04-11)
+
+
+### Bug Fixes
+
+* update decision.lookup validations ([#36](https://github.com/softwaregroup-bg/ut-rule/issues/36)) ([4adf832](https://github.com/softwaregroup-bg/ut-rule/commit/4adf832))
+
+
+
+<a name="9.1.1"></a>
+## [9.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.1.0...v9.1.1) (2017-04-10)
+
+
+### Bug Fixes
+
+* added simple joi validation for rule.decision.lookup ([#35](https://github.com/softwaregroup-bg/ut-rule/issues/35)) ([155d81f](https://github.com/softwaregroup-bg/ut-rule/commit/155d81f))
+
+
+
+<a name="9.1.0"></a>
+# [9.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.0.5...v9.1.0) (2017-04-07)
+
+
+### Features
+
+* add predicate agentOf ([#34](https://github.com/softwaregroup-bg/ut-rule/issues/34)) ([02f222f](https://github.com/softwaregroup-bg/ut-rule/commit/02f222f))
+
+
+
 <a name="9.0.5"></a>
 ## [9.0.5](https://github.com/softwaregroup-bg/ut-rule/compare/v9.0.4...v9.0.5) (2017-04-03)
 

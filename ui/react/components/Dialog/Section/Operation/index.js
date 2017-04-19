@@ -53,9 +53,9 @@ const Operation = React.createClass({
         return [
             {name: 'Key', key: 'key'},
             {name: 'Value', key: 'value'},
-            {name: ' ', key: 'rangeActions'}
+            {name: '', key: 'rangeActions', className: style.deleteButton}
         ].map((cell, i) => (
-            <th key={i}>{cell.name}</th>
+            <th key={i} className={cell.className || ''}>{cell.name}</th>
         ));
     },
     createPropetyRows() {
@@ -146,21 +146,24 @@ const Operation = React.createClass({
                     </div>
                 }
                 {fields.properties.visible &&
-                  <div>
-                  <table className={style.dataGridTable}>
-                      <thead>
-                          <tr>
-                              {this.createPropertyHeaderCells()}
-                          </tr>
-                      </thead>
-                      <tbody >
-                          {this.createPropetyRows()}
-                      </tbody>
-                  </table>
-                  <span className={style.link} onClick={this.props.addPropertyRow}>
-                      <img src={plusImage} className={style.plus} />
-                      Add another property
-                  </span>
+                  <div className={style.propertyTable}>
+                    <table className={style.dataGridTable}>
+                        <thead>
+                            <tr>
+                                <th colSpan={3}>Properties</th>
+                            </tr>
+                            <tr>
+                                {this.createPropertyHeaderCells()}
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {this.createPropetyRows()}
+                        </tbody>
+                    </table>
+                    <span className={style.link} onClick={this.props.addPropertyRow}>
+                        <img src={plusImage} className={style.plus} />
+                        Add another property
+                    </span>
                 </div>
               }
             </div>

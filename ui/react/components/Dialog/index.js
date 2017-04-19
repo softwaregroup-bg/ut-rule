@@ -100,8 +100,6 @@ export default React.createClass({
         open: PropTypes.bool.isRequired,
         data: PropTypes.object,
         nomenclatures: PropTypes.object.isRequired,
-        roles: PropTypes.arrayOf(PropTypes.object).isRequired,
-        organizations: PropTypes.arrayOf(PropTypes.object).isRequired,
         onSave: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
         sections: PropTypes.object
@@ -370,8 +368,8 @@ export default React.createClass({
                                   data={this.state.data.condition[0]}
                                   fields={sections.operation.fields}
                                   properties={this.state.data.operationProperties}
-                                  addPropertyRow={this.addDestinationPropertyRow}
-                                  deletePropetyRow={this.deleteDestinationPropertyRow}
+                                  addPropertyRow={this.addOperationPropertyRow}
+                                  deletePropetyRow={this.deleteOperationPropertyRow}
                                 />
                         </Accordion>}
                         {sections.source.visible &&

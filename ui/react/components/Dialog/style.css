@@ -207,3 +207,11 @@ div.dropDownRoot {
 .splitMinWidth {
   min-width: 70px;
 }
+
+.deleteButton {
+  width: 7%;
+}
+
+.propertyTable {
+  padding-top: 10px;
+}

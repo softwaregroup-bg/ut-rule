@@ -82,6 +82,7 @@ export function editRule(params) {
 };
 
 export function addRule(params) {
+  debugger;
     return function(dispatch) {
         let split = JSON.parse(JSON.stringify(params.split));
 

@@ -1,3 +1,14 @@
+<a name="5.8.9"></a>
+## [5.8.9](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.8...v5.8.9) (2017-04-21)
+
+
+### Bug Fixes
+
+* peer dependencies and validation ([649e3c3](https://github.com/softwaregroup-bg/ut-rule/commit/649e3c3))
+* return all limits ([895998f](https://github.com/softwaregroup-bg/ut-rule/commit/895998f))
+
+
+
 <a name="5.8.8"></a>
 ## [5.8.8](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.7...v5.8.8) (2017-04-03)
 

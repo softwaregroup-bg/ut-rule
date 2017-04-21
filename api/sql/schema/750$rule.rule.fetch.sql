@@ -15,7 +15,8 @@ BEGIN
         ca.*, a.actorType AS [type]
     FROM 
         [rule].conditionActor ca
-    JOIN core.actor a ON ca.actorId = a.actorId
+    JOIN 
+        core.actor a ON a.actorId = ca.actorId
     WHERE
         @conditionId IS NULL OR ca.conditionId = @conditionId
 
@@ -24,8 +25,10 @@ BEGIN
         c.*, t.alias AS [type]
     FROM 
         [rule].conditionItem c 
-    JOIN core.itemName i ON i.itemNameId = c.itemNameId
-    JOIN core.itemType t ON t.itemTypeId = i.itemTypeId
+    JOIN 
+        core.itemName i ON i.itemNameId = c.itemNameId
+    JOIN 
+        core.itemType t ON t.itemTypeId = i.itemTypeId
     WHERE
         @conditionId IS NULL OR c.conditionId = @conditionId
 

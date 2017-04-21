@@ -44,7 +44,7 @@ const Source = React.createClass({
     },
     createPropertyHeaderCells() {
         return [
-            {name: 'Key', key: 'key'},
+            {name: 'Name', key: 'name'},
             {name: 'Value', key: 'value'},
             {name: '', key: 'rangeActions', className: style.deleteButton}
         ].map((cell, i) => (
@@ -56,9 +56,9 @@ const Source = React.createClass({
             <tr key={index}>
                 <td>
                     <Input
-                      keyProp='key'
+                      keyProp='name'
                       onChange={this.onChangePropertyInput(index)}
-                      value={'' + (sourceProperty.key || '')}
+                      value={'' + (sourceProperty.name || '')}
                     />
                 </td>
                 <td>

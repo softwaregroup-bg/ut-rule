@@ -45,7 +45,7 @@ const Channel = React.createClass({
     },
     createPropertyHeaderCells() {
         return [
-            {name: 'Key', key: 'key'},
+            {name: 'Name', key: 'name'},
             {name: 'Value', key: 'value'},
             {name: '', key: 'rangeActions', className: style.deleteButton}
         ].map((cell, i) => (
@@ -57,9 +57,9 @@ const Channel = React.createClass({
             <tr key={index}>
                 <td>
                     <Input
-                      keyProp='key'
+                      keyProp='name'
                       onChange={this.onChangePropertyInput(index)}
-                      value={'' + (channelProperty.key || '')}
+                      value={'' + (channelProperty.name || '')}
                     />
                 </td>
                 <td>
@@ -79,7 +79,6 @@ const Channel = React.createClass({
     },
     render() {
         let {channel, country, region, city, supervisor, organization, role} = this.context.nomenclatures;
-        debugger;
         let { onChangeInput, onSelectDropdown } = this;
         let fields = this.state.fields;
         return (

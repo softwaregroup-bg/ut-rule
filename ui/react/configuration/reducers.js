@@ -61,7 +61,7 @@ const defaultUiState = {
                 title: 'Channel',
                 fields: {
                     channel: {
-                        visible: true,
+                        visible: false,
                         title: 'Type'
                     },
                     country: {

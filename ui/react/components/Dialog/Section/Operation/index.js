@@ -40,7 +40,7 @@ const Operation = React.createClass({
     onChangePropertyInput(index) {
         let self = this;
         return (field) => {
-            self.context.onFieldChange('destinationProperties', index, field.key, field.value);
+            self.context.onFieldChange('operationProperties', index, field.key, field.value);
         };
     },
     onDeletePropertyRow(index) {
@@ -51,7 +51,7 @@ const Operation = React.createClass({
     },
     createPropertyHeaderCells() {
         return [
-            {name: 'Key', key: 'key'},
+            {name: 'Name', key: 'name'},
             {name: 'Value', key: 'value'},
             {name: '', key: 'rangeActions', className: style.deleteButton}
         ].map((cell, i) => (
@@ -63,9 +63,9 @@ const Operation = React.createClass({
             <tr key={index}>
                 <td>
                     <Input
-                      keyProp='key'
+                      keyProp='name'
                       onChange={this.onChangePropertyInput(index)}
-                      value={'' + (operationProperties.key || '')}
+                      value={'' + (operationProperties.name || '')}
                     />
                 </td>
                 <td>
@@ -90,16 +90,6 @@ const Operation = React.createClass({
 
         return (
             <div className={style.content}>
-                {fields.tag.visible &&
-                    <div className={style.inputWrapper}>
-                        <Input
-                          keyProp='operationTag'
-                          label={fields.tag.title}
-                          onChange={onChangeInput}
-                          value={'' + (this.props.data.operationTag || '')}
-                        />
-                    </div>
-                }
                 {fields.operationId.visible &&
                     <div className={style.inputWrapper}>
                       <MultiSelectBubble

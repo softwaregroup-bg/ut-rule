@@ -73,7 +73,7 @@ const emptySplit = {
 };
 
 const emptyProperty = {
-    key: null,
+    name: null,
     value: null
 };
 
@@ -141,6 +141,7 @@ export default React.createClass({
         };
     },
     componentWillMount() {
+      debugger;
         this.setState({
             data: merge({}, this.state.data, this.props.data), // here we get the data
             isEditing: this.props.data !== undefined

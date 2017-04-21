@@ -39,8 +39,6 @@ const Main = React.createClass({
     },
     fetchData() {
         this.props.actions.fetchRules();
-        this.props.actions.fetchRoles();
-        this.props.actions.fetchOrganizations();
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     },
     componentWillMount() {
@@ -55,6 +53,7 @@ const Main = React.createClass({
         return nextProps.ready;
     },
     handleCheckboxSelect(isSelected, data) {
+      debugger;
         let selectedConditions = this.state.selectedConditions;
         if (isSelected === null) {
             isSelected = selectedConditions[data.id];

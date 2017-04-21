@@ -47,7 +47,12 @@ module.exports = {
             limit: joi.object().keys({
                 minAmount: joi.number().allow(null),
                 maxAmount: joi.number().allow(null),
-                count: joi.number().integer().allow(null)
+                maxAmountDaily: joi.number().allow(null),
+                maxCountDaily: joi.number().allow(null),
+                maxAmountWeekly: joi.number().allow(null),
+                maxCountWeekly: joi.number().allow(null),
+                maxAmountMonthly: joi.number().allow(null),
+                maxCountMonthly: joi.number().allow(null)
             }).allow(null)
         })
     },

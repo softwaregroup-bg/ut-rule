@@ -134,7 +134,7 @@ export default React.createClass({
 
                 ],
                 operationProperties: [
-
+                    
                 ]
             },
             sections: this.props.sections

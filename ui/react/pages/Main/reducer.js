@@ -23,7 +23,6 @@ export default (state = defaultState, action) => {
 
 
 var formatRules = function(data) {
-  debugger;
     if (!data.condition.length) {
         return {};
     }

@@ -1,3 +1,13 @@
+<a name="9.2.0"></a>
+# [9.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.1.2...v9.2.0) (2017-04-21)
+
+
+### Features
+
+* add to return type of actor and type of itemName ([5a06b0f](https://github.com/softwaregroup-bg/ut-rule/commit/5a06b0f))
+
+
+
 <a name="9.1.2"></a>
 ## [9.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.1.1...v9.1.2) (2017-04-11)
 

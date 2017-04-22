@@ -12,8 +12,7 @@ const Source = React.createClass({
         data: PropTypes.object.isRequired,
         fields: PropTypes.object,
         addPropertyRow: PropTypes.func.isRequired,
-        properties: PropTypes.array.isRequired,
-        deletePropetyRow: PropTypes.func.isRequired
+        properties: PropTypes.array.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
@@ -78,7 +77,7 @@ const Source = React.createClass({
     },
     render() {
         let { country, region, city, cardProduct, accountProduct, account, organization, supervisor, role } = this.context.nomenclatures;
-        let { onChangeInput, onSelectDropdown } = this;
+        let { onSelectDropdown } = this;
         let fields = this.state.fields;
 
         return (
@@ -115,7 +114,7 @@ const Source = React.createClass({
                           label={fields.city.title}
                           value={this.props.data.sourceCityIds}
                           options={city}
-                          onChange={(val) => { this.onSelectDropdown({key: 'sourceCityIds', value: val}) ;}}
+                          onChange={(val) => { this.onSelectDropdown({ key: 'sourceCityIds', value: val }); }}
                         />
                     </div>
                 }

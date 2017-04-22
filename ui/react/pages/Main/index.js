@@ -15,6 +15,9 @@ import * as actionCreators from './actionCreators';
 const Main = React.createClass({
     propTypes: {
         rules: PropTypes.object,
+        conditionActor: PropTypes.array,
+        conditionItem: PropTypes.array,
+        conditionProperty: PropTypes.array,
         nomenclatures: PropTypes.object,
         ready: PropTypes.bool,
         empty: PropTypes.bool,
@@ -53,7 +56,6 @@ const Main = React.createClass({
         return nextProps.ready;
     },
     handleCheckboxSelect(isSelected, data) {
-      debugger;
         let selectedConditions = this.state.selectedConditions;
         if (isSelected === null) {
             isSelected = selectedConditions[data.id];
@@ -158,6 +160,9 @@ const Main = React.createClass({
                           ref='dialog'
                           open={this.state.dialog.open}
                           data={this.props.rules[this.state.dialog.conditionId]}
+                          conditionProperty={this.props.conditionProperty}
+                          conditionActor={this.props.conditionActor}
+                          conditionItem={this.props.conditionItem}
                           nomenclatures={this.props.nomenclatures}
                           onSave={this.dialogOnSave}
                           onClose={this.dialogOnClose}
@@ -211,6 +216,9 @@ export default connect(
     (state, ownProps) => {
         return {
             rules: state.main.fetchRules,
+            conditionActor: state.main.conditionActor,
+            conditionItem: state.main.conditionItem,
+            conditionProperty: state.main.conditionProperty,
             nomenclatures: state.main.fetchNomenclatures,
             ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
             roles: state.main.fetchRoles,

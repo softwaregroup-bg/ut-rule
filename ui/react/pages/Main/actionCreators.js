@@ -1,13 +1,9 @@
 import * as actionTypes from './actionTypes';
 
-String.prototype.startsWith = function(needle) {
-    return(this.indexOf(needle) == 0);
-};
-
 const removeEmpty = (obj) => {
     Object.keys(obj).forEach(key => {
         if (obj[key] && typeof obj[key] === 'object') removeEmpty(obj[key]);
-        else if (obj[key] == null) delete obj[key];
+        else if (obj[key] === null) delete obj[key];
     });
     return obj;
 };
@@ -60,22 +56,151 @@ export function removeRules(params) {
 };
 
 export function editRule(params) {
-    let split = JSON.parse(JSON.stringify(params.split));
-
-    split.map(s => {
-        removeEmpty(s);
-        s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
-            tags += tag.key + '|';
-            return tags;
-        }, '|');
-        return s;
-    });
-    params.split = {data: {rows: split}};
     return function(dispatch) {
+        let split = JSON.parse(JSON.stringify(params.split));
+
+        split.map(s => {
+            removeEmpty(s);
+            s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
+                tags += tag.key + '|';
+                return tags;
+            }, '|');
+            return s;
+        });
+
+        let paramsCondition = params.condition[0];
+        let conditionId = paramsCondition.conditionId;
+
+        let condition = [{
+            conditionId: conditionId,
+            priority: paramsCondition.priority,
+            operationStartDate: paramsCondition.operationStartDate,
+            operationEndDate: paramsCondition.operationEndDate,
+            sourceAccontId: paramsCondition.sourceAccontId,
+            destinationAccountId: paramsCondition.destinationAccountId
+        }];
+
+        let conditionActor = [];
+        let conditionActionFields = {
+            channelOrganizationId: 'co',
+            channelRoleId: 'co',
+            destinationOrganizationId: 'do',
+            destinationRoleId: 'do',
+            sourceOrganizationId: 'so',
+            sourceRoleId: 'so'
+        };
+
+        for (var key in conditionActionFields) {
+            if (paramsCondition[key]) {
+                conditionActor.push({
+                    conditionId: conditionId,
+                    factor: conditionActionFields[key],
+                    actorId: paramsCondition[key]
+                });
+            }
+        }
+
+        let conditionItem = [];
+        let conditionItemFields = {
+            channelCityIds: 'cs',
+            channelCountryIds: 'cs',
+            channelRegionIds: 'cs',
+            destinationCityIds: 'ds',
+            destinationCountryIds: 'ds',
+            destinationRegionIds: 'ds',
+            sourceCityIds: 'ss',
+            sourceCountryIds: 'ss',
+            sourceRegionIds: 'ss',
+            operationIds: 'oc'
+        };
+
+        for (key in conditionItemFields) {
+            if (paramsCondition[key]) {
+                paramsCondition[key].forEach(value => {
+                    conditionItem.push({
+                        conditionId: conditionId,
+                        factor: conditionItemFields[key],
+                        itemNameId: value.key
+                    });
+                });
+            }
+        }
+
+        if (paramsCondition['destinationAccountProductId']) {
+            conditionItem.push({
+                conditionId: conditionId,
+                factor: 'ds',
+                itemNameId: paramsCondition['destinationAccountProductId']
+            });
+        }
+
+        if (paramsCondition['sourceAccountProductId']) {
+            conditionItem.push({
+                conditionId: conditionId,
+                factor: 'ss',
+                itemNameId: paramsCondition['sourceAccountProductId']
+            });
+        }
+
+        if (paramsCondition['sourceCardProductId']) {
+            conditionItem.push({
+                conditionId: conditionId,
+                factor: 'ss',
+                itemNameId: paramsCondition['sourceCardProductId']
+            });
+        }
+
+        let conditionProperty = [];
+
+        params.channelProperties.forEach((property) => {
+            conditionProperty.push({
+                conditionId: conditionId,
+                factor: 'co',
+                name: property.name,
+                value: property.value
+            });
+        });
+
+        params.destinationProperties.forEach((property) => {
+            conditionProperty.push({
+                conditionId: conditionId,
+                factor: 'do',
+                name: property.name,
+                value: property.value
+            });
+        });
+
+        params.operationProperties.forEach((property) => {
+            conditionProperty.push({
+                conditionId: conditionId,
+                factor: 'oc',
+                name: property.name,
+                value: property.value
+            });
+        });
+
+        params.sourceProperties.forEach((property) => {
+            conditionProperty.push({
+                conditionId: conditionId,
+                factor: 'so',
+                name: property.name,
+                value: property.value
+            });
+        });
+
+        var modifiedParams = {
+            condition,
+            conditionActor,
+            conditionItem,
+            conditionProperty,
+            limit: params.limit,
+            split: { data: { rows: split } }
+        };
+
         return dispatch({
-            type: actionTypes.editRule,
+            type: actionTypes.addRule,
             method: 'rule.rule.edit',
-            params: params || {}
+            params: modifiedParams || {}
         }).then((result) => {
             if (result.error) {
                 return result;
@@ -101,123 +226,120 @@ export function addRule(params) {
         let paramsCondition = params.condition[0];
 
         let condition = [{
-          priority: paramsCondition.priority,
-          operationStartDate: paramsCondition.operationStartDate,
-          operationEndDate: paramsCondition.operationEndDate,
-          sourceAccontId: paramsCondition.sourceAccontId,
-          destinationAccountId: paramsCondition.destinationAccountId
+            priority: paramsCondition.priority,
+            operationStartDate: paramsCondition.operationStartDate,
+            operationEndDate: paramsCondition.operationEndDate,
+            sourceAccontId: paramsCondition.sourceAccontId,
+            destinationAccountId: paramsCondition.destinationAccountId
         }];
 
         let conditionActor = [];
         let conditionActionFields = {
-          channelOrganizationId: 'co',
-          channelRoleId: 'co',
-          destinationOrganizationId: 'do',
-          destinationRoleId: 'do',
-          sourceOrganizationId: 'so',
-          sourceRoleId: 'so'
+            channelOrganizationId: 'co',
+            channelRoleId: 'co',
+            destinationOrganizationId: 'do',
+            destinationRoleId: 'do',
+            sourceOrganizationId: 'so',
+            sourceRoleId: 'so'
         };
 
-        for(var key in conditionActionFields) {
-          if (paramsCondition[key]) {
-              conditionActor.push({
-                factor: conditionActionFields[key],
-                actorId: paramsCondition[key]
-              })
-          }
+        for (var key in conditionActionFields) {
+            if (paramsCondition[key]) {
+                conditionActor.push({
+                    factor: conditionActionFields[key],
+                    actorId: paramsCondition[key]
+                });
+            }
         }
 
         let conditionItem = [];
         let conditionItemFields = {
-          channelCityIds: 'cs',
-          channelCountryIds: 'cs',
-          channelRegionIds: 'cs',
-          destinationCityIds: 'ds',
-          destinationCountryIds: 'ds',
-          destinationRegionIds: 'ds',
-          sourceCityIds: 'ss',
-          sourceCountryIds: 'ss',
-          sourceRegionIds: 'ss',
-          operationIds: 'oc'
+            channelCityIds: 'cs',
+            channelCountryIds: 'cs',
+            channelRegionIds: 'cs',
+            destinationCityIds: 'ds',
+            destinationCountryIds: 'ds',
+            destinationRegionIds: 'ds',
+            sourceCityIds: 'ss',
+            sourceCountryIds: 'ss',
+            sourceRegionIds: 'ss',
+            operationIds: 'oc'
         };
 
-        for(var key in conditionItemFields) {
-          if (paramsCondition[key]) {
-            paramsCondition[key].forEach(value => {
-              conditionItem.push({
-                factor: conditionItemFields[key],
-                itemNameId: value.key
-              })
-            })
-          }
+        for (key in conditionItemFields) {
+            if (paramsCondition[key]) {
+                paramsCondition[key].forEach(value => {
+                    conditionItem.push({
+                        factor: conditionItemFields[key],
+                        itemNameId: value.key
+                    });
+                });
+            }
         }
 
-        if(paramsCondition['destinationAccountProductId']) {
-          conditionItem.push({
-            factor: 'ds',
-            itemNameId: paramsCondition['destinationAccountProductId']
-          })
+        if (paramsCondition['destinationAccountProductId']) {
+            conditionItem.push({
+                factor: 'ds',
+                itemNameId: paramsCondition['destinationAccountProductId']
+            });
         }
 
-        if(paramsCondition['sourceAccountProductId']) {
-          conditionItem.push({
-            factor: 'ss',
-            itemNameId: paramsCondition['sourceAccountProductId']
-          })
+        if (paramsCondition['sourceAccountProductId']) {
+            conditionItem.push({
+                factor: 'ss',
+                itemNameId: paramsCondition['sourceAccountProductId']
+            });
         }
 
-        if(paramsCondition['sourceCardProductId']) {
-          conditionItem.push({
-            factor: 'ss',
-            itemNameId: paramsCondition['sourceCardProductId']
-          })
+        if (paramsCondition['sourceCardProductId']) {
+            conditionItem.push({
+                factor: 'ss',
+                itemNameId: paramsCondition['sourceCardProductId']
+            });
         }
 
         let conditionProperty = [];
 
         params.channelProperties.forEach((property) => {
-          conditionProperty.push({
-            factor: 'co',
-            name: property.name,
-            value: property.value
-          })
-        })
+            conditionProperty.push({
+                factor: 'co',
+                name: property.name,
+                value: property.value
+            });
+        });
 
         params.destinationProperties.forEach((property) => {
-          conditionProperty.push({
-            factor: 'do',
-            name: property.name,
-            value: property.value
-          })
-        })
-
+            conditionProperty.push({
+                factor: 'do',
+                name: property.name,
+                value: property.value
+            });
+        });
 
         params.operationProperties.forEach((property) => {
-          conditionProperty.push({
-            factor: 'oc',
-            name: property.name,
-            value: property.value
-          })
-        })
-
+            conditionProperty.push({
+                factor: 'oc',
+                name: property.name,
+                value: property.value
+            });
+        });
 
         params.sourceProperties.forEach((property) => {
-          conditionProperty.push({
-            factor: 'so',
-            name: property.name,
-            value: property.value
-          })
-        })
-         
+            conditionProperty.push({
+                factor: 'so',
+                name: property.name,
+                value: property.value
+            });
+        });
+
         var modifiedParams = {
-          condition,
-          conditionActor,
-          conditionItem,
-          conditionProperty,
-          limit: params.limit,
-          split: {data: {rows: split}}
+            condition,
+            conditionActor,
+            conditionItem,
+            conditionProperty,
+            limit: params.limit,
+            split: { data: { rows: split } }
         };
-        debugger;
 
         return dispatch({
             type: actionTypes.addRule,

@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
-import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import plusImage from '../../assets/add_new.png';
 import IconButton from 'material-ui/IconButton';
@@ -13,8 +12,7 @@ const Operation = React.createClass({
         data: PropTypes.object.isRequired,
         fields: PropTypes.object,
         addPropertyRow: PropTypes.func.isRequired,
-        properties: PropTypes.array.isRequired,
-        deletePropetyRow: PropTypes.func.isRequired
+        properties: PropTypes.array.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
@@ -84,13 +82,13 @@ const Operation = React.createClass({
         ));
     },
     render() {
-        let { onChangeInput, onChangeDate } = this;
+        let { onChangeDate } = this;
         let { operation } = this.context.nomenclatures;
         let fields = this.state.fields;
 
         return (
             <div className={style.content}>
-                {fields.operationId.visible &&
+                { fields.operationId.visible &&
                     <div className={style.inputWrapper}>
                       <MultiSelectBubble
                         keyProp='operationIds'
@@ -98,11 +96,11 @@ const Operation = React.createClass({
                         label={fields.operationId.title}
                         value={this.props.data.operationIds}
                         options={operation}
-                        onChange={(val) => {this.onSelectDropdown({key: 'operationIds', value: val})}}
+                        onChange={(val) => { this.onSelectDropdown({ key: 'operationIds', value: val }); }}
                     />
                   </div>
                 }
-                {fields.operationStartDate.visible &&
+                { fields.operationStartDate.visible &&
                     <div className={style.inputWrapper}>
                         <div className={style.outerWrap}>
                             <div className={style.lableWrap}>{fields.operationStartDate.title}</div>
@@ -118,7 +116,7 @@ const Operation = React.createClass({
                         </div>
                     </div>
                 }
-                {fields.operationEndDate.visible &&
+                { fields.operationEndDate.visible &&
                     <div className={style.inputWrapper}>
                         <div className={style.outerWrap}>
                             <div className={style.lableWrap}>{fields.operationEndDate.title}</div>
@@ -135,7 +133,7 @@ const Operation = React.createClass({
                         </div>
                     </div>
                 }
-                {fields.properties.visible &&
+                { fields.properties.visible &&
                   <div className={style.propertyTable}>
                     <table className={style.dataGridTable}>
                         <thead>

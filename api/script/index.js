@@ -28,7 +28,7 @@ var wrapper = {
         $meta.method = 'user.role.fetch';
         return bus.importMethod($meta.method)(msg, $meta).then(result => {
             let role = result.role;
-            return {items: role.map(v => ({ type: 'role', value: v.actorId, display: v.name }))}
+            return {items: role.map(v => ({ type: 'role', value: v.actorId, display: v.name }))};
         });
     }
 };

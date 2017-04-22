@@ -12,7 +12,10 @@ export default (state = defaultState, action) => {
                 });
             case actionTypes.fetchRules:
                 return Object.assign({}, state, {
-                    'fetchRules': formatRules(action.result)
+                    'fetchRules': formatRules(action.result),
+                    'conditionActor': action.result.conditionActor,
+                    'conditionItem': action.result.conditionItem,
+                    'conditionProperty': action.result.conditionProperty
                 });
             default:
                 break;
@@ -20,7 +23,6 @@ export default (state = defaultState, action) => {
     }
     return state;
 };
-
 
 var formatRules = function(data) {
     if (!data.condition.length) {

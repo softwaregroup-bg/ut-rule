@@ -12,8 +12,7 @@ const Destination = React.createClass({
         data: PropTypes.object.isRequired,
         fields: PropTypes.object,
         addPropertyRow: PropTypes.func.isRequired,
-        properties: PropTypes.array.isRequired,
-        deletePropetyRow: PropTypes.func.isRequired
+        properties: PropTypes.array.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
@@ -78,7 +77,7 @@ const Destination = React.createClass({
     },
     render() {
         let { country, region, city, accountProduct, account, organization, supervisor, role } = this.context.nomenclatures;
-        let { onChangeInput, onSelectDropdown } = this;
+        let { onSelectDropdown } = this;
         let fields = this.state.fields;
 
         return (

@@ -3,7 +3,6 @@ import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
-import MultiSelectBubbleCustom from 'ut-front-react/components/MultiSelectBubbleCustom';
 import plusImage from '../../assets/add_new.png';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
@@ -13,8 +12,7 @@ const Channel = React.createClass({
         data: PropTypes.object.isRequired,
         fields: PropTypes.object,
         addPropertyRow: PropTypes.func.isRequired,
-        properties: PropTypes.array.isRequired,
-        deletePropetyRow: PropTypes.func.isRequired
+        properties: PropTypes.array.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
@@ -79,7 +77,7 @@ const Channel = React.createClass({
     },
     render() {
         let {channel, country, region, city, supervisor, organization, role} = this.context.nomenclatures;
-        let { onChangeInput, onSelectDropdown } = this;
+        let { onSelectDropdown } = this;
         let fields = this.state.fields;
         return (
             <div className={style.content}>

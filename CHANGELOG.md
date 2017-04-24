@@ -1,3 +1,13 @@
+<a name="9.2.1"></a>
+## [9.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.0...v9.2.1) (2017-04-24)
+
+
+### Bug Fixes
+
+* add UI to handle new DB structure ([63dc0ce](https://github.com/softwaregroup-bg/ut-rule/commit/63dc0ce))
+
+
+
 <a name="9.2.0"></a>
 # [9.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.1.2...v9.2.0) (2017-04-21)
 

@@ -15,23 +15,26 @@ import validations from './validations.js';
 import classnames from 'classnames';
 import set from 'lodash.set';
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
 const emptyCondition = {
     priority: null,
-    channelCountryId: null,
-    channelRegionId: null,
-    channelCityId: null,
+    channelCountryIds: [],
+    channelRegionIds: [],
+    channelCityIds: [],
     channelOrganizationId: null,
     channelSupervisorId: null,
-    channelTag: null,
+    channelProperties: [],
     channelRoleId: null,
     channelId: null,
-    operationId: null,
+    operationIds: [],
     operationTag: null,
     operationStartDate: null,
     operationEndDate: null,
-    sourceCountryId: null,
-    sourceRegionId: null,
-    sourceCityId: null,
+    sourceCountryIds: [],
+    sourceRegionIds: [],
+    sourceCityIds: [],
     sourceOrganizationId: null,
     sourceSupervisorId: null,
     sourceTag: null,
@@ -39,9 +42,10 @@ const emptyCondition = {
     sourceCardProductId: null,
     sourceAccountProductId: null,
     sourceAccountId: null,
-    destinationCountryId: null,
-    destinationRegionId: null,
-    destinationCityId: null,
+    destinationCountryIds: [],
+    destinationRegionIds: [],
+    destinationCityIds: [],
+    destinationRoleId: null,
     destinationOrganizationId: null,
     destinationSupervisorId: null,
     destinationTag: null,
@@ -70,6 +74,11 @@ const emptySplit = {
     splitAssignment: []
 };
 
+const emptyProperty = {
+    name: null,
+    value: null
+};
+
 const emptySplitRange = {
     startAmount: null, // required
     startAmountCurrency: null, // required
@@ -92,6 +101,9 @@ export default React.createClass({
     propTypes: {
         open: PropTypes.bool.isRequired,
         data: PropTypes.object,
+        conditionProperty: PropTypes.array,
+        conditionActor: PropTypes.array,
+        conditionItem: PropTypes.array,
         nomenclatures: PropTypes.object.isRequired,
         onSave: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
@@ -116,19 +128,145 @@ export default React.createClass({
                 ],
                 split: [
 
+                ],
+                channelProperties: [
+
+                ],
+                sourceProperties: [
+
+                ],
+                destinationProperties: [
+
+                ],
+                operationProperties: [
+
                 ]
             },
             sections: this.props.sections
         };
     },
     componentWillMount() {
+        var formatedData = {};
+        if (this.props.data) {
+            let conditionId = this.props.data.condition[0].conditionId;
+            let { conditionActor, conditionItem, conditionProperty, nomenclatures } = this.props;
+            formatedData = JSON.parse(JSON.stringify(this.props.data));
+            conditionActor.forEach((actor) => {
+                if (actor.conditionId === conditionId) {
+                    switch (actor.factor) {
+                        case 'co':
+                            formatedData.condition[0][`channel${capitalizeFirstLetter(actor.type)}Id`] = actor.actorId;
+                            break;
+                        case 'do':
+                            formatedData.condition[0][`destination${capitalizeFirstLetter(actor.type)}Id`] = actor.actorId;
+                            break;
+                        case 'so':
+                            formatedData.condition[0][`source${capitalizeFirstLetter(actor.type)}Id`] = actor.actorId;
+                            break;
+                    }
+                }
+            });
+
+            formatedData.condition[0]['channelCountryIds'] = [];
+            formatedData.condition[0]['channelRegionIds'] = [];
+            formatedData.condition[0]['channelCityIds'] = [];
+            formatedData.condition[0]['operationIds'] = [];
+            formatedData.condition[0]['sourceCountryIds'] = [];
+            formatedData.condition[0]['sourceRegionIds'] = [];
+            formatedData.condition[0]['sourceCityIds'] = [];
+            formatedData.condition[0]['destinationCountryIds'] = [];
+            formatedData.condition[0]['destinationRegionIds'] = [];
+            formatedData.condition[0]['destinationCityIds'] = [];
+
+            conditionItem.forEach((item) => {
+                if (item.conditionId === conditionId) {
+                    if (['operation', 'country', 'city', 'region'].indexOf(item.type) > -1) {
+                        switch (item.factor) {
+                            case 'ds':
+                                formatedData.condition[0][`destination${capitalizeFirstLetter(item.type)}Ids`].push({
+                                    key: item.itemNameId,
+                                    name: nomenclatures[item.type][item.itemNameId]
+                                });
+                                break;
+                            case 'oc':
+                                formatedData.condition[0][`operationIds`].push({
+                                    key: item.itemNameId,
+                                    name: nomenclatures[item.type][item.itemNameId]
+                                });
+                                break;
+                            case 'ss':
+                                formatedData.condition[0][`source${capitalizeFirstLetter(item.type)}Ids`].push({
+                                    key: item.itemNameId,
+                                    name: nomenclatures[item.type][item.itemNameId]
+                                });
+                                break;
+                            case 'cs':
+                                formatedData.condition[0][`channel${capitalizeFirstLetter(item.type)}Ids`].push({
+                                    key: item.itemNameId,
+                                    name: nomenclatures[item.type][item.itemNameId]
+                                });
+                                break;
+                        }
+                    } else {
+                        switch (item.factor) {
+                            case 'ds':
+                                formatedData.condition[0][`destinationAccountProductId`] = item.itemNameId;
+                                break;
+                            case 'ss':
+                                if (item.type === 'accountProduct') {
+                                    formatedData.condition[0][`sourceAccountProductId`] = item.itemNameId;
+                                } else {
+                                    formatedData.condition[0][`sourceCardProductId`] = item.itemNameId;
+                                }
+                        }
+                    }
+                }
+            });
+
+            formatedData.channelProperties = [];
+            formatedData.sourceProperties = [];
+            formatedData.destinationProperties = [];
+            formatedData.operationProperties = [];
+
+            conditionProperty.forEach((property) => {
+                if (property.conditionId === conditionId) {
+                    switch (property.factor) {
+                        case 'co':
+                            formatedData.channelProperties.push({
+                                name: property.name,
+                                value: property.value
+                            });
+                            break;
+                        case 'do':
+                            formatedData.destinationProperties.push({
+                                name: property.name,
+                                value: property.value
+                            });
+                            break;
+                        case 'oc':
+                            formatedData.operationProperties.push({
+                                name: property.name,
+                                value: property.value
+                            });
+                            break;
+                        case 'so':
+                            formatedData.sourceProperties.push({
+                                name: property.name,
+                                value: property.value
+                            });
+                            break;
+                    }
+                }
+            });
+        };
+
         this.setState({
-            data: merge({}, this.state.data, this.props.data), // here we get the data
+            data: merge({}, this.state.data, formatedData), // here we get the data
             isEditing: this.props.data !== undefined
         });
     },
     getChildContext() {
-        let {nomenclatures} = this.props;
+        let { nomenclatures } = this.props;
         let formattedNomenclatures = {};
 
         Object.keys(nomenclatures).map((nomKey) => {
@@ -177,8 +315,64 @@ export default React.createClass({
             data: this.state.data
         });
     },
+    addSourcePropertyRow() {
+        let propertyObject = JSON.parse(JSON.stringify(emptyProperty));
+        this.state.data.sourceProperties.push(propertyObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    addChannelPropertyRow() {
+        let propertyObject = JSON.parse(JSON.stringify(emptyProperty));
+        this.state.data.channelProperties.push(propertyObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    addDestinationPropertyRow() {
+        let propertyObject = JSON.parse(JSON.stringify(emptyProperty));
+        this.state.data.destinationProperties.push(propertyObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    addOperationPropertyRow() {
+        let propertyObject = JSON.parse(JSON.stringify(emptyProperty));
+        this.state.data.operationProperties.push(propertyObject);
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteOperationPropertyRow(index) {
+        let { operationProperties } = this.state.data;
+        this.state.data.operationProperties = operationProperties.slice(0, index).concat(operationProperties.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteDestinationPropertyRow(index) {
+        let { destinationProperties } = this.state.data;
+        this.state.data.destinationProperties = destinationProperties.slice(0, index).concat(destinationProperties.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteChannelPropertyRow(index) {
+        let { channelProperties } = this.state.data;
+        this.state.data.channelProperties = channelProperties.slice(0, index).concat(channelProperties.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
+    deleteSourcePropertyRow(index) {
+        let { sourceProperties } = this.state.data;
+        this.state.data.sourceProperties = sourceProperties.slice(0, index).concat(sourceProperties.slice(index + 1));
+        this.setState({
+            data: this.state.data
+        });
+    },
     deleteSplitRow(index) {
-        let {split} = this.state.data;
+        let { split } = this.state.data;
         this.state.data.split = split.slice(0, index).concat(split.slice(index + 1));
         this.setState({
             data: this.state.data
@@ -253,18 +447,18 @@ export default React.createClass({
               ]}
             >
                 <div>
-                    <Dialog
-                      title='Error'
-                      open={this.state.form.errorDialogOpen}
-                      autoScrollBodyContent
-                      contentStyle={style}
-                      onRequestClose={this.closeFormErrorDialog}
-                      actions={[]}
-                    >
-                        <div className={style.content}>
-                            {this.state.form.errors && this.state.form.errors.map((error, i) => <div key={i}>{error}</div>)}
-                        </div>
-                    </Dialog>
+                  <Dialog
+                    title='Error'
+                    open={this.state.form.errorDialogOpen}
+                    autoScrollBodyContent
+                    contentStyle={style}
+                    onRequestClose={this.closeFormErrorDialog}
+                    actions={[]}
+                  >
+                    <div className={style.content}>
+                        {this.state.form.errors && this.state.form.errors.map((error, i) => <div key={i}>{error}</div>)}
+                    </div>
+                  </Dialog>
                     <div className={style.topSection}>
                         <Input
                           keyProp='priority'
@@ -275,70 +469,82 @@ export default React.createClass({
                     </div>
                     <div className={style.wrapper}>
                         {sections.channel.visible &&
-                            <Accordion title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
-                                <Channel
-                                  data={this.state.data.condition[0]}
-                                  fields={sections.channel.fields}
-                                />
-                            </Accordion>
+                          <Accordion title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
+                            <Channel
+                              data={this.state.data.condition[0]}
+                              fields={sections.channel.fields}
+                              properties={this.state.data.channelProperties}
+                              addPropertyRow={this.addChannelPropertyRow}
+                              deletePropetyRow={this.deleteChannelPropertyRow}
+                            />
+                          </Accordion>
                         }
                         {sections.operation.visible &&
-                            <Accordion title={sections.operation.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                                <Operation
-                                  data={this.state.data.condition[0]}
-                                  fields={sections.operation.fields}
-                                />
-                        </Accordion>}
+                          <Accordion title={sections.operation.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                            <Operation
+                              data={this.state.data.condition[0]}
+                              fields={sections.operation.fields}
+                              properties={this.state.data.operationProperties}
+                              addPropertyRow={this.addOperationPropertyRow}
+                              deletePropetyRow={this.deleteOperationPropertyRow}
+                            />
+                          </Accordion>}
                         {sections.source.visible &&
-                            <Accordion title={sections.source.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                                <Source
-                                  data={this.state.data.condition[0]}
-                                  fields={sections.source.fields}
-                                />
-                        </Accordion>}
+                          <Accordion title={sections.source.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                            <Source
+                              data={this.state.data.condition[0]}
+                              fields={sections.source.fields}
+                              properties={this.state.data.sourceProperties}
+                              addPropertyRow={this.addSourcePropertyRow}
+                              deletePropetyRow={this.deleteSourcePropertyRow}
+                            />
+                          </Accordion>}
                         {sections.destination.visible &&
-                            <Accordion title={sections.destination.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                                <Destination
-                                  data={this.state.data.condition[0]}
-                                  fields={sections.destination.fields}
-                                />
-                        </Accordion>}
+                          <Accordion title={sections.destination.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                            <Destination
+                              data={this.state.data.condition[0]}
+                              fields={sections.destination.fields}
+                              properties={this.state.data.destinationProperties}
+                              addPropertyRow={this.addDestinationPropertyRow}
+                              deletePropetyRow={this.deleteDestinationPropertyRow}
+                            />
+                          </Accordion>}
                         {sections.limit.visible &&
-                            <Accordion title={sections.limit.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                                <div className={style.content}>
-                                    <SectionLimit
-                                      data={this.state.data.limit}
-                                      addRow={this.addLimitRow}
-                                      deleteRow={this.deleteLimitRow}
-                                    />
-                                </div>
-                        </Accordion>}
+                          <Accordion title={sections.limit.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                            <div className={style.content}>
+                              <SectionLimit
+                                data={this.state.data.limit}
+                                addRow={this.addLimitRow}
+                                deleteRow={this.deleteLimitRow}
+                              />
+                            </div>
+                          </Accordion>}
                         {sections.split.visible &&
-                            <Accordion title={sections.split.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                                <div className={style.content}>
-                                    <Split
-                                      data={this.state.data.split}
-                                      nomenclatures={this.props.nomenclatures}
-                                      addSplitRow={this.addSplitRow}
-                                      deleteSplitRow={this.deleteSplitRow}
-                                      addSplitRangeRow={this.addSplitRangeRow}
-                                      deleteSplitRangeRow={this.deleteSplitRangeRow}
-                                      addSplitAssignmentRow={this.addSplitAssignmentRow}
-                                      deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
-                                      config={sections.split}
-                                    />
-                                </div>
-                        </Accordion>}
+                          <Accordion title={sections.split.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                            <div className={style.content}>
+                              <Split
+                                data={this.state.data.split}
+                                nomenclatures={this.props.nomenclatures}
+                                addSplitRow={this.addSplitRow}
+                                deleteSplitRow={this.deleteSplitRow}
+                                addSplitRangeRow={this.addSplitRangeRow}
+                                deleteSplitRangeRow={this.deleteSplitRangeRow}
+                                addSplitAssignmentRow={this.addSplitAssignmentRow}
+                                deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
+                                config={sections.split}
+                              />
+                            </div>
+                          </Accordion>}
                         {sections.summary.visible &&
-                            <Accordion title={sections.summary.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                                <div className={style.content}>
-                                    <SectionSummary
-                                      data={this.state.data}
-                                      nomenclatures={this.props.nomenclatures}
-                                    />
-                                </div>
-                        </Accordion>}
-                    </div>
+                          <Accordion title={sections.summary.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                            <div className={style.content}>
+                              <SectionSummary
+                                data={this.state.data}
+                                nomenclatures={this.props.nomenclatures}
+                              />
+                            </div>
+                          </Accordion>}
+                  </div>
                 </div>
             </Dialog>
         );

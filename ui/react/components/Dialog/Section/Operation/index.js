@@ -2,12 +2,17 @@ import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
-import Dropdown from 'ut-front-react/components/Input/Dropdown';
+import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
+import plusImage from '../../assets/add_new.png';
+import IconButton from 'material-ui/IconButton';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 const Operation = React.createClass({
     propTypes: {
         data: PropTypes.object.isRequired,
-        fields: PropTypes.object
+        fields: PropTypes.object,
+        addPropertyRow: PropTypes.func.isRequired,
+        properties: PropTypes.array.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
@@ -30,38 +35,72 @@ const Operation = React.createClass({
     onSelectDropdown(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
+    onChangePropertyInput(index) {
+        let self = this;
+        return (field) => {
+            self.context.onFieldChange('operationProperties', index, field.key, field.value);
+        };
+    },
+    onDeletePropertyRow(index) {
+        let self = this;
+        return () => {
+            self.props.deletePropetyRow(index);
+        };
+    },
+    createPropertyHeaderCells() {
+        return [
+            {name: 'Name', key: 'name'},
+            {name: 'Value', key: 'value'},
+            {name: '', key: 'rangeActions', className: style.deleteButton}
+        ].map((cell, i) => (
+            <th key={i} className={cell.className || ''}>{cell.name}</th>
+        ));
+    },
+    createPropetyRows() {
+        return this.props.properties.map((operationProperties, index) => (
+            <tr key={index}>
+                <td>
+                    <Input
+                      keyProp='name'
+                      onChange={this.onChangePropertyInput(index)}
+                      value={'' + (operationProperties.name || '')}
+                    />
+                </td>
+                <td>
+                    <Input
+                      keyProp='value'
+                      onChange={this.onChangePropertyInput(index)}
+                      value={'' + (operationProperties.value || '')}
+                    />
+                </td>
+                 <td>
+                    <IconButton onClick={this.onDeletePropertyRow(index)}>
+                        <ActionDelete />
+                    </IconButton>
+                </td>
+            </tr>
+        ));
+    },
     render() {
-        let { onChangeInput, onChangeDate } = this;
+        let { onChangeDate } = this;
         let { operation } = this.context.nomenclatures;
         let fields = this.state.fields;
 
         return (
             <div className={style.content}>
-                {fields.tag.visible &&
+                { fields.operationId.visible &&
                     <div className={style.inputWrapper}>
-                        <Input
-                          keyProp='operationTag'
-                          label={fields.tag.title}
-                          onChange={onChangeInput}
-                          value={'' + (this.props.data.operationTag || '')}
-                        />
-                    </div>
+                      <MultiSelectBubble
+                        keyProp='operationIds'
+                        name='operationIds'
+                        label={fields.operationId.title}
+                        value={this.props.data.operationIds}
+                        options={operation}
+                        onChange={(val) => { this.onSelectDropdown({ key: 'operationIds', value: val }); }}
+                    />
+                  </div>
                 }
-                {fields.operationId.visible &&
-                    <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='operationId'
-                          label={fields.operationId.title}
-                          data={operation}
-                          placeholder={fields.operationId.title}
-                          onSelect={this.onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.operationId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
-                        />
-                    </div>
-                }
-                {fields.operationStartDate.visible &&
+                { fields.operationStartDate.visible &&
                     <div className={style.inputWrapper}>
                         <div className={style.outerWrap}>
                             <div className={style.lableWrap}>{fields.operationStartDate.title}</div>
@@ -77,7 +116,7 @@ const Operation = React.createClass({
                         </div>
                     </div>
                 }
-                {fields.operationEndDate.visible &&
+                { fields.operationEndDate.visible &&
                     <div className={style.inputWrapper}>
                         <div className={style.outerWrap}>
                             <div className={style.lableWrap}>{fields.operationEndDate.title}</div>
@@ -94,6 +133,27 @@ const Operation = React.createClass({
                         </div>
                     </div>
                 }
+                { fields.properties.visible &&
+                  <div className={style.propertyTable}>
+                    <table className={style.dataGridTable}>
+                        <thead>
+                            <tr>
+                                <th colSpan={3}>Properties</th>
+                            </tr>
+                            <tr>
+                                {this.createPropertyHeaderCells()}
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {this.createPropetyRows()}
+                        </tbody>
+                    </table>
+                    <span className={style.link} onClick={this.props.addPropertyRow}>
+                        <img src={plusImage} className={style.plus} />
+                        Add another property
+                    </span>
+                </div>
+              }
             </div>
         );
     }

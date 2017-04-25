@@ -9,8 +9,7 @@ import plusImage from '../../assets/add_new.png';
 const SectionCommission = React.createClass({
     propTypes: {
         data: PropTypes.array.isRequired,
-        addRow: PropTypes.func.isRequired,
-        deleteRow: PropTypes.func.isRequired
+        addRow: PropTypes.func.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,

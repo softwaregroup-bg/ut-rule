@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 import { Main } from './pages';
 import { getRoute } from 'ut-front/react/routerHelper';
 import registerRoutes from './registerRoutes';
+
 export const mainRoute = registerRoutes();
 const getLocalProvider = (config) => {
     return React.createClass({

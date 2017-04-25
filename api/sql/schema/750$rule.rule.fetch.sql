@@ -12,19 +12,25 @@ BEGIN
     
     SELECT 'conditionActor' AS resultSetName
     SELECT 
-        *
+        ca.*, a.actorType AS [type]
     FROM 
-        [rule].conditionActor
+        [rule].conditionActor ca
+    JOIN 
+        core.actor a ON a.actorId = ca.actorId
     WHERE
-        @conditionId IS NULL OR conditionId = @conditionId
+        @conditionId IS NULL OR ca.conditionId = @conditionId
 
     SELECT 'conditionItem' AS resultSetName
     SELECT 
-        *
+        c.*, t.alias AS [type]
     FROM 
-        [rule].conditionItem 
+        [rule].conditionItem c 
+    JOIN 
+        core.itemName i ON i.itemNameId = c.itemNameId
+    JOIN 
+        core.itemType t ON t.itemTypeId = i.itemTypeId
     WHERE
-        @conditionId IS NULL OR conditionId = @conditionId
+        @conditionId IS NULL OR c.conditionId = @conditionId
 
     
     SELECT 'conditionProperty' AS resultSetName

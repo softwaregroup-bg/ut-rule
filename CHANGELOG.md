@@ -1,3 +1,14 @@
+<a name="9.2.2"></a>
+## [9.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.1...v9.2.2) (2017-04-28)
+
+
+### Bug Fixes
+
+* empty data breaks app ([b9d3a8b](https://github.com/softwaregroup-bg/ut-rule/commit/b9d3a8b))
+* validations ([0a21cbd](https://github.com/softwaregroup-bg/ut-rule/commit/0a21cbd))
+
+
+
 <a name="9.2.1"></a>
 ## [9.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.0...v9.2.1) (2017-04-24)
 

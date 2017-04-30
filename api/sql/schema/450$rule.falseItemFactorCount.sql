@@ -12,7 +12,7 @@ BEGIN
             JOIN
                 @items a ON a.[factor] = ci.factor AND ci.itemNameId = a.value
             WHERE
-                conditionId = @conditionId
+                ci.conditionId = @conditionId
         )
     )
 END

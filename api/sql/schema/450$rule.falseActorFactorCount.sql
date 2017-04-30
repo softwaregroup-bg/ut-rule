@@ -12,7 +12,7 @@ BEGIN
             JOIN
                 @actors a ON a.[factor] = ca.factor AND ca.actorId = a.value
             WHERE
-                conditionId = @conditionId
+                ca.conditionId = @conditionId
         )
     )
 END

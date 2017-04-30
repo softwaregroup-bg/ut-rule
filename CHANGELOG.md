@@ -1,3 +1,14 @@
+<a name="9.2.3"></a>
+## [9.2.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.2...v9.2.3) (2017-04-30)
+
+
+### Bug Fixes
+
+* add omissed condition ([626cac3](https://github.com/softwaregroup-bg/ut-rule/commit/626cac3))
+* use alias ([a0d09d4](https://github.com/softwaregroup-bg/ut-rule/commit/a0d09d4))
+
+
+
 <a name="9.2.2"></a>
 ## [9.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.1...v9.2.2) (2017-04-28)
 

@@ -2,11 +2,17 @@ import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
+import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
+import plusImage from '../../assets/add_new.png';
+import IconButton from 'material-ui/IconButton';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 const Destination = React.createClass({
     propTypes: {
         data: PropTypes.object.isRequired,
-        fields: PropTypes.object
+        fields: PropTypes.object,
+        addPropertyRow: PropTypes.func.isRequired,
+        properties: PropTypes.array.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
@@ -23,49 +29,92 @@ const Destination = React.createClass({
     onChangeInput(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
+    onChangePropertyInput(index) {
+        let self = this;
+        return (field) => {
+            self.context.onFieldChange('destinationProperties', index, field.key, field.value);
+        };
+    },
+    onDeletePropertyRow(index) {
+        let self = this;
+        return () => {
+            self.props.deletePropetyRow(index);
+        };
+    },
+    createPropertyHeaderCells() {
+        return [
+            {name: 'Name', key: 'name'},
+            {name: 'Value', key: 'value'},
+            {name: '', key: 'rangeActions', className: style.deleteButton}
+        ].map((cell, i) => (
+            <th key={i} className={cell.className || ''}>{cell.name}</th>
+        ));
+    },
+    createPropetyRows() {
+        return this.props.properties.map((destinationProperties, index) => (
+            <tr key={index}>
+                <td>
+                    <Input
+                      keyProp='name'
+                      onChange={this.onChangePropertyInput(index)}
+                      value={'' + (destinationProperties.name || '')}
+                    />
+                </td>
+                <td>
+                    <Input
+                      keyProp='value'
+                      onChange={this.onChangePropertyInput(index)}
+                      value={'' + (destinationProperties.value || '')}
+                    />
+                </td>
+                 <td>
+                    <IconButton onClick={this.onDeletePropertyRow(index)}>
+                        <ActionDelete />
+                    </IconButton>
+                </td>
+            </tr>
+        ));
+    },
     render() {
-        let { country, region, city, accountProduct, account, organization, supervisor } = this.context.nomenclatures;
-        let { onChangeInput, onSelectDropdown } = this;
+        let { country, region, city, accountProduct, account, organization, supervisor, role } = this.context.nomenclatures;
+        let { onSelectDropdown } = this;
         let fields = this.state.fields;
 
         return (
            <div className={style.content}>
                 {fields.country.visible && country &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='destinationCountryId'
+                        <MultiSelectBubble
+                          keyProp='destinationCountryIds'
+                          name='destinationCountryIds'
                           label={fields.country.title}
-                          data={country}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.destinationCountryId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                          value={this.props.data.destinationCountryIds}
+                          options={country}
+                          onChange={(val) => { this.onSelectDropdown({key: 'destinationCountryIds', value: val}); }}
                         />
                     </div>
                 }
                 {fields.region.visible && region &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='destinationRegionId'
+                        <MultiSelectBubble
+                          keyProp='destinationRegionIds'
+                          name='destinationRegionIds'
                           label={fields.region.title}
-                          data={region}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.destinationRegionId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                          value={this.props.data.destinationRegionIds}
+                          options={region}
+                          onChange={(val) => { this.onSelectDropdown({key: 'destinationRegionIds', value: val}); }}
                         />
                     </div>
                 }
                 {fields.city.visible && city &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='destinationCityId'
+                        <MultiSelectBubble
+                          keyProp='destinationCityIds'
+                          name='destinationCityIds'
                           label={fields.city.title}
-                          data={city}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.destinationCityId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                          value={this.props.data.destinationCityIds}
+                          options={city}
+                          onChange={(val) => { this.onSelectDropdown({key: 'destinationCityIds', value: val}); }}
                         />
                     </div>
                 }
@@ -82,6 +131,19 @@ const Destination = React.createClass({
                         />
                     </div>
                 }
+                {fields.role.visible && role &&
+                    <div className={style.inputWrapper}>
+                        <Dropdown
+                          canSelectPlaceholder
+                          keyProp='destinationRoleId'
+                          label={fields.role.title}
+                          data={role}
+                          onSelect={onSelectDropdown}
+                          defaultSelected={'' + (this.props.data.destinationRoleId || '')}
+                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                        />
+                    </div>
+                }
                 {fields.supervisor.visible && supervisor &&
                     <div className={style.inputWrapper}>
                         <Dropdown
@@ -92,16 +154,6 @@ const Destination = React.createClass({
                           onSelect={onSelectDropdown}
                           defaultSelected={'' + (this.props.data.destinationSupervisorId || '')}
                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
-                        />
-                    </div>
-                }
-                {fields.tag.visible &&
-                    <div className={style.inputWrapper}>
-                        <Input
-                          keyProp='destinationTag'
-                          label={fields.tag.title}
-                          onChange={onChangeInput}
-                          value={'' + (this.props.data.destinationTag || '')}
                         />
                     </div>
                 }
@@ -131,6 +183,27 @@ const Destination = React.createClass({
                         />
                     </div>
                 }
+                {fields.properties.visible &&
+                  <div className={style.propertyTable}>
+                    <table className={style.dataGridTable}>
+                        <thead>
+                          <tr>
+                            <th colSpan={3}>Properties</th>
+                          </tr>
+                          <tr>
+                              {this.createPropertyHeaderCells()}
+                          </tr>
+                        </thead>
+                        <tbody >
+                            {this.createPropetyRows()}
+                        </tbody>
+                    </table>
+                    <span className={style.link} onClick={this.props.addPropertyRow}>
+                        <img src={plusImage} className={style.plus} />
+                        Add another property
+                    </span>
+                </div>
+              }
             </div>
         );
     }

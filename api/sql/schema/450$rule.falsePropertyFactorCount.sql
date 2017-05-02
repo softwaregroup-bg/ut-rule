@@ -14,7 +14,8 @@ BEGIN
             JOIN
                 [rule].conditionProperty ct ON ct.name = t.name AND ct.value = t.value
             WHERE
-                p.factor IN ('so', 'do', 'co')
+                p.factor IN ('so', 'do', 'co') AND
+                ct.conditionId = @conditionId
             UNION SELECT
                 p.factor
             FROM
@@ -24,7 +25,8 @@ BEGIN
             JOIN
                 [rule].conditionProperty ct ON ct.name = t.name AND ct.value = t.value
             WHERE
-                p.factor IN ('ss', 'ds', 'cs', 'oc', 'sc', 'dc')
+                p.factor IN ('ss', 'ds', 'cs', 'oc', 'sc', 'dc') AND
+                ct.conditionId = @conditionId
         )
     )
 END

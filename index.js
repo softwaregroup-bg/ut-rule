@@ -5,6 +5,7 @@ module.exports = () => ({
         'db/rule': require('./api/sql')
     },
     validations: {
-        'db/rule': require('./validations')
+        rule: require('./validations/rule'),
+        'db/rule': require('./validations/db/rule')
     }
 });

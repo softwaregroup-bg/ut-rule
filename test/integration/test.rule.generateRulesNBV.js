@@ -1,12 +1,10 @@
 var test = require('ut-run/test');
 var commonFunc = require('ut-test/lib/methods/commonFunc');
-var ruleConstants = require('ut-test/lib/constants/rule').constants();
 // var ruleMethods = require('ut-test/lib/methods/rule');
 var coreJoiValidation = require('ut-test/lib/joiValidations/core');
 var ruleJoiValidation = require('ut-test/lib/joiValidations/rule');
 var userConstants = require('ut-test/lib/constants/user').constants();
 var userMethods = require('ut-test/lib/methods/user');
-const PRIORITY = ruleConstants.PRIORITY;
 // var stdPolicy;
 const CITY = 'city';
 const REGION = 'region';
@@ -16,6 +14,7 @@ const CURRENCY = 'currency';
 const OPERATION = 'operation';
 var currencyName1, operationIdWithdraw, operationIdSale, operationIdDeposit, operationIdTopUp,
     operationIdFundsTransfer;
+var PRIORITY;
 
 module.exports = function(opt, cache) {
     test({
@@ -93,17 +92,126 @@ module.exports = function(opt, cache) {
                     operationIdTopUp = result.itemTranslationFetch.find(item => item.itemName === 'Top up').itemNameId;
                     operationIdFundsTransfer = result.itemTranslationFetch.find(item => item.itemName === 'Funds transfer to account').itemNameId;
                 }),
+                commonFunc.createStep('db/rule.rule.fetch', 'fetch rules', (context) => {
+                    return {};
+                }, (result, assert) => {
+                    var priorities = [];
+                    result.condition.map(rule => {
+                        priorities.push(rule.priority);
+                    });
+                    PRIORITY = Math.min.apply(null, priorities);
+                }),
                 commonFunc.createStep('db/rule.rule.add', 'add rule for atm withdraw', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY // mandatory
+                            priority: PRIORITY - 1 // mandatory
                         },
                         conditionItem: [{
                             factor: 'oc',
                             itemNameId: operationIdWithdraw
                         }],
                         conditionProperty: [{
-                            factor: 'sc',
+                            factor: 'co',
+                            name: 'atm',
+                            value: 1
+                        }],
+                        conditionActor: [{
+                            factor: 'co',
+                            actorId: 1000
+                        }],
+                        split: {
+                            data: {
+                                rows: [{
+                                    splitName: {
+                                        name: 'Withdraw fee - own ATM', // mandatory
+                                        tag: '|acquirer|atm|fee|'
+                                    },
+                                    splitRange: [{
+                                        isSourceAmount: false,
+                                        minValue: 35,
+                                        startAmount: 0, // mandatory
+                                        startAmountCurrency: currencyName1, // mandatory,
+                                        startAmountDaily: 0,
+                                        startCountDaily: 0,
+                                        startAmountWeekly: 0,
+                                        startCountWeekly: 0,
+                                        startAmountMonthly: 0,
+                                        startCountMonthly: 4 // in nbv it is 4
+                                    }],
+                                    splitAssignment: [{
+                                        credit: '$' + '{channel.id}.fee',
+                                        debit: '$' + '{source.account.number}',
+                                        description: 'ATM fee - acquirer', // mandatory
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 145
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 145
+                                        }, {
+                                            name: 'debitNote'
+                                        }]
+                                    }]
+                                }, {
+                                    splitName: {
+                                        name: 'Withdraw amount - own ATM', // mandatory
+                                        tag: '|acquirer|atm|'
+                                    },
+                                    splitRange: [{
+                                        isSourceAmount: false,
+                                        minValue: 0,
+                                        startAmount: 0, // mandatory
+                                        startAmountCurrency: currencyName1, // mandatory,
+                                        startAmountDaily: 0,
+                                        startCountDaily: 0,
+                                        startAmountWeekly: 0,
+                                        startCountWeekly: 0,
+                                        startAmountMonthly: 0,
+                                        startCountMonthly: 0,
+                                        percent: 100
+                                        // flatValue: 10!!!
+                                    }],
+                                    splitAssignment: [{
+                                        credit: '$' + '{channel.id}.amount',
+                                        debit: '$' + '{source.account.number}',
+                                        description: 'ATM amount - acquirer', // mandatory
+                                        percent: 100,
+                                        splitAnalytic: [{
+                                            name: 'creditCode',
+                                            value: 144
+                                        }, {
+                                            name: 'creditNote',
+                                            value: 'Txn#: $' + '{transfer.transferId}'
+                                        }, {
+                                            name: 'debitCode',
+                                            value: 144
+                                        }, {
+                                            name: 'debitNote',
+                                            value: '$' + '{transfer.udfAcquirer.terminalName}; Txn#: $' + '{transfer.transferId}'
+                                        }]
+                                    }]
+                                }]
+                            }
+                        }
+                    };
+                }, (result, assert) => {
+                    assert.equals(ruleJoiValidation.validateAddRule(result).error, null, 'Return all detals after add rule');
+                }),
+                commonFunc.createStep('db/rule.rule.add', 'add rule for atm withdraw with different ranges', (context) => {
+                    return {
+                        condition: {
+                            priority: PRIORITY - 2 // mandatory
+                        },
+                        conditionItem: [{
+                            factor: 'oc',
+                            itemNameId: operationIdWithdraw
+                        }],
+                        conditionProperty: [{
+                            factor: 'co',
                             name: 'atm',
                             value: 1
                         }],
@@ -237,7 +345,7 @@ module.exports = function(opt, cache) {
                                         startCountMonthly: 10
                                     }],
                                     splitAssignment: [{
-                                        credit: 'channel.$' + '{channel.id}.fee',
+                                        credit: '$' + '{channel.id}.fee',
                                         debit: '$' + '{source.account.number}',
                                         description: 'ATM fee - acquirer', // mandatory
                                         percent: 100,
@@ -274,7 +382,7 @@ module.exports = function(opt, cache) {
                                         // flatValue: 10!!!
                                     }],
                                     splitAssignment: [{
-                                        credit: 'channel.$' + '{channel.id}.amount',
+                                        credit: '$' + '{channel.id}.amount',
                                         debit: '$' + '{source.account.number}',
                                         description: 'ATM amount - acquirer', // mandatory
                                         percent: 100,
@@ -302,14 +410,14 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('db/rule.rule.add', 'add rule for iso withdraw', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 1 // mandatory
+                            priority: PRIORITY - 3 // mandatory
                         },
                         conditionItem: [{
                             factor: 'oc',
                             itemNameId: operationIdWithdraw
                         }],
                         conditionProperty: [{
-                            factor: 'sc',
+                            factor: 'co',
                             name: 'iso',
                             value: 1
                         }],
@@ -335,7 +443,7 @@ module.exports = function(opt, cache) {
                                         // flatValue: 10!!!
                                     }],
                                     splitAssignment: [{
-                                        credit: 'channel.$' + '{channel.id}.amount',
+                                        credit: '$' + '{channel.id}.amount',
                                         debit: '$' + '{source.account.number}',
                                         description: 'ATM amount - issuer', // mandatory
                                         percent: 100,
@@ -367,13 +475,13 @@ module.exports = function(opt, cache) {
                                         startCountDaily: 0,
                                         startAmountWeekly: 0,
                                         startCountWeekly: 0,
-                                        startAmountMonthly: 0,
+                                        startAmountMonthly: 4,
                                         startCountMonthly: 0
                                         // percentBase: 100
                                         // flatValue: 10!!!
                                     }],
                                     splitAssignment: [{
-                                        credit: 'channel.$' + '{channel.id}.fee',
+                                        credit: '$' + '{channel.id}.fee',
                                         debit: '$' + '{source.account.number}',
                                         description: 'ATM fee - issuer', // mandatory
                                         percent: 100,
@@ -436,14 +544,14 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('db/rule.rule.add', 'add rule for ped withdraw', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 2 // mandatory
+                            priority: PRIORITY - 4 // mandatory
                         },
                         conditionItem: [{
                             factor: 'oc',
                             itemNameId: operationIdWithdraw
                         }],
                         conditionProperty: [{
-                            factor: 'sc',
+                            factor: 'co',
                             name: 'ped',
                             value: 1
                         }],
@@ -515,14 +623,14 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('db/rule.rule.add', 'add duplicated rule for ped withdraw', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 22 // mandatory
+                            priority: PRIORITY - 5 // mandatory
                         },
                         conditionItem: [{
                             factor: 'oc',
                             itemNameId: operationIdWithdraw
                         }],
                         conditionProperty: [{
-                            factor: 'sc',
+                            factor: 'co',
                             name: 'ped',
                             value: 1
                         }],
@@ -593,14 +701,14 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('db/rule.rule.add', 'add rule for agent withdraw', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 3 // mandatory
+                            priority: PRIORITY - 6 // mandatory
                         },
                         conditionItem: [{
                             factor: 'oc',
                             itemNameId: operationIdWithdraw
                         }],
                         conditionProperty: [{
-                            factor: 'sc',
+                            factor: 'co',
                             name: 'agent',
                             value: 1
                         }],
@@ -720,14 +828,14 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('db/rule.rule.add', 'add rule for iso sale', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 4 // mandatory
+                            priority: PRIORITY - 7 // mandatory
                         },
                         conditionItem: [{
                             factor: 'oc',
                             itemNameId: operationIdSale
                         }],
                         conditionProperty: [{
-                            factor: 'sc',
+                            factor: 'co',
                             name: 'iso',
                             value: 1
                         }],
@@ -813,14 +921,14 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('db/rule.rule.add', 'add rule for ped deposit', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 5 // mandatory
+                            priority: PRIORITY - 8 // mandatory
                         },
                         conditionItem: [{
                             factor: 'oc',
                             itemNameId: operationIdDeposit
                         }],
                         conditionProperty: [{
-                            factor: 'sc',
+                            factor: 'co',
                             name: 'ped',
                             value: 1
                         }],
@@ -872,14 +980,14 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('db/rule.rule.add', 'add rule for atm top up', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 6 // mandatory
+                            priority: PRIORITY - 9 // mandatory
                         },
                         conditionItem: [{
                             factor: 'oc',
                             itemNameId: operationIdTopUp
                         }],
                         conditionProperty: [{
-                            factor: 'sc',
+                            factor: 'co',
                             name: 'atm',
                             value: 1
                         }],
@@ -967,7 +1075,7 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('db/rule.rule.add', 'add rule for funds transfer', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 7 // mandatory
+                            priority: PRIORITY - 10 // mandatory
                         },
                         conditionItem: [{
                             factor: 'oc',
@@ -1021,7 +1129,7 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('db/rule.rule.add', 'add rule for atm limit', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 8
+                            priority: PRIORITY - 11
                         },
                         conditionProperty: [{
                             factor: 'oc',
@@ -1038,7 +1146,7 @@ module.exports = function(opt, cache) {
                 commonFunc.createStep('db/rule.rule.add', 'add rule for pos limit', (context) => {
                     return {
                         condition: {
-                            priority: PRIORITY + 9
+                            priority: PRIORITY - 12
                         },
                         conditionProperty: [{
                             factor: 'oc',

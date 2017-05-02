@@ -11,7 +11,7 @@ const removeEmpty = (obj) => {
 export function fetchRules(params) {
     return {
         type: actionTypes.fetchRules,
-        method: 'rule.rule.fetch',
+        method: 'db/rule.rule.fetch',
         params: params || {}
     };
 };

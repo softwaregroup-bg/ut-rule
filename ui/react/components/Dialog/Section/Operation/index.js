@@ -95,7 +95,7 @@ const Operation = React.createClass({
                         name='operationIds'
                         label={fields.operationId.title}
                         value={this.props.data.operationIds}
-                        options={operation}
+                        options={operation || []}
                         onChange={(val) => { this.onSelectDropdown({ key: 'operationIds', value: val }); }}
                     />
                   </div>

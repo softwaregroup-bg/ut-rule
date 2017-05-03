@@ -1,3 +1,13 @@
+<a name="9.2.5"></a>
+## [9.2.5](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.4...v9.2.5) (2017-05-03)
+
+
+### Bug Fixes
+
+* permissions UI-982 ([#42](https://github.com/softwaregroup-bg/ut-rule/issues/42)) ([90d9fb9](https://github.com/softwaregroup-bg/ut-rule/commit/90d9fb9))
+
+
+
 <a name="9.2.4"></a>
 ## [9.2.4](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.3...v9.2.4) (2017-05-02)
 

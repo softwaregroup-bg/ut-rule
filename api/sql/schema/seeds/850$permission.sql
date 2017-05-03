@@ -16,13 +16,13 @@ MERGE INTO
     [user].[action] as target
 USING
     (VALUES
-        ('rule.decision.fetch', 'rule.decision.fetch', '{}')
-        ,('rule.operation.lookup', 'rule.operation.lookup', '{}')
-        ,('rule.rule.add', 'rule.rule.add', '{}')
-        ,('rule.rule.edit', 'rule.rule.edit', '{}')
-        ,('rule.rule.fetch', 'rule.rule.fetch', '{}')
-        ,('rule.rule.remove', 'rule.rule.remove', '{}')
-        ,('rule.item.fetch', 'rule.item.fetch', '{}')
+        ('rule.decision.fetch', 'rule.decision.fetch', '{}'),
+        ('rule.operation.lookup', 'rule.operation.lookup', '{}'),
+        ('rule.rule.add', 'rule.rule.add', '{}'),
+        ('rule.rule.edit', 'rule.rule.edit', '{}'),
+        ('rule.rule.fetch', 'rule.rule.fetch', '{}'),
+        ('rule.rule.remove', 'rule.rule.remove', '{}'),
+        ('rule.item.fetch', 'rule.item.fetch', '{}')
     ) AS source (actionId, description, valueMap)
 JOIN
     [user].[actionCategory] c ON c.name = 'rule'

@@ -44,9 +44,6 @@ const Main = React.createClass({
         this.props.actions.fetchRules();
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     },
-    componentWillMount() {
-        this.fetchData();
-    },
     componentWillReceiveProps(nextProps) {
         if (nextProps.empty) {
             this.fetchData();

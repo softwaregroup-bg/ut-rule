@@ -161,7 +161,7 @@ const Assignment = React.createClass({
                 </table>
                 <span className={style.link} onClick={this.props.addSplitAssignmentRow(this.props.splitIndex)}>
                     <img src={plusImage} className={style.plus} />
-                    Add another assignment
+                    Add assignment
                 </span>
             </div>
         );

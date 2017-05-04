@@ -14,8 +14,8 @@ export default React.createClass({
               open={this.props.open}
               autoScrollBodyContent
               actions={[
-                  <button onClick={this.props.onOk} style={{ marginRight: '10px' }}>Ok</button>,
-                  <button onClick={this.props.onCancel}>Cancel</button>
+                  <button className='button btn btn-primary' onClick={this.props.onOk} style={{ marginRight: '10px' }}>OK</button>,
+                  <button className='button btn btn-primary' onClick={this.props.onCancel}>Cancel</button>
               ]}
               >
                 <div style={{padding: '10px'}}>

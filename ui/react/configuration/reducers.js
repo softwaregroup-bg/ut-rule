@@ -90,7 +90,7 @@ const defaultUiState = {
                     },
                     role: {
                         visible: true,
-                        title: 'Channel role'
+                        title: 'Role'
                     }
                 }
             },
@@ -138,7 +138,7 @@ const defaultUiState = {
                     },
                     role: {
                         visible: true,
-                        title: 'Channel role'
+                        title: 'Role'
                     },
                     organization: {
                         visible: true,
@@ -212,7 +212,7 @@ const defaultUiState = {
                     },
                     role: {
                         visible: true,
-                        title: 'Channel role'
+                        title: 'Role'
                     },
                     properties: {
                         visible: true,
@@ -226,7 +226,7 @@ const defaultUiState = {
             },
             split: {
                 visible: true,
-                title: 'Split',
+                title: 'Split for fees and commissions',
                 assignmentFields: {
                     description: {
                         visible: true,

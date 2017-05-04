@@ -10,6 +10,10 @@ module.exports = {
                         prev[cur.name] = cur.value;
                         return prev;
                     }, {});
+                } else if (split.analytics && split.analytics.rows && split.analytics.rows.name && split.analytics.rows.value) {
+                    var analytics = {};
+                    analytics[split.analytics.rows.name] = split.analytics.rows.value;
+                    split.analytics = analytics;
                 }
                 return split;
             });

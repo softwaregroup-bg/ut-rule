@@ -1,3 +1,13 @@
+<a name="9.2.7"></a>
+## [9.2.7](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.6...v9.2.7) (2017-05-04)
+
+
+### Bug Fixes
+
+* handle rule analytics singleton result ([#44](https://github.com/softwaregroup-bg/ut-rule/issues/44)) ([e57ad96](https://github.com/softwaregroup-bg/ut-rule/commit/e57ad96))
+
+
+
 <a name="9.2.6"></a>
 ## [9.2.6](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.5...v9.2.6) (2017-05-03)
 

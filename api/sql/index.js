@@ -1,7 +1,10 @@
 var path = require('path');
 require('../../errors');
 module.exports = {
-    schema: [{path: path.join(__dirname, 'schema'), linkSP: true}],
+    schema: [
+        {path: path.join(__dirname, 'schema'), linkSP: true},
+        {path: path.join(__dirname, 'schema/seeds')}
+    ],
     'decision.lookup.response.receive': result => {
         if (result && Array.isArray(result.split)) {
             result.split.forEach(split => {

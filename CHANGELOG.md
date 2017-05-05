@@ -1,3 +1,18 @@
+<a name="9.3.0"></a>
+# [9.3.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.7...v9.3.0) (2017-05-05)
+
+
+### Bug Fixes
+
+* change xml parsing for split analytic ([#46](https://github.com/softwaregroup-bg/ut-rule/issues/46)) ([de85c79](https://github.com/softwaregroup-bg/ut-rule/commit/de85c79))
+
+
+### Features
+
+* MCTUNE-2772 add cumulative fields ([#45](https://github.com/softwaregroup-bg/ut-rule/issues/45)) ([3ee844e](https://github.com/softwaregroup-bg/ut-rule/commit/3ee844e))
+
+
+
 <a name="9.2.7"></a>
 ## [9.2.7](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.6...v9.2.7) (2017-05-04)
 

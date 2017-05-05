@@ -215,3 +215,8 @@ div.dropDownRoot {
 .propertyTable {
   padding-top: 10px;
 }
+
+.cumulative {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}

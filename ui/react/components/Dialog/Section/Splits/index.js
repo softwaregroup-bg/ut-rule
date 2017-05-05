@@ -4,7 +4,7 @@ import Input from 'ut-front-react/components/Input';
 import plusImage from '../../assets/add_new.png';
 import Accordion from 'ut-front-react/components/Accordion';
 import MultiSelect from 'ut-front-react/components/Input/MultiSelectDropdown';
-import Range from './Range';
+import Cumulative from './Cumulative';
 import Assignment from './Assignment';
 
 const Splits = React.createClass({
@@ -12,8 +12,10 @@ const Splits = React.createClass({
         data: PropTypes.array.isRequired,
         addSplitRow: PropTypes.func.isRequired,
         deleteSplitRow: PropTypes.func.isRequired,
-        addSplitRangeRow: PropTypes.func.isRequired,
-        deleteSplitRangeRow: PropTypes.func.isRequired,
+        addSplitCumulativeRow: PropTypes.func.isRequired,
+        deleteSplitCumulativeRow: PropTypes.func.isRequired,
+        addSplitCumulativeRangeRow: PropTypes.func.isRequired,
+        deleteSplitCumulativeRangeRow: PropTypes.func.isRequired,
         addSplitAssignmentRow: PropTypes.func.isRequired,
         deleteSplitAssignmentRow: PropTypes.func.isRequired,
         config: PropTypes.object
@@ -92,13 +94,15 @@ const Splits = React.createClass({
                         />
                     </div>
                 </div>
-                <Accordion title='Range' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                <Accordion title='Cumulative' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                     <div className={style.content}>
-                        <Range
+                        <Cumulative
                           splitIndex={index}
-                          data={split.splitRange}
-                          addSplitRangeRow={self.props.addSplitRangeRow}
-                          deleteSplitRangeRow={self.props.deleteSplitRangeRow}
+                          data={split.splitCumulative}
+                          addSplitCumulativeRow={self.props.addSplitCumulativeRow}
+                          deleteSplitCumulativeRow={self.props.deleteSplitCumulativeRow}
+                          addSplitCumulativeRangeRow={self.props.addSplitCumulativeRangeRow}
+                          deleteSplitCumulativeRangeRow={self.props.deleteSplitCumulativeRangeRow}
                         />
                     </div>
                 </Accordion>
@@ -125,7 +129,7 @@ const Splits = React.createClass({
                 {this.createSplitRows()}
                 <span className={style.link} onClick={this.props.addSplitRow}>
                     <img src={plusImage} className={style.plus} />
-                    Add another split
+                    Add split
                 </span>
             </div>
         );

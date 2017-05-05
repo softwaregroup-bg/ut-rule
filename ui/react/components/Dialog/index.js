@@ -16,9 +16,6 @@ import classnames from 'classnames';
 import set from 'lodash.set';
 
 function capitalizeFirstLetter(string) {
-    if (!string) {
-        return string;
-    }
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 const emptyCondition = {
@@ -68,12 +65,23 @@ const emptyLimit = {
     maxCountMonthly: null
 };
 
+const emptyCumulative = {
+    currency: null,
+    dailyCount: null,
+    dailyAmount: null,
+    weeklyAmount: null,
+    weeklyCount: null,
+    mounthlyAmount: null,
+    mounthlyCount: null,
+    splitRange: []
+};
+
 const emptySplit = {
     splitName: {
         name: '',
         tag: [] // varchar -> string with , -> multiselect with hardcoded values
     },
-    splitRange: [],
+    splitCumulative: [],
     splitAssignment: []
 };
 
@@ -84,7 +92,6 @@ const emptyProperty = {
 
 const emptySplitRange = {
     startAmount: null, // required
-    startAmountCurrency: null, // required
     isSourceAmount: false,
     minValue: null,
     maxValue: null,
@@ -154,6 +161,36 @@ export default React.createClass({
             let conditionId = this.props.data.condition[0].conditionId;
             let { conditionActor, conditionItem, conditionProperty, nomenclatures } = this.props;
             formatedData = JSON.parse(JSON.stringify(this.props.data));
+            if (formatedData.split) {
+                formatedData.split.map(s => {
+                    s.splitCumulative = [];
+                    let splitCumulativeCurrencies = [];
+                    s.splitRange.map(r => {
+                        if (!splitCumulativeCurrencies.includes(r.startAmountCurrency)) {
+                            splitCumulativeCurrencies.push(r.startAmountCurrency);
+                        }
+                    });
+                    splitCumulativeCurrencies.map(currency => {
+                        let cumulativeRanges = s.splitRange.filter(r => r.startAmountCurrency === currency);
+                        s.splitCumulative.push({
+                            dailyAmount: cumulativeRanges[0].startAmountDaily,
+                            dailyCount: cumulativeRanges[0].startCountDaily,
+                            mounthlyAmount: cumulativeRanges[0].startAmountMonthly,
+                            mounthlyCount: cumulativeRanges[0].startCountMonthly,
+                            weeklyAmount: cumulativeRanges[0].startAmountWeekly,
+                            weeklyCount: cumulativeRanges[0].startCountWeekly,
+                            currency: cumulativeRanges[0].startAmountCurrency,
+                            splitRange: cumulativeRanges.map(rr => ({
+                                startAmount: rr.startAmount, // required
+                                isSourceAmount: rr.isSourceAmount,
+                                minValue: rr.minValue,
+                                maxValue: rr.maxValue,
+                                percent: rr.percent
+                            }))
+                        });
+                    });
+                });
+            }
             conditionActor.forEach((actor) => {
                 if (actor.conditionId === conditionId) {
                     switch (actor.factor) {
@@ -381,18 +418,34 @@ export default React.createClass({
             data: this.state.data
         });
     },
-    addSplitRangeRow(splitIndex) {
+    addSplitCumulativeRow(splitIndex) {
         return () => {
             let tempState = Object.assign({}, this.state);
             let splitRow = tempState.data.split[splitIndex];
-            splitRow.splitRange.push(emptySplitRange);
+            splitRow.splitCumulative.push(emptyCumulative);
             this.setState(tempState);
         };
     },
-    deleteSplitRangeRow(splitIndex, rangeIndex) {
+    deleteSplitCumulativeRow(splitIndex, cumulativeIndex) {
+        return () => {
+            let tempState = Object.assign({}, this.state);
+            let splitRow = tempState.data.split[splitIndex];
+            splitRow.splitCumulative = splitRow.splitCumulative.slice(0, cumulativeIndex).concat(splitRow.splitCumulative.slice(cumulativeIndex + 1));
+            this.setState(tempState);
+        };
+    },
+    addSplitCumulativeRangeRow(splitIndex, cumulativeIndex) {
+        return () => {
+            let tempState = JSON.parse(JSON.stringify(this.state));
+            let cumulativeRow = tempState.data.split[splitIndex].splitCumulative[cumulativeIndex];
+            cumulativeRow.splitRange.push(emptySplitRange);
+            this.setState(tempState);
+        };
+    },
+    deleteSplitCumulativeRangeRow(splitIndex, cumulativeIndex, randeIndex) {
         let tempState = Object.assign({}, this.state);
-        let splitRow = tempState.data.split[splitIndex];
-        splitRow.splitRange = splitRow.splitRange.slice(0, rangeIndex).concat(splitRow.splitRange.slice(rangeIndex + 1));
+        let cumulativeRow = tempState.data.split[splitIndex].splitCumulative[cumulativeIndex];
+        cumulativeRow.splitRange = cumulativeRow.splitRange.slice(0, randeIndex).concat(cumulativeRow.splitRange.slice(randeIndex + 1));
         this.setState(tempState);
     },
     addSplitAssignmentRow(splitIndex) {
@@ -409,8 +462,27 @@ export default React.createClass({
         splitRow.splitAssignment = splitRow.splitAssignment.slice(0, assignmentIndex).concat(splitRow.splitAssignment.slice(assignmentIndex + 1));
         this.setState(tempState);
     },
+    hasDuplicates(array) {
+        return (new Set(array)).size !== array.length;
+    },
     save() {
         let formValidation = validations.run(this.state.data);
+        if (formValidation.isValid) formValidation.errors = [];
+        let hasDuplicateCurrencies = false;
+        let currencyValues = [];
+        for (var i = 0; i < this.state.data.split.length; i++) {
+            currencyValues = [];
+            for (var j = 0; j < this.state.data.split[i].splitCumulative.length; j++) {
+                currencyValues.push(this.state.data.split[i].splitCumulative[j].currency);
+            }
+            hasDuplicateCurrencies = this.hasDuplicates(currencyValues);
+            if (hasDuplicateCurrencies) {
+                formValidation.isValid = false;
+                formValidation.errors.push('There cannot be Cumulative fields with same currencies!');
+                break;
+            }
+        }
+
         if (formValidation.isValid) {
             this.props.onSave(this.state.data);
         }
@@ -530,8 +602,10 @@ export default React.createClass({
                                 nomenclatures={this.props.nomenclatures}
                                 addSplitRow={this.addSplitRow}
                                 deleteSplitRow={this.deleteSplitRow}
-                                addSplitRangeRow={this.addSplitRangeRow}
-                                deleteSplitRangeRow={this.deleteSplitRangeRow}
+                                addSplitCumulativeRow={this.addSplitCumulativeRow}
+                                deleteSplitCumulativeRow={this.deleteSplitCumulativeRow}
+                                addSplitCumulativeRangeRow={this.addSplitCumulativeRangeRow}
+                                deleteSplitCumulativeRangeRow={this.deleteSplitCumulativeRangeRow}
                                 addSplitAssignmentRow={this.addSplitAssignmentRow}
                                 deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
                                 config={sections.split}

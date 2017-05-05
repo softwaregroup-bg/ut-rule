@@ -6,9 +6,9 @@ ALTER PROCEDURE [rule].[rule.add]
     @limit [rule].limitTT READONLY,
     @split XML
 AS
-DECLARE @splitName		   [rule].splitNameTT,
-	   @splitAssignment	   [rule].splitAssignmentTT,
-        @conditionId	   INT
+DECLARE @splitName [rule].splitNameTT,
+        @splitAssignment [rule].splitAssignmentTT,
+        @conditionId INT
 BEGIN TRY
 
     BEGIN TRANSACTION
@@ -93,37 +93,35 @@ BEGIN TRY
     FROM @limit
 
     MERGE INTO [rule].splitName
-    USING @split.nodes('/*/*/splitName') AS records(r)
+    USING @split.nodes('/data/rows/splitName') AS records(r)
     ON 1 = 0
     WHEN NOT MATCHED THEN
-      INSERT (conditionId, name, tag) VALUES (@conditionId, r.value('(name)[1]', 'nvarchar(50)'), r.value('(tag)[1]', 'nvarchar(max)'))
+    INSERT (conditionId, name, tag) VALUES (@conditionId, r.value('(name)[1]', 'nvarchar(50)'), r.value('(tag)[1]', 'nvarchar(max)'))
     OUTPUT INSERTED.* INTO @splitName;
 
     MERGE INTO [rule].splitRange
     USING (
       SELECT
           sn.splitNameId AS splitNameId,
-          splitRange.x.query('*').value('(startAmount)[1]', 'money') AS startAmount,
-          splitRange.x.query('*').value('(startAmountCurrency)[1]', 'varchar(3)') AS startAmountCurrency,
+          splitRange.x.value('(startAmount)[1]', 'money') AS startAmount,
+          splitRange.x.value('(startAmountCurrency)[1]', 'varchar(3)') AS startAmountCurrency,
           ISNULL(splitRange.x.value('(./startAmountDaily/text())[1]', 'money'), 0) AS startAmountDaily,
           ISNULL(splitRange.x.value('(./startCountDaily/text())[1]', 'bigint'), 0) AS startCountDaily,
           ISNULL(splitRange.x.value('(./startAmountWeekly/text())[1]', 'money'), 0) AS startAmountWeekly,
           ISNULL(splitRange.x.value('(./startCountWeekly/text())[1]', 'bigint'), 0) AS startCountWeekly,
           ISNULL(splitRange.x.value('(./startAmountMonthly/text())[1]', 'money'), 0) AS startAmountMonthly,
           ISNULL(splitRange.x.value('(./startCountMonthly/text())[1]', 'bigint'), 0) AS startCountMonthly,
-          ISNULL(splitRange.x.query('*').value('(isSourceAmount)[1]', 'bit'), 1) AS isSourceAmount,
-          splitRange.x.query('*').value('(minValue)[1]', 'money') AS minValue,
-          splitRange.x.query('*').value('(maxValue)[1]', 'money') AS maxValue,
-          splitRange.x.query('*').value('(percent)[1]', 'money') AS [percent],
-          splitRange.x.query('*').value('(percentBase)[1]', 'money') AS percentBase
+          ISNULL(splitRange.x.value('(isSourceAmount)[1]', 'bit'), 1) AS isSourceAmount,
+          splitRange.x.value('(minValue)[1]', 'money') AS minValue,
+          splitRange.x.value('(maxValue)[1]', 'money') AS maxValue,
+          splitRange.x.value('(percent)[1]', 'money') AS [percent],
+          splitRange.x.value('(percentBase)[1]', 'money') AS percentBase
       FROM
-          @split.nodes('/*/*') AS records(x)
-      CROSS APPLY
-          records.x.nodes('splitRange') AS splitRange(x)
+          @split.nodes('/data/rows/splitRange') AS splitRange(x)
       JOIN
           @splitName sn
       ON
-          records.x.value('(splitName/name)[1]', 'nvarchar(50)') = sn.name
+          splitRange.x.value('(../splitName/name)[1]', 'nvarchar(50)') = sn.name
     ) AS r
     ON 1 = 0
     WHEN NOT MATCHED THEN
@@ -162,25 +160,23 @@ BEGIN TRY
     USING (
       SELECT
           sn.splitNameId AS splitNameId,
-          splitAssignment.x.query('*').value('(debit)[1]', 'varchar(50)') AS debit,
-          splitAssignment.x.query('*').value('(credit)[1]', 'varchar(50)') AS credit,
-          splitAssignment.x.query('*').value('(minValue)[1]', 'money') AS minValue,
-          splitAssignment.x.query('*').value('(maxValue)[1]', 'money') AS maxValue,
-          splitAssignment.x.query('*').value('(percent)[1]', 'decimal') AS [percent],
-          splitAssignment.x.query('*').value('(description)[1]', 'varchar(50)') AS description
+          splitAssignment.x.value('(debit)[1]', 'varchar(50)') AS debit,
+          splitAssignment.x.value('(credit)[1]', 'varchar(50)') AS credit,
+          splitAssignment.x.value('(minValue)[1]', 'money') AS minValue,
+          splitAssignment.x.value('(maxValue)[1]', 'money') AS maxValue,
+          splitAssignment.x.value('(percent)[1]', 'decimal') AS [percent],
+          splitAssignment.x.value('(description)[1]', 'varchar(50)') AS description
       FROM
-          @split.nodes('/*/*') AS records(x)
-      CROSS APPLY
-          records.x.nodes('splitAssignment') AS splitAssignment(x)
+          @split.nodes('/data/rows/splitAssignment') AS splitAssignment(x)
       JOIN
           @splitName sn
       ON
-          records.x.value('(splitName/name)[1]', 'nvarchar(50)') = sn.name
+          splitAssignment.x.value('(../splitName/name)[1]', 'nvarchar(50)') = sn.name
     ) AS r
     ON 1 = 0
     WHEN NOT MATCHED THEN
-      INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
-      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
+    INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
+    VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
     OUTPUT INSERTED.* INTO @splitAssignment;
 
 
@@ -188,22 +184,22 @@ BEGIN TRY
     USING (
 	 SELECT
           sn.splitAssignmentId AS splitAssignmentId,
-		splitAssignment.x.query('*').value('(name)[1]', 'nvarchar(50)')		AS [name],
-          splitAssignment.x.query('*').value('(value)[1]', 'nvarchar(150)')	AS [value]
-      FROM
-          @split.nodes('/*/*') AS records(x)
-      CROSS APPLY
-          records.x.nodes('*/splitAnalytic') AS splitAssignment(x)
-      LEFT JOIN @splitAssignment sn ON	 records.x.value('(splitAssignment/debit)[1]', 'nvarchar(50)')	   = sn.debit
-									AND records.x.value('(splitAssignment/credit)[1]', 'nvarchar(50)')	   = sn.credit
-									AND records.x.value('(splitAssignment/description)[1]', 'nvarchar(50)') = sn.[description]
+		  records.x.value('(name)[1]', 'nvarchar(50)')		AS [name],
+          records.x.value('(value)[1]', 'nvarchar(150)')	AS [value]      
+      FROM 
+           @split.nodes('/data/rows/splitAssignment/splitAnalytic') records(x)
+      JOIN 
+           @splitAssignment sn 
+      ON 
+           records.x.value('(../debit)[1]', 'nvarchar(50)') = sn.debit
+           AND records.x.value('(../credit)[1]', 'nvarchar(50)') = sn.credit
+           AND records.x.value('(../description)[1]', 'nvarchar(50)') = sn.[description]
+   							
     ) AS r (splitAssignmentId, [name], [value])
     ON 1 = 0
     WHEN NOT MATCHED THEN
-      INSERT (splitAssignmentId, [name], [value])
-      VALUES (r.splitAssignmentId, r.[name], r.[value])
---    OUTPUT INSERTED.*
-    ;
+    INSERT (splitAssignmentId, [name], [value])
+    VALUES (r.splitAssignmentId, r.[name], r.[value]);
 
     COMMIT TRANSACTION
 

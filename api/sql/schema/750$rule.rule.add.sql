@@ -185,8 +185,7 @@ BEGIN TRY
 	 SELECT
           sn.splitAssignmentId AS splitAssignmentId,
 		  records.x.value('(name)[1]', 'nvarchar(50)')		AS [name],
-          records.x.value('(value)[1]', 'nvarchar(150)')	AS [value]
-      
+          records.x.value('(value)[1]', 'nvarchar(150)')	AS [value]      
       FROM 
            @split.nodes('/data/rows/splitAssignment/splitAnalytic') records(x)
       JOIN 

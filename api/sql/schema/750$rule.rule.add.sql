@@ -6,9 +6,9 @@ ALTER PROCEDURE [rule].[rule.add]
     @limit [rule].limitTT READONLY,
     @split XML
 AS
-DECLARE @splitName		   [rule].splitNameTT,
-	   @splitAssignment	   [rule].splitAssignmentTT,
-        @conditionId	   INT
+DECLARE @splitName [rule].splitNameTT,
+        @splitAssignment [rule].splitAssignmentTT,
+        @conditionId INT
 BEGIN TRY
 
     BEGIN TRANSACTION
@@ -96,7 +96,7 @@ BEGIN TRY
     USING @split.nodes('/data/rows/splitName') AS records(r)
     ON 1 = 0
     WHEN NOT MATCHED THEN
-      INSERT (conditionId, name, tag) VALUES (@conditionId, r.value('(name)[1]', 'nvarchar(50)'), r.value('(tag)[1]', 'nvarchar(max)'))
+    INSERT (conditionId, name, tag) VALUES (@conditionId, r.value('(name)[1]', 'nvarchar(50)'), r.value('(tag)[1]', 'nvarchar(max)'))
     OUTPUT INSERTED.* INTO @splitName;
 
     MERGE INTO [rule].splitRange
@@ -175,8 +175,8 @@ BEGIN TRY
     ) AS r
     ON 1 = 0
     WHEN NOT MATCHED THEN
-      INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
-      VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
+    INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
+    VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
     OUTPUT INSERTED.* INTO @splitAssignment;
 
 
@@ -187,16 +187,20 @@ BEGIN TRY
 		  records.x.value('(name)[1]', 'nvarchar(50)')		AS [name],
           records.x.value('(value)[1]', 'nvarchar(150)')	AS [value]
       
-      FROM @split.nodes('/data/rows/splitAssignment/splitAnalytic') records(x)
-       JOIN @splitAssignment sn ON	 records.x.value('(../debit)[1]', 'nvarchar(50)')	   = sn.debit
-									AND records.x.value('(../credit)[1]', 'nvarchar(50)')	   = sn.credit
-									AND records.x.value('(../description)[1]', 'nvarchar(50)') = sn.[description]
+      FROM 
+           @split.nodes('/data/rows/splitAssignment/splitAnalytic') records(x)
+      JOIN 
+           @splitAssignment sn 
+      ON 
+           records.x.value('(../debit)[1]', 'nvarchar(50)') = sn.debit
+           AND records.x.value('(../credit)[1]', 'nvarchar(50)') = sn.credit
+           AND records.x.value('(../description)[1]', 'nvarchar(50)') = sn.[description]
    							
     ) AS r (splitAssignmentId, [name], [value])
     ON 1 = 0
     WHEN NOT MATCHED THEN
-      INSERT (splitAssignmentId, [name], [value])
-      VALUES (r.splitAssignmentId, r.[name], r.[value]);
+    INSERT (splitAssignmentId, [name], [value])
+    VALUES (r.splitAssignmentId, r.[name], r.[value]);
 
     COMMIT TRANSACTION
 

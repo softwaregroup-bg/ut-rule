@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.3.1-vb1.6",
+  "version": "9.3.1-vb1.7",
   "dependencies": {
     "classnames": "2.2.5",
     "joi": "10.0.6",

@@ -1,3 +1,13 @@
+<a name="9.3.1"></a>
+## [9.3.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.3.0...v9.3.1) (2017-05-09)
+
+
+### Bug Fixes
+
+* version bump ([#47](https://github.com/softwaregroup-bg/ut-rule/issues/47)) ([1f1aca9](https://github.com/softwaregroup-bg/ut-rule/commit/1f1aca9))
+
+
+
 <a name="9.3.0"></a>
 # [9.3.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.2.7...v9.3.0) (2017-05-05)
 

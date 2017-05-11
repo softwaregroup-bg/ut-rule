@@ -1,3 +1,13 @@
+<a name="9.4.0"></a>
+# [9.4.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.3.1...v9.4.0) (2017-05-11)
+
+
+### Features
+
+* add split analytic to rule remove procedure ([#48](https://github.com/softwaregroup-bg/ut-rule/issues/48)) ([217f4ae](https://github.com/softwaregroup-bg/ut-rule/commit/217f4ae))
+
+
+
 <a name="9.3.1"></a>
 ## [9.3.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.3.0...v9.3.1) (2017-05-09)
 

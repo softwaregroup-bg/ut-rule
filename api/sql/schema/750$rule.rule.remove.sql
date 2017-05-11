@@ -51,6 +51,20 @@ BEGIN TRY
         JOIN
             @conditionId item ON s.conditionId = item.value
 
+        SELECT 'splitAnalytic' AS resultSetName
+        DELETE
+            x
+        OUTPUT
+            deleted.*
+        FROM
+            [rule].splitAnalytic x
+        JOIN   
+            [rule].splitAssignment y ON y.splitAssignmentId = x.splitAssignmentId
+        JOIN
+            [rule].splitName s ON s.splitNameId = y.splitNameId
+        JOIN
+            @conditionId item ON s.conditionId = item.value         
+        
         SELECT 'splitAssignment' AS resultSetName
         DELETE
             x

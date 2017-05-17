@@ -1,3 +1,13 @@
+<a name="9.4.1"></a>
+## [9.4.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.0...v9.4.1) (2017-05-17)
+
+
+### Bug Fixes
+
+* add additional tags in frontend ([#49](https://github.com/softwaregroup-bg/ut-rule/issues/49)) ([250622d](https://github.com/softwaregroup-bg/ut-rule/commit/250622d))
+
+
+
 <a name="9.4.0"></a>
 # [9.4.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.3.1...v9.4.0) (2017-05-11)
 

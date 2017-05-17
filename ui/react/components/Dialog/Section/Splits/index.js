@@ -55,7 +55,10 @@ const Splits = React.createClass({
             {key: 'realtime', name: 'Realtime posting'},
             {key: 'pending', name: 'Authorization required'},
             {key: 'agent', name: 'Agent'},
-            {key: 'fee', name: 'Fee'}
+            {key: 'fee', name: 'Fee'},
+            {key: 'atm', name: 'ATM'},
+            {key: 'pos', name: 'POS'},
+            {key: 'ped', name: 'PED'}
         ];
     },
     defaultSelected(origin, selected) {

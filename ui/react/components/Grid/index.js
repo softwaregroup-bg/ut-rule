@@ -8,6 +8,7 @@ export default React.createClass({
         data: PropTypes.object,
         columns: PropTypes.object,
         nomenclatures: PropTypes.object,
+        formatedGridData: PropTypes.object,
         selectedConditions: PropTypes.object,
         refresh: PropTypes.func,
         handleCheckboxSelect: PropTypes.func,
@@ -21,18 +22,14 @@ export default React.createClass({
     shouldComponentUpdate(nextProps, nextState) {
         return true;
     },
-    buildList(arr) {
-        // label, value, nomenclatureKey
-        return arr.map((record, i) => {
-            let value = record[2] && this.props.nomenclatures[record[2]] ? this.props.nomenclatures[record[2]][record[1]] : record[1];
-            return (
-                value
-                ? <div key={i}>
-                    <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
-                </div>
-                : null
-            );
+    renderGridColumn(sequence) {
+        let result = [];
+        result = sequence.map((record, i) => {
+            return <div key={i}>
+                <b>{`${record.name}: `}</b>{record.value}
+            </div>;
         });
+        return result;
     },
     updateColumns(columns) {
         this.setState({
@@ -51,39 +48,11 @@ export default React.createClass({
             return {
                 id: conditionId,
                 priority: columns.priority.visible && condition.priority,
-                channel: columns.channel.visible && [
-                    ['Channel', condition.channelId, 'channel'],
-                    ['Tag', condition.channelTag],
-                    ['Country', condition.channelCountryId, 'country'],
-                    ['Region', condition.channelRegionId, 'region'],
-                    ['City', condition.channelCityId, 'city'],
-                    ['Organization', condition.channelOrganizationId, 'organization'],
-                    ['Supervisor', condition.channelSupervisorId, 'supervisor'],
-                    ['Role', condition.channelRoleIds, 'roles']
-                ],
-                operation: columns.operation.visible && [
-                    ['Operation', condition.operationId, 'operation'],
-                    ['Tag', condition.operationTag],
-                    ['Start Date', condition.operationStartDate],
-                    ['End Date', condition.operationEndDate]
-                ],
-                source: columns.source.visible && [
-                    ['Country', condition.sourceCountryId, 'country'],
-                    ['Region', condition.sourceRegionId, 'region'],
-                    ['City', condition.sourceCityId, 'city'],
-                    ['Organization', condition.sourceOrganizationId, 'organization'],
-                    ['Supervisor', condition.sourceSupervisorId, 'supervisor'],
-                    ['Tag', condition.sourceTag]
-                ],
-                destination: columns.destination.visible && [
-                    ['Country', condition.destinationCountryId, 'country'],
-                    ['Region', condition.destinationRegionId, 'region'],
-                    ['City', condition.destinationCityId, 'city'],
-                    ['Organization', condition.destinationOrganizationId, 'organization'],
-                    ['Supervisor', condition.destinationSupervisorId, 'supervisor'],
-                    ['Tag', condition.destinationTag]
-                ],
-                limit: columns.limit.visible && record.limit,
+                channel: columns.channel.visible && this.props.formatedGridData[conditionId]['co'],
+                operation: columns.operation.visible && this.props.formatedGridData[conditionId]['oc'],
+                source: columns.source.visible && this.props.formatedGridData[conditionId]['so'],
+                destination: columns.destination.visible && this.props.formatedGridData[conditionId]['do'],
+                limit: columns.limit.visible && this.props.formatedGridData[conditionId]['limit'],
                 refresh: ''
             };
         });
@@ -100,36 +69,9 @@ export default React.createClass({
                 case 'operation':
                 case 'source':
                 case 'destination':
-                    return this.buildList(value);
+                    return this.renderGridColumn(value || []);
                 case 'limit':
-                    return value.map((limit, i) => {
-                        return this.buildList([
-                            [
-                                '',
-                                i === 0 ? '' : <hr />
-                            ],
-                            [
-                                'Currency',
-                                limit.currency || ''
-                            ],
-                            [
-                                'Transaction',
-                                '' + (limit.maxAmount ? 'max ' + limit.maxAmount + ' ' : '') + (limit.minAmount ? 'min ' + limit.minAmount + ' ' : '')
-                            ],
-                            [
-                                'Daily',
-                                '' + (limit.maxAmountDaily ? 'max ' + limit.maxAmountDaily + ' ' : '') + (limit.maxCountDaily ? 'count ' + limit.maxCountDaily + ' ' : '')
-                            ],
-                            [
-                                'Weekly',
-                                '' + (limit.maxAmountWeekly ? 'max ' + limit.maxAmountWeekly + ' ' : '') + (limit.maxCountWeekly ? 'count ' + limit.maxCountWeekly + ' ' : '')
-                            ],
-                            [
-                                'Monthly',
-                                '' + (limit.maxAmountMonthly ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (limit.maxCountMonthly ? 'count ' + limit.maxCountMonthly + ' ' : '')
-                            ]
-                        ]);
-                    });
+                    return this.renderGridColumn(value || []);
                 default:
                     return value;
             }

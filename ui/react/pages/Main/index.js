@@ -19,6 +19,7 @@ const Main = React.createClass({
         conditionItem: PropTypes.array,
         conditionProperty: PropTypes.array,
         nomenclatures: PropTypes.object,
+        formatedGridData: PropTypes.object,
         ready: PropTypes.bool,
         empty: PropTypes.bool,
         actions: PropTypes.object,
@@ -189,6 +190,7 @@ const Main = React.createClass({
                       data={this.props.rules}
                       selectedConditions={this.state.selectedConditions}
                       nomenclatures={this.props.nomenclatures}
+                      formatedGridData={this.props.formatedGridData}
                       handleCheckboxSelect={this.handleCheckboxSelect}
                       handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
                       columns={columns}
@@ -217,6 +219,7 @@ export default connect(
             conditionItem: state.main.conditionItem,
             conditionProperty: state.main.conditionProperty,
             nomenclatures: state.main.fetchNomenclatures,
+            formatedGridData: state.main.formatedGridData,
             ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
             roles: state.main.fetchRoles,
             organizations: state.main.fetchOrganizations,

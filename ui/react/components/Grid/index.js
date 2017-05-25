@@ -70,7 +70,7 @@ export default React.createClass({
             }
             switch (header.name) {
                 case 'channel':
-                    return this.renderGridColumn(value, ['co', 'cs']);
+                    return this.renderGridColumn(value, ['cs', 'co']);
                 case 'operation':
                     return this.renderGridColumn(value, ['oc']);
                 case 'source':

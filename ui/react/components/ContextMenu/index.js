@@ -52,13 +52,25 @@ export default React.createClass({
     },
     checkBoxChecked(event, checked, record) {
         let data = this.state.data;
-        data[record].visible = checked;
-        this.setState({
-            shouldUpdate: false,
-            data: data
-        });
+        let checkedValueCount = 0;
+        for (let property in data) {
+            data[property].visible && checkedValueCount++;
+        }
+        if (!(checkedValueCount === 1 && data[record].visible)) {
+            data[record].visible = checked;
+            this.setState({
+                shouldUpdate: true,
+                data: data
+            });
+        } else {
+            this.setState({
+                shouldUpdate: false,
+                data: data
+            });
+        }
     },
     render() {
+        var data = this.state.data;
         return <div style={{float: 'left'}}>
             <SettingsIcon onClick={this.show} />
             <Popover
@@ -76,15 +88,16 @@ export default React.createClass({
                                 <ListItem key={0} primaryText='Reload Grid' onClick={this.props.refresh} leftIcon={<ReloadIcon />} />,
                                 <Divider key={1} />,
                                 <Subheader key={2}>Manage Columns</Subheader>
-                            ].concat(Object.keys(this.state.data).map((record, i) => {
-                                let checkBoxCkecked = (event, checked) => this.checkBoxChecked(event, checked, record);
+                            ].concat(Object.keys(data).map((record, i) => {
+                                let checkBoxChecked = (event, checked) => this.checkBoxChecked(event, checked, record);
                                 return <ListItem
                                   key={i + 3}
-                                  leftCheckbox={<Checkbox
-                                    defaultChecked={this.state.data[record].visible}
-                                    onCheck={checkBoxCkecked}
+                                  leftCheckbox={
+                                    <Checkbox
+                                      checked={data[record].visible}
+                                      onCheck={checkBoxChecked}
                                   />}
-                                  primaryText={this.state.data[record].title}
+                                  primaryText={data[record].title}
                                 />;
                             }))
                         }

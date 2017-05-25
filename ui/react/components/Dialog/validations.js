@@ -7,9 +7,8 @@ let schema = joi.object().keys({
             priority: joi.number().min(1).required().options({
                 language: {
                     key: '"Priority" ',
-                    string: {
-                        min: 'is required for all conditions',
-                        number: 'is required for all conditions'
+                    number: {
+                        base: 'is required for all conditions and should be a number'
                     }
                 }
             })

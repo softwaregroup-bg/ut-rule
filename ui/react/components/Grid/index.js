@@ -22,12 +22,16 @@ export default React.createClass({
     shouldComponentUpdate(nextProps, nextState) {
         return true;
     },
-    renderGridColumn(sequence) {
+    renderGridColumn(condition, keysToInclude) {
         let result = [];
-        result = sequence.map((record, i) => {
-            return <div key={i}>
-                <b>{`${record.name}: `}</b>{record.value}
-            </div>;
+        keysToInclude.forEach((keyToInclude) => {
+            if (Array.isArray(condition[keyToInclude])) {
+                condition[keyToInclude].forEach((record) => {
+                    result.push(<div key={result.length}>
+                        <b>{`${record.name}: `}</b>{record.value}
+                    </div>);
+                });
+            }
         });
         return result;
     },
@@ -48,11 +52,11 @@ export default React.createClass({
             return {
                 id: conditionId,
                 priority: columns.priority.visible && condition.priority,
-                channel: columns.channel.visible && this.props.formatedGridData[conditionId]['co'],
-                operation: columns.operation.visible && this.props.formatedGridData[conditionId]['oc'],
-                source: columns.source.visible && this.props.formatedGridData[conditionId]['so'],
-                destination: columns.destination.visible && this.props.formatedGridData[conditionId]['do'],
-                limit: columns.limit.visible && this.props.formatedGridData[conditionId]['limit'],
+                channel: columns.channel.visible && this.props.formatedGridData[conditionId],
+                operation: columns.operation.visible && this.props.formatedGridData[conditionId],
+                source: columns.source.visible && this.props.formatedGridData[conditionId],
+                destination: columns.destination.visible && this.props.formatedGridData[conditionId],
+                limit: columns.limit.visible && this.props.formatedGridData[conditionId],
                 refresh: ''
             };
         });
@@ -66,12 +70,15 @@ export default React.createClass({
             }
             switch (header.name) {
                 case 'channel':
+                    return this.renderGridColumn(value, ['co', 'cs']);
                 case 'operation':
+                    return this.renderGridColumn(value, ['oc']);
                 case 'source':
+                    return this.renderGridColumn(value, ['ss', 'sc', 'so']);
                 case 'destination':
-                    return this.renderGridColumn(value || []);
+                    return this.renderGridColumn(value, ['ds', 'dc', 'do']);
                 case 'limit':
-                    return this.renderGridColumn(value || []);
+                    return this.renderGridColumn(value, ['limit']);
                 default:
                     return value;
             }

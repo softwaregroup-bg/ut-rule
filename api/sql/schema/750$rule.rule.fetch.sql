@@ -22,7 +22,7 @@ BEGIN
 
     SELECT 'conditionItem' AS resultSetName
     SELECT 
-        c.*, t.alias AS [type]
+        c.*, t.alias AS [type], t.name as itemTypeName, i.itemName
     FROM 
         [rule].conditionItem c 
     JOIN 

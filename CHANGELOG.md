@@ -1,3 +1,44 @@
+<a name="9.4.8"></a>
+## [9.4.8](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.7...v9.4.8) (2017-05-25)
+
+
+### Bug Fixes
+
+* grid columns visualization ([#51](https://github.com/softwaregroup-bg/ut-rule/issues/51)) ([0b5c29c](https://github.com/softwaregroup-bg/ut-rule/commit/0b5c29c))
+* UIS-2662 bug 1, 2, 14 ([#50](https://github.com/softwaregroup-bg/ut-rule/issues/50)) ([ad4d773](https://github.com/softwaregroup-bg/ut-rule/commit/ad4d773))
+
+
+
+<a name="9.4.7"></a>
+## [9.4.7](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.6...v9.4.7) (2017-05-22)
+
+
+
+<a name="9.4.6"></a>
+## [9.4.6](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.5...v9.4.6) (2017-05-22)
+
+
+
+<a name="9.4.5"></a>
+## [9.4.5](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.4...v9.4.5) (2017-05-22)
+
+
+
+<a name="9.4.4"></a>
+## [9.4.4](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.3...v9.4.4) (2017-05-22)
+
+
+
+<a name="9.4.3"></a>
+## [9.4.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.2...v9.4.3) (2017-05-22)
+
+
+
+<a name="9.4.2"></a>
+## [9.4.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.1...v9.4.2) (2017-05-22)
+
+
+
 <a name="9.4.1"></a>
 ## [9.4.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.0...v9.4.1) (2017-05-17)
 

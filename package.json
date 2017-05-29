@@ -39,7 +39,7 @@
     "html-webpack-plugin": "2.24.1"
   },
   "devDependencies": {
-    "ut-tools": "^5.13.5"
+    "ut-tools": "^5.17.19"
   },
   "peerDependencies": {
     "ut-bus": "^5.9.0",

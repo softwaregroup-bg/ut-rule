@@ -1,3 +1,17 @@
+<a name="5.8.15"></a>
+## [5.8.15](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.10...v5.8.15) (2017-05-29)
+
+
+### Bug Fixes
+
+* add babel core dependency ([fcd433a](https://github.com/softwaregroup-bg/ut-rule/commit/fcd433a))
+* add some dependencies so that they can be removed from implementations ([7a032ed](https://github.com/softwaregroup-bg/ut-rule/commit/7a032ed))
+* dependencies ([4d4c8df](https://github.com/softwaregroup-bg/ut-rule/commit/4d4c8df))
+* readme ([a83ea99](https://github.com/softwaregroup-bg/ut-rule/commit/a83ea99))
+* update ut-tools ([7182655](https://github.com/softwaregroup-bg/ut-rule/commit/7182655))
+
+
+
 <a name="5.8.14"></a>
 ## [5.8.14](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.10...v5.8.14) (2017-05-29)
 

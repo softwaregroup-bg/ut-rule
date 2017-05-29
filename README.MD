@@ -1,3 +1,3 @@
 # UT Rule
 
-Provides standard fees, limits and commissions API.
+Provides fees, limits and commissions API.

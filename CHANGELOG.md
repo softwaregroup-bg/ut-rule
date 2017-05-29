@@ -1,3 +1,13 @@
+<a name="9.4.9"></a>
+## [9.4.9](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.8...v9.4.9) (2017-05-29)
+
+
+### Bug Fixes
+
+* publish latest ([7b29fd2](https://github.com/softwaregroup-bg/ut-rule/commit/7b29fd2))
+
+
+
 <a name="9.4.8"></a>
 ## [9.4.8](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.7...v9.4.8) (2017-05-25)
 

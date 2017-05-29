@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.4.8",
+  "version": "9.4.10",
   "dependencies": {
     "classnames": "2.2.5",
     "joi": "10.0.6",
@@ -17,7 +17,7 @@
     "immutable": "3.8.1"
   },
   "devDependencies": {
-    "ut-tools": "^5.17.3"
+    "ut-tools": "^5.17.19"
   },
   "peerDependencies": {
     "ut-front": "^7.0.0",

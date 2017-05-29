@@ -1,3 +1,23 @@
+<a name="9.4.10"></a>
+## [9.4.10](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.9...v9.4.10) (2017-05-29)
+
+
+### Bug Fixes
+
+* dependencies ([5f7c4a9](https://github.com/softwaregroup-bg/ut-rule/commit/5f7c4a9))
+
+
+
+<a name="9.4.9"></a>
+## [9.4.9](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.8...v9.4.9) (2017-05-29)
+
+
+### Bug Fixes
+
+* publish latest ([7b29fd2](https://github.com/softwaregroup-bg/ut-rule/commit/7b29fd2))
+
+
+
 <a name="9.4.8"></a>
 ## [9.4.8](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.7...v9.4.8) (2017-05-25)
 

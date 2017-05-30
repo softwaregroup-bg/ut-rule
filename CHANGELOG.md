@@ -1,3 +1,19 @@
+<a name="9.5.0"></a>
+# [9.5.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.5.0) (2017-05-30)
+
+
+### Bug Fixes
+
+* lint accidental debugger ([66047e5](https://github.com/softwaregroup-bg/ut-rule/commit/66047e5))
+* UIS-2662 bug 1, 2, 14 ([ba5ad80](https://github.com/softwaregroup-bg/ut-rule/commit/ba5ad80))
+
+
+### Features
+
+* MCTUNE-2918 add possibility the user to add more cumulative than one ([ff640e9](https://github.com/softwaregroup-bg/ut-rule/commit/ff640e9))
+
+
+
 <a name="9.4.10"></a>
 ## [9.4.10](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.9...v9.4.10) (2017-05-29)
 

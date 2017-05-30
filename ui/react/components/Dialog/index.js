@@ -174,7 +174,6 @@ export default React.createClass({
                             startCountDaily: r.startCountDaily
                         };
                         if (!(identifiers.some(item => r.startAmountCurrency === item.startAmountCurrency && r.startAmountDaily === item.startAmountDaily && r.startCountDaily === item.startCountDaily))) {
-                            debugger;
                             identifiers.push(indentifyObject);
                         }
                     });

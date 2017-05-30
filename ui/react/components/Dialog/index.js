@@ -18,6 +18,7 @@ import set from 'lodash.set';
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
 const emptyCondition = {
     priority: null,
     channelCountryIds: [],
@@ -161,25 +162,39 @@ export default React.createClass({
             let conditionId = this.props.data.condition[0].conditionId;
             let { conditionActor, conditionItem, conditionProperty, nomenclatures } = this.props;
             formatedData = JSON.parse(JSON.stringify(this.props.data));
+
             if (formatedData.split) {
                 formatedData.split.map(s => {
                     s.splitCumulative = [];
-                    let splitCumulativeCurrencies = [];
+                    let identifiers = [];
                     s.splitRange.map(r => {
-                        if (!splitCumulativeCurrencies.includes(r.startAmountCurrency)) {
-                            splitCumulativeCurrencies.push(r.startAmountCurrency);
+                        let indentifyObject = {
+                            startAmountCurrency: r.startAmountCurrency,
+                            startAmountDaily: r.startAmountDaily,
+                            startCountDaily: r.startCountDaily
+                        };
+                        if (!(identifiers.some(item => r.startAmountCurrency === item.startAmountCurrency && r.startAmountDaily === item.startAmountDaily && r.startCountDaily === item.startCountDaily))) {
+                            identifiers.push(indentifyObject);
                         }
                     });
-                    splitCumulativeCurrencies.map(currency => {
-                        let cumulativeRanges = s.splitRange.filter(r => r.startAmountCurrency === currency);
+
+                    identifiers.map(identifier => {
+                        let cumulativeRanges = s.splitRange.filter(r => {
+                            return (
+                                r.startAmountCurrency === identifier.startAmountCurrency &&
+                                r.startAmountDaily === identifier.startAmountDaily &&
+                                r.startCountDaily === identifier.startCountDaily
+                            );
+                        });
+
                         s.splitCumulative.push({
-                            dailyAmount: cumulativeRanges[0].startAmountDaily,
-                            dailyCount: cumulativeRanges[0].startCountDaily,
+                            dailyAmount: identifier.startAmountDaily,
+                            dailyCount: identifier.startCountDaily,
                             mounthlyAmount: cumulativeRanges[0].startAmountMonthly,
                             mounthlyCount: cumulativeRanges[0].startCountMonthly,
                             weeklyAmount: cumulativeRanges[0].startAmountWeekly,
                             weeklyCount: cumulativeRanges[0].startCountWeekly,
-                            currency: cumulativeRanges[0].startAmountCurrency,
+                            currency: identifier.startAmountCurrency,
                             splitRange: cumulativeRanges.map(rr => ({
                                 startAmount: rr.startAmount, // required
                                 isSourceAmount: rr.isSourceAmount,
@@ -467,22 +482,6 @@ export default React.createClass({
     },
     save() {
         let formValidation = validations.run(this.state.data);
-        if (formValidation.isValid) formValidation.errors = [];
-        let hasDuplicateCurrencies = false;
-        let currencyValues = [];
-        for (var i = 0; i < this.state.data.split.length; i++) {
-            currencyValues = [];
-            for (var j = 0; j < this.state.data.split[i].splitCumulative.length; j++) {
-                currencyValues.push(this.state.data.split[i].splitCumulative[j].currency);
-            }
-            hasDuplicateCurrencies = this.hasDuplicates(currencyValues);
-            if (hasDuplicateCurrencies) {
-                formValidation.isValid = false;
-                formValidation.errors.push('There cannot be Cumulative fields with same currencies!');
-                break;
-            }
-        }
-
         if (formValidation.isValid) {
             this.props.onSave(this.state.data);
         }

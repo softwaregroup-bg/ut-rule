@@ -1,3 +1,13 @@
+<a name="9.6.0"></a>
+# [9.6.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.5.0...v9.6.0) (2017-05-31)
+
+
+### Features
+
+* add account owner parameters ([75381f8](https://github.com/softwaregroup-bg/ut-rule/commit/75381f8))
+
+
+
 <a name="9.5.0"></a>
 # [9.5.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.5.0) (2017-05-30)
 

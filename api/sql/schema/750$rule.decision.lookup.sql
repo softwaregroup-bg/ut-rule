@@ -7,7 +7,9 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @destinationAccount varchar(100),
     @amount money,
     @currency varchar(3),
-    @isSourceAmount BIT=0
+    @isSourceAmount BIT=0,
+    @sourceAccountOwnerId BIGINT = NULL,
+    @destinationAccountOwnerId BIGINT = NULL
 AS
 BEGIN
     DECLARE
@@ -61,7 +63,8 @@ BEGIN
     FROM
         [integration].[vAccount]
     WHERE
-        accountNumber = @sourceAccount
+        accountNumber = @sourceAccount AND
+        (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL)
 
     SELECT
         @destinationCountryId = countryId,
@@ -73,7 +76,8 @@ BEGIN
     FROM
         [integration].[vAccount]
     WHERE
-        accountNumber = @destinationAccount
+        accountNumber = @destinationAccount AND
+        (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 

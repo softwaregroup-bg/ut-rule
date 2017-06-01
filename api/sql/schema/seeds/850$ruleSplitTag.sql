@@ -21,6 +21,7 @@ USING
         ('pending','Authorization required'),
         ('agent','Agent'),
         ('fee','Fee'),
+        ('merchant', 'Merchant'),
         ('atm', 'ATM'),
         ('pos', 'POS'),
         ('ped', 'PED')
@@ -46,7 +47,8 @@ INSERT INTO @itemNameTranslationTT(itemSyncId, itemName, itemCode, itemNameTrans
 INSERT INTO @itemNameTranslationTT(itemSyncId, itemName, itemCode, itemNameTranslation) VALUES (NULL, 'Realtime posting', 'realtime',N'Realtime posting')
 INSERT INTO @itemNameTranslationTT(itemSyncId, itemName, itemCode, itemNameTranslation) VALUES (NULL, 'Authorization required', 'pending',N'Authorization required')
 INSERT INTO @itemNameTranslationTT(itemSyncId, itemName, itemCode, itemNameTranslation) VALUES (NULL, 'Agent', 'agent',N'Agent')
-INSERT INTO @itemNameTranslationTT(itemSyncId, itemName, itemCode, itemNameTranslation) VALUES (NULL, 'Fee', 'fee',N'Fee')
+INSERT INTO @itemNameTranslationTT(itemSyncId, itemName, itemCode, itemNameTranslation) VALUES (NULL, 'Fee', 'fee', N'Fee')
+INSERT INTO @itemNameTranslationTT(itemSyncId, itemName, itemCode, itemNameTranslation) VALUES (NULL, 'Merchant', 'merchant', N'Merchant')
 INSERT INTO @itemNameTranslationTT(itemSyncId, itemName, itemCode, itemNameTranslation) VALUES (NULL, 'ATM', 'atm', N'ATM')
 INSERT INTO @itemNameTranslationTT(itemSyncId, itemName, itemCode, itemNameTranslation) VALUES (NULL, 'POS', 'pos', N'POS')
 INSERT INTO @itemNameTranslationTT(itemSyncId, itemName, itemCode, itemNameTranslation) VALUES (NULL, 'PED', 'ped', N'PED')

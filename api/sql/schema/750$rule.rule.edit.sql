@@ -258,7 +258,7 @@ BEGIN TRY
     WHEN NOT MATCHED THEN
       INSERT (splitAssignmentId, [name], [value])
       VALUES (r.splitAssignmentId, r.[name], r.[value])
-    OUTPUT $action, DELETED.*, INSERTED.*
+    -- OUTPUT $action, DELETED.*, INSERTED.*
     ;
 
 

@@ -1,3 +1,13 @@
+<a name="9.6.1"></a>
+## [9.6.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.6.0...v9.6.1) (2017-06-05)
+
+
+### Bug Fixes
+
+* UIS-2731 unnecessary result set has been removed from procedure ([#56](https://github.com/softwaregroup-bg/ut-rule/issues/56)) ([0c10ff2](https://github.com/softwaregroup-bg/ut-rule/commit/0c10ff2))
+
+
+
 <a name="9.6.0"></a>
 # [9.6.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.5.0...v9.6.0) (2017-05-31)
 

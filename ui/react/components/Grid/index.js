@@ -7,7 +7,6 @@ export default React.createClass({
     propTypes: {
         data: PropTypes.object,
         columns: PropTypes.object,
-        nomenclatures: PropTypes.object,
         formatedGridData: PropTypes.object,
         selectedConditions: PropTypes.object,
         refresh: PropTypes.func,
@@ -97,7 +96,6 @@ export default React.createClass({
                 case 'limit':
                     return this.renderGridColumn(value, ['limit'], row.priority);
                 case 'expansion':
-                    debugger;
                     let expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
                     return <a onClick={(e) => { e.preventDefault(); this.handleGridExpansion(row.priority); }}>{expansionText}</a>;
                 default:

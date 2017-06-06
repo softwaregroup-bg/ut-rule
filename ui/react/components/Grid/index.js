@@ -16,24 +16,41 @@ export default React.createClass({
     },
     getInitialState(state) {
         return {
+            expandedGridColumns: [],
             columns: this.props.columns
         };
     },
     shouldComponentUpdate(nextProps, nextState) {
         return true;
     },
-    renderGridColumn(condition, keysToInclude) {
+    handleGridExpansion(id) {
+        let expandedGridColumns = this.state.expandedGridColumns;
+        if (expandedGridColumns.some(v => v === id)) {
+            let index = expandedGridColumns.indexOf(id);
+            expandedGridColumns.splice(index, 1);
+        } else {
+            expandedGridColumns.push(id);
+        }
+        this.setState({expandedGridColumns});
+    },
+    renderGridColumn(condition, keysToInclude, id) {
         let result = [];
-        keysToInclude.forEach((keyToInclude) => {
+        for (let keyToInclude of keysToInclude) {
             if (Array.isArray(condition[keyToInclude])) {
-                condition[keyToInclude].forEach((record) => {
+                for (let index in condition[keyToInclude]) {
+                    let record = condition[keyToInclude][index];
+                    if (index > 4 && !this.state.expandedGridColumns.some(v => v === id)) break;
                     result.push(<div key={result.length}>
                         <b>{`${record.name}: `}</b>{record.value}
                     </div>);
-                });
+                }
             }
-        });
-        return result;
+        }
+        return (
+          <div>
+            {result}
+          </div>
+        );
     },
     updateColumns(columns) {
         this.setState({
@@ -48,7 +65,6 @@ export default React.createClass({
             let record = this.props.data[conditionId];
             let condition = record.condition[0];
             let columns = this.state.columns;
-
             return {
                 id: conditionId,
                 priority: columns.priority.visible && condition.priority,
@@ -57,6 +73,7 @@ export default React.createClass({
                 source: columns.source.visible && this.props.formatedGridData[conditionId],
                 destination: columns.destination.visible && this.props.formatedGridData[conditionId],
                 limit: columns.limit.visible && this.props.formatedGridData[conditionId],
+                expansion: 'Not Empty',
                 refresh: ''
             };
         });
@@ -70,15 +87,19 @@ export default React.createClass({
             }
             switch (header.name) {
                 case 'channel':
-                    return this.renderGridColumn(value, ['cs', 'co']);
+                    return this.renderGridColumn(value, ['cs', 'co'], row.priority);
                 case 'operation':
-                    return this.renderGridColumn(value, ['oc']);
+                    return this.renderGridColumn(value, ['oc'], row.priority);
                 case 'source':
-                    return this.renderGridColumn(value, ['ss', 'sc', 'so']);
+                    return this.renderGridColumn(value, ['ss', 'sc', 'so'], row.priority);
                 case 'destination':
-                    return this.renderGridColumn(value, ['ds', 'dc', 'do']);
+                    return this.renderGridColumn(value, ['ds', 'dc', 'do'], row.priority);
                 case 'limit':
-                    return this.renderGridColumn(value, ['limit']);
+                    return this.renderGridColumn(value, ['limit'], row.priority);
+                case 'expansion':
+                    debugger;
+                    let expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
+                    return <a onClick={(e) => { e.preventDefault(); this.handleGridExpansion(row.priority); }}>{expansionText}</a>;
                 default:
                     return value;
             }
@@ -98,6 +119,10 @@ export default React.createClass({
               {title: columns.source.title, name: 'source'},
               {title: columns.destination.title, name: 'destination'},
               {title: columns.limit.title, name: 'limit'},
+              {
+                  title: <div>Expansion</div>,
+                  name: 'expansion'
+              },
               {
                   title: <div style={{float: 'right'}}>
                     <ContextMenu

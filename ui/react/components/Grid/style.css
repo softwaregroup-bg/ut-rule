@@ -95,3 +95,13 @@
 .dataGridTable tr.checked table.nested.commission tr:nth-child(even){
     background: #fcd08d;
 }
+
+.bottomSeparator {
+    height: 5px;
+    border-bottom: 2px solid #E2E1E1;
+}
+
+.hideSpan {
+    display: inline-block;
+    visibility: hidden;
+}

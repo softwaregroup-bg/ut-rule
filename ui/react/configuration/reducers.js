@@ -50,6 +50,10 @@ const defaultUiState = {
                 limit: {
                     visible: true,
                     title: 'Limit'
+                },
+                split: {
+                    visible: true,
+                    title: 'Split'
                 }
             }
         }

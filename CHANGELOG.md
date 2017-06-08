@@ -1,3 +1,13 @@
+<a name="9.7.0"></a>
+# [9.7.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.6.1...v9.7.0) (2017-06-08)
+
+
+### Features
+
+* add column for splits in rules grid ([4841ef1](https://github.com/softwaregroup-bg/ut-rule/commit/4841ef1))
+
+
+
 <a name="9.6.1"></a>
 ## [9.6.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.6.0...v9.6.1) (2017-06-05)
 

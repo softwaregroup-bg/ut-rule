@@ -1,5 +1,10 @@
 import * as actionTypes from './actionTypes';
 const defaultState = {};
+const maxPercentageCharacters = 5;
+const amountCharacters = 14;
+const minAmountCharacters = 10;
+const maxAmountCharacters = 10;
+const basePercentageCharacters = 10;
 
 export default (state = defaultState, action) => {
     if (action.type === actionTypes.reset) {
@@ -140,6 +145,7 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
     });
     Object.keys(formattedRules).forEach((conditionId) => {
         let limitArray = formattedRules[conditionId].limit;
+        let splitArray = formattedRules[conditionId].split;
         if (!result[conditionId]) {
             result[conditionId] = {};
         }
@@ -180,6 +186,57 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
                 }
             });
         }
+        if (splitArray && splitArray.length) {
+            splitArray.forEach((split) => {
+                if (!result[conditionId]['split']) {
+                    result[conditionId]['split'] = [];
+                }
+                if (split.splitName && split.splitName.name) {
+                    result[conditionId]['split'].push({
+                        name: 'Name',
+                        value: split.splitName.name
+                    }, {
+                        separator: true
+                    });
+                }
+                if (split.splitRange && split.splitRange.length) {
+                    split.splitRange.forEach((range) => {
+                        if (range.startAmountCurrency) {
+                            result[conditionId]['split'].push({
+                                name: 'Currency',
+                                value: range.startAmountCurrency
+                            });
+                        }
+                        if (range.startAmountDaily) {
+                            result[conditionId]['split'].push({
+                                renderOnlyValue: true,
+                                boldValue: true,
+                                value: `Daily Count <= ${range.startAmountDaily}`
+                            });
+                        }
+                        if (range.startAmount) {
+                            let name = `${getPaddedStringWithSpaces(`Amount >= ${range.startAmount}`, amountCharacters)}`.split('');
+                            let value = `${getPaddedStringWithSpaces(range.percent ? `${range.percent}%;` : '', maxPercentageCharacters)} ${getPaddedStringWithSpaces(range.minValue ? `min: ${range.minValue};` : '', minAmountCharacters)} ${getPaddedStringWithSpaces(range.maxValue ? `max: ${range.maxValue};` : '', maxAmountCharacters)} ${getPaddedStringWithSpaces(range.percentBase ? `base: ${range.percentBase};` : '', basePercentageCharacters)}`.trim().split('');
+                            result[conditionId]['split'].push({
+                                name: name,
+                                value: value
+                            });
+                        }
+                        result[conditionId]['split'].push({
+                            setEmptyRow: true
+                        });
+                    });
+                }
+            });
+        }
     });
     return result;
+};
+
+const getPaddedStringWithSpaces = function(str, maxStringLength) {
+    if (maxStringLength > str.length) {
+        let whitespace = ' ';
+        return str + whitespace.repeat(maxStringLength - str.length);
+    }
+    return str;
 };

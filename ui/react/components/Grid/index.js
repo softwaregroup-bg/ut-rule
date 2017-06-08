@@ -22,14 +22,33 @@ export default React.createClass({
     shouldComponentUpdate(nextProps, nextState) {
         return true;
     },
+    replaceValueInObjectWithEmptySpaces(obj, keyInObj, reactKey) {
+        if (Array.isArray(obj[keyInObj])) {
+            obj[keyInObj] = obj[keyInObj].map((v, i) => {
+                // for correct alignment we use hidden span with some symbol.
+                return v === ' ' ? <span key={`${reactKey}${i}`} className={style.hideSpan}>0</span> : v;
+            });
+        }
+    },
     renderGridColumn(condition, keysToInclude) {
         let result = [];
         keysToInclude.forEach((keyToInclude) => {
             if (Array.isArray(condition[keyToInclude])) {
-                condition[keyToInclude].forEach((record) => {
-                    result.push(<div key={result.length}>
-                        <b>{`${record.name}: `}</b>{record.value}
-                    </div>);
+                condition[keyToInclude].forEach((record, i) => {
+                    this.replaceValueInObjectWithEmptySpaces(record, 'value', `v${keyToInclude}${i}`);
+                    this.replaceValueInObjectWithEmptySpaces(record, 'name', `n${keyToInclude}${i}`);
+                    let value = record.value && record.boldValue ? <b>{record.value}</b> : record.value;
+                    if (record.separator) {
+                        result.push(<div key={result.length} className={style.bottomSeparator} />);
+                    } else if (record.setEmptyRow) {
+                        result.push(<br key={result.length} />);
+                    } else if (record.renderOnlyValue) {
+                        result.push(<div key={result.length}>{value}</div>);
+                    } else {
+                        result.push(<div key={result.length}>
+                            <b>{record.name}: </b>{value}
+                        </div>);
+                    }
                 });
             }
         });
@@ -57,6 +76,7 @@ export default React.createClass({
                 source: columns.source.visible && this.props.formatedGridData[conditionId],
                 destination: columns.destination.visible && this.props.formatedGridData[conditionId],
                 limit: columns.limit.visible && this.props.formatedGridData[conditionId],
+                split: columns.split.visible && this.props.formatedGridData[conditionId],
                 refresh: ''
             };
         });
@@ -79,6 +99,8 @@ export default React.createClass({
                     return this.renderGridColumn(value, ['ds', 'dc', 'do']);
                 case 'limit':
                     return this.renderGridColumn(value, ['limit']);
+                case 'split':
+                    return this.renderGridColumn(value, ['split']);
                 default:
                     return value;
             }
@@ -98,6 +120,7 @@ export default React.createClass({
               {title: columns.source.title, name: 'source'},
               {title: columns.destination.title, name: 'destination'},
               {title: columns.limit.title, name: 'limit'},
+              {title: columns.split.title, name: 'split'},
               {
                   title: <div style={{float: 'right'}}>
                     <ContextMenu

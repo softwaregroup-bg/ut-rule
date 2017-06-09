@@ -1,3 +1,13 @@
+<a name="9.7.1"></a>
+## [9.7.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.7.0...v9.7.1) (2017-06-09)
+
+
+### Bug Fixes
+
+* allow null ([#58](https://github.com/softwaregroup-bg/ut-rule/issues/58)) ([2d25dfc](https://github.com/softwaregroup-bg/ut-rule/commit/2d25dfc))
+
+
+
 <a name="9.7.0"></a>
 # [9.7.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.6.1...v9.7.0) (2017-06-08)
 

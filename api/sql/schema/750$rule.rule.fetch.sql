@@ -9,6 +9,7 @@ BEGIN
         [rule].condition
     WHERE
         @conditionId IS NULL OR conditionId = @conditionId
+    ORDER BY [priority]
     
     SELECT 'conditionActor' AS resultSetName
     SELECT 

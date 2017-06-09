@@ -184,7 +184,17 @@ export function editRule(params) {
             conditionActor,
             conditionItem,
             conditionProperty,
-            limit: params.limit,
+            limit: (params.limit || []).map(item => {
+                item.minAmount = item.minAmount === '' ? null : item.minAmount;
+                item.maxAmount = item.maxAmount === '' ? null : item.maxAmount;
+                item.maxAmountDaily = item.maxAmountDaily === '' ? null : item.maxAmountDaily;
+                item.maxCountDaily = item.maxCountDaily === '' ? null : item.maxCountDaily;
+                item.maxAmountWeekly = item.maxAmountWeekly === '' ? null : item.maxAmountWeekly;
+                item.maxCountWeekly = item.maxCountWeekly === '' ? null : item.maxCountWeekly;
+                item.maxAmountMonthly = item.maxAmountMonthly === '' ? null : item.maxAmountMonthly;
+                item.maxCountMonthly = item.maxCountMonthly === '' ? null : item.maxCountMonthly;
+                return item;
+            }),
             split: { data: { rows: split } }
         };
 

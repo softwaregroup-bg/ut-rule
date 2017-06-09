@@ -22,7 +22,7 @@ const defaultUiState = {
         agentRole: [],
         accountAlias: [],
         organization: [''],
-        role: ['']
+        role: []
     },
     main: {
         grid: {

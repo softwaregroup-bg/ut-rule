@@ -1,3 +1,20 @@
+<a name="9.4.13"></a>
+## [9.4.13](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.4.13) (2017-06-09)
+
+
+### Bug Fixes
+
+* linting problems ([8f61896](https://github.com/softwaregroup-bg/ut-rule/commit/8f61896))
+* UIS-2724 add rule sorting by priority ([f1e7bc7](https://github.com/softwaregroup-bg/ut-rule/commit/f1e7bc7))
+
+
+### Features
+
+* Grid changes made to accomodate expansion row functionality ([3d5e9da](https://github.com/softwaregroup-bg/ut-rule/commit/3d5e9da))
+* UIS-2721 UIS-2719 UIS-2711 UIS-2708 all these issues are fixed ([8804da6](https://github.com/softwaregroup-bg/ut-rule/commit/8804da6))
+
+
+
 <a name="9.4.12"></a>
 ## [9.4.12](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.4.12) (2017-06-09)
 

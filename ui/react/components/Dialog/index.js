@@ -299,7 +299,13 @@ export default React.createClass({
                 }
             });
         };
-
+        formatedData.limit && formatedData.limit.map((l, i) => {
+            for (let key in l) {
+                if (typeof formatedData.limit[i][key] !== 'string') {
+                    formatedData.limit[i][key] = formatedData.limit[i][key].toString();
+                }
+            }
+        });
         this.setState({
             data: merge({}, this.state.data, formatedData), // here we get the data
             isEditing: this.props.data !== undefined

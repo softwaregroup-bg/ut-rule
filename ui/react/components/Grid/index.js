@@ -32,18 +32,39 @@ export default React.createClass({
         }
         this.setState({expandedGridColumns});
     },
-    renderGridColumn(condition, keysToInclude, id) {
+    renderGridColumn(condition, keysToInclude, row, column) {
         let result = [];
         for (let keyToInclude of keysToInclude) {
             if (Array.isArray(condition[keyToInclude])) {
                 for (let index in condition[keyToInclude]) {
                     let record = condition[keyToInclude][index];
-                    if (index > 4 && !this.state.expandedGridColumns.some(v => v === id)) break;
+                    if (index > 4 && !this.state.expandedGridColumns.some(v => v === row.priority)) break;
                     result.push(<div key={result.length}>
-                        <b>{`${record.name}: `}</b>{record.value}
+                        <b>{record.name + ':'}</b>{record.value}
                     </div>);
                 }
             }
+        }
+        if (row.operationEndDate && column === 'operation') {
+            result.push(
+              <div key={result.length}>
+                  <b>End Date: </b>{row.operationEndDate.slice(0, 10)}
+              </div>
+            );
+        }
+        if (row.operationStartDate && column === 'operation') {
+            result.push(
+              <div key={result.length}>
+                  <b>Start Date: </b>{row.operationStartDate.slice(0, 10)}
+              </div>
+            );
+        }
+        if (row.destinationAccountId && column === 'destination') {
+            result.push(
+              <div key={result.length}>
+                  <b>Destination Account: </b>{row.destinationAccountId}
+              </div>
+            );
         }
         return (
           <div>
@@ -66,6 +87,9 @@ export default React.createClass({
             let columns = this.state.columns;
             return {
                 id: conditionId,
+                destinationAccountId: condition.destinationAccountId,
+                operationEndDate: condition.operationEndDate,
+                operationStartDate: condition.operationStartDate,
                 priority: columns.priority.visible && condition.priority,
                 channel: columns.channel.visible && this.props.formatedGridData[conditionId],
                 operation: columns.operation.visible && this.props.formatedGridData[conditionId],
@@ -86,15 +110,15 @@ export default React.createClass({
             }
             switch (header.name) {
                 case 'channel':
-                    return this.renderGridColumn(value, ['cs', 'co'], row.priority);
+                    return this.renderGridColumn(value, ['cs', 'co'], row, 'channel');
                 case 'operation':
-                    return this.renderGridColumn(value, ['oc'], row.priority);
+                    return this.renderGridColumn(value, ['oc'], row, 'operation');
                 case 'source':
-                    return this.renderGridColumn(value, ['ss', 'sc', 'so'], row.priority);
+                    return this.renderGridColumn(value, ['ss', 'sc', 'so'], row, 'source');
                 case 'destination':
-                    return this.renderGridColumn(value, ['ds', 'dc', 'do'], row.priority);
+                    return this.renderGridColumn(value, ['ds', 'dc', 'do'], row, 'destination');
                 case 'limit':
-                    return this.renderGridColumn(value, ['limit'], row.priority);
+                    return this.renderGridColumn(value, ['limit'], row, 'limit');
                 case 'expansion':
                     let expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
                     return <a onClick={(e) => { e.preventDefault(); this.handleGridExpansion(row.priority); }}>{expansionText}</a>;

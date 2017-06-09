@@ -184,7 +184,10 @@ export function editRule(params) {
             conditionActor,
             conditionItem,
             conditionProperty,
-            limit: params.limit,
+            limit: (params.limit || []).map(item => {
+                item.maxAmountDaily = item.maxAmountDaily === '' ? null : item.maxAmountDaily;
+                return item;
+            }),
             split: { data: { rows: split } }
         };
 

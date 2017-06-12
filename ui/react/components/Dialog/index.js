@@ -527,7 +527,9 @@ export default React.createClass({
                     autoScrollBodyContent
                     contentStyle={style}
                     onRequestClose={this.closeFormErrorDialog}
-                    actions={[]}
+                    actions={[
+                        <button onClick={this.closeFormErrorDialog} className='button btn btn-primary'>Cancel</button>
+                    ]}
                   >
                     <div className={style.content}>
                         {this.state.form.errors && this.state.form.errors.map((error, i) => <div key={i}>{error}</div>)}

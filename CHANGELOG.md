@@ -1,3 +1,13 @@
+<a name="9.7.2"></a>
+## [9.7.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.7.1...v9.7.2) (2017-06-12)
+
+
+### Bug Fixes
+
+* vb1 ([397f725](https://github.com/softwaregroup-bg/ut-rule/commit/397f725))
+
+
+
 <a name="9.7.1"></a>
 ## [9.7.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.7.0...v9.7.1) (2017-06-09)
 

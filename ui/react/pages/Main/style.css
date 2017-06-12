@@ -1,16 +1,10 @@
 .grid {
-    padding: 20px;
-    background-color: transparent;
+    overflow-y: auto;
 }
 
 .actionBarWrap {
-    border: 1px solid #e7e7e7;
-}
-
-.tableWrap {
-    margin: 0 !important;
-    padding: 0 !important;
-    position: static !important;
+    border: 1px solid #d7d7d7;
+    overflow: hidden
 }
 
 .rulesNomenclatures {
@@ -28,4 +22,20 @@
 
 .gridToolBoxButtons {
     float: right;
+}
+
+.tableWrap {
+    margin-top: 70px !important;
+}
+
+.pageWrap {
+    height: 100%;
+    overflow: hidden;
+}
+
+.paginationWrap {
+    width: 100%;
+    position: absolute;
+    bottom: 34px;
+    padding: 0 40px 0 20px;
 }

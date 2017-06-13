@@ -21,6 +21,7 @@ BEGIN TRY
             SELECT [priority]
             FROM [rule].condition
             WHERE [priority] = (SELECT [priority] from @condition)
+            AND conditionId != @conditionId
         )
         BEGIN 
             RAISERROR ('rule.duplicatedPriority', 16, 1)        

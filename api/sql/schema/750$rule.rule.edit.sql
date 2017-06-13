@@ -13,9 +13,6 @@ DECLARE @splitAssignment [rule].splitAssignmentTT
 declare @conditionId INT = (SELECT conditionId FROM @condition)
 
 BEGIN TRY
-    BEGIN TRANSACTION
-    SET @conditionId = (SELECT conditionId FROM @condition)
-
     IF EXISTS
         (
             SELECT [priority]
@@ -25,8 +22,11 @@ BEGIN TRY
         )
         BEGIN 
             RAISERROR ('rule.duplicatedPriority', 16, 1)        
-        END 
-        
+        END
+
+    BEGIN TRANSACTION
+    SET @conditionId = (SELECT conditionId FROM @condition)
+
     UPDATE c
     SET [priority] = c1.[priority],
         operationStartDate = c1.operationStartDate,

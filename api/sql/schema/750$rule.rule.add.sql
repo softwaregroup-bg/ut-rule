@@ -11,6 +11,16 @@ DECLARE @splitName [rule].splitNameTT,
         @conditionId INT
 BEGIN TRY
 
+    IF EXISTS
+        (
+            SELECT [priority]
+            FROM [rule].condition
+            WHERE [priority] = (SELECT [priority] from @condition)
+        )
+        BEGIN 
+            RAISERROR ('rule.duplicatedPriority', 16, 1)        
+        END 
+
     BEGIN TRANSACTION
 
     INSERT INTO [rule].condition (
@@ -208,7 +218,7 @@ END TRY
 BEGIN CATCH
     IF @@TRANCOUNT > 0
         ROLLBACK TRANSACTION
-
+    
     EXEC core.error
     RETURN 55555
 END CATCH

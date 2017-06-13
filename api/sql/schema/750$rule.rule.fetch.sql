@@ -16,7 +16,7 @@ BEGIN
 			rc.[operationStartDate],
 			rc.[priority],
 			rc.[sourceAccountId],
-			ROW_NUMBER() OVER(ORDER BY rc.[conditionId] DESC) as [RowNum],
+			ROW_NUMBER() OVER(ORDER BY rc.[priority] DESC) as [RowNum],
 			COUNT(*) OVER(PARTITION BY 1) AS [recordsTotal]
 		FROM
 			[rule].condition rc
@@ -34,6 +34,7 @@ BEGIN
 		cte.[recordsTotal]
 	INTO #RuleConditions
 	FROM CTE cte
+	ORDER BY cte.[priority] DESC
 
 	SELECT 'condition' AS resultSetName
 	SELECT

@@ -16,6 +16,16 @@ BEGIN TRY
     BEGIN TRANSACTION
     SET @conditionId = (SELECT conditionId FROM @condition)
 
+    IF EXISTS
+        (
+            SELECT [priority]
+            FROM [rule].condition
+            WHERE [priority] = (SELECT [priority] from @condition)
+        )
+        BEGIN 
+            RAISERROR ('rule.duplicatedPriority', 16, 1)        
+        END 
+        
     UPDATE c
     SET [priority] = c1.[priority],
         operationStartDate = c1.operationStartDate,

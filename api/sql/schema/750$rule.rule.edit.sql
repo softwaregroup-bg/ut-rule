@@ -13,6 +13,17 @@ DECLARE @splitAssignment [rule].splitAssignmentTT
 declare @conditionId INT = (SELECT conditionId FROM @condition)
 
 BEGIN TRY
+    IF EXISTS
+        (
+            SELECT [priority]
+            FROM [rule].condition
+            WHERE [priority] = (SELECT [priority] from @condition)
+            AND conditionId != @conditionId
+        )
+        BEGIN 
+            RAISERROR ('rule.duplicatedPriority', 16, 1)        
+        END
+
     BEGIN TRANSACTION
     SET @conditionId = (SELECT conditionId FROM @condition)
 

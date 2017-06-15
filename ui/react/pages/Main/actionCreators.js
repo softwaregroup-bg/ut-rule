@@ -8,6 +8,8 @@ const removeEmpty = (obj) => {
     return obj;
 };
 
+export const updatePagination = (params) => ({type: actionTypes.updatePagination, params});
+
 export function fetchRules(params) {
     return {
         type: actionTypes.fetchRules,

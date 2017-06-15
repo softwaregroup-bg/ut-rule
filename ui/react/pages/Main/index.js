@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { fromJS } from 'immutable';
 import { bindActionCreators } from 'redux';
 import Grid from '../../components/Grid';
 import Dialog from '../../components/Dialog';
@@ -8,6 +9,7 @@ import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
 import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
+import AdvancedPagination from 'ut-front-react/components/AdvancedPagination';
 import classnames from 'classnames';
 import style from './style.css';
 import * as actionCreators from './actionCreators';
@@ -21,12 +23,12 @@ const Main = React.createClass({
         nomenclatures: PropTypes.object,
         formatedGridData: PropTypes.object,
         ready: PropTypes.bool,
-        empty: PropTypes.bool,
         actions: PropTypes.object,
         location: PropTypes.object,
         uiConfig: PropTypes.object,
         columns: PropTypes.object,
-        sections: PropTypes.object
+        sections: PropTypes.object,
+        pagination: PropTypes.object
     },
     getInitialState() {
         return {
@@ -41,13 +43,18 @@ const Main = React.createClass({
             uiConfig: this.props.uiConfig.toJS()
         };
     },
-    fetchData() {
-        this.props.actions.fetchRules();
+    fetchData(props) {
+        let {pageSize, pageNumber} = props.pagination;
+
+        this.props.actions.fetchRules({pageSize, pageNumber});
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     },
+    componentWillMount() {
+        this.fetchData(this.props);
+    },
     componentWillReceiveProps(nextProps) {
-        if (nextProps.empty) {
-            this.fetchData();
+        if (this.props.pagination.changeId !== nextProps.pagination.changeId) {
+            this.fetchData(nextProps);
         }
     },
     shouldComponentUpdate(nextProps, nextState) {
@@ -139,19 +146,19 @@ const Main = React.createClass({
             <div className={style.header}>
                 <Header text='Rule Management' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick}]} />
             </div>
+            <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
+                <GridToolbox opened title='' >
+                    <div className={style.gridToolBoxButtons}>
+                        <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
+                            Edit
+                        </button>
+                        <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
+                            Delete
+                        </button>
+                    </div>
+                </GridToolbox>
+            </div>
             <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
-                <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
-                    <GridToolbox opened title='' >
-                        <div className={style.gridToolBoxButtons}>
-                            <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
-                                Edit
-                            </button>
-                            <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
-                                Delete
-                            </button>
-                        </div>
-                    </GridToolbox>
-                </div>
                 <div className={style.grid} >
                     {this.state.dialog.open &&
                         <Dialog
@@ -195,7 +202,12 @@ const Main = React.createClass({
                       handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
                       columns={columns}
                     />
-                    </div>
+                </div>
+            </div>
+            <div className={style.paginationWrap}>
+                <AdvancedPagination
+                  onUpdate={this.props.actions.updatePagination}
+                  pagination={fromJS(this.props.pagination)} />
             </div>
             {false &&
                 <div>
@@ -223,8 +235,12 @@ export default connect(
             ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
             roles: state.main.fetchRoles,
             organizations: state.main.fetchOrganizations,
-            empty: Object.keys(state.main).length === 0,
-            uiConfig: state.uiConfig
+            uiConfig: state.uiConfig,
+            pagination: state.main.pagination || {
+                pageSize: 25,
+                pageNumber: 1,
+                recordsTotal: 0
+            }
         };
     },
     (dispatch) => {

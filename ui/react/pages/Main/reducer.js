@@ -7,9 +7,7 @@ const maxAmountCharacters = 10;
 const basePercentageCharacters = 10;
 
 export default (state = defaultState, action) => {
-    if (action.type === actionTypes.reset) {
-        return defaultState;
-    } else if (action.result && action.methodRequestState === 'finished') {
+    if (action.result && action.methodRequestState === 'finished') {
         switch (action.type) {
             case actionTypes.fetchNomenclatures:
                 return Object.assign({}, state, {
@@ -22,10 +20,21 @@ export default (state = defaultState, action) => {
                     'conditionActor': action.result.conditionActor,
                     'conditionItem': action.result.conditionItem,
                     'conditionProperty': action.result.conditionProperty,
-                    'formatedGridData': getFormattedGridDataColumns(action.result, formattedRules)
+                    'formatedGridData': getFormattedGridDataColumns(action.result, formattedRules),
+                    'pagination': {...state.pagination, ...(action.result.pagination && action.result.pagination[0])}
                 });
             default:
                 break;
+        }
+    } else {
+        switch (action.type) {
+            case actionTypes.reset:
+                return defaultState;
+            case actionTypes.updatePagination:
+                let changeId = (state.pagination.changeId || 0);
+                let paginationState = {pagination: {...action.params.toJS(), ...{changeId: ++changeId}}};
+
+                return {...state, ...paginationState};
         }
     }
     return state;

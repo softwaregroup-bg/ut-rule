@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.7.4-duplicated-priority-error.3",
+  "version": "9.7.5-errors-dialog-buttons.0",
   "dependencies": {
     "classnames": "2.2.5",
     "joi": "10.0.6",

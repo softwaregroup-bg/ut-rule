@@ -1,3 +1,19 @@
+<a name="9.8.0"></a>
+# [9.8.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.7.2...v9.8.0) (2017-06-15)
+
+
+### Bug Fixes
+
+* add close button in error dialog when creating rule with empty p… ([#61](https://github.com/softwaregroup-bg/ut-rule/issues/61)) ([caedd82](https://github.com/softwaregroup-bg/ut-rule/commit/caedd82))
+* handle duplicated priority error ([05c75a3](https://github.com/softwaregroup-bg/ut-rule/commit/05c75a3))
+
+
+### Features
+
+* rule grid pagination ([#62](https://github.com/softwaregroup-bg/ut-rule/issues/62)) ([6677751](https://github.com/softwaregroup-bg/ut-rule/commit/6677751))
+
+
+
 <a name="9.7.2"></a>
 ## [9.7.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.7.1...v9.7.2) (2017-06-12)
 

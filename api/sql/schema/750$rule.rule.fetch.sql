@@ -1,90 +1,98 @@
 ALTER PROCEDURE [rule].[rule.fetch]
     @conditionId INT,
-	@pageSize INT = 25,                       -- how many rows will be returned per page
-    @pageNumber INT = 1  					  -- which page number to display
+    @pageSize INT = 5,    -- how many rows will be returned per page
+    @pageNumber INT = 1   -- which page number to display
 AS
 
 DECLARE @startRow INT = (@pageNumber - 1) * @pageSize + 1
 DECLARE @endRow INT = @startRow + @pageSize - 1
 
 BEGIN
-	;WITH CTE AS (
-		SELECT
-			rc.[conditionId],
-			rc.[destinationAccountId],
-			rc.[operationEndDate],
-			rc.[operationStartDate],
-			rc.[priority],
-			rc.[sourceAccountId],
-			ROW_NUMBER() OVER(ORDER BY rc.[priority] DESC) as [RowNum],
-			COUNT(*) OVER(PARTITION BY 1) AS [recordsTotal]
-		FROM
-			[rule].condition rc
-		WHERE
-			@conditionId IS NULL OR conditionId = @conditionId)
+    ;WITH CTE AS (
+        SELECT
+            rc.[conditionId],
+            rc.[priority],
+            rc.[operationEndDate],
+            rc.[operationStartDate],
+            rc.[sourceAccountId],
+            rc.[destinationAccountId],
+            ROW_NUMBER() OVER(ORDER BY rc.[priority] DESC) as [RowNum],
+            COUNT(*) OVER(PARTITION BY 1) AS [recordsTotal]
+        FROM
+            [rule].condition rc
+        WHERE
+            @conditionId IS NULL OR conditionId = @conditionId)
 
-	SELECT
-		cte.[conditionId],
-		cte.[destinationAccountId],
-		cte.[operationEndDate],
-		cte.[operationStartDate],
-		cte.[priority],
-		cte.[sourceAccountId],
-		cte.[RowNum],
-		cte.[recordsTotal]
-	INTO #RuleConditions
-	FROM CTE cte
-	ORDER BY cte.[priority] DESC
+    SELECT
+        cte.[conditionId],
+        cte.[priority],
+        cte.[operationEndDate],
+        cte.[operationStartDate],
+        cte.[sourceAccountId],
+        cte.[destinationAccountId],
+        cte.[RowNum],
+        cte.[recordsTotal]
+    INTO #RuleConditions
+    FROM CTE cte
+    WHERE (RowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
+    ORDER BY cte.[priority] DESC
 
-	SELECT 'condition' AS resultSetName
-	SELECT
-		rct.[conditionId],
-		rct.[destinationAccountId],
-		rct.[operationEndDate],
-		rct.[operationStartDate],
-		rct.[priority],
-		rct.[sourceAccountId]
-	FROM #RuleConditions rct
-	WHERE (RowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
+    SELECT 'condition' AS resultSetName
+    SELECT
+        rct.[conditionId],
+        rct.[priority],
+        rct.[operationEndDate],
+        rct.[operationStartDate],
+        rct.[sourceAccountId],
+        rct.[destinationAccountId]
+    FROM #RuleConditions rct
 
     SELECT 'conditionActor' AS resultSetName
-    SELECT 
+    SELECT
         ca.*, a.actorType AS [type]
-    FROM 
+    FROM
         [rule].conditionActor ca
-    JOIN 
+    JOIN
+        #RuleConditions rct ON rct.conditionId = ca.conditionId
+    JOIN
         core.actor a ON a.actorId = ca.actorId
     WHERE
         @conditionId IS NULL OR ca.conditionId = @conditionId
 
     SELECT 'conditionItem' AS resultSetName
-    SELECT 
+    SELECT
         c.*, t.alias AS [type], t.name as itemTypeName, i.itemName
-    FROM 
-        [rule].conditionItem c 
-    JOIN 
+    FROM
+        [rule].conditionItem c
+    JOIN
+        #RuleConditions rct ON rct.conditionId = c.conditionId
+    JOIN
         core.itemName i ON i.itemNameId = c.itemNameId
-    JOIN 
+    JOIN
         core.itemType t ON t.itemTypeId = i.itemTypeId
     WHERE
         @conditionId IS NULL OR c.conditionId = @conditionId
 
-    
+
     SELECT 'conditionProperty' AS resultSetName
-    SELECT 
-        *
-    FROM 
-        [rule].conditionProperty 
+    SELECT
+        cp.*
+    FROM
+        [rule].conditionProperty cp
+    JOIN
+        #RuleConditions rct ON rct.conditionId = cp.conditionId
     WHERE
-        @conditionId IS NULL OR conditionId = @conditionId
+        @conditionId IS NULL OR cp.conditionId = @conditionId
 
     SELECT 'splitName' AS resultSetName
     SELECT
-        *
+        sn.*
     FROM
-        [rule].splitName
+        [rule].splitName sn
+    JOIN
+        #RuleConditions rct ON rct.conditionId = sn.conditionId
     WHERE
-        @conditionId IS NULL OR conditionId = @conditionId
+        @conditionId IS NULL OR sn.conditionId = @conditionId
 
     SELECT 'splitRange' AS resultSetName
     SELECT
@@ -93,6 +101,8 @@ BEGIN
         [rule].splitRange sr
     JOIN
         [rule].splitName sn ON sn.splitNameId = sr.splitNameId
+    JOIN
+        #RuleConditions rct ON rct.conditionId = sn.conditionId
     WHERE
         @conditionId IS NULL OR sn.conditionId = @conditionId
 
@@ -103,35 +113,42 @@ BEGIN
         [rule].splitAssignment sa
     JOIN
         [rule].splitName sn ON sn.splitNameId = sa.splitNameId
+    JOIN
+        #RuleConditions rct ON rct.conditionId = sn.conditionId
     WHERE
         @conditionId IS NULL OR sn.conditionId = @conditionId
 
     SELECT 'limit' AS resultSetName
-
     SELECT
-        *
+        l.*
     FROM
-        [rule].limit
+        [rule].limit l
+    JOIN
+        #RuleConditions rct ON rct.conditionId = l.conditionId
     WHERE
-        @conditionId IS NULL OR conditionId = @conditionId
+        @conditionId IS NULL OR l.conditionId = @conditionId
 
     SELECT 'splitAnalytic' AS resultSetName
     SELECT
         san.*
     FROM
-	   [rule].splitAnalytic san
+        [rule].splitAnalytic san
     JOIN
         [rule].splitAssignment sa ON sa.splitAssignmentId = san.splitAssignmentId
     JOIN
         [rule].splitName sn ON sn.splitNameId = sa.splitNameId
+    JOIN
+        #RuleConditions rct ON rct.conditionId = sn.conditionId
     WHERE
         @conditionId IS NULL OR sn.conditionId = @conditionId
 
-	SELECT 'pagination' AS resultSetName
+    SELECT 'pagination' AS resultSetName
     SELECT TOP 1
-		@pageSize AS pageSize,
-		recordsTotal AS recordsTotal,
-		CASE WHEN @pageNumber < (recordsTotal - 1) / @pageSize + 1 THEN @pageNumber ELSE (recordsTotal - 1) / @pageSize + 1 END AS pageNumber,
-		(recordsTotal - 1) / @pageSize + 1 AS pagesTotal
-	FROM #RuleConditions
+        @pageSize AS pageSize,
+        recordsTotal AS recordsTotal,
+        CASE WHEN @pageNumber < (recordsTotal - 1) / @pageSize + 1 THEN @pageNumber ELSE (recordsTotal - 1) / @pageSize + 1 END AS pageNumber,
+        (recordsTotal - 1) / @pageSize + 1 AS pagesTotal
+    FROM #RuleConditions
+
+    DROP TABLE #RuleConditions
 END

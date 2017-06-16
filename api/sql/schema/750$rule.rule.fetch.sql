@@ -1,5 +1,5 @@
 ALTER PROCEDURE [rule].[rule.fetch]
-    @conditionId INT,
+    @conditionId INT = NULL,
     @pageSize INT = 5,    -- how many rows will be returned per page
     @pageNumber INT = 1   -- which page number to display
 AS
@@ -8,34 +8,48 @@ DECLARE @startRow INT = (@pageNumber - 1) * @pageSize + 1
 DECLARE @endRow INT = @startRow + @pageSize - 1
 
 BEGIN
+    
+    IF OBJECT_ID('tempdb..#RuleConditions') IS NOT NULL
+        DROP TABLE #RuleConditions
+    
+    CREATE TABLE #RuleConditions (
+        conditionId INT,
+        [priority] INT, 
+        operationStartDate DATETIME, 
+        operationEndDate DATETIME, 
+        sourceAccountId NVARCHAR(255), 
+        destinationAccountId NVARCHAR(255),
+        rowNum INT, 
+        recordsTotal INT)
+    
     ;WITH CTE AS (
         SELECT
-            rc.[conditionId],
+            rc.conditionId,
             rc.[priority],
-            rc.[operationEndDate],
-            rc.[operationStartDate],
-            rc.[sourceAccountId],
-            rc.[destinationAccountId],
-            ROW_NUMBER() OVER(ORDER BY rc.[priority] DESC) as [RowNum],
-            COUNT(*) OVER(PARTITION BY 1) AS [recordsTotal]
+            rc.operationEndDate,
+            rc.operationStartDate,
+            rc.sourceAccountId,
+            rc.destinationAccountId,
+            ROW_NUMBER() OVER(ORDER BY rc.[priority] DESC) as rowNum,
+            COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
         FROM
             [rule].condition rc
         WHERE
-            @conditionId IS NULL OR conditionId = @conditionId)
+            @conditionId IS NULL OR rc.conditionId = @conditionId)
 
+    INSERT INTO #RuleConditions( conditionId, [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
     SELECT
-        cte.[conditionId],
-        cte.[priority],
-        cte.[operationEndDate],
-        cte.[operationStartDate],
-        cte.[sourceAccountId],
-        cte.[destinationAccountId],
-        cte.[RowNum],
-        cte.[recordsTotal]
-    INTO #RuleConditions
-    FROM CTE cte
-    WHERE (RowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
-    ORDER BY cte.[priority] DESC
+        conditionId,
+        [priority],
+        operationEndDate,
+        operationStartDate,
+        sourceAccountId,
+        destinationAccountId,
+        rowNum,
+        recordsTotal
+    FROM CTE
+    WHERE (rowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
+    ORDER BY [priority] DESC
 
     SELECT 'condition' AS resultSetName
     SELECT

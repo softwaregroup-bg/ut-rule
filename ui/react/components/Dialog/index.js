@@ -5,6 +5,7 @@ import Input from 'ut-front-react/components/Input';
 import style from './style.css';
 import Channel from './Section/Channel';
 import Operation from './Section/Operation';
+import MessageDialog from 'material-ui/Dialog';
 import Split from './Section/Splits';
 import Source from './Section/Source';
 import Destination from './Section/Destination';
@@ -18,7 +19,7 @@ import set from 'lodash.set';
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
-
+const maxPriorityValue = 2000000000;
 const emptyCondition = {
     priority: null,
     channelCountryIds: [],
@@ -126,6 +127,7 @@ export default React.createClass({
     },
     getInitialState() {
         return {
+            prompt: false,
             form: {
                 errors: [],
                 errorDialogOpen: false
@@ -155,6 +157,17 @@ export default React.createClass({
             },
             sections: this.props.sections
         };
+    },
+    showPrompt(msg) {
+        this.setState({
+            prompt: true,
+            message: msg
+        });
+    },
+    hidePrompt() {
+        this.setState({
+            prompt: false
+        });
     },
     componentWillMount() {
         var formatedData = {};
@@ -502,6 +515,17 @@ export default React.createClass({
             form: this.state.form
         });
     },
+    priorityFieldOnChange(a) {
+        if (a.value && !isNaN(a.value) && Number(a.value) >= maxPriorityValue) {
+            this.showPrompt('The entered value for priority too big! Max value: ' + maxPriorityValue);
+            return this.onChangeInput({
+                initValue: maxPriorityValue,
+                value: maxPriorityValue,
+                key: 'priority'
+            });
+        }
+        this.onChangeInput(a);
+    },
     contentStyle: {
         minWidth: '730px',
         maxWidth: '50%'
@@ -520,6 +544,17 @@ export default React.createClass({
                   <button onClick={this.props.onClose} className='button btn btn-primary'>Cancel</button>
               ]}
             >
+                {this.state.prompt &&
+                    <MessageDialog
+                      open={this.state.prompt}
+                      autoScrollBodyContent
+                      actions={[
+                          <button className='button btn btn-primary' onClick={this.hidePrompt} style={{ marginRight: '10px' }}>OK</button>
+                      ]}
+                      >
+                      <div style={{padding: '10px'}}>{this.state.message}</div>
+                    </MessageDialog>
+                }
                 <div>
                   <Dialog
                     title='Error'
@@ -539,7 +574,7 @@ export default React.createClass({
                         <Input
                           keyProp='priority'
                           label='Priority'
-                          onChange={this.onChangeInput}
+                          onChange={this.priorityFieldOnChange}
                           value={'' + (this.state.data.condition[0].priority || '')}
                         />
                     </div>

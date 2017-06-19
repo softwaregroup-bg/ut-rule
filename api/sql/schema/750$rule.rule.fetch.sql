@@ -63,13 +63,15 @@ BEGIN
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
-        ca.*, a.actorType AS [type]
+        ca.*, a.actorType AS [type], va.name AS [actorName]
     FROM
         [rule].conditionActor ca
     JOIN
         #RuleConditions rct ON rct.conditionId = ca.conditionId
     JOIN
         core.actor a ON a.actorId = ca.actorId
+    LEFT JOIN 
+        integration.vActor va ON va.actorId = a.actorId
     WHERE
         @conditionId IS NULL OR ca.conditionId = @conditionId
 

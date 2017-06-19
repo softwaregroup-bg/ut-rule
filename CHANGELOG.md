@@ -1,3 +1,13 @@
+<a name="9.8.1"></a>
+## [9.8.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.0...v9.8.1) (2017-06-19)
+
+
+### Bug Fixes
+
+* rule.rule.fetch pagination ([#64](https://github.com/softwaregroup-bg/ut-rule/issues/64)) ([3e4a64c](https://github.com/softwaregroup-bg/ut-rule/commit/3e4a64c))
+
+
+
 <a name="9.8.0"></a>
 # [9.8.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.7.2...v9.8.0) (2017-06-15)
 

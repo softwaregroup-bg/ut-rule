@@ -24,7 +24,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxAmountDaily: joi.string().empty('').regex(/^\d+$/).options({
+            maxAmountDaily: joi.string().allow(null).allow("").regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -35,7 +35,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxAmountMonthly: joi.string().empty('').regex(/^\d+$/).options({
+            maxAmountMonthly: joi.string().allow(null).allow("").regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -46,7 +46,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxAmountWeekly: joi.string().empty('').regex(/^\d+$/).options({
+            maxAmountWeekly: joi.string().allow(null).allow("").regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -57,7 +57,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxCountDaily: joi.string().empty('').regex(/^\d+$/).options({
+            maxCountDaily: joi.string().allow(null).allow("").regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -68,7 +68,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxCountMonthly: joi.string().empty('').regex(/^\d+$/).options({
+            maxCountMonthly: joi.string().allow(null).allow("").regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -79,7 +79,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxCountWeekly: joi.string().empty('').regex(/^\d+$/).options({
+            maxCountWeekly: joi.string().allow(null).allow("").regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -90,7 +90,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            minAmount: joi.string().empty('').regex(/^\d+$/).options({
+            minAmount: joi.string().allow(null).allow("").regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -101,7 +101,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxAmount: joi.string().empty('').regex(/^\d+$/).options({
+            maxAmount: joi.string().allow(null).allow("").regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {

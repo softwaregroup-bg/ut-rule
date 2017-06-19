@@ -301,8 +301,12 @@ export default React.createClass({
         };
         formatedData.limit && formatedData.limit.map((l, i) => {
             for (let key in l) {
-                if (typeof formatedData.limit[i][key] !== 'string') {
+                if (typeof formatedData.limit[i][key] === 'number') {
                     formatedData.limit[i][key] = formatedData.limit[i][key].toString();
+                } else if (typeof formatedData.limit[i][key] === 'string') {
+                    formatedData.limit[i][key] = formatedData.limit[i][key];
+                } else {
+                    formatedData.limit[i][key] = '';
                 }
             }
         });
@@ -472,7 +476,16 @@ export default React.createClass({
         return (new Set(array)).size !== array.length;
     },
     save() {
-        let formValidation = validations.run(this.state.data);
+        debugger;
+        let newState = this.state.data;
+        newState.limit && newState.limit.map((l, i) => {
+            for (let key in l) {
+                if (newState.limit[i][key] === '') {
+                    newState.limit[i][key] = null;
+                }
+            }
+        });
+        let formValidation = validations.run(newState);
         if (formValidation.isValid) formValidation.errors = [];
         let hasDuplicateCurrencies = false;
         let currencyValues = [];

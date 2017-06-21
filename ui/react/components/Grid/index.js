@@ -16,7 +16,20 @@ export default React.createClass({
     getInitialState(state) {
         return {
             expandedGridColumns: [],
-            columns: this.props.columns
+            columns: this.props.columns,
+            fields: [
+              {title: this.props.columns.priority.title, name: 'priority', visible: true},
+              {title: this.props.columns.channel.title, name: 'channel', visible: true},
+              {title: this.props.columns.operation.title, name: 'operation', visible: true},
+              {title: this.props.columns.source.title, name: 'source', visible: true},
+              {title: this.props.columns.destination.title, name: 'destination', visible: true},
+              {title: this.props.columns.limit.title, name: 'limit', visible: true},
+                {
+                    title: <div>Expansion</div>,
+                    name: 'expansion',
+                    visible: true
+                }
+            ]
         };
     },
     shouldComponentUpdate(nextProps, nextState) {
@@ -80,6 +93,15 @@ export default React.createClass({
     handleRowClick(record, index) {
         this.props.handleCheckboxSelect(null, record);
     },
+    toggleColumn(field) {
+        let stateFields = this.state.fields;
+        stateFields.map(stateField => {
+            if (stateField.name === field.name && stateField.name !== 'expansion') {
+                stateField.visible = !stateField.visible;
+            }
+        });
+        this.setState({fields: stateFields});
+    },
     getData() {
         return Object.keys(this.props.data).map((conditionId, i) => {
             let record = this.props.data[conditionId];
@@ -133,29 +155,10 @@ export default React.createClass({
 
         return <SimpleGrid
           ref='grid'
+          globalMenu
+          toggleColumnVisibility={this.toggleColumn}
           multiSelect
-          fields={[
-              {title: columns.priority.title, name: 'priority'},
-              {title: columns.channel.title, name: 'channel'},
-              {title: columns.operation.title, name: 'operation'},
-              {title: columns.source.title, name: 'source'},
-              {title: columns.destination.title, name: 'destination'},
-              {title: columns.limit.title, name: 'limit'},
-              {
-                  title: <div>Expansion</div>,
-                  name: 'expansion'
-              },
-              {
-                  title: <div style={{float: 'right'}}>
-                    <ContextMenu
-                      refresh={this.props.refresh}
-                      onClose={this.updateColumns}
-                      data={this.state.columns}
-                    />
-                  </div>,
-                  name: 'refresh'
-              }
-          ].filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
+          fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
           handleCheckboxSelect={this.props.handleCheckboxSelect}
           handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
           handleRowClick={this.handleRowClick}

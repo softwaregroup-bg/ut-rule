@@ -15,6 +15,7 @@ export default (state = defaultState, action) => {
                 });
             case actionTypes.fetchRules:
                 let formattedRules = formatRules(action.result);
+
                 return Object.assign({}, state, {
                     'fetchRules': formattedRules,
                     'conditionActor': action.result.conditionActor,
@@ -28,6 +29,11 @@ export default (state = defaultState, action) => {
         }
     } else {
         switch (action.type) {
+            case actionTypes.fetchRules:
+                if (!action.params.pageSize && state.pagination) {
+                    action.params = {...action.params, ...{pageSize: state.pagination.pageSize}};
+                }
+                break;
             case actionTypes.reset:
                 return defaultState;
             case actionTypes.updatePagination:

@@ -4,7 +4,7 @@ import joi from 'joi-browser';
 let schema = joi.object().keys({
     condition: joi.array().items(
         joi.object().keys({
-            priority: joi.number().min(1).required().options({
+            priority: joi.number().integer().min(1).max(2147483647).required().options({
                 language: {
                     key: '"Priority" ',
                     number: {

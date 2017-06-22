@@ -1,6 +1,6 @@
 ALTER PROCEDURE [rule].[rule.fetch]
     @conditionId INT = NULL,
-    @pageSize INT = 5,    -- how many rows will be returned per page
+    @pageSize INT = 25,    -- how many rows will be returned per page
     @pageNumber INT = 1   -- which page number to display
 AS
 

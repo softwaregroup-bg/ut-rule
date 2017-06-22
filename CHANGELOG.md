@@ -1,3 +1,13 @@
+<a name="9.8.2"></a>
+## [9.8.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.1...v9.8.2) (2017-06-22)
+
+
+### Bug Fixes
+
+* rule.fetch default page size value, UIS-2879, UIS-2880 ([#66](https://github.com/softwaregroup-bg/ut-rule/issues/66)) ([63c50d5](https://github.com/softwaregroup-bg/ut-rule/commit/63c50d5))
+
+
+
 <a name="9.8.1"></a>
 ## [9.8.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.0...v9.8.1) (2017-06-19)
 

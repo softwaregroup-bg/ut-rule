@@ -314,7 +314,17 @@ export default React.createClass({
                 }
             });
         };
-
+        formatedData.limit && formatedData.limit.map((l, i) => {
+            for (let key in l) {
+                if (typeof formatedData.limit[i][key] === 'number') {
+                    formatedData.limit[i][key] = formatedData.limit[i][key].toString();
+                } else if (typeof formatedData.limit[i][key] === 'string') {
+                    formatedData.limit[i][key] = formatedData.limit[i][key];
+                } else {
+                    formatedData.limit[i][key] = '';
+                }
+            }
+        });
         this.setState({
             data: merge({}, this.state.data, formatedData), // here we get the data
             isEditing: this.props.data !== undefined
@@ -481,7 +491,36 @@ export default React.createClass({
         return (new Set(array)).size !== array.length;
     },
     save() {
+<<<<<<< HEAD
         let formValidation = validations.run(this.state.data);
+=======
+        debugger;
+        let newState = this.state.data;
+        newState.limit && newState.limit.map((l, i) => {
+            for (let key in l) {
+                if (newState.limit[i][key] === '') {
+                    newState.limit[i][key] = null;
+                }
+            }
+        });
+        let formValidation = validations.run(newState);
+        if (formValidation.isValid) formValidation.errors = [];
+        let hasDuplicateCurrencies = false;
+        let currencyValues = [];
+        for (var i = 0; i < this.state.data.split.length; i++) {
+            currencyValues = [];
+            for (var j = 0; j < this.state.data.split[i].splitCumulative.length; j++) {
+                currencyValues.push(this.state.data.split[i].splitCumulative[j].currency);
+            }
+            hasDuplicateCurrencies = this.hasDuplicates(currencyValues);
+            if (hasDuplicateCurrencies) {
+                formValidation.isValid = false;
+                formValidation.errors.push('There cannot be Cumulative fields with same currencies!');
+                break;
+            }
+        }
+
+>>>>>>> rc1
         if (formValidation.isValid) {
             this.props.onSave(this.state.data);
         }

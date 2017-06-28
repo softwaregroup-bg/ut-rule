@@ -54,6 +54,10 @@ const defaultUiState = {
                 split: {
                     visible: true,
                     title: 'Split'
+                },
+                expansion: {
+                    visible: true,
+                    title: 'Expansion'
                 }
             }
         }

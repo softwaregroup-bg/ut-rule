@@ -112,7 +112,7 @@ const SectionLimit = React.createClass({
     },
     render() {
         return (
-            <div>
+            <div>   
                 <table className={style.dataGridTable}>
                     <thead>
                         <tr>
@@ -126,12 +126,12 @@ const SectionLimit = React.createClass({
                         <tr>
                             <th>Min</th>
                             <th>Max</th>
+                            <th>Min</th>
                             <th>Max</th>
-                            <th>Count</th>
+                            <th>Min</th>
                             <th>Max</th>
-                            <th>Count</th>
+                            <th>Min</th>
                             <th>Max</th>
-                            <th>Count</th>
                         </tr>
                     </thead>
                     <tbody>

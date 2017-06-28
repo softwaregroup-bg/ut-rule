@@ -1,14 +1,6 @@
 <a name="9.8.3"></a>
 ## [9.8.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.2...v9.8.3) (2017-06-22)
 
-
-### Bug Fixes
-
-* set pagination in request parameters ([753bfab](https://github.com/softwaregroup-bg/ut-rule/commit/753bfab))
-* validate priority is an integer ([#68](https://github.com/softwaregroup-bg/ut-rule/issues/68)) ([d9e25ab](https://github.com/softwaregroup-bg/ut-rule/commit/d9e25ab))
-
-
-
 <a name="9.8.2"></a>
 ## [9.8.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.1...v9.8.2) (2017-06-22)
 
@@ -31,27 +23,25 @@
 
 <a name="9.8.0"></a>
 # [9.8.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.7.2...v9.8.0) (2017-06-15)
-
-
-### Bug Fixes
-
-* add close button in error dialog when creating rule with empty p… ([#61](https://github.com/softwaregroup-bg/ut-rule/issues/61)) ([caedd82](https://github.com/softwaregroup-bg/ut-rule/commit/caedd82))
-* handle duplicated priority error ([05c75a3](https://github.com/softwaregroup-bg/ut-rule/commit/05c75a3))
+* linting problems ([8f61896](https://github.com/softwaregroup-bg/ut-rule/commit/8f61896))
+* UIS-2724 add rule sorting by priority ([f1e7bc7](https://github.com/softwaregroup-bg/ut-rule/commit/f1e7bc7))
+* version increment ([e5dea80](https://github.com/softwaregroup-bg/ut-rule/commit/e5dea80))
 
 
 ### Features
 
-* rule grid pagination ([#62](https://github.com/softwaregroup-bg/ut-rule/issues/62)) ([6677751](https://github.com/softwaregroup-bg/ut-rule/commit/6677751))
+* add proper globalMenu, remove old ([0493a16](https://github.com/softwaregroup-bg/ut-rule/commit/0493a16))
+* add validations and make limit fields be able to be 0, null, empty ([f54a0c1](https://github.com/softwaregroup-bg/ut-rule/commit/f54a0c1))
+* Grid changes made to accomodate expansion row functionality ([3d5e9da](https://github.com/softwaregroup-bg/ut-rule/commit/3d5e9da))
+* UIS-2721 UIS-2719 UIS-2711 UIS-2708 all these issues are fixed ([8804da6](https://github.com/softwaregroup-bg/ut-rule/commit/8804da6))
 
 
 
 <a name="9.7.2"></a>
 ## [9.7.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.7.1...v9.7.2) (2017-06-12)
-
-
-### Bug Fixes
-
-* vb1 ([397f725](https://github.com/softwaregroup-bg/ut-rule/commit/397f725))
+* add validations and make limit fields be able to be 0, null, empty ([f54a0c1](https://github.com/softwaregroup-bg/ut-rule/commit/f54a0c1))
+* Grid changes made to accomodate expansion row functionality ([3d5e9da](https://github.com/softwaregroup-bg/ut-rule/commit/3d5e9da))
+* UIS-2721 UIS-2719 UIS-2711 UIS-2708 all these issues are fixed ([8804da6](https://github.com/softwaregroup-bg/ut-rule/commit/8804da6))
 
 
 
@@ -67,26 +57,30 @@
 
 <a name="9.7.0"></a>
 # [9.7.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.6.1...v9.7.0) (2017-06-08)
+* linting problems ([8f61896](https://github.com/softwaregroup-bg/ut-rule/commit/8f61896))
+* UIS-2724 add rule sorting by priority ([f1e7bc7](https://github.com/softwaregroup-bg/ut-rule/commit/f1e7bc7))
 
 
 ### Features
 
-* add column for splits in rules grid ([4841ef1](https://github.com/softwaregroup-bg/ut-rule/commit/4841ef1))
+* Grid changes made to accomodate expansion row functionality ([3d5e9da](https://github.com/softwaregroup-bg/ut-rule/commit/3d5e9da))
+* UIS-2721 UIS-2719 UIS-2711 UIS-2708 all these issues are fixed ([8804da6](https://github.com/softwaregroup-bg/ut-rule/commit/8804da6))
+
+
 
 
 
 <a name="9.6.1"></a>
 ## [9.6.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.6.0...v9.6.1) (2017-06-05)
-
-
-### Bug Fixes
-
-* UIS-2731 unnecessary result set has been removed from procedure ([#56](https://github.com/softwaregroup-bg/ut-rule/issues/56)) ([0c10ff2](https://github.com/softwaregroup-bg/ut-rule/commit/0c10ff2))
+* Grid changes made to accomodate expansion row functionality ([3d5e9da](https://github.com/softwaregroup-bg/ut-rule/commit/3d5e9da))
+* UIS-2721 UIS-2719 UIS-2711 UIS-2708 all these issues are fixed ([8804da6](https://github.com/softwaregroup-bg/ut-rule/commit/8804da6))
 
 
 
 <a name="9.6.0"></a>
 # [9.6.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.5.0...v9.6.0) (2017-05-31)
+* linting problems ([8f61896](https://github.com/softwaregroup-bg/ut-rule/commit/8f61896))
+* UIS-2724 add rule sorting by priority ([f1e7bc7](https://github.com/softwaregroup-bg/ut-rule/commit/f1e7bc7))
 
 
 ### Features
@@ -97,17 +91,86 @@
 
 <a name="9.5.0"></a>
 # [9.5.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.5.0) (2017-05-30)
+* Grid changes made to accomodate expansion row functionality ([3d5e9da](https://github.com/softwaregroup-bg/ut-rule/commit/3d5e9da))
+
+<a name="9.4.17"></a>
+## [9.4.17](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.4.17) (2017-06-21)
+
+
+### Bug Fixes
+
+* set pagination in request parameters ([753bfab](https://github.com/softwaregroup-bg/ut-rule/commit/753bfab))
+* validate priority is an integer ([#68](https://github.com/softwaregroup-bg/ut-rule/issues/68)) ([d9e25ab](https://github.com/softwaregroup-bg/ut-rule/commit/d9e25ab))
+
+
+<a name="9.4.16"></a>
+## [9.4.16](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.4.16) (2017-06-20)
+
+
+### Bug Fixes
+
+* add close button in error dialog when creating rule with empty p… ([#61](https://github.com/softwaregroup-bg/ut-rule/issues/61)) ([caedd82](https://github.com/softwaregroup-bg/ut-rule/commit/caedd82))
+* handle duplicated priority error ([05c75a3](https://github.com/softwaregroup-bg/ut-rule/commit/05c75a3))
+* linting problems ([8f61896](https://github.com/softwaregroup-bg/ut-rule/commit/8f61896))
+* UIS-2724 add rule sorting by priority ([f1e7bc7](https://github.com/softwaregroup-bg/ut-rule/commit/f1e7bc7))
+* version increment ([e5dea80](https://github.com/softwaregroup-bg/ut-rule/commit/e5dea80))
+
+
+### Features
+
+* rule grid pagination ([#62](https://github.com/softwaregroup-bg/ut-rule/issues/62)) ([6677751](https://github.com/softwaregroup-bg/ut-rule/commit/6677751))
+
+
+
+<a name="9.4.14"></a>
+## [9.4.14](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.4.14) (2017-06-13)
+
+
+### Bug Fixes
+
+* vb1 ([397f725](https://github.com/softwaregroup-bg/ut-rule/commit/397f725))
+
+
+
+<a name="9.4.13"></a>
+## [9.4.13](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.4.13) (2017-06-09)
+
+
+### Bug Fixes
+
+* linting problems ([8f61896](https://github.com/softwaregroup-bg/ut-rule/commit/8f61896))
+* UIS-2724 add rule sorting by priority ([f1e7bc7](https://github.com/softwaregroup-bg/ut-rule/commit/f1e7bc7))
+
+
+### Features
+
+* add column for splits in rules grid ([4841ef1](https://github.com/softwaregroup-bg/ut-rule/commit/4841ef1))
+
+
+<a name="9.4.12"></a>
+## [9.4.12](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.4.12) (2017-06-09)
+
+
+### Bug Fixes
+
+* UIS-2731 unnecessary result set has been removed from procedure ([#56](https://github.com/softwaregroup-bg/ut-rule/issues/56)) ([0c10ff2](https://github.com/softwaregroup-bg/ut-rule/commit/0c10ff2))
+
+
+<a name="9.4.11"></a>
+## [9.4.11](https://github.com/softwaregroup-bg/ut-rule/compare/v9.4.10...v9.4.11) (2017-06-07)
 
 
 ### Bug Fixes
 
 * lint accidental debugger ([66047e5](https://github.com/softwaregroup-bg/ut-rule/commit/66047e5))
 * UIS-2662 bug 1, 2, 14 ([ba5ad80](https://github.com/softwaregroup-bg/ut-rule/commit/ba5ad80))
+* linting problems ([8f61896](https://github.com/softwaregroup-bg/ut-rule/commit/8f61896))
 
 
 ### Features
 
 * MCTUNE-2918 add possibility the user to add more cumulative than one ([ff640e9](https://github.com/softwaregroup-bg/ut-rule/commit/ff640e9))
+* Grid changes made to accomodate expansion row functionality ([3d5e9da](https://github.com/softwaregroup-bg/ut-rule/commit/3d5e9da))
 
 
 

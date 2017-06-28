@@ -1,3 +1,24 @@
+<a name="9.8.4"></a>
+## [9.8.4](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.3...v9.8.4) (2017-06-28)
+
+
+### Bug Fixes
+
+* linting problems ([8f61896](https://github.com/softwaregroup-bg/ut-rule/commit/8f61896))
+* previus changes ([001fbab](https://github.com/softwaregroup-bg/ut-rule/commit/001fbab))
+* UIS-2724 add rule sorting by priority ([f1e7bc7](https://github.com/softwaregroup-bg/ut-rule/commit/f1e7bc7))
+* version increment ([e5dea80](https://github.com/softwaregroup-bg/ut-rule/commit/e5dea80))
+
+
+### Features
+
+* add proper globalMenu, remove old ([0493a16](https://github.com/softwaregroup-bg/ut-rule/commit/0493a16))
+* add validations and make limit fields be able to be 0, null, empty ([f54a0c1](https://github.com/softwaregroup-bg/ut-rule/commit/f54a0c1))
+* Grid changes made to accomodate expansion row functionality ([3d5e9da](https://github.com/softwaregroup-bg/ut-rule/commit/3d5e9da))
+* UIS-2721 UIS-2719 UIS-2711 UIS-2708 all these issues are fixed ([8804da6](https://github.com/softwaregroup-bg/ut-rule/commit/8804da6))
+
+
+
 <a name="9.8.3"></a>
 ## [9.8.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.2...v9.8.3) (2017-06-22)
 

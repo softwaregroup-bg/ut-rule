@@ -40,10 +40,10 @@ module.exports = {
         result: joi.object().keys({
             fee: joi.object().keys({
                 amount: joi.number()
-            }).allow(null),
+            }).allow(null).unknown(),
             commission: joi.object().keys({
                 amount: joi.number()
-            }).allow(null),
+            }).allow(null).unknown(),
             limit: joi.object().keys({
                 minAmount: joi.number().allow(null),
                 maxAmount: joi.number().allow(null),
@@ -53,7 +53,7 @@ module.exports = {
                 maxCountWeekly: joi.number().allow(null),
                 maxAmountMonthly: joi.number().allow(null),
                 maxCountMonthly: joi.number().allow(null)
-            }).allow(null)
+            }).allow(null).unknown()
         })
     },
     'item.fetch': {

@@ -1,3 +1,19 @@
+<a name="5.8.18"></a>
+## [5.8.18](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.10...v5.8.18) (2017-06-28)
+
+
+### Bug Fixes
+
+* add babel core dependency ([fcd433a](https://github.com/softwaregroup-bg/ut-rule/commit/fcd433a))
+* add some dependencies so that they can be removed from implementations ([7a032ed](https://github.com/softwaregroup-bg/ut-rule/commit/7a032ed))
+* dependencies ([4d4c8df](https://github.com/softwaregroup-bg/ut-rule/commit/4d4c8df))
+* less strict validations due to latest changes in quote api ([ec0b6d1](https://github.com/softwaregroup-bg/ut-rule/commit/ec0b6d1))
+* readme ([a83ea99](https://github.com/softwaregroup-bg/ut-rule/commit/a83ea99))
+* update dependencies ([5f1aeee](https://github.com/softwaregroup-bg/ut-rule/commit/5f1aeee))
+* update ut-tools ([7182655](https://github.com/softwaregroup-bg/ut-rule/commit/7182655))
+
+
+
 <a name="5.8.17"></a>
 ## [5.8.17](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.10...v5.8.17) (2017-05-30)
 

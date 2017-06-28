@@ -8,7 +8,7 @@ let schema = joi.object().keys({
                 language: {
                     key: '"Priority" ',
                     number: {
-                        base: 'is required for all conditions and should be a number'
+                        base: 'is required for all conditions and should be a integer'
                     }
                 }
             })
@@ -21,6 +21,94 @@ let schema = joi.object().keys({
                     key: '"Currency" ',
                     string: {
                         base: 'is required for all limits'
+                    }
+                }
+            }),
+            maxAmountDaily: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+                language: {
+                    key: '"Limit" ',
+                    string: {
+                        base: 'All limits fields should be integers',
+                        regex: {
+                            base: 'All limits fields should be integers'
+                        }
+                    }
+                }
+            }),
+            maxAmountMonthly: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+                language: {
+                    key: '"Limit" ',
+                    string: {
+                        base: 'All limits fields should be integers',
+                        regex: {
+                            base: 'All limits fields should be integers'
+                        }
+                    }
+                }
+            }),
+            maxAmountWeekly: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+                language: {
+                    key: '"Limit" ',
+                    string: {
+                        base: 'All limits fields should be integers',
+                        regex: {
+                            base: 'All limits fields should be integers'
+                        }
+                    }
+                }
+            }),
+            maxCountDaily: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+                language: {
+                    key: '"Limit" ',
+                    string: {
+                        base: 'All limits fields should be integers',
+                        regex: {
+                            base: 'All limits fields should be integers'
+                        }
+                    }
+                }
+            }),
+            maxCountMonthly: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+                language: {
+                    key: '"Limit" ',
+                    string: {
+                        base: 'All limits fields should be integers',
+                        regex: {
+                            base: 'All limits fields should be integers'
+                        }
+                    }
+                }
+            }),
+            maxCountWeekly: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+                language: {
+                    key: '"Limit" ',
+                    string: {
+                        base: 'All limits fields should be integers',
+                        regex: {
+                            base: 'All limits fields should be integers'
+                        }
+                    }
+                }
+            }),
+            minAmount: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+                language: {
+                    key: '"Limit" ',
+                    string: {
+                        base: 'All limits fields should be integers',
+                        regex: {
+                            base: 'All limits fields should be integers'
+                        }
+                    }
+                }
+            }),
+            maxAmount: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+                language: {
+                    key: '"Limit" ',
+                    string: {
+                        base: 'All limits fields should be integers',
+                        regex: {
+                            base: 'All limits fields should be integers'
+                        }
                     }
                 }
             })
@@ -38,21 +126,105 @@ let schema = joi.object().keys({
                     }
                 })
             }),
-            splitRange: joi.array().items(
+            splitCumulative: joi.array().items(
                  joi.object().keys({
-                     startAmount: joi.number().min(1).required().options({
+                     currency: joi.string().required().options({
                          language: {
-                             key: '"Range Start Amount" ',
-                             number: {
-                                 base: 'is required for all splits'
+                             key: '"Currency" ',
+                             string: {
+                                 base: 'is required for all splits cumulatives'
                              }
                          }
                      }),
-                     startAmountCurrency: joi.string().required().options({
+                    //  dailyAmount: joi.string().options({
+                    //      language: {
+                    //          key: '"Daily Amount" ',
+                    //          string: {
+                    //              base: 'is required for all splits cumulatives'
+                    //          }
+                    //      }
+                    //  }),
+                    //  dailyCount: joi.string().options({
+                    //      language: {
+                    //          key: '"Daily Count" ',
+                    //          string: {
+                    //              base: 'is required for all splits cumulatives'
+                    //          }
+                    //      }
+                    //  }),
+                    //  mounthlyAmount: joi.string().options({
+                    //      language: {
+                    //          key: '"Mounthly Amount" ',
+                    //          string: {
+                    //              base: 'is required for all splits cumulatives'
+                    //          }
+                    //      }
+                    //  }),
+                    //  mounthlyCount: joi.string().options({
+                    //      language: {
+                    //          key: '"Mounthly Count" ',
+                    //          string: {
+                    //              base: 'is required for all splits cumulatives'
+                    //          }
+                    //      }
+                    //  }),
+                    //  weeklyAmount: joi.string().options({
+                    //      language: {
+                    //          key: '"Weekly Amount" ',
+                    //          string: {
+                    //              base: 'is required for all splits cumulatives'
+                    //          }
+                    //      }
+                    //  }),
+                    //  weeklyCount: joi.string().options({
+                    //      language: {
+                    //          key: '"Weekly Count" ',
+                    //          string: {
+                    //              base: 'is required for all splits cumulatives'
+                    //          }
+                    //      }
+                    //  }),
+                     splitRange: joi.array().items(
+                        joi.object().keys({
+                            // isSourceAmount: joi.boolean(),
+                            // maxValue: joi.string().options({
+                            //     language: {
+                            //         key: '"Range" ',
+                            //         string: {
+                            //             base: 'is required for all splits cumulatives'
+                            //         }
+                            //     }
+                            // }),
+                            // minValue: joi.string().options({
+                            //     language: {
+                            //         key: '"Range" ',
+                            //         string: {
+                            //             base: 'is required for all splits cumulatives'
+                            //         }
+                            //     }
+                            // }),
+                            // percent: joi.string().options({
+                            //     language: {
+                            //         key: '"Range" ',
+                            //         string: {
+                            //             base: 'is required for all splits cumulatives'
+                            //         }
+                            //     }
+                            // }),
+                            // startAmount: joi.string().options({
+                            //     language: {
+                            //         key: '"Range" ',
+                            //         string: {
+                            //             base: 'is required for all splits cumulatives'
+                            //         }
+                            //     }
+                            // })
+                        })
+                     ).min(1).options({
                          language: {
-                             key: '"Range Start Amount Currency" ',
+                             key: '"Cumulative Ranges" ',
                              string: {
-                                 base: 'is required for all splits'
+                                 base: 'are required for all splits cumulatives'
                              }
                          }
                      })

@@ -1,14 +1,12 @@
 import React, { PropTypes } from 'react';
 import {fromJS} from 'immutable';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
-import ContextMenu from '../ContextMenu';
 import style from './style.css';
 
 export default React.createClass({
     propTypes: {
         data: PropTypes.object,
         columns: PropTypes.object,
-        nomenclatures: PropTypes.object,
         formatedGridData: PropTypes.object,
         selectedConditions: PropTypes.object,
         refresh: PropTypes.func,
@@ -17,43 +15,75 @@ export default React.createClass({
     },
     getInitialState(state) {
         return {
-            columns: this.props.columns
+            expandedGridColumns: [],
+            columns: this.props.columns,
+            fields: [
+              {title: this.props.columns.priority.title, name: 'priority', visible: true},
+              {title: this.props.columns.channel.title, name: 'channel', visible: true},
+              {title: this.props.columns.operation.title, name: 'operation', visible: true},
+              {title: this.props.columns.source.title, name: 'source', visible: true},
+              {title: this.props.columns.destination.title, name: 'destination', visible: true},
+              {title: this.props.columns.limit.title, name: 'limit', visible: true},
+                {
+                    title: <div>Expansion</div>,
+                    name: 'expansion',
+                    visible: true
+                }
+            ]
         };
     },
     shouldComponentUpdate(nextProps, nextState) {
         return true;
     },
-    replaceValueInObjectWithEmptySpaces(obj, keyInObj, reactKey) {
-        if (Array.isArray(obj[keyInObj])) {
-            obj[keyInObj] = obj[keyInObj].map((v, i) => {
-                // for correct alignment we use hidden span with some symbol.
-                return v === ' ' ? <span key={`${reactKey}${i}`} className={style.hideSpan}>0</span> : v;
-            });
+    handleGridExpansion(id) {
+        let expandedGridColumns = this.state.expandedGridColumns;
+        if (expandedGridColumns.some(v => v === id)) {
+            let index = expandedGridColumns.indexOf(id);
+            expandedGridColumns.splice(index, 1);
+        } else {
+            expandedGridColumns.push(id);
         }
+        this.setState({expandedGridColumns});
     },
-    renderGridColumn(condition, keysToInclude) {
+    renderGridColumn(condition, keysToInclude, row, column) {
         let result = [];
-        keysToInclude.forEach((keyToInclude) => {
+        for (let keyToInclude of keysToInclude) {
             if (Array.isArray(condition[keyToInclude])) {
-                condition[keyToInclude].forEach((record, i) => {
-                    this.replaceValueInObjectWithEmptySpaces(record, 'value', `v${keyToInclude}${i}`);
-                    this.replaceValueInObjectWithEmptySpaces(record, 'name', `n${keyToInclude}${i}`);
-                    let value = record.value && record.boldValue ? <b>{record.value}</b> : record.value;
-                    if (record.separator) {
-                        result.push(<div key={result.length} className={style.bottomSeparator} />);
-                    } else if (record.setEmptyRow) {
-                        result.push(<br key={result.length} />);
-                    } else if (record.renderOnlyValue) {
-                        result.push(<div key={result.length}>{value}</div>);
-                    } else {
-                        result.push(<div key={result.length}>
-                            <b>{record.name}: </b>{value}
-                        </div>);
-                    }
-                });
+                for (let index in condition[keyToInclude]) {
+                    let record = condition[keyToInclude][index];
+                    if (index > 4 && !this.state.expandedGridColumns.some(v => v === row.priority)) break;
+                    result.push(<div key={result.length}>
+                        <b>{record.name + ':'}</b>{record.value}
+                    </div>);
+                }
             }
-        });
-        return result;
+        }
+        if (row.operationEndDate && column === 'operation') {
+            result.push(
+              <div key={result.length}>
+                  <b>End Date: </b>{row.operationEndDate.slice(0, 10)}
+              </div>
+            );
+        }
+        if (row.operationStartDate && column === 'operation') {
+            result.push(
+              <div key={result.length}>
+                  <b>Start Date: </b>{row.operationStartDate.slice(0, 10)}
+              </div>
+            );
+        }
+        if (row.destinationAccountId && column === 'destination') {
+            result.push(
+              <div key={result.length}>
+                  <b>Destination Account: </b>{row.destinationAccountId}
+              </div>
+            );
+        }
+        return (
+          <div>
+            {result}
+          </div>
+        );
     },
     updateColumns(columns) {
         this.setState({
@@ -63,14 +93,25 @@ export default React.createClass({
     handleRowClick(record, index) {
         this.props.handleCheckboxSelect(null, record);
     },
+    toggleColumn(field) {
+        let stateFields = this.state.fields;
+        stateFields.map(stateField => {
+            if (stateField.name === field.name && stateField.name !== 'expansion') {
+                stateField.visible = !stateField.visible;
+            }
+        });
+        this.setState({fields: stateFields});
+    },
     getData() {
         return Object.keys(this.props.data).map((conditionId, i) => {
             let record = this.props.data[conditionId];
             let condition = record.condition[0];
             let columns = this.state.columns;
-
             return {
                 id: conditionId,
+                destinationAccountId: condition.destinationAccountId,
+                operationEndDate: condition.operationEndDate,
+                operationStartDate: condition.operationStartDate,
                 priority: columns.priority.visible && condition.priority,
                 channel: columns.channel.visible && this.props.formatedGridData[conditionId],
                 operation: columns.operation.visible && this.props.formatedGridData[conditionId],
@@ -78,7 +119,7 @@ export default React.createClass({
                 destination: columns.destination.visible && this.props.formatedGridData[conditionId],
                 limit: columns.limit.visible && this.props.formatedGridData[conditionId],
                 split: columns.split.visible && this.props.formatedGridData[conditionId],
-                refresh: ''
+                expansion: 'Not Empty'
             };
         });
     },
@@ -91,17 +132,20 @@ export default React.createClass({
             }
             switch (header.name) {
                 case 'channel':
-                    return this.renderGridColumn(value, ['cs', 'co']);
+                    return this.renderGridColumn(value, ['cs', 'co'], row, 'channel');
                 case 'operation':
-                    return this.renderGridColumn(value, ['oc']);
+                    return this.renderGridColumn(value, ['oc'], row, 'operation');
                 case 'source':
-                    return this.renderGridColumn(value, ['ss', 'sc', 'so']);
+                    return this.renderGridColumn(value, ['ss', 'sc', 'so'], row, 'source');
                 case 'destination':
-                    return this.renderGridColumn(value, ['ds', 'dc', 'do']);
+                    return this.renderGridColumn(value, ['ds', 'dc', 'do'], row, 'destination');
                 case 'limit':
-                    return this.renderGridColumn(value, ['limit']);
+                    return this.renderGridColumn(value, ['limit'], row, 'limit');
                 case 'split':
-                    return this.renderGridColumn(value, ['split']);
+                    return this.renderGridColumn(value, ['split'], row, 'split');
+                case 'expansion':
+                    let expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
+                    return <a onClick={(e) => { e.preventDefault(); this.handleGridExpansion(row.priority); }}>{expansionText}</a>;
                 default:
                     return value;
             }
@@ -112,30 +156,12 @@ export default React.createClass({
             return b.get('priority') - a.get('priority');
         }).toJS();
 
-        let columns = this.state.columns;
-
         return <SimpleGrid
           ref='grid'
+          globalMenu
+          toggleColumnVisibility={this.toggleColumn}
           multiSelect
-          fields={[
-              {title: columns.priority.title, name: 'priority'},
-              {title: columns.channel.title, name: 'channel'},
-              {title: columns.operation.title, name: 'operation'},
-              {title: columns.source.title, name: 'source'},
-              {title: columns.destination.title, name: 'destination'},
-              {title: columns.limit.title, name: 'limit'},
-              {title: columns.split.title, name: 'split'},
-              {
-                  title: <div style={{float: 'right'}}>
-                    <ContextMenu
-                      refresh={this.props.refresh}
-                      onClose={this.updateColumns}
-                      data={this.state.columns}
-                    />
-                  </div>,
-                  name: 'refresh'
-              }
-          ].filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
+          fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
           handleCheckboxSelect={this.props.handleCheckboxSelect}
           handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
           handleRowClick={this.handleRowClick}

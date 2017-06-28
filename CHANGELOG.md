@@ -1,3 +1,13 @@
+<a name="9.9.0"></a>
+# [9.9.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.3...v9.9.0) (2017-06-28)
+
+
+### Features
+
+* improve UI ([c74d5e2](https://github.com/softwaregroup-bg/ut-rule/commit/c74d5e2))
+
+
+
 <a name="9.8.8"></a>
 ## [9.8.8](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.3...v9.8.8) (2017-06-28)
 

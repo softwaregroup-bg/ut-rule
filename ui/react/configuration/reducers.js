@@ -3,25 +3,11 @@ import immutable from 'immutable';
 
 const defaultUiState = {
     nomenclatures: {
-        itemName: [
-            'country',
-            'channel',
-            'region',
-            'city',
-            'organization',
-            'role',
-            'operation',
-            'supervisor',
-            'cardProduct',
-            'accountProduct',
-            'account'
-        ],
-        itemCode: [
-            'currency'
-        ],
+        itemName: [],
+        itemCode: [],
         agentRole: [],
         accountAlias: [],
-        organization: [''],
+        organization: [],
         role: []
     },
     main: {

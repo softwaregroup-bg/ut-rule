@@ -8,20 +8,20 @@ DECLARE @startRow INT = (@pageNumber - 1) * @pageSize + 1
 DECLARE @endRow INT = @startRow + @pageSize - 1
 
 BEGIN
-    
+
     IF OBJECT_ID('tempdb..#RuleConditions') IS NOT NULL
         DROP TABLE #RuleConditions
-    
+
     CREATE TABLE #RuleConditions (
         conditionId INT,
-        [priority] INT, 
-        operationStartDate DATETIME, 
-        operationEndDate DATETIME, 
-        sourceAccountId NVARCHAR(255), 
+        [priority] INT,
+        operationStartDate DATETIME,
+        operationEndDate DATETIME,
+        sourceAccountId NVARCHAR(255),
         destinationAccountId NVARCHAR(255),
-        rowNum INT, 
+        rowNum INT,
         recordsTotal INT)
-    
+
     ;WITH CTE AS (
         SELECT
             rc.conditionId,

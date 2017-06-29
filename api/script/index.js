@@ -40,7 +40,8 @@ module.exports = {
 
         Object.keys(msg).forEach(function(method) {
             if (wrapper[method] !== undefined && msg[method] && msg[method].length > 0) {
-                pending.push(wrapper[method]({alias: msg[method]}, $meta));
+                // Clone the $meta when executing bus methods in parallel
+                pending.push(wrapper[method]({alias: msg[method]}, Object.assign({}, $meta)));
             }
         });
 

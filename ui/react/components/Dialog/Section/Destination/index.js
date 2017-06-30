@@ -7,6 +7,8 @@ import plusImage from '../../assets/add_new.png';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 
+const first = (arr) => (Array.isArray(arr) && arr[0] && arr[0].key) || '';
+
 const Destination = React.createClass({
     propTypes: {
         data: PropTypes.object.isRequired,
@@ -159,15 +161,25 @@ const Destination = React.createClass({
                 }
                 {fields.accountProduct.visible && accountProduct &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='destinationAccountProductId'
-                          label={fields.accountProduct.title}
-                          data={accountProduct}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.destinationAccountProductId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
-                        />
+                        {fields.accountProduct.multi
+                         ? <MultiSelectBubble
+                           keyProp='destinationAccountProductIds'
+                           name='destinationAccountProductIds'
+                           label={fields.accountProduct.title}
+                           value={this.props.data.destinationAccountProductIds}
+                           options={accountProduct}
+                           onChange={(val) => { this.onSelectDropdown({ key: 'destinationAccountProductIds', value: val }); }}
+                           />
+                         : <Dropdown
+                           canSelectPlaceholder
+                           keyProp='destinationAccountProductIds'
+                           label={fields.accountProduct.title}
+                           data={accountProduct}
+                           onSelect={(field) => onSelectDropdown({ key: field.key, value: [{key: field.value}] })}
+                           defaultSelected={first(this.props.data.destinationAccountProductIds)}
+                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                           />
+                        }
                     </div>
                 }
                 {fields.account.visible && account &&

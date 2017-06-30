@@ -7,6 +7,8 @@ import plusImage from '../../assets/add_new.png';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 
+const first = (arr) => (Array.isArray(arr) && arr[0] && arr[0].key) || '';
+
 const Source = React.createClass({
     propTypes: {
         data: PropTypes.object.isRequired,
@@ -79,7 +81,6 @@ const Source = React.createClass({
         let { country, region, city, cardProduct, accountProduct, account, organization, supervisor, role } = this.context.nomenclatures;
         let { onSelectDropdown } = this;
         let fields = this.state.fields;
-
         return (
            <div className={style.content}>
                 {fields.country.visible && country &&
@@ -173,15 +174,25 @@ const Source = React.createClass({
                 }
                 {fields.accountProduct.visible && accountProduct &&
                     <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='sourceAccountProductId'
-                          label={fields.accountProduct.title}
-                          data={accountProduct}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.sourceAccountProductId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
-                        />
+                        {fields.accountProduct.multi
+                         ? <MultiSelectBubble
+                           keyProp='sourceAccountProductIds'
+                           name='sourceAccountProductIds'
+                           label={fields.accountProduct.title}
+                           value={this.props.data.sourceAccountProductIds}
+                           options={accountProduct}
+                           onChange={(val) => { this.onSelectDropdown({ key: 'sourceAccountProductIds', value: val }); }}
+                           />
+                         : <Dropdown
+                           canSelectPlaceholder
+                           keyProp='sourceAccountProductIds'
+                           label={fields.accountProduct.title}
+                           data={accountProduct}
+                           onSelect={(field) => onSelectDropdown({ key: field.key, value: [{key: field.value}] })}
+                           defaultSelected={first(this.props.data.sourceAccountProductIds)}
+                           mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                           />
+                        }
                     </div>
                 }
                 {fields.account.visible && account &&

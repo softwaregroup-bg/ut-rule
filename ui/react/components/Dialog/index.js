@@ -233,6 +233,9 @@ export default React.createClass({
             formatedData.condition[0]['destinationRegionIds'] = [];
             formatedData.condition[0]['destinationCityIds'] = [];
 
+            formatedData.condition[0]['sourceAccountProductIds'] = [];
+            formatedData.condition[0]['destinationAccountProductIds'] = [];
+
             conditionItem.forEach((item) => {
                 if (item.conditionId === conditionId) {
                     if (['operation', 'country', 'city', 'region'].indexOf(item.type) > -1) {
@@ -264,12 +267,18 @@ export default React.createClass({
                         }
                     } else {
                         switch (item.factor) {
-                            case 'ds':
-                                formatedData.condition[0][`destinationAccountProductId`] = item.itemNameId;
+                            case 'dc':
+                                formatedData.condition[0][`destinationAccountProductIds`].push({
+                                    key: item.itemNameId,
+                                    name: nomenclatures[item.type][item.itemNameId]
+                                });
                                 break;
-                            case 'ss':
+                            case 'sc':
                                 if (item.type === 'accountProduct') {
-                                    formatedData.condition[0][`sourceAccountProductId`] = item.itemNameId;
+                                    formatedData.condition[0][`sourceAccountProductIds`].push({
+                                        key: item.itemNameId,
+                                        name: nomenclatures[item.type][item.itemNameId]
+                                    });
                                 } else {
                                     formatedData.condition[0][`sourceCardProductId`] = item.itemNameId;
                                 }

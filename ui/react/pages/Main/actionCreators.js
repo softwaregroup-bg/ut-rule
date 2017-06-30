@@ -101,9 +101,11 @@ export function editRule(params) {
             destinationCityIds: 'ds',
             destinationCountryIds: 'ds',
             destinationRegionIds: 'ds',
+            destinationAccountProductIds: 'dc',
             sourceCityIds: 'ss',
             sourceCountryIds: 'ss',
             sourceRegionIds: 'ss',
+            sourceAccountProductIds: 'sc',
             operationIds: 'oc'
         };
 
@@ -117,22 +119,6 @@ export function editRule(params) {
                     });
                 });
             }
-        }
-
-        if (paramsCondition['destinationAccountProductId']) {
-            conditionItem.push({
-                conditionId: conditionId,
-                factor: 'ds',
-                itemNameId: paramsCondition['destinationAccountProductId']
-            });
-        }
-
-        if (paramsCondition['sourceAccountProductId']) {
-            conditionItem.push({
-                conditionId: conditionId,
-                factor: 'ss',
-                itemNameId: paramsCondition['sourceAccountProductId']
-            });
         }
 
         if (paramsCondition['sourceCardProductId']) {
@@ -277,9 +263,11 @@ export function addRule(params) {
             destinationCityIds: 'ds',
             destinationCountryIds: 'ds',
             destinationRegionIds: 'ds',
+            destinationAccountProductIds: 'dc',
             sourceCityIds: 'ss',
             sourceCountryIds: 'ss',
             sourceRegionIds: 'ss',
+            sourceAccountProductIds: 'sc',
             operationIds: 'oc'
         };
 
@@ -292,20 +280,6 @@ export function addRule(params) {
                     });
                 });
             }
-        }
-
-        if (paramsCondition['destinationAccountProductId']) {
-            conditionItem.push({
-                factor: 'ds',
-                itemNameId: paramsCondition['destinationAccountProductId']
-            });
-        }
-
-        if (paramsCondition['sourceAccountProductId']) {
-            conditionItem.push({
-                factor: 'ss',
-                itemNameId: paramsCondition['sourceAccountProductId']
-            });
         }
 
         if (paramsCondition['sourceCardProductId']) {

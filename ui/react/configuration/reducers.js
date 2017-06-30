@@ -152,6 +152,7 @@ const defaultUiState = {
                     },
                     accountProduct: {
                         visible: true,
+                        mutli: false,
                         title: 'Account Product'
                     },
                     account: {
@@ -198,6 +199,7 @@ const defaultUiState = {
                     },
                     accountProduct: {
                         visible: true,
+                        mutli: false,
                         title: 'Account Product'
                     },
                     account: {

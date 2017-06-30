@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.9.0",
+  "version": "9.9.1-vActor.0",
   "dependencies": {
     "classnames": "2.2.5",
     "joi": "10.0.6",

@@ -41,7 +41,7 @@ const emptyCondition = {
     sourceTag: null,
     sourceId: null,
     sourceCardProductId: null,
-    sourceAccountProductId: null,
+    sourceAccountProductIds: [],
     sourceAccountId: null,
     destinationCountryIds: [],
     destinationRegionIds: [],
@@ -51,7 +51,7 @@ const emptyCondition = {
     destinationSupervisorId: null,
     destinationTag: null,
     destinationId: null,
-    destinationAccountProductId: null,
+    destinationAccountProductIds: [],
     destinationAccountId: null
 };
 const emptyLimit = {

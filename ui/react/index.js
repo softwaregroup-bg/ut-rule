@@ -28,7 +28,7 @@ export const UtRuleRoutes = (config) => {
     return (
         <Route component={getLocalProvider(config)}>
             <Route path={getRoute('ut-rule:home')}>
-                <IndexRoute component={Main} />
+                <IndexRoute component={Main} implementationParseHelper={config ? config.implementationParseHelper : null} />
             </Route>
         </Route>
     );

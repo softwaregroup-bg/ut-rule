@@ -225,7 +225,8 @@ const Main = React.createClass({
 
 export default connect(
     (state, ownProps) => {
-        return {
+        let implementationParseHelper = ownProps.route.implementationParseHelper ? ownProps.route.implementationParseHelper : (a) => { return a; };
+        return implementationParseHelper({
             rules: state.main.fetchRules,
             conditionActor: state.main.conditionActor,
             conditionItem: state.main.conditionItem,
@@ -241,7 +242,7 @@ export default connect(
                 pageNumber: 1,
                 recordsTotal: 0
             }
-        };
+        });
     },
     (dispatch) => {
         return {

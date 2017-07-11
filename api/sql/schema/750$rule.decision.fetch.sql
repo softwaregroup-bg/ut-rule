@@ -8,7 +8,11 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @currency VARCHAR(3),
     @isSourceAmount BIT,
     @sourceAccount varchar(100),
-    @destinationAccount varchar(100)
+    @destinationAccount varchar(100),
+    @sourceCheckAmount MONEY,
+    @sourceCheckMask INT, 
+    @checkMask TINYINT = NULL,
+    @isTransactionValidate BIT = 0
 AS
 BEGIN
     DECLARE @transferTypeId BIGINT
@@ -50,7 +54,9 @@ BEGIN
         @maxAmountWeekly MONEY,
         @maxCountWeekly BIGINT,
         @maxAmountMonthly MONEY,
-        @maxCountMonthly BIGINT
+        @maxCountMonthly BIGINT,        
+        @checkSuccess BIT,
+        @isMaskChecked BIT
 
     INSERT INTO
         @matches(
@@ -112,7 +118,8 @@ BEGIN
         @amountWeekly = ISNULL(c.amountWeekly, 0),
         @countWeekly = ISNULL(c.countWeekly, 0),
         @amountMonthly = ISNULL(c.amountMonthly, 0),
-        @countMonthly = ISNULL(c.countMonthly, 0)
+        @countMonthly = ISNULL(c.countMonthly, 0),
+        @isMaskChecked = l.isMaskChecked
     FROM
         @matches AS c
     JOIN
@@ -122,6 +129,22 @@ BEGIN
     ORDER BY
         c.priority,
         l.limitId
+
+    IF @isTransactionValidate = 0 AND @isMaskChecked = 1 AND @sourceCheckAmount <> 0 AND @sourceCheckAmount <= @amount
+        BEGIN          
+           IF ((@checkMask & @sourceCheckMask) = @sourceCheckMask)              
+               SET @checkSuccess = 1
+            ELSE 
+               SET @checkSuccess = 0    
+        END
+    ELSE 
+        SET @checkSuccess = 1
+    
+    IF @checkSuccess = 0
+        BEGIN 
+            RAISERROR('rule.authenticationFailure', 16, 1)
+            RETURN
+        END  
 
     IF @amount < @minAmount
     BEGIN
@@ -284,4 +307,13 @@ BEGIN
         integration.vAssignment d ON d.accountId = assignment.debit
     LEFT JOIN
         integration.vAssignment c ON c.accountId = assignment.credit
+
+    SELECT 'maskCheck' AS resultSetName, 1 single
+    SELECT   
+        @sourceCheckAmount checkAmount,
+        @sourceCheckMask checkMask
+    WHERE 
+        @isMaskChecked = 1 AND 
+        @isTransactionValidate = 1 AND
+        @amount >= @sourceCheckAmount
 END

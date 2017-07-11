@@ -9,7 +9,9 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @currency varchar(3),
     @isSourceAmount BIT=0,
     @sourceAccountOwnerId BIGINT = NULL,
-    @destinationAccountOwnerId BIGINT = NULL
+    @destinationAccountOwnerId BIGINT = NULL,
+    @checkMask TINYINT = NULL,
+    @isTransactionValidate BIT = 0
 AS
 BEGIN
     DECLARE
@@ -25,6 +27,12 @@ BEGIN
         @sourceOwnerId BIGINT,
         @sourceAccountProductId BIGINT,
         @sourceAccountId NVARCHAR(255),
+        @sourceAccountCheckAmount MONEY,
+        @sourceAccountCheckMask INT,
+        @sourceProductCheckAmount MONEY,
+        @sourceProductCheckMask INT,
+        @sourceCheckAmount MONEY,
+        @sourceCheckMask INT, 
 
         @destinationCountryId BIGINT,
         @destinationRegionId BIGINT,
@@ -59,7 +67,11 @@ BEGIN
         @sourceCityId = cityId,
         @sourceOwnerId = ownerId,
         @sourceAccountProductId = accountProductId,
-        @sourceAccountId = accountId
+        @sourceAccountId = accountId,
+        @sourceAccountCheckAmount = accountCheckAmount,
+        @sourceAccountCheckMask = accountCheckMask,
+        @sourceProductCheckAmount = productCheckAmount,
+        @sourceProductCheckMask = productCheckMask
     FROM
         [integration].[vAccount]
     WHERE
@@ -78,6 +90,9 @@ BEGIN
     WHERE
         accountNumber = @destinationAccount AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
+
+    SET @sourceCheckAmount = coalesce (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0)
+    SET @sourceCheckMask = coalesce (@sourceAccountCheckMask, @sourceProductCheckMask, 0) 
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
@@ -166,5 +181,9 @@ BEGIN
         @currency = @currency,
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
-        @destinationAccount = @destinationAccount
+        @destinationAccount = @destinationAccount,
+        @sourceCheckAmount = @sourceCheckAmount,
+        @sourceCheckMask = @sourceCheckMask,
+        @checkMask = @checkMask,
+        @isTransactionValidate = @isTransactionValidate
 END

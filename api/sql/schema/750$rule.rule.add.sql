@@ -88,7 +88,8 @@ BEGIN TRY
         maxAmountWeekly,
         maxCountWeekly,
         maxAmountMonthly,
-        maxCountMonthly
+        maxCountMonthly,
+        isMaskChecked
     )
     SELECT @conditionId,
         [currency],
@@ -99,7 +100,8 @@ BEGIN TRY
         [maxAmountWeekly],
         [maxCountWeekly],
         [maxAmountMonthly],
-        [maxCountMonthly]
+        [maxCountMonthly],
+        isMaskChecked
     FROM @limit
 
     MERGE INTO [rule].splitName

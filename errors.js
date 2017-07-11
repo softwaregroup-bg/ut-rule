@@ -11,6 +11,7 @@ var ExceedWeeklyLimitCount = create('exceedWeeklyLimitCount', Rule, 'Weekly coun
 var ExceedMonthlyLimitAmount = create('exceedMonthlyLimitAmount', Rule, 'Monthly amount limit reached');
 var ExceedMonthlyLimitCount = create('exceedMonthlyLimitCount', Rule, 'Monthly count limit reached');
 var DuplicatedPriority = create('duplicatedPriority', Rule, 'Rule with this priority already exists');
+var AuthenticationFailure = create('authenticationFailure', Rule, 'Authentication Failure');
 
 module.exports = {
     rule: cause => new Rule(cause),
@@ -23,5 +24,6 @@ module.exports = {
     exceedWeeklyLimitCount: cause => new ExceedWeeklyLimitCount(cause),
     exceedMonthlyLimitAmount: cause => new ExceedMonthlyLimitAmount(cause),
     exceedMonthlyLimitCount: cause => new ExceedMonthlyLimitCount(cause),
-    duplicatedPriority: cause => new DuplicatedPriority(cause)
+    duplicatedPriority: cause => new DuplicatedPriority(cause),
+    authenticationFailure: cause => new AuthenticationFailure(cause)
 };

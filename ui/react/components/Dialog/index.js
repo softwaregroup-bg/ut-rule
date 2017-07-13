@@ -127,7 +127,7 @@ export default React.createClass({
     },
     getInitialState() {
         return {
-            prompt: false,
+            showPrompt: false,
             promptMessage: '',
             form: {
                 errors: [],
@@ -161,7 +161,7 @@ export default React.createClass({
     },
     togglePrompt(params) {
         this.setState({
-            prompt: params.show,
+            showPrompt: params.show,
             promptMessage: params.message
         });
     },
@@ -528,19 +528,19 @@ export default React.createClass({
             }
             if (uniqueSplitNames) {
                 this.props.onSave(this.state.data);
-
-                this.setState({
-                    form: Object.assign({}, this.state.form, {
-                        errorDialogOpen: true,
-                        errors: formValidation.errors
-                    })
-                });
             } else {
                 this.togglePrompt({
                     show: true,
                     message: 'Split names must me unique! Please change them and try again!'
                 });
             }
+        } else {
+            this.setState({
+                form: Object.assign({}, this.state.form, {
+                    errorDialogOpen: true,
+                    errors: formValidation.errors
+                })
+            });
         }
     },
     onChangeInput(field) {
@@ -574,10 +574,10 @@ export default React.createClass({
               ]}
             >
                 <div>
-                     {this.state.prompt &&
+                     {this.state.showPrompt &&
                         <Prompt
                           ref='prompt'
-                          open={this.state.prompt}
+                          open={this.state.showPrompt}
                           message={this.state.promptMessage}
                           onOk={this.closePrompt}
                         />

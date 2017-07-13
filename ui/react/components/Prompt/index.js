@@ -9,14 +9,21 @@ export default React.createClass({
         onCancel: PropTypes.func
     },
     render() {
+        let actions = [];
+
+        if (this.props.onOk) {
+            actions.push(<button className='button btn btn-primary' onClick={this.props.onOk} style={{ marginRight: '10px' }}>OK</button>);
+        }
+
+        if (this.props.onCancel) {
+            actions.push(<button className='button btn btn-primary' onClick={this.props.onCancel}>Cancel</button>);
+        }
+
         return (
             <Dialog
               open={this.props.open}
               autoScrollBodyContent
-              actions={[
-                  <button className='button btn btn-primary' onClick={this.props.onOk} style={{ marginRight: '10px' }}>OK</button>,
-                  <button className='button btn btn-primary' onClick={this.props.onCancel}>Cancel</button>
-              ]}
+              actions={actions}
               >
                 <div style={{padding: '10px'}}>
                    {this.props.message}

@@ -3,6 +3,7 @@ import React, { PropTypes } from 'react';
 import Accordion from 'ut-front-react/components/Accordion';
 import Input from 'ut-front-react/components/Input';
 import style from './style.css';
+import Prompt from './../Prompt';
 import Channel from './Section/Channel';
 import Operation from './Section/Operation';
 import Split from './Section/Splits';
@@ -126,6 +127,8 @@ export default React.createClass({
     },
     getInitialState() {
         return {
+            prompt: false,
+            promptMessage: '',
             form: {
                 errors: [],
                 errorDialogOpen: false
@@ -155,6 +158,12 @@ export default React.createClass({
             },
             sections: this.props.sections
         };
+    },
+    togglePrompt(params) {
+        this.setState({
+            prompt: params.show,
+            promptMessage: params.message
+        });
     },
     componentWillMount() {
         var formatedData = {};
@@ -500,17 +509,39 @@ export default React.createClass({
         return (new Set(array)).size !== array.length;
     },
     save() {
-        let formValidation = validations.run(this.state.data);
+        let { data } = this.state;
+        let formValidation = validations.run(data);
         if (formValidation.isValid) {
-            this.props.onSave(this.state.data);
-        }
+            let uniqueSplitNames = true;
 
-        this.setState({
-            form: Object.assign({}, this.state.form, {
-                errorDialogOpen: true,
-                errors: formValidation.errors
-            })
-        });
+            if (data && data.split && data.split.length > 1) {
+                var splitNames = [];
+                data.split.forEach(s => {
+                    if (s && s.splitName && s.splitName.name) {
+                        if (splitNames.indexOf((s.splitName.name)) === -1) {
+                            splitNames.push(s.splitName.name);
+                        } else {
+                            uniqueSplitNames = false;
+                        }
+                    }
+                });
+            }
+            if (uniqueSplitNames) {
+                this.props.onSave(this.state.data);
+
+                this.setState({
+                    form: Object.assign({}, this.state.form, {
+                        errorDialogOpen: true,
+                        errors: formValidation.errors
+                    })
+                });
+            } else {
+                this.togglePrompt({
+                    show: true,
+                    message: 'Split names must me unique! Please change them and try again!'
+                });
+            }
+        }
     },
     onChangeInput(field) {
         this.onFieldChange('condition', 0, field.key, field.value);
@@ -520,6 +551,9 @@ export default React.createClass({
         this.setState({
             form: this.state.form
         });
+    },
+    closePrompt() {
+        this.togglePrompt({show: false});
     },
     contentStyle: {
         minWidth: '730px',
@@ -539,6 +573,16 @@ export default React.createClass({
                   <button onClick={this.props.onClose} className='button btn btn-primary'>Cancel</button>
               ]}
             >
+                <div>
+                     {this.state.prompt &&
+                        <Prompt
+                          ref='prompt'
+                          open={this.state.prompt}
+                          message={this.state.promptMessage}
+                          onOk={this.closePrompt}
+                        />
+                    }
+                </div>
                 <div>
                   <Dialog
                     title='Error'

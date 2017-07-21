@@ -117,7 +117,7 @@ const SectionLimit = React.createClass({
                     <thead>
                         <tr>
                             <th rowSpan={2} style={{ minWidth: '100px' }}>Currency</th>
-                            <th colSpan={2}>Transactions</th>
+                            <th colSpan={2}>Transaction Amount</th>
                             <th colSpan={2}>Daily</th>
                             <th colSpan={2}>Weekly</th>
                             <th colSpan={2}>Monthly</th>
@@ -126,12 +126,12 @@ const SectionLimit = React.createClass({
                         <tr>
                             <th>Min</th>
                             <th>Max</th>
-                            <th>Min</th>
-                            <th>Max</th>
-                            <th>Min</th>
-                            <th>Max</th>
-                            <th>Min</th>
-                            <th>Max</th>
+                            <th>Max Amount</th>
+                            <th>Max Count</th>
+                            <th>Max Amount</th>
+                            <th>Max Count</th>
+                            <th>Max Amount</th>
+                            <th>Max Count</th>
                         </tr>
                     </thead>
                     <tbody>

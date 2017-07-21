@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import {fromJS} from 'immutable';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
-import ContextMenu from '../ContextMenu';
 import style from './style.css';
 
 export default React.createClass({
@@ -156,8 +155,6 @@ export default React.createClass({
         let data = fromJS(this.getData()).sort((a, b) => {
             return b.get('priority') - a.get('priority');
         }).toJS();
-
-        let columns = this.state.columns;
 
         return <SimpleGrid
           ref='grid'

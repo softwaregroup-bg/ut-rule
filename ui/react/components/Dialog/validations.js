@@ -2,6 +2,33 @@ import joi from 'joi-browser';
 
 /** Joi API ref: https://github.com/hapijs/joi/blob/v9.2.0/lib/language.js */
 let schema = joi.object().keys({
+    channelProperties: joi.array().items(
+        joi.object().keys({
+            name: joi.string().required().options({
+                language: {
+                    key: '"Channel" ',
+                    string: {
+                        base: 'Property fields cannot be empty'
+                    }
+                }
+            }),
+            value: joi.string().required().options({
+                language: {
+                    key: '"Channel" ',
+                    string: {
+                        base: 'Property fields cannot be empty'
+                    }
+                }
+            })
+        })
+    ).unique((a, b) => a.name === b.name).options({
+        language: {
+            key: '"Channel" ',
+            array: {
+                unique: 'properties cannot contain the same names'
+            }
+        }
+    }),
     condition: joi.array().items(
         joi.object().keys({
             priority: joi.number().integer().min(1).max(2147483647).required().options({

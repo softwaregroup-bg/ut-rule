@@ -29,6 +29,87 @@ let schema = joi.object().keys({
             }
         }
     }),
+    operationProperties: joi.array().items(
+        joi.object().keys({
+            name: joi.string().required().options({
+                language: {
+                    key: '"Operation" ',
+                    string: {
+                        base: 'Property fields cannot be empty'
+                    }
+                }
+            }),
+            value: joi.string().required().options({
+                language: {
+                    key: '"Operation" ',
+                    string: {
+                        base: 'Property fields cannot be empty'
+                    }
+                }
+            })
+        })
+    ).unique((a, b) => a.name === b.name).options({
+        language: {
+            key: '"Operation" ',
+            array: {
+                unique: 'properties cannot contain the same names'
+            }
+        }
+    }),
+    sourceProperties: joi.array().items(
+        joi.object().keys({
+            name: joi.string().required().options({
+                language: {
+                    key: '"Source" ',
+                    string: {
+                        base: 'Property fields cannot be empty'
+                    }
+                }
+            }),
+            value: joi.string().required().options({
+                language: {
+                    key: '"Source" ',
+                    string: {
+                        base: 'Property fields cannot be empty'
+                    }
+                }
+            })
+        })
+    ).unique((a, b) => a.name === b.name).options({
+        language: {
+            key: '"Source" ',
+            array: {
+                unique: 'properties cannot contain the same names'
+            }
+        }
+    }),
+    destinationProperties: joi.array().items(
+        joi.object().keys({
+            name: joi.string().required().options({
+                language: {
+                    key: '"Destination" ',
+                    string: {
+                        base: 'Property fields cannot be empty'
+                    }
+                }
+            }),
+            value: joi.string().required().options({
+                language: {
+                    key: '"Destination" ',
+                    string: {
+                        base: 'Property fields cannot be empty'
+                    }
+                }
+            })
+        })
+    ).unique((a, b) => a.name === b.name).options({
+        language: {
+            key: '"Destination" ',
+            array: {
+                unique: 'properties cannot contain the same names'
+            }
+        }
+    }),
     condition: joi.array().items(
         joi.object().keys({
             priority: joi.number().integer().min(1).max(2147483647).required().options({

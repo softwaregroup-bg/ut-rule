@@ -282,7 +282,7 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                    mounthlyAmount: joi.number().min(joi.ref('weeklyAmount')).options({
+                     mounthlyAmount: joi.number().min(joi.ref('weeklyAmount')).options({
                          language: {
                              key: '"Mounthly Amount" ',
                              number: {

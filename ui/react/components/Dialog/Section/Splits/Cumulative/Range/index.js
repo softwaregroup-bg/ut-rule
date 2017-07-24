@@ -55,7 +55,7 @@ const Range = React.createClass({
                 <td>
                     <Input
                       keyProp='startAmount'
-                      type="number"
+                      type='number'
                       onChange={this.onChangeInput(index)}
                       value={'' + (splitRange.startAmount || '')}
                     />
@@ -63,7 +63,7 @@ const Range = React.createClass({
                 <td>
                     <Input
                       keyProp='percent'
-                      type="number"
+                      type='number'
                       onChange={self.onChangeInput(index)}
                       value={'' + (splitRange.percent || '')}
                     />
@@ -71,7 +71,7 @@ const Range = React.createClass({
                 <td>
                     <Input
                       keyProp='minValue'
-                      type="number"
+                      type='number'
                       onChange={self.onChangeInput(index)}
                       value={'' + (splitRange.minValue || '')}
                     />
@@ -79,7 +79,7 @@ const Range = React.createClass({
                 <td>
                     <Input
                       keyProp='maxValue'
-                      type="number"
+                      type='number'
                       onChange={self.onChangeInput(index)}
                       value={'' + (splitRange.maxValue || '')}
                     />

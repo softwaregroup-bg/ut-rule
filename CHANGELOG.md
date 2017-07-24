@@ -1,3 +1,13 @@
+<a name="9.10.2"></a>
+## [9.10.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.1...v9.10.2) (2017-07-24)
+
+
+### Bug Fixes
+
+* linting ([e155e80](https://github.com/softwaregroup-bg/ut-rule/commit/e155e80))
+
+
+
 <a name="9.10.1"></a>
 ## [9.10.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.0...v9.10.1) (2017-07-24)
 

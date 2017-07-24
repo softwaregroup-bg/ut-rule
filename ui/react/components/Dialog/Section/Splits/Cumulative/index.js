@@ -54,7 +54,7 @@ const Cumulative = React.createClass({
             <tr key={index}>
                 <td>
                     <Input
-                      type="number"
+                      type='number'
                       keyProp='dailyCount'
                       onChange={this.onChangeInput(index)}
                       value={'' + (data[index].dailyCount || '')}
@@ -62,7 +62,7 @@ const Cumulative = React.createClass({
                 </td>
                 <td>
                     <Input
-                      type="number"
+                      type='number'
                       keyProp='dailyAmount'
                       onChange={this.onChangeInput(index)}
                       value={'' + (data[index].dailyAmount || '')}
@@ -70,7 +70,7 @@ const Cumulative = React.createClass({
                 </td>
                 <td>
                     <Input
-                      type="number"
+                      type='number'
                       keyProp='weeklyCount'
                       onChange={this.onChangeInput(index)}
                       value={'' + (data[index].weeklyCount || '')}
@@ -78,7 +78,7 @@ const Cumulative = React.createClass({
                 </td>
                 <td>
                     <Input
-                      type="number"
+                      type='number'
                       keyProp='weeklyAmount'
                       onChange={this.onChangeInput(index)}
                       value={'' + (data[index].weeklyAmount || '')}
@@ -86,7 +86,7 @@ const Cumulative = React.createClass({
                 </td>
                 <td>
                     <Input
-                      type="number"
+                      type='number'
                       keyProp='mounthlyCount'
                       onChange={this.onChangeInput(index)}
                       value={'' + (data[index].mounthlyCount || '')}
@@ -94,7 +94,7 @@ const Cumulative = React.createClass({
                 </td>
                 <td>
                     <Input
-                      type="number"
+                      type='number'
                       keyProp='mounthlyAmount'
                       onChange={this.onChangeInput(index)}
                       value={'' + (data[index].mounthlyAmount || '')}

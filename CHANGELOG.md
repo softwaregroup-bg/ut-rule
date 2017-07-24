@@ -1,3 +1,13 @@
+<a name="9.10.1"></a>
+## [9.10.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.0...v9.10.1) (2017-07-24)
+
+
+### Bug Fixes
+
+* replace into clause because of the history triggers ([#75](https://github.com/softwaregroup-bg/ut-rule/issues/75)) ([c5b8a20](https://github.com/softwaregroup-bg/ut-rule/commit/c5b8a20))
+
+
+
 <a name="9.10.0"></a>
 # [9.10.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.9.2...v9.10.0) (2017-07-24)
 

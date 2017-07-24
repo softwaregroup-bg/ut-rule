@@ -1,3 +1,18 @@
+<a name="9.9.2"></a>
+## [9.9.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.9.1...v9.9.2) (2017-07-18)
+
+
+
+<a name="9.9.1"></a>
+## [9.9.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.9.0...v9.9.1) (2017-07-14)
+
+
+### Bug Fixes
+
+* don't override  by reference ([8267f61](https://github.com/softwaregroup-bg/ut-rule/commit/8267f61))
+
+
+
 <a name="9.9.0"></a>
 # [9.9.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.3...v9.9.0) (2017-06-28)
 

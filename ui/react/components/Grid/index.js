@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import {fromJS} from 'immutable';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
 import style from './style.css';
+import {getStorageColumns, toggleColumnInStorage} from 'ut-front-react/components/SimpleGrid/helpers';
+const propInStorage = 'rules';
 
 export default React.createClass({
     propTypes: {
@@ -32,8 +34,18 @@ export default React.createClass({
             ]
         };
     },
-    shouldComponentUpdate(nextProps, nextState) {
-        return true;
+    componentWillMount() {
+        this.setVisibleColumns();
+    },
+    setVisibleColumns() {
+        let invisibleColumns = getStorageColumns(propInStorage);
+        let fieldsWithVisibility = this.state.fields.map((field) => {
+            if (invisibleColumns.includes(field['name'])) {
+                field['visible'] = false;
+            }
+            return field;
+        });
+        this.setState({fields: fieldsWithVisibility});
     },
     handleGridExpansion(id) {
         let expandedGridColumns = this.state.expandedGridColumns;
@@ -97,6 +109,7 @@ export default React.createClass({
         let stateFields = this.state.fields;
         stateFields.map(stateField => {
             if (stateField.name === field.name && stateField.name !== 'expansion') {
+                toggleColumnInStorage(propInStorage, field.name);
                 stateField.visible = !stateField.visible;
             }
         });

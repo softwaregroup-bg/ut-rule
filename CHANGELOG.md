@@ -1,3 +1,14 @@
+<a name="9.10.3"></a>
+## [9.10.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.2...v9.10.3) (2017-07-24)
+
+
+### Bug Fixes
+
+* buttons types to make it highlighted ([054bd18](https://github.com/softwaregroup-bg/ut-rule/commit/054bd18))
+* linting ([5258a6d](https://github.com/softwaregroup-bg/ut-rule/commit/5258a6d))
+
+
+
 <a name="9.10.2"></a>
 ## [9.10.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.1...v9.10.2) (2017-07-24)
 

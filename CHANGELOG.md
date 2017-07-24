@@ -141,14 +141,6 @@
 <a name="9.8.3"></a>
 ## [9.8.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.2...v9.8.3) (2017-06-22)
 
-
-### Bug Fixes
-
-* set pagination in request parameters ([753bfab](https://github.com/softwaregroup-bg/ut-rule/commit/753bfab))
-* validate priority is an integer ([#68](https://github.com/softwaregroup-bg/ut-rule/issues/68)) ([d9e25ab](https://github.com/softwaregroup-bg/ut-rule/commit/d9e25ab))
-
-
-
 <a name="9.8.2"></a>
 ## [9.8.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.1...v9.8.2) (2017-06-22)
 

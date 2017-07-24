@@ -1,3 +1,28 @@
+<a name="9.10.0"></a>
+# [9.10.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.9.2...v9.10.0) (2017-07-24)
+
+
+### Bug Fixes
+
+* ABT-1836 change card product to product ([8755f64](https://github.com/softwaregroup-bg/ut-rule/commit/8755f64))
+* linting problems ([8f61896](https://github.com/softwaregroup-bg/ut-rule/commit/8f61896))
+* previus changes ([001fbab](https://github.com/softwaregroup-bg/ut-rule/commit/001fbab))
+* UIS-2724 add rule sorting by priority ([f1e7bc7](https://github.com/softwaregroup-bg/ut-rule/commit/f1e7bc7))
+* UIS-2930 min amount smaller than max amount in split ([63c7c8a](https://github.com/softwaregroup-bg/ut-rule/commit/63c7c8a))
+* UIS-2932 add channel restriction for same names in properties tab ([59239b4](https://github.com/softwaregroup-bg/ut-rule/commit/59239b4))
+* UIS-2932 add operation, destionation, source restriction for same names in properties tab ([aa4e9a1](https://github.com/softwaregroup-bg/ut-rule/commit/aa4e9a1))
+* version increment ([e5dea80](https://github.com/softwaregroup-bg/ut-rule/commit/e5dea80))
+
+
+### Features
+
+* add proper globalMenu, remove old ([0493a16](https://github.com/softwaregroup-bg/ut-rule/commit/0493a16))
+* add validations and make limit fields be able to be 0, null, empty ([f54a0c1](https://github.com/softwaregroup-bg/ut-rule/commit/f54a0c1))
+* Grid changes made to accomodate expansion row functionality ([3d5e9da](https://github.com/softwaregroup-bg/ut-rule/commit/3d5e9da))
+* UIS-2721 UIS-2719 UIS-2711 UIS-2708 all these issues are fixed ([8804da6](https://github.com/softwaregroup-bg/ut-rule/commit/8804da6))
+
+
+
 <a name="9.9.2"></a>
 ## [9.9.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.9.1...v9.9.2) (2017-07-18)
 

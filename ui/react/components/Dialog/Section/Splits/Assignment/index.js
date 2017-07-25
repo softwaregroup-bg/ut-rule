@@ -12,11 +12,11 @@ const Assignment = React.createClass({
         splitIndex: PropTypes.number.isRequired,
         addSplitAssignmentRow: PropTypes.func.isRequired,
         deleteSplitAssignmentRow: PropTypes.func.isRequired,
-        fields: PropTypes.object
+        fields: PropTypes.object,
+        nomenclatures: PropTypes.object
     },
     contextTypes: {
-        onFieldChange: PropTypes.func,
-        nomenclatures: PropTypes.object
+        onFieldChange: PropTypes.func
     },
     getInitialState() {
         return {
@@ -58,7 +58,7 @@ const Assignment = React.createClass({
     },
     createAssignmentRows() {
         let fields = this.state.fields;
-        let {alias} = this.context.nomenclatures;
+        let {alias, creditAlias, debitAlias} = this.props.nomenclatures;
 
         return this.props.data.map((splitAssignment, index) => (
             <tr key={index}>

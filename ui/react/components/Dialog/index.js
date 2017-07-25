@@ -671,6 +671,7 @@ export default React.createClass({
                               <Split
                                 data={this.state.data.split}
                                 nomenclatures={this.props.nomenclatures}
+                                channelData={this.state.data.condition[0]}
                                 addSplitRow={this.addSplitRow}
                                 deleteSplitRow={this.deleteSplitRow}
                                 addSplitCumulativeRow={this.addSplitCumulativeRow}

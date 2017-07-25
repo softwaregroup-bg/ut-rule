@@ -12,11 +12,13 @@ const Cumulative = React.createClass({
         addSplitCumulativeRow: PropTypes.func.isRequired,
         deleteSplitCumulativeRow: PropTypes.func.isRequired,
         addSplitCumulativeRangeRow: PropTypes.func.isRequired,
+        channelData: PropTypes.any,
         deleteSplitCumulativeRangeRow: PropTypes.func.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
-        nomenclatures: PropTypes.object
+        nomenclatures: PropTypes.object,
+        currencyOrganization: PropTypes.object
     },
     onSelectDropdown(index) {
         let self = this;
@@ -105,44 +107,67 @@ const Cumulative = React.createClass({
     },
     createCumulativeStructure() {
         let {currency} = this.context.nomenclatures;
-        return this.props.data && this.props.data.map((cumulative, index) => (
-            <div key={index}>
-                <div className={style.cumulative}>
-                  <Dropdown
-                    canSelectPlaceholder
-                    keyProp='currency'
-                    label={'Currency'}
-                    data={currency || []}
-                    onSelect={this.onSelectDropdown(index)}
-                    defaultSelected={'' + (cumulative.currency || '')}
-                    mergeStyles={{dropDownRoot: style.dropDownRoot}}
-                  />
+
+        let currenciesToUse = currency;
+        let currencyOrganization = this.context.currencyOrganization;
+        let chosenOrganizationId = this.props.channelData && this.props.channelData.channelOrganizationId ? this.props.channelData.channelOrganizationId : null;
+
+        if (chosenOrganizationId) {
+            currenciesToUse = currencyOrganization.map(c => {
+                if (c.organizationId === chosenOrganizationId) {
+                    return {
+                        key: c.value,
+                        name: c.display
+                    };
+                }
+            }).filter(Boolean);
+        }
+
+        return this.props.data && this.props.data.map((cumulative, index) => {
+            let firstCurrencyKey = chosenOrganizationId ? (currenciesToUse && currenciesToUse[0] && currenciesToUse[0].key) : undefined;
+            let defaultCurrency = [firstCurrencyKey, cumulative.currency].find(dk => {
+                return currency.find(curDK => curDK.key === dk);
+            });
+
+            return (
+                <div key={index}>
+                    <div className={style.cumulative}>
+                    <Dropdown
+                      canSelectPlaceholder
+                      keyProp='currency'
+                      label={'Currency'}
+                      data={currenciesToUse || []}
+                      onSelect={this.onSelectDropdown(index)}
+                      defaultSelected={'' + (defaultCurrency || '')}
+                      mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                    />
+                    </div>
+                    <div className={style.cumulative}>
+                    <table className={style.dataGridTable}>
+                        <thead>
+                            <tr>
+                                {this.createHeaderCells()}
+                            </tr>
+                        </thead>
+                        <tbody className={style.limitTableBody}>
+                            {this.createCumulativeRows(index)}
+                        </tbody>
+                    </table>
+                    </div>
+                    <Range
+                      data={cumulative.splitRange}
+                      splitIndex={this.props.splitIndex}
+                      cumulativeIndex={index}
+                      addSplitRangeRow={this.props.addSplitCumulativeRangeRow}
+                      deleteSplitRangeRow={this.props.deleteSplitCumulativeRangeRow}
+                    />
+                    <button className={style.statusActionButton} onClick={this.props.deleteSplitCumulativeRow(this.props.splitIndex, index)}>
+                        Delete this Cumulative
+                    </button>
+                    <hr />
                 </div>
-                <div className={style.cumulative}>
-                  <table className={style.dataGridTable}>
-                      <thead>
-                          <tr>
-                              {this.createHeaderCells()}
-                          </tr>
-                      </thead>
-                      <tbody className={style.limitTableBody}>
-                          {this.createCumulativeRows(index)}
-                      </tbody>
-                  </table>
-                </div>
-                <Range
-                  data={cumulative.splitRange}
-                  splitIndex={this.props.splitIndex}
-                  cumulativeIndex={index}
-                  addSplitRangeRow={this.props.addSplitCumulativeRangeRow}
-                  deleteSplitRangeRow={this.props.deleteSplitCumulativeRangeRow}
-                />
-                <button className={style.statusActionButton} onClick={this.props.deleteSplitCumulativeRow(this.props.splitIndex, index)}>
-                    Delete this Cumulative
-                </button>
-                <hr />
-              </div>
-        ));
+            );
+        });
     },
     render() {
         return (

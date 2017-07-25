@@ -17,6 +17,14 @@ var wrapper = {
         $meta.method = 'db/integration.alias.list';
         return bus.importMethod($meta.method)(msg, $meta);
     },
+    'creditAlias': function(msg, $meta) {
+        $meta.method = 'db/integration.alias.list';
+        return bus.importMethod($meta.method)({ alias: 'credit' }, $meta);
+    },
+    'debitAlias': function(msg, $meta) {
+        $meta.method = 'db/integration.alias.list';
+        return bus.importMethod($meta.method)({ alias: 'debit' }, $meta);
+    },
     'organization': function(msg, $meta) {
         $meta.method = 'customer.organization.fetch';
         return bus.importMethod($meta.method)(msg, $meta).then(result => {

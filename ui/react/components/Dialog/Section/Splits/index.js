@@ -18,6 +18,7 @@ const Splits = React.createClass({
         deleteSplitCumulativeRangeRow: PropTypes.func.isRequired,
         addSplitAssignmentRow: PropTypes.func.isRequired,
         deleteSplitAssignmentRow: PropTypes.func.isRequired,
+        channelData: PropTypes.object,
         config: PropTypes.object
     },
     contextTypes: {
@@ -102,6 +103,7 @@ const Splits = React.createClass({
                         <Cumulative
                           splitIndex={index}
                           data={split.splitCumulative}
+                          channelData={this.props.channelData}
                           addSplitCumulativeRow={self.props.addSplitCumulativeRow}
                           deleteSplitCumulativeRow={self.props.deleteSplitCumulativeRow}
                           addSplitCumulativeRangeRow={self.props.addSplitCumulativeRangeRow}
@@ -114,6 +116,7 @@ const Splits = React.createClass({
                         <Assignment
                           splitIndex={index}
                           data={split.splitAssignment}
+                          nomenclatures={this.context.nomenclatures}
                           addSplitAssignmentRow={self.props.addSplitAssignmentRow}
                           deleteSplitAssignmentRow={self.props.deleteSplitAssignmentRow}
                           fields={this.state.config.assignmentFields}

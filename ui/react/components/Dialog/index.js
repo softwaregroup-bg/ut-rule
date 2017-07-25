@@ -2,6 +2,7 @@ import Dialog from '../ActionDialog';
 import React, { PropTypes } from 'react';
 import Accordion from 'ut-front-react/components/Accordion';
 import Input from 'ut-front-react/components/Input';
+import Button from 'ut-front-react/components/StandardButton';
 import style from './style.css';
 import Prompt from './../Prompt';
 import Channel from './Section/Channel';
@@ -13,7 +14,6 @@ import SectionLimit from './Section/Limit';
 import SectionSummary from './Section/Summary';
 import merge from 'lodash.merge';
 import validations from './validations.js';
-import classnames from 'classnames';
 import set from 'lodash.set';
 
 function capitalizeFirstLetter(string) {
@@ -575,8 +575,8 @@ export default React.createClass({
               autoScrollBodyContent
               contentStyle={this.contentStyle}
               actions={[
-                  <button onClick={this.save} className={classnames(style.save, 'button btn btn-primary')} >Save</button>,
-                  <button onClick={this.props.onClose} className='button btn btn-primary'>Cancel</button>
+                  <Button label={'Save'} onClick={this.save} styleType='primaryLight' className={style.save} />,
+                  <Button label={'Cancel'} onClick={this.props.onClose} styleType='secondaryDark' />
               ]}
             >
                 <div>
@@ -597,7 +597,7 @@ export default React.createClass({
                     contentStyle={style}
                     onRequestClose={this.closeFormErrorDialog}
                     actions={[
-                        <button onClick={this.closeFormErrorDialog} className='button btn btn-primary'>Cancel</button>
+                        <Button label={'Cancel'} onClick={this.closeFormErrorDialog} styleType='secondaryDark' />
                     ]}
                   >
                     <div className={style.content}>

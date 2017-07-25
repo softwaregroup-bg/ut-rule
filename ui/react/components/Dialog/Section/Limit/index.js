@@ -9,11 +9,13 @@ import plusImage from '../../assets/add_new.png';
 const SectionLimit = React.createClass({
     propTypes: {
         data: PropTypes.array.isRequired,
+        channelData: PropTypes.any,
         addRow: PropTypes.func.isRequired
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
-        nomenclatures: PropTypes.object
+        nomenclatures: PropTypes.object,
+        currencyOrganization: PropTypes.object
     },
     onSelectDropdown(index) {
         let self = this;
@@ -34,78 +36,96 @@ const SectionLimit = React.createClass({
         };
     },
     createLimitRows() {
-        let nomenclatures = this.context.nomenclatures;
+        let currencies = this.context.nomenclatures.currency;
+        let currencyOrganization = this.context.currencyOrganization;
+        let chosenOrganizationId = this.props.channelData && this.props.channelData.channelOrganizationId ? this.props.channelData.channelOrganizationId : null;
+
+        if (chosenOrganizationId) {
+            currencies = currencyOrganization.map(c => {
+                if (c.organizationId === chosenOrganizationId) {
+                    return {
+                        key: c.value,
+                        name: c.display
+                    };
+                }
+            }).filter(Boolean);
+        }
 
         return this.props.data.map((limit, index) => {
-            var currencyOne = (nomenclatures.currency.filter(x => x.name === limit.currency) &&
-                      nomenclatures.currency.filter(x => x.name === limit.currency)[0] &&
-                      nomenclatures.currency.filter(x => x.name === limit.currency)[0].key);
+            var currencyOne = (currencies.filter(x => x.name === limit.currency) &&
+                      currencies.filter(x => x.name === limit.currency)[0] &&
+                      currencies.filter(x => x.name === limit.currency)[0].key);
             var currencyTwo = limit.currency;
+            var firstCurrencyKey = chosenOrganizationId ? (currencies && currencies[0] && currencies[0].key) : undefined;
+            var defaultCurrency = [firstCurrencyKey, currencyOne, currencyTwo].find(dk => {
+                return currencies.find(curDK => curDK.key === dk);
+            });
+
             return (
                 <tr key={index}>
                     <td>
                         <Dropdown
-                            keyProp='currency'
-                            data={nomenclatures.currency || []}
-                            defaultSelected={'' + (currencyOne || currencyTwo || '')}
-                            onSelect={this.onSelectDropdown(index)}
-                            mergeStyles={{ dropDownRoot: style.dropDownRoot }}
+                          keyProp='currency'
+                          data={currencies || []}
+                          defaultSelected={'' + (defaultCurrency)}
+                          onSelect={this.onSelectDropdown(index)}
+                          mergeStyles={{ dropDownRoot: style.dropDownRoot }}
                         />
                     </td>
                     <td>
                         <Input
-                            keyProp='minAmount'
-                            value={'' + (limit.minAmount || '')}
-                            onChange={this.onChangeInput(index)}
+                          keyProp='minAmount'
+                          value={'' + (limit.minAmount || '')}
+                          onChange={this.onChangeInput(index)}
                         />
                     </td>
                     <td>
                         <Input
-                            keyProp='maxAmount'
-                            value={'' + (limit.maxAmount || '')}
-                            onChange={this.onChangeInput(index)}
+                          keyProp='maxAmount'
+                          value={'' + (limit.maxAmount || '')}
+                          onChange={this.onChangeInput(index)}
                         />
                     </td>
                     <td>
                         <Input
-                            keyProp='maxAmountDaily'
-                            value={'' + (limit.maxAmountDaily || '')}
-                            onChange={this.onChangeInput(index)}
+                          keyProp='maxAmountDaily'
+                          value={'' + (limit.maxAmountDaily || '')}
+                          onChange={this.onChangeInput(index)}
                         />
                     </td>
                     <td>
                         <Input
-                            keyProp='maxCountDaily'
-                            value={'' + (limit.maxCountDaily || '')}
-                            onChange={this.onChangeInput(index)}
+                          keyProp='maxCountDaily'
+                          value={'' + (limit.maxCountDaily || '')}
+                          onChange={this.onChangeInput(index)}
                         />
                     </td>
                     <td>
                         <Input
-                            keyProp='maxAmountWeekly'
-                            value={'' + (limit.maxAmountWeekly || '')}
-                            onChange={this.onChangeInput(index)}
+                          keyProp='maxAmountWeekly'
+                          value={'' + (limit.maxAmountWeekly || '')}
+                          onChange={this.onChangeInput(index)}
                         />
                     </td>
                     <td>
                         <Input
-                            keyProp='maxCountWeekly'
-                            value={'' + (limit.maxCountWeekly || '')}
-                            onChange={this.onChangeInput(index)}
+                          keyProp='maxCountWeekly'
+                          value={'' + (limit.maxCountWeekly || '')}
+                          onChange={this.onChangeInput(index)}
                         />
                     </td>
                     <td>
                         <Input
-                            keyProp='maxAmountMonthly'
-                            value={'' + (limit.maxAmountMonthly || '')}
-                            onChange={this.onChangeInput(index)}
+                          keyProp='maxAmountMonthly'
+                          value={'' + (limit.maxAmountMonthly || '')}
+                          onChange={this.onChangeInput(index)}
                         />
                     </td>
                     <td>
                         <Input
-                            keyProp='maxCountMonthly'
-                            value={'' + (limit.maxCountMonthly || '')}
-                            onChange={this.onChangeInput(index)}
+                          keyProp='maxCountMonthly'
+                          value={'' + (limit.maxCountMonthly || '')}
+                          onChange={this.onChangeInput(index)}
                         />
                     </td>
                     <td>
@@ -114,7 +134,7 @@ const SectionLimit = React.createClass({
                         </IconButton>
                     </td>
                 </tr>
-            )
+            );
         });
     },
     render() {

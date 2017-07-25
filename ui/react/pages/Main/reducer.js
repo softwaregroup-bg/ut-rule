@@ -11,7 +11,8 @@ export default (state = defaultState, action) => {
         switch (action.type) {
             case actionTypes.fetchNomenclatures:
                 return Object.assign({}, state, {
-                    'fetchNomenclatures': formatNomenclatures(action.result.items)
+                    'fetchNomenclatures': formatNomenclatures(action.result.items),
+                    'currencyOrganization': formatCurrencyOrganization(action.result.items)
                 });
             case actionTypes.fetchRules:
                 let formattedRules = formatRules(action.result);
@@ -107,6 +108,14 @@ const formatNomenclatures = function(data) {
 
         return all;
     }, {});
+};
+
+const formatCurrencyOrganization = function(data) {
+    return (data || []).map(item => {
+        if (item.type === 'currency') {
+            return item;
+        }
+    }).filter(Boolean);
 };
 
 const getFormattedGridDataColumns = function(fetchedData, formattedRules) {

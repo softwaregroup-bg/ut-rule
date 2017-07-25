@@ -21,6 +21,7 @@ const Main = React.createClass({
         conditionItem: PropTypes.array,
         conditionProperty: PropTypes.array,
         nomenclatures: PropTypes.object,
+        currencyOrganization: PropTypes.object,
         formatedGridData: PropTypes.object,
         ready: PropTypes.bool,
         actions: PropTypes.object,
@@ -169,6 +170,7 @@ const Main = React.createClass({
                           conditionActor={this.props.conditionActor}
                           conditionItem={this.props.conditionItem}
                           nomenclatures={this.props.nomenclatures}
+                          currencyOrganization={this.props.currencyOrganization}
                           onSave={this.dialogOnSave}
                           onClose={this.dialogOnClose}
                           sections={sections}
@@ -232,6 +234,7 @@ export default connect(
             conditionItem: state.main.conditionItem,
             conditionProperty: state.main.conditionProperty,
             nomenclatures: state.main.fetchNomenclatures,
+            currencyOrganization: state.main.currencyOrganization,
             formatedGridData: state.main.formatedGridData,
             ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
             roles: state.main.fetchRoles,

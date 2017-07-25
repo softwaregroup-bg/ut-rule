@@ -117,13 +117,15 @@ export default React.createClass({
         conditionActor: PropTypes.array,
         conditionItem: PropTypes.array,
         nomenclatures: PropTypes.object.isRequired,
+        currencyOrganization: PropTypes.object,
         onSave: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
         sections: PropTypes.object
     },
     childContextTypes: {
         onFieldChange: PropTypes.func,
-        nomenclatures: PropTypes.object
+        nomenclatures: PropTypes.object,
+        currencyOrganization: PropTypes.object
     },
     getInitialState() {
         return {
@@ -349,7 +351,7 @@ export default React.createClass({
         });
     },
     getChildContext() {
-        let { nomenclatures } = this.props;
+        let { nomenclatures, currencyOrganization } = this.props;
         let formattedNomenclatures = {};
 
         Object.keys(nomenclatures).map((nomKey) => {
@@ -363,7 +365,8 @@ export default React.createClass({
 
         return {
             onFieldChange: this.onFieldChange,
-            nomenclatures: formattedNomenclatures
+            nomenclatures: formattedNomenclatures,
+            currencyOrganization
         };
     },
     onFieldChange(category, index, key, value) {
@@ -557,7 +560,10 @@ export default React.createClass({
     },
     contentStyle: {
         minWidth: '730px',
-        maxWidth: '50%'
+        // maxWidth: '50%',
+        width: '90%',
+        maxWidth: '100%',
+        margin: '0 auto'
     },
     render() {
         let sections = this.state.sections;
@@ -653,6 +659,7 @@ export default React.createClass({
                             <div className={style.content}>
                               <SectionLimit
                                 data={this.state.data.limit}
+                                channelData={this.state.data.condition[0]}
                                 addRow={this.addLimitRow}
                                 deleteRow={this.deleteLimitRow}
                               />

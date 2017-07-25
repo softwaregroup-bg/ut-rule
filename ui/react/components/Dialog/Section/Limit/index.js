@@ -145,10 +145,10 @@ const SectionLimit = React.createClass({
                         {this.createLimitRows()}
                     </tbody>
                 </table>
-                <span className={style.link} onClick={this.props.addRow}>
+                {(this.props.data.length === 0) && <span className={style.link} onClick={this.props.addRow}>
                     <img src={plusImage} className={style.plus} />
                     Add another limit
-                </span>
+                </span>}
             </div>
         );
     }

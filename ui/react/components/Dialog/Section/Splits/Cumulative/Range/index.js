@@ -16,7 +16,8 @@ const Range = React.createClass({
     },
     contextTypes: {
         onFieldChange: PropTypes.func,
-        nomenclatures: PropTypes.object
+        nomenclatures: PropTypes.object,
+        handleZeroValues: PropTypes.func
     },
     onSelectDropdown(index) {
         let self = this;
@@ -50,6 +51,7 @@ const Range = React.createClass({
     },
     createRangeRows() {
         var self = this;
+        let {handleZeroValues} = this.context;
         return this.props.data.map((splitRange, index) => (
             <tr key={index}>
                 <td>
@@ -57,7 +59,7 @@ const Range = React.createClass({
                       keyProp='startAmount'
                       type='number'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (splitRange.startAmount || '')}
+                      value={'' + (handleZeroValues(splitRange.startAmount) || '')}
                     />
                 </td>
                 <td>
@@ -65,7 +67,7 @@ const Range = React.createClass({
                       keyProp='percent'
                       type='number'
                       onChange={self.onChangeInput(index)}
-                      value={'' + (splitRange.percent || '')}
+                      value={'' + (handleZeroValues(splitRange.percent) || '')}
                     />
                 </td>
                 <td>
@@ -73,7 +75,7 @@ const Range = React.createClass({
                       keyProp='minValue'
                       type='number'
                       onChange={self.onChangeInput(index)}
-                      value={'' + (splitRange.minValue || '')}
+                      value={'' + (handleZeroValues(splitRange.minValue) || '')}
                     />
                 </td>
                 <td>
@@ -81,7 +83,7 @@ const Range = React.createClass({
                       keyProp='maxValue'
                       type='number'
                       onChange={self.onChangeInput(index)}
-                      value={'' + (splitRange.maxValue || '')}
+                      value={'' + (handleZeroValues(splitRange.maxValue) || '')}
                     />
                 </td>
                 {false &&

@@ -125,7 +125,8 @@ export default React.createClass({
     childContextTypes: {
         onFieldChange: PropTypes.func,
         nomenclatures: PropTypes.object,
-        currencyOrganization: PropTypes.array
+        currencyOrganization: PropTypes.array,
+        handleZeroValues: PropTypes.func
     },
     getInitialState() {
         return {
@@ -377,6 +378,7 @@ export default React.createClass({
 
         return {
             onFieldChange: this.onFieldChange,
+            handleZeroValues: this.handleZeroValues,
             nomenclatures: formattedNomenclatures,
             currencyOrganization
         };
@@ -387,6 +389,10 @@ export default React.createClass({
         let data = JSON.parse(JSON.stringify(this.state.data));
         set(data, path, value === '__placeholder__' ? undefined : value);
         this.setState({ data });
+    },
+    handleZeroValues(val) {
+        if (val === 0) return '0';
+        return val;
     },
     addLimitRow() {
         let limitObject = Object.assign({}, emptyLimit);

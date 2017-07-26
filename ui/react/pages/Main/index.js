@@ -132,6 +132,41 @@ const Main = React.createClass({
             prompt: false
         });
     },
+    getHeaderButtons() {
+        let buttons = [];
+        this.context.checkPermission('rule.rule.add') &&
+          buttons.push({text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'});
+        return buttons;
+    },
+    getToolboxButtons() {
+        let buttons = [];
+        this.context.checkPermission('rule.rule.edit') &&
+          buttons.push(
+            <button
+              onClick={this.editBtnOnClick}
+              className='button btn btn-primary'
+              disabled={!this.state.canEdit}
+            >
+              Edit
+            </button>
+          );
+        this.context.checkPermission('rule.rule.remove') &&
+          buttons.push(
+            <button
+              onClick={this.showPrompt}
+              className={
+                classnames(
+                  'button btn btn-primary',
+                  style.deleteButton
+                )
+              }
+              disabled={!this.state.canEdit}
+            >
+              Delete
+            </button>
+          );
+        return buttons;
+    },
     render() {
         if (!this.props.ready) {
             return null;
@@ -144,17 +179,15 @@ const Main = React.createClass({
         return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
             <div className={style.header}>
-                <Header text='Rule Management' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'}]} />
+                <Header
+                  text='Rule Management'
+                  buttons={this.getHeaderButtons()}
+                />
             </div>
             <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                 <GridToolbox opened title='' >
                     <div className={style.gridToolBoxButtons}>
-                        <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
-                            Edit
-                        </button>
-                        <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
-                            Delete
-                        </button>
+                        {this.getToolboxButtons()}
                     </div>
                 </GridToolbox>
             </div>
@@ -222,6 +255,10 @@ const Main = React.createClass({
         </div>;
     }
 });
+
+Main.contextTypes = {
+    checkPermission: PropTypes.func.isRequired
+};
 
 export default connect(
     (state, ownProps) => {

@@ -248,8 +248,7 @@ let schema = joi.object().keys({
                          language: {
                              key: '"Daily Amount" ',
                              number: {
-                                 max: 'should be smaller than Weekly Amount',
-                                 base: 'is required for all splits cumulatives'
+                                 max: 'should be smaller than Weekly Amount'
                              }
                          }
                      }),
@@ -257,8 +256,7 @@ let schema = joi.object().keys({
                          language: {
                              key: '"Daily Count" ',
                              number: {
-                                 max: 'should be smaller than Weekly Count',
-                                 base: 'is required for all splits cumulatives'
+                                 max: 'should be smaller than Weekly Count'
                              }
                          }
                      }),
@@ -267,8 +265,7 @@ let schema = joi.object().keys({
                              key: '"Weekly Amount" ',
                              number: {
                                  max: 'should be bigger than Daily Amount',
-                                 min: 'should be smaller than Monthly Amount',
-                                 base: 'is required for all splits cumulatives'
+                                 min: 'should be smaller than Monthly Amount'
                              }
                          }
                      }),
@@ -277,8 +274,7 @@ let schema = joi.object().keys({
                              key: '"Weekly Count" ',
                              number: {
                                  max: 'should be bigger than Daily Count',
-                                 min: 'should be smaller than Monthly Count',
-                                 base: 'is required for all splits cumulatives'
+                                 min: 'should be smaller than Monthly Count'
                              }
                          }
                      }),
@@ -286,8 +282,7 @@ let schema = joi.object().keys({
                          language: {
                              key: '"Mounthly Amount" ',
                              number: {
-                                 min: 'should be bigger than Weekly Amount',
-                                 base: 'is required for all splits cumulatives'
+                                 min: 'should be bigger than Weekly Amount'
                              }
                          }
                      }),
@@ -296,8 +291,7 @@ let schema = joi.object().keys({
                          language: {
                              key: '"Mounthly Count" ',
                              number: {
-                                 min: 'should be bigger than Weekly Count',
-                                 base: 'is required for all splits cumulatives'
+                                 min: 'should be bigger than Weekly Count'
                              }
                          }
                      }),
@@ -308,7 +302,7 @@ let schema = joi.object().keys({
                                 language: {
                                     key: '"Range" ',
                                     number: {
-                                        min: 'Max Amount should not be bigger than Min Amount',
+                                        // min: 'Max Amount should not be bigger than Min Amount',
                                         base: 'is required for all splits cumulatives'
                                     }
                                 }
@@ -317,7 +311,7 @@ let schema = joi.object().keys({
                                 language: {
                                     key: '"Range" ',
                                     number: {
-                                        max: 'Min Amount should not be smaller than Max Amount',
+                                        // max: 'Min Amount should not be smaller than Max Amount',
                                         base: 'is required for all splits cumulatives'
                                     }
                                 }

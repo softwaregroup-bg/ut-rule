@@ -244,7 +244,7 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                     dailyAmount: joi.number().max(joi.ref('weeklyAmount')).options({
+                     dailyAmount: joi.number().allow('').allow(null).max(joi.ref('weeklyAmount')).options({
                          language: {
                              key: '"Daily Amount" ',
                              number: {
@@ -252,7 +252,7 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                     dailyCount: joi.number().max(joi.ref('weeklyCount')).options({
+                     dailyCount: joi.number().allow('').allow(null).max(joi.ref('weeklyCount')).options({
                          language: {
                              key: '"Daily Count" ',
                              number: {
@@ -260,7 +260,7 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                     weeklyAmount: joi.number().min(joi.ref('dailyAmount')).max(joi.ref('mounthlyAmount')).options({
+                     weeklyAmount: joi.number().allow('').allow(null).min(joi.ref('dailyAmount')).max(joi.ref('mounthlyAmount')).options({
                          language: {
                              key: '"Weekly Amount" ',
                              number: {
@@ -269,7 +269,7 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                     weeklyCount: joi.number().min(joi.ref('dailyCount')).max(joi.ref('mounthlyCount')).options({
+                     weeklyCount: joi.number().allow('').allow(null).min(joi.ref('dailyCount')).max(joi.ref('mounthlyCount')).options({
                          language: {
                              key: '"Weekly Count" ',
                              number: {
@@ -278,7 +278,7 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                     mounthlyAmount: joi.number().min(joi.ref('weeklyAmount')).options({
+                     mounthlyAmount: joi.number().allow('').allow(null).min(joi.ref('weeklyAmount')).options({
                          language: {
                              key: '"Mounthly Amount" ',
                              number: {
@@ -286,7 +286,7 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                     mounthlyCount: joi.number().min(joi.ref('weeklyCount'))
+                     mounthlyCount: joi.number().allow('').allow(null).min(joi.ref('weeklyCount'))
                      .options({
                          language: {
                              key: '"Mounthly Count" ',

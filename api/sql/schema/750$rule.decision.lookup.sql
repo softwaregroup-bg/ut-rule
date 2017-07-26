@@ -94,6 +94,7 @@ BEGIN
     FROM
         [integration].[vTransfer] t
     WHERE
+        t.success = 1 AND
         t.sourceAccount = @sourceAccount AND
         t.transferCurrency = @currency AND
         t.transferDateTime < @operationDate AND -- look ony at earlier transfers

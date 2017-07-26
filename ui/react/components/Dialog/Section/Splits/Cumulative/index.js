@@ -131,7 +131,7 @@ const Cumulative = React.createClass({
                 return currency.find(curDK => curDK.key === dk);
             });
 
-            if (!cumulative.currency) {
+            if (!cumulative.currency && defaultCurrency) {
                 this.context.onFieldChange('split.' + index + '.splitCumulative', index, 'currency', defaultCurrency);
             }
 

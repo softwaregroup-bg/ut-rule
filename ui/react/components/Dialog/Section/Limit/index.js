@@ -61,7 +61,7 @@ const SectionLimit = React.createClass({
                 return currencies.find(curDK => curDK.key === dk);
             });
 
-            if (!currencyOne && !currencyTwo) {
+            if (!currencyOne && !currencyTwo && defaultCurrency) {
                 this.context.onFieldChange('limit', index, 'currency', defaultCurrency);
             }
 
@@ -71,7 +71,7 @@ const SectionLimit = React.createClass({
                         <Dropdown
                           keyProp='currency'
                           data={currencies || []}
-                          defaultSelected={'' + (defaultCurrency)}
+                          defaultSelected={'' + (defaultCurrency || '')}
                           onSelect={this.onSelectDropdown(index)}
                           mergeStyles={{ dropDownRoot: style.dropDownRoot }}
                         />

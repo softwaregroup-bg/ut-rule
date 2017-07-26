@@ -61,6 +61,10 @@ const SectionLimit = React.createClass({
                 return currencies.find(curDK => curDK.key === dk);
             });
 
+            if (!currencyOne && !currencyTwo) {
+                this.context.onFieldChange('limit', index, 'currency', defaultCurrency);
+            }
+
             return (
                 <tr key={index}>
                     <td>

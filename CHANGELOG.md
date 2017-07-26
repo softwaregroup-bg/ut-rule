@@ -1,3 +1,13 @@
+<a name="9.10.4"></a>
+## [9.10.4](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.3...v9.10.4) (2017-07-26)
+
+
+### Bug Fixes
+
+* only take successful transfers ([ba3bf7a](https://github.com/softwaregroup-bg/ut-rule/commit/ba3bf7a))
+
+
+
 <a name="9.10.3"></a>
 ## [9.10.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.2...v9.10.3) (2017-07-24)
 

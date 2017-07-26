@@ -10,7 +10,7 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @isSourceAmount BIT=0,
     @sourceAccountOwnerId BIGINT = NULL,
     @destinationAccountOwnerId BIGINT = NULL,
-    @checkMask TINYINT = NULL,
+    @credentials INT = NULL,
     @isTransactionValidate BIT = 0
 AS
 BEGIN
@@ -31,8 +31,8 @@ BEGIN
         @sourceAccountCheckMask INT,
         @sourceProductCheckAmount MONEY,
         @sourceProductCheckMask INT,
-        @sourceCheckAmount MONEY,
-        @sourceCheckMask INT, 
+        @maxAmountParam MONEY,
+        @credentialsCheck INT, 
 
         @destinationCountryId BIGINT,
         @destinationRegionId BIGINT,
@@ -91,8 +91,8 @@ BEGIN
         accountNumber = @destinationAccount AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
 
-    SET @sourceCheckAmount = coalesce (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0)
-    SET @sourceCheckMask = coalesce (@sourceAccountCheckMask, @sourceProductCheckMask, 0) 
+    SET @maxAmountParam = CASE WHEN coalesce (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckAmount, @sourceProductCheckAmount) END
+    SET @credentialsCheck = CASE WHEN coalesce (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
@@ -182,8 +182,8 @@ BEGIN
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
         @destinationAccount = @destinationAccount,
-        @sourceCheckAmount = @sourceCheckAmount,
-        @sourceCheckMask = @sourceCheckMask,
-        @checkMask = @checkMask,
+        @maxAmountParam = @maxAmountParam,
+        @credentialsCheck = @credentialsCheck,
+        @credentials = @credentials,
         @isTransactionValidate = @isTransactionValidate
 END

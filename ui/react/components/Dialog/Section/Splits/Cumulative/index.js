@@ -59,7 +59,7 @@ const Cumulative = React.createClass({
                       type='number'
                       keyProp='dailyCount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].dailyCount || '')}
+                      value={'' + ('' + data[index].dailyCount || '')}
                     />
                 </td>
                 <td>
@@ -67,7 +67,7 @@ const Cumulative = React.createClass({
                       type='number'
                       keyProp='dailyAmount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].dailyAmount || '')}
+                      value={'' + ('' + data[index].dailyAmount || '')}
                     />
                 </td>
                 <td>
@@ -75,7 +75,7 @@ const Cumulative = React.createClass({
                       type='number'
                       keyProp='weeklyCount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].weeklyCount || '')}
+                      value={'' + ('' + data[index].weeklyCount || '')}
                     />
                 </td>
                 <td>
@@ -83,7 +83,7 @@ const Cumulative = React.createClass({
                       type='number'
                       keyProp='weeklyAmount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].weeklyAmount || '')}
+                      value={'' + ('' + data[index].weeklyAmount || '')}
                     />
                 </td>
                 <td>
@@ -91,7 +91,7 @@ const Cumulative = React.createClass({
                       type='number'
                       keyProp='mounthlyCount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].mounthlyCount || '')}
+                      value={'' + ('' + data[index].mounthlyCount || '')}
                     />
                 </td>
                 <td>
@@ -99,7 +99,7 @@ const Cumulative = React.createClass({
                       type='number'
                       keyProp='mounthlyAmount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].mounthlyAmount || '')}
+                      value={'' + ('' + data[index].mounthlyAmount || '')}
                     />
                 </td>
             </tr>

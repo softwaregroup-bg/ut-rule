@@ -117,7 +117,7 @@ export default React.createClass({
         conditionActor: PropTypes.array,
         conditionItem: PropTypes.array,
         nomenclatures: PropTypes.object.isRequired,
-        currencyOrganization: PropTypes.object,
+        currencyOrganization: PropTypes.array,
         onSave: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
         sections: PropTypes.object
@@ -125,7 +125,7 @@ export default React.createClass({
     childContextTypes: {
         onFieldChange: PropTypes.func,
         nomenclatures: PropTypes.object,
-        currencyOrganization: PropTypes.object
+        currencyOrganization: PropTypes.array
     },
     getInitialState() {
         return {
@@ -221,7 +221,19 @@ export default React.createClass({
                 if (actor.conditionId === conditionId) {
                     switch (actor.factor) {
                         case 'co':
-                            formatedData.condition[0][`channel${capitalizeFirstLetter(actor.type)}Id`] = actor.actorId;
+
+                            if (actor.type === 'role') {
+                                if (!formatedData.condition[0][`channel${capitalizeFirstLetter(actor.type)}Id`]) {
+                                    formatedData.condition[0][`channel${capitalizeFirstLetter(actor.type)}Id`] = [];
+                                }
+
+                                formatedData.condition[0][`channel${capitalizeFirstLetter(actor.type)}Id`].push({
+                                    key: actor.actorId,
+                                    value: actor.actorName
+                                });
+                            } else {
+                                formatedData.condition[0][`channel${capitalizeFirstLetter(actor.type)}Id`] = actor.actorId;
+                            }
                             break;
                         case 'do':
                             formatedData.condition[0][`destination${capitalizeFirstLetter(actor.type)}Id`] = actor.actorId;
@@ -567,7 +579,6 @@ export default React.createClass({
     },
     render() {
         let sections = this.state.sections;
-
         return (
             <Dialog
               title={this.props.data ? 'Edit Rule' : 'Add Rule'}

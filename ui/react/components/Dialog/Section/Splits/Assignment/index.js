@@ -80,11 +80,11 @@ const Assignment = React.createClass({
                     />
                 </td>
                 }
-                {fields.debitAlias.visible && alias &&
+                {fields.debitAlias.visible && debitAlias &&
                 <td style={{minWidth: '200px'}}>
                     <Dropdown
                       keyProp='debit'
-                      data={alias}
+                      data={debitAlias}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (splitAssignment.debit || '')}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}
@@ -100,11 +100,11 @@ const Assignment = React.createClass({
                     />
                 </td>
                 }
-                {fields.creditAlias.visible && alias &&
+                {fields.creditAlias.visible && creditAlias &&
                 <td style={{minWidth: '200px'}}>
                     <Dropdown
                       keyProp='credit'
-                      data={alias}
+                      data={creditAlias}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (splitAssignment.credit || '')}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}

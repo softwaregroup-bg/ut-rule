@@ -15,7 +15,7 @@ const SectionLimit = React.createClass({
     contextTypes: {
         onFieldChange: PropTypes.func,
         nomenclatures: PropTypes.object,
-        currencyOrganization: PropTypes.object
+        currencyOrganization: PropTypes.array
     },
     onSelectDropdown(index) {
         let self = this;

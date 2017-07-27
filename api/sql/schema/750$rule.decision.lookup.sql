@@ -1,17 +1,20 @@
+
+USE [impl-abt-mwallet-georgiK2]
+GO
 ALTER PROCEDURE [rule].[decision.lookup]
-    @channelId BIGINT,
-    @operation varchar(100),
-    @operationDate datetime,
-    @sourceAccount varchar(100),
-    @sourceCardProductId BIGINT = NULL,
-    @destinationAccount varchar(100),
-    @amount money,
-    @currency varchar(3),
+    @channelId BIGINT, -- the id of the channel triggering transaction
+    @operation varchar(100), -- the operation name 
+    @operationDate datetime, -- the date when operation is triggered
+    @sourceAccount varchar(100), -- source account number
+    @sourceCardProductId BIGINT = NULL, -- product id of the card
+    @destinationAccount varchar(100), -- destination account number
+    @amount money, -- operation amount
+    @currency varchar(3), -- operation currency
     @isSourceAmount BIT=0,
-    @sourceAccountOwnerId BIGINT = NULL,
-    @destinationAccountOwnerId BIGINT = NULL,
-    @credentials INT = NULL,
-    @isTransactionValidate BIT = 0
+    @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
+    @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
+    @credentials INT = NULL, -- the passed credentials to validate operation success
+    @isTransactionValidate BIT = 0 -- flag showing if only opearation validation is triggered (1) or execution (0)
 AS
 BEGIN
     DECLARE
@@ -90,8 +93,10 @@ BEGIN
     WHERE
         accountNumber = @destinationAccount AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
-
+    
+    -- if check amount has been setup for the account and/or the account product, assign the value to variable. Account is with higher priority
     SET @maxAmountParam = CASE WHEN coalesce (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckAmount, @sourceProductCheckAmount) END
+    -- if check credentials has been setup for the account and/or the account product, assign the value to variable. Account is with higher priority
     SET @credentialsCheck = CASE WHEN coalesce (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())

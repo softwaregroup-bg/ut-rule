@@ -31,6 +31,9 @@ const Main = React.createClass({
         sections: PropTypes.object,
         pagination: PropTypes.object
     },
+    contextTypes: {
+        checkPermission: PropTypes.func
+    },
     getInitialState() {
         return {
             selectedConditions: {},
@@ -225,10 +228,6 @@ const Main = React.createClass({
         </div>;
     }
 });
-
-Main.contextTypes = {
-    checkPermission: PropTypes.func
-};
 
 export default connect(
     (state, ownProps) => {

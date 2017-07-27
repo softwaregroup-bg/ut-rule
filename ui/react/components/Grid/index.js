@@ -144,7 +144,7 @@ export default React.createClass({
             let limits = this.props.formatedGridData[conditionId];
 
             // Map currency
-            if (limits.limit.length > 0) {
+            if (limits.limit && limits.limit.length > 0) {
                 for (let i = 0; i < limits.limit.length; i++) {
                     let match = currencies.filter(x => x.key == limits.limit[0].value);
 

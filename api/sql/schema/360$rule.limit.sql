@@ -14,5 +14,6 @@ CREATE TABLE [rule].[limit] (
     [priority] SMALLINT,
 	CONSTRAINT [pkRuleLimit] PRIMARY KEY CLUSTERED (limitId ASC),
     CONSTRAINT ukRuleLimitConditionCurrencyPriority UNIQUE (conditionId, currency, [priority]),
+    CONSTRAINT ukRuleLimitConditionCurrencyCredentials UNIQUE (conditionId, currency, [credentials]),
 	CONSTRAINT [fkRuleLimit_condition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId)
 )

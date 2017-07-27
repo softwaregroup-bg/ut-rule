@@ -10,7 +10,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @sourceAccount varchar(100),
     @destinationAccount varchar(100),
     @maxAmountParam MONEY,
-    @credentialsCheck BIGINT, 
+    @credentialsCheck INT, 
     @credentials INT = NULL,
     @isTransactionValidate BIT = 0
 AS
@@ -105,11 +105,11 @@ BEGIN
         @maxCountWeekly = NULL,
         @maxAmountMonthly = NULL,
         @maxCountMonthly = NULL
-
+        
     SELECT TOP 1
         @limitId = l.limitId,
         @minAmount = l.minAmount,
-        @maxAmount = ISNULL(@maxAmountParam, l.maxAmount),
+        @maxAmount = l.maxAmount,
         @maxAmountDaily = l.maxAmountDaily,
         @maxCountDaily = l.maxCountDaily,
         @maxAmountWeekly = l.maxAmountWeekly,
@@ -122,8 +122,7 @@ BEGIN
         @countWeekly = ISNULL(c.countWeekly, 0),
         @amountMonthly = ISNULL(c.amountMonthly, 0),
         @countMonthly = ISNULL(c.countMonthly, 0),
-        @limitCredentials = l.[credentials],
-        @limitMaxAmount = l.maxAmount
+        @limitCredentials = l.[credentials]
     FROM
         @matches AS c
     JOIN
@@ -133,192 +132,94 @@ BEGIN
     AND 
         (
              @amount < l.minAmount OR
-             @amount > ISNULL(@maxAmountParam, l.maxAmount) OR
+             @amount > l.maxAmount OR
              @amount + @amountDaily > l.maxAmountDaily OR
              @amount + @amountWeekly > l.maxAmountWeekly OR
              @amount + @amountMonthly > l.maxAmountMonthly OR
              @countDaily >= l.maxCountDaily OR
              @countWeekly >= l.maxCountWeekly OR
              @countMonthly >= l.maxCountMonthly        
-        )   
+        )
+    AND 
+        (
+            @credentials IS NULL OR 
+            ISNULL(l.[credentials], 0) = 0 OR             
+            @credentials & ISNULL (@credentialsCheck, l.[credentials]) <> ISNULL (@credentialsCheck, l.[credentials])
+        )
     ORDER BY
         c.[priority],
         l.[priority]
-
-    IF @limitCredentials = 0
-        BEGIN            
-            SET @checkSuccess = CASE 
-                                     WHEN @amount > @maxAmountParam AND 
-                                          @amount <= @limitMaxAmount AND 
-                                          @isTransactionValidate = 1 
-                                     THEN 1 
-                                     WHEN @amount > @maxAmountParam AND 
-                                          @amount <= @limitMaxAmount AND 
-                                          @credentialsCheck IS NOT NULL AND 
-                                          @credentialsCheck & @credentials = @credentialsCheck 
-                                     THEN 1                                                                                 
-                                     ELSE 0
-                                END
-        END    
-    ELSE   
-        BEGIN
-            SET @credentialsCheck = COALESCE (@credentialsCheck, @limitCredentials, 0)
-            SET @checkSuccess = CASE 
-                                     WHEN  @limitId IS NULL OR 
-                                           @credentialsCheck = 0 OR 
-                                           @credentialsCheck & @credentials = @credentialsCheck 
-                                     THEN 1                                             
-                                     ELSE 0
-                                 END
-     END
+   
     
-    IF (@limitCredentials = 0 AND @checkSuccess = 0) OR @limitCredentials IS NULL
+     IF @limitId IS NOT NULL
         BEGIN
-            IF @amount < @minAmount
-            BEGIN
-                SELECT 'ruleData' resultSetName
-                SELECT  @minAmount AS minAmount,
-                        @maxAmount AS maxAmount,
-                        @maxAmountDaily AS maxAmountDaily,
-                        @maxCountDaily AS maxCountDaily,
-                        @maxAmountWeekly AS maxAmountWeekly,
-                        @maxCountWeekly AS maxCountWeekly,
-                        @maxAmountMonthly AS maxAmountMonthly,
-                        @maxCountMonthly AS maxCountMonthly,
-                        @amountDaily AS amountDaily,
-                        @countDaily AS countDaily,
-                        @amountWeekly AS amountWeekly,
-                        @countWeekly AS countWeekly,
-                        @amountMonthly AS amountMonthly,
-                        @countMonthly AS countMonthly,
-                        @amount AS amount,
-                        @amount + @amountDaily AS accumulatedAmountDaily,
-                        @amount + @amountWeekly AS accumulatedAmountWeekly,
-                        @amount + @amountMonthly AS accumulatedAmountMonthly
+          DECLARE @type VARCHAR (20)= CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END
+          DECLARE @error VARCHAR (50) = @type + CASE
+                                                     WHEN @amount > @maxAmount THEN 'MaxLimitAmount'
+                                                     WHEN @amount < @minAmount THEN 'MinLimitAmount'
+                                                     WHEN @amount + @amountDaily > @maxAmountDaily THEN 'DailyLimitAmount'
+                                                     WHEN @amount + @amountWeekly > @maxAmountWeekly THEN 'WeeklyLimitAmount'
+                                                     WHEN @amount + @amountMonthly > @maxAmountMonthly THEN 'MonthlyLimitAmount'
+                                                     WHEN @countDaily >= @maxCountDaily THEN 'DailyLimitCount'
+                                                     WHEN @countWeekly >= @maxCountWeekly THEN 'WeeklyLimitCount'
+                                                     WHEN @countMonthly >= @maxCountMonthly THEN 'MonthlyLimitCount'                                                    
+                                                 END          
 
-                SELECT 'ut-error' resultSetName,
-                       'rule.exceedMinLimitAmount' [type],
-                        @@servername serverName,
-                        @@version [version]             
-                RETURN
-            END
+            SELECT 
+            'ut-error' resultSetName,
+            @error type,
+            @minAmount AS minAmount,
+            ISNULL (@maxAmountParam, @maxAmount) AS maxAmount,
+            @maxAmountDaily AS maxAmountDaily,
+            @maxCountDaily AS maxCountDaily,
+            @maxAmountWeekly AS maxAmountWeekly,
+            @maxCountWeekly AS maxCountWeekly,
+            @maxAmountMonthly AS maxAmountMonthly,
+            @maxCountMonthly AS maxCountMonthly,
+            @amountDaily AS amountDaily,
+            @countDaily AS countDaily,
+            @amountWeekly AS amountWeekly,
+            @countWeekly AS countWeekly,
+            @amountMonthly AS amountMonthly,
+            @countMonthly AS countMonthly,
+            @amount AS amount,
+            @amount + @amountDaily AS accumulatedAmountDaily,
+            @amount + @amountWeekly AS accumulatedAmountWeekly,
+            @amount + @amountMonthly AS accumulatedAmountMonthly,
+            ISNULL (@credentialsCheck, @limitCredentials) AS [credentials]         
 
-            IF @amount > @maxAmount
-            BEGIN
-                RAISERROR('rule.exceedMaxLimitAmount', 16, 1)
-                RETURN
-            END
-
-            IF @amount + @amountDaily > @maxAmountDaily
-            BEGIN
-                RAISERROR('rule.exceedDailyLimitAmount', 16, 1)
-                RETURN
-            END
-
-            IF @amount + @amountWeekly > @maxAmountWeekly
-            BEGIN
-                RAISERROR('rule.exceedWeeklyLimitAmount', 16, 1)
-                RETURN
-            END
-
-            IF @amount + @amountMonthly > @maxAmountMonthly
-            BEGIN
-                RAISERROR('rule.exceedMonthlyLimitAmount', 16, 1)
-                RETURN
-            END
-
-            IF @countDaily >= @maxCountDaily
-            BEGIN
-                RAISERROR('rule.exceedDailyLimitCount', 16, 1)
-                RETURN
-            END
-
-            IF @countWeekly >= @maxCountWeekly
-            BEGIN
-                RAISERROR('rule.exceedWeeklyLimitCount', 16, 1)
-                RETURN
-            END
-
-            IF @countMonthly >= @maxCountMonthly
-            BEGIN
-                RAISERROR('rule.exceedMonthlyLimitCount', 16, 1)
-                RETURN
-            END
-        END
-    ELSE IF @checkSuccess = 0 AND ISNULL(@isTransactionValidate,0) <> 1
+            IF ISNULL (@isTransactionValidate, 0) = 0 RETURN
+        END 
+    ELSE
+        IF @amount > @maxAmountParam AND ISNULL(@credentials, 0) & @credentialsCheck <> @credentialsCheck
         BEGIN
-            IF @amount < @minAmount
-            BEGIN
-                RAISERROR('rule.unauthorizedMinLimitAmount', 16, 1)
-                RETURN
-            END
+            SET @credentialsCheck = CASE WHEN ISNULL(@credentialsCheck, 0) = 0 THEN NULL ELSE @credentialsCheck END
 
-            IF @amount > @maxAmount
-            BEGIN
-                RAISERROR('rule.unauthorizedMaxLimitAmount', 16, 1)
-                RETURN
-            END
+            SELECT 
+            'ut-error' resultSetName,
+            CASE WHEN ISNULL(@credentialsCheck,0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END +'MaxLimitAmount' type,
+            @maxAmountParam AS maxAmount,
+            @minAmount AS minAmount,            
+            @maxAmountDaily AS maxAmountDaily,
+            @maxCountDaily AS maxCountDaily,
+            @maxAmountWeekly AS maxAmountWeekly,
+            @maxCountWeekly AS maxCountWeekly,
+            @maxAmountMonthly AS maxAmountMonthly,
+            @maxCountMonthly AS maxCountMonthly,
+            @amountDaily AS amountDaily,
+            @countDaily AS countDaily,
+            @amountWeekly AS amountWeekly,
+            @countWeekly AS countWeekly,
+            @amountMonthly AS amountMonthly,
+            @countMonthly AS countMonthly,
+            @amount AS amount,
+            @amount + @amountDaily AS accumulatedAmountDaily,
+            @amount + @amountWeekly AS accumulatedAmountWeekly,
+            @amount + @amountMonthly AS accumulatedAmountMonthly,
+            @credentialsCheck AS [credentials]       
 
-            IF @amount + @amountDaily > @maxAmountDaily
-            BEGIN
-                RAISERROR('rule.unauthorizedDailyLimitAmount', 16, 1)
-                RETURN
-            END
-
-            IF @amount + @amountWeekly > @maxAmountWeekly
-            BEGIN
-                RAISERROR('rule.unauthorizedWeeklyLimitAmount', 16, 1)
-                RETURN
-            END
-
-            IF @amount + @amountMonthly > @maxAmountMonthly
-            BEGIN
-                RAISERROR('rule.unauthorizedMonthlyLimitAmount', 16, 1)
-                RETURN
-            END
-
-            IF @countDaily >= @maxCountDaily
-            BEGIN
-                RAISERROR('rule.unauthorizedDailyLimitCount', 16, 1)
-                RETURN
-            END
-
-            IF @countWeekly >= @maxCountWeekly
-            BEGIN
-                RAISERROR('rule.unauthorizedWeeklyLimitCount', 16, 1)
-                RETURN
-            END
-
-            IF @countMonthly >= @maxCountMonthly
-            BEGIN
-                RAISERROR('rule.unauthorizedMonthlyLimitCount', 16, 1)
-                RETURN
-            END
-        END
-    ELSE IF @isTransactionValidate = 1 AND @limitId IS NOT NULL
-        BEGIN
-            SELECT 'ruleData' resultSetName
-            SELECT  @minAmount AS minAmount,
-                    @maxAmount AS maxAmount,
-                    @maxAmountDaily AS maxAmountDaily,
-                    @maxCountDaily AS maxCountDaily,
-                    @maxAmountWeekly AS maxAmountWeekly,
-                    @maxCountWeekly AS maxCountWeekly,
-                    @maxAmountMonthly AS maxAmountMonthly,
-                    @maxCountMonthly AS maxCountMonthly,
-                    @amountDaily AS amountDaily,
-                    @countDaily AS countDaily,
-                    @amountWeekly AS amountWeekly,
-                    @countWeekly AS countWeekly,
-                    @amountMonthly AS amountMonthly,
-                    @countMonthly AS countMonthly,
-                    @amount AS amount,
-                    @amount + @amountDaily AS accumulatedAmountDaily,
-                    @amount + @amountWeekly AS accumulatedAmountWeekly,
-                    @amount + @amountMonthly AS accumulatedAmountMonthly,
-                    CASE WHEN @amount > ISNULL (@maxAmount, @maxAmountParam) THEN @credentialsCheck ELSE NULL END AS credentialsCheck                    
-             END
-
+          IF ISNULL (@isTransactionValidate, 0) = 0 RETURN
+        END                
 
     DECLARE @fee TABLE(
         conditionId int,

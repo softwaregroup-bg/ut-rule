@@ -54,12 +54,9 @@ const SectionLimit = React.createClass({
         }
 
         return this.props.data.map((limit, index) => {
-            var currencyOne = (currencies.filter(x => x.name === limit.currency) &&
-                      currencies.filter(x => x.name === limit.currency)[0] &&
-                      currencies.filter(x => x.name === limit.currency)[0].key);
             var currencyTwo = limit.currency;
             var firstCurrencyKey = chosenOrganizationId ? (currencies && currencies[0] && currencies[0].key) : undefined;
-            var defaultCurrency = [firstCurrencyKey, currencyOne, currencyTwo].find(dk => {
+            var defaultCurrency = [firstCurrencyKey, currencyTwo].find(dk => {
                 return currencies.find(curDK => curDK.key === dk);
             });
 

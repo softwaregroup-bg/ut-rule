@@ -45,9 +45,9 @@ const Main = React.createClass({
         };
     },
     fetchData(props) {
-        let {pageSize, pageNumber} = props.pagination;
+        let { pageSize, pageNumber } = props.pagination;
 
-        this.props.actions.fetchRules({pageSize, pageNumber});
+        this.props.actions.fetchRules({ pageSize, pageNumber });
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     },
     componentWillMount() {
@@ -145,7 +145,7 @@ const Main = React.createClass({
         return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
             <div className={style.header}>
-                <Header text='Rule Management' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'}]} />
+                <Header text='Rule Management' buttons={[{ text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight' }]} />
             </div>
             <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                 <GridToolbox opened title='' >
@@ -163,53 +163,53 @@ const Main = React.createClass({
                 <div className={style.grid} >
                     {this.state.dialog.open &&
                         <Dialog
-                          ref='dialog'
-                          open={this.state.dialog.open}
-                          data={this.props.rules[this.state.dialog.conditionId]}
-                          conditionProperty={this.props.conditionProperty}
-                          conditionActor={this.props.conditionActor}
-                          conditionItem={this.props.conditionItem}
-                          nomenclatures={this.props.nomenclatures}
-                          currencyOrganization={this.props.currencyOrganization}
-                          onSave={this.dialogOnSave}
-                          onClose={this.dialogOnClose}
-                          sections={sections}
+                            ref='dialog'
+                            open={this.state.dialog.open}
+                            data={this.props.rules[this.state.dialog.conditionId]}
+                            conditionProperty={this.props.conditionProperty}
+                            conditionActor={this.props.conditionActor}
+                            conditionItem={this.props.conditionItem}
+                            nomenclatures={this.props.nomenclatures}
+                            currencyOrganization={this.props.currencyOrganization}
+                            onSave={this.dialogOnSave}
+                            onClose={this.dialogOnClose}
+                            sections={sections}
                         />
                     }
                     {this.state.prompt &&
                         <Prompt
-                          ref='prompt'
-                          open={this.state.prompt}
-                          message={
-                            'You are about to delete ' +
-                            (
-                                Object.keys(this.state.selectedConditions).length === 1
-                                    ? '1 rule'
-                                    : Object.keys(this.state.selectedConditions).length + ' rules'
-                            ) +
-                            '. Would you like to proceed?'
-                        }
-                          onOk={this.removeRules}
-                          onCancel={this.hidePrompt}
+                            ref='prompt'
+                            open={this.state.prompt}
+                            message={
+                                'You are about to delete ' +
+                                (
+                                    Object.keys(this.state.selectedConditions).length === 1
+                                        ? '1 rule'
+                                        : Object.keys(this.state.selectedConditions).length + ' rules'
+                                ) +
+                                '. Would you like to proceed?'
+                            }
+                            onOk={this.removeRules}
+                            onCancel={this.hidePrompt}
                         />
                     }
                     <Grid
-                      ref='grid'
-                      refresh={this.refresh}
-                      data={this.props.rules}
-                      selectedConditions={this.state.selectedConditions}
-                      nomenclatures={this.props.nomenclatures}
-                      formatedGridData={this.props.formatedGridData}
-                      handleCheckboxSelect={this.handleCheckboxSelect}
-                      handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
-                      columns={columns}
+                        ref='grid'
+                        refresh={this.refresh}
+                        data={this.props.rules}
+                        selectedConditions={this.state.selectedConditions}
+                        nomenclatures={this.props.nomenclatures}
+                        formatedGridData={this.props.formatedGridData}
+                        handleCheckboxSelect={this.handleCheckboxSelect}
+                        handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                        columns={columns}
                     />
                 </div>
             </div>
             <div className={style.paginationWrap}>
                 <AdvancedPagination
-                  onUpdate={this.props.actions.updatePagination}
-                  pagination={fromJS(this.props.pagination)} />
+                    onUpdate={this.props.actions.updatePagination}
+                    pagination={fromJS(this.props.pagination)} />
             </div>
             {false &&
                 <div>

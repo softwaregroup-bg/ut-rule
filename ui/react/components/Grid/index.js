@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
-import {fromJS} from 'immutable';
-import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
+import { fromJS } from 'immutable';
+import { SimpleGrid } from 'ut-front-react/components/SimpleGrid';
 import style from './style.css';
-import {getStorageColumns, toggleColumnInStorage} from 'ut-front-react/components/SimpleGrid/helpers';
+import { getStorageColumns, toggleColumnInStorage } from 'ut-front-react/components/SimpleGrid/helpers';
 const propInStorage = 'rules';
 
 export default React.createClass({
@@ -15,17 +15,20 @@ export default React.createClass({
         handleCheckboxSelect: PropTypes.func,
         handleHeaderCheckboxSelect: PropTypes.func
     },
+    contextTypes: {
+        nomenclatures: PropTypes.object
+    },
     getInitialState(state) {
         return {
             expandedGridColumns: [],
             columns: this.props.columns,
             fields: [
-              {title: this.props.columns.priority.title, name: 'priority', visible: true},
-              {title: this.props.columns.channel.title, name: 'channel', visible: true},
-              {title: this.props.columns.operation.title, name: 'operation', visible: true},
-              {title: this.props.columns.source.title, name: 'source', visible: true},
-              {title: this.props.columns.destination.title, name: 'destination', visible: true},
-              {title: this.props.columns.limit.title, name: 'limit', visible: true},
+                { title: this.props.columns.priority.title, name: 'priority', visible: true },
+                { title: this.props.columns.channel.title, name: 'channel', visible: true },
+                { title: this.props.columns.operation.title, name: 'operation', visible: true },
+                { title: this.props.columns.source.title, name: 'source', visible: true },
+                { title: this.props.columns.destination.title, name: 'destination', visible: true },
+                { title: this.props.columns.limit.title, name: 'limit', visible: true },
                 {
                     title: <div>Expansion</div>,
                     name: 'expansion',
@@ -45,7 +48,7 @@ export default React.createClass({
             }
             return field;
         });
-        this.setState({fields: fieldsWithVisibility});
+        this.setState({ fields: fieldsWithVisibility });
     },
     handleGridExpansion(id) {
         let expandedGridColumns = this.state.expandedGridColumns;
@@ -55,7 +58,7 @@ export default React.createClass({
         } else {
             expandedGridColumns.push(id);
         }
-        this.setState({expandedGridColumns});
+        this.setState({ expandedGridColumns });
     },
     renderGridColumn(condition, keysToInclude, row, column) {
         let result = [];
@@ -72,29 +75,29 @@ export default React.createClass({
         }
         if (row.operationEndDate && column === 'operation') {
             result.push(
-              <div key={result.length}>
-                  <b>End Date: </b>{row.operationEndDate.slice(0, 10)}
-              </div>
+                <div key={result.length}>
+                    <b>End Date: </b>{row.operationEndDate.slice(0, 10)}
+                </div>
             );
         }
         if (row.operationStartDate && column === 'operation') {
             result.push(
-              <div key={result.length}>
-                  <b>Start Date: </b>{row.operationStartDate.slice(0, 10)}
-              </div>
+                <div key={result.length}>
+                    <b>Start Date: </b>{row.operationStartDate.slice(0, 10)}
+                </div>
             );
         }
         if (row.destinationAccountId && column === 'destination') {
             result.push(
-              <div key={result.length}>
-                  <b>Destination Account: </b>{row.destinationAccountId}
-              </div>
+                <div key={result.length}>
+                    <b>Destination Account: </b>{row.destinationAccountId}
+                </div>
             );
         }
         return (
-          <div>
-            {result}
-          </div>
+            <div>
+                {result}
+            </div>
         );
     },
     updateColumns(columns) {
@@ -113,13 +116,44 @@ export default React.createClass({
                 stateField.visible = !stateField.visible;
             }
         });
-        this.setState({fields: stateFields});
+        this.setState({ fields: stateFields });
+    },
+    getFormattedNomenclatures() {
+        let { nomenclatures } = this.props;
+        let formattedNomenclatures = {};
+
+        Object.keys(nomenclatures).map((nomKey) => {
+            formattedNomenclatures[nomKey] = Object.keys(nomenclatures[nomKey]).map((key) => {
+                return {
+                    key,
+                    name: nomenclatures[nomKey][key]
+                };
+            });
+        });
+
+        return formattedNomenclatures;
     },
     getData() {
+        var currencies = this.getFormattedNomenclatures().currency;
+
         return Object.keys(this.props.data).map((conditionId, i) => {
             let record = this.props.data[conditionId];
             let condition = record.condition[0];
             let columns = this.state.columns;
+
+            let limits = this.props.formatedGridData[conditionId];
+
+            // Map currency
+            if (limits.limit.length > 0) {
+                for (let i = 0; i < limits.limit.length; i++) {
+                    let match = currencies.filter(x => x.key == limits.limit[0].value);
+
+                     if (match.length == 1) {
+                        limits.limit[i].value = match[0].name;
+                    }
+                }
+            }
+
             return {
                 id: conditionId,
                 destinationAccountId: condition.destinationAccountId,
@@ -130,7 +164,7 @@ export default React.createClass({
                 operation: columns.operation.visible && this.props.formatedGridData[conditionId],
                 source: columns.source.visible && this.props.formatedGridData[conditionId],
                 destination: columns.destination.visible && this.props.formatedGridData[conditionId],
-                limit: columns.limit.visible && this.props.formatedGridData[conditionId],
+                limit: columns.limit.visible && limits,
                 split: columns.split.visible && this.props.formatedGridData[conditionId],
                 expansion: 'Not Empty'
             };
@@ -170,19 +204,19 @@ export default React.createClass({
         }).toJS();
 
         return <SimpleGrid
-          ref='grid'
-          globalMenu
-          toggleColumnVisibility={this.toggleColumn}
-          multiSelect
-          fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
-          handleCheckboxSelect={this.props.handleCheckboxSelect}
-          handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
-          handleRowClick={this.handleRowClick}
-          externalStyle={style}
-          mainClassName='dataGridTable'
-          rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
-          data={data}
-          transformCellValue={this.transformCellValue}
+            ref='grid'
+            globalMenu
+            toggleColumnVisibility={this.toggleColumn}
+            multiSelect
+            fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
+            handleCheckboxSelect={this.props.handleCheckboxSelect}
+            handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
+            handleRowClick={this.handleRowClick}
+            externalStyle={style}
+            mainClassName='dataGridTable'
+            rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
+            data={data}
+            transformCellValue={this.transformCellValue}
         />;
     }
 });

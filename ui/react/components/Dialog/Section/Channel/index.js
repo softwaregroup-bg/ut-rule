@@ -4,6 +4,7 @@ import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import plusImage from '../../assets/add_new.png';
+import Select from 'react-select';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 
@@ -77,8 +78,20 @@ const Channel = React.createClass({
     },
     render() {
         let {channel, country, region, city, supervisor, organization, role} = this.context.nomenclatures;
+        let { channelRoleId } = this.props.data;
         let { onSelectDropdown } = this;
         let fields = this.state.fields;
+
+        let usableChannelRoleId = typeof channelRoleId === 'string' ? (
+            [(role || []).find(r => r.key === channelRoleId)].filter(Boolean).map(r => {
+                return {key: r.key, value: r.name};
+            })
+        ) : channelRoleId;
+
+        let selectedAgentTypes = (usableChannelRoleId || []).map(r => {
+            return {value: r.key, label: r.value};
+        });
+
         return (
             <div className={style.content}>
                 {fields.channel.visible && channel &&
@@ -131,19 +144,27 @@ const Channel = React.createClass({
                         />
                     </div>
                 }
-                {fields.role.visible && role &&
-                  <div className={style.inputWrapper}>
-                      <Dropdown
-                        canSelectPlaceholder
-                        data={role || []}
-                        defaultSelected={'' + (this.props.data.channelRoleId || '')}
-                        keyProp='channelRoleId'
-                        placeholder={fields.role.title}
-                        onSelect={onSelectDropdown}
-                        label={fields.role.title}
-                        mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                {
+                    <div className={style.inputWrapper}>
+                        <span className={style.selectLabel}>Agent type</span>
+                        <Select
+                          name={'channelRoleId'}
+                          value={selectedAgentTypes}
+                          options={(role || []).map(r => {
+                              return {value: r.key, label: r.name};
+                          })}
+                          onChange={(e) => {
+                              onSelectDropdown({
+                                  key: 'channelRoleId',
+                                  value: (e || []).map(r => {
+                                      return {key: r.value, value: r.label};
+                                  })
+                              });
+                          }}
+                          className={style.selectElem}
+                          multi
                         />
-                  </div>
+                    </div>
                 }
                 {fields.organization.visible && organization &&
                   <div className={style.inputWrapper}>

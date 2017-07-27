@@ -21,7 +21,7 @@ const Main = React.createClass({
         conditionItem: PropTypes.array,
         conditionProperty: PropTypes.array,
         nomenclatures: PropTypes.object,
-        currencyOrganization: PropTypes.object,
+        currencyOrganization: PropTypes.array,
         formatedGridData: PropTypes.object,
         ready: PropTypes.bool,
         actions: PropTypes.object,

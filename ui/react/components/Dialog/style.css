@@ -220,3 +220,17 @@ div.dropDownRoot {
   padding-top: 15px;
   padding-bottom: 15px;
 }
+
+.selectElem {
+    display: inline-block;
+    float: right;
+    width: 70%;
+    font-size: 15px;
+}
+
+.selectLabel {
+    display: inline-block;
+    font-size: 14px;
+    padding-top: 5px;
+    color: #6c6c6c;
+}

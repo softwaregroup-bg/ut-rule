@@ -7,6 +7,8 @@ import MultiSelect from 'ut-front-react/components/Input/MultiSelectDropdown';
 import Cumulative from './Cumulative';
 import Assignment from './Assignment';
 
+const displaySplitTags = false;
+
 const Splits = React.createClass({
     propTypes: {
         data: PropTypes.array.isRequired,
@@ -87,7 +89,7 @@ const Splits = React.createClass({
                           value={(split.splitName.name || '')}
                         />
                     </div>
-                    <div className={style.splitInput}>
+                    {displaySplitTags && <div className={style.splitInput}>
                         <MultiSelect
                           placeholder='Select Tags'
                           defaultSelected={self.defaultSelected(self.getTagData(), split.splitName.tag)}
@@ -96,7 +98,7 @@ const Splits = React.createClass({
                           label='Tag'
                           keyProp='splitName.tag'
                         />
-                    </div>
+                    </div>}
                 </div>
                 <Accordion title='Cumulative' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                     <div className={style.content}>

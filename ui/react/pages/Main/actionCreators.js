@@ -93,6 +93,22 @@ export function editRule(params) {
             }
         }
 
+        var cAFix = [];
+        conditionActor.forEach(ca => {
+            if (typeof ca.actorId === 'string') {
+                cAFix.push(ca);
+            } else if (ca.actorId) {
+                ca.actorId.forEach(a => {
+                    cAFix.push({
+                        factor: ca.factor,
+                        conditionId: ca.conditionId,
+                        actorId: a.key
+                    });
+                });
+            }
+        });
+        conditionActor = cAFix;
+
         let conditionItem = [];
         let conditionItemFields = {
             channelCityIds: 'cs',
@@ -254,6 +270,22 @@ export function addRule(params) {
                 });
             }
         }
+
+        var cAFix = [];
+        conditionActor.forEach(ca => {
+            if (typeof ca.actorId === 'string') {
+                cAFix.push(ca);
+            } else if (ca.actorId) {
+                ca.actorId.forEach(a => {
+                    cAFix.push({
+                        factor: ca.factor,
+                        conditionId: ca.conditionId,
+                        actorId: a.key
+                    });
+                });
+            }
+        });
+        conditionActor = cAFix;
 
         let conditionItem = [];
         let conditionItemFields = {

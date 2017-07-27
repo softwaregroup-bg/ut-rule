@@ -244,60 +244,54 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                     dailyAmount: joi.number().max(joi.ref('weeklyAmount')).options({
+                     dailyAmount: joi.number().allow('').allow(null).max(joi.ref('weeklyAmount')).options({
                          language: {
                              key: '"Daily Amount" ',
                              number: {
-                                 max: 'should be smaller than Weekly Amount',
-                                 base: 'is required for all splits cumulatives'
+                                 max: 'should be smaller than Weekly Amount'
                              }
                          }
                      }),
-                     dailyCount: joi.number().max(joi.ref('weeklyCount')).options({
+                     dailyCount: joi.number().allow('').allow(null).max(joi.ref('weeklyCount')).options({
                          language: {
                              key: '"Daily Count" ',
                              number: {
-                                 max: 'should be smaller than Weekly Count',
-                                 base: 'is required for all splits cumulatives'
+                                 max: 'should be smaller than Weekly Count'
                              }
                          }
                      }),
-                     weeklyAmount: joi.number().min(joi.ref('dailyAmount')).max(joi.ref('mounthlyAmount')).options({
+                     weeklyAmount: joi.number().allow('').allow(null).min(joi.ref('dailyAmount')).max(joi.ref('mounthlyAmount')).options({
                          language: {
                              key: '"Weekly Amount" ',
                              number: {
                                  max: 'should be bigger than Daily Amount',
-                                 min: 'should be smaller than Monthly Amount',
-                                 base: 'is required for all splits cumulatives'
+                                 min: 'should be smaller than Monthly Amount'
                              }
                          }
                      }),
-                     weeklyCount: joi.number().min(joi.ref('dailyCount')).max(joi.ref('mounthlyCount')).options({
+                     weeklyCount: joi.number().allow('').allow(null).min(joi.ref('dailyCount')).max(joi.ref('mounthlyCount')).options({
                          language: {
                              key: '"Weekly Count" ',
                              number: {
                                  max: 'should be bigger than Daily Count',
-                                 min: 'should be smaller than Monthly Count',
-                                 base: 'is required for all splits cumulatives'
+                                 min: 'should be smaller than Monthly Count'
                              }
                          }
                      }),
-                     mounthlyAmount: joi.number().min(joi.ref('weeklyAmount')).options({
+                     mounthlyAmount: joi.number().allow('').allow(null).min(joi.ref('weeklyAmount')).options({
                          language: {
                              key: '"Mounthly Amount" ',
                              number: {
-                                 min: 'should be bigger than Weekly Amount',
-                                 base: 'is required for all splits cumulatives'
+                                 min: 'should be bigger than Weekly Amount'
                              }
                          }
                      }),
-                     mounthlyCount: joi.number().min(joi.ref('weeklyCount'))
+                     mounthlyCount: joi.number().allow('').allow(null).min(joi.ref('weeklyCount'))
                      .options({
                          language: {
                              key: '"Mounthly Count" ',
                              number: {
-                                 min: 'should be bigger than Weekly Count',
-                                 base: 'is required for all splits cumulatives'
+                                 min: 'should be bigger than Weekly Count'
                              }
                          }
                      }),
@@ -308,7 +302,7 @@ let schema = joi.object().keys({
                                 language: {
                                     key: '"Range" ',
                                     number: {
-                                        min: 'Max Amount should not be bigger than Min Amount',
+                                        // min: 'Max Amount should not be bigger than Min Amount',
                                         base: 'is required for all splits cumulatives'
                                     }
                                 }
@@ -317,7 +311,7 @@ let schema = joi.object().keys({
                                 language: {
                                     key: '"Range" ',
                                     number: {
-                                        max: 'Min Amount should not be smaller than Max Amount',
+                                        // max: 'Min Amount should not be smaller than Max Amount',
                                         base: 'is required for all splits cumulatives'
                                     }
                                 }

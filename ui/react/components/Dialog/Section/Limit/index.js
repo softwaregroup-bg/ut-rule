@@ -15,7 +15,7 @@ const SectionLimit = React.createClass({
     contextTypes: {
         onFieldChange: PropTypes.func,
         nomenclatures: PropTypes.object,
-        currencyOrganization: PropTypes.object
+        currencyOrganization: PropTypes.array
     },
     onSelectDropdown(index) {
         let self = this;
@@ -58,13 +58,17 @@ const SectionLimit = React.createClass({
                 return currencies.find(curDK => curDK.key === dk);
             });
 
+            if (!currencyOne && !currencyTwo && defaultCurrency) {
+                this.context.onFieldChange('limit', index, 'currency', defaultCurrency);
+            }
+
             return (
                 <tr key={index}>
                     <td>
                         <Dropdown
                           keyProp='currency'
                           data={currencies || []}
-                          defaultSelected={'' + (defaultCurrency)}
+                          defaultSelected={'' + (defaultCurrency || '')}
                           onSelect={this.onSelectDropdown(index)}
                           mergeStyles={{ dropDownRoot: style.dropDownRoot }}
                         />

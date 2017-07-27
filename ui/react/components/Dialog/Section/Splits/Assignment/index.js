@@ -16,7 +16,8 @@ const Assignment = React.createClass({
         nomenclatures: PropTypes.object
     },
     contextTypes: {
-        onFieldChange: PropTypes.func
+        onFieldChange: PropTypes.func,
+        handleZeroValues: PropTypes.func
     },
     getInitialState() {
         return {
@@ -58,7 +59,8 @@ const Assignment = React.createClass({
     },
     createAssignmentRows() {
         let fields = this.state.fields;
-        let {alias, creditAlias, debitAlias} = this.props.nomenclatures;
+        let {handleZeroValues} = this.context;
+        let {creditAlias, debitAlias} = this.props.nomenclatures;
 
         return this.props.data.map((splitAssignment, index) => (
             <tr key={index}>
@@ -67,7 +69,7 @@ const Assignment = React.createClass({
                     <Input
                       keyProp='description'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (splitAssignment.description || '')}
+                      value={'' + (handleZeroValues(splitAssignment.description) || '')}
                     />
                 </td>
                 }
@@ -76,15 +78,15 @@ const Assignment = React.createClass({
                     <Input
                       keyProp='debit'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (splitAssignment.debit || '')}
+                      value={'' + (handleZeroValues(splitAssignment.debit) || '')}
                     />
                 </td>
                 }
-                {fields.debitAlias.visible && alias &&
+                {fields.debitAlias.visible && debitAlias &&
                 <td style={{minWidth: '200px'}}>
                     <Dropdown
                       keyProp='debit'
-                      data={alias}
+                      data={debitAlias}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (splitAssignment.debit || '')}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}
@@ -96,15 +98,15 @@ const Assignment = React.createClass({
                     <Input
                       keyProp='credit'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (splitAssignment.credit || '')}
+                      value={'' + (handleZeroValues(splitAssignment.credit) || '')}
                     />
                 </td>
                 }
-                {fields.creditAlias.visible && alias &&
+                {fields.creditAlias.visible && creditAlias &&
                 <td style={{minWidth: '200px'}}>
                     <Dropdown
                       keyProp='credit'
-                      data={alias}
+                      data={creditAlias}
                       onSelect={this.onSelectDropdown(index)}
                       defaultSelected={'' + (splitAssignment.credit || '')}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}
@@ -116,7 +118,7 @@ const Assignment = React.createClass({
                     <Input
                       keyProp='percent'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (splitAssignment.percent || '')}
+                      value={'' + (handleZeroValues(splitAssignment.percent) || '')}
                     />
                 </td>
                 }
@@ -125,7 +127,7 @@ const Assignment = React.createClass({
                     <Input
                       keyProp='minValue'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (splitAssignment.minValue || '')}
+                      value={'' + (handleZeroValues(splitAssignment.minValue) || '')}
                     />
                 </td>
                 }
@@ -134,7 +136,7 @@ const Assignment = React.createClass({
                     <Input
                       keyProp='maxValue'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (splitAssignment.maxValue || '')}
+                      value={'' + (handleZeroValues(splitAssignment.maxValue) || '')}
                     />
                 </td>
                 }

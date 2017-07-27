@@ -298,35 +298,12 @@ let schema = joi.object().keys({
                      splitRange: joi.array().items(
                         joi.object().keys({
                             isSourceAmount: joi.boolean(),
-                            maxValue: joi.number().min(joi.ref('minValue')).options({
+                            maxValue: joi.number().allow('').allow(null),
+                            minValue: joi.number().allow('').allow(null),
+                            percent: joi.number().allow('').allow(null),
+                            startAmount: joi.number().required().allow(0).options({
                                 language: {
-                                    key: '"Range" ',
-                                    number: {
-                                        // min: 'Max Amount should not be bigger than Min Amount',
-                                        base: 'is required for all splits cumulatives'
-                                    }
-                                }
-                            }),
-                            minValue: joi.number().max(joi.ref('maxValue')).options({
-                                language: {
-                                    key: '"Range" ',
-                                    number: {
-                                        // max: 'Min Amount should not be smaller than Max Amount',
-                                        base: 'is required for all splits cumulatives'
-                                    }
-                                }
-                            }),
-                            percent: joi.number().options({
-                                language: {
-                                    key: '"Range" ',
-                                    string: {
-                                        base: 'is required for all splits cumulatives'
-                                    }
-                                }
-                            }),
-                            startAmount: joi.number().options({
-                                language: {
-                                    key: '"Range" ',
+                                    key: '"Range Start Amount" ',
                                     string: {
                                         base: 'is required for all splits cumulatives'
                                     }

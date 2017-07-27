@@ -529,8 +529,28 @@ export default React.createClass({
     hasDuplicates(array) {
         return (new Set(array)).size !== array.length;
     },
+    parseSaveData(data) {
+        if (data && data.split && data.split.forEach) {
+            data.split.forEach(curSplit => {
+                if (curSplit && curSplit.splitCumulative && curSplit.splitCumulative.map) {
+                    curSplit.splitCumulative = curSplit.splitCumulative.map(cumulative => {
+                        Object.keys(cumulative).forEach(key => {
+                            if (cumulative[key] === '0') {
+                                cumulative[key] = 0;
+                            }
+                        });
+                        return cumulative;
+                    });
+                }
+            });
+        }
+
+        return data;
+    },
     save() {
         let { data } = this.state;
+        data = this.parseSaveData(data);
+
         let formValidation = validations.run(data);
         if (formValidation.isValid) {
             let uniqueSplitNames = true;

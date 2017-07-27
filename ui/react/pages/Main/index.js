@@ -150,12 +150,13 @@ const Main = React.createClass({
             <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                 <GridToolbox opened title='' >
                     <div className={style.gridToolBoxButtons}>
-                        <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
+                        { this.context.checkPermission('rule.rule.edit') && <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
                             Edit
-                        </button>
-                        <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
+                        </button> }
+                        { this.context.checkPermission('rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
                             Delete
                         </button>
+                        }
                     </div>
                 </GridToolbox>
             </div>
@@ -224,6 +225,10 @@ const Main = React.createClass({
         </div>;
     }
 });
+
+Main.contextTypes = {
+    checkPermission: PropTypes.func
+};
 
 export default connect(
     (state, ownProps) => {

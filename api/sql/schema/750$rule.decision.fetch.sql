@@ -268,9 +268,9 @@ BEGIN
         a.splitNameId,
         a.tag,
         CAST(CASE
-            WHEN assignment.[percent] * a.fee / 100 > assignment.maxValue THEN maxValue
-            WHEN assignment.[percent] * a.fee / 100 < assignment.minValue THEN minValue
-            ELSE assignment.[percent] * a.fee / 100
+            WHEN ISNULL(assignment.[percent], 0) * a.fee / 100 > assignment.maxValue THEN maxValue
+            WHEN ISNULL(assignment.[percent], 0) * a.fee / 100 < assignment.minValue THEN minValue
+            ELSE ISNULL(assignment.[percent], 0) * a.fee / 100
         END AS MONEY) amount,
         ISNULL(d.accountNumber, assignment.debit) debit,
         ISNULL(c.accountNumber, assignment.credit) credit,

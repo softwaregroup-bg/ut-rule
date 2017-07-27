@@ -60,7 +60,7 @@ const SectionLimit = React.createClass({
                 return currencies.find(curDK => curDK.key === dk);
             });
 
-            if (!currencyOne && !currencyTwo && defaultCurrency) {
+            if (!currencyTwo && defaultCurrency) {
                 this.context.onFieldChange('limit', index, 'currency', defaultCurrency);
             }
 

@@ -135,12 +135,12 @@ BEGIN
         (    --violation of condition limits
              @amount < l.minAmount OR
              @amount > l.maxAmount OR
-             @amount + @amountDaily > l.maxAmountDaily OR
-             @amount + @amountWeekly > l.maxAmountWeekly OR
-             @amount + @amountMonthly > l.maxAmountMonthly OR
-             @countDaily >= l.maxCountDaily OR
-             @countWeekly >= l.maxCountWeekly OR
-             @countMonthly >= l.maxCountMonthly        
+             @amount + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
+             @amount + ISNULL(c.amountWeekly, 0) > l.maxAmountWeekly OR
+             @amount + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
+             ISNULL(c.countDaily, 0) >= l.maxCountDaily OR
+             ISNULL(c.countWeekly, 0) >= l.maxCountWeekly OR
+             ISNULL(c.countMonthly, 0) >= l.maxCountMonthly        
         )
     AND 
         (   --violation of limit credentials
@@ -152,7 +152,6 @@ BEGIN
         c.[priority],
         l.[priority]
    
-    
      IF @limitId IS NOT NULL -- if exists a condition limit which is violated, identify the exact violation and return error with result
         BEGIN
           DECLARE @type VARCHAR (20)= CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END

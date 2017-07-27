@@ -1,3 +1,69 @@
+<a name="9.10.4"></a>
+## [9.10.4](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.3...v9.10.4) (2017-07-26)
+
+
+### Bug Fixes
+
+* only take successful transfers ([ba3bf7a](https://github.com/softwaregroup-bg/ut-rule/commit/ba3bf7a))
+
+
+
+<a name="9.10.3"></a>
+## [9.10.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.2...v9.10.3) (2017-07-24)
+
+
+### Bug Fixes
+
+* buttons types to make it highlighted ([054bd18](https://github.com/softwaregroup-bg/ut-rule/commit/054bd18))
+* linting ([5258a6d](https://github.com/softwaregroup-bg/ut-rule/commit/5258a6d))
+
+
+
+<a name="9.10.2"></a>
+## [9.10.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.1...v9.10.2) (2017-07-24)
+
+
+### Bug Fixes
+
+* linting ([e155e80](https://github.com/softwaregroup-bg/ut-rule/commit/e155e80))
+
+
+
+<a name="9.10.1"></a>
+## [9.10.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.0...v9.10.1) (2017-07-24)
+
+
+### Bug Fixes
+
+* replace into clause because of the history triggers ([#75](https://github.com/softwaregroup-bg/ut-rule/issues/75)) ([c5b8a20](https://github.com/softwaregroup-bg/ut-rule/commit/c5b8a20))
+
+
+
+<a name="9.10.0"></a>
+# [9.10.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.9.2...v9.10.0) (2017-07-24)
+
+
+### Bug Fixes
+
+* ABT-1836 change card product to product ([8755f64](https://github.com/softwaregroup-bg/ut-rule/commit/8755f64))
+* linting problems ([8f61896](https://github.com/softwaregroup-bg/ut-rule/commit/8f61896))
+* previus changes ([001fbab](https://github.com/softwaregroup-bg/ut-rule/commit/001fbab))
+* UIS-2724 add rule sorting by priority ([f1e7bc7](https://github.com/softwaregroup-bg/ut-rule/commit/f1e7bc7))
+* UIS-2930 min amount smaller than max amount in split ([63c7c8a](https://github.com/softwaregroup-bg/ut-rule/commit/63c7c8a))
+* UIS-2932 add channel restriction for same names in properties tab ([59239b4](https://github.com/softwaregroup-bg/ut-rule/commit/59239b4))
+* UIS-2932 add operation, destionation, source restriction for same names in properties tab ([aa4e9a1](https://github.com/softwaregroup-bg/ut-rule/commit/aa4e9a1))
+* version increment ([e5dea80](https://github.com/softwaregroup-bg/ut-rule/commit/e5dea80))
+
+
+### Features
+
+* add proper globalMenu, remove old ([0493a16](https://github.com/softwaregroup-bg/ut-rule/commit/0493a16))
+* add validations and make limit fields be able to be 0, null, empty ([f54a0c1](https://github.com/softwaregroup-bg/ut-rule/commit/f54a0c1))
+* Grid changes made to accomodate expansion row functionality ([3d5e9da](https://github.com/softwaregroup-bg/ut-rule/commit/3d5e9da))
+* UIS-2721 UIS-2719 UIS-2711 UIS-2708 all these issues are fixed ([8804da6](https://github.com/softwaregroup-bg/ut-rule/commit/8804da6))
+
+
+
 <a name="9.9.2"></a>
 ## [9.9.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.9.1...v9.9.2) (2017-07-18)
 
@@ -140,14 +206,6 @@
 
 <a name="9.8.3"></a>
 ## [9.8.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.2...v9.8.3) (2017-06-22)
-
-
-### Bug Fixes
-
-* set pagination in request parameters ([753bfab](https://github.com/softwaregroup-bg/ut-rule/commit/753bfab))
-* validate priority is an integer ([#68](https://github.com/softwaregroup-bg/ut-rule/issues/68)) ([d9e25ab](https://github.com/softwaregroup-bg/ut-rule/commit/d9e25ab))
-
-
 
 <a name="9.8.2"></a>
 ## [9.8.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.8.1...v9.8.2) (2017-06-22)

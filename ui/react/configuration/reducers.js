@@ -162,7 +162,7 @@ const defaultUiState = {
                     },
                     cardProduct: {
                         visible: true,
-                        title: 'Card Product'
+                        title: 'Product'
                     },
                     accountProduct: {
                         visible: true,
@@ -208,7 +208,7 @@ const defaultUiState = {
                     },
                     cardProduct: {
                         visible: true,
-                        title: 'Card Product'
+                        title: 'Product'
                     },
                     accountProduct: {
                         visible: true,

@@ -1,6 +1,3 @@
-USE [impl-abt-mwallet-georgiK2]
-GO
-
 ALTER PROCEDURE [rule].[decision.fetch]
     @operationProperties [rule].properties READONLY, -- properties collected based on the input information that will be checked against rule conditions (roles, products etc.)
     @operationDate DATETIME, -- the date when operation is triggered

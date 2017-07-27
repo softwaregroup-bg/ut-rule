@@ -1,6 +1,3 @@
-
-USE [impl-abt-mwallet-georgiK2]
-GO
 ALTER PROCEDURE [rule].[decision.lookup]
     @channelId BIGINT, -- the id of the channel triggering transaction
     @operation varchar(100), -- the operation name 
@@ -14,7 +11,7 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
     @credentials INT = NULL, -- the passed credentials to validate operation success
-    @isTransactionValidate BIT = 0 -- flag showing if only opearation validation is triggered (1) or execution (0)
+    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
 BEGIN
     DECLARE

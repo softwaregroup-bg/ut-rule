@@ -266,7 +266,7 @@ BEGIN
             c.countWeekly >= r.startCountWeekly AND
             c.amountMonthly >= r.startAmountMonthly AND
             c.countMonthly >= r.startCountMonthly
-    )    
+    )
     INSERT INTO
         @fee(conditionId, splitNameId, fee, tag)
     SELECT

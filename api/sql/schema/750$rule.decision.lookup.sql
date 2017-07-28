@@ -111,14 +111,14 @@ BEGIN
     FROM
         [integration].[vTransfer] t
     WHERE
-        --t.success = 1 AND
+        t.success = 1 AND
         t.sourceAccount = @sourceAccount AND
         t.transferCurrency = @currency AND
         t.transferDateTime < @operationDate AND -- look ony at earlier transfers
         t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
     GROUP BY
         t.transferTypeId
-        
+
     DECLARE
         @operationProperties [rule].properties
 

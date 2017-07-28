@@ -167,24 +167,24 @@ const Main = React.createClass({
                 <div className={style.grid} >
                     {this.state.dialog.open &&
                         <Dialog
-                            ref='dialog'
-                            open={this.state.dialog.open}
-                            data={this.props.rules[this.state.dialog.conditionId]}
-                            conditionProperty={this.props.conditionProperty}
-                            conditionActor={this.props.conditionActor}
-                            conditionItem={this.props.conditionItem}
-                            nomenclatures={this.props.nomenclatures}
-                            currencyOrganization={this.props.currencyOrganization}
-                            onSave={this.dialogOnSave}
-                            onClose={this.dialogOnClose}
-                            sections={sections}
+                          ref='dialog'
+                          open={this.state.dialog.open}
+                          data={this.props.rules[this.state.dialog.conditionId]}
+                          conditionProperty={this.props.conditionProperty}
+                          conditionActor={this.props.conditionActor}
+                          conditionItem={this.props.conditionItem}
+                          nomenclatures={this.props.nomenclatures}
+                          currencyOrganization={this.props.currencyOrganization}
+                          onSave={this.dialogOnSave}
+                          onClose={this.dialogOnClose}
+                          sections={sections}
                         />
                     }
                     {this.state.prompt &&
                         <Prompt
-                            ref='prompt'
-                            open={this.state.prompt}
-                            message={
+                          ref='prompt'
+                          open={this.state.prompt}
+                          message={
                                 'You are about to delete ' +
                                 (
                                     Object.keys(this.state.selectedConditions).length === 1
@@ -193,27 +193,27 @@ const Main = React.createClass({
                                 ) +
                                 '. Would you like to proceed?'
                             }
-                            onOk={this.removeRules}
-                            onCancel={this.hidePrompt}
+                          onOk={this.removeRules}
+                          onCancel={this.hidePrompt}
                         />
                     }
                     <Grid
-                        ref='grid'
-                        refresh={this.refresh}
-                        data={this.props.rules}
-                        selectedConditions={this.state.selectedConditions}
-                        nomenclatures={this.props.nomenclatures}
-                        formatedGridData={this.props.formatedGridData}
-                        handleCheckboxSelect={this.handleCheckboxSelect}
-                        handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
-                        columns={columns}
+                      ref='grid'
+                      refresh={this.refresh}
+                      data={this.props.rules}
+                      selectedConditions={this.state.selectedConditions}
+                      nomenclatures={this.props.nomenclatures}
+                      formatedGridData={this.props.formatedGridData}
+                      handleCheckboxSelect={this.handleCheckboxSelect}
+                      handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                      columns={columns}
                     />
                 </div>
             </div>
             <div className={style.paginationWrap}>
                 <AdvancedPagination
-                    onUpdate={this.props.actions.updatePagination}
-                    pagination={fromJS(this.props.pagination)} />
+                  onUpdate={this.props.actions.updatePagination}
+                  pagination={fromJS(this.props.pagination)} />
             </div>
             {false &&
                 <div>

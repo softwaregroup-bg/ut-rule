@@ -13,7 +13,8 @@ export default React.createClass({
         selectedConditions: PropTypes.object,
         refresh: PropTypes.func,
         handleCheckboxSelect: PropTypes.func,
-        handleHeaderCheckboxSelect: PropTypes.func
+        handleHeaderCheckboxSelect: PropTypes.func,
+        nomenclatures: PropTypes.any
     },
     contextTypes: {
         nomenclatures: PropTypes.object
@@ -146,9 +147,11 @@ export default React.createClass({
             // Map currency
             if (limits.limit && limits.limit.length > 0) {
                 for (let i = 0; i < limits.limit.length; i++) {
+                    /* eslint-disable */
                     let match = currencies.filter(x => x.key == limits.limit[0].value);
+                    /* eslint-enable */
 
-                     if (match.length == 1) {
+                    if (match.length === 1) {
                         limits.limit[i].value = match[0].name;
                     }
                 }
@@ -204,19 +207,19 @@ export default React.createClass({
         }).toJS();
 
         return <SimpleGrid
-            ref='grid'
-            globalMenu
-            toggleColumnVisibility={this.toggleColumn}
-            multiSelect
-            fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
-            handleCheckboxSelect={this.props.handleCheckboxSelect}
-            handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
-            handleRowClick={this.handleRowClick}
-            externalStyle={style}
-            mainClassName='dataGridTable'
-            rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
-            data={data}
-            transformCellValue={this.transformCellValue}
+          ref='grid'
+          globalMenu
+          toggleColumnVisibility={this.toggleColumn}
+          multiSelect
+          fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
+          handleCheckboxSelect={this.props.handleCheckboxSelect}
+          handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
+          handleRowClick={this.handleRowClick}
+          externalStyle={style}
+          mainClassName='dataGridTable'
+          rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
+          data={data}
+          transformCellValue={this.transformCellValue}
         />;
     }
 });

@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.10.5",
+  "version": "9.11.0-wp3.0",
   "dependencies": {
     "classnames": "2.2.5",
     "joi": "10.0.6",

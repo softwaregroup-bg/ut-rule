@@ -4,36 +4,28 @@ AS
 BEGIN TRY
     BEGIN TRANSACTION
         SELECT 'limit' AS resultSetName
-        DELETE x
-        OUTPUT
-            deleted.*
+        DELETE x        
         FROM
             [rule].limit x
         JOIN
             @conditionId item ON x.conditionId = item.value
 
         SELECT 'conditionActor' AS resultSetName
-        DELETE x
-        OUTPUT
-            deleted.*
+        DELETE x        
         FROM
             [rule].conditionActor x
         JOIN
             @conditionId item ON x.conditionId = item.value
 
         SELECT 'conditionItem' AS resultSetName
-        DELETE x
-        OUTPUT 
-            deleted.*    
+        DELETE x        
         FROM 
             [rule].conditionItem x
         JOIN
             @conditionId item ON x.conditionId = item.value
     
         SELECT 'conditionProperty' AS resultSetName
-        DELETE x
-        OUTPUT 
-            deleted.*    
+        DELETE x       
         FROM 
             [rule].conditionProperty x
         JOIN
@@ -41,9 +33,7 @@ BEGIN TRY
 
         SELECT 'splitRange' AS resultSetName
         DELETE
-            x
-        OUTPUT
-            deleted.*
+            x       
         FROM
             [rule].splitRange x
         JOIN
@@ -53,9 +43,7 @@ BEGIN TRY
 
         SELECT 'splitAnalytic' AS resultSetName
         DELETE
-            x
-        OUTPUT
-            deleted.*
+            x        
         FROM
             [rule].splitAnalytic x
         JOIN   
@@ -67,9 +55,7 @@ BEGIN TRY
         
         SELECT 'splitAssignment' AS resultSetName
         DELETE
-            x
-        OUTPUT
-            deleted.*
+            x        
         FROM
             [rule].splitAssignment x
         JOIN
@@ -79,9 +65,7 @@ BEGIN TRY
 
         SELECT 'splitName' AS resultSetName
         DELETE
-            x
-        OUTPUT
-            deleted.*
+            x       
         FROM
             [rule].splitName x
         JOIN
@@ -89,9 +73,7 @@ BEGIN TRY
 
         SELECT 'condition' AS resultSetName
         DELETE
-            x
-        OUTPUT
-            deleted.*
+            x       
         FROM
             [rule].condition x
         JOIN

@@ -43,9 +43,7 @@ export default (state = defaultState, action) => {
 
                 return {...state, ...paginationState};
             case actionTypes.saveVariable:
-                return Object.assign({}, state, {
-                    [action.params.key]: action.params.value
-                });
+                return Object.assign({}, state, { [action.params.key]: action.params.value });
         }
     }
     return state;

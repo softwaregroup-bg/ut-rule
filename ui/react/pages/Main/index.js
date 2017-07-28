@@ -10,6 +10,7 @@ import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
 import resizibleTypes from 'ut-front-react/components/ResiziblePageLayout/resizibleTypes';
 import ResizibleContainer from 'ut-front-react/components/ResiziblePageLayout/Container';
+import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import BusinessUnitsTree from 'ut-core/ui/react/containers/BusinessUnits';
 import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
 import AdvancedPagination from 'ut-front-react/components/AdvancedPagination';
@@ -37,7 +38,7 @@ const Main = React.createClass({
         columns: PropTypes.object,
         sections: PropTypes.object,
         pagination: PropTypes.object,
-        businessUnitId: PropTypes.any
+        filters: PropTypes.any
     },
     contextTypes: {
         checkPermission: PropTypes.func
@@ -56,11 +57,11 @@ const Main = React.createClass({
         };
     },
     fetchData(props, additionalProps, options) {
-        let { businessUnitId } = props;
+        let { businessUnitId, transactionTypeId, agentTypeId } = props.filters;
         let { pageSize, pageNumber } = props.pagination;
 
         this.props.actions.fetchRules(Object.assign({}, {
-            pageSize, pageNumber, businessUnitId
+            pageSize, pageNumber, businessUnitId, transactionTypeId, agentTypeId
         }, additionalProps));
 
         if (options && typeof options.fetchNomenclatures !== 'undefined' && options.fetchNomenclatures === false) {} else {
@@ -129,12 +130,18 @@ const Main = React.createClass({
     },
     dialogOnSave(data) {
         let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
-        this.setState(this.getInitialState(), () => this.props.actions[action](data));
+        this.setState(this.getInitialState(), () => this.props.actions[action](data).then(res => {
+            this.fetchData(this.props);
+            return res;
+        }));
     },
     removeRules() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
         this.setState(this.getInitialState(), () => this.props.actions.removeRules({
             conditionId: conditionsArray
+        }).then(res => {
+            this.fetchData(this.props);
+            return res;
         }));
     },
     refresh() {
@@ -157,6 +164,13 @@ const Main = React.createClass({
             fetchNomenclatures: false
         });
     },
+    handleFilterChange(e) {
+        let value = e.value === '__placeholder__' ? null : e.value;
+        this.props.actions.saveVariable(e.key, value);
+        this.fetchData(this.props, { [e.key]: value }, {
+            fetchNomenclatures: false
+        });
+    },
     render() {
         if (!this.props.ready) {
             return null;
@@ -165,9 +179,14 @@ const Main = React.createClass({
         let uiConfig = this.state.uiConfig;
         let columns = uiConfig.main.grid.columns;
         let sections = uiConfig.dialog.sections;
-
         let contentNormalWidth = window.window.innerWidth - (defaultAsideWidth + defaultAsideWidth);
         let asideStyles = { minWidth: defaultAsideWidth };
+        let organizations = Object.keys((this.props.nomenclatures && this.props.nomenclatures.organization) || {}).map(key => {
+            return {key, name: this.props.nomenclatures.organization[key]};
+        }) || [];
+        let agentTypes = Object.keys((this.props.nomenclatures && this.props.nomenclatures.role) || {}).map(key => {
+            return {key, name: this.props.nomenclatures.role[key]};
+        }) || [];
 
         let leftAside = (
             <div style={{ minWidth: defaultAsideWidth }}>
@@ -285,6 +304,30 @@ const Main = React.createClass({
                         </button>
                         }
                     </div>
+                    <div className={style.toolBoxFilters}>
+                        <div className={style.filterWrapper}>
+                          <Dropdown
+                            data={agentTypes}
+                            customTheme
+                            placeholder='Agent type...'
+                            keyProp='agentTypeId'
+                            defaultSelected={this.props.filters.agentTypeId || ''}
+                            canSelectPlaceholder
+                            onSelect={this.handleFilterChange}
+                           />
+                        </div>
+                        <div className={style.filterWrapper}>
+                          <Dropdown
+                            data={organizations}
+                            customTheme
+                            placeholder='Transaction type...'
+                            keyProp='transactionTypeId'
+                            defaultSelected={this.props.filters.transactionTypeId || ''}
+                            canSelectPlaceholder
+                            onSelect={this.handleFilterChange}
+                           />
+                        </div>
+                    </div>
                 </GridToolbox>
             </div>
              <ResizibleContainer cols={containerCols} />
@@ -312,7 +355,11 @@ export default connect(
                 pageNumber: 1,
                 recordsTotal: 0
             },
-            businessUnitId: state.main.businessUnitId
+            filters: {
+                businessUnitId: state.main.businessUnitId,
+                transactionTypeId: state.main.transactionTypeId,
+                agentTypeId: state.main.agentTypeId
+            }
         };
         return Object.assign(props, implementationParseHelper(props));
     },

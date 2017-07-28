@@ -40,3 +40,13 @@
     bottom: 34px;
     padding: 0 40px 0 20px;
 }
+
+.toolBoxFilters {
+    float: right;
+}
+
+.filterWrapper {
+    margin-right: 20px;
+    width: 250px;
+    display: inline-block;
+}

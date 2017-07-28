@@ -28,7 +28,7 @@ export function removeRules(params) {
             if (result.error) {
                 return result;
             }
-            return dispatch(fetchRules());
+            return true; // return dispatch(fetchRules());
         });
     };
 };
@@ -210,7 +210,7 @@ export function editRule(params) {
             if (result.error) {
                 return result;
             }
-            return dispatch(fetchRules());
+            return true; // return dispatch(fetchRules());
         });
     };
 };
@@ -372,7 +372,7 @@ export function addRule(params) {
             if (result.error) {
                 return result;
             }
-            return dispatch(fetchRules());
+            return true; // return dispatch(fetchRules());
         });
     };
 };

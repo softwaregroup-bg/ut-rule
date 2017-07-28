@@ -9,10 +9,10 @@
     "lodash.merge": "4.6.0",
     "lodash.set": "4.3.2",
     "material-ui": "0.16.5",
-    "react": "15.4.1",
-    "react-redux": "4.4.6",
+    "react": "15.6.1",
+    "react-redux": "5.0.5",
     "react-router": "3.0.0",
-    "redux": "3.6.0",
+    "redux": "3.7.2",
     "ut-error": "^5.4.9",
     "immutable": "3.8.1"
   },

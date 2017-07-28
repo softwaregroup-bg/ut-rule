@@ -194,8 +194,6 @@ BEGIN
     ELSE -- if not exists a condition limit which is violated, check if credentials are correct. If not return error and result
         IF @amount > @maxAmountParam AND ISNULL(@credentials, 0) & @credentialsCheck <> @credentialsCheck
         BEGIN
-            SET @credentialsCheck = CASE WHEN ISNULL(@credentialsCheck, 0) = 0 THEN NULL ELSE @credentialsCheck END
-
             SELECT 
             'ut-error' resultSetName,
             CASE WHEN ISNULL(@credentialsCheck,0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END +'MaxLimitAmount' type,
@@ -219,7 +217,7 @@ BEGIN
             @amount + @amountMonthly AS accumulatedAmountMonthly,
             @credentialsCheck AS [credentials]       
 
-          IF ISNULL (@isTransactionValidate, 0) = 0 RETURN  -- if only validation - proceed, else stop execution
+            IF ISNULL (@isTransactionValidate, 0) = 0 RETURN  -- if only validation - proceed, else stop execution
         END                
 
     DECLARE @fee TABLE(

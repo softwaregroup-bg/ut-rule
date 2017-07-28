@@ -169,11 +169,11 @@ const Channel = React.createClass({
                 {fields.organization.visible && organization &&
                   <div className={style.inputWrapper}>
                       <Dropdown
-                        canSelectPlaceholder
+                        canSelectPlaceholder={false}
                         data={organization || []}
                         defaultSelected={'' + (this.props.data.channelOrganizationId || '')}
                         keyProp='channelOrganizationId'
-                        placeholder={fields.organization.title}
+                        // placeholder={fields.organization.title}
                         onSelect={onSelectDropdown}
                         label={fields.organization.title}
                         mergeStyles={{dropDownRoot: style.dropDownRoot}}

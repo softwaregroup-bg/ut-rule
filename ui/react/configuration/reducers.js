@@ -72,7 +72,7 @@ const defaultUiState = {
                     },
                     organization: {
                         visible: true,
-                        title: 'Organization'
+                        title: 'Business Unit'
                     },
                     supervisor: {
                         visible: true,

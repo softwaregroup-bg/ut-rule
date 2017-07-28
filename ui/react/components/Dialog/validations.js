@@ -119,6 +119,14 @@ let schema = joi.object().keys({
                         base: 'is required for all conditions and should be a integer'
                     }
                 }
+            }),
+            channelOrganizationId: joi.number().integer().required().options({
+                language: {
+                    key: '"Business Unit" ',
+                    number: {
+                        base: 'field is mandatory, select a value.'
+                    }
+                }
             })
         })
     ),

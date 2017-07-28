@@ -8,11 +8,18 @@ import Prompt from '../../components/Prompt';
 import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
+import resizibleTypes from 'ut-front-react/components/ResiziblePageLayout/resizibleTypes';
+import ResizibleContainer from 'ut-front-react/components/ResiziblePageLayout/Container';
+import BusinessUnitsTree from 'ut-core/ui/react/containers/BusinessUnits';
 import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
 import AdvancedPagination from 'ut-front-react/components/AdvancedPagination';
 import classnames from 'classnames';
 import style from './style.css';
 import * as actionCreators from './actionCreators';
+
+const defaultAsideWidth = 200;
+const defaultAsideMinWidth = 100;
+const defaultCollapsedWidth = 30;
 
 const Main = React.createClass({
     propTypes: {
@@ -29,7 +36,8 @@ const Main = React.createClass({
         uiConfig: PropTypes.object,
         columns: PropTypes.object,
         sections: PropTypes.object,
-        pagination: PropTypes.object
+        pagination: PropTypes.object,
+        businessUnitId: PropTypes.any
     },
     contextTypes: {
         checkPermission: PropTypes.func
@@ -47,11 +55,17 @@ const Main = React.createClass({
             uiConfig: this.props.uiConfig.toJS()
         };
     },
-    fetchData(props) {
+    fetchData(props, additionalProps, options) {
+        let { businessUnitId } = props;
         let { pageSize, pageNumber } = props.pagination;
 
-        this.props.actions.fetchRules({ pageSize, pageNumber });
-        this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
+        this.props.actions.fetchRules(Object.assign({}, {
+            pageSize, pageNumber, businessUnitId
+        }, additionalProps));
+
+        if (options && typeof options.fetchNomenclatures !== 'undefined' && options.fetchNomenclatures === false) {} else {
+            this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
+        }
     },
     componentWillMount() {
         this.fetchData(this.props);
@@ -136,6 +150,13 @@ const Main = React.createClass({
             prompt: false
         });
     },
+    onBusinessUnitChange(businessUnit, breadcrumbs) {
+        let businessUnitId = businessUnit ? businessUnit.id : null;
+        this.props.actions.saveVariable('businessUnitId', businessUnitId);
+        this.fetchData(this.props, { businessUnitId }, {
+            fetchNomenclatures: false
+        });
+    },
     render() {
         if (!this.props.ready) {
             return null;
@@ -145,25 +166,21 @@ const Main = React.createClass({
         let columns = uiConfig.main.grid.columns;
         let sections = uiConfig.dialog.sections;
 
-        return <div className={mainStyle.contentTableWrap}>
-            <AddTab pathname={this.props.location.pathname} title='Rule Management' />
-            <div className={style.header}>
-                <Header text='Rule Management' buttons={[{ text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight' }]} />
+        let contentNormalWidth = window.window.innerWidth - (defaultAsideWidth + defaultAsideWidth);
+        let asideStyles = { minWidth: defaultAsideWidth };
+
+        let leftAside = (
+            <div style={{ minWidth: defaultAsideWidth }}>
+                <BusinessUnitsTree identifier='businessUnitsList' showUnselectAll
+                  onActiveClick={this.onBusinessUnitChange}
+                  active
+                />
             </div>
-            <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
-                <GridToolbox opened title='' >
-                    <div className={style.gridToolBoxButtons}>
-                        { this.context.checkPermission('db/rule.rule.edit') && <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
-                            Edit
-                        </button> }
-                        { this.context.checkPermission('db/rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
-                            Delete
-                        </button>
-                        }
-                    </div>
-                </GridToolbox>
-            </div>
-            <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
+        );
+
+        let content = (
+            <div>
+                <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
                 <div className={style.grid} >
                     {this.state.dialog.open &&
                         <Dialog
@@ -225,6 +242,52 @@ const Main = React.createClass({
                     </div>
                 </div>
             }
+            </div>
+        );
+
+        let containerCols = [
+            {
+                type: resizibleTypes.ASIDE,
+                id: 'ruleLeftBUTree',
+                width: defaultAsideWidth,
+                normalWidth: defaultAsideWidth,
+                minWidth: defaultAsideMinWidth,
+                innerColStyles: {overflowX: 'hidden'},
+                collapsedWidth: defaultCollapsedWidth,
+                child: leftAside,
+                heading: ('Business Units'),
+                info: ('Select business unit to filter bio reader list'),
+                styles: asideStyles
+            },
+            {
+                type: resizibleTypes.CONTENT,
+                id: 'ruleMainGridContent',
+                width: contentNormalWidth,
+                normalWidth: contentNormalWidth,
+                minWidth: 250,
+                child: content
+            }
+        ];
+
+        return <div className={mainStyle.contentTableWrap}>
+            <AddTab pathname={this.props.location.pathname} title='Rule Management' />
+            <div className={style.header}>
+                <Header text='Rule Management' buttons={[{ text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight' }]} />
+            </div>
+            <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
+                <GridToolbox opened title='' >
+                    <div className={style.gridToolBoxButtons}>
+                        { this.context.checkPermission('db/rule.rule.edit') && <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
+                            Edit
+                        </button> }
+                        { this.context.checkPermission('db/rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
+                            Delete
+                        </button>
+                        }
+                    </div>
+                </GridToolbox>
+            </div>
+             <ResizibleContainer cols={containerCols} />
         </div>;
     }
 });
@@ -232,7 +295,7 @@ const Main = React.createClass({
 export default connect(
     (state, ownProps) => {
         let implementationParseHelper = ownProps.route.implementationParseHelper ? ownProps.route.implementationParseHelper : (a) => { return a; };
-        return implementationParseHelper({
+        let props = {
             rules: state.main.fetchRules,
             conditionActor: state.main.conditionActor,
             conditionItem: state.main.conditionItem,
@@ -248,8 +311,10 @@ export default connect(
                 pageSize: 25,
                 pageNumber: 1,
                 recordsTotal: 0
-            }
-        });
+            },
+            businessUnitId: state.main.businessUnitId
+        };
+        return Object.assign(props, implementationParseHelper(props));
     },
     (dispatch) => {
         return {

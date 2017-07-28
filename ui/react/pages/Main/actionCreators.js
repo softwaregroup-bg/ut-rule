@@ -390,3 +390,10 @@ export function reset() {
         type: actionTypes.reset
     };
 };
+
+export function saveVariable(key, value) {
+    return {
+        type: actionTypes.saveVariable,
+        params: {key, value}
+    };
+};

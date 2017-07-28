@@ -42,6 +42,10 @@ export default (state = defaultState, action) => {
                 let paginationState = {pagination: {...action.params.toJS(), ...{changeId: ++changeId}}};
 
                 return {...state, ...paginationState};
+            case actionTypes.saveVariable:
+                return Object.assign({}, state, {
+                    [action.params.key]: action.params.value
+                });
         }
     }
     return state;

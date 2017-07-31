@@ -62,11 +62,11 @@ const Main = React.createClass({
         let { pageSize, pageNumber } = props.pagination;
         let fetchParams = Object.assign({}, {
             actorProperties: [
-                additionalProps.businessUnitId || businessUnitId,
-                additionalProps.agentTypeId || agentTypeId
+                Object.assign({}, {businessUnitId}, additionalProps).businessUnitId,
+                Object.assign({}, {agentTypeId}, additionalProps).agentTypeId
             ].filter(Boolean).map(v => { return { value: v }; }),
             itemProperties: [
-                additionalProps.transactionTypeId || transactionTypeId
+                Object.assign({}, {transactionTypeId}, additionalProps).transactionTypeId
             ].filter(Boolean).map(v => { return { value: v }; }),
             pageNumber,
             pageSize

@@ -57,11 +57,13 @@ const Main = React.createClass({
         };
     },
     fetchData(props, additionalProps, options) {
-        let { businessUnitId, transactionTypeId, agentTypeId } = props.filters;
+        props = props === null ? this.props : props;
         let { pageSize, pageNumber } = props.pagination;
 
         this.props.actions.fetchRules(Object.assign({}, {
-            pageSize, pageNumber, businessUnitId, transactionTypeId, agentTypeId
+            ...props.filters,
+            pageNumber,
+            pageSize
         }, additionalProps));
 
         if (options && typeof options.fetchNomenclatures !== 'undefined' && options.fetchNomenclatures === false) {} else {
@@ -181,8 +183,8 @@ const Main = React.createClass({
         let sections = uiConfig.dialog.sections;
         let contentNormalWidth = window.window.innerWidth - (defaultAsideWidth + defaultAsideWidth);
         let asideStyles = { minWidth: defaultAsideWidth };
-        let organizations = Object.keys((this.props.nomenclatures && this.props.nomenclatures.organization) || {}).map(key => {
-            return {key, name: this.props.nomenclatures.organization[key]};
+        let operations = Object.keys((this.props.nomenclatures && this.props.nomenclatures.operation) || {}).map(key => {
+            return {key, name: this.props.nomenclatures.operation[key]};
         }) || [];
         let agentTypes = Object.keys((this.props.nomenclatures && this.props.nomenclatures.role) || {}).map(key => {
             return {key, name: this.props.nomenclatures.role[key]};
@@ -243,6 +245,8 @@ const Main = React.createClass({
                       handleCheckboxSelect={this.handleCheckboxSelect}
                       handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
                       columns={columns}
+                      fetchData={this.fetchData}
+                      saveVariable={this.props.actions.saveVariable}
                     />
                 </div>
             </div>
@@ -318,7 +322,7 @@ const Main = React.createClass({
                         </div>
                         <div className={style.filterWrapper}>
                           <Dropdown
-                            data={organizations}
+                            data={operations}
                             customTheme
                             placeholder='Transaction type...'
                             keyProp='transactionTypeId'
@@ -358,7 +362,9 @@ export default connect(
             filters: {
                 businessUnitId: state.main.businessUnitId,
                 transactionTypeId: state.main.transactionTypeId,
-                agentTypeId: state.main.agentTypeId
+                agentTypeId: state.main.agentTypeId,
+                sortBy: state.main.sortBy,
+                sortOrder: state.main.sortOrder
             }
         };
         return Object.assign(props, implementationParseHelper(props));

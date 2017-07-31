@@ -14,7 +14,9 @@ export default React.createClass({
         refresh: PropTypes.func,
         handleCheckboxSelect: PropTypes.func,
         handleHeaderCheckboxSelect: PropTypes.func,
-        nomenclatures: PropTypes.any
+        nomenclatures: PropTypes.any,
+        fetchData: PropTypes.func,
+        saveVariable: PropTypes.func
     },
     contextTypes: {
         nomenclatures: PropTypes.object
@@ -201,7 +203,19 @@ export default React.createClass({
             }
         }
     },
+    onSort(sortData) {
+        this.props.saveVariable('sortOrder', sortData.new);
+        this.props.saveVariable('sortBy', sortData.field);
+        this.props.fetchData(null, {
+            sortBy: sortData.field,
+            sortOrder: sortData.new
+        }, { fetchNomenclatures: false });
+    },
     render() {
+        let sortableColumns = Object.keys(this.state.columns || {}).map(ck => {
+            return this.state.columns[ck].sortable ? ck : false;
+        }).filter(Boolean);
+
         let data = fromJS(this.getData()).sort((a, b) => {
             return a.get('priority') - b.get('priority');
         }).toJS();
@@ -220,6 +234,8 @@ export default React.createClass({
           rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
           data={data}
           transformCellValue={this.transformCellValue}
+          orderBy={sortableColumns}
+          handleOrder={this.onSort}
         />;
     }
 });

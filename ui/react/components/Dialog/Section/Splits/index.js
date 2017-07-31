@@ -86,7 +86,7 @@ const Splits = React.createClass({
                           label='Name'
                           keyProp='splitName.name'
                           onChange={this.onChangeInput(index)}
-                          value={(split.splitName.name || '')}
+                          value={((split && split.splitName && split.splitName.name) || '')}
                         />
                     </div>
                     {displaySplitTags && <div className={style.splitInput}>

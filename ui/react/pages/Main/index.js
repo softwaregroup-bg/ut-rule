@@ -56,16 +56,27 @@ const Main = React.createClass({
             uiConfig: this.props.uiConfig.toJS()
         };
     },
-    fetchData(props, additionalProps, options) {
+    fetchData(props, additionalProps = {}, options) {
         props = props === null ? this.props : props;
+        let { businessUnitId, transactionTypeId, agentTypeId } = props.filters;
         let { pageSize, pageNumber } = props.pagination;
-
-        this.props.actions.fetchRules(Object.assign({}, {
-            ...props.filters,
+        let fetchParams = Object.assign({}, {
+            actorProperties: [
+                additionalProps.businessUnitId || businessUnitId,
+                additionalProps.agentTypeId || agentTypeId
+            ].filter(Boolean).map(v => { return { value: v }; }),
+            itemProperties: [
+                additionalProps.transactionTypeId || transactionTypeId
+            ].filter(Boolean).map(v => { return { value: v }; }),
             pageNumber,
             pageSize
-        }, additionalProps));
+        }, additionalProps);
 
+        delete fetchParams.businessUnitId;
+        delete fetchParams.transactionTypeId;
+        delete fetchParams.agentTypeId;
+
+        this.props.actions.fetchRules(fetchParams);
         if (options && typeof options.fetchNomenclatures !== 'undefined' && options.fetchNomenclatures === false) {} else {
             this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
         }

@@ -15,37 +15,37 @@ const defaultUiState = {
             columns: {
                 priority: {
                     visible: true,
-                    sortable: true,
+                    sortable: false,
                     title: 'Priority'
                 },
                 channel: {
                     visible: true,
-                    sortable: true,
+                    sortable: false,
                     title: 'Channel'
                 },
                 operation: {
                     visible: true,
-                    sortable: true,
+                    sortable: false,
                     title: 'Operation'
                 },
                 source: {
                     visible: true,
-                    sortable: true,
+                    sortable: false,
                     title: 'Source'
                 },
                 destination: {
                     visible: true,
-                    sortable: true,
+                    sortable: false,
                     title: 'Destination'
                 },
                 limit: {
                     visible: true,
-                    sortable: true,
+                    sortable: false,
                     title: 'Limit'
                 },
                 split: {
                     visible: true,
-                    sortable: true,
+                    sortable: false,
                     title: 'Split'
                 },
                 expansion: {

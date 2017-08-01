@@ -485,8 +485,12 @@ export default React.createClass({
     addSplitCumulativeRow(splitIndex) {
         return () => {
             let tempState = Object.assign({}, this.state);
+            let template = emptyCumulative;
             let splitRow = tempState.data.split[splitIndex];
-            splitRow.splitCumulative.push(emptyCumulative);
+            if (splitRow.splitCumulative[0]) {
+                template.currency = splitRow.splitCumulative[0].currency;
+            }
+            splitRow.splitCumulative.push(template);
             this.setState(tempState);
         };
     },

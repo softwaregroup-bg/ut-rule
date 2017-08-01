@@ -58,23 +58,21 @@ const Main = React.createClass({
     },
     fetchData(props, additionalProps = {}, options) {
         props = props === null ? this.props : props;
-        let { businessUnitId, transactionTypeId, agentTypeId } = props.filters;
+        // let { businessUnitId, transactionTypeId, agentTypeId } = props.filters;
         let { pageSize, pageNumber } = props.pagination;
+
         let fetchParams = Object.assign({}, {
-            actorProperties: [
-                Object.assign({}, {businessUnitId}, additionalProps).businessUnitId,
-                Object.assign({}, {agentTypeId}, additionalProps).agentTypeId
-            ].filter(Boolean).map(v => { return { value: v }; }),
-            itemProperties: [
-                Object.assign({}, {transactionTypeId}, additionalProps).transactionTypeId
-            ].filter(Boolean).map(v => { return { value: v }; }),
+            // actorProperties: [
+            //     Object.assign({}, {businessUnitId}, additionalProps).businessUnitId,
+            //     Object.assign({}, {agentTypeId}, additionalProps).agentTypeId
+            // ].filter(Boolean).map(v => { return { value: v }; }),
+            // itemProperties: [
+            //     Object.assign({}, {transactionTypeId}, additionalProps).transactionTypeId
+            // ].filter(Boolean).map(v => { return { value: v }; }),\
+            ...props.filters,
             pageNumber,
             pageSize
         }, additionalProps);
-
-        delete fetchParams.businessUnitId;
-        delete fetchParams.transactionTypeId;
-        delete fetchParams.agentTypeId;
 
         this.props.actions.fetchRules(fetchParams);
         if (options && typeof options.fetchNomenclatures !== 'undefined' && options.fetchNomenclatures === false) {} else {
@@ -373,9 +371,7 @@ export default connect(
             filters: {
                 businessUnitId: state.main.businessUnitId,
                 transactionTypeId: state.main.transactionTypeId,
-                agentTypeId: state.main.agentTypeId,
-                sortBy: state.main.sortBy,
-                sortOrder: state.main.sortOrder
+                agentTypeId: state.main.agentTypeId
             }
         };
         return Object.assign(props, implementationParseHelper(props));

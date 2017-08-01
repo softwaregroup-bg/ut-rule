@@ -1,8 +1,5 @@
 import * as actionTypes from './actionTypes';
-const defaultState = {
-    sortBy: 'priority',
-    sortOrder: 'ASC'
-};
+const defaultState = {};
 const maxPercentageCharacters = 5;
 const amountCharacters = 14;
 const minAmountCharacters = 10;

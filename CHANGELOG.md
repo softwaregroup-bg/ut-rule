@@ -1,3 +1,13 @@
+<a name="9.10.5"></a>
+## [9.10.5](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.4...v9.10.5) (2017-07-28)
+
+
+### Bug Fixes
+
+* Integrate can edit and can delete permissions ([#79](https://github.com/softwaregroup-bg/ut-rule/issues/79)) ([cfd3ee1](https://github.com/softwaregroup-bg/ut-rule/commit/cfd3ee1))
+
+
+
 <a name="9.10.4"></a>
 ## [9.10.4](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.3...v9.10.4) (2017-07-26)
 

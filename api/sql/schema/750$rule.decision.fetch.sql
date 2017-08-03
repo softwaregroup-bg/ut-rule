@@ -54,7 +54,7 @@ BEGIN
         @maxAmountWeekly MONEY,
         @maxCountWeekly BIGINT,
         @maxAmountMonthly MONEY,
-        @maxCountMonthly BIGINT,        
+        @maxCountMonthly BIGINT,
         @checkSuccess BIT,
         @limitCredentials INT,
         @limitMaxAmount MONEY,
@@ -106,8 +106,8 @@ BEGIN
         @maxCountWeekly = NULL,
         @maxAmountMonthly = NULL,
         @maxCountMonthly = NULL
-    
-    -- check if exists a condition limit that is violated  
+
+    -- check if exists a condition limit that is violated
     SELECT TOP 1
         @limitId = l.limitId,
         @minAmount = l.minAmount,
@@ -130,9 +130,7 @@ BEGIN
     JOIN
         [rule].limit AS l ON l.conditionId = c.conditionId
     WHERE
-        l.currency = @currency 
-    AND 
-        (    --violation of condition limits
+        l.currency = @currency AND (--violation of condition limits
              @amount < l.minAmount OR
              @amount > l.maxAmount OR
              @amount + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
@@ -140,33 +138,31 @@ BEGIN
              @amount + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
              ISNULL(c.countDaily, 0) >= l.maxCountDaily OR
              ISNULL(c.countWeekly, 0) >= l.maxCountWeekly OR
-             ISNULL(c.countMonthly, 0) >= l.maxCountMonthly        
-        )
-    AND 
-        (   --violation of limit credentials
+             ISNULL(c.countMonthly, 0) >= l.maxCountMonthly
+        ) AND (--violation of limit credentials
             @credentials IS NULL OR            -- no checked credentials passed by the backend
-            ISNULL(l.[credentials], 0) = 0 OR  -- limit credentials equal to NULL or 0 means that condition limits cannot be exceeded          
+            ISNULL(l.[credentials], 0) = 0 OR  -- limit credentials equal to NULL or 0 means that condition limits cannot be exceeded
             @credentials & ISNULL (@credentialsCheck, l.[credentials]) <> ISNULL (@credentialsCheck, l.[credentials])
         )
     ORDER BY
         c.[priority],
         l.[priority]
-   
-     IF @limitId IS NOT NULL -- if exists a condition limit which is violated, identify the exact violation and return error with result
-        BEGIN
-          DECLARE @type VARCHAR (20)= CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END
-          DECLARE @error VARCHAR (50) = @type + CASE
-                                                     WHEN @amount > @maxAmount THEN 'MaxLimitAmount'
-                                                     WHEN @amount < @minAmount THEN 'MinLimitAmount'
-                                                     WHEN @amount + @amountDaily > @maxAmountDaily THEN 'DailyLimitAmount'
-                                                     WHEN @amount + @amountWeekly > @maxAmountWeekly THEN 'WeeklyLimitAmount'
-                                                     WHEN @amount + @amountMonthly > @maxAmountMonthly THEN 'MonthlyLimitAmount'
-                                                     WHEN @countDaily >= @maxCountDaily THEN 'DailyLimitCount'
-                                                     WHEN @countWeekly >= @maxCountWeekly THEN 'WeeklyLimitCount'
-                                                     WHEN @countMonthly >= @maxCountMonthly THEN 'MonthlyLimitCount'                                                    
-                                                 END          
 
-            SELECT 
+    IF @limitId IS NOT NULL -- if exists a condition limit which is violated, identify the exact violation and return error with result
+    BEGIN
+        DECLARE @type VARCHAR (20)= CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END
+        DECLARE @error VARCHAR (50) = @type + CASE
+            WHEN @amount > @maxAmount THEN 'MaxLimitAmount'
+            WHEN @amount < @minAmount THEN 'MinLimitAmount'
+            WHEN @amount + @amountDaily > @maxAmountDaily THEN 'DailyLimitAmount'
+            WHEN @amount + @amountWeekly > @maxAmountWeekly THEN 'WeeklyLimitAmount'
+            WHEN @amount + @amountMonthly > @maxAmountMonthly THEN 'MonthlyLimitAmount'
+            WHEN @countDaily >= @maxCountDaily THEN 'DailyLimitCount'
+            WHEN @countWeekly >= @maxCountWeekly THEN 'WeeklyLimitCount'
+            WHEN @countMonthly >= @maxCountMonthly THEN 'MonthlyLimitCount'
+        END
+
+        SELECT
             'ut-error' resultSetName,
             @error type,
             @minAmount AS minAmount,
@@ -187,18 +183,18 @@ BEGIN
             @amount + @amountDaily AS accumulatedAmountDaily,
             @amount + @amountWeekly AS accumulatedAmountWeekly,
             @amount + @amountMonthly AS accumulatedAmountMonthly,
-            ISNULL (@credentialsCheck, @limitCredentials) AS [credentials]         
+            ISNULL (@credentialsCheck, @limitCredentials) AS [credentials]
 
-            IF ISNULL (@isTransactionValidate, 0) = 0 RETURN  -- if only validation - proceed, else stop execution
-        END 
+        IF ISNULL (@isTransactionValidate, 0) = 0 RETURN  -- if only validation - proceed, else stop execution
+    END
     ELSE -- if not exists a condition limit which is violated, check if credentials are correct. If not return error and result
-        IF @amount > @maxAmountParam AND ISNULL(@credentials, 0) & @credentialsCheck <> @credentialsCheck
-        BEGIN
-            SELECT 
+    IF @amount > @maxAmountParam AND ISNULL(@credentials, 0) & @credentialsCheck <> @credentialsCheck
+    BEGIN
+        SELECT
             'ut-error' resultSetName,
             CASE WHEN ISNULL(@credentialsCheck,0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END +'MaxLimitAmount' type,
             @maxAmountParam AS maxAmount,
-            @minAmount AS minAmount,            
+            @minAmount AS minAmount,
             @maxAmountDaily AS maxAmountDaily,
             @maxCountDaily AS maxCountDaily,
             @maxAmountWeekly AS maxAmountWeekly,
@@ -215,10 +211,10 @@ BEGIN
             @amount + @amountDaily AS accumulatedAmountDaily,
             @amount + @amountWeekly AS accumulatedAmountWeekly,
             @amount + @amountMonthly AS accumulatedAmountMonthly,
-            @credentialsCheck AS [credentials]       
+            @credentialsCheck AS [credentials]
 
-            IF ISNULL (@isTransactionValidate, 0) = 0 RETURN  -- if only validation - proceed, else stop execution
-        END                
+        IF ISNULL (@isTransactionValidate, 0) = 0 RETURN  -- if only validation - proceed, else stop execution
+    END
 
     DECLARE @fee TABLE(
         conditionId int,
@@ -334,5 +330,5 @@ BEGIN
     LEFT JOIN
         integration.vAssignment d ON d.accountId = assignment.debit
     LEFT JOIN
-        integration.vAssignment c ON c.accountId = assignment.credit   
+        integration.vAssignment c ON c.accountId = assignment.credit
 END

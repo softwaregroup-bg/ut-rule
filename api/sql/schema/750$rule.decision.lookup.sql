@@ -1,6 +1,6 @@
 ALTER PROCEDURE [rule].[decision.lookup]
     @channelId BIGINT, -- the id of the channel triggering transaction
-    @operation varchar(100), -- the operation name 
+    @operation varchar(100), -- the operation name
     @operationDate datetime, -- the date when operation is triggered
     @sourceAccount varchar(100), -- source account number
     @sourceCardProductId BIGINT = NULL, -- product id of the card
@@ -32,7 +32,7 @@ BEGIN
         @sourceProductCheckAmount MONEY,
         @sourceProductCheckMask INT,
         @maxAmountParam MONEY,
-        @credentialsCheck INT, 
+        @credentialsCheck INT,
 
         @destinationCountryId BIGINT,
         @destinationRegionId BIGINT,
@@ -90,7 +90,7 @@ BEGIN
     WHERE
         accountNumber = @destinationAccount AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
-    
+
     -- if check amount has been setup for the account and/or the account product, assign the value to variable. Account is with higher priority
     SET @maxAmountParam = CASE WHEN coalesce (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckAmount, @sourceProductCheckAmount) END
     -- if check credentials has been setup for the account and/or the account product, assign the value to variable. Account is with higher priority

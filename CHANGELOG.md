@@ -1,3 +1,13 @@
+<a name="9.11.0"></a>
+# [9.11.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.5...v9.11.0) (2017-08-04)
+
+
+### Features
+
+* upgrade react ([44cc234](https://github.com/softwaregroup-bg/ut-rule/commit/44cc234))
+
+
+
 <a name="9.10.5"></a>
 ## [9.10.5](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.4...v9.10.5) (2017-07-28)
 

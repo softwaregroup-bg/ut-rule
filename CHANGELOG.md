@@ -1,3 +1,13 @@
+<a name="9.11.1"></a>
+## [9.11.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.11.0...v9.11.1) (2017-08-04)
+
+
+### Bug Fixes
+
+* upgrade ut-front-react? ([#81](https://github.com/softwaregroup-bg/ut-rule/issues/81)) ([60efc87](https://github.com/softwaregroup-bg/ut-rule/commit/60efc87))
+
+
+
 <a name="9.11.0"></a>
 # [9.11.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.5...v9.11.0) (2017-08-04)
 

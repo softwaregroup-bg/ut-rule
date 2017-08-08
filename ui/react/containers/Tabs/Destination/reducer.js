@@ -1,6 +1,7 @@
 import { Map, List } from 'immutable';
 
 import * as actionTypes from './actionTypes';
+import { RESET_RULE_STATE } from '../../../pages/Detail/actionTypes';
 
 const defaultState = Map({
     fields: Map({
@@ -29,6 +30,8 @@ export const ruleDestinationTabReducer = (state = defaultState, action) => {
                 ['fields', 'properties', action.params.propertyId, action.params.field],
                 action.params.newValue
             );
+        case RESET_RULE_STATE:
+            return defaultState;
         default:
             return state;
     }

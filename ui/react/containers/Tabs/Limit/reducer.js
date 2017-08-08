@@ -1,6 +1,7 @@
 import { Map, List } from 'immutable';
 
 import * as actionTypes from './actionTypes';
+import { RESET_RULE_STATE } from '../../../pages/Detail/actionTypes';
 
 const defaultState = Map({
     fields: Map({
@@ -38,6 +39,8 @@ export const ruleLimitTabReducer = (state = defaultState, action) => {
                 ['fields', 'limits', action.params.limitId, action.params.field],
                 action.params.newValue
             );
+        case RESET_RULE_STATE:
+            return defaultState;
         default:
             return state;
     }

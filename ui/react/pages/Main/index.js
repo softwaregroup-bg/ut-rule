@@ -10,6 +10,7 @@ import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
 import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
 import AdvancedPagination from 'ut-front-react/components/AdvancedPagination';
+import { getRoute } from 'ut-front/react/routerHelper';
 import classnames from 'classnames';
 import style from './style.css';
 import * as actionCreators from './actionCreators';
@@ -135,7 +136,7 @@ const Main = React.createClass({
     getHeaderButtons() {
         let buttons = [];
         this.context.checkPermission('rule.rule.add') &&
-          buttons.push({text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'});
+            buttons.push({text: 'Create Rule', href: getRoute('ut-rule:create'), styleType: 'primaryLight'});
         return buttons;
     },
     getToolboxButtons() {

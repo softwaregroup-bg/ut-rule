@@ -1,7 +1,6 @@
 import uiConfig from './configuration/reducers';
 import main from './pages/Main/reducer';
-import { ruleRewriteReducer } from './pages/Rewrite/reducer';
-import { ruleTabReducer } from './containers/Tabs/Index/reducer';
+import { ruleDetailReducer } from './pages/Detail/reducer';
 import { ruleChannelTabReducer } from './containers/Tabs/Channel/reducer';
 import { ruleSourceTabReducer } from './containers/Tabs/Source/reducer';
 import { ruleOperationTabReducer } from './containers/Tabs/Operation/reducer';
@@ -12,8 +11,7 @@ import { ruleLimitTabReducer } from './containers/Tabs/Limit/reducer';
 export default {
     ...uiConfig,
     main,
-    ruleRewriteReducer,
-    ruleTabReducer,
+    ruleTabReducer: ruleDetailReducer, // todo rename
     ruleChannelTabReducer,
     ruleSourceTabReducer,
     ruleOperationTabReducer,

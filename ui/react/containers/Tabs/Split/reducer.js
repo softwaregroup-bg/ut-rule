@@ -1,6 +1,7 @@
 import { Map, List } from 'immutable';
 
 import * as actionTypes from './actionTypes';
+import { RESET_RULE_STATE } from '../../../pages/Detail/actionTypes';
 
 const defaultState = Map({
     fields: Map({
@@ -113,6 +114,8 @@ export const ruleSplitTabReducer = (state = defaultState, action) => {
             return state.updateIn(
                 ['fields', 'splits'],
                 v => v.splice(action.params.splitIndex, 1));
+        case RESET_RULE_STATE:
+            return defaultState;
         default:
             return state;
     }

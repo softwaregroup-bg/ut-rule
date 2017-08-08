@@ -63,79 +63,79 @@ export const prepateRuleToSave = ({
         }
     );
 
-    formattedRule.conditionItems = [];
+    formattedRule.conditionItem = [];
 
     channel.cities.forEach(city => {
-        formattedRule.conditionItems.push({
+        formattedRule.conditionItem.push({
             itemNameId: city.key,
             factor: factors.channelSpatial
         });
     });
 
     channel.countries.forEach(country => {
-        formattedRule.conditionItems.push({
+        formattedRule.conditionItem.push({
             itemNameId: country.key,
             factor: factors.channelSpatial
         });
     });
 
     channel.regions.forEach(region => {
-        formattedRule.conditionItems.push({
+        formattedRule.conditionItem.push({
             itemNameId: region.key,
             factor: factors.channelSpatial
         });
     });
 
     destination.cities.forEach(city => {
-        formattedRule.conditionItems.push({
+        formattedRule.conditionItem.push({
             itemNameId: city.key,
             factor: factors.destinationSpatial
         });
     });
 
     destination.countries.forEach(country => {
-        formattedRule.conditionItems.push({
+        formattedRule.conditionItem.push({
             itemNameId: country.key,
             factor: factors.destinationSpatial
         });
     });
 
     destination.regions.forEach(region => {
-        formattedRule.conditionItems.push({
+        formattedRule.conditionItem.push({
             itemNameId: region.key,
             factor: factors.destinationSpatial
         });
     });
 
     source.cities.forEach(city => {
-        formattedRule.conditionItems.push({
+        formattedRule.conditionItem.push({
             itemNameId: city.key,
             factor: factors.sourceSpatial
         });
     });
 
     source.countries.forEach(country => {
-        formattedRule.conditionItems.push({
+        formattedRule.conditionItem.push({
             itemNameId: country.key,
             factor: factors.sourceSpatial
         });
     });
 
     source.regions.forEach(region => {
-        formattedRule.conditionItems.push({
+        formattedRule.conditionItem.push({
             itemNameId: region.key,
             factor: factors.sourceSpatial
         });
     });
 
     operation.operations.forEach(operation => {
-        formattedRule.conditionItems.push({
+        formattedRule.conditionItem.push({
             itemNameId: operation.key,
             factor: factors.operationCategory
         });
     });
 
-    formattedRule.conditionItems.push({
+    formattedRule.conditionItem.push({
         factor: factors.sourceSpatial,
         itemNameId: source.product
     });

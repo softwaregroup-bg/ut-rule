@@ -248,7 +248,7 @@ let schema = joi.object().keys({
                          language: {
                              key: '"Daily Amount" ',
                              number: {
-                                 max: 'should be smaller than Weekly Amount',
+                                 max: '1should be smaller than Weekly Amount',
                                  base: 'is required for all splits cumulatives'
                              }
                          }

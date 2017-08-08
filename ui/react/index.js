@@ -1,6 +1,9 @@
 import React, { PropTypes } from 'react';
 import { Route, IndexRoute } from 'react-router';
+
 import { Main } from './pages';
+import Rewrite from './pages/Rewrite';
+import Tab from './containers/Tabs/Index';
 import { getRoute } from 'ut-front/react/routerHelper';
 import registerRoutes from './registerRoutes';
 
@@ -29,6 +32,12 @@ export const UtRuleRoutes = (config) => {
         <Route component={getLocalProvider(config)}>
             <Route path={getRoute('ut-rule:home')}>
                 <IndexRoute component={Main} />
+            </Route>
+            <Route path={getRoute('ut-rule:rewrite')}>
+                <IndexRoute component={Rewrite} />
+            </Route>
+            <Route path={getRoute('ut-rule:detail')}>
+                <IndexRoute component={Tab} />
             </Route>
         </Route>
     );

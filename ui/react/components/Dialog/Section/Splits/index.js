@@ -63,7 +63,7 @@ const Splits = React.createClass({
     },
     defaultSelected(origin, selected) {
         let result = [];
-
+        debugger;
         selected.forEach(function(row) {
             result.push(origin.filter(function(r) {
                 return r.key === row.key;
@@ -74,6 +74,7 @@ const Splits = React.createClass({
     },
     createSplitRows() {
         var self = this;
+        debugger;
 
         return this.props.data.map((split, index) => (
             <div key={index} style={{marginBottom: '20px'}}>

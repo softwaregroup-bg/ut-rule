@@ -58,7 +58,9 @@ const Splits = React.createClass({
             {key: 'fee', name: 'Fee'},
             {key: 'atm', name: 'ATM'},
             {key: 'pos', name: 'POS'},
-            {key: 'ped', name: 'PED'}
+            {key: 'ped', name: 'PED'},
+            {key: 'vendor', name: 'Vendor'},
+            {key: 'merchant', name: 'Merchant'}
         ];
     },
     defaultSelected(origin, selected) {

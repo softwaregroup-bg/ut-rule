@@ -15,7 +15,6 @@ export const Assignments = (props) => {
         name
     } = props;
 
-
     const tags = [
         {key: 'acquirer', name: 'Acquirer'},
         {key: 'issuer', name: 'Issuer'},
@@ -26,7 +25,9 @@ export const Assignments = (props) => {
         {key: 'fee', name: 'Fee'},
         {key: 'atm', name: 'ATM'},
         {key: 'pos', name: 'POS'},
-        {key: 'ped', name: 'PED'}
+        {key: 'ped', name: 'PED'},
+        {key: 'vendor', name: 'Vendor'},
+        {key: 'merchant', name: 'Merchant'}
     ];
 
     return (

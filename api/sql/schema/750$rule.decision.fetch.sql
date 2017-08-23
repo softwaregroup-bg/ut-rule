@@ -125,49 +125,89 @@ BEGIN
 
     IF @amount < @minAmount
     BEGIN
-        RAISERROR('rule.exceedMinLimitAmount', 16, 1)
+        SELECT
+            'ut-error' resultSetName,
+            'rule.exceedMinLimitAmount' [type],
+            @@servername serverName,
+            @@version [version],
+            (SELECT @minAmount FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
         RETURN
     END
 
     IF @amount > @maxAmount
     BEGIN
-        RAISERROR('rule.exceedMaxLimitAmount', 16, 1)
+        SELECT
+            'ut-error' resultSetName,
+            'rule.exceedMaxLimitAmount' [type],
+            @@servername serverName,
+            @@version [version],
+            (SELECT @maxAmount FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
         RETURN
     END
 
     IF @amount + @amountDaily > @maxAmountDaily
     BEGIN
-        RAISERROR('rule.exceedDailyLimitAmount', 16, 1)
+        SELECT
+            'ut-error' resultSetName,
+            'rule.exceedDailyLimitAmount' [type],
+            @@servername serverName,
+            @@version [version],
+            (SELECT @maxAmountDaily FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
         RETURN
     END
 
     IF @amount + @amountWeekly > @maxAmountWeekly
     BEGIN
-        RAISERROR('rule.exceedWeeklyLimitAmount', 16, 1)
+        SELECT
+            'ut-error' resultSetName,
+            'rule.exceedWeeklyLimitAmount' [type],
+            @@servername serverName,
+            @@version [version],
+            (SELECT @maxAmountWeekly FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
         RETURN
     END
 
     IF @amount + @amountMonthly > @maxAmountMonthly
     BEGIN
-        RAISERROR('rule.exceedMonthlyLimitAmount', 16, 1)
+        SELECT
+            'ut-error' resultSetName,
+            'rule.exceedMonthlyLimitAmount' [type],
+            @@servername serverName,
+            @@version [version],
+            (SELECT @maxAmountMonthly FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
         RETURN
     END
 
     IF @countDaily >= @maxCountDaily
     BEGIN
-        RAISERROR('rule.exceedDailyLimitCount', 16, 1)
+        SELECT
+            'ut-error' resultSetName,
+            'rule.exceedDailyLimitCount' [type],
+            @@servername serverName,
+            @@version [version],
+            (SELECT @maxCountDaily FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
         RETURN
     END
 
     IF @countWeekly >= @maxCountWeekly
     BEGIN
-        RAISERROR('rule.exceedWeeklyLimitCount', 16, 1)
+        SELECT
+            'ut-error' resultSetName,
+            'rule.exceedWeeklyLimitCount' [type],
+            @@servername serverName,
+            @@version [version],
+            (SELECT @maxCountWeekly FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
         RETURN
     END
 
     IF @countMonthly >= @maxCountMonthly
     BEGIN
-        RAISERROR('rule.exceedMonthlyLimitCount', 16, 1)
+        SELECT
+            'ut-error' resultSetName,
+            'rule.exceedMonthlyLimitCount' [type],
+            @@servername serverName,
+            @@version [version],
+            (SELECT @maxCountMonthly FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
         RETURN
     END
 

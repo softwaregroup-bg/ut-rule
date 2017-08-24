@@ -36,7 +36,7 @@
     "react-hot-loader": "3.0.0-beta.6",
     "url-loader": "0.5.7",
     "file-loader": "0.11.1",
-    "webpack": "2.1.0-beta.27",
+    "webpack": "3.3.0",
     "html-webpack-plugin": "2.24.1"
   },
   "devDependencies": {
@@ -44,8 +44,8 @@
   },
   "peerDependencies": {
     "ut-bus": "^5.9.0",
-    "ut-front": "~6.4.8",
-    "ut-front-react": "~8.19.14"
+    "ut-front": "~7.1.3",
+    "ut-front-react": "~9.12.5"
   },
   "description": "UT Rule",
   "scripts": {

@@ -1,3 +1,24 @@
+<a name="5.8.22"></a>
+## [5.8.22](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.10...v5.8.22) (2017-08-24)
+
+
+### Bug Fixes
+
+* add babel core dependency ([fcd433a](https://github.com/softwaregroup-bg/ut-rule/commit/fcd433a))
+* add some dependencies so that they can be removed from implementations ([7a032ed](https://github.com/softwaregroup-bg/ut-rule/commit/7a032ed))
+* bump babel versions ([d85aa99](https://github.com/softwaregroup-bg/ut-rule/commit/d85aa99))
+* bump babel versions ([546da52](https://github.com/softwaregroup-bg/ut-rule/commit/546da52))
+* bump dependencies versions ([e1df7ff](https://github.com/softwaregroup-bg/ut-rule/commit/e1df7ff))
+* bump react version ([0c2fe80](https://github.com/softwaregroup-bg/ut-rule/commit/0c2fe80))
+* dependencies ([4d4c8df](https://github.com/softwaregroup-bg/ut-rule/commit/4d4c8df))
+* less strict validations due to latest changes in quote api ([ec0b6d1](https://github.com/softwaregroup-bg/ut-rule/commit/ec0b6d1))
+* readme ([a83ea99](https://github.com/softwaregroup-bg/ut-rule/commit/a83ea99))
+* update dependencies ([5f1aeee](https://github.com/softwaregroup-bg/ut-rule/commit/5f1aeee))
+* update ut-tools ([7182655](https://github.com/softwaregroup-bg/ut-rule/commit/7182655))
+* update webpack version ([923bf61](https://github.com/softwaregroup-bg/ut-rule/commit/923bf61))
+
+
+
 <a name="5.8.21"></a>
 ## [5.8.21](https://github.com/softwaregroup-bg/ut-rule/compare/v5.8.10...v5.8.21) (2017-08-24)
 

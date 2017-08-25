@@ -130,7 +130,7 @@ BEGIN
             'rule.exceedMinLimitAmount' [type],
             @@servername serverName,
             @@version [version],
-            (SELECT @minAmount FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
+            CAST(( SELECT @minAmount FOR XML PATH('limit'), ROOT('udf') ) AS XML ) AS [errorParams]
         RETURN
     END
 
@@ -141,7 +141,7 @@ BEGIN
             'rule.exceedMaxLimitAmount' [type],
             @@servername serverName,
             @@version [version],
-            (SELECT @maxAmount FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
+            CAST((SELECT @maxAmount FOR XML PATH('limit'), ROOT('udf')) AS XML) AS [errorParams]
         RETURN
     END
 
@@ -152,7 +152,7 @@ BEGIN
             'rule.exceedDailyLimitAmount' [type],
             @@servername serverName,
             @@version [version],
-            (SELECT @maxAmountDaily FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
+            CAST((SELECT @maxAmountDaily FOR XML PATH('limit'), ROOT('udf')) AS XML) AS [errorParams]
         RETURN
     END
 
@@ -163,7 +163,7 @@ BEGIN
             'rule.exceedWeeklyLimitAmount' [type],
             @@servername serverName,
             @@version [version],
-            (SELECT @maxAmountWeekly FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
+            CAST((SELECT @maxAmountWeekly FOR XML PATH('limit'), ROOT('udf')) AS XML) AS [errorParams]
         RETURN
     END
 
@@ -174,7 +174,7 @@ BEGIN
             'rule.exceedMonthlyLimitAmount' [type],
             @@servername serverName,
             @@version [version],
-            (SELECT @maxAmountMonthly FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
+            CAST((SELECT @maxAmountMonthly FOR XML PATH('limit'), ROOT('udf')) AS XML) AS [errorParams]
         RETURN
     END
 
@@ -185,7 +185,7 @@ BEGIN
             'rule.exceedDailyLimitCount' [type],
             @@servername serverName,
             @@version [version],
-            (SELECT @maxCountDaily FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
+            CAST((SELECT @maxCountDaily FOR XML PATH('limit'), ROOT('udf')) AS XML) AS [errorParams]
         RETURN
     END
 
@@ -196,7 +196,7 @@ BEGIN
             'rule.exceedWeeklyLimitCount' [type],
             @@servername serverName,
             @@version [version],
-            (SELECT @maxCountWeekly FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
+            CAST((SELECT @maxCountWeekly FOR XML PATH('limit'), ROOT('udf')) AS XML) AS [errorParams]
         RETURN
     END
 
@@ -207,7 +207,7 @@ BEGIN
             'rule.exceedMonthlyLimitCount' [type],
             @@servername serverName,
             @@version [version],
-            (SELECT @maxCountMonthly FOR XML PATH('limit'), ROOT('udf')) AS [errorParams]
+            CAST((SELECT @maxCountMonthly FOR XML PATH('limit'), ROOT('udf')) AS XML) AS [errorParams]
         RETURN
     END
 

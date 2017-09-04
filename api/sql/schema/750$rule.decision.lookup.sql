@@ -59,7 +59,7 @@ BEGIN
         @sourceAccountProductId = accountProductId,
         @sourceAccountId = accountId
     FROM
-        [integration].[vAccount]
+        [integration].[vAccountT24]
     WHERE
         accountNumber = @sourceAccount
 
@@ -71,7 +71,7 @@ BEGIN
         @destinationAccountProductId = accountProductId,
         @destinationAccountId = accountId
     FROM
-        [integration].[vAccount]
+        [integration].[vAccountT24]
     WHERE
         accountNumber = @destinationAccount
 

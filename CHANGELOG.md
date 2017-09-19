@@ -1,3 +1,13 @@
+<a name="9.12.0"></a>
+# [9.12.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.11.1...v9.12.0) (2017-09-19)
+
+
+### Features
+
+* add logic for check transaction pin rule ([5822a36](https://github.com/softwaregroup-bg/ut-rule/commit/5822a36))
+
+
+
 <a name="9.11.1"></a>
 ## [9.11.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.11.0...v9.11.1) (2017-08-04)
 

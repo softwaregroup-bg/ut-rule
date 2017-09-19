@@ -78,10 +78,12 @@ BEGIN TRY
             maxAmountWeekly = l1.maxAmountWeekly,
             maxCountWeekly = l1.maxCountWeekly,
             maxAmountMonthly = l1.maxAmountMonthly,
-            maxCountMonthly = l1.maxCountMonthly
+            maxCountMonthly = l1.maxCountMonthly,
+            [credentials] = l1.[credentials],
+            [priority] = l1.[priority]
     WHEN NOT MATCHED BY TARGET THEN
-        INSERT (conditionId, currency, minAmount, maxAmount, maxAmountDaily, maxCountDaily, maxAmountWeekly, maxCountWeekly, maxAmountMonthly, maxCountMonthly)
-        VALUES (@conditionId, l1.currency, l1.minAmount, l1.maxAmount, l1.maxAmountDaily, l1.maxCountDaily, l1.maxAmountWeekly, l1.maxCountWeekly, l1.maxAmountMonthly, l1.maxCountMonthly)
+        INSERT (conditionId, currency, minAmount, maxAmount, maxAmountDaily, maxCountDaily, maxAmountWeekly, maxCountWeekly, maxAmountMonthly, maxCountMonthly, [credentials], [priority])
+        VALUES (@conditionId, l1.currency, l1.minAmount, l1.maxAmount, l1.maxAmountDaily, l1.maxCountDaily, l1.maxAmountWeekly, l1.maxCountWeekly, l1.maxAmountMonthly, l1.maxCountMonthly, l1.[credentials], l1.[priority])
     WHEN NOT MATCHED by SOURCE AND l.conditionId = @conditionId THEN
         DELETE;
 

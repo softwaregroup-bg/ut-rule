@@ -1,14 +1,18 @@
 ALTER PROCEDURE [rule].[decision.fetch]
-    @operationProperties [rule].properties READONLY,
-    @operationDate DATETIME,
-    @sourceAccountId NVARCHAR(255),
-    @destinationAccountId NVARCHAR(255),
-    @amount MONEY,
-    @totals [rule].totals READONLY,
-    @currency VARCHAR(3),
+    @operationProperties [rule].properties READONLY, -- properties collected based on the input information that will be checked against rule conditions (roles, products etc.)
+    @operationDate DATETIME, -- the date when operation is triggered
+    @sourceAccountId NVARCHAR(255), -- source account id
+    @destinationAccountId NVARCHAR(255), -- destination account id
+    @amount MONEY, -- operation amount
+    @totals [rule].totals READONLY, -- totals by transfer type (amountDaily, countDaily, amountWeekly ... etc.)
+    @currency VARCHAR(3), -- operation currenc
     @isSourceAmount BIT,
-    @sourceAccount varchar(100),
-    @destinationAccount varchar(100)
+    @sourceAccount varchar(100), -- source account number
+    @destinationAccount varchar(100), -- destination account number
+    @maxAmountParam MONEY, -- max amount from account or account product, after which credential validation is required
+    @credentialsCheck INT,  -- credentials from account or account product
+    @credentials INT = NULL, -- the passed credentials to validate operation success
+    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
 BEGIN
     DECLARE @transferTypeId BIGINT
@@ -50,8 +54,13 @@ BEGIN
         @maxAmountWeekly MONEY,
         @maxCountWeekly BIGINT,
         @maxAmountMonthly MONEY,
-        @maxCountMonthly BIGINT
+        @maxCountMonthly BIGINT,
+        @checkSuccess BIT,
+        @limitCredentials INT,
+        @limitMaxAmount MONEY,
+        @limitId INT
 
+    --find all conditions(rules) that match based on the input information
     INSERT INTO
         @matches(
             [priority],
@@ -98,7 +107,9 @@ BEGIN
         @maxAmountMonthly = NULL,
         @maxCountMonthly = NULL
 
+    -- check if exists a condition limit that is violated
     SELECT TOP 1
+        @limitId = l.limitId,
         @minAmount = l.minAmount,
         @maxAmount = l.maxAmount,
         @maxAmountDaily = l.maxAmountDaily,
@@ -112,63 +123,97 @@ BEGIN
         @amountWeekly = ISNULL(c.amountWeekly, 0),
         @countWeekly = ISNULL(c.countWeekly, 0),
         @amountMonthly = ISNULL(c.amountMonthly, 0),
-        @countMonthly = ISNULL(c.countMonthly, 0)
+        @countMonthly = ISNULL(c.countMonthly, 0),
+        @limitCredentials = l.[credentials]
     FROM
         @matches AS c
     JOIN
         [rule].limit AS l ON l.conditionId = c.conditionId
     WHERE
-        l.currency = @currency
+        l.currency = @currency AND (--violation of condition limits
+             @amount < l.minAmount OR
+             @amount > l.maxAmount OR
+             @amount + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
+             @amount + ISNULL(c.amountWeekly, 0) > l.maxAmountWeekly OR
+             @amount + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
+             ISNULL(c.countDaily, 0) >= l.maxCountDaily OR
+             ISNULL(c.countWeekly, 0) >= l.maxCountWeekly OR
+             ISNULL(c.countMonthly, 0) >= l.maxCountMonthly
+        ) AND (--violation of limit credentials
+            @credentials IS NULL OR            -- no checked credentials passed by the backend
+            ISNULL(l.[credentials], 0) = 0 OR  -- limit credentials equal to NULL or 0 means that condition limits cannot be exceeded
+            @credentials & ISNULL (@credentialsCheck, l.[credentials]) <> ISNULL (@credentialsCheck, l.[credentials])
+        )
     ORDER BY
-        c.priority,
-        l.limitId
+        c.[priority],
+        l.[priority]
 
-    IF @amount < @minAmount
+    IF @limitId IS NOT NULL -- if exists a condition limit which is violated, identify the exact violation and return error with result
     BEGIN
-        RAISERROR('rule.exceedMinLimitAmount', 16, 1)
-        RETURN
+        DECLARE @type VARCHAR (20)= CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END
+        DECLARE @error VARCHAR (50) = @type + CASE
+            WHEN @amount > @maxAmount THEN 'MaxLimitAmount'
+            WHEN @amount < @minAmount THEN 'MinLimitAmount'
+            WHEN @amount + @amountDaily > @maxAmountDaily THEN 'DailyLimitAmount'
+            WHEN @amount + @amountWeekly > @maxAmountWeekly THEN 'WeeklyLimitAmount'
+            WHEN @amount + @amountMonthly > @maxAmountMonthly THEN 'MonthlyLimitAmount'
+            WHEN @countDaily >= @maxCountDaily THEN 'DailyLimitCount'
+            WHEN @countWeekly >= @maxCountWeekly THEN 'WeeklyLimitCount'
+            WHEN @countMonthly >= @maxCountMonthly THEN 'MonthlyLimitCount'
+        END
+
+        SELECT
+            'ut-error' resultSetName,
+            @error type,
+            @minAmount AS minAmount,
+            ISNULL (@maxAmountParam, @maxAmount) AS maxAmount,
+            @maxAmountDaily AS maxAmountDaily,
+            @maxCountDaily AS maxCountDaily,
+            @maxAmountWeekly AS maxAmountWeekly,
+            @maxCountWeekly AS maxCountWeekly,
+            @maxAmountMonthly AS maxAmountMonthly,
+            @maxCountMonthly AS maxCountMonthly,
+            @amountDaily AS amountDaily,
+            @countDaily AS countDaily,
+            @amountWeekly AS amountWeekly,
+            @countWeekly AS countWeekly,
+            @amountMonthly AS amountMonthly,
+            @countMonthly AS countMonthly,
+            @amount AS amount,
+            @amount + @amountDaily AS accumulatedAmountDaily,
+            @amount + @amountWeekly AS accumulatedAmountWeekly,
+            @amount + @amountMonthly AS accumulatedAmountMonthly,
+            ISNULL (@credentialsCheck, @limitCredentials) AS [credentials]
+
+        IF ISNULL (@isTransactionValidate, 0) = 0 RETURN  -- if only validation - proceed, else stop execution
     END
-
-    IF @amount > @maxAmount
+    ELSE -- if not exists a condition limit which is violated, check if credentials are correct. If not return error and result
+    IF @amount > @maxAmountParam AND ISNULL(@credentials, 0) & @credentialsCheck <> @credentialsCheck
     BEGIN
-        RAISERROR('rule.exceedMaxLimitAmount', 16, 1)
-        RETURN
-    END
+        SELECT
+            'ut-error' resultSetName,
+            CASE WHEN ISNULL(@credentialsCheck,0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END +'MaxLimitAmount' type,
+            @maxAmountParam AS maxAmount,
+            @minAmount AS minAmount,
+            @maxAmountDaily AS maxAmountDaily,
+            @maxCountDaily AS maxCountDaily,
+            @maxAmountWeekly AS maxAmountWeekly,
+            @maxCountWeekly AS maxCountWeekly,
+            @maxAmountMonthly AS maxAmountMonthly,
+            @maxCountMonthly AS maxCountMonthly,
+            @amountDaily AS amountDaily,
+            @countDaily AS countDaily,
+            @amountWeekly AS amountWeekly,
+            @countWeekly AS countWeekly,
+            @amountMonthly AS amountMonthly,
+            @countMonthly AS countMonthly,
+            @amount AS amount,
+            @amount + @amountDaily AS accumulatedAmountDaily,
+            @amount + @amountWeekly AS accumulatedAmountWeekly,
+            @amount + @amountMonthly AS accumulatedAmountMonthly,
+            @credentialsCheck AS [credentials]
 
-    IF @amount + @amountDaily > @maxAmountDaily
-    BEGIN
-        RAISERROR('rule.exceedDailyLimitAmount', 16, 1)
-        RETURN
-    END
-
-    IF @amount + @amountWeekly > @maxAmountWeekly
-    BEGIN
-        RAISERROR('rule.exceedWeeklyLimitAmount', 16, 1)
-        RETURN
-    END
-
-    IF @amount + @amountMonthly > @maxAmountMonthly
-    BEGIN
-        RAISERROR('rule.exceedMonthlyLimitAmount', 16, 1)
-        RETURN
-    END
-
-    IF @countDaily >= @maxCountDaily
-    BEGIN
-        RAISERROR('rule.exceedDailyLimitCount', 16, 1)
-        RETURN
-    END
-
-    IF @countWeekly >= @maxCountWeekly
-    BEGIN
-        RAISERROR('rule.exceedWeeklyLimitCount', 16, 1)
-        RETURN
-    END
-
-    IF @countMonthly >= @maxCountMonthly
-    BEGIN
-        RAISERROR('rule.exceedMonthlyLimitCount', 16, 1)
-        RETURN
+        IF ISNULL (@isTransactionValidate, 0) = 0 RETURN  -- if only validation - proceed, else stop execution
     END
 
     DECLARE @fee TABLE(
@@ -178,6 +223,7 @@ BEGIN
         tag VARCHAR(MAX)
     );
 
+    -- calculate the operation fees based on the matched conditions (rules), and select these with highest priority
     WITH split(conditionId, splitNameId, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
         SELECT
             c.conditionId,
@@ -244,6 +290,7 @@ BEGIN
 
     DECLARE @map [core].map
 
+    -- calculate the splits based on the selected condition
     INSERT INTO
         @map([key], [value])
     SELECT

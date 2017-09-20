@@ -312,16 +312,18 @@ BEGIN
             WHEN ISNULL(assignment.[percent], 0) * a.fee / 100 < assignment.minValue THEN minValue
             ELSE ISNULL(assignment.[percent], 0) * a.fee / 100
         END AS MONEY) amount,
-        ISNULL(d.accountNumber, assignment.debit) debit,
-        ISNULL(c.accountNumber, assignment.credit) credit,
+        assignment.debit, 
+        assignment.credit,
+        --ISNULL(d.accountNumber, assignment.debit) debit,
+        --ISNULL(c.accountNumber, assignment.credit) credit,
         assignment.description,
         assignment.analytics
     FROM
         @fee a
     CROSS APPLY
         [rule].assignment(a.splitNameId, @map) assignment
-    LEFT JOIN
-        integration.vAssignment d ON d.accountId = assignment.debit
-    LEFT JOIN
-        integration.vAssignment c ON c.accountId = assignment.credit
+    --LEFT JOIN
+    --    integration.vAssignment d ON d.accountId = assignment.debit
+    --LEFT JOIN
+    --    integration.vAssignment c ON c.accountId = assignment.credit
 END

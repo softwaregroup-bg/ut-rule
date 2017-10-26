@@ -1,3 +1,19 @@
+<a name="9.13.0"></a>
+# [9.13.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.12.0...v9.13.0) (2017-10-26)
+
+
+### Bug Fixes
+
+* remove result sets from rule.remove procedure ([#83](https://github.com/softwaregroup-bg/ut-rule/issues/83)) ([c3a57b6](https://github.com/softwaregroup-bg/ut-rule/commit/c3a57b6))
+
+
+### Features
+
+* add logic for check transaction pin rule ([#82](https://github.com/softwaregroup-bg/ut-rule/issues/82)) ([afdffc2](https://github.com/softwaregroup-bg/ut-rule/commit/afdffc2))
+* UIS-3639 rule management edit ([598e2d6](https://github.com/softwaregroup-bg/ut-rule/commit/598e2d6))
+
+
+
 <a name="9.12.0"></a>
 # [9.12.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.11.1...v9.12.0) (2017-09-19)
 

@@ -196,7 +196,6 @@ const Main = React.createClass({
                 <div className={style.grid} >
                     {this.state.dialog.open &&
                         <Dialog
-                          ref='dialog'
                           open={this.state.dialog.open}
                           data={this.props.rules[this.state.dialog.conditionId]}
                           conditionProperty={this.props.conditionProperty}
@@ -210,7 +209,6 @@ const Main = React.createClass({
                     }
                     {this.state.prompt &&
                         <Prompt
-                          ref='prompt'
                           open={this.state.prompt}
                           message={
                             'You are about to delete ' +
@@ -226,7 +224,6 @@ const Main = React.createClass({
                         />
                     }
                     <Grid
-                      ref='grid'
                       refresh={this.refresh}
                       data={this.props.rules}
                       selectedConditions={this.state.selectedConditions}

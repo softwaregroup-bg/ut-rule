@@ -170,7 +170,6 @@ export default React.createClass({
         }).toJS();
 
         return <SimpleGrid
-          ref='grid'
           globalMenu
           toggleColumnVisibility={this.toggleColumn}
           multiSelect

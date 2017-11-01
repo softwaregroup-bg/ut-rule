@@ -82,7 +82,7 @@ export default React.createClass({
               onRequestClose={this.hide}
             >
                 <div style={{width: '200px'}}>
-                    <List ref='list'>
+                    <List>
                         {
                             [
                                 <ListItem key={0} primaryText='Reload Grid' onClick={this.props.refresh} leftIcon={<ReloadIcon />} />,

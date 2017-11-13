@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.14.0-rc-acapulco.1",
+  "version": "9.14.0-rc-acapulco.2",
   "dependencies": {
     "classnames": "2.2.5",
     "joi": "10.0.6",

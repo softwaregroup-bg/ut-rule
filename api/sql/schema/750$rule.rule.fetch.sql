@@ -15,8 +15,8 @@ BEGIN
     CREATE TABLE #RuleConditions (
         conditionId INT,
         [priority] INT, 
-        operationStartDate DATETIME, 
         operationEndDate DATETIME, 
+        operationStartDate DATETIME,
         sourceAccountId NVARCHAR(255), 
         destinationAccountId NVARCHAR(255),
         rowNum INT, 
@@ -37,7 +37,7 @@ BEGIN
         WHERE
             @conditionId IS NULL OR rc.conditionId = @conditionId)
 
-    INSERT INTO #RuleConditions( conditionId, [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
+    INSERT INTO #RuleConditions( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
     SELECT
         conditionId,
         [priority],

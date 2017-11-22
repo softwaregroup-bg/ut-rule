@@ -75,11 +75,11 @@ const Main = React.createClass({
         }, additionalProps);
 
         this.props.actions.fetchRules(fetchParams);
-        if (options && typeof options.fetchNomenclatures !== 'undefined' && options.fetchNomenclatures === false) {} else {
-            this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
-        }
+        // if (options && typeof options.fetchNomenclatures !== 'undefined' && options.fetchNomenclatures === false) {} else {
+        //     this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
+        // }
     },
-    componentWillMount() {
+    componentDidMount() {
         this.fetchData(this.props);
     },
     componentWillReceiveProps(nextProps) {

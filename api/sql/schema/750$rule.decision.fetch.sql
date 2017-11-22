@@ -312,7 +312,7 @@ BEGIN
             WHEN ISNULL(assignment.[percent], 0) * a.fee / 100 < assignment.minValue THEN minValue
             ELSE ISNULL(assignment.[percent], 0) * a.fee / 100
         END AS MONEY) amount,
-        assignment.debit, 
+        assignment.debit,
         assignment.credit,
         --ISNULL(d.accountNumber, assignment.debit) debit,
         --ISNULL(c.accountNumber, assignment.credit) credit,

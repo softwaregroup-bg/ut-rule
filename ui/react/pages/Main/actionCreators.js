@@ -11,10 +11,22 @@ const removeEmpty = (obj) => {
 export const updatePagination = (params) => ({type: actionTypes.updatePagination, params});
 
 export function fetchRules(params) {
-    return {
-        type: actionTypes.fetchRules,
-        method: 'db/rule.rule.fetch',
-        params: params || {}
+    return (dispatch, getState) => {
+        const state = getState();
+        if (state.main.fetchNomenclatures) {
+            return dispatch({
+                type: actionTypes.fetchRules,
+                method: 'db/rule.rule.fetch',
+                params: params || {}
+            });
+        } else {
+            return dispatch(fetchNomenclatures(state.uiConfig.toJS().nomenclatures))
+                .then(dispatch({
+                    type: actionTypes.fetchRules,
+                    method: 'db/rule.rule.fetch',
+                    params: params || {}
+                }));
+        }
     };
 };
 

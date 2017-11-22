@@ -137,7 +137,7 @@ export default React.createClass({
         return formattedNomenclatures;
     },
     getData() {
-        var currencies = this.getFormattedNomenclatures().currency;
+        var currencies = this.getFormattedNomenclatures().currency || [];
 
         return Object.keys(this.props.data).map((conditionId, i) => {
             let record = this.props.data[conditionId];

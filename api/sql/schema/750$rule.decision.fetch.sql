@@ -154,9 +154,9 @@ BEGIN
         DECLARE @error VARCHAR (50) = @type + CASE
             WHEN @amount > @maxAmount THEN 'MaxLimitAmount'
             WHEN @amount < @minAmount THEN 'MinLimitAmount'
-            WHEN @amountDaily = @maxAmountDaily THEN 'DailyLimitAmountReached'
-            WHEN @amountWeekly = @maxAmountWeekly THEN 'WeeklyLimitAmountReached'
-            WHEN @amountMonthly = @maxAmountMonthly THEN 'MonthlyLimitAmountReached'
+            WHEN @amountDaily >= @maxAmountDaily THEN 'DailyLimitAmountReached'
+            WHEN @amountWeekly >= @maxAmountWeekly THEN 'WeeklyLimitAmountReached'
+            WHEN @amountMonthly >= @maxAmountMonthly THEN 'MonthlyLimitAmountReached'
             WHEN @amount + @amountDaily > @maxAmountDaily THEN 'DailyLimitAmount'
             WHEN @amount + @amountWeekly > @maxAmountWeekly THEN 'WeeklyLimitAmount'
             WHEN @amount + @amountMonthly > @maxAmountMonthly THEN 'MonthlyLimitAmount'

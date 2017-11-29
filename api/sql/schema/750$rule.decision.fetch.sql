@@ -162,7 +162,7 @@ BEGIN
             WHEN @amount + @amountMonthly > @maxAmountMonthly THEN 'MonthlyLimitAmount'
             WHEN @countDaily >= @maxCountDaily THEN 'DailyLimitCount'
             WHEN @countWeekly >= @maxCountWeekly THEN 'WeeklyLimitCount'
-            WHEN @countMonthly >= @maxCountMonthly THEN 'MonthlyLimitCount'            
+            WHEN @countMonthly >= @maxCountMonthly THEN 'MonthlyLimitCount'
         END
 
         SELECT

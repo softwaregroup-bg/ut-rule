@@ -167,7 +167,7 @@ BEGIN
 
         SELECT
             'ut-error' resultSetName,
-            @error type,
+            'rule.' + @error type,
             @minAmount AS minAmount,
             ISNULL (@maxAmountParam, @maxAmount) AS maxAmount,
             @maxAmountDaily AS maxAmountDaily,

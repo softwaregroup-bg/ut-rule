@@ -17,12 +17,12 @@
     "immutable": "3.8.1"
   },
   "devDependencies": {
-    "ut-tools": "^5.17.26"
+    "ut-tools": "^5.30.0"
   },
   "peerDependencies": {
-    "ut-front": "^7.1.1",
-    "ut-front-react": "^9.11.1",
-    "ut-bus": "^5.11.1"
+    "ut-front": "^8.0.0",
+    "ut-front-react": "^10.0.1",
+    "ut-bus": "^6.0.0"
   },
   "description": "UT Rule",
   "scripts": {

@@ -1,3 +1,8 @@
+<a name="9.14.0"></a>
+# [9.14.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.14.0-rc-acapulco.6...v9.14.0) (2017-12-14)
+
+
+
 <a name="9.13.0"></a>
 # [9.13.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.12.0...v9.13.0) (2017-10-26)
 

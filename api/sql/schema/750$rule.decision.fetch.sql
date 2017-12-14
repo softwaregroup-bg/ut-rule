@@ -151,15 +151,18 @@ BEGIN
     IF @limitId IS NOT NULL -- if exists a condition limit which is violated, identify the exact violation and return error with result
     BEGIN
         DECLARE @type VARCHAR (20)= CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END
-        DECLARE @error VARCHAR (50) = @type + CASE
-            WHEN @amount > @maxAmount THEN 'MaxLimitAmount'
-            WHEN @amount < @minAmount THEN 'MinLimitAmount'
-            WHEN @amount + @amountDaily > @maxAmountDaily THEN 'DailyLimitAmount'
-            WHEN @amount + @amountWeekly > @maxAmountWeekly THEN 'WeeklyLimitAmount'
-            WHEN @amount + @amountMonthly > @maxAmountMonthly THEN 'MonthlyLimitAmount'
-            WHEN @countDaily >= @maxCountDaily THEN 'DailyLimitCount'
-            WHEN @countWeekly >= @maxCountWeekly THEN 'WeeklyLimitCount'
-            WHEN @countMonthly >= @maxCountMonthly THEN 'MonthlyLimitCount'
+        DECLARE @error VARCHAR (50) = CASE
+            WHEN @amount > @maxAmount THEN @type + 'MaxLimitAmount'
+            WHEN @amount < @minAmount THEN @type + 'MinLimitAmount'
+            WHEN @amountDaily >= @maxAmountDaily THEN 'rule.reachedDailyLimitAmount'
+            WHEN @amountWeekly >= @maxAmountWeekly THEN 'rule.reachedWeeklyLimitAmount'
+            WHEN @amountMonthly >= @maxAmountMonthly THEN 'rule.reachedMonthlyLimitAmount'
+            WHEN @amount + @amountDaily > @maxAmountDaily THEN @type + 'DailyLimitAmount'
+            WHEN @amount + @amountWeekly > @maxAmountWeekly THEN @type + 'WeeklyLimitAmount'
+            WHEN @amount + @amountMonthly > @maxAmountMonthly THEN @type + 'MonthlyLimitAmount'
+            WHEN @countDaily >= @maxCountDaily THEN @type + 'DailyLimitCount'
+            WHEN @countWeekly >= @maxCountWeekly THEN @type + 'WeeklyLimitCount'
+            WHEN @countMonthly >= @maxCountMonthly THEN @type + 'MonthlyLimitCount'
         END
 
         SELECT

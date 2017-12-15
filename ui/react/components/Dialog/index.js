@@ -10,6 +10,7 @@ import Source from './Section/Source';
 import Destination from './Section/Destination';
 import SectionLimit from './Section/Limit';
 import SectionSummary from './Section/Summary';
+import HowToUse from './Section/HowToUse';
 import merge from 'lodash.merge';
 import validations from './validations.js';
 import classnames from 'classnames';
@@ -265,6 +266,7 @@ export default React.createClass({
                         </div>
                     </Dialog>
                     <div className={style.topSection}>
+                        <HowToUse />
                         <Input
                           keyProp='priority'
                           label='Priority'

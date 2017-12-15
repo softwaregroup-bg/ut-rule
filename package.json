@@ -20,8 +20,8 @@
     "ut-tools": "^5.30.0"
   },
   "peerDependencies": {
-    "ut-front": "^8.0.0",
-    "ut-front-react": "^10.0.1",
+    "ut-front": "^8.0.1",
+    "ut-front-react": "^10.0.4",
     "ut-bus": "^6.0.0"
   },
   "description": "UT Rule",

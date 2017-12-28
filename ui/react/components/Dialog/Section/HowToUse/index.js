@@ -21,7 +21,7 @@ const HowToUse = React.createClass({
                 <p>
                     <b>2. Fees:</b> For fees to be calculated, when creating a split, mandatory tags are:<br />
                     <b>a.</b> Issuer<br />
-                    <b>b.</b> Realtime Authorization<br />
+                    <b>b.</b> Realtime Posting<br />
                     <b>c.</b> (Express Centre Agents) - Non Mandatory. Use If you want the selected product code in 'credit' field to be sent to FlexCube as product code
                 </p>
             </div>

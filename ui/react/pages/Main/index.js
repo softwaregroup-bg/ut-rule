@@ -203,8 +203,8 @@ const Main = React.createClass({
         let leftAside = (
             <div style={{ minWidth: defaultAsideWidth }}>
                 <BusinessUnitsTree identifier='businessUnitsList' showUnselectAll
-                    onActiveClick={this.onBusinessUnitChange}
-                    active
+                  onActiveClick={this.onBusinessUnitChange}
+                  active
                 />
             </div>
         );
@@ -215,24 +215,24 @@ const Main = React.createClass({
                     <div className={style.grid} >
                         {this.state.dialog.open &&
                             <Dialog
-                                ref='dialog'
-                                open={this.state.dialog.open}
-                                data={this.props.rules[this.state.dialog.conditionId]}
-                                conditionProperty={this.props.conditionProperty}
-                                conditionActor={this.props.conditionActor}
-                                conditionItem={this.props.conditionItem}
-                                nomenclatures={this.props.nomenclatures}
-                                currencyOrganization={this.props.currencyOrganization}
-                                onSave={this.dialogOnSave}
-                                onClose={this.dialogOnClose}
-                                sections={sections}
+                              ref='dialog'
+                              open={this.state.dialog.open}
+                              data={this.props.rules[this.state.dialog.conditionId]}
+                              conditionProperty={this.props.conditionProperty}
+                              conditionActor={this.props.conditionActor}
+                              conditionItem={this.props.conditionItem}
+                              nomenclatures={this.props.nomenclatures}
+                              currencyOrganization={this.props.currencyOrganization}
+                              onSave={this.dialogOnSave}
+                              onClose={this.dialogOnClose}
+                              sections={sections}
                             />
                         }
                         {this.state.prompt &&
                             <Prompt
-                                ref='prompt'
-                                open={this.state.prompt}
-                                message={
+                              ref='prompt'
+                              open={this.state.prompt}
+                              message={
                                     'You are about to delete ' +
                                     (
                                         Object.keys(this.state.selectedConditions).length === 1
@@ -241,29 +241,29 @@ const Main = React.createClass({
                                     ) +
                                     '. Would you like to proceed?'
                                 }
-                                onOk={this.removeRules}
-                                onCancel={this.hidePrompt}
+                              onOk={this.removeRules}
+                              onCancel={this.hidePrompt}
                             />
                         }
                         <Grid
-                            ref='grid'
-                            refresh={this.refresh}
-                            data={this.props.rules}
-                            selectedConditions={this.state.selectedConditions}
-                            nomenclatures={this.props.nomenclatures}
-                            formatedGridData={this.props.formatedGridData}
-                            handleCheckboxSelect={this.handleCheckboxSelect}
-                            handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
-                            columns={columns}
-                            fetchData={this.fetchData}
-                            saveVariable={this.props.actions.saveVariable}
+                          ref='grid'
+                          refresh={this.refresh}
+                          data={this.props.rules}
+                          selectedConditions={this.state.selectedConditions}
+                          nomenclatures={this.props.nomenclatures}
+                          formatedGridData={this.props.formatedGridData}
+                          handleCheckboxSelect={this.handleCheckboxSelect}
+                          handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                          columns={columns}
+                          fetchData={this.fetchData}
+                          saveVariable={this.props.actions.saveVariable}
                         />
                     </div>
                 </div>
                 <div className={style.paginationWrap}>
                     <AdvancedPagination
-                        onUpdate={this.props.actions.updatePagination}
-                        pagination={fromJS(this.props.pagination)} />
+                      onUpdate={this.props.actions.updatePagination}
+                      pagination={fromJS(this.props.pagination)} />
                 </div>
                 {false &&
                     <div>
@@ -321,24 +321,24 @@ const Main = React.createClass({
                     <div className={style.toolBoxFilters}>
                         <div className={style.filterWrapper}>
                             <Dropdown
-                                data={agentTypes}
-                                customTheme
-                                placeholder='Role...'
-                                keyProp='agentTypeId'
-                                defaultSelected={this.props.filters.agentTypeId || ''}
-                                canSelectPlaceholder
-                                onSelect={this.handleFilterChange}
+                              data={agentTypes}
+                              customTheme
+                              placeholder='Role...'
+                              keyProp='agentTypeId'
+                              defaultSelected={this.props.filters.agentTypeId || ''}
+                              canSelectPlaceholder
+                              onSelect={this.handleFilterChange}
                             />
                         </div>
                         <div className={style.filterWrapper}>
                             <Dropdown
-                                data={operations}
-                                customTheme
-                                placeholder='Transaction type...'
-                                keyProp='transactionTypeId'
-                                defaultSelected={this.props.filters.transactionTypeId || ''}
-                                canSelectPlaceholder
-                                onSelect={this.handleFilterChange}
+                              data={operations}
+                              customTheme
+                              placeholder='Transaction type...'
+                              keyProp='transactionTypeId'
+                              defaultSelected={this.props.filters.transactionTypeId || ''}
+                              canSelectPlaceholder
+                              onSelect={this.handleFilterChange}
                             />
                         </div>
                     </div>

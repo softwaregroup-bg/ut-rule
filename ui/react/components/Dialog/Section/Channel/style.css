@@ -1,0 +1,5 @@
+.deletedStyle span {
+    background-color: lightgrey !important;
+    color: grey;
+    border: none;
+}

@@ -58,26 +58,15 @@ const Main = React.createClass({
     },
     fetchData(props, additionalProps = {}, options) {
         props = props === null ? this.props : props;
-        // let { businessUnitId, transactionTypeId, agentTypeId } = props.filters;
         let { pageSize, pageNumber } = props.pagination;
 
         let fetchParams = Object.assign({}, {
-            // actorProperties: [
-            //     Object.assign({}, {businessUnitId}, additionalProps).businessUnitId,
-            //     Object.assign({}, {agentTypeId}, additionalProps).agentTypeId
-            // ].filter(Boolean).map(v => { return { value: v }; }),
-            // itemProperties: [
-            //     Object.assign({}, {transactionTypeId}, additionalProps).transactionTypeId
-            // ].filter(Boolean).map(v => { return { value: v }; }),\
             ...props.filters,
             pageNumber,
             pageSize
         }, additionalProps);
 
         this.props.actions.fetchRules(fetchParams);
-        // if (options && typeof options.fetchNomenclatures !== 'undefined' && options.fetchNomenclatures === false) {} else {
-        //     this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
-        // }
     },
     componentDidMount() {
         this.fetchData(this.props);
@@ -140,11 +129,22 @@ const Main = React.createClass({
         });
     },
     dialogOnSave(data) {
+        // Decide which action is need to save the rule.
         let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
-        this.setState(this.getInitialState(), () => this.props.actions[action](data).then(res => {
-            this.fetchData(this.props);
-            return res;
-        }));
+        // Run the add/edit action and get the result from it.
+        let saveResult = () => this.props.actions[action](data).then(res => {
+            // Check for an error.
+            if (!res.error) {
+                this.fetchData(this.props);
+                return res;
+            } else {
+                return false;
+            }
+        });
+        // If there is a response merge it with the initial state to update the internal state.
+        if (saveResult) {
+            this.setState(this.getInitialState(), saveResult);
+        }
     },
     removeRules() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
@@ -193,17 +193,18 @@ const Main = React.createClass({
         let contentNormalWidth = window.window.innerWidth - (defaultAsideWidth + defaultAsideWidth);
         let asideStyles = { minWidth: defaultAsideWidth };
         let operations = Object.keys((this.props.nomenclatures && this.props.nomenclatures.operation) || {}).map(key => {
-            return {key, name: this.props.nomenclatures.operation[key]};
+            return { key, name: this.props.nomenclatures.operation[key] };
         }) || [];
+
         let agentTypes = Object.keys((this.props.nomenclatures && this.props.nomenclatures.role) || {}).map(key => {
-            return {key, name: this.props.nomenclatures.role[key]};
+            return { key, name: this.props.nomenclatures.role[key] };
         }) || [];
 
         let leftAside = (
             <div style={{ minWidth: defaultAsideWidth }}>
                 <BusinessUnitsTree identifier='businessUnitsList' showUnselectAll
-                  onActiveClick={this.onBusinessUnitChange}
-                  active
+                    onActiveClick={this.onBusinessUnitChange}
+                    active
                 />
             </div>
         );
@@ -211,69 +212,69 @@ const Main = React.createClass({
         let content = (
             <div>
                 <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
-                <div className={style.grid} >
-                    {this.state.dialog.open &&
-                        <Dialog
-                          ref='dialog'
-                          open={this.state.dialog.open}
-                          data={this.props.rules[this.state.dialog.conditionId]}
-                          conditionProperty={this.props.conditionProperty}
-                          conditionActor={this.props.conditionActor}
-                          conditionItem={this.props.conditionItem}
-                          nomenclatures={this.props.nomenclatures}
-                          currencyOrganization={this.props.currencyOrganization}
-                          onSave={this.dialogOnSave}
-                          onClose={this.dialogOnClose}
-                          sections={sections}
+                    <div className={style.grid} >
+                        {this.state.dialog.open &&
+                            <Dialog
+                                ref='dialog'
+                                open={this.state.dialog.open}
+                                data={this.props.rules[this.state.dialog.conditionId]}
+                                conditionProperty={this.props.conditionProperty}
+                                conditionActor={this.props.conditionActor}
+                                conditionItem={this.props.conditionItem}
+                                nomenclatures={this.props.nomenclatures}
+                                currencyOrganization={this.props.currencyOrganization}
+                                onSave={this.dialogOnSave}
+                                onClose={this.dialogOnClose}
+                                sections={sections}
+                            />
+                        }
+                        {this.state.prompt &&
+                            <Prompt
+                                ref='prompt'
+                                open={this.state.prompt}
+                                message={
+                                    'You are about to delete ' +
+                                    (
+                                        Object.keys(this.state.selectedConditions).length === 1
+                                            ? '1 rule'
+                                            : Object.keys(this.state.selectedConditions).length + ' rules'
+                                    ) +
+                                    '. Would you like to proceed?'
+                                }
+                                onOk={this.removeRules}
+                                onCancel={this.hidePrompt}
+                            />
+                        }
+                        <Grid
+                            ref='grid'
+                            refresh={this.refresh}
+                            data={this.props.rules}
+                            selectedConditions={this.state.selectedConditions}
+                            nomenclatures={this.props.nomenclatures}
+                            formatedGridData={this.props.formatedGridData}
+                            handleCheckboxSelect={this.handleCheckboxSelect}
+                            handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                            columns={columns}
+                            fetchData={this.fetchData}
+                            saveVariable={this.props.actions.saveVariable}
                         />
-                    }
-                    {this.state.prompt &&
-                        <Prompt
-                          ref='prompt'
-                          open={this.state.prompt}
-                          message={
-                                'You are about to delete ' +
-                                (
-                                    Object.keys(this.state.selectedConditions).length === 1
-                                        ? '1 rule'
-                                        : Object.keys(this.state.selectedConditions).length + ' rules'
-                                ) +
-                                '. Would you like to proceed?'
-                            }
-                          onOk={this.removeRules}
-                          onCancel={this.hidePrompt}
-                        />
-                    }
-                    <Grid
-                      ref='grid'
-                      refresh={this.refresh}
-                      data={this.props.rules}
-                      selectedConditions={this.state.selectedConditions}
-                      nomenclatures={this.props.nomenclatures}
-                      formatedGridData={this.props.formatedGridData}
-                      handleCheckboxSelect={this.handleCheckboxSelect}
-                      handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
-                      columns={columns}
-                      fetchData={this.fetchData}
-                      saveVariable={this.props.actions.saveVariable}
-                    />
-                </div>
-            </div>
-            <div className={style.paginationWrap}>
-                <AdvancedPagination
-                  onUpdate={this.props.actions.updatePagination}
-                  pagination={fromJS(this.props.pagination)} />
-            </div>
-            {false &&
-                <div>
-                    <div className={style.rulesNomenclatures}>
-                        RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>
-                    </div>
-                    <div className={style.rulesNomenclatures}>
-                        NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre>
                     </div>
                 </div>
-            }
+                <div className={style.paginationWrap}>
+                    <AdvancedPagination
+                        onUpdate={this.props.actions.updatePagination}
+                        pagination={fromJS(this.props.pagination)} />
+                </div>
+                {false &&
+                    <div>
+                        <div className={style.rulesNomenclatures}>
+                            RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>
+                        </div>
+                        <div className={style.rulesNomenclatures}>
+                            NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre>
+                        </div>
+                    </div>
+                }
             </div>
         );
 
@@ -284,7 +285,7 @@ const Main = React.createClass({
                 width: defaultAsideWidth,
                 normalWidth: defaultAsideWidth,
                 minWidth: defaultAsideMinWidth,
-                innerColStyles: {overflowX: 'hidden'},
+                innerColStyles: { overflowX: 'hidden' },
                 collapsedWidth: defaultCollapsedWidth,
                 child: leftAside,
                 heading: ('Business Units'),
@@ -309,41 +310,41 @@ const Main = React.createClass({
             <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                 <GridToolbox opened title='' >
                     <div className={style.gridToolBoxButtons}>
-                        { this.context.checkPermission('db/rule.rule.edit') && <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
+                        {this.context.checkPermission('db/rule.rule.edit') && <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
                             Edit
-                        </button> }
-                        { this.context.checkPermission('db/rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
+                        </button>}
+                        {this.context.checkPermission('db/rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
                             Delete
                         </button>
                         }
                     </div>
                     <div className={style.toolBoxFilters}>
                         <div className={style.filterWrapper}>
-                          <Dropdown
-                            data={agentTypes}
-                            customTheme
-                            placeholder='Agent type...'
-                            keyProp='agentTypeId'
-                            defaultSelected={this.props.filters.agentTypeId || ''}
-                            canSelectPlaceholder
-                            onSelect={this.handleFilterChange}
-                           />
+                            <Dropdown
+                                data={agentTypes}
+                                customTheme
+                                placeholder='Role...'
+                                keyProp='agentTypeId'
+                                defaultSelected={this.props.filters.agentTypeId || ''}
+                                canSelectPlaceholder
+                                onSelect={this.handleFilterChange}
+                            />
                         </div>
                         <div className={style.filterWrapper}>
-                          <Dropdown
-                            data={operations}
-                            customTheme
-                            placeholder='Transaction type...'
-                            keyProp='transactionTypeId'
-                            defaultSelected={this.props.filters.transactionTypeId || ''}
-                            canSelectPlaceholder
-                            onSelect={this.handleFilterChange}
-                           />
+                            <Dropdown
+                                data={operations}
+                                customTheme
+                                placeholder='Transaction type...'
+                                keyProp='transactionTypeId'
+                                defaultSelected={this.props.filters.transactionTypeId || ''}
+                                canSelectPlaceholder
+                                onSelect={this.handleFilterChange}
+                            />
                         </div>
                     </div>
                 </GridToolbox>
             </div>
-             <ResizibleContainer cols={containerCols} />
+            <ResizibleContainer cols={containerCols} />
         </div>;
     }
 });
@@ -374,6 +375,7 @@ export default connect(
                 agentTypeId: state.main.agentTypeId
             }
         };
+
         return Object.assign(props, implementationParseHelper(props));
     },
     (dispatch) => {

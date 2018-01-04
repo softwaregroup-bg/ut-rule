@@ -589,7 +589,7 @@ export default React.createClass({
         }
     },
     onChangeInput(field) {
-        this.onFieldChange('condition', 0, field.key, field.value);
+        this.onFieldChange('condition', 0, field.key, field.value.trim());
     },
     closeFormErrorDialog() {
         this.state.form.errorDialogOpen = false;
@@ -611,130 +611,130 @@ export default React.createClass({
         let sections = this.state.sections;
         return (
             <Dialog
-              title={this.props.data ? 'Edit Rule' : 'Add Rule'}
-              open={this.props.open}
-              autoScrollBodyContent
-              contentStyle={this.contentStyle}
-              actions={[
-                  <Button label={'Save'} onClick={this.save} styleType='primaryLight' className={style.save} />,
-                  <Button label={'Cancel'} onClick={this.props.onClose} styleType='secondaryDark' />
-              ]}
+                title={this.props.data ? 'Edit Rule' : 'Add Rule'}
+                open={this.props.open}
+                autoScrollBodyContent
+                contentStyle={this.contentStyle}
+                actions={[
+                    <Button label={'Save'} onClick={this.save} styleType='primaryLight' className={style.save} />,
+                    <Button label={'Cancel'} onClick={this.props.onClose} styleType='secondaryDark' />
+                ]}
             >
                 <div>
-                     {this.state.showPrompt &&
+                    {this.state.showPrompt &&
                         <Prompt
-                          ref='prompt'
-                          open={this.state.showPrompt}
-                          message={this.state.promptMessage}
-                          onOk={this.closePrompt}
+                            ref='prompt'
+                            open={this.state.showPrompt}
+                            message={this.state.promptMessage}
+                            onOk={this.closePrompt}
                         />
                     }
                 </div>
                 <div>
-                  <Dialog
-                    title='Error'
-                    open={this.state.form.errorDialogOpen}
-                    autoScrollBodyContent
-                    contentStyle={style}
-                    onRequestClose={this.closeFormErrorDialog}
-                    actions={[
-                        <Button label={'Cancel'} onClick={this.closeFormErrorDialog} styleType='secondaryDark' />
-                    ]}
-                  >
-                    <div className={style.content}>
-                        {this.state.form.errors && this.state.form.errors.map((error, i) => <div key={i}>{error}</div>)}
-                    </div>
-                  </Dialog>
+                    <Dialog
+                        title='Error'
+                        open={this.state.form.errorDialogOpen}
+                        autoScrollBodyContent
+                        contentStyle={style}
+                        onRequestClose={this.closeFormErrorDialog}
+                        actions={[
+                            <Button label={'Cancel'} onClick={this.closeFormErrorDialog} styleType='secondaryDark' />
+                        ]}
+                    >
+                        <div className={style.content}>
+                            {this.state.form.errors && this.state.form.errors.map((error, i) => <div key={i}>{error}</div>)}
+                        </div>
+                    </Dialog>
                     <div className={style.topSection}>
                         <Input
-                          keyProp='priority'
-                          label='Priority'
-                          onChange={this.onChangeInput}
-                          value={'' + (this.state.data.condition[0].priority || '')}
+                            keyProp='priority'
+                            label='Priority'
+                            onChange={this.onChangeInput}
+                            value={'' + (this.state.data.condition[0].priority || '')}
                         />
                     </div>
                     <div className={style.wrapper}>
                         {sections.channel.visible &&
                           <Accordion title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
-                            <Channel
-                              data={this.state.data.condition[0]}
-                              fields={sections.channel.fields}
-                              properties={this.state.data.channelProperties}
-                              addPropertyRow={this.addChannelPropertyRow}
-                              deletePropetyRow={this.deleteChannelPropertyRow}
-                            />
+                              <Channel
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.channel.fields}
+                                  properties={this.state.data.channelProperties}
+                                  addPropertyRow={this.addChannelPropertyRow}
+                                  deletePropetyRow={this.deleteChannelPropertyRow}
+                              />
                           </Accordion>
                         }
                         {sections.operation.visible &&
                           <Accordion title={sections.operation.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Operation
-                              data={this.state.data.condition[0]}
-                              fields={sections.operation.fields}
-                              properties={this.state.data.operationProperties}
-                              addPropertyRow={this.addOperationPropertyRow}
-                              deletePropetyRow={this.deleteOperationPropertyRow}
-                            />
+                              <Operation
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.operation.fields}
+                                  properties={this.state.data.operationProperties}
+                                  addPropertyRow={this.addOperationPropertyRow}
+                                  deletePropetyRow={this.deleteOperationPropertyRow}
+                              />
                           </Accordion>}
                         {sections.source.visible &&
                           <Accordion title={sections.source.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Source
-                              data={this.state.data.condition[0]}
-                              fields={sections.source.fields}
-                              properties={this.state.data.sourceProperties}
-                              addPropertyRow={this.addSourcePropertyRow}
-                              deletePropetyRow={this.deleteSourcePropertyRow}
-                            />
+                              <Source
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.source.fields}
+                                  properties={this.state.data.sourceProperties}
+                                  addPropertyRow={this.addSourcePropertyRow}
+                                  deletePropetyRow={this.deleteSourcePropertyRow}
+                              />
                           </Accordion>}
                         {sections.destination.visible &&
                           <Accordion title={sections.destination.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Destination
-                              data={this.state.data.condition[0]}
-                              fields={sections.destination.fields}
-                              properties={this.state.data.destinationProperties}
-                              addPropertyRow={this.addDestinationPropertyRow}
-                              deletePropetyRow={this.deleteDestinationPropertyRow}
-                            />
+                              <Destination
+                                  data={this.state.data.condition[0]}
+                                  fields={sections.destination.fields}
+                                  properties={this.state.data.destinationProperties}
+                                  addPropertyRow={this.addDestinationPropertyRow}
+                                  deletePropetyRow={this.deleteDestinationPropertyRow}
+                              />
                           </Accordion>}
                         {sections.limit.visible &&
                           <Accordion title={sections.limit.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                              <SectionLimit
-                                data={this.state.data.limit}
-                                channelData={this.state.data.condition[0]}
-                                addRow={this.addLimitRow}
-                                deleteRow={this.deleteLimitRow}
-                              />
-                            </div>
+                              <div className={style.content}>
+                                  <SectionLimit
+                                      data={this.state.data.limit}
+                                      channelData={this.state.data.condition[0]}
+                                      addRow={this.addLimitRow}
+                                      deleteRow={this.deleteLimitRow}
+                                  />
+                              </div>
                           </Accordion>}
                         {sections.split.visible &&
                           <Accordion title={sections.split.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                              <Split
-                                data={this.state.data.split}
-                                nomenclatures={this.props.nomenclatures}
-                                channelData={this.state.data.condition[0]}
-                                addSplitRow={this.addSplitRow}
-                                deleteSplitRow={this.deleteSplitRow}
-                                addSplitCumulativeRow={this.addSplitCumulativeRow}
-                                deleteSplitCumulativeRow={this.deleteSplitCumulativeRow}
-                                addSplitCumulativeRangeRow={this.addSplitCumulativeRangeRow}
-                                deleteSplitCumulativeRangeRow={this.deleteSplitCumulativeRangeRow}
-                                addSplitAssignmentRow={this.addSplitAssignmentRow}
-                                deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
-                                config={sections.split}
-                              />
-                            </div>
+                              <div className={style.content}>
+                                  <Split
+                                      data={this.state.data.split}
+                                      nomenclatures={this.props.nomenclatures}
+                                      channelData={this.state.data.condition[0]}
+                                      addSplitRow={this.addSplitRow}
+                                      deleteSplitRow={this.deleteSplitRow}
+                                      addSplitCumulativeRow={this.addSplitCumulativeRow}
+                                      deleteSplitCumulativeRow={this.deleteSplitCumulativeRow}
+                                      addSplitCumulativeRangeRow={this.addSplitCumulativeRangeRow}
+                                      deleteSplitCumulativeRangeRow={this.deleteSplitCumulativeRangeRow}
+                                      addSplitAssignmentRow={this.addSplitAssignmentRow}
+                                      deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
+                                      config={sections.split}
+                                  />
+                              </div>
                           </Accordion>}
                         {sections.summary.visible &&
                           <Accordion title={sections.summary.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                              <SectionSummary
-                                data={this.state.data}
-                                nomenclatures={this.props.nomenclatures}
-                              />
-                            </div>
+                              <div className={style.content}>
+                                  <SectionSummary
+                                      data={this.state.data}
+                                      nomenclatures={this.props.nomenclatures}
+                                  />
+                              </div>
                           </Accordion>}
-                  </div>
+                    </div>
                 </div>
             </Dialog>
         );

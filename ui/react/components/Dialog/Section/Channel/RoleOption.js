@@ -17,7 +17,7 @@ export default class RenderOption extends Component {
     }
 
     render() {
-        let label = Array.isArray(this.props.children) && this.props.children[0] && typeof (this.props.children) === 'string' ? this.props.children[0] : this.props.value.label;
+        let label = Array.isArray(this.props.children) && this.props.children[0] && typeof (this.props.children[0]) === 'string' ? this.props.children[0] : this.props.value.label;
         // Check whether the role is deleted.
         let isDeleted = /( )deleted( )([A-z]){3}( )/g.test(label);
         // If it is deleted remove the label part of it.

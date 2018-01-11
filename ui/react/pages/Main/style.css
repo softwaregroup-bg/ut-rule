@@ -4,7 +4,12 @@
 
 .actionBarWrap {
     border: 1px solid #d7d7d7;
-    overflow: hidden
+    overflow: hidden;
+    top: 170px;
+}
+
+.actionBarWrap > div > div {
+    width: 100%;
 }
 
 .rulesNomenclatures {
@@ -18,10 +23,14 @@
 
 .header {
     background-color: white;
+    margin-top: -60px;
 }
 
 .gridToolBoxButtons {
-    float: right;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
 }
 
 .tableWrap {

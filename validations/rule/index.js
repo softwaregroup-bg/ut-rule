@@ -5,5 +5,11 @@ module.exports = {
         notes: '',
         params: joi.any(),
         result: joi.any()
+    },
+    'rule.fetch': {
+        description: '',
+        notes: '',
+        params: joi.any(),
+        result: joi.any()
     }
 };

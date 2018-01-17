@@ -1,6 +1,9 @@
 {
   "name": "ut-rule",
   "version": "9.15.0-rc-bahur.1",
+  "pkg": {
+    "assets": ["api/sql/schema/*.sql", "api/sql/schema/seeds/*.sql"]
+  },
   "dependencies": {
     "classnames": "2.2.5",
     "joi": "10.0.6",

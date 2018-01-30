@@ -142,9 +142,9 @@ const Main = React.createClass({
         let sections = uiConfig.dialog.sections;
 
         return <div className={mainStyle.contentTableWrap}>
-            <AddTab pathname={this.props.location.pathname} title='Rule Management' />
+            <AddTab pathname={this.props.location.pathname} title='Fees, Commissions and Limits (FCL)' />
             <div className={style.header}>
-                <Header text='Rule Management' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'}]} />
+                <Header text='Fees, Commissions and Limits (FCL)' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'}]} />
             </div>
             <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                 <GridToolbox opened title='' >

@@ -24,6 +24,13 @@
     padding: 0px;
 }
 
+.tableWrap {
+    max-height: calc(100% - 59px - 40px - 71px - 55px - 30px); /* 100% - header - tab - title bar - pagination*/
+    position: absolute;
+    overflow-y: auto;
+    margin: 0 !important;
+    padding: 10px 20px;
+}
 
 .actionBarWrap > div, .actionBarWrap > div > div {
     width: 100%;

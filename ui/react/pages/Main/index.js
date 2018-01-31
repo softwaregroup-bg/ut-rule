@@ -156,7 +156,7 @@ const Main = React.createClass({
                       </div>
                     </GridToolbox>
                 </div>
-                <div className={mainStyle.tableWrap}>
+                <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
                     <div className={style.grid} >
                         {this.state.dialog.open &&
                           <Dialog

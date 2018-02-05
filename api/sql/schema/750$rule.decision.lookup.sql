@@ -1,17 +1,15 @@
 ALTER PROCEDURE [rule].[decision.lookup]
-    @channelId BIGINT, -- the id of the channel triggering transaction
-    @operation varchar(100), -- the operation name
-    @operationDate datetime, -- the date when operation is triggered
-    @sourceAccount varchar(100), -- source account number
-    @sourceCardProductId BIGINT = NULL, -- product id of the card
-    @destinationAccount varchar(100), -- destination account number
-    @amount money, -- operation amount
-    @currency varchar(3), -- operation currency
+    @channelId BIGINT,
+    @operation varchar(100),
+    @operationDate datetime,
+    @sourceAccount varchar(100),
+    @sourceCardProductId BIGINT = NULL,
+    @destinationAccount varchar(100),
+    @amount money,
+    @currency varchar(3),
     @isSourceAmount BIT=0,
-    @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
-    @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
-    @credentials INT = NULL, -- the passed credentials to validate operation success
-    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
+    @sourceAccountOwnerId BIGINT = NULL,
+    @destinationAccountOwnerId BIGINT = NULL
 AS
 BEGIN
     DECLARE
@@ -27,12 +25,6 @@ BEGIN
         @sourceOwnerId BIGINT,
         @sourceAccountProductId BIGINT,
         @sourceAccountId NVARCHAR(255),
-        @sourceAccountCheckAmount MONEY,
-        @sourceAccountCheckMask INT,
-        @sourceProductCheckAmount MONEY,
-        @sourceProductCheckMask INT,
-        @maxAmountParam MONEY,
-        @credentialsCheck INT,
 
         @destinationCountryId BIGINT,
         @destinationRegionId BIGINT,
@@ -67,11 +59,7 @@ BEGIN
         @sourceCityId = cityId,
         @sourceOwnerId = ownerId,
         @sourceAccountProductId = accountProductId,
-        @sourceAccountId = accountId,
-        @sourceAccountCheckAmount = accountCheckAmount,
-        @sourceAccountCheckMask = accountCheckMask,
-        @sourceProductCheckAmount = productCheckAmount,
-        @sourceProductCheckMask = productCheckMask
+        @sourceAccountId = accountId
     FROM
         [integration].[vAccount]
     WHERE
@@ -90,11 +78,6 @@ BEGIN
     WHERE
         accountNumber = @destinationAccount AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
-
-    -- if check amount has been setup for the account and/or the account product, assign the value to variable. Account is with higher priority
-    SET @maxAmountParam = CASE WHEN coalesce (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckAmount, @sourceProductCheckAmount) END
-    -- if check credentials has been setup for the account and/or the account product, assign the value to variable. Account is with higher priority
-    SET @credentialsCheck = CASE WHEN coalesce (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
@@ -184,9 +167,5 @@ BEGIN
         @currency = @currency,
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
-        @destinationAccount = @destinationAccount,
-        @maxAmountParam = @maxAmountParam,
-        @credentialsCheck = @credentialsCheck,
-        @credentials = @credentials,
-        @isTransactionValidate = @isTransactionValidate
+        @destinationAccount = @destinationAccount
 END

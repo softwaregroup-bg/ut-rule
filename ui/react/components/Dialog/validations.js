@@ -244,95 +244,12 @@ let schema = joi.object().keys({
                              }
                          }
                      }),
-                     dailyAmount: joi.number().max(joi.ref('weeklyAmount')).options({
-                         language: {
-                             key: '"Daily Amount" ',
-                             number: {
-                                 max: 'should be smaller than Weekly Amount',
-                                 base: 'is required for all splits cumulatives'
-                             }
-                         }
-                     }),
-                     dailyCount: joi.number().max(joi.ref('weeklyCount')).options({
-                         language: {
-                             key: '"Daily Count" ',
-                             number: {
-                                 max: 'should be smaller than Weekly Count',
-                                 base: 'is required for all splits cumulatives'
-                             }
-                         }
-                     }),
-                     weeklyAmount: joi.number().min(joi.ref('dailyAmount')).max(joi.ref('mounthlyAmount')).options({
-                         language: {
-                             key: '"Weekly Amount" ',
-                             number: {
-                                 max: 'should be bigger than Daily Amount',
-                                 min: 'should be smaller than Monthly Amount',
-                                 base: 'is required for all splits cumulatives'
-                             }
-                         }
-                     }),
-                     weeklyCount: joi.number().min(joi.ref('dailyCount')).max(joi.ref('mounthlyCount')).options({
-                         language: {
-                             key: '"Weekly Count" ',
-                             number: {
-                                 max: 'should be bigger than Daily Count',
-                                 min: 'should be smaller than Monthly Count',
-                                 base: 'is required for all splits cumulatives'
-                             }
-                         }
-                     }),
-                     mounthlyAmount: joi.number().min(joi.ref('weeklyAmount')).options({
-                         language: {
-                             key: '"Mounthly Amount" ',
-                             number: {
-                                 min: 'should be bigger than Weekly Amount',
-                                 base: 'is required for all splits cumulatives'
-                             }
-                         }
-                     }),
-                     mounthlyCount: joi.number().min(joi.ref('weeklyCount'))
-                     .options({
-                         language: {
-                             key: '"Mounthly Count" ',
-                             number: {
-                                 min: 'should be bigger than Weekly Count',
-                                 base: 'is required for all splits cumulatives'
-                             }
-                         }
-                     }),
                      splitRange: joi.array().items(
                         joi.object().keys({
                             isSourceAmount: joi.boolean(),
-                            maxValue: joi.number().min(joi.ref('minValue')).options({
-                                language: {
-                                    key: '"Range" ',
-                                    number: {
-                                        min: 'Max Amount should not be bigger than Min Amount',
-                                        base: 'is required for all splits cumulatives'
-                                    }
-                                }
-                            }),
-                            minValue: joi.number().max(joi.ref('maxValue')).options({
-                                language: {
-                                    key: '"Range" ',
-                                    number: {
-                                        max: 'Min Amount should not be smaller than Max Amount',
-                                        base: 'is required for all splits cumulatives'
-                                    }
-                                }
-                            }),
                             percent: joi.number().options({
                                 language: {
-                                    key: '"Range" ',
-                                    string: {
-                                        base: 'is required for all splits cumulatives'
-                                    }
-                                }
-                            }),
-                            startAmount: joi.number().options({
-                                language: {
-                                    key: '"Range" ',
+                                    key: '"Percent" ',
                                     string: {
                                         base: 'is required for all splits cumulatives'
                                     }
@@ -387,20 +304,77 @@ module.exports = {
             abortEarly: false
         }, options), (err, value) => {
             if (!err) {
-                return {
-                    isValid: true
-                };
+                err = {details: []};
             }
+
             let errors = err.details.reduce((errorArray, current) => {
                 if (errorArray.indexOf(current.message) === -1) {
                     errorArray.push(current.message);
                 }
                 return errorArray;
             }, []);
+            const customErrors = customValidation(objToValidate);
+            errors = errors.concat(customErrors);
+
             return {
                 isValid: errors.length === 0,
                 errors: errors
             };
         });
-    }
+    },
+    isNumber
 };
+
+function customValidation(obj) {
+    const errors = [];
+    if (Array.isArray(obj.split)) {
+        for (const split of obj.split) {
+            const splitCumulative = split.splitCumulative;
+            if (Array.isArray(splitCumulative)) {
+                for (const cummulative of splitCumulative) {
+                    // amounts
+                    if (isBiggerThan(cummulative.dailyAmount, cummulative.weeklyAmount)) {
+                        errors.push('Daily Amount should be smaller than Weekly Amount');
+                    }
+                    if (isBiggerThan(cummulative.dailyAmount, cummulative.mounthlyAmount)) {
+                        errors.push('Daily Amount should be smaller than Monthly Amount');
+                    }
+                    if (isBiggerThan(cummulative.weeklyAmount, cummulative.mounthlyAmount)) {
+                        errors.push('Weekly Amount should be smaller than Monthly Amount');
+                    }
+                    // counts
+                    if (isBiggerThan(cummulative.dailyCount, cummulative.weeklyCount)) {
+                        errors.push('Daily Count should be smaller than Weekly Count');
+                    }
+                    if (isBiggerThan(cummulative.dailyCount, cummulative.mounthlyCount)) {
+                        errors.push('Daily Count should be smaller than Monthly Count');
+                    }
+                    if (isBiggerThan(cummulative.weeklyCount, cummulative.mounthlyCount)) {
+                        errors.push('Weekly Count should be smaller than Monthly Count');
+                    }
+                    const splitRange = cummulative.splitRange;
+                    if (Array.isArray(splitRange)) {
+                        for (const range of splitRange) {
+                            if (isBiggerThan(range.minValue, range.maxValue)) {
+                                errors.push('Range Min Amount should be smaller than Range Max Amount');
+                            }
+                            if (!isNumber(range.startAmount)) {
+                                errors.push('Range Start Amount is required');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return errors;
+}
+
+function isNumber(n) {
+    return n !== null && n !== '' && n !== [] && !isNaN(n);
+}
+
+function isBiggerThan(n1, n2) {
+    return isNumber(n1) && isNumber(n2) && Number(n1) > Number(n2);
+}

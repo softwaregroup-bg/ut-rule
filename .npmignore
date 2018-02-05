@@ -1,0 +1,7 @@
+node_modules
+.tern*
+.vscode
+.history
+*.log
+.idea
+*.marko.js

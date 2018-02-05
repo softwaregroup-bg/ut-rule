@@ -21,7 +21,7 @@ export default (state = defaultState, action) => {
                     'conditionActor': action.result.conditionActor,
                     'conditionItem': action.result.conditionItem,
                     'conditionProperty': action.result.conditionProperty,
-                    'formatedGridData': getFormattedGridDataColumns(action.result, formattedRules),
+                    'formatedGridData': getFormattedGridDataColumns(action.result, formattedRules, state.fetchNomenclatures),
                     'pagination': {...state.pagination, ...(action.result.pagination && action.result.pagination[0])}
                 });
             default:
@@ -109,7 +109,7 @@ const formatNomenclatures = function(data) {
     }, {});
 };
 
-const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
+const getFormattedGridDataColumns = function(fetchedData, formattedRules, nomenclatures) {
     // the pattern is:
     // result = {
     //     conditionId: {
@@ -153,9 +153,14 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
             result[actor.conditionId][actor.factor] = [];
         }
 
+        if (actor.type === 'role' && nomenclatures && nomenclatures.agentType && nomenclatures.agentType[actor.actorId]) {
+            actor.type = 'agentType';
+        }
+
         result[actor.conditionId][actor.factor].push({
             name: actor.type,
-            value: actor.actorId
+            value: actor.actorId,
+            translatedValue: actor.roleName // PD: ABT-2040
         });
     });
     Object.keys(formattedRules).forEach((conditionId) => {

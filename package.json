@@ -1,36 +1,122 @@
 {
-  "name": "ut-rule",
-  "version": "9.14.0",
+  "_args": [
+    [
+      {
+        "raw": "ut-rule@9.10.5",
+        "scope": null,
+        "escapedName": "ut-rule",
+        "name": "ut-rule",
+        "rawSpec": "9.10.5",
+        "spec": "9.10.5",
+        "type": "version"
+      },
+      "D:\\abt\\impl-accessbank-tanzania-mwallet"
+    ],
+    [
+      {
+        "raw": "ut-rule@git+ssh://git@git.softwaregroup-bg.com:ut5impl/impl-accessbank-tanzania-mwallet.git#ut-rule",
+        "scope": null,
+        "escapedName": "ut-rule",
+        "name": "ut-rule",
+        "rawSpec": "git+ssh://git@git.softwaregroup-bg.com:ut5impl/impl-accessbank-tanzania-mwallet.git#ut-rule",
+        "spec": "ssh://git@git.softwaregroup-bg.com:ut5impl/impl-accessbank-tanzania-mwallet.git#ut-rule",
+        "type": "git"
+      },
+      "D:\\workspace\\impl-abt"
+    ]
+  ],
+  "_from": "git+ssh://git@git.softwaregroup-bg.com:ut5impl/impl-accessbank-tanzania-mwallet.git#ut-rule",
+  "_id": "ut-rule@9.10.5",
+  "_inCache": true,
+  "_location": "/ut-rule",
+  "_nodeVersion": "6.9.5",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/ut-rule-9.10.5.tgz_1501220602546_0.2370991047937423"
+  },
+  "_npmUser": {
+    "name": "kalin.krustev",
+    "email": "kalin.krustev@gmail.com"
+  },
+  "_npmVersion": "3.10.9",
+  "_phantomChildren": {
+    "hoist-non-react-statics": "1.2.0",
+    "invariant": "2.2.2",
+    "lodash": "4.17.4",
+    "loose-envify": "1.3.1"
+  },
+  "_requested": {
+    "raw": "ut-rule@git+ssh://git@git.softwaregroup-bg.com:ut5impl/impl-accessbank-tanzania-mwallet.git#ut-rule",
+    "scope": null,
+    "escapedName": "ut-rule",
+    "name": "ut-rule",
+    "rawSpec": "git+ssh://git@git.softwaregroup-bg.com:ut5impl/impl-accessbank-tanzania-mwallet.git#ut-rule",
+    "spec": "ssh://git@git.softwaregroup-bg.com:ut5impl/impl-accessbank-tanzania-mwallet.git#ut-rule",
+    "type": "git"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "git+ssh://git@git.softwaregroup-bg.com:ut5impl/impl-accessbank-tanzania-mwallet.git#71d3da2be6fa68922e66196213c4092ad2bfa047",
+  "_shasum": "3d3df4967690d07b3cc8fddf439ee466f5b71da3",
+  "_shrinkwrap": null,
+  "_spec": "ut-rule@git+ssh://git@git.softwaregroup-bg.com:ut5impl/impl-accessbank-tanzania-mwallet.git#ut-rule",
+  "_where": "D:\\workspace\\impl-abt",
+  "bugs": {
+    "url": "https://github.com/softwaregroup-bg/ut-rule/issues"
+  },
   "dependencies": {
     "classnames": "2.2.5",
+    "immutable": "3.8.1",
     "joi": "10.0.6",
     "joi-browser": "^10.0.6",
     "lodash.get": "4.4.2",
     "lodash.merge": "4.6.0",
     "lodash.set": "4.3.2",
     "material-ui": "0.16.5",
-    "react": "15.6.1",
-    "react-redux": "5.0.5",
+    "react": "15.4.1",
+    "react-redux": "4.4.6",
     "react-router": "3.0.0",
-    "redux": "3.7.2",
-    "ut-error": "^5.4.9",
-    "immutable": "3.8.1"
-  },
-  "devDependencies": {
-    "ut-tools": "^5.30.0"
-  },
-  "peerDependencies": {
-    "ut-front": "^8.0.0",
-    "ut-front-react": "^10.0.1",
-    "ut-bus": "^6.0.0"
+    "redux": "3.6.0",
+    "ut-error": "^5.4.9"
   },
   "description": "UT Rule",
+  "devDependencies": {
+    "ut-tools": "^5.17.26"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "b662e560ebdf972958188fe814d5d8a370e4ef4e",
+    "tarball": "https://nexus.softwaregroup-bg.com/repository/npm-all/ut-rule/-/ut-rule-9.10.5.tgz"
+  },
+  "gitHead": "b9ab8d41a81b6f87b2ad2ad4200b3cf9af414c70",
+  "homepage": "https://github.com/softwaregroup-bg/ut-rule#readme",
+  "license": "Apache-2.0",
+  "maintainers": [
+    {
+      "name": "kalin.krustev",
+      "email": "kalin.krustev@gmail.com"
+    }
+  ],
+  "name": "ut-rule",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "ut-front": "^7.0.0",
+    "ut-front-react": "^9.4.11",
+    "ut-bus": "^5.11.1"
+  },
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/softwaregroup-bg/ut-rule.git"
+  },
   "scripts": {
-    "lint": "ut-lint .",
-    "release": "ut-release",
     "changelog": "ut-changelog",
     "check": "ut-check",
     "cover": "ut-cover",
+    "gitlab": "ut-gitlab",
+    "jenkins": "ut-jenkins",
+    "lint": "ut-lint .",
     "lint-js": "ut-lint-js .",
     "postpublish": "ut-postpublish",
     "postversion": "ut-postversion",
@@ -39,14 +125,9 @@
     "prepush": "ut-prepush",
     "pretest": "ut-pretest",
     "preversion": "ut-preversion",
+    "release": "ut-release",
     "test": "ut-test",
-    "version": "ut-version",
-    "jenkins": "ut-jenkins",
-    "gitlab": "ut-gitlab"
+    "version": "ut-version"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:softwaregroup-bg/ut-rule.git"
-  },
-  "license": "Apache-2.0"
+  "version": "9.10.5"
 }

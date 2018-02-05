@@ -133,27 +133,6 @@ const Operation = React.createClass({
                         </div>
                     </div>
                 }
-                { fields.properties.visible &&
-                  <div className={style.propertyTable}>
-                    <table className={style.dataGridTable}>
-                        <thead>
-                            <tr>
-                                <th colSpan={3}>Properties</th>
-                            </tr>
-                            <tr>
-                                {this.createPropertyHeaderCells()}
-                            </tr>
-                        </thead>
-                        <tbody >
-                            {this.createPropetyRows()}
-                        </tbody>
-                    </table>
-                    <span className={style.link} onClick={this.props.addPropertyRow}>
-                        <img src={plusImage} className={style.plus} />
-                        Add another property
-                    </span>
-                </div>
-              }
             </div>
         );
     }

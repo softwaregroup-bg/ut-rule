@@ -1,7 +1,16 @@
 node_modules
+dev
+docs
 .tern*
-.vscode
 .history
 *.log
 .idea
 *.marko.js
+.ut_standard_devrc
+dist
+npm-debug.*
+coverage
+coverage/**/*
+httpRequests
+node.exe
+nssm.exe

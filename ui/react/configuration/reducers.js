@@ -14,7 +14,9 @@ const defaultUiState = {
             'supervisor',
             'cardProduct',
             'accountProduct',
-            'account'
+            'account',
+            'agentType',
+            'internalAccount'
         ],
         itemCode: [
             'currency'
@@ -22,7 +24,9 @@ const defaultUiState = {
         agentRole: [],
         accountAlias: [],
         organization: [''],
-        role: []
+        role: [''],
+        agentType: [''],
+        internalAccount: ['']
     },
     main: {
         grid: {
@@ -99,6 +103,10 @@ const defaultUiState = {
                     role: {
                         visible: true,
                         title: 'Role'
+                    },
+                    agentType: {
+                        visible: true,
+                        title: 'Agent Type'
                     }
                 }
             },
@@ -241,19 +249,19 @@ const defaultUiState = {
                         title: 'Description'
                     },
                     debit: {
-                        visible: true,
+                        visible: false,
                         title: 'Debit'
                     },
                     debitAlias: {
-                        visible: false,
+                        visible: true,
                         title: 'Debit'
                     },
                     credit: {
-                        visible: true,
+                        visible: false,
                         title: 'Credit'
                     },
                     creditAlias: {
-                        visible: false,
+                        visible: true,
                         title: 'Credit'
                     },
                     percent: {

@@ -12,8 +12,11 @@ import Destination from './Section/Destination';
 import SectionLimit from './Section/Limit';
 import SectionSummary from './Section/Summary';
 import merge from 'lodash.merge';
-import validations from './validations.js';
+import validations, {isNumber} from './validations.js';
 import set from 'lodash.set';
+import {connect} from 'react-redux';
+import {checkAccountExists} from '../../pages/Main/actionCreators';
+import Promise from 'bluebird';
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -28,6 +31,7 @@ const emptyCondition = {
     channelSupervisorId: null,
     channelProperties: [],
     channelRoleId: null,
+    channelAgentTypeId: null,
     channelId: null,
     operationIds: [],
     operationTag: null,
@@ -108,7 +112,7 @@ const emptySplitAssignment = {
     description: null
 };
 
-export default React.createClass({
+export default connect(() => ({}), {checkAccountExists})(React.createClass({
     propTypes: {
         open: PropTypes.bool.isRequired,
         data: PropTypes.object,
@@ -188,19 +192,19 @@ export default React.createClass({
                         });
 
                         s.splitCumulative.push({
-                            dailyAmount: identifier.startAmountDaily,
-                            dailyCount: identifier.startCountDaily,
-                            mounthlyAmount: cumulativeRanges[0].startAmountMonthly,
-                            mounthlyCount: cumulativeRanges[0].startCountMonthly,
-                            weeklyAmount: cumulativeRanges[0].startAmountWeekly,
-                            weeklyCount: cumulativeRanges[0].startCountWeekly,
+                            dailyAmount: isNumber(identifier.startAmountDaily) ? String(identifier.startAmountDaily) : null,
+                            dailyCount: isNumber(identifier.startCountDaily) ? String(identifier.startCountDaily) : null,
+                            mounthlyAmount: isNumber(cumulativeRanges[0].startAmountMonthly) ? String(cumulativeRanges[0].startAmountMonthly) : null,
+                            mounthlyCount: isNumber(cumulativeRanges[0].startCountMonthly) ? String(cumulativeRanges[0].startCountMonthly) : null,
+                            weeklyAmount: isNumber(cumulativeRanges[0].startAmountWeekly) ? String(cumulativeRanges[0].startAmountWeekly) : null,
+                            weeklyCount: isNumber(cumulativeRanges[0].startCountWeekly) ? String(cumulativeRanges[0].startCountWeekly) : null,
                             currency: identifier.startAmountCurrency,
                             splitRange: cumulativeRanges.map(rr => ({
-                                startAmount: rr.startAmount, // required
+                                startAmount: isNumber(rr.startAmount) ? String(rr.startAmount) : null, // required
                                 isSourceAmount: rr.isSourceAmount,
-                                minValue: rr.minValue,
-                                maxValue: rr.maxValue,
-                                percent: rr.percent
+                                minValue: isNumber(rr.minValue) ? String(rr.minValue) : null,
+                                maxValue: isNumber(rr.maxValue) ? String(rr.maxValue) : null,
+                                percent: isNumber(rr.percent) ? String(rr.percent) : null
                             }))
                         });
                     });
@@ -491,17 +495,55 @@ export default React.createClass({
         return (new Set(array)).size !== array.length;
     },
     save() {
-        let formValidation = validations.run(this.state.data);
-        if (formValidation.isValid) {
-            this.props.onSave(this.state.data);
-        }
+        const formValidation = validations.run(this.state.data);
+        const {data, form} = this.state;
 
-        this.setState({
-            form: Object.assign({}, this.state.form, {
-                errorDialogOpen: true,
-                errors: formValidation.errors
+        if (Array.isArray(data.condition) && data.condition.length && (data.condition[0].sourceAccountNumber || data.condition[0].destinationAccountNumber)) {
+            const setState = this.setState.bind(this);
+            const props = this.props;
+            const promiseFunc = data.condition[0].sourceAccountNumber
+                ? props.checkAccountExists
+                : () => Promise.resolve();
+
+            promiseFunc({accountNumber: data.condition[0].sourceAccountNumber})
+            .then(res => {
+                if (res && res.error) {
+                    formValidation.errors.push(res.error.message + `, ${data.condition[0].sourceAccountNumber}`);
+                } else if (res && res.result) {
+                    data.condition[0].sourceAccountId = res.result.account.accountId;
+                }
+                return data.condition[0].destinationAccountNumber
+                    ? props.checkAccountExists({accountNumber: data.condition[0].destinationAccountNumber})
+                    : Promise.resolve();
             })
-        });
+            .then(res => {
+                if (res && res.error) {
+                    formValidation.errors.push(res.error.message + `, ${data.condition[0].destinationAccountNumber}`);
+                } else if (res && res.result) {
+                    data.condition[0].destinationAccountId = res.result.account.accountId;
+                }
+
+                if (formValidation.isValid && !formValidation.errors.length) {
+                    props.onSave(data);
+                } else {
+                    setState({
+                        form: Object.assign({}, form, {
+                            errorDialogOpen: true,
+                            errors: formValidation.errors
+                        })
+                    });
+                }
+            });
+        } else if (formValidation.isValid) {
+            this.props.onSave(this.state.data);
+        } else {
+            this.setState({
+                form: Object.assign({}, this.state.form, {
+                    errorDialogOpen: true,
+                    errors: formValidation.errors
+                })
+            });
+        }
     },
     onChangeInput(field) {
         this.onFieldChange('condition', 0, field.key, field.value);
@@ -514,7 +556,8 @@ export default React.createClass({
     },
     contentStyle: {
         minWidth: '730px',
-        maxWidth: '50%'
+        maxWidth: '85%',
+        width: '100%'
     },
     render() {
         let sections = this.state.sections;
@@ -637,4 +680,4 @@ export default React.createClass({
             </Dialog>
         );
     }
-});
+}));

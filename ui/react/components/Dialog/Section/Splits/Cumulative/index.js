@@ -4,6 +4,11 @@ import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Range from './Range';
 import plusImage from '../../../assets/add_new.png';
+import {isNumber} from '../../../validations';
+
+function stringifyNumber(n) {
+    return isNumber(n) ? String(parseInt(n)) : null;
+}
 
 const Cumulative = React.createClass({
     propTypes: {
@@ -27,7 +32,7 @@ const Cumulative = React.createClass({
     onChangeInput(index) {
         let self = this;
         return (field) => {
-            self.context.onFieldChange('split.' + self.props.splitIndex + '.splitCumulative', index, field.key, parseInt(field.value));
+            self.context.onFieldChange('split.' + self.props.splitIndex + '.splitCumulative', index, field.key, stringifyNumber(field.value));
         };
     },
     onDeleteRow(index) {
@@ -50,54 +55,50 @@ const Cumulative = React.createClass({
     },
     createCumulativeRows(index) {
         let {data} = this.props;
+        const prop = data[index];
+
         return (
             <tr key={index}>
                 <td>
                     <Input
-                      type='number'
                       keyProp='dailyCount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].dailyCount || '')}
+                      value={stringifyNumber(prop.dailyCount)}
                     />
                 </td>
                 <td>
                     <Input
-                      type='number'
                       keyProp='dailyAmount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].dailyAmount || '')}
+                      value={stringifyNumber(prop.dailyAmount)}
                     />
                 </td>
                 <td>
                     <Input
-                      type='number'
                       keyProp='weeklyCount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].weeklyCount || '')}
+                      value={stringifyNumber(prop.weeklyCount)}
                     />
                 </td>
                 <td>
                     <Input
-                      type='number'
                       keyProp='weeklyAmount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].weeklyAmount || '')}
+                      value={stringifyNumber(prop.weeklyAmount)}
                     />
                 </td>
                 <td>
                     <Input
-                      type='number'
                       keyProp='mounthlyCount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].mounthlyCount || '')}
+                      value={stringifyNumber(prop.mounthlyCount)}
                     />
                 </td>
                 <td>
                     <Input
-                      type='number'
                       keyProp='mounthlyAmount'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (data[index].mounthlyAmount || '')}
+                      value={stringifyNumber(prop.mounthlyAmount)}
                     />
                 </td>
             </tr>

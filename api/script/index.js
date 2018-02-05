@@ -30,6 +30,20 @@ var wrapper = {
             let role = result.role;
             return {items: role.map(v => ({ type: 'role', value: v.actorId, display: v.name }))};
         });
+    },
+    'agentType': function(msg, $meta) {
+        return bus.importMethod('agent.agentType.fetchDropdown')(msg, Object.assign({}, $meta, {method: 'agent.agentType.fetch'}))
+        .then(res => {
+            const agentTypes = res.agentTypes;
+            return {items: agentTypes.map(v => ({ type: 'agentType', value: v.actorId, display: v.name }))};
+        });
+    },
+    'internalAccount': function(msg, $meta) {
+        return bus.importMethod('implementation.internalAccount.fetchDropdown')(msg, Object.assign({}, $meta, {method: 'implementation.internalAccount.fetch'}))
+        .then(res => {
+            const internalAccounts = res.internalAccounts;
+            return {items: internalAccounts.map(v => ({ type: 'internalAccount', value: v.accountNumber, display: v.label }))};
+        });
     }
 };
 

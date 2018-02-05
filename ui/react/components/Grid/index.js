@@ -64,8 +64,9 @@ export default React.createClass({
                 for (let index in condition[keyToInclude]) {
                     let record = condition[keyToInclude][index];
                     if (index > 4 && !this.state.expandedGridColumns.some(v => v === row.priority)) break;
+                    // PD: ABT-2040
                     result.push(<div key={result.length}>
-                        <b>{record.name + ':'}</b>{record.value}
+                        <b>{record.name + ':'}</b>{record.translatedValue || record.value} 
                     </div>);
                 }
             }
@@ -84,13 +85,22 @@ export default React.createClass({
               </div>
             );
         }
-        if (row.destinationAccountId && column === 'destination') {
+        if (row.destinationAccountNumber && column === 'destination') {
             result.push(
               <div key={result.length}>
-                  <b>Destination Account: </b>{row.destinationAccountId}
+                  <b>Destination Account: </b>{row.destinationAccountNumber}
               </div>
             );
         }
+
+        if (row.sourceAccountNumber && column === 'source') {
+            result.push(
+                <div key={result.length}>
+                    <b>Source Account: </b>{row.sourceAccountNumber}
+                </div>
+              );
+        }
+
         return (
           <div>
             {result}
@@ -123,6 +133,9 @@ export default React.createClass({
             return {
                 id: conditionId,
                 destinationAccountId: condition.destinationAccountId,
+                destinationAccountNumber: condition.destinationAccountNumber,
+                sourceAccountId: condition.sourceAccountId,
+                sourceAccountNumber: condition.sourceAccountNumber,
                 operationEndDate: condition.operationEndDate,
                 operationStartDate: condition.operationStartDate,
                 priority: columns.priority.visible && condition.priority,

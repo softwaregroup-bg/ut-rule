@@ -6,6 +6,11 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import Checkbox from 'ut-front-react/components/Input/Checkbox';
 import plusImage from '../../../../assets/add_new.png';
 import Accordion from 'ut-front-react/components/Accordion';
+import {isNumber} from '../../../../validations';
+
+function stringifyNumber(n) {
+    return isNumber(n) ? String(parseInt(n)) : null;
+}
 
 const Range = React.createClass({
     propTypes: {
@@ -27,7 +32,7 @@ const Range = React.createClass({
     onChangeInput(index) {
         let self = this;
         return (field) => {
-            self.context.onFieldChange('split.' + self.props.splitIndex + '.splitCumulative.' + self.props.cumulativeIndex + '.splitRange', index, field.key, parseInt(field.value));
+            self.context.onFieldChange('split.' + self.props.splitIndex + '.splitCumulative.' + self.props.cumulativeIndex + '.splitRange', index, field.key, stringifyNumber(field.value));
         };
     },
     onDeleteRow(index) {
@@ -55,33 +60,29 @@ const Range = React.createClass({
                 <td>
                     <Input
                       keyProp='startAmount'
-                      type='number'
                       onChange={this.onChangeInput(index)}
-                      value={'' + (splitRange.startAmount || '')}
+                      value={stringifyNumber(splitRange.startAmount)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='percent'
-                      type='number'
                       onChange={self.onChangeInput(index)}
-                      value={'' + (splitRange.percent || '')}
+                      value={stringifyNumber(splitRange.percent)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='minValue'
-                      type='number'
                       onChange={self.onChangeInput(index)}
-                      value={'' + (splitRange.minValue || '')}
+                      value={stringifyNumber(splitRange.minValue)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='maxValue'
-                      type='number'
                       onChange={self.onChangeInput(index)}
-                      value={'' + (splitRange.maxValue || '')}
+                      value={stringifyNumber(splitRange.maxValue)}
                     />
                 </td>
                 {false &&

@@ -59,25 +59,28 @@ const Splits = React.createClass({
             {key: 'atm', name: 'ATM'},
             {key: 'pos', name: 'POS'},
             {key: 'ped', name: 'PED'},
-            {key: 'vendor', name: 'Vendor'},
-            {key: 'merchant', name: 'Merchant'}
+            {key: 'agentCommission', name: 'Agent Commision'}
         ];
     },
     defaultSelected(origin, selected) {
         let result = [];
-        selected.forEach(function(row) {
-            result.push(origin.filter(function(r) {
-                return r.key === row.key;
-            })[0]);
-        });
+        if (Array.isArray(selected)) {
+            selected.forEach(function(row) {
+                const val = origin.filter(function(r) {
+                    return r.key === row.key;
+                })[0];
+                if (val) {
+                    result.push(val);
+                }
+            });
+        }
 
         return result;
     },
     createSplitRows() {
         var self = this;
 
-        return this.props.data.map((split, index) => {
-            return (
+        return this.props.data.map((split, index) => (
             <div key={index} style={{marginBottom: '20px'}}>
                 <div className={style.border}>
                     <div className={style.splitInput}>
@@ -91,7 +94,7 @@ const Splits = React.createClass({
                     <div className={style.splitInput}>
                         <MultiSelect
                           placeholder='Select Tags'
-                          defaultSelected={self.defaultSelected(self.getTagData(), split.splitName.tag || [])}
+                          defaultSelected={self.defaultSelected(self.getTagData(), split.splitName.tag)}
                           onSelect={self.onChangeInput(index)}
                           data={self.getTagData()}
                           label='Tag'
@@ -126,8 +129,7 @@ const Splits = React.createClass({
                     Delete this Split
                 </button>
             </div>
-            );
-        });
+        ));
     },
     render() {
         return (

@@ -8,3 +8,4 @@ export const addRule = Symbol.for('addRule');
 export const fetchNomenclatures = Symbol.for('fetchNomenclatures');
 export const reset = Symbol.for('reset');
 export const updatePagination = Symbol.for('updatePagination');
+export const CHECK_ACCOUNT_EXISTS = Symbol('CHECK_ACCOUNT_EXISTS');

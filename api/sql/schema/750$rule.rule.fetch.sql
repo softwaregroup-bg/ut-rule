@@ -15,8 +15,8 @@ BEGIN
     CREATE TABLE #RuleConditions (
         conditionId INT,
         [priority] INT, 
+        operationStartDate DATETIME, 
         operationEndDate DATETIME, 
-        operationStartDate DATETIME,
         sourceAccountId NVARCHAR(255), 
         destinationAccountId NVARCHAR(255),
         rowNum INT, 
@@ -37,7 +37,7 @@ BEGIN
         WHERE
             @conditionId IS NULL OR rc.conditionId = @conditionId)
 
-    INSERT INTO #RuleConditions( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
+    INSERT INTO #RuleConditions( conditionId, [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
     SELECT
         conditionId,
         [priority],
@@ -63,15 +63,18 @@ BEGIN
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
-        ca.*, a.actorType AS [type]
+        ca.*, a.actorType AS [type], ur.[name] as roleName -- PD: ABT-2040
     FROM
         [rule].conditionActor ca
     JOIN
         #RuleConditions rct ON rct.conditionId = ca.conditionId
     JOIN
         core.actor a ON a.actorId = ca.actorId
+    LEFT JOIN -- PD: ABT-2040
+		[user].[role] ur ON ur.actorId = a.actorId AND a.actorType = 'role' -- PD: ABT-2040
     WHERE
         @conditionId IS NULL OR ca.conditionId = @conditionId
+
 
     SELECT 'conditionItem' AS resultSetName
     SELECT

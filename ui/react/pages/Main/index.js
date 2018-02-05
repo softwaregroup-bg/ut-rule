@@ -46,8 +46,8 @@ const Main = React.createClass({
     fetchData(props) {
         let {pageSize, pageNumber} = props.pagination;
 
-        this.props.actions.fetchRules({pageSize, pageNumber});
-        this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
+        this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures)
+        .then(() => this.props.actions.fetchRules({pageSize, pageNumber}));
     },
     componentWillMount() {
         this.fetchData(this.props);
@@ -140,11 +140,15 @@ const Main = React.createClass({
         let uiConfig = this.state.uiConfig;
         let columns = uiConfig.main.grid.columns;
         let sections = uiConfig.dialog.sections;
+        const buttons = [];
+        if (this.context.checkPermission('rule.rule.add')) {
+            buttons.push({text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'});
+        }
 
         return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
             <div className={style.header}>
-                <Header text='Rule Management' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'}]} />
+                <Header text='Rule Management' buttons={buttons} />
             </div>
             <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                 <GridToolbox opened title='' >

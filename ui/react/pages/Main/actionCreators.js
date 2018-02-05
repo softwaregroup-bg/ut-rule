@@ -10,10 +10,19 @@ const removeEmpty = (obj) => {
 
 export const updatePagination = (params) => ({type: actionTypes.updatePagination, params});
 
+export const checkAccountExists = (params) => ({
+    type: actionTypes.CHECK_ACCOUNT_EXISTS,
+    method: 'implementation.checkAccountExists',
+    suppressErrorWindow: true,
+    params: {
+        accountNumber: params.accountNumber
+    }
+});
+
 export function fetchRules(params) {
     return {
         type: actionTypes.fetchRules,
-        method: 'db/rule.rule.fetch',
+        method: 'implementation.rule.fetch',
         params: params || {}
     };
 };
@@ -54,7 +63,7 @@ export function editRule(params) {
 
         split.map(s => {
             removeEmpty(s);
-            s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
+            s.splitName.tag = (s.splitName.tag || []).reduce((tags, tag) => {
                 tags += tag.key + '|';
                 return tags;
             }, '|');
@@ -69,7 +78,7 @@ export function editRule(params) {
             priority: paramsCondition.priority,
             operationStartDate: paramsCondition.operationStartDate,
             operationEndDate: paramsCondition.operationEndDate,
-            sourceAccontId: paramsCondition.sourceAccontId,
+            sourceAccountId: paramsCondition.sourceAccountId,
             destinationAccountId: paramsCondition.destinationAccountId
         }];
 
@@ -77,6 +86,7 @@ export function editRule(params) {
         let conditionActionFields = {
             channelOrganizationId: 'co',
             channelRoleId: 'co',
+            channelAgentTypeId: 'co',
             destinationOrganizationId: 'do',
             destinationRoleId: 'do',
             sourceOrganizationId: 'so',
@@ -234,7 +244,7 @@ export function addRule(params) {
 
         split.map(s => {
             removeEmpty(s);
-            s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
+            s.splitName.tag = (s.splitName.tag || []).reduce((tags, tag) => {
                 tags += tag.key + '|';
                 return tags;
             }, '|');
@@ -246,7 +256,7 @@ export function addRule(params) {
             priority: paramsCondition.priority,
             operationStartDate: paramsCondition.operationStartDate,
             operationEndDate: paramsCondition.operationEndDate,
-            sourceAccontId: paramsCondition.sourceAccontId,
+            sourceAccountId: paramsCondition.sourceAccountId,
             destinationAccountId: paramsCondition.destinationAccountId
         }];
 
@@ -254,6 +264,7 @@ export function addRule(params) {
         let conditionActionFields = {
             channelOrganizationId: 'co',
             channelRoleId: 'co',
+            channelAgentTypeId: 'co',
             destinationOrganizationId: 'do',
             destinationRoleId: 'do',
             sourceOrganizationId: 'so',

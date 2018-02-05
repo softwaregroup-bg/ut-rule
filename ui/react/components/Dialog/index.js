@@ -14,6 +14,7 @@ import SectionSummary from './Section/Summary';
 import merge from 'lodash.merge';
 import validations from './validations.js';
 import set from 'lodash.set';
+import { textValidations } from 'ut-front-react/validator/constants.js';
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -547,6 +548,7 @@ export default React.createClass({
                   </Dialog>
                     <div className={style.topSection}>
                         <Input
+                          validators={[{type: textValidations.isRequired}]}
                           keyProp='priority'
                           label='Priority'
                           onChange={this.onChangeInput}

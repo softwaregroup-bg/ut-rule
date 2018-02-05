@@ -30,7 +30,7 @@ BEGIN
             rc.operationStartDate,
             rc.sourceAccountId,
             rc.destinationAccountId,
-            ROW_NUMBER() OVER(ORDER BY rc.[priority] DESC) as rowNum,
+            ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) as rowNum,
             COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
         FROM
             [rule].condition rc
@@ -49,7 +49,7 @@ BEGIN
         recordsTotal
     FROM CTE
     WHERE (rowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
-    ORDER BY [priority] DESC
+
 
     SELECT 'condition' AS resultSetName
     SELECT

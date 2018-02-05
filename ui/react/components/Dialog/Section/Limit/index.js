@@ -41,7 +41,7 @@ const SectionLimit = React.createClass({
                     <Dropdown
                       keyProp='currency'
                       data={nomenclatures.currency || []}
-                      defaultSelected={'' + (limit.currency || '')}
+                      defaultSelected={limit.currency}
                       onSelect={this.onSelectDropdown(index)}
                       mergeStyles={{dropDownRoot: style.dropDownRoot}}
                     />
@@ -49,56 +49,56 @@ const SectionLimit = React.createClass({
                 <td>
                     <Input
                       keyProp='minAmount'
-                      value={'' + (limit.minAmount || '')}
+                      value={limit.minAmount}
                       onChange={this.onChangeInput(index)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='maxAmount'
-                      value={'' + (limit.maxAmount || '')}
+                      value={limit.maxAmount}
                       onChange={this.onChangeInput(index)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='maxAmountDaily'
-                      value={'' + (limit.maxAmountDaily || '')}
+                      value={limit.maxAmountDaily}
                       onChange={this.onChangeInput(index)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='maxCountDaily'
-                      value={'' + (limit.maxCountDaily || '')}
+                      value={limit.maxCountDaily}
                       onChange={this.onChangeInput(index)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='maxAmountWeekly'
-                      value={'' + (limit.maxAmountWeekly || '')}
+                      value={limit.maxAmountWeekly}
                       onChange={this.onChangeInput(index)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='maxCountWeekly'
-                      value={'' + (limit.maxCountWeekly || '')}
+                      value={limit.maxCountWeekly}
                       onChange={this.onChangeInput(index)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='maxAmountMonthly'
-                      value={'' + (limit.maxAmountMonthly || '')}
+                      value={limit.maxAmountMonthly}
                       onChange={this.onChangeInput(index)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='maxCountMonthly'
-                      value={'' + (limit.maxCountMonthly || '')}
+                      value={limit.maxCountMonthly}
                       onChange={this.onChangeInput(index)}
                     />
                 </td>

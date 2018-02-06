@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.15.0-rc-bahur.4",
+  "version": "9.15.0-rc-bahur.5",
   "pkg": {
     "assets": [
       "api/sql/schema/*.sql",

@@ -10,6 +10,7 @@ import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
 import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
 import AdvancedPagination from 'ut-front-react/components/AdvancedPagination';
+import Button from 'ut-front-react/components/StandardButton';
 import classnames from 'classnames';
 import style from './style.css';
 import * as actionCreators from './actionCreators';
@@ -141,85 +142,82 @@ const Main = React.createClass({
         let columns = uiConfig.main.grid.columns;
         let sections = uiConfig.dialog.sections;
 
-        return <div className={mainStyle.contentTableWrap}>
+        return <div>
             <AddTab pathname={this.props.location.pathname} title='Fees, Commissions and Limits (FCL)' />
-            <div className={style.header}>
-                <Header text='Fees, Commissions and Limits (FCL)' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'}]} />
-            </div>
-            <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
-                <GridToolbox opened title='' >
-                    <div className={style.gridToolBoxButtons}>
-                        { this.context.checkPermission('rule.rule.edit') && <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
-                            Edit
-                        </button> }
-                        { this.context.checkPermission('rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
-                            Delete
-                        </button>
-                        }
-                    </div>
-                </GridToolbox>
-            </div>
-            <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
-                <div className={style.grid} >
-                    {this.state.dialog.open &&
-                        <Dialog
-                          ref='dialog'
-                          open={this.state.dialog.open}
-                          data={this.props.rules[this.state.dialog.conditionId]}
-                          conditionProperty={this.props.conditionProperty}
-                          conditionActor={this.props.conditionActor}
-                          conditionItem={this.props.conditionItem}
-                          nomenclatures={this.props.nomenclatures}
-                          onSave={this.dialogOnSave}
-                          onClose={this.dialogOnClose}
-                          sections={sections}
-                        />
-                    }
-                    {this.state.prompt &&
-                        <Prompt
-                          ref='prompt'
-                          open={this.state.prompt}
-                          message={
-                            'You are about to delete ' +
-                            (
-                                Object.keys(this.state.selectedConditions).length === 1
-                                    ? '1 rule'
-                                    : Object.keys(this.state.selectedConditions).length + ' rules'
-                            ) +
-                            '. Would you like to proceed?'
-                        }
-                          onOk={this.removeRules}
-                          onCancel={this.hidePrompt}
-                        />
-                    }
-                    <Grid
-                      ref='grid'
-                      refresh={this.refresh}
-                      data={this.props.rules}
-                      selectedConditions={this.state.selectedConditions}
-                      nomenclatures={this.props.nomenclatures}
-                      formatedGridData={this.props.formatedGridData}
-                      handleCheckboxSelect={this.handleCheckboxSelect}
-                      handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
-                      columns={columns}
-                    />
+            <Header text='Fees, Commissions and Limits (FCL)' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'}]} />
+            <div className={classnames(mainStyle.contentTableWrap, style.contentTableWrap)}>
+                <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
+                    <GridToolbox opened title='' >
+                      <div className={style.actionWrap} >
+                        { this.context.checkPermission('rule.rule.edit') &&
+                            (<Button label='Edit' disabled={!this.state.canEdit} className='defaultBtn' onClick={this.editBtnOnClick} />)}
+                        { this.context.checkPermission('rule.rule.remove') &&
+                            (<Button label='Delete' disabled={!this.state.canEdit} className='defaultBtn' onClick={this.showPrompt} />)}
+                      </div>
+                    </GridToolbox>
                 </div>
-            </div>
-            <div className={style.paginationWrap}>
-                <AdvancedPagination
-                  onUpdate={this.props.actions.updatePagination}
-                  pagination={fromJS(this.props.pagination)} />
-            </div>
-            {false &&
-                <div>
-                    <div className={style.rulesNomenclatures}>
-                        RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>
-                    </div>
-                    <div className={style.rulesNomenclatures}>
-                        NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre>
+                <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
+                    <div className={style.grid} >
+                        {this.state.dialog.open &&
+                          <Dialog
+                            ref='dialog'
+                            open={this.state.dialog.open}
+                            data={this.props.rules[this.state.dialog.conditionId]}
+                            conditionProperty={this.props.conditionProperty}
+                            conditionActor={this.props.conditionActor}
+                            conditionItem={this.props.conditionItem}
+                            nomenclatures={this.props.nomenclatures}
+                            onSave={this.dialogOnSave}
+                            onClose={this.dialogOnClose}
+                            sections={sections}
+                            />
+                        }
+                        {this.state.prompt &&
+                          <Prompt
+                            ref='prompt'
+                            open={this.state.prompt}
+                            message={
+                                'You are about to delete ' +
+                                (
+                                    Object.keys(this.state.selectedConditions).length === 1
+                                        ? '1 rule'
+                                        : Object.keys(this.state.selectedConditions).length + ' rules'
+                                ) +
+                                '. Would you like to proceed?'
+                            }
+                            onOk={this.removeRules}
+                            onCancel={this.hidePrompt}
+                            />
+                        }
+                      <Grid
+                        ref='grid'
+                        refresh={this.refresh}
+                        data={this.props.rules}
+                        selectedConditions={this.state.selectedConditions}
+                        nomenclatures={this.props.nomenclatures}
+                        formatedGridData={this.props.formatedGridData}
+                        handleCheckboxSelect={this.handleCheckboxSelect}
+                        handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                        columns={columns}
+                        />
                     </div>
                 </div>
-            }
+                <div className={style.paginationWrap}>
+                    <AdvancedPagination
+                      onUpdate={this.props.actions.updatePagination}
+                      pagination={fromJS(this.props.pagination)} />
+                </div>
+                {false &&
+                    <div>
+                        <div className={style.rulesNomenclatures}>
+                            RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>
+                        </div>
+                        <div className={style.rulesNomenclatures}>
+                            NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>;
     }
 });

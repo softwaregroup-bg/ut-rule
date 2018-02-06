@@ -4,7 +4,8 @@
 
 .actionBarWrap {
     border: 1px solid #d7d7d7;
-    overflow: hidden
+    overflow: hidden;
+    position: static !important;
 }
 
 .rulesNomenclatures {
@@ -12,30 +13,35 @@
     padding: 50px;
 }
 
-.deleteButton {
-    margin-left: 15px;
-}
-
-.header {
-    background-color: white;
-}
-
-.gridToolBoxButtons {
-    float: right;
-}
-
-.tableWrap {
-    margin-top: 70px !important;
-}
-
-.pageWrap {
-    height: 100%;
-    overflow: hidden;
-}
-
 .paginationWrap {
     width: 100%;
     position: absolute;
-    bottom: 34px;
+    bottom: 0px;
     padding: 0 40px 0 20px;
 }
+
+.contentTableWrap {
+    padding: 0px;
+}
+
+.tableWrap {
+    max-height: calc(100% - 59px - 40px - 71px - 55px - 30px); /* 100% - header - tab - title bar - pagination*/
+    position: absolute;
+    overflow-y: auto;
+    margin: 0 !important;
+    padding: 10px 20px;
+}
+
+.actionBarWrap > div, .actionBarWrap > div > div {
+    width: 100%;
+}
+
+.actionWrap {
+    display: flex;
+    justify-content: flex-end;
+ }
+
+ .actionWrap button {
+    margin-left: 10px;
+ }
+ 

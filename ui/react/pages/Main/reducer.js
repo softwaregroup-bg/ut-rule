@@ -157,10 +157,14 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules, nomenc
             actor.type = 'agentType';
         }
 
+        if (actor.type === 'organization' && nomenclatures && nomenclatures.organization && nomenclatures.organization[actor.actorId]) {
+            actor.displayName = nomenclatures.organization[actor.actorId];
+        }
+
         result[actor.conditionId][actor.factor].push({
             name: actor.type,
             value: actor.actorId,
-            translatedValue: actor.roleName // PD: ABT-2040
+            translatedValue: actor.roleName || actor.displayName
         });
     });
     Object.keys(formattedRules).forEach((conditionId) => {

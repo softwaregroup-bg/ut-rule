@@ -225,7 +225,7 @@ let schema = joi.object().keys({
     split: joi.array().items(
         joi.object().keys({
             splitName: joi.object().keys({
-                name: joi.string().required().options({
+                name: joi.string().trim().required().options({
                     language: {
                         key: '"Split Name" ',
                         number: {

@@ -254,7 +254,7 @@ let schema = joi.object().keys({
                                         base: 'is required for all splits cumulatives'
                                     }
                                 }
-                            })
+                            }).allow(null, '')
                         })
                      ).min(1).options({
                          language: {

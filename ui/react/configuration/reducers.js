@@ -70,7 +70,7 @@ const defaultUiState = {
         sections: {
             channel: {
                 visible: true,
-                title: 'Channel',
+                title: 'Mediator Condition',
                 fields: {
                     channel: {
                         visible: false,

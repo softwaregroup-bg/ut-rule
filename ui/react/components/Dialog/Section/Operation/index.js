@@ -111,6 +111,8 @@ const Operation = React.createClass({
                                   mode='landscape'
                                   onChange={onChangeDate('operationStartDate')}
                                   defaultValue={this.props.data.operationStartDate ? new Date(this.props.data.operationStartDate) : null}
+                                  maxDate={this.props.data.operationEndDate ? new Date(this.props.data.operationEndDate) : undefined}
+                                  minDate={new Date()}
                                 />
                             </div>
                         </div>

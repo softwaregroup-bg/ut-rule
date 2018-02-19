@@ -132,7 +132,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxAmountDaily: joi.string().allow(null).allow('').max(16).regex(/(^\s+$|^$|^\d+$)/).options({
+            maxAmountDaily: joi.string().allow(null).allow('').max(12).regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -143,7 +143,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxAmountMonthly: joi.string().allow(null).allow('').max(16).regex(/(^\s+$|^$|^\d+$)/).options({
+            maxAmountMonthly: joi.string().allow(null).allow('').max(12).regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -154,7 +154,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxAmountWeekly: joi.string().allow(null).allow('').max(16).regex(/(^\s+$|^$|^\d+$)/).options({
+            maxAmountWeekly: joi.string().allow(null).allow('').max(12).regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -198,7 +198,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            minAmount: joi.string().allow(null).allow('').max(16).regex(/(^\s+$|^$|^\d+$)/).options({
+            minAmount: joi.string().allow(null).allow('').max(12).regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {
@@ -209,7 +209,7 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxAmount: joi.string().allow(null).allow('').max(16).regex(/(^\s+$|^$|^\d+$)/).options({
+            maxAmount: joi.string().allow(null).allow('').max(12).regex(/(^\s+$|^$|^\d+$)/).options({
                 language: {
                     key: '"Limit" ',
                     string: {

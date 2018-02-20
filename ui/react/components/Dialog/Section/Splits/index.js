@@ -49,17 +49,17 @@ const Splits = React.createClass({
     },
     getTagData() {
         return [
-            // {key: 'acquirer', name: 'Acquirer'},
+            {key: 'acquirer', name: 'Acquirer'},
+            {key: 'fee', name: 'Fee'},
+            {key: 'realtime', name: 'Real Time'},
+            {key: 'agentCommission', name: 'Delayed'}
             // {key: 'issuer', name: 'Issuer'},
             // {key: 'commission', name: 'Commission'},
-            {key: 'realtime', name: 'Real Time'},
             // {key: 'pending', name: 'Authorization required'},
             // {key: 'agent', name: 'Agent'},
-            // {key: 'fee', name: 'Fee'},
             // {key: 'atm', name: 'ATM'},
             // {key: 'pos', name: 'POS'},
             // {key: 'ped', name: 'PED'},
-            {key: 'agentCommission', name: 'Delayed'}
         ];
     },
     defaultSelected(origin, selected) {

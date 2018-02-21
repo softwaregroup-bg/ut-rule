@@ -1,28 +1,28 @@
 ALTER PROCEDURE [rule].[rule.fetch]
     @conditionId INT = NULL,
-    @pageSize INT = 25,    -- how many rows will be returned per page
-    @pageNumber INT = 1   -- which page number to display
+    @pageSize INT = 25, -- how many rows will be returned per page
+    @pageNumber INT = 1 -- which page number to display
 AS
 
 DECLARE @startRow INT = (@pageNumber - 1) * @pageSize + 1
 DECLARE @endRow INT = @startRow + @pageSize - 1
 
 BEGIN
-    
+
     IF OBJECT_ID('tempdb..#RuleConditions') IS NOT NULL
         DROP TABLE #RuleConditions
-    
+
     CREATE TABLE #RuleConditions (
         conditionId INT,
-        [priority] INT, 
-        operationEndDate DATETIME, 
+        [priority] INT,
+        operationEndDate DATETIME,
         operationStartDate DATETIME,
-        sourceAccountId NVARCHAR(255), 
+        sourceAccountId NVARCHAR(255),
         destinationAccountId NVARCHAR(255),
-        rowNum INT, 
-        recordsTotal INT)
-    
-    ;WITH CTE AS (
+        rowNum INT,
+        recordsTotal INT);
+
+    WITH CTE AS (
         SELECT
             rc.conditionId,
             rc.[priority],
@@ -30,7 +30,7 @@ BEGIN
             rc.operationStartDate,
             rc.sourceAccountId,
             rc.destinationAccountId,
-            ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) as rowNum,
+            ROW_NUMBER() OVER(ORDER BY rc.[priority] DESC) AS rowNum,
             COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
         FROM
             [rule].condition rc
@@ -49,7 +49,7 @@ BEGIN
         recordsTotal
     FROM CTE
     WHERE (rowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
-
+    ORDER BY [priority] DESC
 
     SELECT 'condition' AS resultSetName
     SELECT
@@ -75,7 +75,7 @@ BEGIN
 
     SELECT 'conditionItem' AS resultSetName
     SELECT
-        c.*, t.alias AS [type], t.name as itemTypeName, i.itemName
+        c.*, t.alias AS [type], t.name AS itemTypeName, i.itemName
     FROM
         [rule].conditionItem c
     JOIN

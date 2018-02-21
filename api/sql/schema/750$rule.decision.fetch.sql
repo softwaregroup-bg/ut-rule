@@ -1,18 +1,18 @@
 ALTER PROCEDURE [rule].[decision.fetch]
-    @operationProperties [rule].properties READONLY, -- properties collected based on the input information that will be checked against rule conditions (roles, products etc.)
-    @operationDate DATETIME, -- the date when operation is triggered
+    @operationProperties [rule].properties READONLY, -- properties collected based ON the input information that will be checked against rule conditions (roles, products etc.)
+    @operationDate DATETIME, -- the DATE WHEN operation IS triggered
     @sourceAccountId NVARCHAR(255), -- source account id
     @destinationAccountId NVARCHAR(255), -- destination account id
     @amount MONEY, -- operation amount
-    @totals [rule].totals READONLY, -- totals by transfer type (amountDaily, countDaily, amountWeekly ... etc.)
+    @totals [rule].totals READONLY, -- totals BY transfer type (amountDaily, countDaily, amountWeekly ... etc.)
     @currency VARCHAR(3), -- operation currenc
     @isSourceAmount BIT,
-    @sourceAccount varchar(100), -- source account number
-    @destinationAccount varchar(100), -- destination account number
-    @maxAmountParam MONEY, -- max amount from account or account product, after which credential validation is required
-    @credentialsCheck INT,  -- credentials from account or account product
+    @sourceAccount VARCHAR(100), -- source account number
+    @destinationAccount VARCHAR(100), -- destination account number
+    @maxAmountParam MONEY, -- max amount FROM account or account product, after which credential validation IS required
+    @credentialsCheck INT, -- credentials FROM account or account product
     @credentials INT = NULL, -- the passed credentials to validate operation success
-    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
+    @isTransactionValidate BIT = 0 -- flag showing IF operation IS only validated (1) or executed (0)
 AS
 BEGIN
     DECLARE @transferTypeId BIGINT
@@ -27,14 +27,14 @@ BEGIN
         [priority] INT,
         conditionId BIGINT,
         amountDaily money,
-        countDaily bigint,
+        countDaily BIGINT,
         amountWeekly money,
-        countWeekly bigint,
+        countWeekly BIGINT,
         amountMonthly money,
-        countMonthly bigint
+        countMonthly BIGINT
     )
 
-    SET @operationDate = IsNull(@operationDate, GETDATE())
+    SET @operationDate = ISNULL(@operationDate, GETDATE())
 
     DECLARE
         @calcCommission MONEY,
@@ -60,7 +60,7 @@ BEGIN
         @limitMaxAmount MONEY,
         @limitId INT
 
-    --find all conditions(rules) that match based on the input information
+    --find all conditions(rules) that match based ON the input information
     INSERT INTO
         @matches(
             [priority],
@@ -107,7 +107,7 @@ BEGIN
         @maxAmountMonthly = NULL,
         @maxCountMonthly = NULL
 
-    -- check if exists a condition limit that is violated
+    -- check IF EXISTS a condition limit that IS violated
     SELECT TOP 1
         @limitId = l.limitId,
         @minAmount = l.minAmount,
@@ -131,26 +131,26 @@ BEGIN
         [rule].limit AS l ON l.conditionId = c.conditionId
     WHERE
         l.currency = @currency AND (--violation of condition limits
-             @amount < l.minAmount OR
-             @amount > l.maxAmount OR
-             @amount + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
-             @amount + ISNULL(c.amountWeekly, 0) > l.maxAmountWeekly OR
-             @amount + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
-             ISNULL(c.countDaily, 0) >= l.maxCountDaily OR
-             ISNULL(c.countWeekly, 0) >= l.maxCountWeekly OR
-             ISNULL(c.countMonthly, 0) >= l.maxCountMonthly
+            @amount < l.minAmount OR
+            @amount > l.maxAmount OR
+            @amount + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
+            @amount + ISNULL(c.amountWeekly, 0) > l.maxAmountWeekly OR
+            @amount + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
+            ISNULL(c.countDaily, 0) >= l.maxCountDaily OR
+            ISNULL(c.countWeekly, 0) >= l.maxCountWeekly OR
+            ISNULL(c.countMonthly, 0) >= l.maxCountMonthly
         ) AND (--violation of limit credentials
-            @credentials IS NULL OR            -- no checked credentials passed by the backend
-            ISNULL(l.[credentials], 0) = 0 OR  -- limit credentials equal to NULL or 0 means that condition limits cannot be exceeded
+            @credentials IS NULL OR -- no checked credentials passed BY the backend
+            ISNULL(l.[credentials], 0) = 0 OR -- limit credentials equal to NULL or 0 means that condition limits cannot be exceeded
             @credentials & ISNULL (@credentialsCheck, l.[credentials]) <> ISNULL (@credentialsCheck, l.[credentials])
         )
     ORDER BY
         c.[priority],
         l.[priority]
 
-    IF @limitId IS NOT NULL -- if exists a condition limit which is violated, identify the exact violation and return error with result
+    IF @limitId IS NOT NULL -- IF EXISTS a condition limit which IS violated, identify the exact violation AND RETURN error WITH result
     BEGIN
-        DECLARE @type VARCHAR (20)= CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END
+        DECLARE @type VARCHAR (20) = CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END
         DECLARE @error VARCHAR (50) = CASE
             WHEN @amount > @maxAmount THEN @type + 'MaxLimitAmount'
             WHEN @amount < @minAmount THEN @type + 'MinLimitAmount'
@@ -188,14 +188,14 @@ BEGIN
             @amount + @amountMonthly AS accumulatedAmountMonthly,
             ISNULL (@credentialsCheck, @limitCredentials) AS [credentials]
 
-        IF ISNULL (@isTransactionValidate, 0) = 0 RETURN  -- if only validation - proceed, else stop execution
+        IF ISNULL (@isTransactionValidate, 0) = 0 RETURN -- IF only validation - proceed, ELSE stop execution
     END
-    ELSE -- if not exists a condition limit which is violated, check if credentials are correct. If not return error and result
+    ELSE -- IF NOT EXISTS a condition limit which IS violated, check IF credentials are correct. IF NOT RETURN error AND result
     IF @amount > @maxAmountParam AND ISNULL(@credentials, 0) & @credentialsCheck <> @credentialsCheck
     BEGIN
         SELECT
             'ut-error' resultSetName,
-            CASE WHEN ISNULL(@credentialsCheck,0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END +'MaxLimitAmount' type,
+            CASE WHEN ISNULL(@credentialsCheck, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END + 'MaxLimitAmount' type,
             @maxAmountParam AS maxAmount,
             @minAmount AS minAmount,
             @maxAmountDaily AS maxAmountDaily,
@@ -216,17 +216,17 @@ BEGIN
             @amount + @amountMonthly AS accumulatedAmountMonthly,
             @credentialsCheck AS [credentials]
 
-        IF ISNULL (@isTransactionValidate, 0) = 0 RETURN  -- if only validation - proceed, else stop execution
+        IF ISNULL (@isTransactionValidate, 0) = 0 RETURN -- IF only validation - proceed, ELSE stop execution
     END
 
     DECLARE @fee TABLE(
-        conditionId int,
-        splitNameId int,
+        conditionId INT,
+        splitNameId INT,
         fee MONEY,
         tag VARCHAR(MAX)
     );
 
-    -- calculate the operation fees based on the matched conditions (rules), and select these with highest priority
+    -- calculate the operation fees based ON the matched conditions (rules), AND SELECT these WITH highest priority
     WITH split(conditionId, splitNameId, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
         SELECT
             c.conditionId,
@@ -272,8 +272,8 @@ BEGIN
         s.conditionId,
         s.splitNameId,
         CASE
-            WHEN s.calcFee>s.maxFee THEN s.maxFee
-            WHEN s.calcFee<s.minFee THEN s.minFee
+            WHEN s.calcFee > s.maxFee THEN s.maxFee
+            WHEN s.calcFee < s.minFee THEN s.minFee
             ELSE s.calcFee
         END fee,
         s.tag
@@ -293,17 +293,17 @@ BEGIN
 
     DECLARE @map [core].map
 
-    -- calculate the splits based on the selected condition
+    -- calculate the splits based ON the selected condition
     INSERT INTO
         @map([key], [value])
     SELECT
-        '$' + '{' + name + '}', CASE WHEN factor IN ('so', 'do', 'co') THEN 'actor:' ELSE 'item:' END + CAST(value AS varchar(100))
+        '$' + '{' + name + '}', CASE WHEN factor IN ('so', 'do', 'co') THEN 'actor:' ELSE 'item:' END + CAST(value AS VARCHAR(100))
     FROM
         @operationProperties
 
     INSERT INTO
         @map([key], [value])
-    VALUES -- note that ${} is replaced by SQL port
+    VALUES -- note that ${} IS replaced BY SQL port
         ('$' + '{operation.currency}', CAST(@currency AS VARCHAR(100))),
         ('$' + '{source.account.id}', 'account:' + CAST(@sourceAccountId AS VARCHAR(100))),
         ('$' + '{source.account.number}', CAST(@sourceAccount AS VARCHAR(100))),

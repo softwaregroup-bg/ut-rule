@@ -1,17 +1,17 @@
 ALTER PROCEDURE [rule].[decision.lookup]
-    @channelId BIGINT, -- the id of the channel triggering transaction
-    @operation varchar(100), -- the operation name
-    @operationDate datetime, -- the date when operation is triggered
-    @sourceAccount varchar(100), -- source account number
+    @channelId BIGINT, -- the id of the channel triggering TRANSACTION
+    @operation VARCHAR(100), -- the operation name
+    @operationDate datetime, -- the DATE WHEN operation IS triggered
+    @sourceAccount VARCHAR(100), -- source account number
     @sourceCardProductId BIGINT = NULL, -- product id of the card
-    @destinationAccount varchar(100), -- destination account number
+    @destinationAccount VARCHAR(100), -- destination account number
     @amount money, -- operation amount
-    @currency varchar(3), -- operation currency
-    @isSourceAmount BIT=0,
+    @currency VARCHAR(3), -- operation currency
+    @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
     @credentials INT = NULL, -- the passed credentials to validate operation success
-    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
+    @isTransactionValidate BIT = 0 -- flag showing IF operation IS only validated (1) or executed (0)
 AS
 BEGIN
     DECLARE
@@ -91,21 +91,21 @@ BEGIN
         accountNumber = @destinationAccount AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
 
-    -- if check amount has been setup for the account and/or the account product, assign the value to variable. Account is with higher priority
-    SET @maxAmountParam = CASE WHEN coalesce (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckAmount, @sourceProductCheckAmount) END
-    -- if check credentials has been setup for the account and/or the account product, assign the value to variable. Account is with higher priority
-    SET @credentialsCheck = CASE WHEN coalesce (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
+    -- IF check amount has been setup FOR the account AND/or the account product, assign the value to variable. Account IS WITH higher priority
+    SET @maxAmountParam = CASE WHEN COALESCE (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckAmount, @sourceProductCheckAmount) END
+    -- IF check credentials has been setup FOR the account AND/or the account product, assign the value to variable. Account IS WITH higher priority
+    SET @credentialsCheck = CASE WHEN COALESCE (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
     INSERT INTO
         @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
-    SELECT -- totals by transfer type
+    SELECT -- totals BY transfer type
         t.transferTypeId,
         ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount ELSE 0 END), 0),
         ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN 1 ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount ELSE 0 END), 0),--week starts on Mon
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN 1 ELSE 0 END), 0),--week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate - 1), 0) THEN t.transferAmount ELSE 0 END), 0), --week starts ON Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate - 1), 0) THEN 1 ELSE 0 END), 0), --week starts ON Mon
         ISNULL(SUM(t.transferAmount), 0),
         ISNULL(COUNT(t.transferAmount), 0)
     FROM
@@ -115,7 +115,7 @@ BEGIN
         t.sourceAccount = @sourceAccount AND
         t.transferCurrency = @currency AND
         t.transferDateTime < @operationDate AND -- look ony at earlier transfers
-        t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
+        t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate), 0) --look back up to the start of month
     GROUP BY
         t.transferTypeId
 
@@ -127,27 +127,27 @@ BEGIN
     SELECT
         'co', 'channel.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, r.actorId
     FROM
-        core.actorGraph(@channelId,'memberOf','subject') g
+        core.actorGraph(@channelId, 'memberOf', 'subject') g
     CROSS APPLY
-        core.actorGraph(g.actorId,'role','subject') r
+        core.actorGraph(g.actorId, 'role', 'subject') r
     WHERE
         g.actorId <> r.actorId
     UNION SELECT
         'so', 'source.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
-        core.actorGraph(@sourceOwnerId,'memberOf','subject') g
+        core.actorGraph(@sourceOwnerId, 'memberOf', 'subject') g
     UNION SELECT
         'do', 'destination.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
-        core.actorGraph(@destinationOwnerId,'memberOf','subject') g
+        core.actorGraph(@destinationOwnerId, 'memberOf', 'subject') g
     UNION SELECT
         'co', 'channel.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
-        core.actorGraph(@channelId,'memberOf','subject') g
+        core.actorGraph(@channelId, 'memberOf', 'subject') g
     UNION SELECT
         'co', 'agentOf.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
-        core.actorGraph(@channelId,'agentOf','subject') g
+        core.actorGraph(@channelId, 'agentOf', 'subject') g
 
     INSERT INTO
         @operationProperties(factor, name, value)

@@ -1,5 +1,5 @@
 ALTER FUNCTION [rule].assignment(
-    @splitNameId bigint,
+    @splitNameId BIGINT,
     @map [core].[map] READONLY
 ) RETURNS TABLE AS RETURN (
     SELECT
@@ -9,10 +9,9 @@ ALTER FUNCTION [rule].assignment(
         [maxValue],
         core.mapReplace(debit, @map) debit,
         core.mapReplace(credit, @map) credit,
-        (SELECT
-            [name],
-            core.mapReplace([value], @map) as [value]
-         FROM
+        (SELECT [name],
+            core.mapReplace([value], @map) AS [value]
+        FROM
             [rule].[splitAnalytic] [rows]
         WHERE
             [rows].splitAssignmentId = b.splitAssignmentId

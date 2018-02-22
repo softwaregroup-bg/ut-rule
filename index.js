@@ -1,11 +1,9 @@
 module.exports = () => ({
     ports: [],
     modules: {
-        rule: require('./api/script'),
-        'db/rule': require('./api/sql')
+        rule: require('./api/script')
     },
     validations: {
-        rule: require('./validations/rule'),
-        'db/rule': require('./validations/db/rule')
+        rule: require('./validations/rule')
     }
 });

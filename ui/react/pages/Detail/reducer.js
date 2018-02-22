@@ -1,4 +1,4 @@
-import { Map, List } from 'immutable';
+import { Map } from 'immutable';
 import { methodRequestState } from 'ut-front-react/constants';
 
 import { formatRuleItems } from './helpers';
@@ -21,7 +21,7 @@ export const ruleDetailReducer = (state = defaultState, action) => {
             if (action.methodRequestState === methodRequestState.FINISHED) {
                 return state.set('nomenclatures', Map(formatRuleItems(action.result.items)));
             }
-            return state;        
+            return state;
         default:
             return state;
     }

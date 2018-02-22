@@ -54,15 +54,15 @@ let emptyAssignment = Map({
     maxAmount: ''
 });
 
-let emptyCumulative = Map({
-    currency: '',
-    dailyCount: '',
-    dailyAmount: '',
-    weeklyCount: '',
-    weeklyAmount: '',
-    monthlyCount: '',
-    monthlyAmount: ''
-});
+// let emptyCumulative = Map({
+//     currency: '',
+//     dailyCount: '',
+//     dailyAmount: '',
+//     weeklyCount: '',
+//     weeklyAmount: '',
+//     monthlyCount: '',
+//     monthlyAmount: ''
+// });
 
 let emptyRange = Map({
     startAmount: '',

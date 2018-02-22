@@ -28,6 +28,7 @@ const propTypes = {
         createRule: PropTypes.func,
         resetRuleState: PropTypes.func
     }).isRequired,
+    activeTab: PropTypes.object,
     removeTab: PropTypes.func.isRequired,
     nomenclatureConfiguration: PropTypes.shape({}).isRequired
 };

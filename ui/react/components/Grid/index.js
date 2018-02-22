@@ -166,7 +166,7 @@ export default React.createClass({
     },
     render() {
         let data = fromJS(this.getData()).sort((a, b) => {
-            return b.get('priority') - a.get('priority');
+            return a.get('priority') - b.get('priority');
         }).toJS();
 
         return <SimpleGrid

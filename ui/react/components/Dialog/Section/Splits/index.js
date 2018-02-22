@@ -76,7 +76,8 @@ const Splits = React.createClass({
     createSplitRows() {
         var self = this;
 
-        return this.props.data.map((split, index) => (
+        return this.props.data.map((split, index) => {
+            return (
             <div key={index} style={{marginBottom: '20px'}}>
                 <div className={style.border}>
                     <div className={style.splitInput}>
@@ -90,7 +91,7 @@ const Splits = React.createClass({
                     <div className={style.splitInput}>
                         <MultiSelect
                           placeholder='Select Tags'
-                          defaultSelected={self.defaultSelected(self.getTagData(), split.splitName.tag)}
+                          defaultSelected={self.defaultSelected(self.getTagData(), split.splitName.tag || [])}
                           onSelect={self.onChangeInput(index)}
                           data={self.getTagData()}
                           label='Tag'
@@ -125,7 +126,8 @@ const Splits = React.createClass({
                     Delete this Split
                 </button>
             </div>
-        ));
+            );
+        });
     },
     render() {
         return (

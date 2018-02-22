@@ -132,91 +132,113 @@ let schema = joi.object().keys({
                     }
                 }
             }),
-            maxAmountDaily: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+            maxAmountDaily: joi.number().allow(null).when(
+                'maxAmount', {
+                    is: joi.number(),
+                    then: joi.number().greater(joi.ref('maxAmount'))
+                }
+            ).options({
                 language: {
                     key: '"Limit" ',
-                    string: {
-                        base: 'All limits fields should be integers',
-                        regex: {
-                            base: 'All limits fields should be integers'
-                        }
+                    number: {
+                        greater: 'max amount daily should be greater than max transaction amount',
+                        base: 'All limits fields should be integers'
                     }
                 }
             }),
-            maxAmountMonthly: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+            maxAmountWeekly: joi.number().allow(null).when(
+                'maxAmountDaily', {
+                    is: joi.number(),
+                    then: joi.number().greater(joi.ref('maxAmountDaily'))
+                }
+            ).options({
                 language: {
                     key: '"Limit" ',
-                    string: {
-                        base: 'All limits fields should be integers',
-                        regex: {
-                            base: 'All limits fields should be integers'
-                        }
+                    number: {
+                        greater: 'max amount weekly should be greater than max amount daily',
+                        base: 'All limits fields should be integers'
                     }
                 }
             }),
-            maxAmountWeekly: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+            maxAmountMonthly: joi.number().allow(null).when(
+                'maxAmountWeekly', {
+                    is: joi.number(),
+                    then: joi.number().greater(joi.ref('maxAmountWeekly'))
+                }
+            ).when(
+                'maxAmountDaily', {
+                    is: joi.number(),
+                    then: joi.number().greater(joi.ref('maxAmountDaily'))
+                }
+            ).options({
                 language: {
                     key: '"Limit" ',
-                    string: {
-                        base: 'All limits fields should be integers',
-                        regex: {
-                            base: 'All limits fields should be integers'
-                        }
+                    number: {
+                        greater: 'max amount monthly should be greater than max amount weekly and daily',
+                        base: 'All limits fields should be integers'
                     }
                 }
             }),
-            maxCountDaily: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+            maxCountDaily: joi.number().allow(null).options({
                 language: {
                     key: '"Limit" ',
-                    string: {
-                        base: 'All limits fields should be integers',
-                        regex: {
-                            base: 'All limits fields should be integers'
-                        }
+                    number: {
+                        base: 'All limits fields should be integers'
                     }
                 }
             }),
-            maxCountMonthly: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+            maxCountMonthly: joi.number().allow(null).when(
+                'maxCountWeekly', {
+                    is: joi.number(),
+                    then: joi.number().greater(joi.ref('maxCountWeekly'))
+                }
+            ).when(
+                'maxCountDaily', {
+                    is: joi.number(),
+                    then: joi.number().greater(joi.ref('maxCountDaily'))
+                }
+            ).options({
                 language: {
                     key: '"Limit" ',
-                    string: {
-                        base: 'All limits fields should be integers',
-                        regex: {
-                            base: 'All limits fields should be integers'
-                        }
+                    number: {
+                        greater: 'max monthly count should be greater than max weekly and daily count',
+                        base: 'All limits fields should be integers'
                     }
                 }
             }),
-            maxCountWeekly: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+            maxCountWeekly: joi.number().allow(null).when(
+                'maxCountDaily', {
+                    is: joi.number(),
+                    then: joi.number().greater(joi.ref('maxCountDaily'))
+                }
+            ).options({
                 language: {
                     key: '"Limit" ',
-                    string: {
-                        base: 'All limits fields should be integers',
-                        regex: {
-                            base: 'All limits fields should be integers'
-                        }
+                    number: {
+                        greater: 'max weekly count should be greater than max daily count',
+                        base: 'All limits fields should be integers'
                     }
                 }
             }),
-            minAmount: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+            minAmount: joi.number().allow(null).options({
                 language: {
                     key: '"Limit" ',
-                    string: {
-                        base: 'All limits fields should be integers',
-                        regex: {
-                            base: 'All limits fields should be integers'
-                        }
+                    number: {
+                        base: 'All limits fields should be integers'
                     }
                 }
             }),
-            maxAmount: joi.string().allow(null).allow('').regex(/(^\s+$|^$|^\d+$)/).options({
+            maxAmount: joi.number().allow(null).when(
+                'minAmount', {
+                    is: joi.number(),
+                    then: joi.number().greater(joi.ref('minAmount'))
+                }
+            ).options({
                 language: {
                     key: '"Limit" ',
-                    string: {
-                        base: 'All limits fields should be integers',
-                        regex: {
-                            base: 'All limits fields should be integers'
-                        }
+                    number: {
+                        greater: 'Transaction max amount should be greater than its min amount',
+                        base: 'All limits fields should be integers'
                     }
                 }
             })

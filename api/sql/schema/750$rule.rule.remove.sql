@@ -3,33 +3,32 @@ ALTER PROCEDURE [rule].[rule.remove]
 AS
 BEGIN TRY
     BEGIN TRANSACTION
-        
-        DELETE x        
+        DELETE x
         FROM
             [rule].limit x
         JOIN
             @conditionId item ON x.conditionId = item.value
-        
-        DELETE x        
+
+        DELETE x
         FROM
             [rule].conditionActor x
         JOIN
             @conditionId item ON x.conditionId = item.value
-       
-        DELETE x        
-        FROM 
+
+        DELETE x
+        FROM
             [rule].conditionItem x
         JOIN
             @conditionId item ON x.conditionId = item.value
-    
-        DELETE x       
-        FROM 
+
+        DELETE x
+        FROM
             [rule].conditionProperty x
         JOIN
             @conditionId item ON x.conditionId = item.value
 
         DELETE
-            x       
+            x
         FROM
             [rule].splitRange x
         JOIN
@@ -38,18 +37,18 @@ BEGIN TRY
             @conditionId item ON s.conditionId = item.value
 
         DELETE
-            x        
+            x
         FROM
             [rule].splitAnalytic x
-        JOIN   
+        JOIN
             [rule].splitAssignment y ON y.splitAssignmentId = x.splitAssignmentId
         JOIN
             [rule].splitName s ON s.splitNameId = y.splitNameId
         JOIN
-            @conditionId item ON s.conditionId = item.value         
-  
+            @conditionId item ON s.conditionId = item.value
+
         DELETE
-            x        
+            x
         FROM
             [rule].splitAssignment x
         JOIN
@@ -58,14 +57,14 @@ BEGIN TRY
             @conditionId item ON s.conditionId = item.value
 
         DELETE
-            x       
+            x
         FROM
             [rule].splitName x
         JOIN
             @conditionId item ON x.conditionId = item.value
 
         DELETE
-            x       
+            x
         FROM
             [rule].condition x
         JOIN
@@ -75,7 +74,6 @@ END TRY
 BEGIN CATCH
     IF @@TRANCOUNT > 0
         ROLLBACK TRANSACTION
-
     EXEC core.error
     RETURN 55555
 END CATCH

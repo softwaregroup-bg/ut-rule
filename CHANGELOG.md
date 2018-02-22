@@ -1,3 +1,74 @@
+<a name="9.14.0"></a>
+# [9.14.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.14.0-rc-acapulco.6...v9.14.0) (2017-12-14)
+
+
+
+<a name="9.13.0"></a>
+# [9.13.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.12.0...v9.13.0) (2017-10-26)
+
+
+### Bug Fixes
+
+* remove result sets from rule.remove procedure ([#83](https://github.com/softwaregroup-bg/ut-rule/issues/83)) ([c3a57b6](https://github.com/softwaregroup-bg/ut-rule/commit/c3a57b6))
+
+
+### Features
+
+* add logic for check transaction pin rule ([#82](https://github.com/softwaregroup-bg/ut-rule/issues/82)) ([afdffc2](https://github.com/softwaregroup-bg/ut-rule/commit/afdffc2))
+* UIS-3639 rule management edit ([598e2d6](https://github.com/softwaregroup-bg/ut-rule/commit/598e2d6))
+
+
+
+<a name="9.12.0"></a>
+# [9.12.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.11.1...v9.12.0) (2017-09-19)
+
+
+### Features
+
+* add logic for check transaction pin rule ([5822a36](https://github.com/softwaregroup-bg/ut-rule/commit/5822a36))
+
+
+
+<a name="9.11.1"></a>
+## [9.11.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.11.0...v9.11.1) (2017-08-04)
+
+
+### Bug Fixes
+
+* upgrade ut-front-react? ([#81](https://github.com/softwaregroup-bg/ut-rule/issues/81)) ([60efc87](https://github.com/softwaregroup-bg/ut-rule/commit/60efc87))
+
+
+
+<a name="9.11.0"></a>
+# [9.11.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.5...v9.11.0) (2017-08-04)
+
+
+### Features
+
+* upgrade react ([44cc234](https://github.com/softwaregroup-bg/ut-rule/commit/44cc234))
+
+
+
+<a name="9.10.5"></a>
+## [9.10.5](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.4...v9.10.5) (2017-07-28)
+
+
+### Bug Fixes
+
+* Integrate can edit and can delete permissions ([#79](https://github.com/softwaregroup-bg/ut-rule/issues/79)) ([cfd3ee1](https://github.com/softwaregroup-bg/ut-rule/commit/cfd3ee1))
+
+
+
+<a name="9.10.4"></a>
+## [9.10.4](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.3...v9.10.4) (2017-07-26)
+
+
+### Bug Fixes
+
+* only take successful transfers ([ba3bf7a](https://github.com/softwaregroup-bg/ut-rule/commit/ba3bf7a))
+
+
+
 <a name="9.10.3"></a>
 ## [9.10.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.10.2...v9.10.3) (2017-07-24)
 

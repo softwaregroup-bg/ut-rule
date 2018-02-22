@@ -112,7 +112,7 @@ BEGIN TRY
             SELECT records.r.value('(./splitNameId)[1]', 'INT') AS splitNameId,
                 records.r.value('(./name/text())[1]', 'VARCHAR(50)') AS name,
                 records.r.value('(./tag/text())[1]', 'NVARCHAR(max)') AS tag,
-                records.r.value('FOR $a IN .. RETURN 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'INT') AS rowPos
+                records.r.value('for $a in .. return 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'INT') AS rowPos
             FROM @split.nodes('/data/rows/splitName') AS records(r)
         ) AS sn ON x.splitNameId = sn.splitNameId
         WHEN MATCHED THEN
@@ -145,7 +145,7 @@ BEGIN TRY
             records.x.value('(./percent/text())[1]', 'money') AS [percent],
             records.x.value('(./percentBase/text())[1]', 'money') AS percentBase
         FROM @split.nodes('/data/rows/splitRange') AS records(x)
-        JOIN @splitName sn ON sn.rowPosition = records.x.value('FOR $a IN .. RETURN 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'INT')
+        JOIN @splitName sn ON sn.rowPosition = records.x.value('for $a in .. return 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'INT')
         ) AS r ON x.splitRangeId = r.splitRangeId
         WHEN MATCHED THEN
             UPDATE
@@ -206,7 +206,7 @@ BEGIN TRY
                 records.x.value('(./percent/text())[1]', 'decimal') AS [percent],
                 records.x.value('(./description/text())[1]', 'VARCHAR(50)') AS description
             FROM @split.nodes('/data/rows/splitAssignment') AS records(x)
-            JOIN @splitName sn ON sn.rowPosition = records.x.value('FOR $a IN .. RETURN 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'INT')
+            JOIN @splitName sn ON sn.rowPosition = records.x.value('for $a in .. return 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'INT')
         ) AS r ON x.splitAssignmentId = r.splitAssignmentId
         WHEN MATCHED THEN
         UPDATE

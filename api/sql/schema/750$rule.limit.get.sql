@@ -16,13 +16,13 @@ JOIN [rule].conditionActor ca ON ca.conditionId = c.conditionId
 JOIN [rule].conditionItem ci ON ci.conditionId = ca.conditionId
 JOIN [rule].conditionProperty cp ON cp.conditionId = ci.conditionId
 JOIN [rule].limit l ON l.conditionId = cp.conditionId
-JOIN core.actorHierarchy h ON ca.factor = 'co' AND ca.actorId = h.[object]
+JOIN core.actorHierarchy h ON ca.actorId = h.[object] AND h.[subject] = @userId
 JOIN [user].[role] ur ON h.[object] = ur.actorId AND ur.isEnabled = 1
 WHERE ci.itemNameId = @operationId
     AND l.currency = @currency
     AND cp.factor = 'co'
-    AND cp.[name] = @property
-    AND [subject] = @userId
-    AND [predicate] = 'role'
+    AND ca.factor = 'co'
+    AND cp.[name] = @property    
+    AND h.[predicate] = 'role'
 ORDER BY c.priority
 

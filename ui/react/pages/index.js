@@ -1,4 +1,4 @@
-import Main from './Main';
-import Detail from './Detail';
+import Rules from './Rules';
+import RulesCreate from './RuleProfile/Create';
 
-export { Main, Detail };
+export { Rules, RulesCreate };

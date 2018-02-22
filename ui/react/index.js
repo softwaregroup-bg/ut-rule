@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import { Main, Detail } from './pages';
+import { Rules, RulesCreate } from './pages';
 import { getRoute } from 'ut-front/react/routerHelper';
 import registerRoutes from './registerRoutes';
 
@@ -29,10 +29,10 @@ export const UtRuleRoutes = (config) => {
     return (
         <Route component={getLocalProvider(config)}>
             <Route path={getRoute('ut-rule:home')}>
-                <IndexRoute component={Main} />
+                <IndexRoute component={Rules} />
             </Route>
             <Route path={getRoute('ut-rule:create')}>
-                <IndexRoute component={Detail} />
+                <IndexRoute component={RulesCreate} />
             </Route>
         </Route>
     );

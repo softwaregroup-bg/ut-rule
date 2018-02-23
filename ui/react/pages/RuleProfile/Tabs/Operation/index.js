@@ -1,27 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-import { removeTab } from 'ut-front-react/containers/TabMenu/actions';
-
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
 import Input from 'ut-front-react/components/Input';
-import style from './style.css';
-
-import plusImage from './assets/add_new.png';
-import deleteImage from './assets/delete.png';
-
+import style from '../style.css';
 import * as actions from './actions';
 
 const propTypes = {
-
+    operations: PropTypes.array,
+    fieldValues: PropTypes.object,
+    actions: PropTypes.object
 };
 
 const defaultProps = {
-    operations: [],
-    organizations: []
+    operations: []
 };
 
 class OperationTab extends Component {
@@ -36,7 +30,7 @@ class OperationTab extends Component {
         return [
             {name: 'Name', key: 'name'},
             {name: 'Value', key: 'value'},
-            {name: '', key: 'rangeActions', className: style.deleteButton}
+            {name: '', key: 'rangeActions', className: style.deleteCol}
         ].map((cell, i) => (
             <th key={i} className={cell.className || ''}>{cell.name}</th>
         ));
@@ -62,12 +56,8 @@ class OperationTab extends Component {
                           value={prop.value}
                         />
                     </td>
-                    <td>
-                        <img
-                          src={deleteImage}
-                          className={style.deleteButton}
-                          onClick={() => { removeProperty(index); }}
-                        />
+                    <td className={style.deleteCol}>
+                        <div className={style.deleteIcon} onClick={() => { removeProperty(index); }} />
                     </td>
                 </tr>
             );
@@ -89,7 +79,7 @@ class OperationTab extends Component {
                     </tbody>
                 </table>
                 <span className={style.link} onClick={addProperty}>
-                    <img src={plusImage} className={style.plus} />
+                    <div className={style.plus} />
                     Add another property
                 </span>
             </div>
@@ -106,7 +96,6 @@ class OperationTab extends Component {
             changeMultiSelectField,
             changeDropdownField
         } = this.props.actions;
-
         return (
             <div>
                 <div className={style.inputWrapper}>
@@ -187,7 +176,7 @@ OperationTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        operations: state.ruleTabReducer.getIn(['nomenclatures', 'operation']),
+        operations: state.ruleTabReducer.getIn(['nomenclatures', 'operation']).toJS(),
         fieldValues: state.ruleOperationTabReducer.get('fields').toJS()
     };
 };

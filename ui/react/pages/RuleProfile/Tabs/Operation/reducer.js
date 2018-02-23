@@ -6,8 +6,8 @@ import { RESET_RULE_STATE } from '../../../../pages/RuleProfile/actionTypes';
 const defaultState = Map({
     fields: Map({
         operations: List([]),
-        startDate: '',
-        endDate: '',
+        startDate: null,
+        endDate: null,
         properties: List([])
     })
 });

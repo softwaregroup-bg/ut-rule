@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
 
-import style from '../style.css';
-import plusImage from '../assets/add_new.png';
-import deleteImage from '../assets/delete.png';
+import style from '../../style.css';
+// import plusImage from '../assets/add_new.png';
+// import deleteImage from '../assets/delete.png';
 
 export const Assignments = (props) => {
     const {
@@ -22,7 +22,7 @@ export const Assignments = (props) => {
             {name: '%', key: 'percent'},
             {name: 'Min Amount', key: 'minAmount'},
             {name: 'Max Amount', key: 'maxAmount'},
-            {name: '', key: 'rangeActions', className: style.deleteButton}
+            {name: '', key: 'rangeActions', className: style.deleteCol}
         ].map((cell, i) => (
             <th key={i} className={cell.className || ''}>{cell.name}</th>
         ));
@@ -74,12 +74,8 @@ export const Assignments = (props) => {
                           value={prop.maxAmount}
                         />
                     </td>
-                    <td>
-                        <img
-                          src={deleteImage}
-                          className={style.deleteButton}
-                          onClick={() => { removeAssignment(splitIndex, index); }}
-                        />
+                    <td className={style.deleteCol}>
+                        <div className={style.deleteIcon} onClick={() => { removeAssignment(splitIndex, index); }} />
                     </td>
                 </tr>
             );
@@ -99,11 +95,19 @@ export const Assignments = (props) => {
                 </tbody>
             </table>
             <span className={style.link} onClick={() => addAssignment(splitIndex)}>
-                <img src={plusImage} className={style.plus} />
+                <div className={style.plus} />
                 Add another Assignment
             </span>
         </div>
     );
+};
+
+Assignments.propTypes = {
+    addAssignment: PropTypes.func,
+    removeAssignment: PropTypes.func,
+    setAssignmentField: PropTypes.func,
+    assignments: PropTypes.array,
+    splitIndex: PropTypes.number
 };
 
 export default Assignments;

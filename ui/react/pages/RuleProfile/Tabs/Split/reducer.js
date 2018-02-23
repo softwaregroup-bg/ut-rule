@@ -1,86 +1,61 @@
-import { Map, List } from 'immutable';
+import { fromJS } from 'immutable';
 
 import * as actionTypes from './actionTypes';
 import { RESET_RULE_STATE } from '../../../../pages/RuleProfile/actionTypes';
 
-const defaultState = Map({
-    fields: Map({
-        splits: List([
-            Map({
-                name: '',
-                tags: List([]),
-                cumulatives: List([
-                    Map({
-                        currency: '',
-                        dailyCount: '',
-                        dailyAmount: '',
-                        weeklyCount: '',
-                        weeklyAmount: '',
-                        monthlyCount: '',
-                        monthlyAmount: '',
-                        ranges: List([])
-                    })
-                ]),
-                assignments: List([])
-            })
-        ])
-    })
-});
-
-let emptySplit = Map({
+let emptyCumulative = {
+    currency: '',
+    dailyCount: '',
+    dailyAmount: '',
+    weeklyCount: '',
+    weeklyAmount: '',
+    monthlyCount: '',
+    monthlyAmount: '',
+    ranges: []
+};
+let emptySplit = {
     name: '',
-    tags: List([]),
-    cumulatives: List([
-        Map({
-            currency: '',
-            dailyCount: '',
-            dailyAmount: '',
-            weeklyCount: '',
-            weeklyAmount: '',
-            monthlyCount: '',
-            monthlyAmount: '',
-            ranges: List([])
-        })
-    ]),
-    assignments: List([])
-});
-
-let emptyAssignment = Map({
+    tags: [],
+    cumulatives: [emptyCumulative],
+    assignments: []
+};
+let emptyAssignment = {
     description: '',
     debit: '',
     credit: '',
     percent: '',
     minAmount: '',
     maxAmount: ''
-});
-
-// let emptyCumulative = Map({
-//     currency: '',
-//     dailyCount: '',
-//     dailyAmount: '',
-//     weeklyCount: '',
-//     weeklyAmount: '',
-//     monthlyCount: '',
-//     monthlyAmount: ''
-// });
-
-let emptyRange = Map({
+};
+let emptyRange = {
     startAmount: '',
     percent: '',
     minAmount: '',
     maxAmount: ''
+};
+const defaultState = fromJS({
+    fields: {
+        splits: [
+            {
+                name: '',
+                tags: [],
+                cumulatives: [emptyCumulative],
+                assignments: []
+            }
+        ]
+    }
 });
 
 export const ruleSplitTabReducer = (state = defaultState, action) => {
     switch (action.type) {
         case actionTypes.CHANGE_MULTISELECT_FIELD:
-            return state.setIn(['fields', 'splits', action.params.splitIndex, action.params.field], List(action.params.newValue));
+            return state.setIn(['fields', 'splits', action.params.splitIndex, action.params.field], fromJS(action.params.newValue));
         case actionTypes.CHANGE_DROPDOWN_FIELD:
             return state.setIn(['fields', 'splits', action.params.splitIndex, action.params.field], action.params.newValue);
         case actionTypes.CHANGE_INPUT_FIELD:
             return state.setIn(['fields', 'splits', action.params.splitIndex, action.params.field], action.params.newValue);
         case actionTypes.ADD_ASSIGNMENT:
-            return state.updateIn(['fields', 'splits', action.params.splitIndex, 'assignments'], v => v.push(emptyAssignment));
+            return state.updateIn(['fields', 'splits', action.params.splitIndex, 'assignments'], v => v.push(fromJS(emptyAssignment)));
         case actionTypes.REMOVE_ASSIGNMENT:
             return state.updateIn(['fields', 'splits', action.params.splitIndex, 'assignments'], v => v.splice(action.params.propertyId, 1));
         case actionTypes.SET_ASSIGNMENT_FIELD:
@@ -96,7 +71,7 @@ export const ruleSplitTabReducer = (state = defaultState, action) => {
         case actionTypes.ADD_CUMULATIVE_RANGE:
             return state.updateIn(
                 ['fields', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
-                v => v.push(emptyRange));
+                v => v.push(fromJS(emptyRange)));
         case actionTypes.REMOVE_CUMULATIVE_RANGE:
             return state.updateIn(
                 ['fields', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
@@ -109,7 +84,7 @@ export const ruleSplitTabReducer = (state = defaultState, action) => {
         case actionTypes.ADD_SPLIT:
             return state.updateIn(
                 ['fields', 'splits'],
-                v => v.push(emptySplit));
+                v => v.push(fromJS(emptySplit)));
         case actionTypes.REMOVE_SPLIT:
             return state.updateIn(
                 ['fields', 'splits'],

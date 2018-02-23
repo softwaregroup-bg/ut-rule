@@ -2,9 +2,7 @@ import React from 'react';
 import Input from 'ut-front-react/components/Input';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 
-import style from '../style.css';
-import plusImage from '../assets/add_new.png';
-import deleteImage from '../assets/delete.png';
+import style from '../../style.css';
 
 export const Assignments = (props) => {
     const {

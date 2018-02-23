@@ -1,20 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { removeTab } from 'ut-front-react/containers/TabMenu/actions';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Input from 'ut-front-react/components/Input';
-import style from './style.css';
-
-import plusImage from './assets/add_new.png';
-import deleteImage from './assets/delete.png';
-
+import style from '../style.css';
 import * as actions from './actions';
 
 const propTypes = {
-
+    actions: PropTypes.object,
+    countries: PropTypes.array,
+    regions: PropTypes.array,
+    cities: PropTypes.array,
+    organizations: PropTypes.array,
+    products: PropTypes.array,
+    fieldValues: PropTypes.object
 };
 
 const defaultProps = {
@@ -37,7 +38,7 @@ class SourceTab extends Component {
         return [
             {name: 'Name', key: 'name'},
             {name: 'Value', key: 'value'},
-            {name: '', key: 'rangeActions', className: style.deleteButton}
+            {name: '', key: 'rangeActions', className: style.deleteCol}
         ].map((cell, i) => (
             <th key={i} className={cell.className || ''}>{cell.name}</th>
         ));
@@ -63,12 +64,8 @@ class SourceTab extends Component {
                           value={prop.value}
                         />
                     </td>
-                    <td>
-                        <img
-                          src={deleteImage}
-                          className={style.deleteButton}
-                          onClick={() => { removeProperty(index); }}
-                        />
+                    <td className={style.deleteCol}>
+                        <div className={style.deleteIcon} onClick={() => { removeProperty(index); }} />
                     </td>
                 </tr>
             );
@@ -90,7 +87,7 @@ class SourceTab extends Component {
                     </tbody>
                 </table>
                 <span className={style.link} onClick={addProperty}>
-                    <img src={plusImage} className={style.plus} />
+                    <div className={style.plus} />
                     Add another property
                 </span>
             </div>
@@ -202,11 +199,11 @@ SourceTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        countries: state.ruleTabReducer.getIn(['nomenclatures', 'country']),
-        regions: state.ruleTabReducer.getIn(['nomenclatures', 'region']),
-        cities: state.ruleTabReducer.getIn(['nomenclatures', 'city']),
-        organizations: state.ruleTabReducer.getIn(['nomenclatures', 'organization']),
-        products: state.ruleTabReducer.getIn(['nomenclatures', 'cardProduct']),
+        countries: state.ruleTabReducer.getIn(['nomenclatures', 'country']).toJS(),
+        regions: state.ruleTabReducer.getIn(['nomenclatures', 'region']).toJS(),
+        cities: state.ruleTabReducer.getIn(['nomenclatures', 'city']).toJS(),
+        organizations: state.ruleTabReducer.getIn(['nomenclatures', 'organization']).toJS(),
+        products: state.ruleTabReducer.getIn(['nomenclatures', 'cardProduct']).toJS(),
         fieldValues: state.ruleSourceTabReducer.get('fields').toJS()
     };
 };

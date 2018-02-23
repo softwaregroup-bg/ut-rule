@@ -1,14 +1,11 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
-
-import style from './style.css';
-import plusImage from './assets/add_new.png';
-import deleteImage from './assets/delete.png';
-
+import style from '../style.css';
 import * as actions from './actions';
 
 const defaultProps = {
@@ -22,7 +19,6 @@ export const Limits = (props) => {
     } = props;
 
     const {
-        changeDropdownField,
         addLimit,
         removeLimit,
         setLimitField
@@ -119,12 +115,8 @@ export const Limits = (props) => {
                       onChange={({value}) => setLimitField(index, 'monthlyMaxCount', value)}
                     />
                 </td>
-                <td>
-                    <img
-                      src={deleteImage}
-                      className={style.deleteButton}
-                      onClick={() => { removeLimit(index); }}
-                    />
+                <td className={style.deleteCol}>
+                    <div className={style.deleteIcon} onClick={() => { removeLimit(index); }} />
                 </td>
             </tr>
         ));
@@ -132,7 +124,7 @@ export const Limits = (props) => {
 
     return (
         <div className={style.contentBox}>
-            <div className={style.contentBoxWrapper}>
+            <div className={classnames(style.contentBoxWrapper, style.limitContentBoxWrapper)}>
                 <TitledContentBox
                   title='Limit Info'
                   wrapperClassName
@@ -145,7 +137,7 @@ export const Limits = (props) => {
                             </tbody>
                         </table>
                         <span className={style.link} onClick={addLimit}>
-                            <img src={plusImage} className={style.plus} />
+                            <div className={style.plus} />
                             Add another Limit
                         </span>
                     </div>
@@ -156,10 +148,14 @@ export const Limits = (props) => {
 };
 
 Limits.defaultProps = defaultProps;
-
+Limits.propTypes = {
+    currencies: PropTypes.array,
+    fieldValues: PropTypes.object,
+    actions: PropTypes.object
+};
 const mapStateToProps = (state) => ({
     fieldValues: state.ruleLimitTabReducer.get('fields').toJS(),
-    currencies: state.ruleTabReducer.getIn(['nomenclatures', 'currency'])
+    currencies: state.ruleTabReducer.getIn(['nomenclatures', 'currency']).toJS()
 });
 
 const mapDispatchToProps = (dispatch) => ({

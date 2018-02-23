@@ -22,14 +22,20 @@ import * as actions from '../actions';
 import { prepateRuleToSave } from '../helpers';
 
 const propTypes = {
+    destination: PropTypes.object,
+    source: PropTypes.object,
+    operation: PropTypes.object,
+    channel: PropTypes.object,
+    split: PropTypes.object,
+    limit: PropTypes.object,
     actions: PropTypes.shape({
-        fetchRules: PropTypes.func,
         fetchNomenclatures: PropTypes.func,
         createRule: PropTypes.func,
         resetRuleState: PropTypes.func
     }).isRequired,
     activeTab: PropTypes.object,
     removeTab: PropTypes.func.isRequired,
+    nomenclaturesFetched: PropTypes.bool,
     nomenclatureConfiguration: PropTypes.shape({}).isRequired
 };
 
@@ -37,7 +43,7 @@ const defaultProps = {
 
 };
 
-class RuleTabDetail extends Component {
+class RuleCreate extends Component {
     constructor(props, context) {
         super(props, context);
         this.onSave = this.onSave.bind(this);
@@ -46,17 +52,16 @@ class RuleTabDetail extends Component {
     }
 
     fetchData() {
-        const { fetchRules, fetchNomenclatures } = this.props.actions;
-        const { nomenclatureConfiguration } = this.props;
-        fetchRules();
-        fetchNomenclatures(nomenclatureConfiguration);
+        const { fetchNomenclatures } = this.props.actions;
+        const { nomenclatureConfiguration, nomenclaturesFetched } = this.props;
+        !nomenclaturesFetched && fetchNomenclatures(nomenclatureConfiguration);
     }
 
     componentWillMount() {
         this.fetchData();
     }
 
-    async onSave() {
+    onSave() {
         const {
             destination,
             source,
@@ -74,9 +79,7 @@ class RuleTabDetail extends Component {
             split,
             limit
         });
-        await this.props.actions.createRule(formattedRule);
-        this.props.actions.resetRuleState();
-        this.props.removeTab(this.props.activeTab.pathname);
+        this.props.actions.createRule(formattedRule);
     }
 
     onClose() {
@@ -116,14 +119,33 @@ class RuleTabDetail extends Component {
     }
 
     getActionButtons() {
+        let create = () => {
+            // this.setState({
+            //     resetState: true
+            // });
+            this.onSave();
+        };
+        let createAndClose = () => {
+            // this.setState({
+            //     resetState: true,
+            //     closeTab: true
+            // });
+            this.onSave();
+        };
         let actionButtons = [
             {
                 text: 'Create and Close',
                 performFullValidation: true,
-                onClick: this.onSave,
+                onClick: createAndClose,
                 styleType: 'primaryLight'
-            },
-            { text: 'Close', onClick: this.onClose }
+            }, {
+                text: 'Create',
+                performFullValidation: true,
+                onClick: create
+            }, {
+                text: 'Close',
+                onClick: this.onClose
+            }
         ];
         return actionButtons;
     }
@@ -152,8 +174,8 @@ class RuleTabDetail extends Component {
     }
 }
 
-RuleTabDetail.propTypes = propTypes;
-RuleTabDetail.defaultProps = defaultProps;
+RuleCreate.propTypes = propTypes;
+RuleCreate.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => ({
     activeTab: state.tabMenu.active,
@@ -163,7 +185,8 @@ const mapStateToProps = (state, ownProps) => ({
     operation: state.ruleOperationTabReducer.get('fields').toJS(),
     channel: state.ruleChannelTabReducer.get('fields').toJS(),
     split: state.ruleSplitTabReducer.get('fields').toJS(),
-    limit: state.ruleLimitTabReducer.get('fields').toJS()
+    limit: state.ruleLimitTabReducer.get('fields').toJS(),
+    nomenclaturesFetched: state.ruleTabReducer.get('nomenclaturesFetched')
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -171,4 +194,4 @@ const mapDispatchToProps = (dispatch) => ({
     removeTab: bindActionCreators(removeTab, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RuleTabDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(RuleCreate);

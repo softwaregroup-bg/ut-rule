@@ -1,25 +1,35 @@
-import { Map } from 'immutable';
+import { fromJS } from 'immutable';
 import { methodRequestState } from 'ut-front-react/constants';
 
-import { formatRuleItems } from './helpers';
+import { formatNomenclatures } from './helpers';
 
 import * as actionTypes from './actionTypes';
 
-const defaultState = Map({
-    nomenclatures: Map({}),
-    rule: Map({})
+const defaultState = fromJS({
+    nomenclatures: {
+        accountProduct: [],
+        cardProduct: [],
+        channel: [],
+        city: [],
+        country: [],
+        operation: [],
+        region: [],
+        currency: [],
+        organization: []
+    },
+    nomenclaturesFetched: false
 });
 
 export const ruleProfileReducer = (state = defaultState, action) => {
     switch (action.type) {
-        case actionTypes.FETCH_RULES:
-            if (action.methodRequestState === methodRequestState.FINISHED) {
-                return state.set('rule', Map(action.result));
-            }
-            return state;
         case actionTypes.FETCH_NOMENCLATURES:
             if (action.methodRequestState === methodRequestState.FINISHED) {
-                return state.set('nomenclatures', Map(formatRuleItems(action.result.items)));
+                return state.set('nomenclatures', fromJS(formatNomenclatures(action.result.items)))
+                    .set('nomenclaturesFetched', true);
+            }
+            return state;
+        case actionTypes.CREATE_RULE:
+            if (action.methodRequestState === methodRequestState.FINISHED) {
             }
             return state;
         default:

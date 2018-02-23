@@ -14,12 +14,6 @@ const defaultState = Map({
     })
 });
 
-export const CHANGE_MULTISELECT_FIELD = Symbol('CHANGE_MULTISELECT_FIELD');
-export const CHANGE_DROPDOWN_FIELD = Symbol('CHANGE_DROPDOWN_FIELD');
-export const ADD_PROPERTY = Symbol('ADD_PROPERTY');
-export const REMOVE_PROPERTY = Symbol('REMOVE_PROPERTY');
-export const SET_PROPERTY_FIELD = Symbol('SET_PROPERTY_FIELD');
-
 export const ruleChannelTabReducer = (state = defaultState, action) => {
     switch (action.type) {
         case actionTypes.CHANGE_MULTISELECT_FIELD:

@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import classnames from 'classnames';
 
-import style from '../style.css';
-import plusImage from '../assets/add_new.png';
-import deleteImage from '../assets/delete.png';
+import style from '../../style.css';
+// import plusImage from '../assets/add_new.png';
+// import deleteImage from '../assets/delete.png';
 
 export const Cumulative = (props) => {
     const {
@@ -38,7 +38,7 @@ export const Cumulative = (props) => {
             {name: '%', key: 'precent'},
             {name: 'Min Amount', key: 'minAmount'},
             {name: 'Max Amount', key: 'maxAmount'},
-            {name: '', key: 'rangeActions', className: style.deleteButton}
+            {name: '', key: 'rangeActions', className: style.deleteCol}
         ].map((cell, i) => (
             <th key={i} className={cell.className || ''}>{cell.name}</th>
         ));
@@ -126,12 +126,8 @@ export const Cumulative = (props) => {
                           onChange={({key, value}) => { setCumulativeRangeField(splitIndex, 0, index, key, value); }}
                         />
                     </td>
-                    <td>
-                        <img
-                          src={deleteImage}
-                          className={style.deleteButton}
-                          onClick={() => { removeCumulativeRange(splitIndex, 0, index); }}
-                        />
+                    <td className={style.deleteCol}>
+                        <div className={style.deleteIcon} onClick={() => { removeCumulativeRange(splitIndex, 0, index); }} />
                     </td>
                 </tr>
             ));
@@ -175,7 +171,7 @@ export const Cumulative = (props) => {
                         </tbody>
                     </table>
                     <span className={style.link} onClick={() => addCumulativeRange(splitIndex, 0)}>
-                        <img src={plusImage} className={style.plus} />
+                        <div className={style.plus} />
                         Add another Range
                     </span>
                     </div>
@@ -183,6 +179,16 @@ export const Cumulative = (props) => {
             </div>
         </div>
     );
+};
+
+Cumulative.propTypes = {
+    setCumulativeField: PropTypes.func,
+    addCumulativeRange: PropTypes.func,
+    removeCumulativeRange: PropTypes.func,
+    setCumulativeRangeField: PropTypes.func,
+    cumulatives: PropTypes.array,
+    currencies: PropTypes.array,
+    splitIndex: PropTypes.number
 };
 
 export default Cumulative;

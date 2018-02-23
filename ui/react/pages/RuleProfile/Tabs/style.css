@@ -15,20 +15,12 @@
     border-bottom: 1px solid #E2E1E1;
 }
 
-.dropDownWrapper {
-    padding: 10px 0;
-    border-bottom: 1px solid #E2E1E1;
-    margin-bottom: 15px;
+.limitContentBoxWrapper {
+    width: 100% !important;
 }
-
 .contentBoxWrapper {
     width: 80%;
     margin: 0 20px;
-}
-
-.inputWrapper {
-    padding: 10px 0;
-    border-bottom: 1px solid #E2E1E1;
 }
 
 .inputWrapper:first-child {
@@ -65,11 +57,13 @@
 .dataGridTable a:hover {
     text-decoration: underline;
 }
-.dataGridTable tr td, .dataGridTable tr, th {
-    padding: 10px 0px 10px 10px;
-}
-.dataGridTableSpecial tr td, .dataGridTableSpecial tr, th {
+.dataGridTable tr td, .dataGridTable tr th {
     padding: 10px;
+}
+.dataGridTable tr td:last-child.deleteCol, .dataGridTable tr th:last-child.deleteCol {
+    padding: 0px;
+    text-align: center;
+    width: 23px;
 }
 .dataGridTable tr th {
     text-align: left;
@@ -103,8 +97,6 @@
     color: #595959;
     font-weight: bold;
 }
-
-
 .borderRight {
     background: rgb(249, 249, 249);
 }
@@ -209,6 +201,11 @@ div.dropDownRoot {
 
 .plus {
     margin-right: 10px;
+    background-image: url('./assets/add_new.png');
+    background-repeat: no-repeat;
+    width: 11px;
+    height: 11px;
+    display: inline-block;
 }
 
 .statusActionButtonDisabled,
@@ -233,20 +230,20 @@ div.dropDownRoot {
     border: 1px solid #e6e6e6;
 }
 
-.inputWrapper {
-    margin-right: 10px !important;
-}
-.inputWrapper:last-child {
-    border-bottom: none;
-}
-
 .splitMinWidth {
   min-width: 70px;
 }
 
 .deleteButton {
-  margin-right: 7px;
-  margin-left: -4px;
+    margin-right: 20px;
+}
+
+.deleteIcon {
+  background-image: url('./assets/delete.png');
+  width: 13px;
+  height: 16px;
+  /* padding: 0 10px; */
+  background-repeat: no-repeat;
 }
 
 .propertyTable {
@@ -258,6 +255,9 @@ div.dropDownRoot {
   padding-bottom: 15px;
 }
 
+.inputWrapper:last-child {
+   border-bottom: none;
+}
 .rangeWrapper {
     margin-top: 20px;
 }
@@ -300,7 +300,12 @@ div.dropDownRoot {
     color: #979090;
 }
 
-.deleteButton {
-    
-    margin-right: 20px;
+.currency {
+    width: 130px;
+}
+
+.dropDownWrapper {
+    padding: 10px 0;
+    border-bottom: 1px solid #E2E1E1;
+    margin-bottom: 15px;
 }

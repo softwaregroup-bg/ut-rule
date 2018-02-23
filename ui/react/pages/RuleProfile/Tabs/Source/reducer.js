@@ -1,27 +1,27 @@
-import { Map, List } from 'immutable';
+import { fromJS } from 'immutable';
 
 import * as actionTypes from './actionTypes';
 import { RESET_RULE_STATE } from '../../../../pages/RuleProfile/actionTypes';
 
-const defaultState = Map({
-    fields: Map({
-        countries: List([]),
-        regions: List([]),
-        cities: List([]),
+const defaultState = fromJS({
+    fields: {
+        countries: [],
+        regions: [],
+        cities: [],
         organization: '',
         product: '',
-        properties: List([])
-    })
+        properties: []
+    }
 });
 
 export const ruleSourceTabReducer = (state = defaultState, action) => {
     switch (action.type) {
         case actionTypes.CHANGE_MULTISELECT_FIELD:
-            return state.setIn(['fields', action.params.field], List(action.params.newValue));
+            return state.setIn(['fields', action.params.field], fromJS(action.params.newValue));
         case actionTypes.CHANGE_DROPDOWN_FIELD:
             return state.setIn(['fields', action.params.field], action.params.newValue);
         case actionTypes.ADD_PROPERTY:
-            return state.updateIn(['fields', 'properties'], v => v.push(Map({
+            return state.updateIn(['fields', 'properties'], v => v.push(fromJS({
                 name: '',
                 value: ''
             })));

@@ -6,11 +6,7 @@ import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Input from 'ut-front-react/components/Input';
-import style from './style.css';
-
-import plusImage from './assets/add_new.png';
-import deleteImage from './assets/delete.png';
-
+import style from '../style.css';
 import * as actions from './actions';
 
 const propTypes = {
@@ -36,7 +32,7 @@ class DestinationTab extends Component {
         return [
             {name: 'Name', key: 'name'},
             {name: 'Value', key: 'value'},
-            {name: '', key: 'rangeActions', className: style.deleteButton}
+            {name: '', key: 'rangeActions', className: style.deleteCol}
         ].map((cell, i) => (
             <th key={i} className={cell.className || ''}>{cell.name}</th>
         ));
@@ -62,12 +58,8 @@ class DestinationTab extends Component {
                           value={prop.value}
                         />
                     </td>
-                    <td>
-                        <img
-                          src={deleteImage}
-                          className={style.deleteButton}
-                          onClick={() => { removeProperty(index); }}
-                        />
+                    <td className={style.deleteCol}>
+                        <div className={style.deleteIcon} onClick={() => { removeProperty(index); }} />
                     </td>
                 </tr>
             );
@@ -89,7 +81,7 @@ class DestinationTab extends Component {
                     </tbody>
                 </table>
                 <span className={style.link} onClick={addProperty}>
-                    <img src={plusImage} className={style.plus} />
+                    <div className={style.plus} />
                     Add another property
                 </span>
             </div>
@@ -190,10 +182,10 @@ DestinationTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        countries: state.ruleTabReducer.getIn(['nomenclatures', 'country']),
-        regions: state.ruleTabReducer.getIn(['nomenclatures', 'region']),
-        cities: state.ruleTabReducer.getIn(['nomenclatures', 'city']),
-        organizations: state.ruleTabReducer.getIn(['nomenclatures', 'organization']),
+        countries: state.ruleTabReducer.getIn(['nomenclatures', 'country']).toJS(),
+        regions: state.ruleTabReducer.getIn(['nomenclatures', 'region']).toJS(),
+        cities: state.ruleTabReducer.getIn(['nomenclatures', 'city']).toJS(),
+        organizations: state.ruleTabReducer.getIn(['nomenclatures', 'organization']).toJS(),
         fieldValues: state.ruleDestinationTabReducer.get('fields').toJS()
     };
 };

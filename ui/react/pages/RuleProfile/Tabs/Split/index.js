@@ -1,26 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { removeTab } from 'ut-front-react/containers/TabMenu/actions';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
-import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
-import Dropdown from 'ut-front-react/components/Input/Dropdown';
-import Input from 'ut-front-react/components/Input';
 import Button from 'ut-front-react/components/StandardButton';
 
-import style from './style.css';
-
+import style from '../style.css';
 import Assignments from './Assignment';
 import Info from './Info';
 import Cumulative from './Cumulative';
-
-import plusImage from './assets/add_new.png';
-import deleteImage from './assets/delete.png';
-
 import * as actions from './actions';
 
 const propTypes = {
-
+    currencies: PropTypes.array,
+    actions: PropTypes.object,
+    fieldValues: PropTypes.object
 };
 
 const defaultProps = {
@@ -30,7 +23,6 @@ const defaultProps = {
 class SplitTab extends Component {
     renderFields(split, index) {
         const { currencies } = this.props;
-
         const {
             addAssignment,
             removeAssignment,
@@ -43,7 +35,6 @@ class SplitTab extends Component {
             setCumulativeRangeField,
             removeSplit
         } = this.props.actions;
-
         const {
             name,
             assignments,
@@ -51,7 +42,7 @@ class SplitTab extends Component {
             cumulatives
         } = split;
         return (
-            <div>
+            <div key={index}>
                 <div className={style.splitHeader}>
                     <span className={style.label}>{name.toUpperCase() || 'SPLIT NAME'}</span>
                     <Button onClick={() => removeSplit(index)} className={style.deleteButton} styleType='secondaryLight' label='DELETE SPLIT' />
@@ -60,22 +51,18 @@ class SplitTab extends Component {
                     <div className={style.contentBox}>
                         <div className={style.contentBoxWrapper}>
                             <TitledContentBox
-                            title='Split Info'
-                            wrapperClassName
-                            >
-                                <Info
-                                changeInputField={changeInputField}
-                                changeMultiSelectField={changeMultiSelectField}
-                                name={name}
-                                selectedTags={tags}
-                                splitIndex={index}
-                                />
+                              title='Split Info'
+                              wrapperClassName >
+                                  <Info
+                                    changeInputField={changeInputField}
+                                    changeMultiSelectField={changeMultiSelectField}
+                                    name={name}
+                                    selectedTags={tags}
+                                    splitIndex={index} />
                             </TitledContentBox>
                             <div className={style.rangeWrapper}>
-                                <TitledContentBox
-                                title='Assignment'
-                                >
-                                    <Assignments
+                                <TitledContentBox title='Assignment'>
+                                  <Assignments
                                     addAssignment={addAssignment}
                                     removeAssignment={removeAssignment}
                                     setAssignmentField={setAssignmentField}
@@ -86,11 +73,8 @@ class SplitTab extends Component {
                             </div>
                         </div>
                         <div className={style.contentBoxWrapper}>
-                            <TitledContentBox
-                            title='Cumulative'
-                            externalContentClasses={style.contentPadding}
-                            >
-                                <Cumulative
+                            <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding} >
+                              <Cumulative
                                 setCumulativeField={setCumulativeField}
                                 addCumulativeRange={addCumulativeRange}
                                 removeCumulativeRange={removeCumulativeRange}
@@ -115,7 +99,7 @@ class SplitTab extends Component {
                     return this.renderFields(split, index);
                 })}
                 <span className={style.linkPlus} onClick={addSplit}>
-                    <img src={plusImage} className={style.plus} />
+                    <div className={style.plus} />
                     Add another Split
                 </span>
             </div>
@@ -129,7 +113,7 @@ SplitTab.defaultProps = defaultProps;
 const mapStateToProps = (state, ownProps) => {
     return {
         fieldValues: state.ruleSplitTabReducer.get('fields').toJS(),
-        currencies: state.ruleTabReducer.getIn(['nomenclatures', 'currency'])
+        currencies: state.ruleTabReducer.getIn(['nomenclatures', 'currency']).toJS()
     };
 };
 

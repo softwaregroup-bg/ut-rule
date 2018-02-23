@@ -1,4 +1,4 @@
-export const formatRuleItems = (items) => {
+export const formatNomenclatures = (items) => {
     let formattedPayload = {};
 
     items.map(item => {
@@ -10,7 +10,6 @@ export const formatRuleItems = (items) => {
             name: item.display
         });
     });
-
     return formattedPayload;
 };
 
@@ -135,7 +134,7 @@ export const prepateRuleToSave = ({
         });
     });
 
-    formattedRule.conditionItem.push({
+    source.product && formattedRule.conditionItem.push({
         factor: factors.sourceSpatial,
         itemNameId: source.product
     });

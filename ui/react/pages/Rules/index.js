@@ -236,17 +236,17 @@ Main.contextTypes = {
 export default connect(
     (state, ownProps) => {
         return {
-            rules: state.main.fetchRules,
-            conditionActor: state.main.conditionActor,
-            conditionItem: state.main.conditionItem,
-            conditionProperty: state.main.conditionProperty,
-            nomenclatures: state.main.fetchNomenclatures,
-            formatedGridData: state.main.formatedGridData,
-            ready: !!(state.main.fetchRules && state.main.fetchNomenclatures),
-            roles: state.main.fetchRoles,
-            organizations: state.main.fetchOrganizations,
+            rules: state.ruleList.fetchRules,
+            conditionActor: state.ruleList.conditionActor,
+            conditionItem: state.ruleList.conditionItem,
+            conditionProperty: state.ruleList.conditionProperty,
+            nomenclatures: state.ruleList.fetchNomenclatures,
+            formatedGridData: state.ruleList.formatedGridData,
+            ready: !!(state.ruleList.fetchRules && state.ruleList.fetchNomenclatures),
+            roles: state.ruleList.fetchRoles,
+            organizations: state.ruleList.fetchOrganizations,
             uiConfig: state.uiConfig,
-            pagination: state.main.pagination || {
+            pagination: state.ruleList.pagination || {
                 pageSize: 25,
                 pageNumber: 1,
                 recordsTotal: 0

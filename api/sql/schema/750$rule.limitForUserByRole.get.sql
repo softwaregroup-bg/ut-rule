@@ -1,4 +1,4 @@
-ALTER PROCEDURE [rule].[limit.get] --retrieve the rule limits set per user role, operation and currency
+ALTER PROCEDURE [rule].[limitForUserByRole.get] --retrieve the rule limits set per user role, operation and currency
     @userId BIGINT, --actor id of the channel performing the operation
     @operation VARCHAR(100) = 'loanApplicationApprove', --operation executed
     @currency VARCHAR(3) = 'USD', --limit currency

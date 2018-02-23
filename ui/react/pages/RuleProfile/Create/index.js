@@ -30,7 +30,7 @@ const propTypes = {
     operation: PropTypes.object,
     channel: PropTypes.object,
     split: PropTypes.object,
-    limit: PropTypes.object,
+    limit: PropTypes.array,
     actions: PropTypes.shape({
         fetchNomenclatures: PropTypes.func,
         createRule: PropTypes.func,
@@ -190,17 +190,20 @@ class RuleCreate extends Component {
 RuleCreate.propTypes = propTypes;
 RuleCreate.defaultProps = defaultProps;
 
-const mapStateToProps = (state, ownProps) => ({
-    activeTab: state.tabMenu.active,
-    nomenclatureConfiguration: state.uiConfig.get('nomenclatures').toJS(),
-    destination: state.ruleDestinationTabReducer.get('fields').toJS(),
-    source: state.ruleSourceTabReducer.get('fields').toJS(),
-    operation: state.ruleOperationTabReducer.get('fields').toJS(),
-    channel: state.ruleChannelTabReducer.get('fields').toJS(),
-    split: state.ruleSplitTabReducer.get('fields').toJS(),
-    limit: state.ruleLimitTabReducer.get('fields').toJS(),
-    config: state.ruleTabReducer.get('config').toJS()
-});
+const mapStateToProps = (state, ownProps) => () => {
+    debugger;
+    return {
+        activeTab: state.tabMenu.active,
+        nomenclatureConfiguration: state.uiConfig.get('nomenclatures').toJS(),
+        destination: state.ruleProfileReducer.get('destination').toJS(),
+        source: state.ruleProfileReducer.get('source').toJS(),
+        operation: state.ruleProfileReducer.get('operation').toJS(),
+        channel: state.ruleProfileReducer.get('channel').toJS(),
+        split: state.ruleProfileReducer.get('split').toJS(),
+        limit: state.ruleProfileReducer.get('limit').toJS(),
+        config: state.ruleProfileReducer.get('config').toJS()
+    };
+};
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch),

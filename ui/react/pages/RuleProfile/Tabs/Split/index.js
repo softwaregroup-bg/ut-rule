@@ -8,7 +8,7 @@ import style from '../style.css';
 import Assignments from './Assignment';
 import Info from './Info';
 import Cumulative from './Cumulative';
-import * as actions from './actions';
+import * as actions from '../../actions';
 
 const propTypes = {
     currencies: PropTypes.array,
@@ -27,8 +27,8 @@ class SplitTab extends Component {
             addAssignment,
             removeAssignment,
             setAssignmentField,
-            changeInputField,
-            changeMultiSelectField,
+            changeSplitInputField,
+            changeSplitMultiSelectField,
             setCumulativeField,
             addCumulativeRange,
             removeCumulativeRange,
@@ -54,8 +54,8 @@ class SplitTab extends Component {
                               title='Split Info'
                               wrapperClassName >
                                   <Info
-                                    changeInputField={changeInputField}
-                                    changeMultiSelectField={changeMultiSelectField}
+                                    changeInputField={changeSplitInputField}
+                                    changeMultiSelectField={changeSplitMultiSelectField}
                                     name={name}
                                     selectedTags={tags}
                                     splitIndex={index} />
@@ -112,8 +112,8 @@ SplitTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        fieldValues: state.ruleSplitTabReducer.get('fields').toJS(),
-        currencies: state.ruleTabReducer.getIn(['nomenclatures', 'currency']).toJS()
+        fieldValues: state.ruleProfileReducer.get('split').toJS(),
+        currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS()
     };
 };
 

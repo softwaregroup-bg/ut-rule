@@ -6,8 +6,8 @@ import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
 import Input from 'ut-front-react/components/Input';
 import style from '../style.css';
-import * as actions from './actions';
-
+import * as actions from '../../actions';
+const destinationProp = 'operation';
 const propTypes = {
     operations: PropTypes.array,
     fieldValues: PropTypes.object,
@@ -38,7 +38,12 @@ class OperationTab extends Component {
 
     getPropetyRowsBody() {
         const { properties } = this.props.fieldValues;
-        const { removeProperty, setPropertyField } = this.props.actions;
+        let removeProperty = (index) => {
+            this.props.actions.removeProperty(index, destinationProp);
+        };
+        let setPropertyField = (index, key, value) => {
+            this.props.actions.setPropertyField(index, key, value, destinationProp);
+        };
         return properties.map((prop, index) => {
             return (
                 <tr key={`${index}`}>
@@ -65,7 +70,9 @@ class OperationTab extends Component {
     }
 
     renderPropertyTable() {
-        const { addProperty } = this.props.actions;
+        let addProperty = () => {
+            this.props.actions.addProperty(destinationProp);
+        };
         return (
             <div className={style.propertyTable}>
                 <table className={style.dataGridTable}>
@@ -91,11 +98,12 @@ class OperationTab extends Component {
             operations,
             fieldValues
         } = this.props;
-
-        const {
-            changeMultiSelectField,
-            changeDropdownField
-        } = this.props.actions;
+        let changeMultiSelectField = (field, value) => {
+            this.props.actions.changeMultiSelectField(field, value, destinationProp);
+        };
+        let changeDropdownField = (field, value) => {
+            this.props.actions.changeDropdownField(field, value, destinationProp);
+        };
         return (
             <div>
                 <div className={style.inputWrapper}>
@@ -176,8 +184,8 @@ OperationTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        operations: state.ruleTabReducer.getIn(['nomenclatures', 'operation']).toJS(),
-        fieldValues: state.ruleOperationTabReducer.get('fields').toJS()
+        operations: state.ruleProfileReducer.getIn(['nomenclatures', 'operation']).toJS(),
+        fieldValues: state.ruleProfileReducer.get(destinationProp).toJS()
     };
 };
 

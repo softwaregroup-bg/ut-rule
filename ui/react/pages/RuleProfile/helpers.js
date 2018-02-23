@@ -174,7 +174,7 @@ export const prepateRuleToSave = ({
     });
 
     formattedRule.limit = [];
-    limit.limits.forEach(limit => {
+    (limit || []).forEach(limit => {
         formattedRule.limit.push({
             currency: limit.currency,
             minAmount: limit.txMin,

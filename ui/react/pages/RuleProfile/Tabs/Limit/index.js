@@ -6,8 +6,7 @@ import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import style from '../style.css';
-import * as actions from './actions';
-
+import * as actions from '../../actions';
 const defaultProps = {
     currencies: []
 };
@@ -48,7 +47,7 @@ export const Limits = (props) => {
     );
 
     const renderBody = () => {
-        return fieldValues.limits.map((limit, index) => (
+        return fieldValues.map((limit, index) => (
             <tr key={`Limit${index}`}>
                 <td className={style.currency}>
                     <Dropdown
@@ -150,12 +149,12 @@ export const Limits = (props) => {
 Limits.defaultProps = defaultProps;
 Limits.propTypes = {
     currencies: PropTypes.array,
-    fieldValues: PropTypes.object,
+    fieldValues: PropTypes.array,
     actions: PropTypes.object
 };
 const mapStateToProps = (state) => ({
-    fieldValues: state.ruleLimitTabReducer.get('fields').toJS(),
-    currencies: state.ruleTabReducer.getIn(['nomenclatures', 'currency']).toJS()
+    fieldValues: state.ruleProfileReducer.get('limit').toJS(),
+    currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS()
 });
 
 const mapDispatchToProps = (dispatch) => ({

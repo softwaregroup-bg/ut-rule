@@ -1,16 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { removeTab } from 'ut-front-react/containers/TabMenu/actions';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Input from 'ut-front-react/components/Input';
 import style from '../style.css';
-import * as actions from './actions';
-
+import * as actions from '../../actions';
+const destinationProp = 'destination';
 const propTypes = {
-
+    actions: PropTypes.object,
+    countries: PropTypes.array,
+    regions: PropTypes.array,
+    cities: PropTypes.array,
+    organizations: PropTypes.array,
+    fieldValues: PropTypes.object
 };
 
 const defaultProps = {
@@ -40,7 +44,12 @@ class DestinationTab extends Component {
 
     getPropetyRowsBody() {
         const { properties } = this.props.fieldValues;
-        const { removeProperty, setPropertyField } = this.props.actions;
+        let removeProperty = (index) => {
+            this.props.actions.removeProperty(index, destinationProp);
+        };
+        let setPropertyField = (index, key, value) => {
+            this.props.actions.setPropertyField(index, key, value, destinationProp);
+        };
         return properties.map((prop, index) => {
             return (
                 <tr key={`${index}`}>
@@ -67,7 +76,9 @@ class DestinationTab extends Component {
     }
 
     renderPropertyTable() {
-        const { addProperty } = this.props.actions;
+        let addProperty = () => {
+            this.props.actions.addProperty(destinationProp);
+        };
         return (
             <div className={style.propertyTable}>
                 <table className={style.dataGridTable}>
@@ -96,11 +107,12 @@ class DestinationTab extends Component {
             organizations,
             fieldValues
         } = this.props;
-
-        const {
-            changeMultiSelectField,
-            changeDropdownField
-        } = this.props.actions;
+        let changeMultiSelectField = (field, value) => {
+            this.props.actions.changeMultiSelectField(field, value, destinationProp);
+        };
+        let changeDropdownField = (field, value) => {
+            this.props.actions.changeDropdownField(field, value, destinationProp);
+        };
 
         return (
             <div>
@@ -182,11 +194,11 @@ DestinationTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        countries: state.ruleTabReducer.getIn(['nomenclatures', 'country']).toJS(),
-        regions: state.ruleTabReducer.getIn(['nomenclatures', 'region']).toJS(),
-        cities: state.ruleTabReducer.getIn(['nomenclatures', 'city']).toJS(),
-        organizations: state.ruleTabReducer.getIn(['nomenclatures', 'organization']).toJS(),
-        fieldValues: state.ruleDestinationTabReducer.get('fields').toJS()
+        countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
+        regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
+        cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
+        organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
+        fieldValues: state.ruleProfileReducer.get(destinationProp).toJS()
     };
 };
 

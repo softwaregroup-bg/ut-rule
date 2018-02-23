@@ -6,8 +6,8 @@ import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Input from 'ut-front-react/components/Input';
 import style from '../style.css';
-import * as actions from './actions';
-
+import * as actions from '../../actions';
+const destinationProp = 'channel';
 const propTypes = {
     actions: PropTypes.object,
     countries: PropTypes.array,
@@ -44,7 +44,12 @@ class ChannelTab extends Component {
 
     getPropetyRowsBody() {
         const { properties } = this.props.fieldValues;
-        const { removeProperty, setPropertyField } = this.props.actions;
+        let removeProperty = (index) => {
+            this.props.actions.removeProperty(index, destinationProp);
+        };
+        let setPropertyField = (index, key, value) => {
+            this.props.actions.setPropertyField(index, key, value, destinationProp);
+        };
         return properties.map((prop, index) => {
             return (
                 <tr key={`${index}`}>
@@ -71,7 +76,9 @@ class ChannelTab extends Component {
     }
 
     renderPropertyTable() {
-        const { addProperty } = this.props.actions;
+        let addProperty = () => {
+            this.props.actions.addProperty(destinationProp);
+        };
         return (
             <div className={style.propertyTable}>
                 <table className={style.dataGridTable}>
@@ -100,11 +107,12 @@ class ChannelTab extends Component {
             organizations,
             fieldValues
         } = this.props;
-
-        const {
-            changeMultiSelectField,
-            changeDropdownField
-        } = this.props.actions;
+        let changeMultiSelectField = (field, value) => {
+            this.props.actions.changeMultiSelectField(field, value, destinationProp);
+        };
+        let changeDropdownField = (field, value) => {
+            this.props.actions.changeDropdownField(field, value, destinationProp);
+        };
 
         return (
             <div>
@@ -193,11 +201,11 @@ ChannelTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        countries: state.ruleTabReducer.getIn(['nomenclatures', 'country']).toJS(),
-        regions: state.ruleTabReducer.getIn(['nomenclatures', 'region']).toJS(),
-        cities: state.ruleTabReducer.getIn(['nomenclatures', 'city']).toJS(),
-        organizations: state.ruleTabReducer.getIn(['nomenclatures', 'organization']).toJS(),
-        fieldValues: state.ruleChannelTabReducer.get('fields').toJS()
+        countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
+        regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
+        cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
+        organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
+        fieldValues: state.ruleProfileReducer.get('channel').toJS()
     };
 };
 

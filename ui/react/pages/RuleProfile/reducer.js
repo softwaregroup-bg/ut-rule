@@ -17,7 +17,11 @@ const defaultState = fromJS({
         currency: [],
         organization: []
     },
-    nomenclaturesFetched: false
+    config: {
+        nomenclaturesFetched: false,
+        ruleSaved: false,
+        activeTab: 1
+    }
 });
 
 export const ruleProfileReducer = (state = defaultState, action) => {
@@ -25,13 +29,16 @@ export const ruleProfileReducer = (state = defaultState, action) => {
         case actionTypes.FETCH_NOMENCLATURES:
             if (action.methodRequestState === methodRequestState.FINISHED) {
                 return state.set('nomenclatures', fromJS(formatNomenclatures(action.result.items)))
-                    .set('nomenclaturesFetched', true);
+                    .setIn(['config', 'nomenclaturesFetched'], true);
             }
             return state;
         case actionTypes.CREATE_RULE:
-            if (action.methodRequestState === methodRequestState.FINISHED) {
+            if (action.methodRequestState === methodRequestState.FINISHED && !action.error) {
+                return state.setIn(['config', 'ruleSaved'], true);
             }
             return state;
+        case actionTypes.RESET_RULE_STATE:
+            return state.setIn(['config', 'ruleSaved'], false);
         default:
             return state;
     }

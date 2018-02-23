@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import { fromJS } from 'immutable';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import { getLink } from 'ut-front/react/routerHelper';
 import { removeTab } from 'ut-front-react/containers/TabMenu/actions';
@@ -10,7 +10,7 @@ import Page from 'ut-front-react/components/PageLayout/Page';
 import Container from 'ut-front-react/components/PageLayout/Container';
 import Content from 'ut-front-react/components/PageLayout/Content';
 import TabContainer from 'ut-front-react/containers/TabContainer';
-
+import StatusDialog from 'ut-front-react/components/StatusDialog';
 import Channel from '../Tabs/Channel';
 import Source from '../Tabs/Source';
 import Operation from '../Tabs/Operation';
@@ -18,7 +18,10 @@ import Destination from '../Tabs/Destination';
 import Split from '../Tabs/Split';
 import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
-
+var status = fromJS({
+    status: 'SUCCESS',
+    message: 'Rule successfully created'
+});
 import { prepateRuleToSave } from '../helpers';
 
 const propTypes = {
@@ -35,7 +38,7 @@ const propTypes = {
     }).isRequired,
     activeTab: PropTypes.object,
     removeTab: PropTypes.func.isRequired,
-    nomenclaturesFetched: PropTypes.bool,
+    config: PropTypes.object,
     nomenclatureConfiguration: PropTypes.shape({}).isRequired
 };
 
@@ -48,19 +51,26 @@ class RuleCreate extends Component {
         super(props, context);
         this.onSave = this.onSave.bind(this);
         this.fetchData = this.fetchData.bind(this);
-        this.onClose = this.onClose.bind(this);
+        this.onReset = this.onReset.bind(this);
+        this.handleDialogClose = this.handleDialogClose.bind(this);
+        this.state = {
+            closeAfterSave: false
+        };
     }
 
     fetchData() {
-        const { fetchNomenclatures } = this.props.actions;
-        const { nomenclatureConfiguration, nomenclaturesFetched } = this.props;
+        let { fetchNomenclatures } = this.props.actions;
+        let { nomenclatureConfiguration, config } = this.props;
+        let { nomenclaturesFetched } = config || {};
         !nomenclaturesFetched && fetchNomenclatures(nomenclatureConfiguration);
     }
 
     componentWillMount() {
         this.fetchData();
     }
-
+    handleDialogClose() {
+        this.onReset(this.state.closeAfterSave);
+    }
     onSave() {
         const {
             destination,
@@ -82,9 +92,9 @@ class RuleCreate extends Component {
         this.props.actions.createRule(formattedRule);
     }
 
-    onClose() {
+    onReset(closeAfterSave) {
         this.props.actions.resetRuleState();
-        this.props.removeTab(this.props.activeTab.pathname);
+        closeAfterSave && this.props.removeTab(this.props.activeTab.pathname);
     }
 
     getTabs() {
@@ -120,16 +130,15 @@ class RuleCreate extends Component {
 
     getActionButtons() {
         let create = () => {
-            // this.setState({
-            //     resetState: true
-            // });
+            this.state.closeAfterSave && this.setState({
+                closeAfterSave: false
+            });
             this.onSave();
         };
         let createAndClose = () => {
-            // this.setState({
-            //     resetState: true,
-            //     closeTab: true
-            // });
+            this.setState({
+                closeAfterSave: true
+            });
             this.onSave();
         };
         let actionButtons = [
@@ -144,7 +153,9 @@ class RuleCreate extends Component {
                 onClick: create
             }, {
                 text: 'Close',
-                onClick: this.onClose
+                onClick: () => {
+                    return this.onReset(true);
+                }
             }
         ];
         return actionButtons;
@@ -161,9 +172,11 @@ class RuleCreate extends Component {
     }
 
     render() {
+        let { ruleSaved } = this.props.config;
         return (
             <Page>
                 <AddTab pathname={getLink('ut-rule:create')} title='Create Rule' />
+                {ruleSaved && <StatusDialog status={status} onClose={this.handleDialogClose} />}
                 <Container>
                     <Content style={{position: 'relative'}}>
                         {this.renderTabContainer()}
@@ -186,7 +199,7 @@ const mapStateToProps = (state, ownProps) => ({
     channel: state.ruleChannelTabReducer.get('fields').toJS(),
     split: state.ruleSplitTabReducer.get('fields').toJS(),
     limit: state.ruleLimitTabReducer.get('fields').toJS(),
-    nomenclaturesFetched: state.ruleTabReducer.get('nomenclaturesFetched')
+    config: state.ruleTabReducer.get('config').toJS()
 });
 
 const mapDispatchToProps = (dispatch) => ({

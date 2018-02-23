@@ -35,7 +35,6 @@ BEGIN TRY
             [rule].splitName s ON s.splitNameId = x.splitNameId
         JOIN
             @conditionId item ON s.conditionId = item.value
-
         DELETE
             x
         FROM
@@ -55,14 +54,12 @@ BEGIN TRY
             [rule].splitName s ON s.splitNameId = x.splitNameId
         JOIN
             @conditionId item ON s.conditionId = item.value
-
         DELETE
             x
         FROM
             [rule].splitName x
         JOIN
             @conditionId item ON x.conditionId = item.value
-
         DELETE
             x
         FROM

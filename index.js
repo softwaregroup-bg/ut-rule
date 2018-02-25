@@ -5,5 +5,6 @@ module.exports = () => ({
     },
     validations: {
         rule: require('./validations/rule')
-    }
+    },
+    errors: require('./errors')
 });

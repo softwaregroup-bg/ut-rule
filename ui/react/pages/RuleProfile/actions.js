@@ -17,6 +17,11 @@ export const resetRuleState = (params) => ({
     type: actionTypes.RESET_RULE_STATE
 });
 
+export const changeRuleProfile = (mode, id) => ({
+    type: actionTypes.CHANGE_RULE_PROFILE,
+    params: {mode, id}
+});
+
 // channel actions
 export const changeMultiSelectField = (field, newValue, destinationProp) => ({
     type: actionTypes.CHANGE_MULTISELECT_FIELD,

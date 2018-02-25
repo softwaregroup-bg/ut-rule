@@ -183,9 +183,10 @@ OperationTab.propTypes = propTypes;
 OperationTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
+    let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
         operations: state.ruleProfileReducer.getIn(['nomenclatures', 'operation']).toJS(),
-        fieldValues: state.ruleProfileReducer.get(destinationProp).toJS()
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS()
     };
 };
 

@@ -206,13 +206,14 @@ SourceTab.propTypes = propTypes;
 SourceTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
+    let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
         countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
         products: state.ruleProfileReducer.getIn(['nomenclatures', 'cardProduct']).toJS(),
-        fieldValues: state.ruleProfileReducer.get(destinationProp).toJS()
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS()
     };
 };
 

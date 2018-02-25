@@ -111,8 +111,9 @@ SplitTab.propTypes = propTypes;
 SplitTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
+    let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
-        fieldValues: state.ruleProfileReducer.get('split').toJS(),
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, 'split']).toJS(),
         currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS()
     };
 };

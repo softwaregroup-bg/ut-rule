@@ -2,7 +2,7 @@
 export const FETCH_NOMENCLATURES = Symbol('FETCH_NOMENCLATURES');
 export const CREATE_RULE = Symbol('CREATE_RULE');
 export const RESET_RULE_STATE = Symbol('RESET_RULE_STATE');
-
+export const CHANGE_RULE_PROFILE = Symbol('CHANGE_RULE_PROFILE');
 // tab common actions
 export const CHANGE_MULTISELECT_FIELD = Symbol('CHANGE_MULTISELECT_FIELD');
 export const CHANGE_DROPDOWN_FIELD = Symbol('CHANGE_DROPDOWN_FIELD');

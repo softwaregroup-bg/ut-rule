@@ -152,10 +152,13 @@ Limits.propTypes = {
     fieldValues: PropTypes.array,
     actions: PropTypes.object
 };
-const mapStateToProps = (state) => ({
-    fieldValues: state.ruleProfileReducer.get('limit').toJS(),
-    currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS()
-});
+const mapStateToProps = (state) => {
+    let { mode, id } = state.ruleProfileReducer.get('config').toJS();
+    return {
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, 'limit']).toJS(),
+        currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS()
+    };
+};
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch)

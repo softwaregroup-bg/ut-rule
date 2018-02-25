@@ -200,12 +200,13 @@ ChannelTab.propTypes = propTypes;
 ChannelTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
+    let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
         countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
-        fieldValues: state.ruleProfileReducer.get('channel').toJS()
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, 'channel']).toJS()
     };
 };
 

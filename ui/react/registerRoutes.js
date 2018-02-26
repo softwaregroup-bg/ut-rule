@@ -2,9 +2,9 @@ import { registerRoute } from 'ut-front/react/routerHelper';
 
 export default () => {
     let mainRoute = 'ut-rule:home';
-    // let rewriteRoute = 'ut-rule:rewrite';
-    let createRule = 'ut-rule:create';
     registerRoute(mainRoute).path('/rule');
-    registerRoute(createRule).path('/rule/create');
+    registerRoute('ut-rule:rules').path('rules').parent(mainRoute);
+    registerRoute('ut-rule:create').path('create').parent('ut-rule:rules');
+    registerRoute('ut-rule:edit').path('edit/:id').parent('ut-rule:rules');
     return mainRoute;
 };

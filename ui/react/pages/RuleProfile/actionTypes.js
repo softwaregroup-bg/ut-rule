@@ -1,6 +1,8 @@
 
 export const FETCH_NOMENCLATURES = Symbol('FETCH_NOMENCLATURES');
 export const CREATE_RULE = Symbol('CREATE_RULE');
+export const EDIT_RULE = Symbol('EDIT_RULE');
+export const GET_RULE = Symbol('GET_RULE');
 export const RESET_RULE_STATE = Symbol('RESET_RULE_STATE');
 export const CHANGE_RULE_PROFILE = Symbol('CHANGE_RULE_PROFILE');
 // tab common actions

@@ -90,7 +90,10 @@ class SplitTab extends Component {
             </div>
         );
     }
-
+    // componentWillMount() {
+    //     // add empty split by default if split is null
+    //     !this.props.fieldValues.splits && this.props.actions.addSplit();
+    // }
     render() {
         const { addSplit } = this.props.actions;
         return (

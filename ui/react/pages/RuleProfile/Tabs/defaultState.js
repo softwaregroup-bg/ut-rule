@@ -69,7 +69,7 @@ export const defaultTabState = {
         regions: [],
         cities: [],
         organization: '',
-        product: '',
+        cardProduct: '',
         properties: []
     },
     split: {

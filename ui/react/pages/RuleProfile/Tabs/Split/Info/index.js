@@ -1,7 +1,7 @@
 import React from 'react';
 import Input from 'ut-front-react/components/Input';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
-
+import {splitTags} from '../../../helpers';
 import style from '../../style.css';
 
 export const Assignments = (props) => {
@@ -12,22 +12,6 @@ export const Assignments = (props) => {
         splitIndex,
         name
     } = props;
-
-    const tags = [
-        {key: 'acquirer', name: 'Acquirer'},
-        {key: 'issuer', name: 'Issuer'},
-        {key: 'commission', name: 'Commission'},
-        {key: 'realtime', name: 'Realtime posting'},
-        {key: 'pending', name: 'Authorization required'},
-        {key: 'agent', name: 'Agent'},
-        {key: 'fee', name: 'Fee'},
-        {key: 'atm', name: 'ATM'},
-        {key: 'pos', name: 'POS'},
-        {key: 'ped', name: 'PED'},
-        {key: 'vendor', name: 'Vendor'},
-        {key: 'merchant', name: 'Merchant'}
-    ];
-
     return (
         <div>
             <div className={style.inputWrapper}>
@@ -42,7 +26,7 @@ export const Assignments = (props) => {
                   name='tag'
                   label={'Tag'}
                   value={selectedTags}
-                  options={tags}
+                  options={splitTags}
                   onChange={(value) => { changeMultiSelectField(splitIndex, 'tags', value); }}
                 />
             </div>

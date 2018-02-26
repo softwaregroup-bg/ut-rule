@@ -1,4 +1,5 @@
 import Rules from './Rules';
-import RulesCreate from './RuleProfile/Create';
+import RuleCreate from './RuleProfile/Create';
+import RuleEdit from './RuleProfile/Edit';
 
-export { Rules, RulesCreate };
+export { Rules, RuleCreate, RuleEdit };

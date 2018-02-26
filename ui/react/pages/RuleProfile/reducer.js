@@ -1,9 +1,9 @@
 import { fromJS } from 'immutable';
 import { methodRequestState } from 'ut-front-react/constants';
-import { formatNomenclatures } from './helpers';
+import { formatNomenclatures, prepareRuleModel } from './helpers';
 import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange } from './Tabs/defaultState';
 import * as actionTypes from './actionTypes';
-
+const __placeholder__ = __placeholder__;
 const defaultState = {
     nomenclatures: {
         accountProduct: [],
@@ -21,7 +21,8 @@ const defaultState = {
         ruleSaved: false,
         mode: null,
         id: null
-    }
+    },
+    rules: {}
 };
 
 export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
@@ -40,18 +41,30 @@ export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
                     .setIn(['config', 'nomenclaturesFetched'], true);
             }
             return state;
+        case actionTypes.EDIT_RULE:
         case actionTypes.CREATE_RULE:
             if (action.methodRequestState === methodRequestState.FINISHED && !action.error) {
                 return state.setIn(['config', 'ruleSaved'], true);
             }
             return state;
+        case actionTypes.GET_RULE:
+            if (action.methodRequestState === methodRequestState.FINISHED && !action.error) {
+                return state.setIn([mode, id], fromJS(prepareRuleModel(action.result)))
+                    .setIn(['rules', id], action.result);
+            }
+            return state;
         case actionTypes.RESET_RULE_STATE:
-            return state.setIn(['config', 'ruleSaved'], false).setIn([mode, id], fromJS(defaultTabState));
-
+            if (mode === 'create') {
+                return state.setIn(['config', 'ruleSaved'], false).setIn([mode, id], fromJS(defaultTabState));
+            } else {
+                return state.setIn(['config', 'ruleSaved'], false);
+            }
         // tab common actions
         case actionTypes.CHANGE_MULTISELECT_FIELD:
+            if (action.params.newValue === __placeholder__) action.params.newValue = null;
             return state.setIn([mode, id, action.destinationProp, action.params.field], fromJS(action.params.newValue));
         case actionTypes.CHANGE_DROPDOWN_FIELD:
+            if (action.params.newValue === __placeholder__) action.params.newValue = null;
             return state.setIn([mode, id, action.destinationProp, action.params.field], action.params.newValue);
         case actionTypes.ADD_PROPERTY:
             return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.push(fromJS({
@@ -77,8 +90,10 @@ export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
             );
         // split actions
         case actionTypes.CHANGE_SPLIT_MULTISELECT_FIELD:
+            if (action.params.newValue === __placeholder__) action.params.newValue = null;
             return state.setIn([mode, id, 'split', 'splits', action.params.splitIndex, action.params.field], fromJS(action.params.newValue));
         case actionTypes.CHANGE_SPLIT_DROPDOWN_FIELD:
+            if (action.params.newValue === __placeholder__) action.params.newValue = null;
             return state.setIn([mode, id, 'split', 'splits', action.params.splitIndex, action.params.field], action.params.newValue);
         case actionTypes.CHANGE_SPLIT_INPUT_FIELD:
             return state.setIn([mode, id, 'split', 'splits', action.params.splitIndex, action.params.field], action.params.newValue);

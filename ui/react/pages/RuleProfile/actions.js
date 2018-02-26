@@ -7,9 +7,21 @@ export const fetchNomenclatures = (params) => ({
     params: params || {}
 });
 
+export const getRule = (conditionId) => ({
+    type: actionTypes.GET_RULE,
+    method: 'rule.rule.fetch',
+    params: { conditionId }
+});
+
 export const createRule = (params) => ({
     type: actionTypes.CREATE_RULE,
     method: 'rule.rule.add',
+    params: params || {}
+});
+
+export const editRule = (params) => ({
+    type: actionTypes.EDIT_RULE,
+    method: 'rule.rule.edit',
     params: params || {}
 });
 

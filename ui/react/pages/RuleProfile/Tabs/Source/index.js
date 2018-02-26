@@ -14,7 +14,7 @@ const propTypes = {
     regions: PropTypes.array,
     cities: PropTypes.array,
     organizations: PropTypes.array,
-    products: PropTypes.array,
+    cardProducts: PropTypes.array,
     fieldValues: PropTypes.object
 };
 
@@ -22,7 +22,7 @@ const defaultProps = {
     countries: [],
     regions: [],
     cities: [],
-    products: [],
+    cardProducts: [],
     organizations: []
 };
 
@@ -107,7 +107,8 @@ class SourceTab extends Component {
             regions,
             cities,
             organizations,
-            products,
+            cardProducts,
+            accountProducts,
             fieldValues
         } = this.props;
 
@@ -156,14 +157,24 @@ class SourceTab extends Component {
                       label={'Organizaton'}
                     />
                 </div>
-                 <div className={style.inputWrapper}>
+                <div className={style.inputWrapper}>
                     <Dropdown
                       canSelectPlaceholder
-                      data={products}
-                      defaultSelected={fieldValues.product}
+                      data={cardProducts}
+                      defaultSelected={fieldValues.cardProduct}
                       placeholder='Enter Product'
-                      onSelect={({value}) => { changeDropdownField('product', value); }}
+                      onSelect={({value}) => { changeDropdownField('cardProduct', value); }}
                       label={'Product'}
+                    />
+                </div>
+                <div className={style.inputWrapper}>
+                    <Dropdown
+                      canSelectPlaceholder
+                      data={accountProducts}
+                      defaultSelected={fieldValues.accountProduct}
+                      placeholder='Enter Account Product'
+                      onSelect={({value}) => { changeDropdownField('accountProduct', value); }}
+                      label={'Account Product'}
                     />
                 </div>
             </div>
@@ -212,7 +223,8 @@ const mapStateToProps = (state, ownProps) => {
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
-        products: state.ruleProfileReducer.getIn(['nomenclatures', 'cardProduct']).toJS(),
+        cardProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'cardProduct']).toJS(),
+        accountProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'accountProduct']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS()
     };
 };

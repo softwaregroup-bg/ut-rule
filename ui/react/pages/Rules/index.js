@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux';
 import Grid from '../../components/Grid';
 import Dialog from '../../components/Dialog';
 import Prompt from '../../components/Prompt';
+import { getLink } from 'ut-front/react/routerHelper';
 import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
 import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
 import AdvancedPagination from 'ut-front-react/components/AdvancedPagination';
-import { getRoute } from 'ut-front/react/routerHelper';
 import Button from 'ut-front-react/components/StandardButton';
 import classnames from 'classnames';
 import style from './style.css';
@@ -87,22 +87,6 @@ const Main = React.createClass({
             canDelete: !isSelected
         });
     },
-    createBtnOnClick() {
-        this.setState({
-            dialog: {
-                open: true,
-                conditionId: null
-            }
-        });
-    },
-    editBtnOnClick() {
-        this.setState({
-            dialog: {
-                open: true,
-                conditionId: Object.keys(this.state.selectedConditions)[0]
-            }
-        });
-    },
     dialogOnClose() {
         this.setState({
             dialog: {
@@ -137,7 +121,7 @@ const Main = React.createClass({
     getHeaderButtons() {
         let buttons = [];
         this.context.checkPermission('rule.rule.add') &&
-            buttons.push({text: 'Create Rule', href: getRoute('ut-rule:create'), styleType: 'primaryLight'});
+            buttons.push({text: 'Create Rule', href: getLink('ut-rule:create'), styleType: 'primaryLight'});
         return buttons;
     },
     render() {
@@ -148,16 +132,16 @@ const Main = React.createClass({
         let uiConfig = this.state.uiConfig;
         let columns = uiConfig.main.grid.columns;
         let sections = uiConfig.dialog.sections;
-
+        let id = Object.keys(this.state.selectedConditions)[0];
         return <div>
-            <AddTab pathname={this.props.location.pathname} title='Fees, Commissions and Limits (FCL)' />
+            <AddTab pathname={getLink('ut-rule:rules')} title='Fees, Commissions and Limits (FCL)' />
             <Header text='Fees, Commissions and Limits (FCL)' buttons={this.getHeaderButtons()} />
             <div className={classnames(mainStyle.contentTableWrap, style.contentTableWrap)}>
                 <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                     <GridToolbox opened title='' >
                       <div className={style.actionWrap} >
                         { this.context.checkPermission('rule.rule.edit') &&
-                            (<Button label='Edit' disabled={!this.state.canEdit} className='defaultBtn' onClick={this.editBtnOnClick} />)}
+                            (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
                         { this.context.checkPermission('rule.rule.remove') &&
                             (<Button label='Delete' disabled={!this.state.canEdit} className='defaultBtn' onClick={this.showPrompt} />)}
                       </div>

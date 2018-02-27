@@ -17,6 +17,7 @@ import set from 'lodash.set';
 import {connect} from 'react-redux';
 import {checkAccountExists} from '../../pages/Main/actionCreators';
 import Promise from 'bluebird';
+import TabContainer from 'ut-front-react/containers/TabContainer';
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -556,11 +557,138 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
     },
     contentStyle: {
         minWidth: '730px',
-        maxWidth: '85%',
+        maxWidth: '95%',
         width: '100%'
     },
     render() {
         let sections = this.state.sections;
+        const tabs = [];
+
+        if (sections.channel.visible) {
+            tabs.push({
+                title: 'Channel',
+                component:
+                  <Accordion title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
+                    <Channel
+                      data={this.state.data.condition[0]}
+                      fields={sections.channel.fields}
+                      properties={this.state.data.channelProperties}
+                      addPropertyRow={this.addChannelPropertyRow}
+                      deletePropetyRow={this.deleteChannelPropertyRow}
+                    />
+                  </Accordion>
+            });
+        }
+
+        if (sections.operation.visible) {
+            tabs.push({
+                title: sections.operation.title,
+                component:
+                  <Accordion title={sections.operation.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                    <Operation
+                      data={this.state.data.condition[0]}
+                      fields={sections.operation.fields}
+                      properties={this.state.data.operationProperties}
+                      addPropertyRow={this.addOperationPropertyRow}
+                      deletePropetyRow={this.deleteOperationPropertyRow}
+                    />
+                  </Accordion>
+            });
+        }
+
+        if (sections.source.visible) {
+            tabs.push({
+                title: sections.source.title,
+                component:
+                  <Accordion title={sections.source.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                    <Source
+                      data={this.state.data.condition[0]}
+                      fields={sections.source.fields}
+                      properties={this.state.data.sourceProperties}
+                      addPropertyRow={this.addSourcePropertyRow}
+                      deletePropetyRow={this.deleteSourcePropertyRow}
+                    />
+                  </Accordion>
+            });
+        }
+
+        if (sections.destination.visible) {
+            tabs.push({
+                title: sections.destination.title,
+                component:
+                  <Accordion title={sections.destination.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                    <Destination
+                      data={this.state.data.condition[0]}
+                      fields={sections.destination.fields}
+                      properties={this.state.data.destinationProperties}
+                      addPropertyRow={this.addDestinationPropertyRow}
+                      deletePropetyRow={this.deleteDestinationPropertyRow}
+                    />
+                  </Accordion>
+            });
+        }
+
+        if (sections.limit.visible) {
+            tabs.push({
+                title: sections.limit.title,
+                component:
+                  <Accordion title={sections.limit.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                    <div className={style.content}>
+                      <SectionLimit
+                        data={this.state.data.limit}
+                        addRow={this.addLimitRow}
+                        deleteRow={this.deleteLimitRow}
+                      />
+                    </div>
+                  </Accordion>
+            });
+        }
+
+        if (sections.split.visible) {
+            tabs.push({
+                title: 'Splits',
+                component:
+                  <Accordion title={sections.split.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                    <div className={style.content}>
+                      <Split
+                        data={this.state.data.split}
+                        nomenclatures={this.props.nomenclatures}
+                        addSplitRow={this.addSplitRow}
+                        deleteSplitRow={this.deleteSplitRow}
+                        addSplitCumulativeRow={this.addSplitCumulativeRow}
+                        deleteSplitCumulativeRow={this.deleteSplitCumulativeRow}
+                        addSplitCumulativeRangeRow={this.addSplitCumulativeRangeRow}
+                        deleteSplitCumulativeRangeRow={this.deleteSplitCumulativeRangeRow}
+                        addSplitAssignmentRow={this.addSplitAssignmentRow}
+                        deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
+                        config={sections.split}
+                      />
+                    </div>
+                  </Accordion>
+            });
+        }
+
+        // if (sections.summary.visible) {
+        //     tabs.push({
+        //         title: sections.summary.title,
+        //         component:
+        //           <Accordion title={sections.summary.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+        //             <div className={style.content}>
+        //               <SectionSummary
+        //                 data={this.state.data}
+        //                 nomenclatures={this.props.nomenclatures}
+        //               />
+        //             </div>
+        //           </Accordion>
+        //     });
+        // }
+
+        if (sections.documents.visible) {
+            tabs.push({
+                title: sections.documents.title,
+                component: <div>Not implemented</div>
+            });
+        }
 
         return (
             <Dialog
@@ -597,84 +725,12 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
                         />
                     </div>
                     <div className={style.wrapper}>
-                        {sections.channel.visible &&
-                          <Accordion title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
-                            <Channel
-                              data={this.state.data.condition[0]}
-                              fields={sections.channel.fields}
-                              properties={this.state.data.channelProperties}
-                              addPropertyRow={this.addChannelPropertyRow}
-                              deletePropetyRow={this.deleteChannelPropertyRow}
-                            />
-                          </Accordion>
-                        }
-                        {sections.operation.visible &&
-                          <Accordion title={sections.operation.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Operation
-                              data={this.state.data.condition[0]}
-                              fields={sections.operation.fields}
-                              properties={this.state.data.operationProperties}
-                              addPropertyRow={this.addOperationPropertyRow}
-                              deletePropetyRow={this.deleteOperationPropertyRow}
-                            />
-                          </Accordion>}
-                        {sections.source.visible &&
-                          <Accordion title={sections.source.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Source
-                              data={this.state.data.condition[0]}
-                              fields={sections.source.fields}
-                              properties={this.state.data.sourceProperties}
-                              addPropertyRow={this.addSourcePropertyRow}
-                              deletePropetyRow={this.deleteSourcePropertyRow}
-                            />
-                          </Accordion>}
-                        {sections.destination.visible &&
-                          <Accordion title={sections.destination.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <Destination
-                              data={this.state.data.condition[0]}
-                              fields={sections.destination.fields}
-                              properties={this.state.data.destinationProperties}
-                              addPropertyRow={this.addDestinationPropertyRow}
-                              deletePropetyRow={this.deleteDestinationPropertyRow}
-                            />
-                          </Accordion>}
-                        {sections.limit.visible &&
-                          <Accordion title={sections.limit.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                              <SectionLimit
-                                data={this.state.data.limit}
-                                addRow={this.addLimitRow}
-                                deleteRow={this.deleteLimitRow}
-                              />
-                            </div>
-                          </Accordion>}
-                        {sections.split.visible &&
-                          <Accordion title={sections.split.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                              <Split
-                                data={this.state.data.split}
-                                nomenclatures={this.props.nomenclatures}
-                                addSplitRow={this.addSplitRow}
-                                deleteSplitRow={this.deleteSplitRow}
-                                addSplitCumulativeRow={this.addSplitCumulativeRow}
-                                deleteSplitCumulativeRow={this.deleteSplitCumulativeRow}
-                                addSplitCumulativeRangeRow={this.addSplitCumulativeRangeRow}
-                                deleteSplitCumulativeRangeRow={this.deleteSplitCumulativeRangeRow}
-                                addSplitAssignmentRow={this.addSplitAssignmentRow}
-                                deleteSplitAssignmentRow={this.deleteSplitAssignmentRow}
-                                config={sections.split}
-                              />
-                            </div>
-                          </Accordion>}
-                        {sections.summary.visible &&
-                          <Accordion title={sections.summary.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
-                            <div className={style.content}>
-                              <SectionSummary
-                                data={this.state.data}
-                                nomenclatures={this.props.nomenclatures}
-                              />
-                            </div>
-                          </Accordion>}
+                        <TabContainer
+                          sourceMap={{}}
+                          actionButtons={[]}
+                          tabs={tabs}
+                          hideHeader
+                        />
                   </div>
                 </div>
             </Dialog>

@@ -281,6 +281,10 @@ const defaultUiState = {
             summary: {
                 visible: true,
                 title: 'Summary'
+            },
+            documents: {
+                visible: true,
+                title: 'Documents'
             }
         }
     }

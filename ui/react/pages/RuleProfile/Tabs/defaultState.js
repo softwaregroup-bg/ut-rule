@@ -55,7 +55,8 @@ export const defaultTabState = {
         regions: [],
         cities: [],
         organization: '',
-        properties: []
+        properties: [],
+        accountProduct: null
     },
     limit: [],
     operation: {
@@ -69,7 +70,8 @@ export const defaultTabState = {
         regions: [],
         cities: [],
         organization: '',
-        cardProduct: '',
+        cardProduct: null,
+        accountProduct: null,
         properties: []
     },
     split: {

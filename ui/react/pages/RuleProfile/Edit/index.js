@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { fromJS } from 'immutable';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import { getLink } from 'ut-front/react/routerHelper';
-import { removeTab } from 'ut-front-react/containers/TabMenu/actions';
+import { removeTab, updateTabTitle } from 'ut-front-react/containers/TabMenu/actions';
 
 import Page from 'ut-front-react/components/PageLayout/Page';
 import Container from 'ut-front-react/components/PageLayout/Container';
@@ -24,7 +24,7 @@ let status = fromJS({
     message: 'Rule successfully saved'
 });
 const mode = 'edit';
-
+const baseTabTitle = 'Edit Rule';
 class RuleEdit extends Component {
     constructor(props, context) {
         super(props, context);
@@ -37,22 +37,31 @@ class RuleEdit extends Component {
         };
     }
     fetchData() {
-        let { fetchNomenclatures, changeRuleProfile } = this.props.actions;
+        let { fetchNomenclatures, changeRuleProfile, getRule } = this.props.actions;
         let { nomenclatureConfiguration, config, params, remoteRule } = this.props;
         let { nomenclaturesFetched } = config || {};
         changeRuleProfile(mode, params.id);
-        !remoteRule && this.props.actions.getRule(this.props.params.id);
+        !remoteRule && getRule(this.props.params.id);
         !nomenclaturesFetched && fetchNomenclatures(nomenclatureConfiguration);
     }
     componentWillMount() {
         this.fetchData();
     }
+    getTitle(remoteRule) {
+        return remoteRule ? baseTabTitle.concat(' - ', ((remoteRule.condition || [])[0] || {}).priority) : baseTabTitle;
+    }
     componentWillReceiveProps(nextProps) {
         let { id } = nextProps.params;
+        let { remoteRule, updateTabTitle } = nextProps;
+        let { changeRuleProfile, getRule } = this.props.actions;
         if (id && id !== this.props.params.id) {
-            this.props.actions.changeRuleProfile(mode, nextProps.params.id);
-        } else if (this.props.config.id && !nextProps.remoteRule && this.props.remoteRule !== this.props.remoteRule) {
-            this.props.actions.getRule(nextProps.params.id);
+            changeRuleProfile(mode, id);
+        } else if (this.props.config.id && !remoteRule && remoteRule !== this.props.remoteRule) {
+            getRule(nextProps.params.id);
+        }
+        if (this.getTitle(remoteRule) !== this.getTitle(this.props.remoteRule)) {
+            let pathname = getLink('ut-rule:edit', { id });
+            updateTabTitle(pathname, this.getTitle(remoteRule));
         }
     }
     handleDialogClose() {
@@ -131,7 +140,7 @@ class RuleEdit extends Component {
     renderTabContainer() {
         return (
             <TabContainer
-              headerTitle='Edit Rule'
+              headerTitle={this.getTitle(this.props.remoteRule)}
               tabs={this.getTabs()}
               actionButtons={this.getActionButtons()}
             />
@@ -142,7 +151,7 @@ class RuleEdit extends Component {
         let { id } = this.props.params;
         return (
             <Page>
-                <AddTab pathname={getLink('ut-rule:edit', { id })} title='Edit Rule' />
+                <AddTab pathname={getLink('ut-rule:edit', { id })} title={this.getTitle(this.props.remoteRule)} />
                 {ruleSaved && <StatusDialog status={status} onClose={this.handleDialogClose} />}
                 <Container>
                     <Content style={{position: 'relative'}}>
@@ -159,6 +168,7 @@ RuleEdit.propTypes = {
     params: PropTypes.object,
     actions: PropTypes.object,
     activeTab: PropTypes.object,
+    updateTabTitle: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
     config: PropTypes.object,
     remoteRule: PropTypes.object,
@@ -180,7 +190,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch),
-    removeTab: bindActionCreators(removeTab, dispatch)
+    removeTab: bindActionCreators(removeTab, dispatch),
+    updateTabTitle: bindActionCreators(updateTabTitle, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RuleEdit);

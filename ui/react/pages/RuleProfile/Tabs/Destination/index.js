@@ -14,6 +14,7 @@ const propTypes = {
     regions: PropTypes.array,
     cities: PropTypes.array,
     organizations: PropTypes.array,
+    accountProducts: PropTypes.array,
     fieldValues: PropTypes.object
 };
 
@@ -105,6 +106,7 @@ class DestinationTab extends Component {
             regions,
             cities,
             organizations,
+            accountProducts,
             fieldValues
         } = this.props;
         let changeMultiSelectField = (field, value) => {
@@ -153,6 +155,16 @@ class DestinationTab extends Component {
                       label={'Organizaton'}
                     />
                 </div>
+                <div className={style.inputWrapper}>
+                    <Dropdown
+                      canSelectPlaceholder
+                      data={accountProducts}
+                      defaultSelected={fieldValues.accountProduct}
+                      placeholder='Enter Account Product'
+                      onSelect={({value}) => { changeDropdownField('accountProduct', value); }}
+                      label={'Account Product'}
+                    />
+                </div>
             </div>
         );
     }
@@ -199,7 +211,8 @@ const mapStateToProps = (state, ownProps) => {
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS()
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
+        accountProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'accountProduct']).toJS()
     };
 };
 

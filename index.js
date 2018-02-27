@@ -4,7 +4,7 @@ module.exports = () => ({
         rule: require('./api/script')
     },
     validations: {
-        rule: require('./validations/rule')
+        rule: require('./validations')
     },
     errors: require('./errors')
 });

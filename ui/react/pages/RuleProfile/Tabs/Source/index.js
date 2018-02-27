@@ -15,6 +15,7 @@ const propTypes = {
     cities: PropTypes.array,
     organizations: PropTypes.array,
     cardProducts: PropTypes.array,
+    accountProducts: PropTypes.array,
     fieldValues: PropTypes.object
 };
 

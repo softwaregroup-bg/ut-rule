@@ -14,7 +14,7 @@ DECLARE @maxApprovalAmount MONEY
 DECLARE @maxApprovalLevel NVARCHAR(200)
 
 --select the max amount and level from all limits for operation per currency and property
-SELECT TOP 1 
+SELECT TOP 1
     @maxApprovalLevel = cp.value,
     @maxApprovalAmount = l.maxAmount
 FROM [rule].condition c
@@ -24,7 +24,7 @@ JOIN [rule].limit l ON l.conditionId = cp.conditionId
 WHERE ci.itemNameId = @operationId
     AND l.currency = @currency
     AND cp.factor = 'co'
-    AND cp.[name] = @property    
+    AND cp.[name] = @property
 ORDER BY c.priority
 
 SELECT TOP 1 l.currency, l.maxAmount AS approvalAmount, cp.value AS approvalLevel,
@@ -40,7 +40,7 @@ WHERE ci.itemNameId = @operationId
     AND l.currency = @currency
     AND cp.factor = 'co'
     AND ca.factor = 'co'
-    AND cp.[name] = @property    
+    AND cp.[name] = @property
     AND h.[predicate] = 'role'
 ORDER BY c.priority
 

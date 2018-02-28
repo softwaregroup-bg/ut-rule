@@ -3,7 +3,7 @@ import { methodRequestState } from 'ut-front-react/constants';
 import { formatNomenclatures, prepareRuleModel } from './helpers';
 import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange } from './Tabs/defaultState';
 import * as actionTypes from './actionTypes';
-const __placeholder__ = __placeholder__;
+const __placeholder__ = '__placeholder__';
 const defaultState = {
     nomenclatures: {
         accountProduct: [],

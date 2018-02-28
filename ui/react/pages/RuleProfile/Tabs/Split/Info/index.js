@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import {splitTags} from '../../../helpers';
 import style from '../../style.css';
 
-export const Assignments = (props) => {
+export const Info = (props) => {
     const {
         changeInputField,
         changeMultiSelectField,
@@ -34,4 +34,12 @@ export const Assignments = (props) => {
     );
 };
 
-export default Assignments;
+Info.propTypes = {
+    changeInputField: PropTypes.func,
+    changeMultiSelectField: PropTypes.func,
+    selectedTags: PropTypes.array,
+    splitIndex: PropTypes.number,
+    name: PropTypes.string
+};
+
+export default Info;

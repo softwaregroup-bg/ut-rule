@@ -10,7 +10,25 @@ DECLARE @operationId BIGINT = (
     JOIN [core].[itemType] t ON n.itemTypeId = t.itemTypeId AND t.alias = 'operation'
     WHERE itemCode = @operation)
 
-SELECT TOP 1 l.currency, l.maxAmount AS approvalAmount, cp.value AS approvalLevel
+DECLARE @maxApprovalAmount MONEY
+DECLARE @maxApprovalLevel NVARCHAR(200)
+
+--select the max amount and level from all limits for operation per currency and property
+SELECT TOP 1 
+    @maxApprovalLevel = cp.value,
+    @maxApprovalAmount = l.maxAmount
+FROM [rule].condition c
+JOIN [rule].conditionItem ci ON ci.conditionId = c.conditionId
+JOIN [rule].conditionProperty cp ON cp.conditionId = ci.conditionId
+JOIN [rule].limit l ON l.conditionId = cp.conditionId
+WHERE ci.itemNameId = @operationId
+    AND l.currency = @currency
+    AND cp.factor = 'co'
+    AND cp.[name] = @property    
+ORDER BY c.priority
+
+SELECT TOP 1 l.currency, l.maxAmount AS approvalAmount, cp.value AS approvalLevel,
+    @maxApprovalAmount AS maxApprovalAmount, @maxApprovalLevel AS maxApprovalLevel
 FROM [rule].condition c
 JOIN [rule].conditionActor ca ON ca.conditionId = c.conditionId
 JOIN [rule].conditionItem ci ON ci.conditionId = ca.conditionId

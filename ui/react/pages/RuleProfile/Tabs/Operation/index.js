@@ -41,23 +41,23 @@ class OperationTab extends Component {
         let removeProperty = (index) => {
             this.props.actions.removeProperty(index, destinationProp);
         };
-        let setPropertyField = (index, key, value) => {
-            this.props.actions.setPropertyField(index, key, value, destinationProp);
+        let changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
         };
         return properties.map((prop, index) => {
             return (
                 <tr key={`${index}`}>
                     <td>
                         <Input
-                          keyProp='name'
-                          onChange={({key, value}) => { setPropertyField(index, key, value); }}
+                          keyProp={['properties', index, 'name'].join(',')}
+                          onChange={(field) => { changeInput(field); }}
                           value={prop.name}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='value'
-                          onChange={({key, value}) => { setPropertyField(index, key, value); }}
+                          keyProp={['properties', index, 'value'].join(',')}
+                          onChange={(field) => { changeInput(field); }}
                           value={prop.value}
                         />
                     </td>
@@ -98,11 +98,8 @@ class OperationTab extends Component {
             operations,
             fieldValues
         } = this.props;
-        let changeMultiSelectField = (field, value) => {
-            this.props.actions.changeMultiSelectField(field, value, destinationProp);
-        };
-        let changeDropdownField = (field, value) => {
-            this.props.actions.changeDropdownField(field, value, destinationProp);
+        let changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
         };
         return (
             <div>
@@ -112,7 +109,7 @@ class OperationTab extends Component {
                       label={'Operation'}
                       value={fieldValues.operations}
                       options={operations}
-                      onChange={(value) => { changeMultiSelectField('operations', value); }}
+                      onChange={(value) => { changeInput({key: 'operations', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -123,7 +120,7 @@ class OperationTab extends Component {
                               wrapperStyles={{backgroundColor: 'white'}}
                               keyProp='startDate'
                               mode='landscape'
-                              onChange={({value}) => { changeDropdownField('startDate', value); }}
+                              onChange={({value}) => { changeInput({key: 'startDate', value}); }}
                               defaultValue={fieldValues.startDate}
                             />
                         </div>
@@ -137,7 +134,7 @@ class OperationTab extends Component {
                               wrapperStyles={{backgroundColor: 'white'}}
                               keyProp='endDate'
                               mode='landscape'
-                              onChange={({value}) => { changeDropdownField('endDate', value); }}
+                              onChange={({value}) => { changeInput({key: 'endDate', value}); }}
                               defaultValue={fieldValues.endDate}
                             />
                         </div>

@@ -48,23 +48,23 @@ class DestinationTab extends Component {
         let removeProperty = (index) => {
             this.props.actions.removeProperty(index, destinationProp);
         };
-        let setPropertyField = (index, key, value) => {
-            this.props.actions.setPropertyField(index, key, value, destinationProp);
+        let changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
         };
         return properties.map((prop, index) => {
             return (
                 <tr key={`${index}`}>
                     <td>
                         <Input
-                          keyProp='name'
-                          onChange={({key, value}) => { setPropertyField(index, key, value); }}
+                          keyProp={['properties', index, 'name'].join(',')}
+                          onChange={(field) => { changeInput(field); }}
                           value={prop.name}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='value'
-                          onChange={({key, value}) => { setPropertyField(index, key, value); }}
+                          keyProp={['properties', index, 'value'].join(',')}
+                          onChange={(field) => { changeInput(field); }}
                           value={prop.value}
                         />
                     </td>
@@ -109,11 +109,8 @@ class DestinationTab extends Component {
             accountProducts,
             fieldValues
         } = this.props;
-        let changeMultiSelectField = (field, value) => {
-            this.props.actions.changeMultiSelectField(field, value, destinationProp);
-        };
-        let changeDropdownField = (field, value) => {
-            this.props.actions.changeDropdownField(field, value, destinationProp);
+        let changeInput = (field, value) => {
+            this.props.actions.changeInput(field, destinationProp);
         };
 
         return (
@@ -124,7 +121,7 @@ class DestinationTab extends Component {
                       label={'Country'}
                       value={fieldValues.countries}
                       options={countries}
-                      onChange={(value) => { changeMultiSelectField('countries', value); }}
+                      onChange={(value) => { changeInput({key: 'countries', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -133,7 +130,7 @@ class DestinationTab extends Component {
                       label={'Region'}
                       value={fieldValues.regions}
                       options={regions}
-                      onChange={(value) => { changeMultiSelectField('regions', value); }}
+                      onChange={(value) => { changeInput({key: 'regions', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -142,26 +139,28 @@ class DestinationTab extends Component {
                       label={'City'}
                       value={fieldValues.cities}
                       options={cities}
-                      onChange={(value) => { changeMultiSelectField('cities', value); }}
+                      onChange={(value) => { changeInput({key: 'cities', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
                       canSelectPlaceholder
+                      keyProp={'organization'}
                       data={organizations}
                       defaultSelected={fieldValues.organization}
                       placeholder='Enter Organizaton'
-                      onSelect={({value}) => { changeDropdownField('organization', value); }}
+                      onSelect={(field) => { changeInput(field); }}
                       label={'Organizaton'}
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
                       canSelectPlaceholder
+                      keyProp={'accountProduct'}
                       data={accountProducts}
                       defaultSelected={fieldValues.accountProduct}
                       placeholder='Enter Account Product'
-                      onSelect={({value}) => { changeDropdownField('accountProduct', value); }}
+                      onSelect={(field) => { changeInput(field); }}
                       label={'Account Product'}
                     />
                 </div>

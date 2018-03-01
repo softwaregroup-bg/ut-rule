@@ -12,17 +12,13 @@ const defaultProps = {
 };
 
 export const Limits = (props) => {
-    const {
-        fieldValues,
-        currencies
-    } = props;
+    const { fieldValues, currencies } = props;
 
-    const {
-        addLimit,
-        removeLimit,
-        setLimitField
-    } = props.actions;
-
+    const { addLimit, removeLimit, changeInput } = props.actions;
+    const setLimitField = (index, field) => {
+        field.key = [index, field.key].join(',');
+        changeInput(field, 'limit');
+    };
     const renderTableHead = () => (
         <thead>
             <tr>
@@ -52,66 +48,67 @@ export const Limits = (props) => {
                 <td className={style.currency}>
                     <Dropdown
                       style={{width: '120px'}}
+                      keyProp={'currency'}
                       data={currencies}
                       defaultSelected={limit.currency}
                       placeholder='Currency'
-                      onSelect={({value}) => { setLimitField(index, 'currency', value); }}
+                      onSelect={(field) => { setLimitField(index, field); }}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='txMin'
                       value={limit.txMin}
-                      onChange={({value}) => setLimitField(index, 'txMin', value)}
+                      onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='txMax'
                       value={limit.txMax}
-                      onChange={({value}) => setLimitField(index, 'txMax', value)}
+                      onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='dailyMaxAmount'
                       value={limit.dailyMaxAmount}
-                      onChange={({value}) => setLimitField(index, 'dailyMaxAmount', value)}
+                      onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='dailyMaxCount'
                       value={limit.dailyMaxCount}
-                      onChange={({value}) => setLimitField(index, 'dailyMaxCount', value)}
+                      onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='weeklyMaxAmount'
                       value={limit.weeklyMaxAmount}
-                      onChange={({value}) => setLimitField(index, 'weeklyMaxAmount', value)}
+                      onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='weeklyMaxCount'
                       value={limit.weeklyMaxCount}
-                      onChange={({value}) => setLimitField(index, 'weeklyMaxCount', value)}
+                      onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='monthlyMaxAmount'
                       value={limit.monthlyMaxAmount}
-                      onChange={({value}) => setLimitField(index, 'monthlyMaxAmount', value)}
+                      onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='monthlyMaxCount'
                       value={limit.monthlyMaxCount}
-                      onChange={({value}) => setLimitField(index, 'monthlyMaxCount', value)}
+                      onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
                 <td className={style.deleteCol}>

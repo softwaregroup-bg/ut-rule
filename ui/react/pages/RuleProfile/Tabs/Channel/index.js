@@ -7,6 +7,8 @@ import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Input from 'ut-front-react/components/Input';
 import style from '../style.css';
 import * as actions from '../../actions';
+import validator from '../../validator';
+import { fromJS } from 'immutable';
 const destinationProp = 'channel';
 const propTypes = {
     actions: PropTypes.object,
@@ -14,7 +16,8 @@ const propTypes = {
     regions: PropTypes.array,
     cities: PropTypes.array,
     organizations: PropTypes.array,
-    fieldValues: PropTypes.object
+    fieldValues: PropTypes.object,
+    errors: PropTypes.object // immutable
 };
 
 const defaultProps = {
@@ -47,23 +50,23 @@ class ChannelTab extends Component {
         let removeProperty = (index) => {
             this.props.actions.removeProperty(index, destinationProp);
         };
-        let setPropertyField = (index, key, value) => {
-            this.props.actions.setPropertyField(index, key, value, destinationProp);
+        let changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
         };
         return properties.map((prop, index) => {
             return (
                 <tr key={`${index}`}>
                     <td>
                         <Input
-                          keyProp='name'
-                          onChange={({key, value}) => { setPropertyField(index, key, value); }}
+                          keyProp={['properties', index, 'name'].join(',')}
+                          onChange={(field) => { changeInput(field); }}
                           value={prop.name}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='value'
-                          onChange={({key, value}) => { setPropertyField(index, key, value); }}
+                          keyProp={['properties', index, 'value'].join(',')}
+                          onChange={(field) => { changeInput(field); }}
                           value={prop.value}
                         />
                     </td>
@@ -105,13 +108,11 @@ class ChannelTab extends Component {
             regions,
             cities,
             organizations,
-            fieldValues
+            fieldValues,
+            errors
         } = this.props;
-        let changeMultiSelectField = (field, value) => {
-            this.props.actions.changeMultiSelectField(field, value, destinationProp);
-        };
-        let changeDropdownField = (field, value) => {
-            this.props.actions.changeDropdownField(field, value, destinationProp);
+        let changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
         };
 
         return (
@@ -119,8 +120,11 @@ class ChannelTab extends Component {
                 <div className={style.inputWrapper}>
                     <Input
                       label='Priority'
+                      keyProp='priority'
                       value={fieldValues.priority}
-                      onChange={({value}) => changeDropdownField('priority', value)}
+                      validators={validator.priority}
+                      isValid={!errors.get('priority')} errorMessage={errors.get('priority')}
+                      onChange={(field) => changeInput(field)}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -129,7 +133,7 @@ class ChannelTab extends Component {
                       label={'Country'}
                       value={fieldValues.countries}
                       options={countries}
-                      onChange={(value) => { changeMultiSelectField('countries', value); }}
+                      onChange={(value) => { changeInput({key: 'countries', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -138,7 +142,7 @@ class ChannelTab extends Component {
                       label={'Region'}
                       value={fieldValues.regions}
                       options={regions}
-                      onChange={(value) => { changeMultiSelectField('regions', value); }}
+                      onChange={(value) => { changeInput({key: 'regions', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -147,16 +151,17 @@ class ChannelTab extends Component {
                       label={'City'}
                       value={fieldValues.cities}
                       options={cities}
-                      onChange={(value) => { changeMultiSelectField('cities', value); }}
+                      onChange={(value) => { changeInput({key: 'cities', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
                       canSelectPlaceholder
+                      keyProp={'organization'}
                       data={organizations}
                       defaultSelected={fieldValues.organization}
                       placeholder='Enter Organizaton'
-                      onSelect={({value}) => { changeDropdownField('organization', value); }}
+                      onSelect={(field) => { changeInput(field); }}
                       label={'Organizaton'}
                     />
                 </div>
@@ -200,13 +205,15 @@ ChannelTab.propTypes = propTypes;
 ChannelTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
+    window.state = state;
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
         countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, 'channel']).toJS()
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, 'channel']).toJS(),
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', 'channel']) || fromJS({})
     };
 };
 

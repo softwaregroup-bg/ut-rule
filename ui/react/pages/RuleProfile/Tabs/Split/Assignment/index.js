@@ -2,14 +2,12 @@ import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
 
 import style from '../../style.css';
-// import plusImage from '../assets/add_new.png';
-// import deleteImage from '../assets/delete.png';
 
 export const Assignments = (props) => {
     const {
         addAssignment,
         removeAssignment,
-        setAssignmentField,
+        changeInput,
         assignments,
         splitIndex
     } = props;
@@ -34,43 +32,43 @@ export const Assignments = (props) => {
                 <tr key={`${index}`}>
                     <td>
                         <Input
-                          keyProp='description'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'description'}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.description}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='debit'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'debit'}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.debit}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='credit'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'credit'}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.credit}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='percent'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'percent'}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.percent}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='minAmount'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'minAmount'}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.minAmount}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='maxAmount'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'maxAmount'}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.maxAmount}
                         />
                     </td>
@@ -105,7 +103,7 @@ export const Assignments = (props) => {
 Assignments.propTypes = {
     addAssignment: PropTypes.func,
     removeAssignment: PropTypes.func,
-    setAssignmentField: PropTypes.func,
+    changeInput: PropTypes.func,
     assignments: PropTypes.array,
     splitIndex: PropTypes.number
 };

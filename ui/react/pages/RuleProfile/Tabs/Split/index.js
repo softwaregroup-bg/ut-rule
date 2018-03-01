@@ -9,7 +9,7 @@ import Assignments from './Assignment';
 import Info from './Info';
 import Cumulative from './Cumulative';
 import * as actions from '../../actions';
-
+const destinationProp = 'split';
 const propTypes = {
     currencies: PropTypes.array,
     actions: PropTypes.object,
@@ -26,21 +26,28 @@ class SplitTab extends Component {
         const {
             addAssignment,
             removeAssignment,
-            setAssignmentField,
-            changeSplitInputField,
-            changeSplitMultiSelectField,
-            setCumulativeField,
+            changeInput,
             addCumulativeRange,
             removeCumulativeRange,
-            setCumulativeRangeField,
             removeSplit
         } = this.props.actions;
-        const {
-            name,
-            assignments,
-            tags,
-            cumulatives
-        } = split;
+        const { name, assignments, tags, cumulatives } = split;
+        const setAssignment = (assId, field) => {
+            field.key = ['splits', index, 'assignments', assId, field.key].join(',');
+            changeInput(field, destinationProp);
+        };
+        const setCumulative = (field) => {
+            field.key = ['splits', index, 'cumulatives', 0, field.key].join(',');
+            changeInput(field, destinationProp);
+        };
+        const setCumulativeRange = (cumulativeId, rangeId, field) => {
+            field.key = ['splits', index, 'cumulatives', cumulativeId, 'ranges', rangeId, field.key].join(',');
+            changeInput(field, destinationProp);
+        };
+        const setInfo = (field) => {
+            field.key = ['splits', index, field.key].join(',');
+            changeInput(field, destinationProp);
+        };
         return (
             <div key={index}>
                 <div className={style.splitHeader}>
@@ -54,18 +61,16 @@ class SplitTab extends Component {
                               title='Split Info'
                               wrapperClassName >
                                   <Info
-                                    changeInputField={changeSplitInputField}
-                                    changeMultiSelectField={changeSplitMultiSelectField}
+                                    changeInputField={setInfo}
                                     name={name}
-                                    selectedTags={tags}
-                                    splitIndex={index} />
+                                    selectedTags={tags} />
                             </TitledContentBox>
                             <div className={style.rangeWrapper}>
                                 <TitledContentBox title='Assignment'>
                                   <Assignments
                                     addAssignment={addAssignment}
                                     removeAssignment={removeAssignment}
-                                    setAssignmentField={setAssignmentField}
+                                    changeInput={setAssignment}
                                     assignments={assignments}
                                     splitIndex={index}
                                     />
@@ -75,10 +80,10 @@ class SplitTab extends Component {
                         <div className={style.contentBoxWrapper}>
                             <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding} >
                               <Cumulative
-                                setCumulativeField={setCumulativeField}
+                                setCumulativeField={setCumulative}
                                 addCumulativeRange={addCumulativeRange}
                                 removeCumulativeRange={removeCumulativeRange}
-                                setCumulativeRangeField={setCumulativeRangeField}
+                                setCumulativeRangeField={setCumulativeRange}
                                 cumulatives={cumulatives}
                                 currencies={currencies}
                                 splitIndex={index}

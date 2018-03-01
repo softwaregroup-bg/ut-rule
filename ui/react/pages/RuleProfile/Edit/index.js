@@ -80,27 +80,26 @@ class RuleEdit extends Component {
             {
                 title: 'Channel',
                 component: <Channel />
-                // validations: getGeneralInfoTabValidator()
-            },
-            {
-                title: 'Source',
-                component: <Source />
             },
             {
                 title: 'Operation',
                 component: <Operation />
             },
             {
+                title: 'Source',
+                component: <Source />
+            },
+            {
                 title: 'Destination',
                 component: <Destination />
             },
             {
-                title: 'Fee and Commission Split',
-                component: <Split />
-            },
-            {
                 title: 'Limit',
                 component: <Limit />
+            },
+            {
+                title: 'Fee and Commission Split',
+                component: <Split />
             }
         ];
         return tabs;

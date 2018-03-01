@@ -51,35 +51,35 @@ export const Cumulative = (props) => {
                     <Input
                       keyProp='dailyCount'
                       value={cumulative.dailyCount}
-                      onChange={({key, value}) => { setCumulativeField(splitIndex, 0, key, value); }}
+                      onChange={(field) => { setCumulativeField(field); }}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='dailyAmount'
                       value={cumulative.dailyAmount}
-                      onChange={({key, value}) => { setCumulativeField(splitIndex, 0, key, value); }}
+                      onChange={(field) => { setCumulativeField(field); }}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='weeklyCount'
                       value={cumulative.weeklyCount}
-                      onChange={({key, value}) => { setCumulativeField(splitIndex, 0, key, value); }}
+                      onChange={(field) => { setCumulativeField(field); }}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='weeklyAmount'
                       value={cumulative.weeklyAmount}
-                      onChange={({key, value}) => { setCumulativeField(splitIndex, 0, key, value); }}
+                      onChange={(field) => { setCumulativeField(field); }}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='monthlyCount'
                       value={cumulative.monthlyCount}
-                      onChange={({key, value}) => { setCumulativeField(splitIndex, 0, key, value); }}
+                      onChange={(field) => { setCumulativeField(field); }}
                     />
                 </td>
                 <td>
@@ -87,7 +87,7 @@ export const Cumulative = (props) => {
                       inputWrapClassName={style.inputWrapper}
                       value={cumulative.monthlyAmount}
                       keyProp='monthlyAmount'
-                      onChange={({key, value}) => { setCumulativeField(splitIndex, 0, key, value); }}
+                      onChange={(field) => { setCumulativeField(field); }}
                     />
                 </td>
             </tr>
@@ -102,28 +102,28 @@ export const Cumulative = (props) => {
                         <Input
                           keyProp='startAmount'
                           value={range.startAmount}
-                          onChange={({key, value}) => { setCumulativeRangeField(splitIndex, 0, index, key, value); }}
+                          onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
                         />
                     </td>
                     <td>
                         <Input
                           keyProp='percent'
                           value={range.percent}
-                          onChange={({key, value}) => { setCumulativeRangeField(splitIndex, 0, index, key, value); }}
+                          onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
                         />
                     </td>
                     <td>
                         <Input
                           keyProp='minAmount'
                           value={range.minAmount}
-                          onChange={({key, value}) => { setCumulativeRangeField(splitIndex, 0, index, key, value); }}
+                          onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
                         />
                     </td>
                     <td>
                         <Input
                           keyProp='maxAmount'
                           value={range.maxAmount}
-                          onChange={({key, value}) => { setCumulativeRangeField(splitIndex, 0, index, key, value); }}
+                          onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
                         />
                     </td>
                     <td className={style.deleteCol}>
@@ -137,11 +137,12 @@ export const Cumulative = (props) => {
         <div className={style.propertyTable}>
              <div className={style.dropDownWrapper}>
                 <Dropdown
+                  keyProp={'currency'}
                   canSelectPlaceholder
                   data={currencies}
                   defaultSelected={cumulative.currency}
                   placeholder='Currency'
-                  onSelect={({value}) => { setCumulativeField(splitIndex, 0, 'currency', value); }}
+                  onSelect={(field) => { setCumulativeField(field); }}
                   label={'Currency'}
                 />
             </div>

@@ -42,6 +42,7 @@ export const emptyLimit = {
 };
 
 export const defaultTabState = {
+    errors: {},
     channel: {
         priority: '',
         countries: [],

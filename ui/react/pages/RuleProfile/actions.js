@@ -35,15 +35,9 @@ export const changeRuleProfile = (mode, id) => ({
 });
 
 // channel actions
-export const changeMultiSelectField = (field, newValue, destinationProp) => ({
-    type: actionTypes.CHANGE_MULTISELECT_FIELD,
-    params: {field, newValue},
-    destinationProp
-});
-
-export const changeDropdownField = (field, newValue, destinationProp) => ({
-    type: actionTypes.CHANGE_DROPDOWN_FIELD,
-    params: {field, newValue},
+export const changeInput = (params, destinationProp) => ({
+    type: actionTypes.CHANGE_INPUT,
+    params: params || {},
     destinationProp
 });
 
@@ -58,12 +52,6 @@ export const removeProperty = (propertyId, destinationProp) => ({
     destinationProp
 });
 
-export const setPropertyField = (propertyId, field, newValue, destinationProp) => ({
-    type: actionTypes.SET_PROPERTY_FIELD,
-    params: {propertyId, field, newValue},
-    destinationProp
-});
-
 export const addLimit = () => {
     return {
         type: actionTypes.ADD_LIMIT
@@ -73,11 +61,6 @@ export const addLimit = () => {
 export const removeLimit = (limitId) => ({
     type: actionTypes.REMOVE_LIMIT,
     params: {limitId}
-});
-
-export const setLimitField = (limitId, field, newValue) => ({
-    type: actionTypes.SET_LIMIT_FIELD,
-    params: {limitId, field, newValue}
 });
 
 export const addAssignment = (splitIndex) => ({
@@ -90,31 +73,6 @@ export const removeAssignment = (splitIndex, propertyId) => ({
     params: {splitIndex, propertyId}
 });
 
-export const setAssignmentField = (splitIndex, propertyId, field, newValue) => ({
-    type: actionTypes.SET_ASSIGNMENT_FIELD,
-    params: {splitIndex, propertyId, field, newValue}
-});
-
-export const addCumulative = (splitIndex) => ({
-    type: actionTypes.ADD_CUMULATIVE,
-    params: {splitIndex}
-});
-
-export const removeCumulative = (splitIndex, propertyId) => ({
-    type: actionTypes.REMOVE_CUMULATIVE,
-    params: {splitIndex, propertyId}
-});
-
-export const setCumulativeField = (splitIndex, cumulativeId, field, newValue) => ({
-    type: actionTypes.SET_CUMULATIVE_FIELD,
-    params: {splitIndex, cumulativeId, field, newValue}
-});
-
-export const changeInputField = (splitIndex, field, newValue) => ({
-    type: actionTypes.CHANGE_INPUT_FIELD,
-    params: {splitIndex, field, newValue}
-});
-
 export const addCumulativeRange = (splitIndex, cumulativeId) => ({
     type: actionTypes.ADD_CUMULATIVE_RANGE,
     params: {splitIndex, cumulativeId}
@@ -125,11 +83,6 @@ export const removeCumulativeRange = (splitIndex, cumulativeId, rangeId) => ({
     params: {splitIndex, cumulativeId, rangeId}
 });
 
-export const setCumulativeRangeField = (splitIndex, cumulativeId, rangeId, field, newValue) => ({
-    type: actionTypes.SET_CUMULATIVE_RANGE_FIELD,
-    params: {splitIndex, cumulativeId, rangeId, field, newValue}
-});
-
 export const addSplit = () => ({
     type: actionTypes.ADD_SPLIT
 });
@@ -137,19 +90,4 @@ export const addSplit = () => ({
 export const removeSplit = (splitIndex) => ({
     type: actionTypes.REMOVE_SPLIT,
     params: {splitIndex}
-});
-
-export const changeSplitMultiSelectField = (splitIndex, field, newValue) => ({
-    type: actionTypes.CHANGE_SPLIT_MULTISELECT_FIELD,
-    params: {splitIndex, field, newValue}
-});
-
-export const changeSplitDropdownField = (splitIndex, field, newValue) => ({
-    type: actionTypes.CHANGE_SPLIT_DROPDOWN_FIELD,
-    params: {splitIndex, field, newValue}
-});
-
-export const changeSplitInputField = (splitIndex, field, newValue) => ({
-    type: actionTypes.CHANGE_SPLIT_INPUT_FIELD,
-    params: {splitIndex, field, newValue}
 });

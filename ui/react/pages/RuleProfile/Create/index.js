@@ -5,7 +5,6 @@ import { fromJS } from 'immutable';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import { getLink } from 'ut-front/react/routerHelper';
 import { removeTab } from 'ut-front-react/containers/TabMenu/actions';
-
 import Page from 'ut-front-react/components/PageLayout/Page';
 import Container from 'ut-front-react/components/PageLayout/Container';
 import Content from 'ut-front-react/components/PageLayout/Content';
@@ -67,27 +66,26 @@ class RuleCreate extends Component {
             {
                 title: 'Channel',
                 component: <Channel />
-                // validations: getGeneralInfoTabValidator()
-            },
-            {
-                title: 'Source',
-                component: <Source />
             },
             {
                 title: 'Operation',
                 component: <Operation />
             },
             {
+                title: 'Source',
+                component: <Source />
+            },
+            {
                 title: 'Destination',
                 component: <Destination />
             },
             {
-                title: 'Fee and Commission Split',
-                component: <Split />
-            },
-            {
                 title: 'Limit',
                 component: <Limit />
+            },
+            {
+                title: 'Fee and Commission Split',
+                component: <Split />
             }
         ];
         return tabs;

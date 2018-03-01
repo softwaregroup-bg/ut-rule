@@ -7,18 +7,17 @@ import style from '../../style.css';
 export const Info = (props) => {
     const {
         changeInputField,
-        changeMultiSelectField,
         selectedTags,
-        splitIndex,
         name
     } = props;
     return (
         <div>
             <div className={style.inputWrapper}>
                 <Input
+                  keyProp={'name'}
                   label='Split Name'
                   value={name}
-                  onChange={({value}) => changeInputField(splitIndex, 'name', value)}
+                  onChange={(field) => changeInputField(field)}
                 />
             </div>
             <div className={style.inputWrapper}>
@@ -27,7 +26,7 @@ export const Info = (props) => {
                   label={'Tag'}
                   value={selectedTags}
                   options={splitTags}
-                  onChange={(value) => { changeMultiSelectField(splitIndex, 'tags', value); }}
+                  onChange={(value) => { changeInputField({key: 'tags', value}); }}
                 />
             </div>
         </div>
@@ -36,9 +35,7 @@ export const Info = (props) => {
 
 Info.propTypes = {
     changeInputField: PropTypes.func,
-    changeMultiSelectField: PropTypes.func,
     selectedTags: PropTypes.array,
-    splitIndex: PropTypes.number,
     name: PropTypes.string
 };
 

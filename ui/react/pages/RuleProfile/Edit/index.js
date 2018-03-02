@@ -19,6 +19,7 @@ import Split from '../Tabs/Split';
 import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
 import { prepateRuleToSave } from '../helpers';
+import HistoryLog from 'ut-audit/modules/history/ui/react/containers/HistoryLog';
 let status = fromJS({
     status: 'SUCCESS',
     message: 'Rule successfully saved'
@@ -103,6 +104,12 @@ class RuleEdit extends Component {
                 component: <Limit />
             }
         ];
+        if (this.context.checkPermission('history.customer.listChanges')) {
+            tabs.push({
+                title: 'History Log',
+                component: <HistoryLog objectId={this.props.params.id} objectName={'rule'} objectDisplayName={((this.props.remoteRule.condition || [])[0] || {}).priority} />
+            });
+        }
         return tabs;
     }
     getActionButtons() {
@@ -162,6 +169,10 @@ class RuleEdit extends Component {
         );
     }
 }
+
+RuleEdit.contextTypes = {
+    checkPermission: PropTypes.func
+};
 
 RuleEdit.propTypes = {
     rule: PropTypes.object,

@@ -1,4 +1,5 @@
 var path = require('path');
+let { transform } = require('../../history/transform');
 var wrapper = {
     'itemName': function(msg, $meta) {
         $meta.method = 'core.itemName.fetch';
@@ -73,5 +74,8 @@ module.exports = {
 
             return {items: data};
         });
+    },
+    'rule.historyTransform': function(msg, $meta) {
+        return transform(msg, 'rule');
     }
 };

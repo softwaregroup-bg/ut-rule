@@ -1,8 +1,8 @@
 var { mapconfig } = require('ut-audit/modules/history/helpers/mapconfig');
 var { prepareRuleModel } = require('./helpers');
 
-function prepareRulesHistory(data, config) {
-    var rules = mapconfig(data, config);
+function prepareRulesHistory(data) {
+    var rules = mapconfig(data);
     var formattedRules = prepareRuleModel(data);
     rules['Channel Info'] = formattedRules.channel;
     rules['Source'] = formattedRules.source;

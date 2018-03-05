@@ -18,7 +18,6 @@ const propMap = {
     region: 'Region',
     city: 'City',
     operation: 'Operation',
-    organization: 'Organization',
     so: 'source',
     do: 'destination',
     co: 'channel',
@@ -44,15 +43,12 @@ const prepareRuleModel = (result) => {
             Country: [],
             Region: [],
             City: [],
-            'Account Product': result.conditionItem.find((fil) => { return fil.type === 'accountProduct' && fil.factor === 'ds'; }).itemName,
             Properties: []
         },
         source: {
             Country: [],
             Region: [],
             City: [],
-            Product: result.conditionItem.find((fil) => { return fil.type === 'cardProduct' && fil.factor === 'ss'; }).itemName,
-            'Account Product': result.conditionItem.find((fil) => { return fil.type === 'accountProduct' && fil.factor === 'ss'; }).itemName,
             Properties: [] },
         split: {
             Split: []
@@ -69,7 +65,10 @@ const prepareRuleModel = (result) => {
         var des = rule[propMap[ca.factor]];
         des && (des['Organization'] = ca.organizationName);
     });
-
+    (result.conditionItem || []).filter((prod) => prod.type === 'cardProduct' || prod.type === 'accountProduct').forEach((cp) => {
+        var product = rule[propMap[cp.factor]] || rule[propMap[cp.factor]][propMap[cp.type]];
+        product && (cp.type === 'cardProduct') ? product['Product'] = cp.itemName : product['Account Product'] = cp.itemName;
+    });
     (result.conditionItem || []).forEach((item) => {
         if (['operation', 'country', 'city', 'region'].indexOf(item.type) > -1) {
             var obj = rule[propMap[item.factor]] && rule[propMap[item.factor]][propMap[item.type]];

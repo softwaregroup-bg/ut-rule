@@ -8,7 +8,6 @@ var ph = require('./prepare');
             }
 */
 function transform(msg, objectName) {
-    debugger;
     return {
         data: ph[objectName] ? ph[objectName](msg.data) : msg.data
     };

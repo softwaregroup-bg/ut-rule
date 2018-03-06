@@ -1,3 +1,28 @@
+<a name="9.15.0"></a>
+# [9.15.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.14.0...v9.15.0) (2018-03-02)
+
+
+### Bug Fixes
+
+* add fee ([#96](https://github.com/softwaregroup-bg/ut-rule/issues/96)) ([76bd539](https://github.com/softwaregroup-bg/ut-rule/commit/76bd539))
+* add support for pkg ([7c68523](https://github.com/softwaregroup-bg/ut-rule/commit/7c68523))
+* dependencies ([17d81c9](https://github.com/softwaregroup-bg/ut-rule/commit/17d81c9))
+* move frontend as peerDependency ([19590ad](https://github.com/softwaregroup-bg/ut-rule/commit/19590ad))
+* remove db prefix & refactor ([#90](https://github.com/softwaregroup-bg/ut-rule/issues/90)) ([1397fd4](https://github.com/softwaregroup-bg/ut-rule/commit/1397fd4))
+* rename rule.limit.get ([419c386](https://github.com/softwaregroup-bg/ut-rule/commit/419c386))
+* rename title for rule management [UTP-57] ([#91](https://github.com/softwaregroup-bg/ut-rule/issues/91)) ([9f5f1d0](https://github.com/softwaregroup-bg/ut-rule/commit/9f5f1d0))
+* return NULL fees when no matches ([c9f166a](https://github.com/softwaregroup-bg/ut-rule/commit/c9f166a))
+* rule screen issues ([#92](https://github.com/softwaregroup-bg/ut-rule/issues/92)) ([39ba6e7](https://github.com/softwaregroup-bg/ut-rule/commit/39ba6e7))
+* UTP-175 ([#93](https://github.com/softwaregroup-bg/ut-rule/issues/93)) ([381fe03](https://github.com/softwaregroup-bg/ut-rule/commit/381fe03))
+* versions ([7038ce0](https://github.com/softwaregroup-bg/ut-rule/commit/7038ce0))
+
+
+### Features
+
+* add procedure to retrieve limits for loan approval levels LOAN-239 ([#94](https://github.com/softwaregroup-bg/ut-rule/issues/94)) ([6d6bcfb](https://github.com/softwaregroup-bg/ut-rule/commit/6d6bcfb))
+
+
+
 <a name="9.14.0"></a>
 # [9.14.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.14.0-rc-acapulco.6...v9.14.0) (2017-12-14)
 

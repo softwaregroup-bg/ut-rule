@@ -1,3 +1,8 @@
+<a name="9.16.0"></a>
+# [9.16.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.15.0...v9.16.0) (2018-03-06)
+
+
+
 <a name="9.15.0"></a>
 # [9.15.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.14.0...v9.15.0) (2018-03-02)
 

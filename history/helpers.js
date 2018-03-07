@@ -1,3 +1,4 @@
+
 const splitTags = [
     {key: 'acquirer', name: 'Acquirer'},
     {key: 'issuer', name: 'Issuer'},
@@ -18,47 +19,46 @@ const propMap = {
     region: 'Region',
     city: 'City',
     operation: 'Operation',
-    so: 'source',
-    do: 'destination',
-    co: 'channel',
-    ss: 'source',
-    ds: 'destination',
-    cs: 'channel',
-    oc: 'operation',
-    sc: 'source',
-    dc: 'destination'
+    so: 'Source',
+    do: 'Destination',
+    co: 'Channel',
+    ss: 'Source',
+    ds: 'Destination',
+    cs: 'Channel',
+    oc: 'Operation',
+    sc: 'Source',
+    dc: 'Destination'
 };
 
 const prepareRuleModel = (result) => {
     var condition = (result.condition || [])[0] || {};
     var rule = {
-        channel: {
-            Priority: condition.priority,
-            Country: [],
-            Region: [],
-            City: [],
-            Properties: []
+        Channel: {
+                Priority: condition.priority,
+                Country: [],
+                Region: [],
+                City: [],
+                Properties: []
         },
-        destination: {
-            Country: [],
-            Region: [],
-            City: [],
-            Properties: []
+        Destination: {
+                Country: [],
+                Region: [],
+                City: [],
+                Properties: []
         },
-        source: {
-            Country: [],
-            Region: [],
-            City: [],
-            Properties: [] },
-        split: {
-            Split: []
+        Source: {
+                Country: [],
+                Region: [],
+                City: [],
+                Properties: []
         },
-        limit: [],
-        operation: {
-            Operation: [],
-            'Start Date': condition.operationStartDate,
-            'End Date': condition.operationEndDate,
-            Properties: []
+        Split: [],
+        Limit: [],
+        Operation: {
+                Operation: [],
+                'Start Date': condition.operationStartDate,
+                'End Date': condition.operationEndDate,
+                Properties: []
         }
     };
     (result.conditionActor || []).forEach((ca) => {
@@ -85,7 +85,7 @@ const prepareRuleModel = (result) => {
         });
     });
     result.limit && result.limit.sort((a, b) => a.limitId > b.limitId).forEach((limit) => {
-        rule.limit.push({
+        rule.Limit.push({
             Currency: limit.currency,
             'Transaction Amount Min': limit.minAmount,
             'Transaction Amount Max': limit.maxAmount,
@@ -143,7 +143,7 @@ const prepareRuleModel = (result) => {
                 'Max Amount': assignment.maxValue
             });
         });
-        rule.split.Split.push(split);
+        rule.Split.push(split);
     });
     return rule;
 };

@@ -1,16 +1,7 @@
-var { mapconfig } = require('ut-audit/modules/history/helpers/mapconfig');
 var { prepareRuleModel } = require('./helpers');
 
 function prepareRulesHistory(data) {
-    var rules = mapconfig(data);
-    var formattedRules = prepareRuleModel(data);
-    rules['Channel Info'] = formattedRules.channel;
-    rules['Source'] = formattedRules.source;
-    rules['Operation'] = formattedRules.operation;
-    rules['Destination'] = formattedRules.destination;
-    rules['Fee and Commission Split'] = formattedRules.split;
-    rules['Limit'] = formattedRules.limit;
-
+    var rules = prepareRuleModel(data);
     return rules;
 };
 

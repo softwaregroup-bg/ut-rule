@@ -34,31 +34,31 @@ const prepareRuleModel = (result) => {
     var condition = (result.condition || [])[0] || {};
     var rule = {
         Channel: {
-                Priority: condition.priority,
-                Country: [],
-                Region: [],
-                City: [],
-                Properties: []
+            Priority: condition.priority,
+            Country: [],
+            Region: [],
+            City: [],
+            Properties: []
         },
         Destination: {
-                Country: [],
-                Region: [],
-                City: [],
-                Properties: []
+            Country: [],
+            Region: [],
+            City: [],
+            Properties: []
         },
         Source: {
-                Country: [],
-                Region: [],
-                City: [],
-                Properties: []
+            Country: [],
+            Region: [],
+            City: [],
+            Properties: []
         },
         Split: [],
         Limit: [],
         Operation: {
-                Operation: [],
-                'Start Date': condition.operationStartDate,
-                'End Date': condition.operationEndDate,
-                Properties: []
+            Operation: [],
+            'Start Date': condition.operationStartDate,
+            'End Date': condition.operationEndDate,
+            Properties: []
         }
     };
     (result.conditionActor || []).forEach((ca) => {

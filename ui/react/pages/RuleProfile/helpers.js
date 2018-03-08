@@ -1,5 +1,16 @@
 import { errorMessage } from './validator';
+import { defaultErrorState } from './Tabs/defaultState';
 import { fromJS } from 'immutable';
+
+export const tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
+export const tabTitleMap = {
+    channel: 'Channel',
+    operation: 'Operation',
+    source: 'Source',
+    destination: 'Destination',
+    limit: 'Limit',
+    split: 'Fee and commission split'
+};
 export const splitTags = [
     {key: 'acquirer', name: 'Acquirer'},
     {key: 'issuer', name: 'Issuer'},
@@ -427,20 +438,20 @@ export const prepareRuleModel = (result) => {
     return rule;
 };
 
-export const prepareRuleErrors = (rule) => {
-    var errors = fromJS({});
+export const prepareRuleErrors = (rule, existErrors) => {
+    var errors = fromJS(existErrors || defaultErrorState);
     let { destination, source, operation, channel, split, limit } = rule;
     channel && !channel.priority && (errors = errors.setIn(['channel', 'priority'], errorMessage.priorityRequired));
-    channel.properties && channel.properties.forEach((prop, idx) => {
+    channel && channel.properties && channel.properties.forEach((prop, idx) => {
         prop.value && !prop.name && (errors = errors.setIn(['channel', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
     });
-    source.properties && source.properties.forEach((prop, idx) => {
+    source && source.properties && source.properties.forEach((prop, idx) => {
         prop.value && !prop.name && (errors = errors.setIn(['source', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
     });
-    destination.properties && destination.properties.forEach((prop, idx) => {
+    destination && destination.properties && destination.properties.forEach((prop, idx) => {
         prop.value && !prop.name && (errors = errors.setIn(['destination', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
     });
-    operation.properties && operation.properties.forEach((prop, idx) => {
+    operation && operation.properties && operation.properties.forEach((prop, idx) => {
         prop.value && !prop.name && (errors = errors.setIn(['operation', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
     });
     limit && limit.forEach((lim, idx) => {
@@ -448,27 +459,26 @@ export const prepareRuleErrors = (rule) => {
     });
     split && split.splits.forEach((split, idx) => {
         let isEmptySplit = isEmptyValuesOnly(split);
-        let cumulative = split.cumulatives && split.cumulatives[0];
         if (!isEmptySplit) {
+            let cumulative = split.cumulatives && split.cumulatives[0];
             // info
             !split.name && (errors = errors.setIn(['split', 'splits', idx, 'name'], errorMessage.splitNameRequired));
-            // assignments
-            split.assignments && split.assignments.forEach((ass, aidx) => {
-                ass.minAmount && ass.maxAmount && parseFloat(ass.minAmount) > parseFloat(ass.maxAmount) &&
-                (errors = errors.setIn(['split', 'splits', idx, 'assignments', aidx, 'minAmount'], errorMessage.minLessThanMaxAmount));
+            // assignement
+            split && split.assignments && split.assignments.forEach((ass, assidx) => {
+                ass && !ass.description && !isEmptyValuesOnly(ass) &&
+                    (errors = errors.setIn(['split', 'splits', idx, 'assignments', assidx, 'description'], errorMessage.descriptionRequired));
+                ass && !ass.credit && !isEmptyValuesOnly(ass) &&
+                    (errors = errors.setIn(['split', 'splits', idx, 'assignments', assidx, 'credit'], errorMessage.creditRequired));
             });
             // cumulative
             cumulative && !cumulative.currency && !isEmptyValuesOnly(cumulative) &&
             (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'currency'], errorMessage.currencyRequired));
 
-            cumulative && cumulative.ranges && cumulative.ranges.forEach((range, ridx) => {
-                range.minAmount && range.maxAmount && parseFloat(range.minAmount) > parseFloat(range.maxAmount) &&
-                (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'ranges', ridx, 'minAmount'], errorMessage.minLessThanMaxAmount));
+            // ranges
+            cumulative && cumulative.ranges && cumulative.ranges.forEach(function(range, ridx) {
+                range && !isEmptyValuesOnly(range) && !range.startAmount &&
+                    (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'ranges', ridx, 'startAmount'], errorMessage.startAmountRequired));
             });
-
-            cumulative && cumulative.dailyCount && (cumulative.weeklyCount || cumulative.monthlyCount) &&
-           (parseFloat(cumulative.dailyCount) > parseFloat(cumulative.weeklyCount) || parseFloat(cumulative.dailyCount) > parseFloat(cumulative.monthlyCount)) &&
-           (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'dailyCount'], errorMessage.dailyCount));
         }
     });
     return errors.toJS();
@@ -476,7 +486,7 @@ export const prepareRuleErrors = (rule) => {
 
 export const isEmptyValuesOnly = (obj) => {
     var tempIsEmpty = true;
-    if (typeof obj === 'object') {
+    if (obj && typeof obj === 'object') {
         Object.keys(obj).forEach((objKey) => {
             if (!isEmptyValuesOnly(obj[objKey])) {
                 tempIsEmpty = false;
@@ -502,7 +512,6 @@ export const isEqual = (obj1, obj2) => {
 
 export const getRuleErrorCount = (errors) => {
     var flattenObjKeys = Object.keys(flatten(errors));
-    var tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
     let errorCount = {};
     tabs.map((tab) => {
         errorCount[tab] = flattenObjKeys.filter((fkey) => fkey.startsWith(tab)).length;
@@ -526,11 +535,3 @@ export const flatten = function(ob) {
     }
     return result;
 };
-
-// export const prepareRuleErrors = (validationErrors) => {
-//     let errors = fromJS({});
-//     (validationErrors || []).forEach((err) => {
-//         errors = errors.setIn(err.key, err.errorMessage);
-//     });
-//     return errors.toJS();
-// };

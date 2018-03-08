@@ -1,16 +1,26 @@
 import { textValidations } from 'ut-front-react/validator/constants.js';
-
-const errorMessage = {
+const limitAmountOrder = ['txMin', 'txMax', 'dailyMaxAmount', 'weeklyMaxAmount', 'monthlyMaxAmount'];
+const limitCountOrder = ['dailyMaxCount', 'weeklyMaxCount', 'monthlyMaxCount'];
+const minMaxOrder = ['minAmount', 'maxAmount'];
+const splitCumulativeAmountOrder = ['dailyAmount', 'weeklyAmount', 'monthlyAmount'];
+const splitCumulativeCountOrder = ['dailyCount', 'weeklyCount', 'monthlyCount'];
+export const errorMessage = {
     priorityRequired: 'Priority is required',
     propertyNameRequired: 'Property name is required',
     currencyRequired: 'Currency is required',
+    // split
     splitNameRequired: 'Split name is required',
-    minLessThanMaxAmount: 'Min amount should be less than max amount',
+    minAmount: 'Min amount should be less than max amount',
+    maxAmount: 'Max amount should be greater than min amount',
     dailyCount: 'Daily count should be less than weekly and monthly count',
     weeklyCount: 'Weekly count should be less than monthly count',
     monthlyCount: 'Weekly count should be less than monthly count',
     dailyAmount: 'Daily amount should be less than weekly and monthly amount',
-    weeklyAmount: 'Weekly amount should be less than monthly amount',
+    weeklyAmount: 'Weekly amount should be less than monthly amount and grater than daily amount',
+    monthlyAmount: 'Monthly amount should be greater than daily and monthly amount',
+    startAmountRequired: 'Start amount is required',
+    descriptionRequired: 'Description is required',
+    creditRequired: 'Credit is required',
     // limit
     dailyMaxCount: 'Daily count should be less than weekly and monthly count',
     weeklyMaxCount: 'Weekly count should be less than monthly count and greater than daily count',
@@ -31,15 +41,16 @@ export const validations = {
         {type: textValidations.numberOnly, errorMessage: 'Please enter a valid number'}
     ],
     percent: [
-        {type: textValidations.decimalOnly, precision: 12, scale: 2, errorMessage: 'Please enter a valid percent ex. 10.50'}
+        {type: textValidations.decimalOnly, precision: 12, scale: 2, errorMessage: 'Please enter a valid percent ex. 10.500'}
     ],
     amount: [
         {type: textValidations.decimalOnly, precision: 12, scale: 2, errorMessage: 'Please enter a valid amount ex. 10.50'}
     ]
 };
+
+// used to validate amount, count o split, limit fields
 const validate = (order) => {
     return function fieldValidate(field, tabObj, errors, clearLinkedErrors = true) {
-        if (!field.value || isNaN(parseFloat(field.value))) return field;
         let smallArr = [];
         let highArr = [];
         let baseKeyArr = field.key.split(',').slice(0, field.key.split(',').length - 1);
@@ -63,6 +74,7 @@ const validate = (order) => {
                 cfield && !cfield.error && field.clearLinkedErrors.push(ckey);
             });
         }
+        if (!field.value || isNaN(parseFloat(field.value))) return field;
         order.slice(order.indexOf(key) + 1, order.length).map((hkey) => {
             values[hkey] && highArr.push(parseFloat(values[hkey]) || 0);
         });
@@ -79,10 +91,12 @@ const validate = (order) => {
         return field;
     };
 };
-const limitAmountOrder = ['txMin', 'txMax', 'dailyMaxAmount', 'weeklyMaxAmount', 'monthlyMaxAmount'];
-const limitCountOrder = ['dailyMaxCount', 'weeklyMaxCount', 'monthlyMaxCount'];
+
 const limitAmountValidate = validate(limitAmountOrder);
 const limitCountValidate = validate(limitCountOrder);
+const minMaxValidate = validate(minMaxOrder);
+const splitCumulativeAmountValidate = validate(splitCumulativeAmountOrder);
+const splitCumulativeCountValidate = validate(splitCumulativeCountOrder);
 export const externalValidate = {
     limit_txMin: limitAmountValidate,
     limit_txMax: limitAmountValidate,
@@ -91,15 +105,15 @@ export const externalValidate = {
     limit_monthlyMaxAmount: limitAmountValidate,
     limit_dailyMaxCount: limitCountValidate,
     limit_weeklyMaxCount: limitCountValidate,
-    limit_monthlyMaxCount: limitCountValidate
+    limit_monthlyMaxCount: limitCountValidate,
+    split_assignement_minAmount: minMaxValidate,
+    split_assignement_maxAmount: minMaxValidate,
+    split_cumulative_range_minAmount: minMaxValidate,
+    split_cumulative_range_maxAmount: minMaxValidate,
+    split_cumulative_dailyAmount: splitCumulativeAmountValidate,
+    split_cumulative_weeklyAmount: splitCumulativeAmountValidate,
+    split_cumulative_monthlyAmount: splitCumulativeAmountValidate,
+    split_cumulative_dailyCount: splitCumulativeCountValidate,
+    split_cumulative_weeklyCount: splitCumulativeCountValidate,
+    split_cumulative_monthlyCount: splitCumulativeCountValidate
 };
-
-// export function getChannelTabValidator() {
-//     return [
-//         {
-//             key: ['channel', 'priority'],
-//             type: validationTypes.text,
-//             rules: validations.priority
-//         }
-//     ];
-// }

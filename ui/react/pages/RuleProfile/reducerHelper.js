@@ -1,5 +1,5 @@
 const __placeholder__ = '__placeholder__';
-import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange } from './Tabs/defaultState';
+import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange, defaultErrorState } from './Tabs/defaultState';
 import { methodRequestState } from 'ut-front-react/constants';
 import { formatNomenclatures, prepareRuleModel } from './helpers';
 import { fromJS } from 'immutable';
@@ -70,64 +70,67 @@ export function changeInput(state, action, options) {
 
 export function addProperty(state, action, options) {
     let { mode, id } = options;
-    return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.push(fromJS({
-        name: '',
-        value: ''
-    })));
+    return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.push(fromJS({name: '', value: ''})))
+        .updateIn([mode, id, 'errors', action.destinationProp, 'properties'], e => e.push(fromJS({})));
 }
 
 export function removeProperty(state, action, options) {
     let { mode, id } = options;
     return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.splice(action.params.propertyId, 1))
-        .deleteIn([mode, id, 'errors', action.destinationProp, 'properties', action.params.propertyId.toString()]);
+        .updateIn([mode, id, 'errors', action.destinationProp, 'properties'], d => d.splice(action.params.propertyId, 1));
 }
 // limit actions
 export function addLimit(state, action, options) {
     let { mode, id } = options;
-    return state.updateIn([mode, id, 'limit'], v => v.push(fromJS(emptyLimit)));
+    return state.updateIn([mode, id, 'limit'], v => v.push(fromJS(emptyLimit)))
+        .updateIn([mode, id, 'errors', 'limit'], e => e.push(fromJS({})));
 }
 
 export function removeLimit(state, action, options) {
     let { mode, id } = options;
     return state.updateIn([mode, id, 'limit'], v => v.splice(action.params.limitId, 1))
-        .deleteIn([mode, id, 'errors', 'limit', action.params.limitId.toString()]);
+        .updateIn([mode, id, 'errors', 'limit'], d => d.splice(action.params.limitId, 1));
 }
 
 // split actions
 export function addAssignment(state, action, options) {
     let { mode, id } = options;
-    return state.updateIn([mode, id, 'split', 'splits', action.params.splitIndex, 'assignments'], v => v.push(fromJS(emptyAssignment)));
+    return state.updateIn([mode, id, 'split', 'splits', action.params.splitIndex, 'assignments'], v => v.push(fromJS(emptyAssignment)))
+        .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex, 'assignments'], e => e.push(fromJS({})));
 }
 
 export function removeAssignment(state, action, options) {
     let { mode, id } = options;
-    return state.updateIn([mode, id, 'split', 'splits', action.params.splitIndex, 'assignments'], v => v.splice(action.params.propertyId, 1));
+    return state.updateIn([mode, id, 'split', 'splits', action.params.splitIndex, 'assignments'], v => v.splice(action.params.propertyId, 1))
+        .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex, 'assignments'], d => d.splice(action.params.propertyId, 1));
 }
 
 export function addCumulativeRange(state, action, options) {
     let { mode, id } = options;
     return state.updateIn(
         [mode, id, 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
-        v => v.push(fromJS(emptyRange)));
+        v => v.push(fromJS(emptyRange)))
+        .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
+        e => e.push(fromJS({})));
 }
 
 export function removeCumulativeRange(state, action, options) {
     let { mode, id } = options;
     return state.updateIn(
         [mode, id, 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
-        v => v.splice(action.params.rangeId, 1));
+        v => v.splice(action.params.rangeId, 1))
+        .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex,
+            'cumulatives', action.params.cumulativeId, 'ranges'], d => d.splice(action.params.rangeId, 1));
 }
 
 export function addSplit(state, action, options) {
     let { mode, id } = options;
-    return state.updateIn(
-        [mode, id, 'split', 'splits'],
-        v => v.push(fromJS(emptySplit)));
+    return state.updateIn([mode, id, 'split', 'splits'], v => v.push(fromJS(emptySplit)))
+        .updateIn([mode, id, 'errors', 'split', 'splits'], e => e.push(fromJS(defaultErrorState.split.splits[0])));
 }
 
 export function removeSplit(state, action, options) {
     let { mode, id } = options;
-    return state.updateIn(
-        [mode, id, 'split', 'splits'],
-        v => v.splice(action.params.splitIndex, 1));
+    return state.updateIn([mode, id, 'split', 'splits'], v => v.splice(action.params.splitIndex, 1))
+        .updateIn([mode, id, 'errors', 'split', 'splits'], d => d.splice(action.params.splitIndex, 1));
 }

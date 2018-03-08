@@ -3,17 +3,19 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import Button from 'ut-front-react/components/StandardButton';
-
 import style from '../style.css';
 import Assignments from './Assignment';
 import Info from './Info';
 import Cumulative from './Cumulative';
 import * as actions from '../../actions';
+import { externalValidate } from '../../validator';
+import { fromJS } from 'immutable';
 const destinationProp = 'split';
 const propTypes = {
     currencies: PropTypes.array,
     actions: PropTypes.object,
-    fieldValues: PropTypes.object
+    fieldValues: PropTypes.object,
+    errors: PropTypes.object // immutable
 };
 
 const defaultProps = {
@@ -22,7 +24,7 @@ const defaultProps = {
 
 class SplitTab extends Component {
     renderFields(split, index) {
-        const { currencies } = this.props;
+        const { currencies, errors, fieldValues } = this.props;
         const {
             addAssignment,
             removeAssignment,
@@ -32,16 +34,27 @@ class SplitTab extends Component {
             removeSplit
         } = this.props.actions;
         const { name, assignments, tags, cumulatives } = split;
+        let additionalValidate = (field, fnprefix) => {
+            if (!field.error) {
+                let lastKey = field.key.split(',').pop();
+                let extVal = externalValidate[`${fnprefix}_${lastKey}`];
+                extVal && (field = extVal(field, fromJS(fieldValues), errors));
+            }
+            return field;
+        };
         const setAssignment = (assId, field) => {
             field.key = ['splits', index, 'assignments', assId, field.key].join(',');
+            field = additionalValidate(field, 'split_assignement');
             changeInput(field, destinationProp);
         };
         const setCumulative = (field) => {
             field.key = ['splits', index, 'cumulatives', 0, field.key].join(',');
+            field = additionalValidate(field, 'split_cumulative');
             changeInput(field, destinationProp);
         };
         const setCumulativeRange = (cumulativeId, rangeId, field) => {
             field.key = ['splits', index, 'cumulatives', cumulativeId, 'ranges', rangeId, field.key].join(',');
+            field = additionalValidate(field, 'split_cumulative_range');
             changeInput(field, destinationProp);
         };
         const setInfo = (field) => {
@@ -63,6 +76,7 @@ class SplitTab extends Component {
                                   <Info
                                     changeInputField={setInfo}
                                     name={name}
+                                    errors={errors.getIn(['splits', index])}
                                     selectedTags={tags} />
                             </TitledContentBox>
                             <div className={style.rangeWrapper}>
@@ -73,6 +87,7 @@ class SplitTab extends Component {
                                     changeInput={setAssignment}
                                     assignments={assignments}
                                     splitIndex={index}
+                                    errors={errors.getIn(['splits', index, 'assignments'])}
                                     />
                                 </TitledContentBox>
                             </div>
@@ -87,6 +102,7 @@ class SplitTab extends Component {
                                 cumulatives={cumulatives}
                                 currencies={currencies}
                                 splitIndex={index}
+                                errors={errors.getIn(['splits', index, 'cumulatives'])}
                                 />
                             </TitledContentBox>
                         </div>
@@ -122,7 +138,8 @@ const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
         fieldValues: state.ruleProfileReducer.getIn([mode, id, 'split']).toJS(),
-        currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS()
+        currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS(),
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', 'split']) || fromJS({})
     };
 };
 

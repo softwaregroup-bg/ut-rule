@@ -1,15 +1,17 @@
 import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
-
+import {validations} from '../../../validator';
 import style from '../../style.css';
+import { fromJS } from 'immutable';
 
-export const Assignments = (props) => {
+export const Assignment = (props) => {
     const {
         addAssignment,
         removeAssignment,
         changeInput,
         assignments,
-        splitIndex
+        splitIndex,
+        errors // immutable
     } = props;
 
     const getHeaderCells = () => {
@@ -28,18 +30,23 @@ export const Assignments = (props) => {
 
     const getBody = () => {
         return assignments.map((prop, index) => {
+            let idx = index.toString();
             return (
                 <tr key={`${index}`}>
                     <td>
                         <Input
                           keyProp={'description'}
                           onChange={(field) => { changeInput(index, field); }}
+                          isValid={!errors.getIn([idx, 'description'])}
+                          errorMessage={errors.getIn([idx, 'description'])}
                           value={prop.description}
                         />
                     </td>
                     <td>
                         <Input
                           keyProp={'debit'}
+                          isValid={!errors.getIn([idx, 'debit'])}
+                          errorMessage={errors.getIn([idx, 'debit'])}
                           onChange={(field) => { changeInput(index, field); }}
                           value={prop.debit}
                         />
@@ -47,6 +54,8 @@ export const Assignments = (props) => {
                     <td>
                         <Input
                           keyProp={'credit'}
+                          isValid={!errors.getIn([idx, 'credit'])}
+                          errorMessage={errors.getIn([idx, 'credit'])}
                           onChange={(field) => { changeInput(index, field); }}
                           value={prop.credit}
                         />
@@ -54,6 +63,9 @@ export const Assignments = (props) => {
                     <td>
                         <Input
                           keyProp={'percent'}
+                          validators={validations.percent}
+                          isValid={!errors.getIn([idx, 'percent'])}
+                          errorMessage={errors.getIn([idx, 'percent'])}
                           onChange={(field) => { changeInput(index, field); }}
                           value={prop.percent}
                         />
@@ -61,6 +73,9 @@ export const Assignments = (props) => {
                     <td>
                         <Input
                           keyProp={'minAmount'}
+                          validators={validations.amount}
+                          isValid={!errors.getIn([idx, 'minAmount'])}
+                          errorMessage={errors.getIn([idx, 'minAmount'])}
                           onChange={(field) => { changeInput(index, field); }}
                           value={prop.minAmount}
                         />
@@ -68,6 +83,9 @@ export const Assignments = (props) => {
                     <td>
                         <Input
                           keyProp={'maxAmount'}
+                          validators={validations.amount}
+                          isValid={!errors.getIn([idx, 'maxAmount'])}
+                          errorMessage={errors.getIn([idx, 'maxAmount'])}
                           onChange={(field) => { changeInput(index, field); }}
                           value={prop.maxAmount}
                         />
@@ -100,12 +118,17 @@ export const Assignments = (props) => {
     );
 };
 
-Assignments.propTypes = {
+Assignment.propTypes = {
     addAssignment: PropTypes.func,
     removeAssignment: PropTypes.func,
     changeInput: PropTypes.func,
     assignments: PropTypes.array,
-    splitIndex: PropTypes.number
+    splitIndex: PropTypes.number,
+    errors: PropTypes.object
 };
 
-export default Assignments;
+Assignment.defaultProps = {
+    errors: fromJS({})
+};
+
+export default Assignment;

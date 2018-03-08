@@ -316,6 +316,7 @@ export const prepateRuleToSave = ({
 };
 
 export const prepareRuleModel = (result) => {
+    var errState = defaultErrorState;
     var condition = (result.condition || [])[0] || {};
     var rule = {
         channel: {
@@ -365,6 +366,7 @@ export const prepareRuleModel = (result) => {
     });
     // limit
     result.limit && result.limit.sort((a, b) => a.limitId > b.limitId).forEach((limit) => {
+        errState.limit.push({});
         rule.limit.push({
             conditionId: condition.conditionId,
             limitId: limit.limitId,
@@ -435,6 +437,21 @@ export const prepareRuleModel = (result) => {
         });
         rule.split.splits.push(split);
     });
+    // add empty objects at error state
+    errState.split.splits = [];
+    rule.split.splits.forEach((split) => {
+        errState.split.splits.push({
+            assignments: Array(split.assignments.length).fill({}),
+            cumulatives: [{
+                ranges: Array((((split.cumulatives[0] || {}).ranges || [])).length).fill({})
+            }]
+        });
+    });
+    errState.limit = Array(rule.limit.length).fill({});
+    tabs.forEach((tk) => {
+        rule[tk] && rule[tk].properties && (errState[tk].properties = Array(rule[tk].properties.length).fill({}));
+    });
+    rule.errors = errState;
     return rule;
 };
 
@@ -511,10 +528,10 @@ export const isEqual = (obj1, obj2) => {
 };
 
 export const getRuleErrorCount = (errors) => {
-    var flattenObjKeys = Object.keys(flatten(errors));
+    let flattenObj = flatten(errors);
     let errorCount = {};
     tabs.map((tab) => {
-        errorCount[tab] = flattenObjKeys.filter((fkey) => fkey.startsWith(tab)).length;
+        errorCount[tab] = Object.keys(flattenObj).filter((fkey) => flattenObj[fkey] && fkey.startsWith(tab)).length;
     });
     return errorCount;
 };

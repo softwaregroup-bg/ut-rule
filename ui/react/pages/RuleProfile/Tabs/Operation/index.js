@@ -4,14 +4,16 @@ import { bindActionCreators } from 'redux';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
-import Input from 'ut-front-react/components/Input';
+import Property from '../../../../components/Property';
+import { fromJS } from 'immutable';
 import style from '../style.css';
 import * as actions from '../../actions';
 const destinationProp = 'operation';
 const propTypes = {
     operations: PropTypes.array,
     fieldValues: PropTypes.object,
-    actions: PropTypes.object
+    actions: PropTypes.object,
+    errors: PropTypes.object // immutable
 };
 
 const defaultProps = {
@@ -22,75 +24,6 @@ class OperationTab extends Component {
     constructor(props, context) {
         super(props, context);
         this.renderFields = this.renderFields.bind(this);
-        this.getPropetyRowsBody = this.getPropetyRowsBody.bind(this);
-        this.renderPropertyTable = this.renderPropertyTable.bind(this);
-    }
-
-    getPropertyHeaderCells() {
-        return [
-            {name: 'Name', key: 'name'},
-            {name: 'Value', key: 'value'},
-            {name: '', key: 'rangeActions', className: style.deleteCol}
-        ].map((cell, i) => (
-            <th key={i} className={cell.className || ''}>{cell.name}</th>
-        ));
-    }
-
-    getPropetyRowsBody() {
-        const { properties } = this.props.fieldValues;
-        let removeProperty = (index) => {
-            this.props.actions.removeProperty(index, destinationProp);
-        };
-        let changeInput = (field) => {
-            this.props.actions.changeInput(field, destinationProp);
-        };
-        return properties.map((prop, index) => {
-            return (
-                <tr key={`${index}`}>
-                    <td>
-                        <Input
-                          keyProp={['properties', index, 'name'].join(',')}
-                          onChange={(field) => { changeInput(field); }}
-                          value={prop.name}
-                        />
-                    </td>
-                    <td>
-                        <Input
-                          keyProp={['properties', index, 'value'].join(',')}
-                          onChange={(field) => { changeInput(field); }}
-                          value={prop.value}
-                        />
-                    </td>
-                    <td className={style.deleteCol}>
-                        <div className={style.deleteIcon} onClick={() => { removeProperty(index); }} />
-                    </td>
-                </tr>
-            );
-        });
-    }
-
-    renderPropertyTable() {
-        let addProperty = () => {
-            this.props.actions.addProperty(destinationProp);
-        };
-        return (
-            <div className={style.propertyTable}>
-                <table className={style.dataGridTable}>
-                    <thead>
-                        <tr>
-                            {this.getPropertyHeaderCells()}
-                        </tr>
-                    </thead>
-                    <tbody >
-                        {this.getPropetyRowsBody()}
-                    </tbody>
-                </table>
-                <span className={style.link} onClick={addProperty}>
-                    <div className={style.plus} />
-                    Add another property
-                </span>
-            </div>
-        );
     }
 
     renderFields() {
@@ -101,6 +34,8 @@ class OperationTab extends Component {
         let changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
         };
+        var minDate = fieldValues.startDate ? new Date(fieldValues.startDate) : null;
+        minDate && (minDate.setDate(minDate.getDate() + 1));
         return (
             <div>
                 <div className={style.inputWrapper}>
@@ -135,6 +70,7 @@ class OperationTab extends Component {
                               keyProp='endDate'
                               mode='landscape'
                               onChange={({value}) => { changeInput({key: 'endDate', value}); }}
+                              minDate={minDate}
                               defaultValue={fieldValues.endDate}
                             />
                         </div>
@@ -145,6 +81,15 @@ class OperationTab extends Component {
     }
 
     renderInfoFields() {
+        let addProperty = () => {
+            this.props.actions.addProperty(destinationProp);
+        };
+        let removeProperty = (index) => {
+            this.props.actions.removeProperty(index, destinationProp);
+        };
+        let changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
+        };
         return (
             <div className={style.contentBox}>
                 <div className={style.contentBoxWrapper}>
@@ -160,7 +105,13 @@ class OperationTab extends Component {
                       title='Properties'
                       wrapperClassName
                     >
-                        {this.renderPropertyTable()}
+                      <Property
+                        addProperty={addProperty}
+                        removeProperty={removeProperty}
+                        changeInput={changeInput}
+                        properties={(this.props.fieldValues || {}).properties || []}
+                        errors={this.props.errors}
+                        />
                     </TitledContentBox>
                 </div>
             </div>
@@ -183,7 +134,8 @@ const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
         operations: state.ruleProfileReducer.getIn(['nomenclatures', 'operation']).toJS(),
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS()
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})
     };
 };
 

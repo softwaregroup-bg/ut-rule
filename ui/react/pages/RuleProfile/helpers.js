@@ -1,3 +1,5 @@
+import { errorMessage } from './validator';
+import { fromJS } from 'immutable';
 export const splitTags = [
     {key: 'acquirer', name: 'Acquirer'},
     {key: 'issuer', name: 'Issuer'},
@@ -302,7 +304,7 @@ export const prepateRuleToSave = ({
     return formattedRule;
 };
 
-export let prepareRuleModel = (result) => {
+export const prepareRuleModel = (result) => {
     var condition = (result.condition || [])[0] || {};
     var rule = {
         channel: {
@@ -424,3 +426,111 @@ export let prepareRuleModel = (result) => {
     });
     return rule;
 };
+
+export const prepareRuleErrors = (rule) => {
+    var errors = fromJS({});
+    let { destination, source, operation, channel, split, limit } = rule;
+    channel && !channel.priority && (errors = errors.setIn(['channel', 'priority'], errorMessage.priorityRequired));
+    channel.properties && channel.properties.forEach((prop, idx) => {
+        prop.value && !prop.name && (errors = errors.setIn(['channel', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
+    });
+    source.properties && source.properties.forEach((prop, idx) => {
+        prop.value && !prop.name && (errors = errors.setIn(['source', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
+    });
+    destination.properties && destination.properties.forEach((prop, idx) => {
+        prop.value && !prop.name && (errors = errors.setIn(['destination', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
+    });
+    operation.properties && operation.properties.forEach((prop, idx) => {
+        prop.value && !prop.name && (errors = errors.setIn(['operation', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
+    });
+    limit && limit.forEach((lim, idx) => {
+        !lim.currency && !isEmptyValuesOnly(lim) && (errors = errors.setIn(['limit', idx, 'currency'], errorMessage.currencyRequired));
+    });
+    split && split.splits.forEach((split, idx) => {
+        let isEmptySplit = isEmptyValuesOnly(split);
+        let cumulative = split.cumulatives && split.cumulatives[0];
+        if (!isEmptySplit) {
+            // info
+            !split.name && (errors = errors.setIn(['split', 'splits', idx, 'name'], errorMessage.splitNameRequired));
+            // assignments
+            split.assignments && split.assignments.forEach((ass, aidx) => {
+                ass.minAmount && ass.maxAmount && parseFloat(ass.minAmount) > parseFloat(ass.maxAmount) &&
+                (errors = errors.setIn(['split', 'splits', idx, 'assignments', aidx, 'minAmount'], errorMessage.minLessThanMaxAmount));
+            });
+            // cumulative
+            cumulative && !cumulative.currency && !isEmptyValuesOnly(cumulative) &&
+            (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'currency'], errorMessage.currencyRequired));
+
+            cumulative && cumulative.ranges && cumulative.ranges.forEach((range, ridx) => {
+                range.minAmount && range.maxAmount && parseFloat(range.minAmount) > parseFloat(range.maxAmount) &&
+                (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'ranges', ridx, 'minAmount'], errorMessage.minLessThanMaxAmount));
+            });
+
+            cumulative && cumulative.dailyCount && (cumulative.weeklyCount || cumulative.monthlyCount) &&
+           (parseFloat(cumulative.dailyCount) > parseFloat(cumulative.weeklyCount) || parseFloat(cumulative.dailyCount) > parseFloat(cumulative.monthlyCount)) &&
+           (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'dailyCount'], errorMessage.dailyCount));
+        }
+    });
+    return errors.toJS();
+};
+
+export const isEmptyValuesOnly = (obj) => {
+    var tempIsEmpty = true;
+    if (typeof obj === 'object') {
+        Object.keys(obj).forEach((objKey) => {
+            if (!isEmptyValuesOnly(obj[objKey])) {
+                tempIsEmpty = false;
+                return false;
+            }
+        });
+    } else tempIsEmpty = !obj;
+    return tempIsEmpty;
+};
+
+export const isEqual = (obj1, obj2) => {
+    if (typeof obj1 !== 'object' && typeof obj2 !== 'object') {
+        return obj1 === obj2;
+    } else if (typeof obj1 === 'object' && typeof obj2 === 'object') {
+        if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+            return false;
+        } else {
+
+        }
+    }
+    return false;
+};
+
+export const getRuleErrorCount = (errors) => {
+    var flattenObjKeys = Object.keys(flatten(errors));
+    var tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
+    let errorCount = {};
+    tabs.map((tab) => {
+        errorCount[tab] = flattenObjKeys.filter((fkey) => fkey.startsWith(tab)).length;
+    });
+    return errorCount;
+};
+
+export const flatten = function(ob) {
+    var result = {};
+    for (var i in ob) {
+        if (!ob.hasOwnProperty(i)) continue;
+        if ((typeof ob[i]) === 'object') {
+            var flatObject = flatten(ob[i]);
+            for (var x in flatObject) {
+                if (!flatObject.hasOwnProperty(x)) continue;
+                result[i + '.' + x] = flatObject[x];
+            }
+        } else {
+            result[i] = ob[i];
+        }
+    }
+    return result;
+};
+
+// export const prepareRuleErrors = (validationErrors) => {
+//     let errors = fromJS({});
+//     (validationErrors || []).forEach((err) => {
+//         errors = errors.setIn(err.key, err.errorMessage);
+//     });
+//     return errors.toJS();
+// };

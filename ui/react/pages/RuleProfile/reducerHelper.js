@@ -45,16 +45,26 @@ export function resetRuleProfile(state, action, options) {
         return state.setIn(['config', 'ruleSaved'], false);
     }
 }
+
+// error update
+export function updateRuleErrors(state, action, options) {
+    let { mode, id } = options;
+    return state.setIn([mode, id, 'errors'], fromJS(action.params.errors));
+}
 // common tab actions
 export function changeInput(state, action, options) {
     let { mode, id } = options;
-    let { error, errorMessage, value, key } = action.params;
+    let { error, errorMessage, value, key, clearLinkedErrors } = action.params;
     if (value === __placeholder__) value = null;
     state = state.setIn([mode, id, action.destinationProp].concat(key.split(',')), value);
     if (error) {
         return state.setIn([mode, id, 'errors', action.destinationProp].concat(key.split(',')), errorMessage);
     } else {
-        return state.deleteIn([mode, id, 'errors', action.destinationProp].concat(key.split(',')));
+        // clearLinkedErrors
+        [...(clearLinkedErrors || []), key].map((dkey) => {
+            state = state.deleteIn([mode, id, 'errors', action.destinationProp].concat(dkey.split(',')));
+        });
+        return state;
     }
 };
 
@@ -68,7 +78,8 @@ export function addProperty(state, action, options) {
 
 export function removeProperty(state, action, options) {
     let { mode, id } = options;
-    return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.splice(action.params.propertyId, 1));
+    return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.splice(action.params.propertyId, 1))
+        .deleteIn([mode, id, 'errors', action.destinationProp, 'properties', action.params.propertyId.toString()]);
 }
 // limit actions
 export function addLimit(state, action, options) {
@@ -78,7 +89,8 @@ export function addLimit(state, action, options) {
 
 export function removeLimit(state, action, options) {
     let { mode, id } = options;
-    return state.updateIn([mode, id, 'limit'], v => v.splice(action.params.limitId, 1));
+    return state.updateIn([mode, id, 'limit'], v => v.splice(action.params.limitId, 1))
+        .deleteIn([mode, id, 'errors', 'limit', action.params.limitId.toString()]);
 }
 
 // split actions

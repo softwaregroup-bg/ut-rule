@@ -17,7 +17,8 @@ import Destination from '../Tabs/Destination';
 import Split from '../Tabs/Split';
 import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
-import { prepateRuleToSave } from '../helpers';
+import { prepateRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount } from '../helpers';
+
 let status = fromJS({
     status: 'SUCCESS',
     message: 'Rule successfully created'
@@ -30,6 +31,7 @@ class RuleCreate extends Component {
         super(props, context);
         this.onSave = this.onSave.bind(this);
         this.fetchData = this.fetchData.bind(this);
+        // this.updateRuleErrors = this.updateRuleErrors.bind(this);
         this.onReset = this.onReset.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.state = {
@@ -52,8 +54,13 @@ class RuleCreate extends Component {
         this.onReset(this.state.closeAfterSave);
     }
     onSave() {
-        let formattedRule = prepateRuleToSave(this.props.rule);
-        this.props.actions.createRule(formattedRule);
+        var errs = prepareRuleErrors(this.props.rule);
+        if (!isEmptyValuesOnly(errs)) {
+            // this.props.actions.updateRuleErrors(errs);
+        } else {
+            // let formattedRule = prepateRuleToSave(this.props.rule);
+            // this.props.actions.createRule(formattedRule);
+        }
     }
 
     onReset(closeAfterSave) {
@@ -62,36 +69,45 @@ class RuleCreate extends Component {
     }
 
     getTabs() {
+        let errorCount = getRuleErrorCount(this.props.errors.toJS());
         let tabs = [
             {
                 title: 'Channel',
-                component: <Channel />
+                component: <Channel />,
+                errorsCount: errorCount.channel
             },
             {
                 title: 'Operation',
-                component: <Operation />
+                component: <Operation />,
+                errorsCount: errorCount.operation
             },
             {
                 title: 'Source',
-                component: <Source />
+                component: <Source />,
+                errorsCount: errorCount.source
             },
             {
                 title: 'Destination',
-                component: <Destination />
+                component: <Destination />,
+                errorsCount: errorCount.destination
             },
             {
                 title: 'Limit',
-                component: <Limit />
+                component: <Limit />,
+                errorsCount: errorCount.limit
             },
             {
                 title: 'Fee and Commission Split',
-                component: <Split />
+                component: <Split />,
+                errorsCount: errorCount.split
             }
         ];
         return tabs;
     }
 
     getActionButtons() {
+        let { errors } = this.props;
+        let saveDisabled = !isEmptyValuesOnly(errors.toJS());
         let create = () => {
             this.state.closeAfterSave && this.setState({
                 closeAfterSave: false
@@ -107,11 +123,13 @@ class RuleCreate extends Component {
         let actionButtons = [
             {
                 text: 'Create and Close',
-                performFullValidation: true,
+                disabled: saveDisabled,
                 onClick: createAndClose,
+                performFullValidation: true,
                 styleType: 'primaryLight'
             }, {
                 text: 'Create',
+                disabled: saveDisabled,
                 performFullValidation: true,
                 onClick: create
             }, {
@@ -123,10 +141,10 @@ class RuleCreate extends Component {
         ];
         return actionButtons;
     }
-
     renderTabContainer() {
         return (
             <TabContainer
+              ref={`tab_container_${mode}_${id}`}
               headerTitle='Create Rule'
               tabs={this.getTabs()}
               actionButtons={this.getActionButtons()}
@@ -152,12 +170,8 @@ class RuleCreate extends Component {
 
 RuleCreate.propTypes = {
     rule: PropTypes.object,
-    actions: PropTypes.shape({
-        fetchNomenclatures: PropTypes.func,
-        createRule: PropTypes.func,
-        resetRuleState: PropTypes.func,
-        changeRuleProfile: PropTypes.func
-    }).isRequired,
+    errors: PropTypes.object,
+    actions: PropTypes.object,
     activeTab: PropTypes.object,
     removeTab: PropTypes.func.isRequired,
     config: PropTypes.object,
@@ -172,7 +186,8 @@ const mapStateToProps = (state, ownProps) => {
         activeTab: state.tabMenu.active,
         config: state.ruleProfileReducer.get('config').toJS(),
         nomenclatureConfiguration: state.uiConfig.get('nomenclatures').toJS(),
-        rule: tabState ? tabState.toJS() : {}
+        rule: tabState ? tabState.toJS() : {},
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors']) || fromJS({})
     };
 };
 

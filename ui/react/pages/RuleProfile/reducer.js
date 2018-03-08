@@ -38,6 +38,9 @@ export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
         case actionTypes.RESET_RULE_STATE:
             return reducerHelper.resetRuleProfile(state, action, options);
 
+        // update errors
+        case actionTypes.UPDATE_RULE_ERRORS:
+            return reducerHelper.updateRuleErrors(state, action, options);
         // tab common actions
         case actionTypes.CHANGE_INPUT:
             return reducerHelper.changeInput(state, action, options);

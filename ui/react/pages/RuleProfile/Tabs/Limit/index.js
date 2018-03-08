@@ -7,17 +7,25 @@ import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import style from '../style.css';
 import * as actions from '../../actions';
+import {validations, externalValidate} from '../../validator';
+import { fromJS } from 'immutable';
+const destinationProp = 'limit';
 const defaultProps = {
     currencies: []
 };
 
 export const Limits = (props) => {
-    const { fieldValues, currencies } = props;
+    const { fieldValues, currencies, errors } = props;
 
     const { addLimit, removeLimit, changeInput } = props.actions;
     const setLimitField = (index, field) => {
         field.key = [index, field.key].join(',');
-        changeInput(field, 'limit');
+        if (!field.error) {
+            let lastKey = field.key.split(',').pop();
+            let extVal = externalValidate[`limit_${lastKey}`];
+            extVal && (field = extVal(field, fromJS(fieldValues), errors));
+        }
+        changeInput(field, destinationProp);
     };
     const renderTableHead = () => (
         <thead>
@@ -41,10 +49,11 @@ export const Limits = (props) => {
             </tr>
         </thead>
     );
-
     const renderBody = () => {
-        return fieldValues.map((limit, index) => (
-            <tr key={`Limit${index}`}>
+        return fieldValues.map((limit, index) => {
+            let idx = index.toString();
+            return (
+              <tr key={`Limit${index}`}>
                 <td className={style.currency}>
                     <Dropdown
                       style={{width: '120px'}}
@@ -59,6 +68,9 @@ export const Limits = (props) => {
                     <Input
                       keyProp='txMin'
                       value={limit.txMin}
+                      validators={validations.amount}
+                      isValid={!errors.getIn([idx.toString(), 'txMin'])}
+                      errorMessage={errors.getIn([idx.toString(), 'txMin'])}
                       onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
@@ -66,6 +78,9 @@ export const Limits = (props) => {
                     <Input
                       keyProp='txMax'
                       value={limit.txMax}
+                      validators={validations.amount}
+                      isValid={!errors.getIn([idx, 'txMax'])}
+                      errorMessage={errors.getIn([idx, 'txMax'])}
                       onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
@@ -73,6 +88,9 @@ export const Limits = (props) => {
                     <Input
                       keyProp='dailyMaxAmount'
                       value={limit.dailyMaxAmount}
+                      validators={validations.amount}
+                      isValid={!errors.getIn([idx, 'dailyMaxAmount'])}
+                      errorMessage={errors.getIn([idx, 'dailyMaxAmount'])}
                       onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
@@ -80,12 +98,18 @@ export const Limits = (props) => {
                     <Input
                       keyProp='dailyMaxCount'
                       value={limit.dailyMaxCount}
+                      validators={validations.count}
+                      isValid={!errors.getIn([idx, 'dailyMaxCount'])}
+                      errorMessage={errors.getIn([idx, 'dailyMaxCount'])}
                       onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='weeklyMaxAmount'
+                      validators={validations.amount}
+                      isValid={!errors.getIn([idx, 'weeklyMaxAmount'])}
+                      errorMessage={errors.getIn([idx, 'weeklyMaxAmount'])}
                       value={limit.weeklyMaxAmount}
                       onChange={(field) => setLimitField(index, field)}
                     />
@@ -94,6 +118,9 @@ export const Limits = (props) => {
                     <Input
                       keyProp='weeklyMaxCount'
                       value={limit.weeklyMaxCount}
+                      validators={validations.count}
+                      isValid={!errors.getIn([idx, 'weeklyMaxCount'])}
+                      errorMessage={errors.getIn([idx, 'weeklyMaxCount'])}
                       onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
@@ -101,12 +128,18 @@ export const Limits = (props) => {
                     <Input
                       keyProp='monthlyMaxAmount'
                       value={limit.monthlyMaxAmount}
+                      validators={validations.amount}
+                      isValid={!errors.getIn([idx, 'monthlyMaxAmount'])}
+                      errorMessage={errors.getIn([idx, 'monthlyMaxAmount'])}
                       onChange={(field) => setLimitField(index, field)}
                     />
                 </td>
                 <td>
                     <Input
                       keyProp='monthlyMaxCount'
+                      validators={validations.count}
+                      isValid={!errors.getIn([idx, 'monthlyMaxCount'])}
+                      errorMessage={errors.getIn([idx, 'monthlyMaxCount'])}
                       value={limit.monthlyMaxCount}
                       onChange={(field) => setLimitField(index, field)}
                     />
@@ -114,8 +147,8 @@ export const Limits = (props) => {
                 <td className={style.deleteCol}>
                     <div className={style.deleteIcon} onClick={() => { removeLimit(index); }} />
                 </td>
-            </tr>
-        ));
+              </tr>);
+        });
     };
 
     return (
@@ -145,6 +178,7 @@ export const Limits = (props) => {
 
 Limits.defaultProps = defaultProps;
 Limits.propTypes = {
+    errors: PropTypes.object,
     currencies: PropTypes.array,
     fieldValues: PropTypes.array,
     actions: PropTypes.object
@@ -152,8 +186,9 @@ Limits.propTypes = {
 const mapStateToProps = (state) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, 'limit']).toJS(),
-        currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS()
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
+        currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS(),
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})
     };
 };
 

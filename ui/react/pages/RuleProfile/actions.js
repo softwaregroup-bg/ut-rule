@@ -91,3 +91,8 @@ export const removeSplit = (splitIndex) => ({
     type: actionTypes.REMOVE_SPLIT,
     params: {splitIndex}
 });
+
+export const updateRuleErrors = (errors) => ({
+    type: actionTypes.UPDATE_RULE_ERRORS,
+    params: {errors}
+});

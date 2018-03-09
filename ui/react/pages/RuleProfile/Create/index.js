@@ -123,23 +123,22 @@ class RuleCreate extends Component {
             });
             this.onSave();
         };
-        let actionButtons = [
-            {
-                text: 'Create and Close',
-                onClick: createAndClose,
-                performFullValidation: true,
-                styleType: 'primaryLight'
-            }, {
-                text: 'Create',
-                performFullValidation: true,
-                onClick: create
-            }, {
-                text: 'Close',
-                onClick: () => {
-                    return this.onReset(true);
-                }
+        let actionButtons = [{
+            text: 'Close',
+            onClick: () => {
+                return this.onReset(true);
             }
-        ];
+        }];
+        this.context.checkPermission('rule.rule.add') && actionButtons.unshift({
+            text: 'Create',
+            performFullValidation: true,
+            onClick: create
+        }) && actionButtons.unshift({
+            text: 'Create and Close',
+            onClick: createAndClose,
+            performFullValidation: true,
+            styleType: 'primaryLight'
+        });
         return actionButtons;
     }
     renderTabContainer() {
@@ -219,5 +218,9 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch),
     removeTab: bindActionCreators(removeTab, dispatch)
 });
+
+RuleCreate.contextTypes = {
+    checkPermission: PropTypes.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(RuleCreate);

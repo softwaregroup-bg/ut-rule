@@ -515,17 +515,17 @@ export const isEmptyValuesOnly = (obj) => {
     return tempIsEmpty;
 };
 
-export const isEqual = (obj1, obj2) => {
-    if (typeof obj1 !== 'object' && typeof obj2 !== 'object') {
-        return obj1 === obj2;
-    } else if (typeof obj1 === 'object' && typeof obj2 === 'object') {
-        if (Object.keys(obj1).length !== Object.keys(obj2).length) {
-            return false;
-        } else {
-
+export const isEqual = (x, y) => {
+    if ((typeof x === 'object' && x != null) && (typeof y === 'object' && y != null)) {
+        if (Object.keys(x).length !== Object.keys(y).length) return false;
+        for (var prop in x) {
+            if (y.hasOwnProperty(prop)) {
+                if (!isEqual(x[prop], y[prop])) return false;
+            } // else return false;
         }
-    }
-    return false;
+        return true;
+    } else if (String(x || null) !== String(y || null)) return false;
+    else return true;
 };
 
 export const getRuleErrorCount = (errors) => {

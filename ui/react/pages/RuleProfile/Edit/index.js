@@ -115,6 +115,22 @@ class RuleEdit extends Component {
 
     getActionButtons() {
         let { errors, rule } = this.props;
+        let isEdited = true;
+        // // logic to check whether the rule has changed
+        // let { channel, destination, operation, source, limit, split } = rule;
+        // let editedRule = { channel, destination, operation, source, limit, split };
+        // if (!isEmptyValuesOnly(editedRule)) {
+        //     let remoteRuleData = prepareRuleModel(remoteRule) || {};
+        //     let remoteRuleModel = {
+        //         channel: remoteRuleData.channel,
+        //         destination: remoteRuleData.destination,
+        //         operation: remoteRuleData.operation,
+        //         source: remoteRuleData.source,
+        //         limit: remoteRuleData.limit,
+        //         split: remoteRuleData.split
+        //     };
+        //     isEdited = !isEqual(editedRule, remoteRuleModel);
+        // }
         let newErrors = prepareRuleErrors(rule, errors.toJS());
         let isValid = isEmptyValuesOnly(newErrors);
         let showError = () => {
@@ -135,23 +151,22 @@ class RuleEdit extends Component {
             });
             this.onSave();
         };
-        let actionButtons = [
-            {
-                text: 'Save and Close',
-                performFullValidation: true,
-                onClick: createAndClose,
-                styleType: 'primaryLight'
-            }, {
-                text: 'Save',
-                performFullValidation: true,
-                onClick: create
-            }, {
-                text: 'Close',
-                onClick: () => {
-                    return this.onReset(true);
-                }
+        let actionButtons = [{
+            text: 'Close',
+            onClick: () => {
+                return this.onReset(true);
             }
-        ];
+        }];
+        isEdited && this.context.checkPermission('rule.rule.edit') && actionButtons.unshift({
+            text: 'Save',
+            performFullValidation: true,
+            onClick: create
+        }) && actionButtons.unshift({
+            text: 'Save and Close',
+            performFullValidation: true,
+            onClick: createAndClose,
+            styleType: 'primaryLight'
+        });
         return actionButtons;
     }
     renderErrorStatusDialog() {
@@ -236,5 +251,7 @@ const mapDispatchToProps = (dispatch) => ({
     removeTab: bindActionCreators(removeTab, dispatch),
     updateTabTitle: bindActionCreators(updateTabTitle, dispatch)
 });
-
+RuleEdit.contextTypes = {
+    checkPermission: PropTypes.func
+};
 export default connect(mapStateToProps, mapDispatchToProps)(RuleEdit);

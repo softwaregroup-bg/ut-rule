@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 import * as actionTypes from './actionTypes';
 import * as reducerHelper from './reducerHelper';
+import { REMOVE_TAB } from 'ut-front-react/containers/TabMenu/actionTypes';
 
 const defaultState = {
     nomenclatures: {
@@ -37,7 +38,8 @@ export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
             return reducerHelper.getRule(state, action, options);
         case actionTypes.RESET_RULE_STATE:
             return reducerHelper.resetRuleProfile(state, action, options);
-
+        case actionTypes.CHANGE_ACTIVE_TAB:
+            return reducerHelper.changeActiveTab(state, action, options);
         // update errors
         case actionTypes.UPDATE_RULE_ERRORS:
             return reducerHelper.updateRuleErrors(state, action, options);
@@ -68,6 +70,8 @@ export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
             return reducerHelper.addSplit(state, action, options);
         case actionTypes.REMOVE_SPLIT:
             return reducerHelper.removeSplit(state, action, options);
+        case REMOVE_TAB:
+            return reducerHelper.removeTab(state, action, options);
         default:
             return state;
     }

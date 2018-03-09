@@ -147,6 +147,8 @@ class RuleCreate extends Component {
             <TabContainer
               ref={`tab_container_${mode}_${id}`}
               headerTitle='Create Rule'
+              onTabClick={this.props.actions.changeActiveTab}
+              active={this.props.rule.activeTab}
               tabs={this.getTabs()}
               actionButtons={this.getActionButtons()}
             />

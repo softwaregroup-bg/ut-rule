@@ -5,6 +5,7 @@ export const EDIT_RULE = Symbol('EDIT_RULE');
 export const GET_RULE = Symbol('GET_RULE');
 export const RESET_RULE_STATE = Symbol('RESET_RULE_STATE');
 export const CHANGE_RULE_PROFILE = Symbol('CHANGE_RULE_PROFILE');
+export const CHANGE_ACTIVE_TAB = Symbol('CHANGE_ACTIVE_TAB');
 // errors
 export const UPDATE_RULE_ERRORS = Symbol('UPDATE_RULE_ERRORS');
 // tab common actions

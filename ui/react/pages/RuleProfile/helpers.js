@@ -3,6 +3,7 @@ import { defaultErrorState } from './Tabs/defaultState';
 import { fromJS } from 'immutable';
 
 export const tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
+
 export const tabTitleMap = {
     channel: 'Channel',
     operation: 'Operation',

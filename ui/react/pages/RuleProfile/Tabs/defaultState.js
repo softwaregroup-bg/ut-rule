@@ -59,6 +59,7 @@ export const defaultErrorState = {
 
 export const defaultTabState = {
     errors: defaultErrorState,
+    activeTab: 0,
     channel: {
         priority: '',
         countries: [],

@@ -34,6 +34,11 @@ export const changeRuleProfile = (mode, id) => ({
     params: {mode, id}
 });
 
+export const changeActiveTab = (tab) => ({
+    type: actionTypes.CHANGE_ACTIVE_TAB,
+    params: {...tab}
+});
+
 // channel actions
 export const changeInput = (params, destinationProp) => ({
     type: actionTypes.CHANGE_INPUT,

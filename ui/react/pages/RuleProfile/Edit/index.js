@@ -179,6 +179,8 @@ class RuleEdit extends Component {
         return (
             <TabContainer
               headerTitle={this.getTitle(this.props.remoteRule)}
+              onTabClick={this.props.actions.changeActiveTab}
+              active={this.props.rule.activeTab || 0}
               tabs={this.getTabs()}
               actionButtons={this.getActionButtons()}
             />

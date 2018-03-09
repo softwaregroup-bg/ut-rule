@@ -3,6 +3,7 @@ import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange, d
 import { methodRequestState } from 'ut-front-react/constants';
 import { formatNomenclatures, prepareRuleModel } from './helpers';
 import { fromJS } from 'immutable';
+import { getLink } from 'ut-front/react/routerHelper';
 
 export function changeRuleProfile(state, action, options) {
     if (action.params.mode && action.params.id) {
@@ -46,6 +47,23 @@ export function resetRuleProfile(state, action, options) {
     }
 }
 
+export function removeTab(state, action, options) {
+    let { mode, id } = options;
+    let pathname = getLink(`ut-rule:${mode}`, { id });
+    if (action.pathname === pathname) {
+        return state.setIn(['config', 'ruleSaved'], false).deleteIn([mode, id])
+            .deleteIn(['rules', id]);
+    }
+    return state;
+};
+
+export function changeActiveTab(state, action, options) {
+    let { mode, id } = options;
+    if (mode && id && action.params.id) {
+        return state.setIn([mode, id, 'activeTab'], action.params.id);
+    }
+    return state;
+}
 // error update
 export function updateRuleErrors(state, action, options) {
     let { mode, id } = options;

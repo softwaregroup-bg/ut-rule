@@ -37,7 +37,7 @@ BEGIN TRY
         JOIN @condition c1 ON c.conditionId = c1.conditionId
 
         MERGE INTO [rule].conditionActor ca
-        USING @conditionActor ca1 
+        USING @conditionActor ca1
             ON ca.conditionId = ca1.conditionId AND ca.factor = ca1.factor AND ca.actorId = ca1.actorId
         WHEN NOT MATCHED BY TARGET THEN
             INSERT (conditionId, factor, actorId)

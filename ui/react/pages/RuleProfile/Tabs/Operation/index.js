@@ -34,8 +34,7 @@ class OperationTab extends Component {
         let changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
         };
-        var minDate = fieldValues.startDate ? new Date(fieldValues.startDate) : null;
-        minDate && (minDate.setDate(minDate.getDate() + 1));
+        var minDate = fieldValues.startDate ? new Date(fieldValues.startDate) : new Date(null);
         return (
             <div>
                 <div className={style.inputWrapper}>

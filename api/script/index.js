@@ -1,31 +1,24 @@
-var path = require('path');
 var wrapper = {
     'itemName': function(msg, $meta) {
-        $meta.method = 'core.itemName.fetch';
-        return this.bus.importMethod($meta.method)(msg, $meta);
+        return this.bus.importMethod('core.itemName.fetch')(msg, $meta);
     },
     'itemCode': function(msg, $meta) {
-        $meta.method = 'core.itemCode.fetch';
-        return this.bus.importMethod($meta.method)(msg, $meta);
+        return this.bus.importMethod('core.itemCode.fetch')(msg, $meta);
     },
     'agentRole': function(msg, $meta) {
-        $meta.method = 'db/integration.agentRole.fetch';
-        return this.bus.importMethod($meta.method)(msg, $meta);
+        return this.bus.importMethod('db/integration.agentRole.fetch')(msg, $meta);
     },
     'accountAlias': function(msg, $meta) {
-        $meta.method = 'db/integration.alias.list';
-        return this.bus.importMethod($meta.method)(msg, $meta);
+        return this.bus.importMethod('db/integration.alias.list')(msg, $meta);
     },
     'organization': function(msg, $meta) {
-        var $newMeta = Object.assign($meta, { method: 'customer.organization.fetch' });
-        return this.bus.importMethod($meta.method)(msg, $newMeta).then(result => {
+        return this.bus.importMethod('customer.organization.fetch')(msg, $meta).then(result => {
             let organization = result.organization;
             return {items: organization.map(v => ({ type: 'organization', value: v.actorId, display: v.organizationName }))};
         });
     },
     'role': function(msg, $meta) {
-        $meta.method = 'user.role.fetch';
-        return this.bus.importMethod($meta.method)(msg, $meta).then(result => {
+        return this.bus.importMethod('user.role.fetch')(msg, $meta).then(result => {
             let role = result.role;
             return {items: role.map(v => ({ type: 'role', value: v.actorId, display: v.name }))};
         });
@@ -33,28 +26,6 @@ var wrapper = {
 };
 
 module.exports = {
-    schema: [
-        {path: path.join(__dirname, '../sql/schema'), linkSP: true},
-        {path: path.join(__dirname, '../sql/schema/seeds')}
-    ],
-    'decision.lookup.response.receive': result => {
-        if (result && Array.isArray(result.split)) {
-            result.split.forEach(split => {
-                if (split.analytics && Array.isArray(split.analytics.rows)) {
-                    split.analytics = split.analytics.rows.reduce((prev, cur) => {
-                        prev[cur.name] = cur.value;
-                        return prev;
-                    }, {});
-                } else if (split.analytics && split.analytics.rows && split.analytics.rows.name && split.analytics.rows.value) {
-                    var analytics = {};
-                    analytics[split.analytics.rows.name] = split.analytics.rows.value;
-                    split.analytics = analytics;
-                }
-                return split;
-            });
-        }
-        return result;
-    },
     'item.fetch': function(msg, $meta) {
         var pending = [];
 

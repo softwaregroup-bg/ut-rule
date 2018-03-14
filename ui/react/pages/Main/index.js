@@ -10,6 +10,8 @@ import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
 import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
 import AdvancedPagination from 'ut-front-react/components/AdvancedPagination';
+import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
+import Input from 'ut-front-react/components/Input';
 import classnames from 'classnames';
 import style from './style.css';
 import * as actionCreators from './actionCreators';
@@ -39,6 +41,21 @@ const Main = React.createClass({
             dialog: {
                 open: false,
                 conditionId: null
+            },
+            showFilter: true,
+            filterData: {
+                operation: [],
+                priority: {
+                    from: {
+                        value: null,
+                        isValid: true
+                    },
+                    to: {
+                        value: null,
+                        isValid: true
+                    }
+                },
+                errorMessage: 'Enter numerical values'
             },
             uiConfig: this.props.uiConfig.toJS()
         };
@@ -74,7 +91,8 @@ const Main = React.createClass({
         this.setState({
             selectedConditions: selectedConditions,
             canEdit: count === 1,
-            canDelete: count > 0
+            canDelete: count > 0,
+            showFilter: false
         });
         return !isSelected;
     },
@@ -132,11 +150,52 @@ const Main = React.createClass({
             prompt: false
         });
     },
+    fetchRulesWithFilter() {
+        let { pageSize, pageNumber } = this.props.pagination;
+        let { from, to } = this.state.filterData.priority;
+        let operationType = this.state.filterData.operation.map(operation => {
+            return Number(operation.key);
+        });
+        this.props.actions.fetchRules({ operationType, pageSize, pageNumber, minPriority: from.value, maxPriority: to.value });
+    },
+    onSelectDropdown(field) {
+        let data = this.state.filterData;
+        data[field.key] = field.value;
+        this.setState({
+            filterData: data
+        }, () => {
+            this.fetchRulesWithFilter();
+        });
+    },
+    onInputChange({ key, value, initValue, error, errorMessage }) {
+        let data = this.state.filterData;
+        if (isNaN(value) && value !== '') {
+            data.priority[key].isValid = false;
+            data.priority[key].value = null;
+            this.setState({
+                filterData: data
+            });
+        } else {
+            data.priority[key].value = value === '' ? null : value;
+            data.priority[key].isValid = true;
+            this.setState({
+                filterData: data
+            }, () => {
+                this.fetchRulesWithFilter();
+            });
+        }
+    },
+    toggleGridToolBox(val) {
+        this.setState({
+            showFilter: !this.state.showFilter
+        });
+    },
     render() {
         if (!this.props.ready) {
             return null;
         }
-
+        let { showFilter } = this.state;
+        let { errorMessage, priority } = this.state.filterData;
         let uiConfig = this.state.uiConfig;
         let columns = uiConfig.main.grid.columns;
         let sections = uiConfig.dialog.sections;
@@ -151,7 +210,46 @@ const Main = React.createClass({
                 <Header text='Rule Management' buttons={buttons} />
             </div>
             <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
-                <GridToolbox opened title='' >
+                <GridToolbox opened={showFilter} title='Show buttons' isTitleLink toggle={this.toggleGridToolBox}>
+                    <div className={style.filterWrap} >
+                        <div className={style.filterSeparated}>
+                            <Input
+                              keyProp='from'
+                              errorMessage={errorMessage}
+                              isValid={priority.from.isValid}
+                              type='input'
+                              value={priority.from.value}
+                              placeholder='Priority from'
+                              onChange={this.onInputChange}
+                            />
+                        </div>
+                        <div className={style.filterSeparated}>
+                            <Input
+                              keyProp='to'
+                              errorMessage={errorMessage}
+                              isValid={priority.to.isValid}
+                              type='input'
+                              value={priority.to.value}
+                              placeholder='Priority to'
+                              onChange={this.onInputChange}
+                            />
+                        </div>
+                        <MultiSelectBubble
+                          keyProp='operationIds'
+                          name='operationIds'
+                          label='Operations'
+                          value={this.state.filterData.operation}
+                          options={Object.keys(this.props.nomenclatures.operation).map(key => {
+                              return {
+                                  key,
+                                  name: this.props.nomenclatures.operation[key]
+                              };
+                          }) || []}
+                          onChange={(val) => { this.onSelectDropdown({ key: 'operation', value: val }); }}
+                        />
+                    </div>
+                </GridToolbox>
+                <GridToolbox opened={!showFilter} title='Show filters' isTitleLink toggle={this.toggleGridToolBox}>
                     <div className={style.gridToolBoxButtons}>
                         { this.context.checkPermission('rule.rule.edit') && <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
                             Edit

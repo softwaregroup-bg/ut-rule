@@ -4,7 +4,6 @@
 
 .actionBarWrap {
     border: 1px solid #d7d7d7;
-    overflow: hidden
 }
 
 .rulesNomenclatures {
@@ -38,4 +37,23 @@
     position: absolute;
     bottom: 34px;
     padding: 0 40px 0 20px;
+}
+
+.wrapperMaxWidth {
+    width: 100%;
+}
+
+.filterSeparated{
+    margin-right: 20px;
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-basis: auto;
+    min-width: 135px;
+    white-space: nowrap;
+}
+
+.filterWrap, .buttonWrap {
+    display: flex;
+    width: auto;
+    justify-content: flex-end;
 }

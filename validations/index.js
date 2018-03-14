@@ -6,5 +6,6 @@ module.exports = {
     'rule.fetch': require('./rule/rule.fetch'),
     'rule.add': require('./rule/rule.add'),
     'rule.remove': require('./rule/rule.remove'),
-    'rule.edit': require('./rule/rule.edit')
+    'rule.edit': require('./rule/rule.edit'),
+    'limitForUserByRole.get': require('./rule/rule.limitforuserbyrole.get')
 };

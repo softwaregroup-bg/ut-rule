@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.15.0-rc-bahur.10",
+  "version": "9.17.0-rc-cubalibre.1",
   "pkg": {
     "assets": [
       "api/sql/schema/*.sql",
@@ -27,9 +27,8 @@
     "react-router": "^3.0.0",
     "redux": "^3.7.2",
     "ut-front": "^8.0.1",
-    "ut-front-react": "^10.0.4",
-    "ut-bus": "^6.0.0",
-    "ut-audit": "^3.2.0-rc-bahur.33"
+    "ut-front-react": "^10.2.0-rc-cubalibre.0",
+    "ut-bus": "^6.0.0"
   },
   "description": "UT Rule",
   "scripts": {

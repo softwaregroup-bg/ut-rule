@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import {splitTags} from '../../../helpers';
+import {fromJS} from 'immutable';
 import style from '../../style.css';
 
-export const Assignments = (props) => {
+export const Info = (props) => {
     const {
         changeInputField,
-        changeMultiSelectField,
         selectedTags,
-        splitIndex,
-        name
+        name,
+        errors
     } = props;
     return (
         <div>
             <div className={style.inputWrapper}>
                 <Input
+                  keyProp={'name'}
                   label='Split Name'
+                  isValid={!errors.getIn(['name'])}
+                  errorMessage={errors.getIn(['name'])}
                   value={name}
-                  onChange={({value}) => changeInputField(splitIndex, 'name', value)}
+                  onChange={(field) => changeInputField(field)}
                 />
             </div>
             <div className={style.inputWrapper}>
@@ -27,11 +30,22 @@ export const Assignments = (props) => {
                   label={'Tag'}
                   value={selectedTags}
                   options={splitTags}
-                  onChange={(value) => { changeMultiSelectField(splitIndex, 'tags', value); }}
+                  onChange={(value) => { changeInputField({key: 'tags', value}); }}
                 />
             </div>
         </div>
     );
 };
 
-export default Assignments;
+Info.propTypes = {
+    changeInputField: PropTypes.func,
+    selectedTags: PropTypes.array,
+    name: PropTypes.string,
+    errors: PropTypes.object // immutable
+};
+
+Info.defaultProps = {
+    errors: fromJS({})
+};
+
+export default Info;

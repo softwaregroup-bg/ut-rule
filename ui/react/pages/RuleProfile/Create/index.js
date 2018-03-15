@@ -5,7 +5,6 @@ import { fromJS } from 'immutable';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import { getLink } from 'ut-front/react/routerHelper';
 import { removeTab } from 'ut-front-react/containers/TabMenu/actions';
-
 import Page from 'ut-front-react/components/PageLayout/Page';
 import Container from 'ut-front-react/components/PageLayout/Container';
 import Content from 'ut-front-react/components/PageLayout/Content';
@@ -18,7 +17,8 @@ import Destination from '../Tabs/Destination';
 import Split from '../Tabs/Split';
 import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
-import { prepateRuleToSave } from '../helpers';
+import { prepateRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap } from '../helpers';
+
 let status = fromJS({
     status: 'SUCCESS',
     message: 'Rule successfully created'
@@ -31,10 +31,12 @@ class RuleCreate extends Component {
         super(props, context);
         this.onSave = this.onSave.bind(this);
         this.fetchData = this.fetchData.bind(this);
+        // this.updateRuleErrors = this.updateRuleErrors.bind(this);
         this.onReset = this.onReset.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.state = {
-            closeAfterSave: false
+            closeAfterSave: false,
+            showErrorStatus: false
         };
     }
 
@@ -63,85 +65,122 @@ class RuleCreate extends Component {
     }
 
     getTabs() {
+        let errorCount = getRuleErrorCount(this.props.errors.toJS());
         let tabs = [
             {
                 title: 'Channel',
-                component: <Channel />
-                // validations: getGeneralInfoTabValidator()
-            },
-            {
-                title: 'Source',
-                component: <Source />
+                component: <Channel />,
+                errorsCount: errorCount.channel
             },
             {
                 title: 'Operation',
-                component: <Operation />
+                component: <Operation />,
+                errorsCount: errorCount.operation
+            },
+            {
+                title: 'Source',
+                component: <Source />,
+                errorsCount: errorCount.source
             },
             {
                 title: 'Destination',
-                component: <Destination />
-            },
-            {
-                title: 'Fee and Commission Split',
-                component: <Split />
+                component: <Destination />,
+                errorsCount: errorCount.destination
             },
             {
                 title: 'Limit',
-                component: <Limit />
+                component: <Limit />,
+                errorsCount: errorCount.limit
+            },
+            {
+                title: 'Fee and Commission Split',
+                component: <Split />,
+                errorsCount: errorCount.split
             }
         ];
         return tabs;
     }
 
     getActionButtons() {
+        let { errors, rule } = this.props;
+        let newErrors = prepareRuleErrors(rule, errors.toJS());
+        let isValid = isEmptyValuesOnly(newErrors);
+        let showError = () => {
+            !isEmptyValuesOnly(newErrors) && this.props.actions.updateRuleErrors(newErrors);
+            this.setState({showErrorStatus: true});
+        };
         let create = () => {
+            if (!isValid) return showError();
             this.state.closeAfterSave && this.setState({
                 closeAfterSave: false
             });
             this.onSave();
         };
         let createAndClose = () => {
+            if (!isValid) return showError();
             this.setState({
                 closeAfterSave: true
             });
             this.onSave();
         };
-        let actionButtons = [
-            {
-                text: 'Create and Close',
-                performFullValidation: true,
-                onClick: createAndClose,
-                styleType: 'primaryLight'
-            }, {
-                text: 'Create',
-                performFullValidation: true,
-                onClick: create
-            }, {
-                text: 'Close',
-                onClick: () => {
-                    return this.onReset(true);
-                }
+        let actionButtons = [{
+            text: 'Close',
+            onClick: () => {
+                return this.onReset(true);
             }
-        ];
+        }];
+        this.context.checkPermission('rule.rule.add') && actionButtons.unshift({
+            text: 'Create',
+            performFullValidation: true,
+            onClick: create
+        }) && actionButtons.unshift({
+            text: 'Create and Close',
+            onClick: createAndClose,
+            performFullValidation: true,
+            styleType: 'primaryLight'
+        });
         return actionButtons;
     }
-
     renderTabContainer() {
         return (
             <TabContainer
+              ref={`tab_container_${mode}_${id}`}
               headerTitle='Create Rule'
+              onTabClick={this.props.actions.changeActiveTab}
+              active={this.props.rule.activeTab}
               tabs={this.getTabs()}
               actionButtons={this.getActionButtons()}
             />
         );
     }
-
+    renderErrorStatusDialog() {
+        let errorCount = getRuleErrorCount(this.props.errors.toJS());
+        let totalErrors = 0;
+        let totalErrorTabs = 0;
+        let tabErrorMsg = '';
+        let close = () => {
+            this.setState({showErrorStatus: false});
+        };
+        for (var key in errorCount) {
+            if (errorCount[key]) {
+                totalErrorTabs++;
+                totalErrors += errorCount[key];
+                let currentErrorString = errorCount[key] > 1 ? 'errors' : 'error';
+                tabErrorMsg += `<li>${tabTitleMap[key]}: ${errorCount[key]} ${currentErrorString}</li>`;
+            }
+        }
+        let errorString = totalErrors > 1 ? 'errors' : 'error';
+        let tabString = totalErrorTabs > 1 ? 'tabs' : 'tab';
+        let statusErrorMessage = `Your request can not be saved because you have ${errorString} in the following ${tabString}:<ul>${tabErrorMsg}</ul>`;
+        return <StatusDialog onClose={close} status={fromJS({status: 'failed', message: statusErrorMessage})} />;
+    }
     render() {
         let { ruleSaved } = this.props.config;
         return (
             <Page>
                 <AddTab pathname={getLink('ut-rule:create')} title='Create Rule' />
                 {ruleSaved && <StatusDialog status={status} onClose={this.handleDialogClose} />}
+                {this.state.showErrorStatus && this.renderErrorStatusDialog()}
                 <Container>
                     <Content style={{position: 'relative'}}>
                         {this.renderTabContainer()}
@@ -154,12 +193,8 @@ class RuleCreate extends Component {
 
 RuleCreate.propTypes = {
     rule: PropTypes.object,
-    actions: PropTypes.shape({
-        fetchNomenclatures: PropTypes.func,
-        createRule: PropTypes.func,
-        resetRuleState: PropTypes.func,
-        changeRuleProfile: PropTypes.func
-    }).isRequired,
+    errors: PropTypes.object,
+    actions: PropTypes.object,
     activeTab: PropTypes.object,
     removeTab: PropTypes.func.isRequired,
     config: PropTypes.object,
@@ -174,7 +209,8 @@ const mapStateToProps = (state, ownProps) => {
         activeTab: state.tabMenu.active,
         config: state.ruleProfileReducer.get('config').toJS(),
         nomenclatureConfiguration: state.uiConfig.get('nomenclatures').toJS(),
-        rule: tabState ? tabState.toJS() : {}
+        rule: tabState ? tabState.toJS() : {},
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors']) || fromJS({})
     };
 };
 
@@ -182,5 +218,9 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch),
     removeTab: bindActionCreators(removeTab, dispatch)
 });
+
+RuleCreate.contextTypes = {
+    checkPermission: PropTypes.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(RuleCreate);

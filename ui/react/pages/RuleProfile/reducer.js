@@ -1,9 +1,8 @@
 import { fromJS } from 'immutable';
-import { methodRequestState } from 'ut-front-react/constants';
-import { formatNomenclatures, prepareRuleModel } from './helpers';
-import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange } from './Tabs/defaultState';
 import * as actionTypes from './actionTypes';
-const __placeholder__ = __placeholder__;
+import * as reducerHelper from './reducerHelper';
+import { REMOVE_TAB } from 'ut-front-react/containers/TabMenu/actionTypes';
+
 const defaultState = {
     nomenclatures: {
         accountProduct: [],
@@ -26,112 +25,53 @@ const defaultState = {
 };
 
 export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
-    let { mode, id } = state.get('config').toJS();
+    let options = state.get('config').toJS();
     switch (action.type) {
         case actionTypes.CHANGE_RULE_PROFILE:
-            if (action.params.mode && action.params.id) {
-                return state.setIn(['config', 'mode'], action.params.mode)
-                    .setIn(['config', 'id'], action.params.id)
-                    .setIn([action.params.mode, action.params.id], state.getIn([action.params.mode, action.params.id]) || fromJS(defaultTabState));
-            }
-            return state;
+            return reducerHelper.changeRuleProfile(state, action, options);
         case actionTypes.FETCH_NOMENCLATURES:
-            if (action.methodRequestState === methodRequestState.FINISHED) {
-                return state.set('nomenclatures', fromJS(formatNomenclatures(action.result.items)))
-                    .setIn(['config', 'nomenclaturesFetched'], true);
-            }
-            return state;
+            return reducerHelper.fetchNomenclatures(state, action, options);
         case actionTypes.EDIT_RULE:
         case actionTypes.CREATE_RULE:
-            if (action.methodRequestState === methodRequestState.FINISHED && !action.error) {
-                return state.setIn(['config', 'ruleSaved'], true);
-            }
-            return state;
+            return reducerHelper.saveRule(state, action, options);
         case actionTypes.GET_RULE:
-            if (action.methodRequestState === methodRequestState.FINISHED && !action.error) {
-                return state.setIn([mode, id], fromJS(prepareRuleModel(action.result)))
-                    .setIn(['rules', id], action.result);
-            }
-            return state;
+            return reducerHelper.getRule(state, action, options);
         case actionTypes.RESET_RULE_STATE:
-            if (mode === 'create') {
-                return state.setIn(['config', 'ruleSaved'], false).setIn([mode, id], fromJS(defaultTabState));
-            } else {
-                return state.setIn(['config', 'ruleSaved'], false);
-            }
+            return reducerHelper.resetRuleProfile(state, action, options);
+        case actionTypes.CHANGE_ACTIVE_TAB:
+            return reducerHelper.changeActiveTab(state, action, options);
+        // update errors
+        case actionTypes.UPDATE_RULE_ERRORS:
+            return reducerHelper.updateRuleErrors(state, action, options);
         // tab common actions
-        case actionTypes.CHANGE_MULTISELECT_FIELD:
-            if (action.params.newValue === __placeholder__) action.params.newValue = null;
-            return state.setIn([mode, id, action.destinationProp, action.params.field], fromJS(action.params.newValue));
-        case actionTypes.CHANGE_DROPDOWN_FIELD:
-            if (action.params.newValue === __placeholder__) action.params.newValue = null;
-            return state.setIn([mode, id, action.destinationProp, action.params.field], action.params.newValue);
+        case actionTypes.CHANGE_INPUT:
+            return reducerHelper.changeInput(state, action, options);
         case actionTypes.ADD_PROPERTY:
-            return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.push(fromJS({
-                name: '',
-                value: ''
-            })));
+            return reducerHelper.addProperty(state, action, options);
         case actionTypes.REMOVE_PROPERTY:
-            return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.splice(action.params.propertyId, 1));
-        case actionTypes.SET_PROPERTY_FIELD:
-            return state.setIn(
-                [mode, id, action.destinationProp, 'properties', action.params.propertyId, action.params.field],
-                action.params.newValue
-            );
+            return reducerHelper.removeProperty(state, action, options);
+
         // limit actions
         case actionTypes.ADD_LIMIT:
-            return state.updateIn([mode, id, 'limit'], v => v.push(fromJS(emptyLimit)));
+            return reducerHelper.addLimit(state, action, options);
         case actionTypes.REMOVE_LIMIT:
-            return state.updateIn([mode, id, 'limit'], v => v.splice(action.params.limitId, 1));
-        case actionTypes.SET_LIMIT_FIELD:
-            return state.setIn(
-                [mode, id, 'limit', action.params.limitId, action.params.field],
-                action.params.newValue
-            );
+            return reducerHelper.removeLimit(state, action, options);
+
         // split actions
-        case actionTypes.CHANGE_SPLIT_MULTISELECT_FIELD:
-            if (action.params.newValue === __placeholder__) action.params.newValue = null;
-            return state.setIn([mode, id, 'split', 'splits', action.params.splitIndex, action.params.field], fromJS(action.params.newValue));
-        case actionTypes.CHANGE_SPLIT_DROPDOWN_FIELD:
-            if (action.params.newValue === __placeholder__) action.params.newValue = null;
-            return state.setIn([mode, id, 'split', 'splits', action.params.splitIndex, action.params.field], action.params.newValue);
-        case actionTypes.CHANGE_SPLIT_INPUT_FIELD:
-            return state.setIn([mode, id, 'split', 'splits', action.params.splitIndex, action.params.field], action.params.newValue);
         case actionTypes.ADD_ASSIGNMENT:
-            return state.updateIn([mode, id, 'split', 'splits', action.params.splitIndex, 'assignments'], v => v.push(fromJS(emptyAssignment)));
+            return reducerHelper.addAssignment(state, action, options);
         case actionTypes.REMOVE_ASSIGNMENT:
-            return state.updateIn([mode, id, 'split', 'splits', action.params.splitIndex, 'assignments'], v => v.splice(action.params.propertyId, 1));
-        case actionTypes.SET_ASSIGNMENT_FIELD:
-            return state.setIn(
-                [mode, id, 'split', 'splits', action.params.splitIndex, 'assignments', action.params.propertyId, action.params.field],
-                action.params.newValue
-            );
-        case actionTypes.SET_CUMULATIVE_FIELD:
-            return state.setIn(
-                [mode, id, 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, action.params.field],
-                action.params.newValue
-            );
+            return reducerHelper.removeAssignment(state, action, options);
         case actionTypes.ADD_CUMULATIVE_RANGE:
-            return state.updateIn(
-                [mode, id, 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
-                v => v.push(fromJS(emptyRange)));
+            return reducerHelper.addCumulativeRange(state, action, options);
         case actionTypes.REMOVE_CUMULATIVE_RANGE:
-            return state.updateIn(
-                [mode, id, 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
-                v => v.splice(action.params.rangeId, 1));
-        case actionTypes.SET_CUMULATIVE_RANGE_FIELD:
-            return state.setIn(
-                [mode, id, 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges', action.params.rangeId, action.params.field],
-                action.params.newValue
-            );
+            return reducerHelper.removeCumulativeRange(state, action, options);
         case actionTypes.ADD_SPLIT:
-            return state.updateIn(
-                [mode, id, 'split', 'splits'],
-                v => v.push(fromJS(emptySplit)));
+            return reducerHelper.addSplit(state, action, options);
         case actionTypes.REMOVE_SPLIT:
-            return state.updateIn(
-                [mode, id, 'split', 'splits'],
-                v => v.splice(action.params.splitIndex, 1));
+            return reducerHelper.removeSplit(state, action, options);
+        case REMOVE_TAB:
+            return reducerHelper.removeTab(state, action, options);
         default:
             return state;
     }

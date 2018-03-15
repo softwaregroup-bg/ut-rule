@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
-import Input from 'ut-front-react/components/Input';
+import { fromJS } from 'immutable';
+import Property from '../../../../components/Property';
 import style from '../style.css';
 import * as actions from '../../actions';
 const destinationProp = 'source';
@@ -16,7 +17,8 @@ const propTypes = {
     organizations: PropTypes.array,
     cardProducts: PropTypes.array,
     accountProducts: PropTypes.array,
-    fieldValues: PropTypes.object
+    fieldValues: PropTypes.object,
+    errors: PropTypes.object // immutable
 };
 
 const defaultProps = {
@@ -31,75 +33,6 @@ class SourceTab extends Component {
     constructor(props, context) {
         super(props, context);
         this.renderFields = this.renderFields.bind(this);
-        this.getPropetyRowsBody = this.getPropetyRowsBody.bind(this);
-        this.renderPropertyTable = this.renderPropertyTable.bind(this);
-    }
-
-    getPropertyHeaderCells() {
-        return [
-            {name: 'Name', key: 'name'},
-            {name: 'Value', key: 'value'},
-            {name: '', key: 'rangeActions', className: style.deleteCol}
-        ].map((cell, i) => (
-            <th key={i} className={cell.className || ''}>{cell.name}</th>
-        ));
-    }
-
-    getPropetyRowsBody() {
-        const { properties } = this.props.fieldValues;
-        let removeProperty = (index) => {
-            this.props.actions.removeProperty(index, destinationProp);
-        };
-        let setPropertyField = (index, key, value) => {
-            this.props.actions.setPropertyField(index, key, value, destinationProp);
-        };
-        return properties.map((prop, index) => {
-            return (
-                <tr key={`${index}`}>
-                    <td>
-                        <Input
-                          keyProp='name'
-                          onChange={({key, value}) => { setPropertyField(index, key, value); }}
-                          value={prop.name}
-                        />
-                    </td>
-                    <td>
-                        <Input
-                          keyProp='value'
-                          onChange={({key, value}) => { setPropertyField(index, key, value); }}
-                          value={prop.value}
-                        />
-                    </td>
-                    <td className={style.deleteCol}>
-                        <div className={style.deleteIcon} onClick={() => { removeProperty(index); }} />
-                    </td>
-                </tr>
-            );
-        });
-    }
-
-    renderPropertyTable() {
-        let addProperty = () => {
-            this.props.actions.addProperty(destinationProp);
-        };
-        return (
-            <div className={style.propertyTable}>
-                <table className={style.dataGridTable}>
-                    <thead>
-                        <tr>
-                            {this.getPropertyHeaderCells()}
-                        </tr>
-                    </thead>
-                    <tbody >
-                        {this.getPropetyRowsBody()}
-                    </tbody>
-                </table>
-                <span className={style.link} onClick={addProperty}>
-                    <div className={style.plus} />
-                    Add another property
-                </span>
-            </div>
-        );
     }
 
     renderFields() {
@@ -113,11 +46,8 @@ class SourceTab extends Component {
             fieldValues
         } = this.props;
 
-        let changeMultiSelectField = (field, value) => {
-            this.props.actions.changeMultiSelectField(field, value, destinationProp);
-        };
-        let changeDropdownField = (field, value) => {
-            this.props.actions.changeDropdownField(field, value, destinationProp);
+        let changeInput = (field, value) => {
+            this.props.actions.changeInput(field, destinationProp);
         };
         return (
             <div>
@@ -127,7 +57,7 @@ class SourceTab extends Component {
                       label={'Country'}
                       value={fieldValues.countries}
                       options={countries}
-                      onChange={(value) => { changeMultiSelectField('countries', value); }}
+                      onChange={(value) => { changeInput({key: 'countries', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -136,7 +66,7 @@ class SourceTab extends Component {
                       label={'Region'}
                       value={fieldValues.regions}
                       options={regions}
-                      onChange={(value) => { changeMultiSelectField('regions', value); }}
+                      onChange={(value) => { changeInput({key: 'regions', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -145,36 +75,39 @@ class SourceTab extends Component {
                       label={'City'}
                       value={fieldValues.cities}
                       options={cities}
-                      onChange={(value) => { changeMultiSelectField('cities', value); }}
+                      onChange={(value) => { changeInput({key: 'cities', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
                       canSelectPlaceholder
+                      keyProp={'organization'}
                       data={organizations}
                       defaultSelected={fieldValues.organization}
                       placeholder='Enter Organizaton'
-                      onSelect={({value}) => { changeDropdownField('organization', value); }}
+                      onSelect={(field) => { changeInput(field); }}
                       label={'Organizaton'}
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
                       canSelectPlaceholder
+                      keyProp={'cardProduct'}
                       data={cardProducts}
                       defaultSelected={fieldValues.cardProduct}
                       placeholder='Enter Product'
-                      onSelect={({value}) => { changeDropdownField('cardProduct', value); }}
+                      onSelect={(field) => { changeInput(field); }}
                       label={'Product'}
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
                       canSelectPlaceholder
+                      keyProp={'accountProduct'}
                       data={accountProducts}
                       defaultSelected={fieldValues.accountProduct}
                       placeholder='Enter Account Product'
-                      onSelect={({value}) => { changeDropdownField('accountProduct', value); }}
+                      onSelect={(field) => { changeInput(field); }}
                       label={'Account Product'}
                     />
                 </div>
@@ -183,6 +116,15 @@ class SourceTab extends Component {
     }
 
     renderInfoFields() {
+        let addProperty = () => {
+            this.props.actions.addProperty(destinationProp);
+        };
+        let removeProperty = (index) => {
+            this.props.actions.removeProperty(index, destinationProp);
+        };
+        let changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
+        };
         return (
             <div className={style.contentBox}>
                 <div className={style.contentBoxWrapper}>
@@ -198,7 +140,13 @@ class SourceTab extends Component {
                       title='Properties'
                       wrapperClassName
                     >
-                        {this.renderPropertyTable()}
+                      <Property
+                        addProperty={addProperty}
+                        removeProperty={removeProperty}
+                        changeInput={changeInput}
+                        properties={(this.props.fieldValues || {}).properties || []}
+                        errors={this.props.errors}
+                        />
                     </TitledContentBox>
                 </div>
             </div>
@@ -226,7 +174,8 @@ const mapStateToProps = (state, ownProps) => {
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
         cardProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'cardProduct']).toJS(),
         accountProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'accountProduct']).toJS(),
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS()
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})
     };
 };
 

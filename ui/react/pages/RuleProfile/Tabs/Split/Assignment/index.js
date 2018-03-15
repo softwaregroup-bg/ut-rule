@@ -1,17 +1,17 @@
 import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
-
+import {validations} from '../../../validator';
 import style from '../../style.css';
-// import plusImage from '../assets/add_new.png';
-// import deleteImage from '../assets/delete.png';
+import { fromJS } from 'immutable';
 
-export const Assignments = (props) => {
+export const Assignment = (props) => {
     const {
         addAssignment,
         removeAssignment,
-        setAssignmentField,
+        changeInput,
         assignments,
-        splitIndex
+        splitIndex,
+        errors // immutable
     } = props;
 
     const getHeaderCells = () => {
@@ -30,47 +30,63 @@ export const Assignments = (props) => {
 
     const getBody = () => {
         return assignments.map((prop, index) => {
+            let idx = index.toString();
             return (
                 <tr key={`${index}`}>
                     <td>
                         <Input
-                          keyProp='description'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'description'}
+                          onChange={(field) => { changeInput(index, field); }}
+                          isValid={!errors.getIn([idx, 'description'])}
+                          errorMessage={errors.getIn([idx, 'description'])}
                           value={prop.description}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='debit'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'debit'}
+                          isValid={!errors.getIn([idx, 'debit'])}
+                          errorMessage={errors.getIn([idx, 'debit'])}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.debit}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='credit'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'credit'}
+                          isValid={!errors.getIn([idx, 'credit'])}
+                          errorMessage={errors.getIn([idx, 'credit'])}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.credit}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='percent'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'percent'}
+                          validators={validations.percent}
+                          isValid={!errors.getIn([idx, 'percent'])}
+                          errorMessage={errors.getIn([idx, 'percent'])}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.percent}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='minAmount'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'minAmount'}
+                          validators={validations.amount}
+                          isValid={!errors.getIn([idx, 'minAmount'])}
+                          errorMessage={errors.getIn([idx, 'minAmount'])}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.minAmount}
                         />
                     </td>
                     <td>
                         <Input
-                          keyProp='maxAmount'
-                          onChange={({key, value}) => { setAssignmentField(splitIndex, index, key, value); }}
+                          keyProp={'maxAmount'}
+                          validators={validations.amount}
+                          isValid={!errors.getIn([idx, 'maxAmount'])}
+                          errorMessage={errors.getIn([idx, 'maxAmount'])}
+                          onChange={(field) => { changeInput(index, field); }}
                           value={prop.maxAmount}
                         />
                     </td>
@@ -102,12 +118,17 @@ export const Assignments = (props) => {
     );
 };
 
-Assignments.propTypes = {
+Assignment.propTypes = {
     addAssignment: PropTypes.func,
     removeAssignment: PropTypes.func,
-    setAssignmentField: PropTypes.func,
+    changeInput: PropTypes.func,
     assignments: PropTypes.array,
-    splitIndex: PropTypes.number
+    splitIndex: PropTypes.number,
+    errors: PropTypes.object
 };
 
-export default Assignments;
+Assignment.defaultProps = {
+    errors: fromJS({})
+};
+
+export default Assignment;

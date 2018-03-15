@@ -5,8 +5,11 @@ import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Input from 'ut-front-react/components/Input';
+import Property from '../../../../components/Property';
 import style from '../style.css';
 import * as actions from '../../actions';
+import {validations} from '../../validator';
+import { fromJS } from 'immutable';
 const destinationProp = 'channel';
 const propTypes = {
     actions: PropTypes.object,
@@ -14,7 +17,8 @@ const propTypes = {
     regions: PropTypes.array,
     cities: PropTypes.array,
     organizations: PropTypes.array,
-    fieldValues: PropTypes.object
+    fieldValues: PropTypes.object,
+    errors: PropTypes.object // immutable
 };
 
 const defaultProps = {
@@ -28,75 +32,6 @@ class ChannelTab extends Component {
     constructor(props, context) {
         super(props, context);
         this.renderFields = this.renderFields.bind(this);
-        this.getPropetyRowsBody = this.getPropetyRowsBody.bind(this);
-        this.renderPropertyTable = this.renderPropertyTable.bind(this);
-    }
-
-    getPropertyHeaderCells() {
-        return [
-            {name: 'Name', key: 'name'},
-            {name: 'Value', key: 'value'},
-            {name: '', key: 'rangeActions', className: style.deleteCol}
-        ].map((cell, i) => (
-            <th key={i} className={cell.className || ''}>{cell.name}</th>
-        ));
-    }
-
-    getPropetyRowsBody() {
-        const { properties } = this.props.fieldValues;
-        let removeProperty = (index) => {
-            this.props.actions.removeProperty(index, destinationProp);
-        };
-        let setPropertyField = (index, key, value) => {
-            this.props.actions.setPropertyField(index, key, value, destinationProp);
-        };
-        return properties.map((prop, index) => {
-            return (
-                <tr key={`${index}`}>
-                    <td>
-                        <Input
-                          keyProp='name'
-                          onChange={({key, value}) => { setPropertyField(index, key, value); }}
-                          value={prop.name}
-                        />
-                    </td>
-                    <td>
-                        <Input
-                          keyProp='value'
-                          onChange={({key, value}) => { setPropertyField(index, key, value); }}
-                          value={prop.value}
-                        />
-                    </td>
-                    <td className={style.deleteCol}>
-                        <div className={style.deleteIcon} onClick={() => { removeProperty(index); }} />
-                    </td>
-                </tr>
-            );
-        });
-    }
-
-    renderPropertyTable() {
-        let addProperty = () => {
-            this.props.actions.addProperty(destinationProp);
-        };
-        return (
-            <div className={style.propertyTable}>
-                <table className={style.dataGridTable}>
-                    <thead>
-                        <tr>
-                            {this.getPropertyHeaderCells()}
-                        </tr>
-                    </thead>
-                    <tbody >
-                        {this.getPropetyRowsBody()}
-                    </tbody>
-                </table>
-                <span className={style.link} onClick={addProperty}>
-                    <div className={style.plus} />
-                    Add another property
-                </span>
-            </div>
-        );
     }
 
     renderFields() {
@@ -105,13 +40,11 @@ class ChannelTab extends Component {
             regions,
             cities,
             organizations,
-            fieldValues
+            fieldValues,
+            errors
         } = this.props;
-        let changeMultiSelectField = (field, value) => {
-            this.props.actions.changeMultiSelectField(field, value, destinationProp);
-        };
-        let changeDropdownField = (field, value) => {
-            this.props.actions.changeDropdownField(field, value, destinationProp);
+        let changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
         };
 
         return (
@@ -119,8 +52,11 @@ class ChannelTab extends Component {
                 <div className={style.inputWrapper}>
                     <Input
                       label='Priority'
+                      keyProp='priority'
                       value={fieldValues.priority}
-                      onChange={({value}) => changeDropdownField('priority', value)}
+                      validators={validations.priority}
+                      isValid={!errors.get('priority')} errorMessage={errors.get('priority')}
+                      onChange={(field) => changeInput(field)}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -129,7 +65,7 @@ class ChannelTab extends Component {
                       label={'Country'}
                       value={fieldValues.countries}
                       options={countries}
-                      onChange={(value) => { changeMultiSelectField('countries', value); }}
+                      onChange={(value) => { changeInput({key: 'countries', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -138,7 +74,7 @@ class ChannelTab extends Component {
                       label={'Region'}
                       value={fieldValues.regions}
                       options={regions}
-                      onChange={(value) => { changeMultiSelectField('regions', value); }}
+                      onChange={(value) => { changeInput({key: 'regions', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -147,16 +83,17 @@ class ChannelTab extends Component {
                       label={'City'}
                       value={fieldValues.cities}
                       options={cities}
-                      onChange={(value) => { changeMultiSelectField('cities', value); }}
+                      onChange={(value) => { changeInput({key: 'cities', value}); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
                       canSelectPlaceholder
+                      keyProp={'organization'}
                       data={organizations}
                       defaultSelected={fieldValues.organization}
                       placeholder='Enter Organizaton'
-                      onSelect={({value}) => { changeDropdownField('organization', value); }}
+                      onSelect={(field) => { changeInput(field); }}
                       label={'Organizaton'}
                     />
                 </div>
@@ -165,6 +102,15 @@ class ChannelTab extends Component {
     }
 
     renderInfoFields() {
+        let addProperty = () => {
+            this.props.actions.addProperty(destinationProp);
+        };
+        let removeProperty = (index) => {
+            this.props.actions.removeProperty(index, destinationProp);
+        };
+        let changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
+        };
         return (
             <div className={style.contentBox}>
                 <div className={style.contentBoxWrapper}>
@@ -180,7 +126,13 @@ class ChannelTab extends Component {
                       title='Properties'
                       wrapperClassName
                     >
-                        {this.renderPropertyTable()}
+                        <Property
+                          addProperty={addProperty}
+                          removeProperty={removeProperty}
+                          changeInput={changeInput}
+                          properties={(this.props.fieldValues || {}).properties || []}
+                          errors={this.props.errors}
+                        />
                     </TitledContentBox>
                 </div>
             </div>
@@ -206,7 +158,8 @@ const mapStateToProps = (state, ownProps) => {
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, 'channel']).toJS()
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})
     };
 };
 

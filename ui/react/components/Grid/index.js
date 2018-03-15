@@ -11,7 +11,6 @@ export default React.createClass({
         columns: PropTypes.object,
         formatedGridData: PropTypes.object,
         selectedConditions: PropTypes.object,
-        refresh: PropTypes.func,
         handleCheckboxSelect: PropTypes.func,
         handleHeaderCheckboxSelect: PropTypes.func
     },

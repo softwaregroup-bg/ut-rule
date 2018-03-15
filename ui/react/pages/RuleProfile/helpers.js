@@ -1,3 +1,17 @@
+import { errorMessage } from './validator';
+import { defaultErrorState } from './Tabs/defaultState';
+import { fromJS } from 'immutable';
+
+export const tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
+
+export const tabTitleMap = {
+    channel: 'Channel',
+    operation: 'Operation',
+    source: 'Source',
+    destination: 'Destination',
+    limit: 'Limit',
+    split: 'Fee and commission split'
+};
 export const splitTags = [
     {key: 'acquirer', name: 'Acquirer'},
     {key: 'issuer', name: 'Issuer'},
@@ -302,7 +316,8 @@ export const prepateRuleToSave = ({
     return formattedRule;
 };
 
-export let prepareRuleModel = (result) => {
+export const prepareRuleModel = (result) => {
+    var errState = defaultErrorState;
     var condition = (result.condition || [])[0] || {};
     var rule = {
         channel: {
@@ -352,6 +367,7 @@ export let prepareRuleModel = (result) => {
     });
     // limit
     result.limit && result.limit.sort((a, b) => a.limitId > b.limitId).forEach((limit) => {
+        errState.limit.push({});
         rule.limit.push({
             conditionId: condition.conditionId,
             limitId: limit.limitId,
@@ -422,5 +438,118 @@ export let prepareRuleModel = (result) => {
         });
         rule.split.splits.push(split);
     });
+    // add empty objects at error state
+    errState.split.splits = [];
+    rule.split.splits.forEach((split) => {
+        errState.split.splits.push({
+            assignments: Array(split.assignments.length).fill({}),
+            cumulatives: [{
+                ranges: Array((((split.cumulatives[0] || {}).ranges || [])).length).fill({})
+            }]
+        });
+    });
+    errState.limit = Array(rule.limit.length).fill({});
+    tabs.forEach((tk) => {
+        rule[tk] && rule[tk].properties && (errState[tk].properties = Array(rule[tk].properties.length).fill({}));
+    });
+    rule.errors = errState;
     return rule;
+};
+
+export const prepareRuleErrors = (rule, existErrors) => {
+    var errors = fromJS(existErrors || defaultErrorState);
+    let { destination, source, operation, channel, split, limit } = rule;
+    channel && !channel.priority && (errors = errors.setIn(['channel', 'priority'], errorMessage.priorityRequired));
+    channel && channel.properties && channel.properties.forEach((prop, idx) => {
+        prop.value && !prop.name && (errors = errors.setIn(['channel', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
+    });
+    source && source.properties && source.properties.forEach((prop, idx) => {
+        prop.value && !prop.name && (errors = errors.setIn(['source', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
+    });
+    destination && destination.properties && destination.properties.forEach((prop, idx) => {
+        prop.value && !prop.name && (errors = errors.setIn(['destination', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
+    });
+    operation && operation.properties && operation.properties.forEach((prop, idx) => {
+        prop.value && !prop.name && (errors = errors.setIn(['operation', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
+    });
+    limit && limit.forEach((lim, idx) => {
+        !lim.currency && !isEmptyValuesOnly(lim) && (errors = errors.setIn(['limit', idx, 'currency'], errorMessage.currencyRequired));
+    });
+    split && split.splits.forEach((split, idx) => {
+        let isEmptySplit = isEmptyValuesOnly(split);
+        if (!isEmptySplit) {
+            let cumulative = split.cumulatives && split.cumulatives[0];
+            // info
+            !split.name && (errors = errors.setIn(['split', 'splits', idx, 'name'], errorMessage.splitNameRequired));
+            // assignement
+            split && split.assignments && split.assignments.forEach((ass, assidx) => {
+                ass && !ass.description && !isEmptyValuesOnly(ass) &&
+                    (errors = errors.setIn(['split', 'splits', idx, 'assignments', assidx, 'description'], errorMessage.descriptionRequired));
+                ass && !ass.credit && !isEmptyValuesOnly(ass) &&
+                    (errors = errors.setIn(['split', 'splits', idx, 'assignments', assidx, 'credit'], errorMessage.creditRequired));
+            });
+            // cumulative
+            cumulative && !cumulative.currency && !isEmptyValuesOnly(cumulative) &&
+            (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'currency'], errorMessage.currencyRequired));
+
+            // ranges
+            cumulative && cumulative.ranges && cumulative.ranges.forEach(function(range, ridx) {
+                range && !isEmptyValuesOnly(range) && !range.startAmount &&
+                    (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'ranges', ridx, 'startAmount'], errorMessage.startAmountRequired));
+            });
+        }
+    });
+    return errors.toJS();
+};
+
+export const isEmptyValuesOnly = (obj) => {
+    var tempIsEmpty = true;
+    if (obj && typeof obj === 'object') {
+        Object.keys(obj).forEach((objKey) => {
+            if (!isEmptyValuesOnly(obj[objKey])) {
+                tempIsEmpty = false;
+                return false;
+            }
+        });
+    } else tempIsEmpty = !obj;
+    return tempIsEmpty;
+};
+
+export const isEqual = (x, y) => {
+    if ((typeof x === 'object' && x != null) && (typeof y === 'object' && y != null)) {
+        if (Object.keys(x).length !== Object.keys(y).length) return false;
+        for (var prop in x) {
+            if (y.hasOwnProperty(prop)) {
+                if (!isEqual(x[prop], y[prop])) return false;
+            } // else return false;
+        }
+        return true;
+    } else if (String(x || null) !== String(y || null)) return false;
+    else return true;
+};
+
+export const getRuleErrorCount = (errors) => {
+    let flattenObj = flatten(errors);
+    let errorCount = {};
+    tabs.map((tab) => {
+        errorCount[tab] = Object.keys(flattenObj).filter((fkey) => flattenObj[fkey] && fkey.startsWith(tab)).length;
+    });
+    return errorCount;
+};
+
+export const flatten = function(ob) {
+    var result = {};
+    for (var i in ob) {
+        if (!ob.hasOwnProperty(i)) continue;
+        if ((typeof ob[i]) === 'object') {
+            var flatObject = flatten(ob[i]);
+            for (var x in flatObject) {
+                if (!flatObject.hasOwnProperty(x)) continue;
+                result[i + '.' + x] = flatObject[x];
+            }
+        } else {
+            result[i] = ob[i];
+        }
+    }
+    return result;
 };

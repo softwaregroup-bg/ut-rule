@@ -41,7 +41,25 @@ export const emptyLimit = {
     monthlyMaxCount: ''
 };
 
+export const defaultErrorState = {
+    channel: {properties: []},
+    destination: {properties: []},
+    limit: [],
+    operation: {properties: []},
+    source: {properties: []},
+    split: {
+        splits: [{
+            assignments: [],
+            cumulatives: [{
+                ranges: []
+            }]
+        }]
+    }
+};
+
 export const defaultTabState = {
+    errors: defaultErrorState,
+    activeTab: 0,
     channel: {
         priority: '',
         countries: [],

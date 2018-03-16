@@ -52,6 +52,16 @@
     white-space: nowrap;
 }
 
+.clearFilterSeparated{
+    margin-right: 20px;
+    margin-left: 20px;
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-basis: auto;
+    min-width: 135px;
+    white-space: nowrap;
+}
+
 .filterWrap, .buttonWrap {
     display: flex;
     width: auto;

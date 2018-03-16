@@ -12,6 +12,9 @@ import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
 import AdvancedPagination from 'ut-front-react/components/AdvancedPagination';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import Input from 'ut-front-react/components/Input';
+import ToolboxFilter from './ToolboxFilter';
+import ToolboxButtons from './ToolboxButtons';
+import ToolboxClearFilter from './ClearFilter';
 import classnames from 'classnames';
 import style from './style.css';
 import * as actionCreators from './actionCreators';
@@ -42,7 +45,8 @@ const Main = React.createClass({
                 open: false,
                 conditionId: null
             },
-            showFilter: true,
+            showFilter: false,
+            showButtons: true,
             filterData: {
                 operation: [],
                 priority: {
@@ -61,10 +65,10 @@ const Main = React.createClass({
         };
     },
     fetchData(props) {
-        let {pageSize, pageNumber} = props.pagination;
+        let { pageSize, pageNumber } = props.pagination;
 
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures)
-        .then(() => this.props.actions.fetchRules({pageSize, pageNumber}));
+        .then(() => this.props.actions.fetchRules({ pageSize, pageNumber }));
     },
     componentWillMount() {
         this.fetchData(this.props);
@@ -92,7 +96,8 @@ const Main = React.createClass({
             selectedConditions: selectedConditions,
             canEdit: count === 1,
             canDelete: count > 0,
-            showFilter: false
+            showFilter: count === 0,
+            showButtons: count > 0
         });
         return !isSelected;
     },
@@ -187,21 +192,43 @@ const Main = React.createClass({
     },
     toggleGridToolBox(val) {
         this.setState({
-            showFilter: !this.state.showFilter
+            showFilter: !this.state.showFilter,
+            showButtons: !this.state.showButtons
         });
+    },
+    clearFilter() {
+        let filterData = {
+            operation: [],
+            priority: {
+                from: {
+                    value: null,
+                    isValid: true
+                },
+                to: {
+                    value: null,
+                    isValid: true
+                }
+            },
+            errorMessage: 'Enter numerical values'
+        };
+        this.setState({
+            filterData
+        });
+        let { pageSize, pageNumber } = this.props.pagination;
+        this.props.actions.fetchRules({ pageSize, pageNumber });
     },
     render() {
         if (!this.props.ready) {
             return null;
         }
-        let { showFilter } = this.state;
+        let { showFilter, showButtons, filterData, selectedConditions } = this.state;
         let { errorMessage, priority } = this.state.filterData;
         let uiConfig = this.state.uiConfig;
         let columns = uiConfig.main.grid.columns;
         let sections = uiConfig.dialog.sections;
         const buttons = [];
         if (this.context.checkPermission('rule.rule.add')) {
-            buttons.push({text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'});
+            buttons.push({ text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight' });
         }
 
         return <div className={mainStyle.contentTableWrap}>
@@ -210,7 +237,7 @@ const Main = React.createClass({
                 <Header text='Rule Management' buttons={buttons} />
             </div>
             <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
-                <GridToolbox opened={showFilter} title='Show buttons' isTitleLink toggle={this.toggleGridToolBox}>
+                <ToolboxFilter selected={selectedConditions} toggle={this.toggleGridToolBox} show={showFilter}>
                     <div className={style.filterWrap} >
                         <div className={style.filterSeparated}>
                             <Input
@@ -234,32 +261,35 @@ const Main = React.createClass({
                               onChange={this.onInputChange}
                             />
                         </div>
-                        <MultiSelectBubble
-                          keyProp='operationIds'
-                          name='operationIds'
-                          label='Operations'
-                          value={this.state.filterData.operation}
-                          options={Object.keys(this.props.nomenclatures.operation).map(key => {
-                              return {
-                                  key,
-                                  name: this.props.nomenclatures.operation[key]
-                              };
-                          }) || []}
-                          onChange={(val) => { this.onSelectDropdown({ key: 'operation', value: val }); }}
-                        />
+                            <MultiSelectBubble
+                              keyProp='operationIds'
+                              name='operationIds'
+                              label='Operations'
+                              value={filterData.operation}
+                              options={Object.keys(this.props.nomenclatures.operation).map(key => {
+                                  return {
+                                      key,
+                                      name: this.props.nomenclatures.operation[key]
+                                  };
+                              }) || []}
+                              onChange={(val) => { this.onSelectDropdown({ key: 'operation', value: val }); }}
+                            />
+                        <div className={style.clearFilterSeparated}>
+                            <ToolboxClearFilter filterData={filterData} clearFilter={this.clearFilter} />
+                        </div>
                     </div>
-                </GridToolbox>
-                <GridToolbox opened={!showFilter} title='Show filters' isTitleLink toggle={this.toggleGridToolBox}>
+                </ToolboxFilter>
+                <ToolboxButtons selected={selectedConditions} toggle={this.toggleGridToolBox} show={showButtons}>
                     <div className={style.gridToolBoxButtons}>
-                        { this.context.checkPermission('rule.rule.edit') && <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
+                        {this.context.checkPermission('rule.rule.edit') && <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
                             Edit
-                        </button> }
-                        { this.context.checkPermission('rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
+                        </button>}
+                        {this.context.checkPermission('rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
                             Delete
                         </button>
                         }
                     </div>
-                </GridToolbox>
+                </ToolboxButtons>
             </div>
             <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
                 <div className={style.grid} >
@@ -282,14 +312,14 @@ const Main = React.createClass({
                           ref='prompt'
                           open={this.state.prompt}
                           message={
-                            'You are about to delete ' +
-                            (
-                                Object.keys(this.state.selectedConditions).length === 1
-                                    ? '1 rule'
-                                    : Object.keys(this.state.selectedConditions).length + ' rules'
-                            ) +
-                            '. Would you like to proceed?'
-                        }
+                                'You are about to delete ' +
+                                (
+                                    Object.keys(this.state.selectedConditions).length === 1
+                                        ? '1 rule'
+                                        : Object.keys(this.state.selectedConditions).length + ' rules'
+                                ) +
+                                '. Would you like to proceed?'
+                            }
                           onOk={this.removeRules}
                           onCancel={this.hidePrompt}
                         />

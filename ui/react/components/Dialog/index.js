@@ -17,6 +17,9 @@ import set from 'lodash.set';
 import {connect} from 'react-redux';
 import {checkAccountExists} from '../../pages/Main/actionCreators';
 import Promise from 'bluebird';
+import Page from 'ut-front-react/components/PageLayout/Page';
+import Container from 'ut-front-react/components/PageLayout/Container';
+import Content from 'ut-front-react/components/PageLayout/Content';
 import TabContainer from 'ut-front-react/containers/TabContainer';
 
 function capitalizeFirstLetter(string) {
@@ -115,7 +118,6 @@ const emptySplitAssignment = {
 
 export default connect(() => ({}), {checkAccountExists})(React.createClass({
     propTypes: {
-        open: PropTypes.bool.isRequired,
         data: PropTypes.object,
         conditionProperty: PropTypes.array,
         conditionActor: PropTypes.array,
@@ -123,7 +125,9 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
         nomenclatures: PropTypes.object.isRequired,
         onSave: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
-        sections: PropTypes.object
+        sections: PropTypes.object,
+        params: PropTypes.object,
+        isEdit: PropTypes.bool
     },
     childContextTypes: {
         onFieldChange: PropTypes.func,
@@ -568,7 +572,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             tabs.push({
                 title: 'Channel',
                 component:
-                  <Accordion title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
+                  <Accordion noCollapse title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
                     <Channel
                       data={this.state.data.condition[0]}
                       fields={sections.channel.fields}
@@ -584,7 +588,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             tabs.push({
                 title: sections.operation.title,
                 component:
-                  <Accordion title={sections.operation.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                  <Accordion noCollapse title={sections.operation.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                     <Operation
                       data={this.state.data.condition[0]}
                       fields={sections.operation.fields}
@@ -600,7 +604,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             tabs.push({
                 title: sections.source.title,
                 component:
-                  <Accordion title={sections.source.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                  <Accordion noCollapse title={sections.source.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                     <Source
                       data={this.state.data.condition[0]}
                       fields={sections.source.fields}
@@ -616,7 +620,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             tabs.push({
                 title: sections.destination.title,
                 component:
-                  <Accordion title={sections.destination.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                  <Accordion noCollapse title={sections.destination.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                     <Destination
                       data={this.state.data.condition[0]}
                       fields={sections.destination.fields}
@@ -632,7 +636,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             tabs.push({
                 title: sections.limit.title,
                 component:
-                  <Accordion title={sections.limit.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                  <Accordion noCollapse title={sections.limit.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                     <div className={style.content}>
                       <SectionLimit
                         data={this.state.data.limit}
@@ -648,7 +652,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             tabs.push({
                 title: 'Splits',
                 component:
-                  <Accordion title={sections.split.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                  <Accordion noCollapse title={sections.split.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                     <div className={style.content}>
                       <Split
                         data={this.state.data.split}
@@ -668,11 +672,20 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             });
         }
 
+        const addMargin = tab =>
+          ({
+              ...tab,
+              component:
+              <div style={{marginLeft: 15, marginRight: 15}}>
+                {tab.component}
+              </div>
+          });
+
         // if (sections.summary.visible) {
         //     tabs.push({
         //         title: sections.summary.title,
         //         component:
-        //           <Accordion title={sections.summary.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+        //           <Accordion noCollapse title={sections.summary.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
         //             <div className={style.content}>
         //               <SectionSummary
         //                 data={this.state.data}
@@ -683,24 +696,45 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
         //     });
         // }
 
-        if (sections.documents.visible) {
-            tabs.push({
-                title: sections.documents.title,
-                component: <div>Not implemented</div>
-            });
-        }
+        // if (sections.documents.visible) {
+        //     tabs.push({
+        //         title: sections.documents.title,
+        //         component: <div>Not implemented</div>
+        //     });
+        // }
+
+        const isEdit = this.props.isEdit;
+        const title = isEdit
+          ? 'Edit Rule'
+          : 'Create Rule';
+        const extraElements = [
+            <Input
+              keyProp='priority'
+              label='Priority'
+              onChange={this.onChangeInput}
+              value={'' + (this.state.data.condition[0].priority || '')}
+            />
+        ];
+        const actionButtons = [
+            {
+                text: 'Save',
+                onClick: this.save,
+                permissions: [],
+                styleType: 'primaryLight',
+                performFullValidation: true
+            },
+            {
+                text: 'Close',
+                onClick: () => this.props.onClose(),
+                permissions: [],
+                styleType: 'secondaryDark'
+            }
+        ];
 
         return (
-            <Dialog
-              title={this.props.data ? 'Edit Rule' : 'Add Rule'}
-              open={this.props.open}
-              autoScrollBodyContent
-              contentStyle={this.contentStyle}
-              actions={[
-                  <Button label={'Save'} onClick={this.save} styleType='primaryLight' className={style.save} />,
-                  <Button label={'Cancel'} onClick={this.props.onClose} styleType='secondaryDark' />
-              ]}
-            >
+          <Page>
+            <Container>
+              <Content style={{position: 'relative'}}>
                 <div>
                   <Dialog
                     title='Error'
@@ -716,24 +750,17 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
                         {this.state.form.errors && this.state.form.errors.map((error, i) => <div key={i}>{error}</div>)}
                     </div>
                   </Dialog>
-                    <div className={style.topSection}>
-                        <Input
-                          keyProp='priority'
-                          label='Priority'
-                          onChange={this.onChangeInput}
-                          value={'' + (this.state.data.condition[0].priority || '')}
-                        />
                     </div>
-                    <div className={style.wrapper}>
                         <TabContainer
                           sourceMap={{}}
-                          actionButtons={[]}
-                          tabs={tabs}
-                          hideHeader
+                          extraElements={extraElements}
+                          actionButtons={actionButtons}
+                          tabs={tabs.map(addMargin)}
+                          headerTitle={title}
                         />
-                  </div>
-                </div>
-            </Dialog>
+              </Content>
+            </Container>
+          </Page>
         );
     }
 }));

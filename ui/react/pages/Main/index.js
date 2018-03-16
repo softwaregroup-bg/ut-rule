@@ -18,6 +18,7 @@ import ToolboxClearFilter from './ClearFilter';
 import classnames from 'classnames';
 import style from './style.css';
 import * as actionCreators from './actionCreators';
+import Button from 'ut-front-react/components/StandardButton';
 
 const Main = React.createClass({
     propTypes: {
@@ -228,120 +229,126 @@ const Main = React.createClass({
         let sections = uiConfig.dialog.sections;
         const buttons = [];
         if (this.context.checkPermission('rule.rule.add')) {
-            buttons.push({ text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight' });
+            buttons.push({text: 'Create Rule', onClick: this.createBtnOnClick, styleType: 'primaryLight'});
         }
 
         return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
-            <div className={style.header}>
-                <Header text='Rule Management' buttons={buttons} />
-            </div>
-            <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
-                <ToolboxFilter selected={selectedConditions} toggle={this.toggleGridToolBox} show={showFilter}>
-                    <div className={style.filterWrap} >
-                        <div className={style.filterSeparated}>
-                            <Input
-                              keyProp='from'
-                              errorMessage={errorMessage}
-                              isValid={priority.from.isValid}
-                              type='input'
-                              value={priority.from.value}
-                              placeholder='Priority from'
-                              onChange={this.onInputChange}
-                            />
-                        </div>
-                        <div className={style.filterSeparated}>
-                            <Input
-                              keyProp='to'
-                              errorMessage={errorMessage}
-                              isValid={priority.to.isValid}
-                              type='input'
-                              value={priority.to.value}
-                              placeholder='Priority to'
-                              onChange={this.onInputChange}
-                            />
-                        </div>
-                            <MultiSelectBubble
-                              keyProp='operationIds'
-                              name='operationIds'
-                              label='Operations'
-                              value={filterData.operation}
-                              options={Object.keys(this.props.nomenclatures.operation).map(key => {
-                                  return {
-                                      key,
-                                      name: this.props.nomenclatures.operation[key]
-                                  };
-                              }) || []}
-                              onChange={(val) => { this.onSelectDropdown({ key: 'operation', value: val }); }}
-                            />
-                        <div className={style.clearFilterSeparated}>
-                            <ToolboxClearFilter filterData={filterData} clearFilter={this.clearFilter} />
-                        </div>
-                    </div>
-                </ToolboxFilter>
-                <ToolboxButtons selected={selectedConditions} toggle={this.toggleGridToolBox} show={showButtons}>
-                    <div className={style.gridToolBoxButtons}>
-                        {this.context.checkPermission('rule.rule.edit') && <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
-                            Edit
-                        </button>}
-                        {this.context.checkPermission('rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
-                            Delete
-                        </button>
-                        }
-                    </div>
-                </ToolboxButtons>
-            </div>
-            <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
-                <div className={style.grid} >
-                    {this.state.dialog.open &&
-                        <Dialog
-                          ref='dialog'
-                          open={this.state.dialog.open}
-                          data={this.props.rules[this.state.dialog.conditionId]}
-                          conditionProperty={this.props.conditionProperty}
-                          conditionActor={this.props.conditionActor}
-                          conditionItem={this.props.conditionItem}
-                          nomenclatures={this.props.nomenclatures}
-                          onSave={this.dialogOnSave}
-                          onClose={this.dialogOnClose}
-                          sections={sections}
-                        />
-                    }
-                    {this.state.prompt &&
-                        <Prompt
-                          ref='prompt'
-                          open={this.state.prompt}
-                          message={
-                                'You are about to delete ' +
-                                (
-                                    Object.keys(this.state.selectedConditions).length === 1
-                                        ? '1 rule'
-                                        : Object.keys(this.state.selectedConditions).length + ' rules'
-                                ) +
-                                '. Would you like to proceed?'
-                            }
-                          onOk={this.removeRules}
-                          onCancel={this.hidePrompt}
-                        />
-                    }
-                    <Grid
-                      ref='grid'
-                      refresh={this.refresh}
-                      data={this.props.rules}
-                      selectedConditions={this.state.selectedConditions}
-                      nomenclatures={this.props.nomenclatures}
-                      formatedGridData={this.props.formatedGridData}
-                      handleCheckboxSelect={this.handleCheckboxSelect}
-                      handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
-                      columns={columns}
-                    />
+            {this.state.dialog.open
+              ? <Dialog
+                ref='dialog'
+                open={this.state.dialog.open}
+                isEdit={!!this.state.dialog.conditionId}
+                data={this.props.rules[this.state.dialog.conditionId]}
+                conditionProperty={this.props.conditionProperty}
+                conditionActor={this.props.conditionActor}
+                conditionItem={this.props.conditionItem}
+                nomenclatures={this.props.nomenclatures}
+                onSave={this.dialogOnSave}
+                onClose={this.dialogOnClose}
+                sections={sections}
+                />
+              : <div>
+                <div className={style.header}>
+                    <Header text='Rule Management' buttons={buttons} />
                 </div>
-            </div>
-            <div className={style.paginationWrap}>
-                <AdvancedPagination
-                  onUpdate={this.props.actions.updatePagination}
-                  pagination={fromJS(this.props.pagination)} />
-            </div>
+                <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
+                    <ToolboxFilter selected={selectedConditions} toggle={this.toggleGridToolBox} show={showFilter}>
+                        <div className={style.filterWrap} >
+                            <div className={style.filterSeparated}>
+                                <Input
+                                  keyProp='from'
+                                  errorMessage={errorMessage}
+                                  isValid={priority.from.isValid}
+                                  type='input'
+                                  value={priority.from.value}
+                                  placeholder='Priority from'
+                                  onChange={this.onInputChange}
+                                />
+                            </div>
+                            <div className={style.filterSeparated}>
+                                <Input
+                                  keyProp='to'
+                                  errorMessage={errorMessage}
+                                  isValid={priority.to.isValid}
+                                  type='input'
+                                  value={priority.to.value}
+                                  placeholder='Priority to'
+                                  onChange={this.onInputChange}
+                                />
+                            </div>
+                                <MultiSelectBubble
+                                  keyProp='operationIds'
+                                  name='operationIds'
+                                  label='Operations'
+                                  value={filterData.operation}
+                                  options={Object.keys(this.props.nomenclatures.operation).map(key => {
+                                      return {
+                                          key,
+                                          name: this.props.nomenclatures.operation[key]
+                                      };
+                                  }) || []}
+                                  onChange={(val) => { this.onSelectDropdown({ key: 'operation', value: val }); }}
+                                />
+                            <div className={style.clearFilterSeparated}>
+                                <ToolboxClearFilter filterData={filterData} clearFilter={this.clearFilter} />
+                            </div>
+                        </div>
+                    </ToolboxFilter>
+                    <ToolboxButtons selected={selectedConditions} toggle={this.toggleGridToolBox} show={showButtons}>
+                        <div className={style.gridToolBoxButtons}>
+                            { this.context.checkPermission('rule.rule.edit') &&
+                              <Button
+                                onClick={this.editBtnOnClick}
+                                styleType='secondaryDark'
+                                label='Edit'
+                              />
+                            }
+                            { this.context.checkPermission('rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
+                                Delete
+                            </button>
+                            }
+                        </div>
+                    </ToolboxButtons>
+                </div>
+                <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
+                    <div className={style.grid} >
+                        {this.state.prompt &&
+                            <Prompt
+                              ref='prompt'
+                              open={this.state.prompt}
+                              message={
+                                    'You are about to delete ' +
+                                    (
+                                        Object.keys(this.state.selectedConditions).length === 1
+                                            ? '1 rule'
+                                            : Object.keys(this.state.selectedConditions).length + ' rules'
+                                    ) +
+                                    '. Would you like to proceed?'
+                                }
+                              onOk={this.removeRules}
+                              onCancel={this.hidePrompt}
+                            />
+                        }
+                        <Grid
+                          ref='grid'
+                          refresh={this.refresh}
+                          data={this.props.rules}
+                          selectedConditions={this.state.selectedConditions}
+                          nomenclatures={this.props.nomenclatures}
+                          formatedGridData={this.props.formatedGridData}
+                          handleCheckboxSelect={this.handleCheckboxSelect}
+                          handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                          columns={columns}
+                        />
+                    </div>
+                </div>
+                <div className={style.paginationWrap}>
+                    <AdvancedPagination
+                      onUpdate={this.props.actions.updatePagination}
+                      pagination={fromJS(this.props.pagination)} />
+                </div>
+            </div>}
             {false &&
                 <div>
                     <div className={style.rulesNomenclatures}>

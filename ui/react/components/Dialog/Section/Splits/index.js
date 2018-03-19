@@ -49,7 +49,7 @@ const Splits = React.createClass({
     },
     getTagData() {
         return [
-            {key: 'acquirer', name: 'Acquirer'},
+            // {key: 'acquirer', name: 'Acquirer'},
             {key: 'fee', name: 'Fee'},
             {key: 'realtime', name: 'Real Time'},
             {key: 'agentCommission', name: 'Delayed'}

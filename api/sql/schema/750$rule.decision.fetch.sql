@@ -236,9 +236,12 @@ BEGIN
 
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|otherTax|%') otherTax,
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|wth|%') wth,
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|vat|%') vat,
         (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|fee|%' AND tag NOT LIKE '%|issuer|%') acquirerFee,
         (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%') issuerFee,
-        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|commission|%') commission,
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|commission|%' OR tag LIKE '%|agentCommission|%') commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
 

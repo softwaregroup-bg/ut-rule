@@ -89,6 +89,9 @@ module.exports = {
         }),
         result: joi.object().keys({
             amount: joi.object().keys({
+                otherTax: joi.number().required(),
+                vat: joi.number().required(),
+                wth: joi.number().required(),
                 acquirerFee: joi.number().required(),
                 issuerFee: joi.number().required(),
                 commission: joi.number().required(),

@@ -51,6 +51,14 @@
     min-width: 135px;
     white-space: nowrap;
 }
+.multiFilterSeparated{
+    margin-right: 20px;
+    flex-shrink: 1;
+    flex-grow: 3;
+    flex-basis: auto;
+    min-width: 135px;
+    white-space: nowrap;
+}
 
 .clearFilterSeparated{
     margin-right: 20px;

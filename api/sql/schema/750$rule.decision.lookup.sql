@@ -4,6 +4,7 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @operationDate datetime, -- the date when operation is triggered
     @sourceAccount varchar(100), -- source account number
     @sourceCardProductId BIGINT = NULL, -- product id of the card
+    @sourceCardProductItemNameId BIGINT = NULL, -- item name id of product
     @destinationAccount varchar(100), -- destination account number
     @amount money, -- operation amount
     @currency varchar(3), -- operation currency
@@ -164,7 +165,7 @@ BEGIN
         ('ss', 'source.city', @sourceCityId),
         --source category
         ('sc', 'source.account.product', @sourceAccountProductId),
-        ('sc', 'source.card.product', @sourceCardProductId),
+        ('sc', 'source.card.product', @sourceCardProductItemNameId),
         --destination spatial
         ('ds', 'destination.country', @destinationCountryId),
         ('ds', 'destination.region', @destinationRegionId),

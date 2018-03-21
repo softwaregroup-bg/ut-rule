@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { fromJS } from 'immutable';
 import { bindActionCreators } from 'redux';
 import Grid from '../../components/Grid';
-import Dialog from '../../components/Dialog';
-import Prompt from '../../components/Prompt';
+import ConfirmDialog from 'ut-front-react/components/ConfirmDialog';
 import { getLink } from 'ut-front/react/routerHelper';
 import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
@@ -46,16 +45,20 @@ const Main = React.createClass({
         };
     },
     fetchData(props) {
+        debugger;
         let {pageSize, pageNumber} = props.pagination;
+        let showDeleted = props.showDeleted;
 
-        this.props.actions.fetchRules({pageSize, pageNumber});
+        this.props.actions.fetchRules({pageSize, pageNumber}, showDeleted);
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     },
     componentWillMount() {
+        debugger;
         this.fetchData(this.props);
     },
     componentWillReceiveProps(nextProps) {
-        if (this.props.pagination.changeId !== nextProps.pagination.changeId) {
+        debugger;
+        if (this.props.pagination.changeId !== nextProps.pagination.changeId || this.props.showDeleted !== nextProps.showDeleted) {
             this.fetchData(nextProps);
         }
     },
@@ -125,6 +128,7 @@ const Main = React.createClass({
         return buttons;
     },
     render() {
+        debugger;
         if (!this.props.ready) {
             return null;
         }
@@ -133,19 +137,28 @@ const Main = React.createClass({
         let columns = uiConfig.main.grid.columns;
         let sections = uiConfig.dialog.sections;
         let id = Object.keys(this.state.selectedConditions)[0];
+        let showDeleted = this.props.showDeleted;
         return <div>
             <AddTab pathname={getLink('ut-rule:rules')} title='Fees, Commissions and Limits (FCL)' />
             <Header text='Fees, Commissions and Limits (FCL)' buttons={this.getHeaderButtons()} />
             <div className={classnames(mainStyle.contentTableWrap, style.contentTableWrap)}>
                 <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
-                    <GridToolbox opened title='' >
+                    <GridToolBox opened title='' >
+                    {!showDeleted ? (
                       <div className={style.actionWrap} >
                         { this.context.checkPermission('rule.rule.edit') &&
                             (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
                         { this.context.checkPermission('rule.rule.remove') &&
-                            (<Button label='Delete' disabled={!this.state.canEdit} className='defaultBtn' onClick={this.showPrompt} />)}
-                      </div>
-                    </GridToolbox>
+                            (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
+                        { this.context.checkPermission('rule.rule.fetchDeleted') &&
+                            (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
+                              onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
+                    </div>) : (<div className={style.actionWrap} >
+                        { this.context.checkPermission('rule.rule.fetchDeleted') &&
+                            (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
+                              onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
+                              </div>) }
+                    </GridToolBox>
                 </div>
                 <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
                     <div className={style.grid} >
@@ -217,6 +230,11 @@ Main.contextTypes = {
     checkPermission: PropTypes.func.isRequired
 };
 
+Main.propTypes = {
+    showDeleted: PropTypes.bool.isRequired,
+    toggleRuleOption: PropTypes.func.isRequired
+};
+
 export default connect(
     (state, ownProps) => {
         return {
@@ -234,7 +252,8 @@ export default connect(
                 pageSize: 25,
                 pageNumber: 1,
                 recordsTotal: 0
-            }
+            },
+            showDeleted: state.ruleList.showDeleted
         };
     },
     (dispatch) => {

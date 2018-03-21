@@ -9,7 +9,7 @@ import { getLink } from 'ut-front/react/routerHelper';
 import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
-import GridToolbox from 'ut-front-react/components/SimpleGridToolbox';
+import GridToolBox from 'ut-front-react/components/SimpleGridToolbox';
 import AdvancedPagination from 'ut-front-react/components/AdvancedPagination';
 import Button from 'ut-front-react/components/StandardButton';
 import classnames from 'classnames';

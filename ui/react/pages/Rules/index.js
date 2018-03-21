@@ -18,17 +18,11 @@ import * as actionCreators from './actionCreators';
 const Main = React.createClass({
     propTypes: {
         rules: PropTypes.object,
-        conditionActor: PropTypes.array,
-        conditionItem: PropTypes.array,
-        conditionProperty: PropTypes.array,
         nomenclatures: PropTypes.object,
         formatedGridData: PropTypes.object,
         ready: PropTypes.bool,
         actions: PropTypes.object,
-        location: PropTypes.object,
         uiConfig: PropTypes.object,
-        columns: PropTypes.object,
-        sections: PropTypes.object,
         pagination: PropTypes.object
     },
     getInitialState() {
@@ -36,29 +30,20 @@ const Main = React.createClass({
             selectedConditions: {},
             canEdit: false,
             canDelete: false,
-            prompt: false,
-            dialog: {
-                open: false,
-                conditionId: null
-            },
             uiConfig: this.props.uiConfig.toJS()
         };
     },
     fetchData(props) {
-        debugger;
         let {pageSize, pageNumber} = props.pagination;
-        let showDeleted = props.showDeleted;
 
-        this.props.actions.fetchRules({pageSize, pageNumber}, showDeleted);
+        this.props.actions.fetchRules({pageSize, pageNumber});
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     },
     componentWillMount() {
-        debugger;
         this.fetchData(this.props);
     },
     componentWillReceiveProps(nextProps) {
-        debugger;
-        if (this.props.pagination.changeId !== nextProps.pagination.changeId || this.props.showDeleted !== nextProps.showDeleted) {
+        if (this.props.pagination.changeId !== nextProps.pagination.changeId) {
             this.fetchData(nextProps);
         }
     },
@@ -90,18 +75,6 @@ const Main = React.createClass({
             canDelete: !isSelected
         });
     },
-    dialogOnClose() {
-        this.setState({
-            dialog: {
-                open: false,
-                conditionId: null
-            }
-        });
-    },
-    dialogOnSave(data) {
-        let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
-        this.setState(this.getInitialState(), () => this.props.actions[action](data));
-    },
     removeRules() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
         this.setState(this.getInitialState(), () => this.props.actions.removeRules({
@@ -111,15 +84,8 @@ const Main = React.createClass({
     refresh() {
         this.setState(this.getInitialState(), () => this.props.actions.reset());
     },
-    showPrompt() {
-        this.setState({
-            prompt: true
-        });
-    },
-    hidePrompt() {
-        this.setState({
-            prompt: false
-        });
+    showConfirm() {
+        this.refs['showRuleConfirmDialog'] && this.refs['showRuleConfirmDialog'].open();
     },
     getHeaderButtons() {
         let buttons = [];
@@ -128,71 +94,42 @@ const Main = React.createClass({
         return buttons;
     },
     render() {
-        debugger;
         if (!this.props.ready) {
             return null;
         }
 
         let uiConfig = this.state.uiConfig;
         let columns = uiConfig.main.grid.columns;
-        let sections = uiConfig.dialog.sections;
         let id = Object.keys(this.state.selectedConditions)[0];
-        let showDeleted = this.props.showDeleted;
         return <div>
             <AddTab pathname={getLink('ut-rule:rules')} title='Fees, Commissions and Limits (FCL)' />
             <Header text='Fees, Commissions and Limits (FCL)' buttons={this.getHeaderButtons()} />
             <div className={classnames(mainStyle.contentTableWrap, style.contentTableWrap)}>
                 <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                     <GridToolBox opened title='' >
-                    {!showDeleted ? (
                       <div className={style.actionWrap} >
                         { this.context.checkPermission('rule.rule.edit') &&
                             (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
                         { this.context.checkPermission('rule.rule.remove') &&
                             (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
-                        { this.context.checkPermission('rule.rule.fetchDeleted') &&
-                            (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
-                              onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
-                    </div>) : (<div className={style.actionWrap} >
-                        { this.context.checkPermission('rule.rule.fetchDeleted') &&
-                            (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
-                              onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
-                              </div>) }
+                      </div>
                     </GridToolBox>
                 </div>
                 <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
                     <div className={style.grid} >
-                        {this.state.dialog.open &&
-                          <Dialog
-                            ref='dialog'
-                            open={this.state.dialog.open}
-                            data={this.props.rules[this.state.dialog.conditionId]}
-                            conditionProperty={this.props.conditionProperty}
-                            conditionActor={this.props.conditionActor}
-                            conditionItem={this.props.conditionItem}
-                            nomenclatures={this.props.nomenclatures}
-                            onSave={this.dialogOnSave}
-                            onClose={this.dialogOnClose}
-                            sections={sections}
-                            />
-                        }
-                        {this.state.prompt &&
-                          <Prompt
-                            ref='prompt'
-                            open={this.state.prompt}
-                            message={
-                                'You are about to delete ' +
-                                (
-                                    Object.keys(this.state.selectedConditions).length === 1
-                                        ? '1 rule'
-                                        : Object.keys(this.state.selectedConditions).length + ' rules'
-                                ) +
-                                '. Would you like to proceed?'
-                            }
-                            onOk={this.removeRules}
-                            onCancel={this.hidePrompt}
-                            />
-                        }
+                      <ConfirmDialog
+                        ref={'showRuleConfirmDialog'}
+                        submitLabel='Yes'
+                        title='Warning'
+                        message={
+                            'You are about to delete ' +
+                            (
+                                Object.keys(this.state.selectedConditions).length === 1
+                                    ? '1 rule'
+                                    : Object.keys(this.state.selectedConditions).length + ' rules'
+                            ) +
+                            '. Would you like to proceed?'}
+                        onSubmit={this.removeRules} />
                       <Grid
                         ref='grid'
                         refresh={this.refresh}
@@ -230,18 +167,10 @@ Main.contextTypes = {
     checkPermission: PropTypes.func.isRequired
 };
 
-Main.propTypes = {
-    showDeleted: PropTypes.bool.isRequired,
-    toggleRuleOption: PropTypes.func.isRequired
-};
-
 export default connect(
     (state, ownProps) => {
         return {
             rules: state.ruleList.fetchRules,
-            conditionActor: state.ruleList.conditionActor,
-            conditionItem: state.ruleList.conditionItem,
-            conditionProperty: state.ruleList.conditionProperty,
             nomenclatures: state.ruleList.fetchNomenclatures,
             formatedGridData: state.ruleList.formatedGridData,
             ready: !!(state.ruleList.fetchRules && state.ruleList.fetchNomenclatures),
@@ -252,8 +181,7 @@ export default connect(
                 pageSize: 25,
                 pageNumber: 1,
                 recordsTotal: 0
-            },
-            showDeleted: state.ruleList.showDeleted
+            }
         };
     },
     (dispatch) => {

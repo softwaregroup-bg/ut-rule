@@ -1,5 +1,5 @@
 ALTER FUNCTION [rule].falsePropertyFactorCount(
-    @conditionId int,
+    @conditionId INT,
     @properties [rule].[properties] READONLY
 ) RETURNS BIGINT AS
 BEGIN

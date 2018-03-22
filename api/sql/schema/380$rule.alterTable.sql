@@ -1,9 +1,9 @@
-IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'credentials' AND Object_ID = Object_ID(N'rule.limit') )
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'credentials' AND OBJECT_ID = OBJECT_ID(N'rule.limit') )
 BEGIN
     ALTER TABLE [rule].[limit] ADD [credentials] INT
 END
 
-IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'priority' AND Object_ID = Object_ID(N'rule.limit') )
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'priority' AND OBJECT_ID = OBJECT_ID(N'rule.limit') )
 BEGIN
     ALTER TABLE [rule].[limit] ADD [priority] SMALLINT
 END

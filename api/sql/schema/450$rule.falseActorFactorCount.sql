@@ -1,5 +1,5 @@
 CREATE FUNCTION [rule].falseActorFactorCount(
-    @conditionId int,
+    @conditionId INT,
     @actors [rule].[properties] READONLY
 ) RETURNS BIT AS
 BEGIN

@@ -1,5 +1,5 @@
 CREATE TYPE [rule].[properties] AS TABLE (
-    [factor] char(2),
-    [name] nvarchar (100),
-    [value] bigint
+    [factor] CHAR(2),
+    [name] NVARCHAR (100),
+    [value] BIGINT
 )

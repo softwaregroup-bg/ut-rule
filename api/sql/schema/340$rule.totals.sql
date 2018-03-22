@@ -1,9 +1,9 @@
 CREATE TYPE [rule].[totals] AS TABLE(
-    transferTypeId bigint,
-    amountDaily money,
-    countDaily bigint,
-    amountWeekly money,
-    countWeekly bigint,
-    amountMonthly money,
-    countMonthly bigint
+    transferTypeId BIGINT,
+    amountDaily MONEY,
+    countDaily BIGINT,
+    amountWeekly MONEY,
+    countWeekly BIGINT,
+    amountMonthly MONEY,
+    countMonthly BIGINT
 )

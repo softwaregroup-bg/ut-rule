@@ -1,11 +1,11 @@
 MERGE INTO
-    [user].[actionCategory] as target
+    [user].[actionCategory] AS target
 USING
     (VALUES
         ('rule')
     ) AS source (name)
 ON
-    target.name=source.name
+    target.name = source.name
 WHEN NOT MATCHED BY TARGET THEN
 INSERT
     ([name])
@@ -13,7 +13,7 @@ VALUES
     (source.[name]);
 
 MERGE INTO
-    [user].[action] as target
+    [user].[action] AS target
 USING
     (VALUES
         ('rule.decision.fetch', 'rule.decision.fetch', '{}'),
@@ -27,7 +27,7 @@ USING
 JOIN
     [user].[actionCategory] c ON c.name = 'rule'
 ON
-    target.actionId=source.actionId
+    target.actionId = source.actionId
 WHEN NOT MATCHED BY TARGET THEN
 INSERT
     ([actionId], [actionCategoryId], [description], [valueMap])

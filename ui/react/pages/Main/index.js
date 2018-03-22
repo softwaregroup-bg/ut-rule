@@ -321,14 +321,9 @@ const Main = React.createClass({
                                     ref='prompt'
                                     open={this.state.prompt}
                                     message={
-                                        'You are about to delete ' +
-                                        (
-                                            Object.keys(this.state.selectedConditions).length === 1
-                                                ? '1 rule'
-                                                : Object.keys(this.state.selectedConditions).length + ' rules'
-                                        ) +
-                                        '. Would you like to proceed?'
+                                       'Are you sure you want to delete the selected rule?'
                                     }
+                                    title='Delete Rule'
                                     onOk={this.removeRules}
                                     onCancel={this.hidePrompt}
                                 />

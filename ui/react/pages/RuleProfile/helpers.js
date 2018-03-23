@@ -317,7 +317,7 @@ export const prepateRuleToSave = ({
 };
 
 export const prepareRuleModel = (result) => {
-    var errState = defaultErrorState;
+    var errState = fromJS(defaultErrorState).toJS();
     var condition = (result.condition || [])[0] || {};
     var rule = {
         channel: {
@@ -438,10 +438,10 @@ export const prepareRuleModel = (result) => {
         });
         rule.split.splits.push(split);
     });
-    // add empty objects at error state
     errState.split.splits = [];
     rule.split.splits.forEach((split) => {
         errState.split.splits.push({
+            tags: [],
             assignments: Array(split.assignments.length).fill({}),
             cumulatives: [{
                 ranges: Array((((split.cumulatives[0] || {}).ranges || [])).length).fill({})

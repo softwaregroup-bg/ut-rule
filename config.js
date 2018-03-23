@@ -1,4 +1,4 @@
-export const splitTags = [
+const splitTags = [
     {key: 'acquirer', name: 'Acquirer'},
     {key: 'issuer', name: 'Issuer'},
     {key: 'commission', name: 'Commission'},
@@ -12,3 +12,7 @@ export const splitTags = [
     {key: 'vendor', name: 'Vendor'},
     {key: 'merchant', name: 'Merchant'}
 ];
+
+module.exports = {
+    splitTags
+};

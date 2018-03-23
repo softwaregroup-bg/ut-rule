@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
-import {splitTags} from '../../../helpers';
+import { splitTags } from '../../../../../../../config';
 import {fromJS} from 'immutable';
 import style from '../../style.css';
 

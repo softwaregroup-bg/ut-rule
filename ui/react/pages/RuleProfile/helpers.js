@@ -1,6 +1,7 @@
 import { errorMessage } from './validator';
 import { defaultErrorState } from './Tabs/defaultState';
 import { fromJS } from 'immutable';
+import { splitTags } from '../../../../config';
 
 export const tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
 
@@ -12,20 +13,6 @@ export const tabTitleMap = {
     limit: 'Limit',
     split: 'Fee and commission split'
 };
-export const splitTags = [
-    {key: 'acquirer', name: 'Acquirer'},
-    {key: 'issuer', name: 'Issuer'},
-    {key: 'commission', name: 'Commission'},
-    {key: 'realtime', name: 'Realtime posting'},
-    {key: 'pending', name: 'Authorization required'},
-    {key: 'agent', name: 'Agent'},
-    {key: 'fee', name: 'Fee'},
-    {key: 'atm', name: 'ATM'},
-    {key: 'pos', name: 'POS'},
-    {key: 'ped', name: 'PED'},
-    {key: 'vendor', name: 'Vendor'},
-    {key: 'merchant', name: 'Merchant'}
-];
 
 const factors = {
     sourceOrganization: 'so',
@@ -317,7 +304,7 @@ export const prepateRuleToSave = ({
 };
 
 export const prepareRuleModel = (result) => {
-    var errState = defaultErrorState;
+    var errState = fromJS(defaultErrorState).toJS();
     var condition = (result.condition || [])[0] || {};
     var rule = {
         channel: {
@@ -438,10 +425,10 @@ export const prepareRuleModel = (result) => {
         });
         rule.split.splits.push(split);
     });
-    // add empty objects at error state
     errState.split.splits = [];
-    rule.split.splits.forEach((split) => {
+    rule.split.splits.forEach((split, idx) => {
         errState.split.splits.push({
+            tags: [],
             assignments: Array(split.assignments.length).fill({}),
             cumulatives: [{
                 ranges: Array((((split.cumulatives[0] || {}).ranges || [])).length).fill({})

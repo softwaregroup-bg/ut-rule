@@ -49,6 +49,7 @@ export const defaultErrorState = {
     source: {properties: []},
     split: {
         splits: [{
+            tags: [],
             assignments: [],
             cumulatives: [{
                 ranges: []

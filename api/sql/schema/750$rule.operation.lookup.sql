@@ -1,5 +1,5 @@
 ALTER PROCEDURE [rule].[operation.lookup]
-    @operation varchar(100),
+    @operation VARCHAR(100),
     @operationDateTime datetime
 AS
     SELECT 'operation' AS resultSetName, 1 single

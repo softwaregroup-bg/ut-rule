@@ -1,5 +1,5 @@
 CREATE TABLE [rule].[condition] (
-    conditionId INT IDENTITY(1000,1) NOT NULL,
+    conditionId INT IDENTITY(1000, 1) NOT NULL,
     [priority] INT,
     operationStartDate DATETIME,
     operationEndDate DATETIME,

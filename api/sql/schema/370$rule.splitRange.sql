@@ -1,5 +1,5 @@
 CREATE TABLE [rule].[splitRange] (
-    splitRangeId INT IDENTITY(1000,1) NOT NULL,
+    splitRangeId INT IDENTITY(1000, 1) NOT NULL,
     splitNameId INT NOT NULL,
     startAmount MONEY NOT NULL,
     startAmountCurrency VARCHAR(3) NOT NULL,

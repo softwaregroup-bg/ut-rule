@@ -426,7 +426,7 @@ export const prepareRuleModel = (result) => {
         rule.split.splits.push(split);
     });
     errState.split.splits = [];
-    rule.split.splits.forEach((split, idx) => {
+    rule.split.splits.forEach((split) => {
         errState.split.splits.push({
             tags: [],
             assignments: Array(split.assignments.length).fill({}),

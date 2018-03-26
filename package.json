@@ -8,7 +8,6 @@
     ]
   },
   "dependencies": {
-    "joi": "10.0.6",
     "lodash.get": "4.4.2",
     "lodash.merge": "4.6.0",
     "lodash.set": "4.3.2",
@@ -20,6 +19,7 @@
   "peerDependencies": {
     "classnames": "^2.2.5",
     "immutable": "^3.8.1",
+    "joi": "^13.1.2",
     "joi-browser": "^10.0.6",
     "material-ui": "^0.16.5",
     "react": "^15.6.1",

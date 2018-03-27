@@ -7,6 +7,7 @@ const splitCumulativeCountOrder = ['dailyCount', 'weeklyCount', 'monthlyCount'];
 export const errorMessage = {
     priorityRequired: 'Priority is required',
     propertyNameRequired: 'Property name is required',
+    propertyNameUnique: 'Property name should be unique with channel, operation, source and destination properties',
     currencyRequired: 'Currency is required',
     // split
     splitNameRequired: 'Split name is required',

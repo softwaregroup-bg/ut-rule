@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
-import classnames from 'classnames';
 import { fromJS } from 'immutable';
 import {validations} from '../../../validator';
 import style from '../../style.css';
@@ -114,6 +113,7 @@ export const Cumulative = (props) => {
 
     const getRangeBody = (cumulativeId) => {
         if (cumulatives[cumulativeId] && cumulatives[cumulativeId].ranges) {
+            let showDeleteIcon = cumulatives[cumulativeId].ranges.length !== 1;
             return cumulatives[cumulativeId].ranges.map((range, index) => {
                 let ridx = index.toString();
                 let rerrors = errors.getIn([idx, 'ranges', ridx]) || fromJS({});
@@ -160,7 +160,7 @@ export const Cumulative = (props) => {
                         />
                     </td>
                     <td className={style.deleteCol}>
-                        <div className={style.deleteIcon} onClick={() => { removeCumulativeRange(splitIndex, 0, index); }} />
+                { showDeleteIcon && <div className={style.deleteIcon} onClick={() => { removeCumulativeRange(splitIndex, 0, index); }} /> }
                     </td>
                 </tr>);
             });
@@ -181,7 +181,7 @@ export const Cumulative = (props) => {
                   label={'Currency'}
                 />
             </div>
-            <table className={classnames(style.dataGridTable, classnames)}>
+            <table className={style.dataGridTable}>
                 <thead>
                     <tr>
                         {getHeaderCells()}
@@ -200,7 +200,7 @@ export const Cumulative = (props) => {
                                 {getRangeCells()}
                             </tr>
                         </thead>
-                        <tbody >
+                        <tbody>
                             {getRangeBody(0)}
                         </tbody>
                     </table>

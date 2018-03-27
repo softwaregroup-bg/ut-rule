@@ -6,10 +6,13 @@ import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
 import Property from '../../../../components/Property';
 import { fromJS } from 'immutable';
+import { getRuleProperties } from '../../helpers';
+import {errorMessage} from '../../validator';
 import style from '../style.css';
 import * as actions from '../../actions';
 const destinationProp = 'operation';
 const propTypes = {
+    rule: PropTypes.object,
     operations: PropTypes.array,
     fieldValues: PropTypes.object,
     actions: PropTypes.object,
@@ -80,6 +83,7 @@ class OperationTab extends Component {
     }
 
     renderInfoFields() {
+        let properties = getRuleProperties(this.props.rule);
         let addProperty = () => {
             this.props.actions.addProperty(destinationProp);
         };
@@ -87,6 +91,10 @@ class OperationTab extends Component {
             this.props.actions.removeProperty(index, destinationProp);
         };
         let changeInput = (field) => {
+            if (field.key.split(',').pop() === 'name' && !field.error) {
+                let isDuplicateProperty = !!properties.find((prop) => { return prop.name === field.value; });
+                isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
+            }
             this.props.actions.changeInput(field, destinationProp);
         };
         return (
@@ -131,7 +139,9 @@ OperationTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
+    let immutableRule = state.ruleProfileReducer.getIn([mode, id]);
     return {
+        rule: immutableRule ? immutableRule.toJS() : {},
         operations: state.ruleProfileReducer.getIn(['nomenclatures', 'operation']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})

@@ -1,12 +1,18 @@
+export const emptyRange = {
+    startAmount: '',
+    percent: '',
+    minAmount: '',
+    maxAmount: ''
+};
 export const emptyCumulative = {
     currency: '',
-    dailyCount: '',
+    dailyCount: null,
     dailyAmount: '',
-    weeklyCount: '',
+    weeklyCount: null,
     weeklyAmount: '',
-    monthlyCount: '',
+    monthlyCount: null,
     monthlyAmount: '',
-    ranges: []
+    ranges: [emptyRange]
 };
 export const emptySplit = {
     name: '',
@@ -22,13 +28,6 @@ export const emptyAssignment = {
     minAmount: '',
     maxAmount: ''
 };
-export const emptyRange = {
-    startAmount: '',
-    percent: '',
-    minAmount: '',
-    maxAmount: ''
-};
-
 export const emptyLimit = {
     currency: '',
     txMin: '',

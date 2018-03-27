@@ -422,6 +422,18 @@ export const prepareRuleErrors = (rule, existErrors) => {
     return errors.toJS();
 };
 
+export const getRuleProperties = (rule = {}) => {
+    var properties = [];
+    ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
+        var tab = rule[tabKey];
+        if (tab) {
+            var value = tab.properties;
+            value && (properties = properties.concat(value));
+        }
+    });
+    return properties;
+};
+
 export const isEmptyValuesOnly = (obj) => {
     var tempIsEmpty = true;
     if (obj && typeof obj === 'object') {

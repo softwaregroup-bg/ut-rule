@@ -8,10 +8,12 @@ import Input from 'ut-front-react/components/Input';
 import Property from '../../../../components/Property';
 import style from '../style.css';
 import * as actions from '../../actions';
-import {validations} from '../../validator';
+import { getRuleProperties } from '../../helpers';
+import {validations, errorMessage} from '../../validator';
 import { fromJS } from 'immutable';
 const destinationProp = 'channel';
 const propTypes = {
+    rule: PropTypes.object,
     actions: PropTypes.object,
     countries: PropTypes.array,
     regions: PropTypes.array,
@@ -102,6 +104,7 @@ class ChannelTab extends Component {
     }
 
     renderInfoFields() {
+        let properties = getRuleProperties(this.props.rule);
         let addProperty = () => {
             this.props.actions.addProperty(destinationProp);
         };
@@ -109,6 +112,10 @@ class ChannelTab extends Component {
             this.props.actions.removeProperty(index, destinationProp);
         };
         let changeInput = (field) => {
+            if (field.key.split(',').pop() === 'name' && !field.error) {
+                let isDuplicateProperty = !!properties.find((prop) => { return prop.name === field.value; });
+                isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
+            }
             this.props.actions.changeInput(field, destinationProp);
         };
         return (
@@ -153,7 +160,9 @@ ChannelTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
+    let immutableRule = state.ruleProfileReducer.getIn([mode, id]);
     return {
+        rule: immutableRule ? immutableRule.toJS() : {},
         countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),

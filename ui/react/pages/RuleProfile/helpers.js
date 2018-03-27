@@ -90,7 +90,7 @@ export const formatNomenclatures = (items) => {
     return formattedPayload;
 };
 
-export const prepateRuleToSave = (rule) => {
+export const prepareRuleToSave = (rule) => {
     let { operation, channel, split, limit } = rule;
     let formattedRule = {};
     let conditionId = channel.conditionId;
@@ -157,7 +157,7 @@ export const prepateRuleToSave = (rule) => {
 
     formattedRule.limit = [];
     (limit || []).forEach(limit => {
-        formattedRule.limit.push({
+        !isEmptyValuesOnly(limit) && formattedRule.limit.push({
             conditionId,
             limitId: limit.limitId,
             currency: limit.currency,
@@ -183,8 +183,9 @@ export const prepateRuleToSave = (rule) => {
             tag: `|${split.tags.map(tag => tag.key).join('|')}|`
         };
 
-        formattedSplit.splitAssignment = [
-            ...split.assignments.map(assignment => ({
+        formattedSplit.splitAssignment = [];
+        split.assignments.forEach((assignment) => {
+            !isEmptyValuesOnly(assignment) && formattedSplit.splitAssignment.push({
                 splitNameId: assignment.splitNameId,
                 splitAssignmentId: assignment.splitAssignmentId,
                 debit: assignment.debit,
@@ -193,8 +194,8 @@ export const prepateRuleToSave = (rule) => {
                 maxValue: assignment.maxAmount,
                 percent: assignment.percent,
                 description: assignment.description
-            }))
-        ];
+            });
+        });
 
         formattedSplit.splitRange = [];
 
@@ -210,7 +211,7 @@ export const prepateRuleToSave = (rule) => {
                 splitNameId: cumulative.splitNameId
             };
             cumulative.ranges.forEach(range => {
-                formattedSplit.splitRange.push({
+                !isEmptyValuesOnly(range) && formattedSplit.splitRange.push({
                     splitRangeId: range.splitRangeId,
                     startAmount: range.startAmount,
                     isSourceAmount: false,

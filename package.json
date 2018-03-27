@@ -29,7 +29,7 @@
     "ut-front": "^8.0.1",
     "ut-front-react": "^10.2.0-rc-cubalibre.0",
     "ut-bus": "^6.0.0",
-    "ut-audit": "^3.3.0-rc-cubalibre.2"
+    "ut-audit": "^3.3.0-rc-cubalibre.5"
   },
   "description": "UT Rule",
   "scripts": {

@@ -109,7 +109,7 @@ export const prepareRuleToSave = (rule) => {
             {
                 actorId: value.organization,
                 conditionId,
-                factor: conditionActorFactor[keyProp]
+                factor: conditionActorFactodiffObj[keyProp]
             }
         );
     });
@@ -125,14 +125,14 @@ export const prepareRuleToSave = (rule) => {
                     ci.key && formattedRule.conditionItem.push({
                         itemNameId: ci.key,
                         conditionId,
-                        factor: conditionItemFactor[tabKey]
+                        factor: conditionItemFactodiffObj[tabKey]
                     });
                 });
             } else if (value && !(value instanceof Object)) {
                 formattedRule.conditionItem.push({
                     itemNameId: value,
                     conditionId,
-                    factor: conditionItemFactor[tabKey]
+                    factor: conditionItemFactodiffObj[tabKey]
                 });
             }
         });
@@ -147,7 +147,7 @@ export const prepareRuleToSave = (rule) => {
             value && value.forEach(function(prop) {
                 prop.name && formattedRule.conditionProperty.push({
                     conditionId,
-                    factor: conditionPropertyFactor[tabKey],
+                    factor: conditionPropertyFactodiffObj[tabKey],
                     name: prop.name,
                     value: prop.value
                 });
@@ -446,6 +446,32 @@ export const isEmptyValuesOnly = (obj) => {
     } else tempIsEmpty = !obj;
     return tempIsEmpty;
 };
+
+export const diff = (obj1,obj2) => {
+    var diffObj = {};
+    for (var prop in obj1) {
+    if (obj1.hasOwnProperty(prop) && prop != '__proto__') {
+            if (!obj2.hasOwnProperty(prop)) diffObj[prop] = obj1[prop];
+            else if (obj1[prop] === Object(obj1[prop])) {
+                var difference = diff(obj1[prop], obj2[prop]);
+                if (Object.keys(difference).length > 0) diffObj[prop] = difference;
+            }
+            else if (obj1[prop] !== obj2[prop]) {
+                if (obj1[prop] === undefined)
+                diffObj[prop] = 'undefined';
+                if (obj1[prop] === null)
+                diffObj[prop] = null;
+            else if (typeof obj1[prop] === 'function')
+                diffObj[prop] = 'function';
+            else if (typeof obj1[prop] === 'object')
+                diffObj[prop] = 'object';
+            else
+                diffObj[prop] = obj1[prop];
+            }
+        }
+    }
+    return diffObj;
+}
 
 export const isEqual = (x, y) => {
     if ((typeof x === 'object' && x != null) && (typeof y === 'object' && y != null)) {

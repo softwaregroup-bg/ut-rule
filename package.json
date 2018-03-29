@@ -10,8 +10,7 @@
   "dependencies": {
     "lodash.get": "4.4.2",
     "lodash.merge": "4.6.0",
-    "lodash.set": "4.3.2",
-    "ut-error": "^5.4.9"
+    "lodash.set": "4.3.2"
   },
   "devDependencies": {
     "ut-tools": "^5.30.0"

@@ -4,6 +4,7 @@ import { methodRequestState } from 'ut-front-react/constants';
 import { formatNomenclatures, prepareRuleModel } from './helpers';
 import { fromJS } from 'immutable';
 import { getLink } from 'ut-front/react/routerHelper';
+import { stat } from 'fs';
 
 export function changeRuleProfile(state, action, options) {
     if (action.params.mode && action.params.id) {
@@ -56,6 +57,21 @@ export function removeTab(state, action, options) {
     }
     return state;
 };
+
+export function deleteRule(state, action, options) {
+    let { mode, id } = options;
+    (action.methodRequestState === methodRequestState.FINISHED) && (action.params.conditionId || []).forEach(function(conId) {
+        let conditionId = String(conId);
+        if(state.getIn(['rules', conditionId]) || state.getIn(['edit', conditionId])) {
+            state = state.deleteIn(['edit', conditionId])
+                .deleteIn(['rules', conditionId]);
+        }
+        if (id === conditionId) {
+            state = state.setIn(['config', 'mode'], null).setIn(['config', 'id'], null);
+        }
+    });
+    return state;
+}
 
 export function changeActiveTab(state, action, options) {
     let { mode, id } = options;
@@ -151,4 +167,18 @@ export function removeSplit(state, action, options) {
     let { mode, id } = options;
     return state.updateIn([mode, id, 'split', 'splits'], v => v.splice(action.params.splitIndex, 1))
         .updateIn([mode, id, 'errors', 'split', 'splits'], d => d.splice(action.params.splitIndex, 1));
+}
+
+function getUrlParams(queryPath, pathname) {
+    if (pathname.startsWith(queryPath.split(':')[0])) {
+        let object = {};
+        let pathArray = pathname.split('/');
+        queryPath.split('/').forEach(function(rkey, index) {
+            if (rkey.match(/^:/)) {
+                var key = rkey.slice(1);
+                object[key] = pathArray[index];
+            }
+        });
+        return object;
+    } else return null;
 }

@@ -1,3 +1,4 @@
+const errorsFactory = require('../../errors');
 var wrapper = {
     'itemName': function(msg, $meta) {
         return this.bus.importMethod('core.itemName.fetch')(msg, $meta);
@@ -26,6 +27,9 @@ var wrapper = {
 };
 
 module.exports = {
+    // start: function() {
+    //     this.errors = errorsFactory(this.defineError);
+    // },
     'item.fetch': function(msg, $meta) {
         var pending = [];
 

@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 import * as actionTypes from './actionTypes';
 import * as reducerHelper from './reducerHelper';
 import { REMOVE_TAB } from 'ut-front-react/containers/TabMenu/actionTypes';
-
+import { removeRules as DELETE_RULE } from '../Rules/actionTypes';
 const defaultState = {
     nomenclatures: {
         accountProduct: [],
@@ -72,6 +72,8 @@ export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
             return reducerHelper.removeSplit(state, action, options);
         case REMOVE_TAB:
             return reducerHelper.removeTab(state, action, options);
+        case DELETE_RULE:
+            return reducerHelper.deleteRule(state, action, options);
         default:
             return state;
     }

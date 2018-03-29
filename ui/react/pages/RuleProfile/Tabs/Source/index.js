@@ -127,7 +127,7 @@ class SourceTab extends Component {
             this.props.actions.removeProperty(index, destinationProp);
         };
         let changeInput = (field) => {
-            if (field.key.split(',').pop() === 'name' && !field.error) {
+            if (field.key.split(',').pop() === 'name' && !field.error && field.value) {
                 let isDuplicateProperty = !!properties.find((prop) => { return prop.name === field.value; });
                 isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
             }

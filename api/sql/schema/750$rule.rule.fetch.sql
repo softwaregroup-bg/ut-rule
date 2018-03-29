@@ -1,9 +1,10 @@
 ALTER PROCEDURE [rule].[rule.fetch]
     @conditionId INT = NULL,
     @pageSize INT = 25, -- how many rows will be returned per page
-    @pageNumber INT = 1 -- which page number to display
+    @pageNumber INT = 1, -- which page number to display,
+    @meta core.metaDataTT READONLY -- information for the logged user
 AS
-
+DECLARE @userId BIGINT = (SELECT [auth.actorId] FROM @meta)
 DECLARE @startRow INT = (@pageNumber - 1) * @pageSize + 1
 DECLARE @endRow INT = @startRow + @pageSize - 1
 
@@ -34,7 +35,7 @@ BEGIN
         FROM
             [rule].condition rc
         WHERE
-            @conditionId IS NULL OR rc.conditionId = @conditionId)
+            (@conditionId IS NULL OR rc.conditionId = @conditionId ) AND rc.isDeleted = 0 )
 
     INSERT INTO #RuleConditions( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
     SELECT

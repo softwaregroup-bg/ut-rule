@@ -3,6 +3,7 @@ import {fromJS} from 'immutable';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
 import style from './style.css';
 import {getStorageColumns, toggleColumnInStorage} from 'ut-front-react/components/SimpleGrid/helpers';
+import { Link } from 'react-router';
 const propInStorage = 'rules';
 
 export default React.createClass({
@@ -34,10 +35,14 @@ export default React.createClass({
         };
     },
     componentWillMount() {
-        this.setVisibleColumns();
+        this.setVisibleColumns(this.props);
     },
-    setVisibleColumns() {
-        let invisibleColumns = getStorageColumns(propInStorage);
+    componentWillReceiveProps(nextProps) {
+        this.setVisibleColumns(nextProps);
+    },
+    setVisibleColumns(props) {
+        let showDeleted = props.showDeleted;
+        let invisibleColumns = showDeleted ? ['channel', 'operation', 'destination', 'source', 'limit', 'expansion'] : getStorageColumns(propInStorage);
         let fieldsWithVisibility = this.state.fields.map((field) => {
             if (invisibleColumns.includes(field['name'])) {
                 field['visible'] = false;
@@ -45,6 +50,9 @@ export default React.createClass({
             return field;
         });
         this.setState({fields: fieldsWithVisibility});
+        if (!showDeleted) {
+            this.setState(this.getInitialState);
+        }
     },
     handleGridExpansion(id) {
         let expandedGridColumns = this.state.expandedGridColumns;
@@ -90,6 +98,13 @@ export default React.createClass({
               </div>
             );
         }
+        if (row.priority && column === 'priority') {
+            result.push(
+              <div key={result.length}>
+                  <Link to={row.url}>{ row.priority }</Link>
+              </div>
+            );
+        }
         return (
           <div>
             {result}
@@ -131,7 +146,8 @@ export default React.createClass({
                 destination: columns.destination.visible && this.props.formatedGridData[conditionId],
                 limit: columns.limit.visible && this.props.formatedGridData[conditionId],
                 split: columns.split.visible && this.props.formatedGridData[conditionId],
-                expansion: 'Not Empty'
+                expansion: 'Not Empty',
+                url: record.url
             };
         });
     },
@@ -155,6 +171,8 @@ export default React.createClass({
                     return this.renderGridColumn(value, ['limit'], row, 'limit');
                 case 'split':
                     return this.renderGridColumn(value, ['split'], row, 'split');
+                case 'priority':
+                    return this.renderGridColumn(value, ['priority'], row, 'priority');
                 case 'expansion':
                     let expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
                     return <a onClick={(e) => { e.preventDefault(); this.handleGridExpansion(row.priority); }}>{expansionText}</a>;

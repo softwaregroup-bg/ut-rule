@@ -11,11 +11,12 @@ import {validations, externalValidate} from '../../validator';
 import { fromJS } from 'immutable';
 const destinationProp = 'limit';
 const defaultProps = {
-    currencies: []
+    currencies: [],
+    canEdit: true
 };
 
 export const Limits = (props) => {
-    const { fieldValues, currencies, errors } = props;
+    const { fieldValues, currencies, errors, canEdit } = props;
     const { addLimit, removeLimit, changeInput } = props.actions;
     const setLimitField = (index, field) => {
         field.key = [index, field.key].join(',');
@@ -54,6 +55,7 @@ export const Limits = (props) => {
               <tr key={`Limit${index}`}>
                 <td className={style.currency}>
                     <Dropdown
+                      disabled={!canEdit}
                       style={{width: '120px'}}
                       keyProp={'currency'}
                       isValid={!errors.getIn([index, 'currency'])}
@@ -66,6 +68,7 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={!canEdit}
                       keyProp='txMin'
                       value={limit.txMin}
                       validators={validations.amount}
@@ -76,6 +79,7 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={!canEdit}
                       keyProp='txMax'
                       value={limit.txMax}
                       validators={validations.amount}
@@ -86,6 +90,7 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={!canEdit}
                       keyProp='dailyMaxAmount'
                       value={limit.dailyMaxAmount}
                       validators={validations.amount}
@@ -96,6 +101,7 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={!canEdit}
                       keyProp='dailyMaxCount'
                       value={limit.dailyMaxCount}
                       validators={validations.count}
@@ -106,6 +112,7 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={!canEdit}
                       keyProp='weeklyMaxAmount'
                       validators={validations.amount}
                       isValid={!errors.getIn([index, 'weeklyMaxAmount'])}
@@ -116,6 +123,7 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={!canEdit}
                       keyProp='weeklyMaxCount'
                       value={limit.weeklyMaxCount}
                       validators={validations.count}
@@ -126,6 +134,7 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={!canEdit}
                       keyProp='monthlyMaxAmount'
                       value={limit.monthlyMaxAmount}
                       validators={validations.amount}
@@ -136,6 +145,7 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={!canEdit}
                       keyProp='monthlyMaxCount'
                       validators={validations.count}
                       isValid={!errors.getIn([index, 'monthlyMaxCount'])}
@@ -145,7 +155,7 @@ export const Limits = (props) => {
                     />
                 </td>
                 <td className={style.deleteCol}>
-                    <div className={style.deleteIcon} onClick={() => { removeLimit(index); }} />
+                { canEdit && <div className={style.deleteIcon} onClick={() => { removeLimit(index); }} /> }
                 </td>
               </tr>);
         });
@@ -165,10 +175,10 @@ export const Limits = (props) => {
                                 {renderBody()}
                             </tbody>
                         </table>
-                        <span className={style.link} onClick={addLimit}>
+                        { canEdit && <span className={style.link} onClick={addLimit}>
                             <div className={style.plus} />
                             Add another Limit
-                        </span>
+                          </span> }
                     </div>
                 </TitledContentBox>
             </div>
@@ -178,14 +188,16 @@ export const Limits = (props) => {
 
 Limits.defaultProps = defaultProps;
 Limits.propTypes = {
+    canEdit: PropTypes.bool,
     errors: PropTypes.object,
     currencies: PropTypes.array,
     fieldValues: PropTypes.array,
     actions: PropTypes.object
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
+        canEdit: ownProps.canEdit,
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
         currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})

@@ -13,6 +13,7 @@ import {validations, errorMessage} from '../../validator';
 import { fromJS } from 'immutable';
 const destinationProp = 'channel';
 const propTypes = {
+    canEdit: PropTypes.bool,
     rule: PropTypes.object,
     actions: PropTypes.object,
     countries: PropTypes.array,
@@ -24,6 +25,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+    canEdit: true,
     countries: [],
     regions: [],
     cities: [],
@@ -38,6 +40,7 @@ class ChannelTab extends Component {
 
     renderFields() {
         const {
+            canEdit,
             countries,
             regions,
             cities,
@@ -48,13 +51,14 @@ class ChannelTab extends Component {
         let changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
         };
-
+        let readonly = !canEdit;
         return (
             <div>
                 <div className={style.inputWrapper}>
                     <Input
                       label='Priority'
                       keyProp='priority'
+                      readonly={readonly}
                       value={fieldValues.priority}
                       validators={validations.priority}
                       isValid={!errors.get('priority')} errorMessage={errors.get('priority')}
@@ -63,6 +67,7 @@ class ChannelTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <MultiSelectBubble
+                      disabled={readonly}
                       name='country'
                       label={'Country'}
                       value={fieldValues.countries}
@@ -72,6 +77,7 @@ class ChannelTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <MultiSelectBubble
+                      disabled={readonly}
                       name='region'
                       label={'Region'}
                       value={fieldValues.regions}
@@ -81,6 +87,7 @@ class ChannelTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <MultiSelectBubble
+                      disabled={readonly}
                       name='city'
                       label={'City'}
                       value={fieldValues.cities}
@@ -90,6 +97,7 @@ class ChannelTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
+                      disabled={readonly}
                       canSelectPlaceholder
                       keyProp={'organization'}
                       data={organizations}
@@ -104,19 +112,20 @@ class ChannelTab extends Component {
     }
 
     renderInfoFields() {
-        let properties = getRuleProperties(this.props.rule);
+        let { canEdit, rule, actions, fieldValues, errors } = this.props;
+        let properties = getRuleProperties(rule);
         let addProperty = () => {
-            this.props.actions.addProperty(destinationProp);
+            actions.addProperty(destinationProp);
         };
         let removeProperty = (index) => {
-            this.props.actions.removeProperty(index, destinationProp);
+            actions.removeProperty(index, destinationProp);
         };
         let changeInput = (field) => {
             if (field.key.split(',').pop() === 'name' && !field.error && field.value) {
                 let isDuplicateProperty = !!properties.find((prop) => { return prop.name === field.value; });
                 isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
             }
-            this.props.actions.changeInput(field, destinationProp);
+            actions.changeInput(field, destinationProp);
         };
         return (
             <div className={style.contentBox}>
@@ -134,11 +143,12 @@ class ChannelTab extends Component {
                       wrapperClassName
                     >
                         <Property
+                          canEdit={canEdit}
                           addProperty={addProperty}
                           removeProperty={removeProperty}
                           changeInput={changeInput}
-                          properties={(this.props.fieldValues || {}).properties || []}
-                          errors={this.props.errors}
+                          properties={(fieldValues || {}).properties || []}
+                          errors={errors}
                         />
                     </TitledContentBox>
                 </div>
@@ -162,6 +172,7 @@ const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     let immutableRule = state.ruleProfileReducer.getIn([mode, id]);
     return {
+        canEdit: ownProps.canEdit,
         rule: immutableRule ? immutableRule.toJS() : {},
         countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),

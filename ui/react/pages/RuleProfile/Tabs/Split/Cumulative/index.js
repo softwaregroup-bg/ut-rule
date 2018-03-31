@@ -8,6 +8,7 @@ import style from '../../style.css';
 
 export const Cumulative = (props) => {
     const {
+        canEdit,
         setCumulativeField,
         addCumulativeRange,
         removeCumulativeRange,
@@ -19,6 +20,7 @@ export const Cumulative = (props) => {
     } = props;
     var idx = 0;
     var cumulative = cumulatives[0] || {};
+    let readonly = !canEdit;
     const getHeaderCells = () => {
         return [
             {name: 'Daily Count', key: 'dailyCount'},
@@ -48,6 +50,7 @@ export const Cumulative = (props) => {
             <tr key={`cumulative${1}`}>
                 <td>
                     <Input
+                      readonly={readonly}
                       keyProp='dailyCount'
                       validators={validations.count}
                       isValid={!errors.getIn([idx, 'dailyCount'])}
@@ -58,6 +61,7 @@ export const Cumulative = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={readonly}
                       keyProp='dailyAmount'
                       validators={validations.amount}
                       isValid={!errors.getIn([idx, 'dailyAmount'])}
@@ -68,6 +72,7 @@ export const Cumulative = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={readonly}
                       keyProp='weeklyCount'
                       validators={validations.count}
                       isValid={!errors.getIn([idx, 'weeklyCount'])}
@@ -78,6 +83,7 @@ export const Cumulative = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={readonly}
                       keyProp='weeklyAmount'
                       validators={validations.amount}
                       isValid={!errors.getIn([idx, 'weeklyAmount'])}
@@ -88,6 +94,7 @@ export const Cumulative = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={readonly}
                       keyProp='monthlyCount'
                       validators={validations.count}
                       isValid={!errors.getIn([idx, 'monthlyCount'])}
@@ -98,6 +105,7 @@ export const Cumulative = (props) => {
                 </td>
                 <td>
                     <Input
+                      readonly={readonly}
                       inputWrapClassName={style.inputWrapper}
                       value={cumulative.monthlyAmount}
                       validators={validations.amount}
@@ -121,6 +129,7 @@ export const Cumulative = (props) => {
                 <tr key={`range${index}`}>
                     <td>
                         <Input
+                          readonly={readonly}
                           keyProp='startAmount'
                           validators={validations.amount}
                           isValid={!rerrors.getIn(['startAmount'])}
@@ -131,6 +140,7 @@ export const Cumulative = (props) => {
                     </td>
                     <td>
                         <Input
+                          readonly={readonly}
                           keyProp='percent'
                           validators={validations.percent}
                           isValid={!rerrors.getIn(['percent'])}
@@ -141,6 +151,7 @@ export const Cumulative = (props) => {
                     </td>
                     <td>
                         <Input
+                          readonly={readonly}
                           keyProp='minAmount'
                           validators={validations.amount}
                           isValid={!rerrors.getIn(['minAmount'])}
@@ -151,6 +162,7 @@ export const Cumulative = (props) => {
                     </td>
                     <td>
                         <Input
+                          readonly={readonly}
                           keyProp='maxAmount'
                           validators={validations.amount}
                           isValid={!rerrors.getIn(['maxAmount'])}
@@ -160,7 +172,7 @@ export const Cumulative = (props) => {
                         />
                     </td>
                     <td className={style.deleteCol}>
-                { showDeleteIcon && <div className={style.deleteIcon} onClick={() => { removeCumulativeRange(splitIndex, 0, index); }} /> }
+                        { canEdit && showDeleteIcon && <div className={style.deleteIcon} onClick={() => { removeCumulativeRange(splitIndex, 0, index); }} /> }
                     </td>
                 </tr>);
             });
@@ -170,6 +182,7 @@ export const Cumulative = (props) => {
         <div className={style.propertyTable}>
              <div className={style.dropDownWrapper}>
                 <Dropdown
+                  disabled={readonly}
                   keyProp={'currency'}
                   isValid={!errors.getIn([idx, 'currency'])}
                   errorMessage={errors.getIn([idx, 'currency'])}
@@ -204,10 +217,10 @@ export const Cumulative = (props) => {
                             {getRangeBody(0)}
                         </tbody>
                     </table>
-                    <span className={style.link} onClick={() => addCumulativeRange(splitIndex, 0)}>
+                    { canEdit && <span className={style.link} onClick={() => addCumulativeRange(splitIndex, 0)}>
                         <div className={style.plus} />
                         Add another Range
-                    </span>
+                    </span> }
                     </div>
                 </TitledContentBox>
             </div>
@@ -216,6 +229,7 @@ export const Cumulative = (props) => {
 };
 
 Cumulative.propTypes = {
+    canEdit: PropTypes.bool,
     setCumulativeField: PropTypes.func,
     addCumulativeRange: PropTypes.func,
     removeCumulativeRange: PropTypes.func,
@@ -227,6 +241,7 @@ Cumulative.propTypes = {
 };
 
 Cumulative.defaultProps = {
+    canEdit: true,
     errors: fromJS({})
 };
 

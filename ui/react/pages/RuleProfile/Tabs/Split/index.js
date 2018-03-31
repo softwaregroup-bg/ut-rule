@@ -8,10 +8,11 @@ import Assignments from './Assignment';
 import Info from './Info';
 import Cumulative from './Cumulative';
 import * as actions from '../../actions';
-import { externalValidate } from '../../validator';
+import { externalValidate, errorMessage } from '../../validator';
 import { fromJS } from 'immutable';
 const destinationProp = 'split';
 const propTypes = {
+    canEdit: PropTypes.bool,
     currencies: PropTypes.array,
     actions: PropTypes.object,
     fieldValues: PropTypes.object,
@@ -19,12 +20,13 @@ const propTypes = {
 };
 
 const defaultProps = {
+    canEdit: true,
     currencies: []
 };
 
 class SplitTab extends Component {
     renderFields(split, index) {
-        const { currencies, errors, fieldValues } = this.props;
+        const { currencies, errors, fieldValues, canEdit } = this.props;
         const {
             addAssignment,
             removeAssignment,
@@ -54,6 +56,11 @@ class SplitTab extends Component {
         };
         const setCumulativeRange = (cumulativeId, rangeId, field) => {
             field.key = ['splits', index, 'cumulatives', cumulativeId, 'ranges', rangeId, field.key].join(',');
+            if (field.key.split(',').pop() === 'startAmount' && !field.error && field.value) {
+                var ranges = (cumulatives[0] || {}).ranges || [];
+                let isDuplicate = !!ranges.find((range) => { return range.startAmount === field.value; });
+                isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.startAmountUnique);
+            }
             field = additionalValidate(field, 'split_cumulative_range');
             changeInput(field, destinationProp);
         };
@@ -65,7 +72,7 @@ class SplitTab extends Component {
             <div key={index}>
                 <div className={style.splitHeader}>
                     <span className={style.label}>{name.toUpperCase() || 'SPLIT NAME'}</span>
-                    <Button onClick={() => removeSplit(index)} className={style.deleteButton} styleType='secondaryLight' label='DELETE SPLIT' />
+                    { canEdit && <Button onClick={() => removeSplit(index)} className={style.deleteButton} styleType='secondaryLight' label='DELETE SPLIT' /> }
                 </div>
                 <div className={style.splitWrapper}>
                     <div className={style.contentBox}>
@@ -74,6 +81,7 @@ class SplitTab extends Component {
                               title='Split Info'
                               wrapperClassName >
                                   <Info
+                                    canEdit={canEdit}
                                     changeInputField={setInfo}
                                     name={name}
                                     errors={errors.getIn(['splits', index])}
@@ -82,6 +90,7 @@ class SplitTab extends Component {
                             <div className={style.rangeWrapper}>
                                 <TitledContentBox title='Assignment'>
                                   <Assignments
+                                    canEdit={canEdit}
                                     addAssignment={addAssignment}
                                     removeAssignment={removeAssignment}
                                     changeInput={setAssignment}
@@ -95,6 +104,7 @@ class SplitTab extends Component {
                         <div className={style.contentBoxWrapper}>
                             <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding} >
                               <Cumulative
+                                canEdit={canEdit}
                                 setCumulativeField={setCumulative}
                                 addCumulativeRange={addCumulativeRange}
                                 removeCumulativeRange={removeCumulativeRange}
@@ -137,6 +147,7 @@ SplitTab.defaultProps = defaultProps;
 const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
+        canEdit: ownProps.canEdit,
         fieldValues: state.ruleProfileReducer.getIn([mode, id, 'split']).toJS(),
         currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', 'split']) || fromJS({})

@@ -6,6 +6,5 @@ module.exports = () => ({
     },
     validations: {
         rule: require('./validations')
-    },
-    errors: require('./errors')(require('ut-error').define)
+    }
 });

@@ -78,36 +78,36 @@ class RuleEdit extends Component {
     }
     getTabs() {
         let errorCount = getRuleErrorCount(this.props.errors.toJS());
-        // let canEdit = !isEmptyValuesOnly(this.props.remoteRule);
+        let canEdit = this.context.checkPermission('rule.rule.edit') && !isEmptyValuesOnly(this.props.remoteRule);
         let tabs = [
             {
                 title: 'Channel',
-                component: <Channel canEdit={false} />,
+                component: <Channel canEdit={canEdit} />,
                 errorsCount: errorCount.channel
             },
             {
                 title: 'Operation',
-                component: <Operation />,
+                component: <Operation canEdit={canEdit} />,
                 errorsCount: errorCount.operation
             },
             {
                 title: 'Source',
-                component: <Source />,
+                component: <Source canEdit={canEdit} />,
                 errorsCount: errorCount.source
             },
             {
                 title: 'Destination',
-                component: <Destination />,
+                component: <Destination canEdit={canEdit} />,
                 errorsCount: errorCount.destination
             },
             {
                 title: 'Limit',
-                component: <Limit />,
+                component: <Limit canEdit={canEdit} />,
                 errorsCount: errorCount.limit
             },
             {
                 title: 'Fee and Commission Split',
-                component: <Split />,
+                component: <Split canEdit={canEdit} />,
                 errorsCount: errorCount.split
             }
         ];

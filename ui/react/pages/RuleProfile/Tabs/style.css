@@ -247,7 +247,7 @@ div.dropDownRoot {
 }
 
 .propertyTable {
-  padding-top: 20px;
+  padding: 20px 0;
 }
 
 .cumulative {
@@ -279,7 +279,6 @@ div.dropDownRoot {
 
 .linkPlus {
     padding-top: 0px;
-    padding-bottom: 20px;
     color: #4096FD !important;
     display: block;
     text-decoration: none;

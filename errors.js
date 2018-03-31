@@ -1,6 +1,6 @@
 
 module.exports = (create) => {
-    const Rule = create('rule', null, 'ut-rulr rule error', 'error');
+    const Rule = create('rule', null, 'ut-rule rule error', 'error');
     return {
         rule: cause => new Rule(cause),
         generic: create('generic', Rule),

@@ -1,4 +1,4 @@
-const errorsFactory = require('./errors');
+const errorsFactory = require('../../errors');
 var wrapper = {
     'itemName': function(msg, $meta) {
         return this.bus.importMethod('core.itemName.fetch')(msg, $meta);

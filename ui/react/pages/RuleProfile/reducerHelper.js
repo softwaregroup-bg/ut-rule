@@ -1,10 +1,9 @@
-const __placeholder__ = '__placeholder__';
-import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange, defaultErrorState } from './Tabs/defaultState';
 import { methodRequestState } from 'ut-front-react/constants';
 import { formatNomenclatures, prepareRuleModel } from './helpers';
 import { fromJS } from 'immutable';
 import { getLink } from 'ut-front/react/routerHelper';
-import { stat } from 'fs';
+import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange, defaultErrorState } from './Tabs/defaultState';
+const __placeholder__ = '__placeholder__';
 
 export function changeRuleProfile(state, action, options) {
     if (action.params.mode && action.params.id) {
@@ -49,20 +48,25 @@ export function resetRuleProfile(state, action, options) {
 }
 
 export function removeTab(state, action, options) {
-    let { mode, id } = options;
-    let pathname = getLink(`ut-rule:${mode}`, { id });
-    if (action.pathname === pathname) {
-        return state.setIn(['config', 'ruleSaved'], false).deleteIn([mode, id])
-            .deleteIn(['rules', id]);
+    if (action.pathname === getLink('ut-rule:create')) {
+        state = state.deleteIn(['create', 'create']);
+    } else {
+        var urlPath = getLink('ut-rule:edit');
+        var pathParams = getUrlParams(urlPath, action.pathname);
+        let { id } = pathParams;
+        id && (state = state.deleteIn(['edit', id]).deleteIn(['rules', id]));
+        if (options.id === id) {
+            state = state.setIn(['config', 'ruleSaved'], false);
+        }
     }
     return state;
 };
 
 export function deleteRule(state, action, options) {
-    let { mode, id } = options;
+    let { id } = options;
     (action.methodRequestState === methodRequestState.FINISHED) && (action.params.conditionId || []).forEach(function(conId) {
         let conditionId = String(conId);
-        if(state.getIn(['rules', conditionId]) || state.getIn(['edit', conditionId])) {
+        if (state.getIn(['rules', conditionId]) || state.getIn(['edit', conditionId])) {
             state = state.deleteIn(['edit', conditionId])
                 .deleteIn(['rules', conditionId]);
         }
@@ -145,7 +149,7 @@ export function addCumulativeRange(state, action, options) {
         [mode, id, 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
         v => v.push(fromJS(emptyRange)))
         .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
-        e => e.push(fromJS({})));
+            e => e.push(fromJS({})));
 }
 
 export function removeCumulativeRange(state, action, options) {
@@ -181,4 +185,4 @@ function getUrlParams(queryPath, pathname) {
         });
         return object;
     } else return null;
-}
+};

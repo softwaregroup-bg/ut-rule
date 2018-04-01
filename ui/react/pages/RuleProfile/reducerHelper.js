@@ -53,10 +53,12 @@ export function removeTab(state, action, options) {
     } else {
         var urlPath = getLink('ut-rule:edit');
         var pathParams = getUrlParams(urlPath, action.pathname);
-        let { id } = pathParams;
-        id && (state = state.deleteIn(['edit', id]).deleteIn(['rules', id]));
-        if (options.id === id) {
-            state = state.setIn(['config', 'ruleSaved'], false);
+        if (pathParams) {
+            let { id } = pathParams;
+            id && (state = state.deleteIn(['edit', id]).deleteIn(['rules', id]));
+            if (options.id === id) {
+                state = state.setIn(['config', 'ruleSaved'], false);
+            }
         }
     }
     return state;

@@ -13,6 +13,7 @@ import {validations, errorMessage} from '../../validator';
 import { fromJS } from 'immutable';
 const destinationProp = 'channel';
 const propTypes = {
+    mode: PropTypes.string,
     canEdit: PropTypes.bool,
     rule: PropTypes.object,
     actions: PropTypes.object,
@@ -37,7 +38,29 @@ class ChannelTab extends Component {
         super(props, context);
         this.renderFields = this.renderFields.bind(this);
     }
-
+    renderPriority() {
+        const {
+            fieldValues,
+            errors,
+            mode
+        } = this.props;
+        let changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
+        };
+        return (
+            <div className={style.inputWrapper}>
+              <Input
+                label='Priority'
+                keyProp='priority'
+                readonly={mode !== 'create'}
+                value={fieldValues.priority}
+                validators={validations.priority}
+                isValid={!errors.get('priority')} errorMessage={errors.get('priority')}
+                onChange={(field) => changeInput(field)}
+            />
+            </div>
+        );
+    }
     renderFields() {
         const {
             canEdit,
@@ -45,8 +68,7 @@ class ChannelTab extends Component {
             regions,
             cities,
             organizations,
-            fieldValues,
-            errors
+            fieldValues
         } = this.props;
         let changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
@@ -54,17 +76,6 @@ class ChannelTab extends Component {
         let readonly = !canEdit;
         return (
             <div>
-                <div className={style.inputWrapper}>
-                    <Input
-                      label='Priority'
-                      keyProp='priority'
-                      readonly={readonly}
-                      value={fieldValues.priority}
-                      validators={validations.priority}
-                      isValid={!errors.get('priority')} errorMessage={errors.get('priority')}
-                      onChange={(field) => changeInput(field)}
-                    />
-                </div>
                 <div className={style.inputWrapper}>
                     <MultiSelectBubble
                       disabled={readonly}
@@ -130,12 +141,22 @@ class ChannelTab extends Component {
         return (
             <div className={style.contentBox}>
                 <div className={style.contentBoxWrapper}>
-                    <TitledContentBox
-                      title='Channel Info'
-                      wrapperClassName
-                    >
-                        {this.renderFields()}
-                    </TitledContentBox>
+                    <div className={style.innerContentBoxWrapper}>
+                        <TitledContentBox
+                          title='Priority'
+                          wrapperClassName
+                        >
+                            {this.renderPriority()}
+                        </TitledContentBox>
+                    </div>
+                    <div className={style.innerContentBoxWrapper}>
+                        <TitledContentBox
+                          title='Channel Info'
+                          wrapperClassName
+                        >
+                            {this.renderFields()}
+                        </TitledContentBox>
+                    </div>
                 </div>
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
@@ -172,6 +193,7 @@ const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     let immutableRule = state.ruleProfileReducer.getIn([mode, id]);
     return {
+        mode,
         canEdit: ownProps.canEdit,
         rule: immutableRule ? immutableRule.toJS() : {},
         countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),

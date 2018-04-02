@@ -324,3 +324,6 @@ div.dropDownRoot {
 .rangeRow > td {
     padding: 0 10px !important;
 }
+.innerContentBoxWrapper + .innerContentBoxWrapper {
+    margin-top: 20px;
+}

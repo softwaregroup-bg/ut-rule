@@ -28,6 +28,8 @@ class SplitTab extends Component {
     renderFields(split, index) {
         const { currencies, errors, fieldValues, canEdit } = this.props;
         const {
+            addCumulative,
+            removeCumulative,
             addAssignment,
             removeAssignment,
             changeInput,
@@ -49,18 +51,26 @@ class SplitTab extends Component {
             field = additionalValidate(field, 'split_assignement');
             changeInput(field, destinationProp);
         };
-        const setCumulative = (field) => {
-            field.key = ['splits', index, 'cumulatives', 0, field.key].join(',');
+        const setCumulative = (field, cumulativeId = 0) => {
+            field.key = ['splits', index, 'cumulatives', cumulativeId, field.key].join(',');
+            field.key.split(',').pop() === 'currency' && !field.error && field.value && (field = validateCurrency(field));
             field = additionalValidate(field, 'split_cumulative');
             changeInput(field, destinationProp);
         };
+        let validateStartAmount = (cumulativeId, rangeId, field) => {
+            var ranges = (cumulatives[cumulativeId] || {}).ranges || [];
+            let isDuplicate = !!ranges.find((range) => { return range.startAmount === field.value; });
+            isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.startAmountUnique);
+            return field;
+        };
+        let validateCurrency = (field) => {
+            let isDuplicate = !!cumulatives.find((range) => { return range.currency === field.value; });
+            isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.cumulativeCurrencyUnique);
+            return field;
+        };
         const setCumulativeRange = (cumulativeId, rangeId, field) => {
             field.key = ['splits', index, 'cumulatives', cumulativeId, 'ranges', rangeId, field.key].join(',');
-            if (field.key.split(',').pop() === 'startAmount' && !field.error && field.value) {
-                var ranges = (cumulatives[0] || {}).ranges || [];
-                let isDuplicate = !!ranges.find((range) => { return range.startAmount === field.value; });
-                isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.startAmountUnique);
-            }
+            field.key.split(',').pop() === 'startAmount' && !field.error && field.value && (field = validateStartAmount(cumulativeId, rangeId, field));
             field = additionalValidate(field, 'split_cumulative_range');
             changeInput(field, destinationProp);
         };
@@ -105,6 +115,8 @@ class SplitTab extends Component {
                             <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding} >
                               <Cumulative
                                 canEdit={canEdit}
+                                addCumulative={addCumulative}
+                                removeCumulative={removeCumulative}
                                 setCumulativeField={setCumulative}
                                 addCumulativeRange={addCumulativeRange}
                                 removeCumulativeRange={removeCumulativeRange}

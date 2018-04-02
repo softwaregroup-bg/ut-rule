@@ -7,7 +7,7 @@ import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import style from '../style.css';
 import * as actions from '../../actions';
-import {validations, externalValidate} from '../../validator';
+import {validations, externalValidate, errorMessage} from '../../validator';
 import { fromJS } from 'immutable';
 const destinationProp = 'limit';
 const defaultProps = {
@@ -24,6 +24,10 @@ export const Limits = (props) => {
             let lastKey = field.key.split(',').pop();
             let extVal = externalValidate[`limit_${lastKey}`];
             extVal && (field = extVal(field, fromJS(fieldValues), errors));
+        }
+        if (!field.error && field.key.split(',').pop() === 'currency') {
+            let isDuplicate = !!fieldValues.find((limit) => { return limit.currency === field.value; });
+            isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.limitCurrencyUnique);
         }
         changeInput(field, destinationProp);
     };

@@ -22,8 +22,10 @@ export const errorMessage = {
     startAmountRequired: 'Start amount is required',
     descriptionRequired: 'Description is required',
     creditRequired: 'Credit is required',
-    startAmountUnique: 'Start amount should be unique with in its split',
+    startAmountUnique: 'Start amount should be unique with in its cumulative',
+    cumulativeCurrencyUnique: 'Currency should be unique withn in its split',
     // limit
+    limitCurrencyUnique: 'Limit currency should be unique',
     dailyMaxCount: 'Daily count <= Weekly and Monthly count',
     weeklyMaxCount: 'Weekly count <= Monthly count and Weekly count >= Daily count',
     monthlyMaxCount: 'Monthly count >= Daily and Weekly count',

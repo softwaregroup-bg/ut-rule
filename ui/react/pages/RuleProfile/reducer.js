@@ -70,6 +70,10 @@ export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
             return reducerHelper.addSplit(state, action, options);
         case actionTypes.REMOVE_SPLIT:
             return reducerHelper.removeSplit(state, action, options);
+        case actionTypes.ADD_CUMULATIVE:
+            return reducerHelper.addCumulative(state, action, options);
+        case actionTypes.REMOVE_CUMULATIVE:
+            return reducerHelper.removeCumulative(state, action, options);
         case REMOVE_TAB:
             return reducerHelper.removeTab(state, action, options);
         case DELETE_RULE:

@@ -313,29 +313,38 @@ export const prepareRuleModel = (result) => {
         });
         var splitRange = result.splitRange && result.splitRange.filter((range) => range.splitNameId === splitNameId);
         if (splitRange.length > 0) {
-            var range = splitRange[0];
-            var cumulative = {
-                splitNameId,
-                currency: range.startAmountCurrency,
-                dailyCount: parseInt(range.startCountDaily) || '',
-                dailyAmount: range.startAmountDaily,
-                weeklyCount: parseInt(range.startCountWeekly) || '',
-                weeklyAmount: range.startAmountWeekly,
-                monthlyCount: parseInt(range.startCountMonthly) || '',
-                monthlyAmount: range.startAmountMonthly,
-                ranges: []
-            };
-            splitRange.forEach((srange) => {
-                cumulative.ranges.push({
-                    splitRangeId: srange.splitRangeId,
-                    startAmount: srange.startAmount,
-                    minAmount: srange.minValue,
-                    maxAmount: srange.maxValue,
-                    percent: srange.percent,
-                    isSourceAmount: srange.isSourceAmount
-                });
+            let uniqueCurrencies = []; // ideally its good to split the cumulatives by cumulative id
+            var cumulatives = splitRange.filter((cum) => {
+                if (cum.startAmountCurrency && uniqueCurrencies.includes(cum.startAmountCurrency)) return false;
+                else if (cum.startAmountCurrency) {
+                    uniqueCurrencies.push(cum.startAmountCurrency);
+                    return true;
+                } else return false;
             });
-            split.cumulatives.push(cumulative);
+            cumulatives.forEach(function(range) {
+                var cumulative = {
+                    splitNameId,
+                    currency: range.startAmountCurrency,
+                    dailyCount: parseInt(range.startCountDaily) || '',
+                    dailyAmount: range.startAmountDaily,
+                    weeklyCount: parseInt(range.startCountWeekly) || '',
+                    weeklyAmount: range.startAmountWeekly,
+                    monthlyCount: parseInt(range.startCountMonthly) || '',
+                    monthlyAmount: range.startAmountMonthly,
+                    ranges: []
+                };
+                splitRange.forEach((srange) => {
+                    range.startAmountCurrency === srange.startAmountCurrency && cumulative.ranges.push({
+                        splitRangeId: srange.splitRangeId,
+                        startAmount: srange.startAmount,
+                        minAmount: srange.minValue,
+                        maxAmount: srange.maxValue,
+                        percent: srange.percent,
+                        isSourceAmount: srange.isSourceAmount
+                    });
+                });
+                split.cumulatives.push(cumulative);
+            });
         } else {
             split.cumulatives.push(emptyCumulative);
         }
@@ -393,7 +402,6 @@ export const prepareRuleErrors = (rule, existErrors) => {
     split && split.splits.forEach((split, idx) => {
         let isEmptySplit = isEmptyValuesOnly(split);
         if (!isEmptySplit) {
-            let cumulative = split.cumulatives && split.cumulatives[0];
             // info
             !split.name && (errors = errors.setIn(['split', 'splits', idx, 'name'], errorMessage.splitNameRequired));
             // assignement
@@ -404,18 +412,20 @@ export const prepareRuleErrors = (rule, existErrors) => {
                     (errors = errors.setIn(['split', 'splits', idx, 'assignments', assidx, 'credit'], errorMessage.creditRequired));
             });
             // cumulative
-            cumulative && !cumulative.currency && !isEmptyValuesOnly(cumulative) &&
-            (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'currency'], errorMessage.currencyRequired));
+            split.cumulatives.forEach(function(cumulative, cidx) {
+                cumulative && !cumulative.currency && !isEmptyValuesOnly(cumulative) &&
+                (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'currency'], errorMessage.currencyRequired));
 
-            // ranges
-            cumulative && cumulative.ranges && cumulative.ranges.forEach(function(range, ridx) {
-                if (ridx === 0) {
-                    cumulative.currency && !range.startAmount &&
-                        (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'ranges', ridx, 'startAmount'], errorMessage.startAmountRequired));
-                } else {
-                    range && !isEmptyValuesOnly(range) && !range.startAmount &&
-                        (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'ranges', ridx, 'startAmount'], errorMessage.startAmountRequired));
-                }
+                // ranges
+                cumulative && cumulative.ranges && cumulative.ranges.forEach(function(range, ridx) {
+                    if (ridx === 0) {
+                        cumulative.currency && !range.startAmount &&
+                            (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'ranges', ridx, 'startAmount'], errorMessage.startAmountRequired));
+                    } else {
+                        range && !isEmptyValuesOnly(range) && !range.startAmount &&
+                            (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'ranges', ridx, 'startAmount'], errorMessage.startAmountRequired));
+                    }
+                });
             });
         }
     });

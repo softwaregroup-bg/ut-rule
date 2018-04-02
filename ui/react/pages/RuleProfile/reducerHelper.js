@@ -2,7 +2,7 @@ import { methodRequestState } from 'ut-front-react/constants';
 import { formatNomenclatures, prepareRuleModel } from './helpers';
 import { fromJS } from 'immutable';
 import { getLink } from 'ut-front/react/routerHelper';
-import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange, defaultErrorState } from './Tabs/defaultState';
+import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange, defaultErrorState, emptyCumulative } from './Tabs/defaultState';
 const __placeholder__ = '__placeholder__';
 
 export function changeRuleProfile(state, action, options) {
@@ -143,6 +143,23 @@ export function removeAssignment(state, action, options) {
     let { mode, id } = options;
     return state.updateIn([mode, id, 'split', 'splits', action.params.splitIndex, 'assignments'], v => v.splice(action.params.propertyId, 1))
         .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex, 'assignments'], d => d.splice(action.params.propertyId, 1));
+}
+
+export function addCumulative(state, action, options) {
+    let { mode, id } = options;
+    let { splitIndex } = action.params;
+    return state.updateIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives'], v => v.push(fromJS(emptyCumulative)))
+        .updateIn([mode, id, 'errors', 'split', 'splits', splitIndex, 'cumulatives'], e => e.push(fromJS({ranges: []})));
+}
+
+export function removeCumulative(state, action, options) {
+    let { mode, id } = options;
+    let { splitIndex, cumulativeId } = action.params;
+    return state.updateIn(
+        [mode, id, 'split', 'splits', splitIndex, 'cumulatives'],
+        v => v.splice(cumulativeId, 1))
+        .updateIn([mode, id, 'errors', 'split', 'splits', splitIndex,
+            'cumulatives'], d => d.splice(cumulativeId, 1));
 }
 
 export function addCumulativeRange(state, action, options) {

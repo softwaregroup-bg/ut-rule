@@ -17,7 +17,7 @@ import Destination from '../Tabs/Destination';
 import Split from '../Tabs/Split';
 import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
-import { prepateRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap } from '../helpers';
+import { prepareRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap } from '../helpers';
 
 let status = fromJS({
     status: 'SUCCESS',
@@ -55,7 +55,7 @@ class RuleCreate extends Component {
         this.onReset(this.state.closeAfterSave);
     }
     onSave() {
-        let formattedRule = prepateRuleToSave(this.props.rule);
+        let formattedRule = prepareRuleToSave(this.props.rule);
         this.props.actions.createRule(formattedRule);
     }
 

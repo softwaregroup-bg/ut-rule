@@ -1,4 +1,16 @@
-let { transform } = require('../../history/transform');
+// let { transform } = require('../../history/transform');
+var prepareHistory = require('../../history/prepare');
+var historyConfig = require('../../history/config');
+
+const historyTransform = function(objectName, data) {
+    return this.bus.importMethod('history.history.transform')({
+        config: historyConfig[objectName],
+        data
+    }).then(function(transformedData) {
+        return { data: prepareHistory[objectName] && prepareHistory[objectName](transformedData, data) };
+    });
+};
+
 var wrapper = {
     'itemName': function(msg, $meta) {
         return this.bus.importMethod('core.itemName.fetch')(msg, $meta);
@@ -47,6 +59,6 @@ module.exports = {
         });
     },
     'rule.historyTransform': function(msg, $meta) {
-        return transform(msg, 'rule');
+        return historyTransform.call(this, 'organization', msg.data);
     }
 };

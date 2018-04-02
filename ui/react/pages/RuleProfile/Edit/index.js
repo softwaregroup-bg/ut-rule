@@ -18,7 +18,7 @@ import Destination from '../Tabs/Destination';
 import Split from '../Tabs/Split';
 import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
-import HistoryLog from 'ut-audit/modules/history/ui/react/containers/HistoryLog';
+import { HistoryLog } from 'ut-history/ui';
 import { prepateRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap } from '../helpers';
 let status = fromJS({
     status: 'SUCCESS',
@@ -70,7 +70,7 @@ class RuleEdit extends Component {
         this.onReset(this.state.closeAfterSave);
     }
     onSave() {
-        let formattedRule = prepateRuleToSave(this.props.rule);
+        let formattedRule = prepareRuleToSave(this.props.rule);
         this.props.actions.editRule(formattedRule);
     }
     onReset(closeAfterSave) {
@@ -114,7 +114,7 @@ class RuleEdit extends Component {
         if (this.context.checkPermission('history.rule.listChanges') && this.props.remoteRule) {
             tabs.push({
                 title: 'History Log',
-                component: <HistoryLog objectId={this.props.params.id} objectName={'rule'} objectDisplayName={((this.props.remoteRule.condition || [])[0] || {}).priority} />
+                component: <HistoryLog objectId={this.props.params.id} objectName={'rule'} objectDisplayName={(((this.props.remoteRule.condition || [])[0] || {}).priority)} />
             });
         }
         return tabs;

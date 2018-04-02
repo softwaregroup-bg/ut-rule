@@ -1,4 +1,3 @@
-// let { transform } = require('../../history/transform');
 var prepareHistory = require('../../history/prepare');
 var historyConfig = require('../../history/config');
 

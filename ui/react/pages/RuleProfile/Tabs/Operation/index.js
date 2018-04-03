@@ -12,6 +12,7 @@ import style from '../style.css';
 import * as actions from '../../actions';
 const destinationProp = 'operation';
 const propTypes = {
+    canEdit: PropTypes.bool,
     rule: PropTypes.object,
     operations: PropTypes.array,
     fieldValues: PropTypes.object,
@@ -20,6 +21,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+    canEdit: true,
     operations: []
 };
 
@@ -32,7 +34,8 @@ class OperationTab extends Component {
     renderFields() {
         const {
             operations,
-            fieldValues
+            fieldValues,
+            canEdit
         } = this.props;
         let changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
@@ -42,6 +45,7 @@ class OperationTab extends Component {
             <div>
                 <div className={style.inputWrapper}>
                     <MultiSelectBubble
+                      disabled={!canEdit}
                       name='opearations'
                       label={'Operation'}
                       value={fieldValues.operations}
@@ -54,6 +58,7 @@ class OperationTab extends Component {
                         <div className={style.lableWrap}>Start Date</div>
                         <div className={style.inputWrap}>
                             <DatePicker
+                              disabled={!canEdit}
                               wrapperStyles={{backgroundColor: 'white'}}
                               keyProp='startDate'
                               mode='landscape'
@@ -68,6 +73,7 @@ class OperationTab extends Component {
                         <div className={style.lableWrap}>End Date</div>
                         <div className={style.inputWrap}>
                             <DatePicker
+                              disabled={!canEdit}
                               wrapperStyles={{backgroundColor: 'white'}}
                               keyProp='endDate'
                               mode='landscape'
@@ -91,7 +97,7 @@ class OperationTab extends Component {
             this.props.actions.removeProperty(index, destinationProp);
         };
         let changeInput = (field) => {
-            if (field.key.split(',').pop() === 'name' && !field.error) {
+            if (field.key.split(',').pop() === 'name' && !field.error && field.value) {
                 let isDuplicateProperty = !!properties.find((prop) => { return prop.name === field.value; });
                 isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
             }
@@ -113,6 +119,7 @@ class OperationTab extends Component {
                       wrapperClassName
                     >
                       <Property
+                        canEdit={this.props.canEdit}
                         addProperty={addProperty}
                         removeProperty={removeProperty}
                         changeInput={changeInput}
@@ -141,6 +148,7 @@ const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     let immutableRule = state.ruleProfileReducer.getIn([mode, id]);
     return {
+        canEdit: ownProps.canEdit,
         rule: immutableRule ? immutableRule.toJS() : {},
         operations: state.ruleProfileReducer.getIn(['nomenclatures', 'operation']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),

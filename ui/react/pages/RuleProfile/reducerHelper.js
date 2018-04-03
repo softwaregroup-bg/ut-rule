@@ -1,9 +1,9 @@
-const __placeholder__ = '__placeholder__';
-import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange, defaultErrorState } from './Tabs/defaultState';
 import { methodRequestState } from 'ut-front-react/constants';
 import { formatNomenclatures, prepareRuleModel } from './helpers';
 import { fromJS } from 'immutable';
 import { getLink } from 'ut-front/react/routerHelper';
+import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange, defaultErrorState, emptyCumulative } from './Tabs/defaultState';
+const __placeholder__ = '__placeholder__';
 
 export function changeRuleProfile(state, action, options) {
     if (action.params.mode && action.params.id) {
@@ -48,14 +48,36 @@ export function resetRuleProfile(state, action, options) {
 }
 
 export function removeTab(state, action, options) {
-    let { mode, id } = options;
-    let pathname = getLink(`ut-rule:${mode}`, { id });
-    if (action.pathname === pathname) {
-        return state.setIn(['config', 'ruleSaved'], false).deleteIn([mode, id])
-            .deleteIn(['rules', id]);
+    if (action.pathname === getLink('ut-rule:create')) {
+        state = state.deleteIn(['create', 'create']);
+    } else {
+        var urlPath = getLink('ut-rule:edit');
+        var pathParams = getUrlParams(urlPath, action.pathname);
+        if (pathParams) {
+            let { id } = pathParams;
+            id && (state = state.deleteIn(['edit', id]).deleteIn(['rules', id]));
+            if (options.id === id) {
+                state = state.setIn(['config', 'ruleSaved'], false);
+            }
+        }
     }
     return state;
 };
+
+export function deleteRule(state, action, options) {
+    let { id } = options;
+    (action.methodRequestState === methodRequestState.FINISHED) && (action.params.conditionId || []).forEach(function(conId) {
+        let conditionId = String(conId);
+        if (state.getIn(['rules', conditionId]) || state.getIn(['edit', conditionId])) {
+            state = state.deleteIn(['edit', conditionId])
+                .deleteIn(['rules', conditionId]);
+        }
+        if (id === conditionId) {
+            state = state.setIn(['config', 'mode'], null).setIn(['config', 'id'], null);
+        }
+    });
+    return state;
+}
 
 export function changeActiveTab(state, action, options) {
     let { mode, id } = options;
@@ -123,13 +145,30 @@ export function removeAssignment(state, action, options) {
         .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex, 'assignments'], d => d.splice(action.params.propertyId, 1));
 }
 
+export function addCumulative(state, action, options) {
+    let { mode, id } = options;
+    let { splitIndex } = action.params;
+    return state.updateIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives'], v => v.push(fromJS(emptyCumulative)))
+        .updateIn([mode, id, 'errors', 'split', 'splits', splitIndex, 'cumulatives'], e => e.push(fromJS({ranges: []})));
+}
+
+export function removeCumulative(state, action, options) {
+    let { mode, id } = options;
+    let { splitIndex, cumulativeId } = action.params;
+    return state.updateIn(
+        [mode, id, 'split', 'splits', splitIndex, 'cumulatives'],
+        v => v.splice(cumulativeId, 1))
+        .updateIn([mode, id, 'errors', 'split', 'splits', splitIndex,
+            'cumulatives'], d => d.splice(cumulativeId, 1));
+}
+
 export function addCumulativeRange(state, action, options) {
     let { mode, id } = options;
     return state.updateIn(
         [mode, id, 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
         v => v.push(fromJS(emptyRange)))
         .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
-        e => e.push(fromJS({})));
+            e => e.push(fromJS({})));
 }
 
 export function removeCumulativeRange(state, action, options) {
@@ -152,3 +191,17 @@ export function removeSplit(state, action, options) {
     return state.updateIn([mode, id, 'split', 'splits'], v => v.splice(action.params.splitIndex, 1))
         .updateIn([mode, id, 'errors', 'split', 'splits'], d => d.splice(action.params.splitIndex, 1));
 }
+
+function getUrlParams(queryPath, pathname) {
+    if (pathname.startsWith(queryPath.split(':')[0])) {
+        let object = {};
+        let pathArray = pathname.split('/');
+        queryPath.split('/').forEach(function(rkey, index) {
+            if (rkey.match(/^:/)) {
+                var key = rkey.slice(1);
+                object[key] = pathArray[index];
+            }
+        });
+        return object;
+    } else return null;
+};

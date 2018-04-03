@@ -19,7 +19,7 @@ import Split from '../Tabs/Split';
 import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
 import { HistoryLog } from 'ut-history/ui';
-import { prepateRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap } from '../helpers';
+import { prepareRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap } from '../helpers';
 let status = fromJS({
     status: 'SUCCESS',
     message: 'Rule successfully saved'

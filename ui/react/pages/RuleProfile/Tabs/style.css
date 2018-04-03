@@ -134,8 +134,7 @@
 }
 
 .link {
-    padding-top: 8px;
-    padding-bottom: 20px;
+    padding-top: 10px;
     color: #4096FD !important;
     display: block;
     text-decoration: none;
@@ -247,7 +246,7 @@ div.dropDownRoot {
 }
 
 .propertyTable {
-  padding-top: 20px;
+  padding: 20px 0;
 }
 
 .cumulative {
@@ -279,7 +278,6 @@ div.dropDownRoot {
 
 .linkPlus {
     padding-top: 0px;
-    padding-bottom: 20px;
     color: #4096FD !important;
     display: block;
     text-decoration: none;
@@ -308,4 +306,24 @@ div.dropDownRoot {
     padding: 10px 0;
     border-bottom: 1px solid #E2E1E1;
     margin-bottom: 15px;
+}
+
+.deleteCumulative {
+    margin-bottom: 10px;
+    float: right;
+    margin-right: 0;
+}
+
+.cumulativeContainer {
+    padding: 10px 0 !important;
+}
+
+.cumulativeContainer + .cumulativeContainer {
+    border-top: 1px solid #d6d6d6;
+}
+.rangeRow > td {
+    padding: 0 10px !important;
+}
+.innerContentBoxWrapper + .innerContentBoxWrapper {
+    margin-top: 20px;
 }

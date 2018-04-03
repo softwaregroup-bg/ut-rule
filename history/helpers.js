@@ -19,8 +19,10 @@ const propMap = {
 const prepareRuleModel = (result) => {
     var condition = (result.condition || [])[0] || {};
     var rule = {
+        Priority: {
+            Priority: condition.priority
+        },
         Channel: {
-            Priority: condition.priority,
             Country: [],
             Region: [],
             City: [],
@@ -42,8 +44,8 @@ const prepareRuleModel = (result) => {
         Limit: [],
         Operation: {
             Operation: [],
-            'Start Date': condition.operationStartDate,
-            'End Date': condition.operationEndDate,
+            'Start Date': condition.operationStartDate.toLocaleDateString(),
+            'End Date': condition.operationEndDate.toLocaleDateString(),
             Properties: []
         }
     };
@@ -118,7 +120,7 @@ const prepareRuleModel = (result) => {
                 });
             });
             split.Cumulative.push(cumulative);
-        }
+    }
         result.splitAssignment && result.splitAssignment.filter((sa) => sa.splitNameId === splitNameId).forEach((assignment) => {
             split.Assignment.push({
                 Description: assignment.description,

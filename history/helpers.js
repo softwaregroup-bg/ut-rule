@@ -100,27 +100,36 @@ const prepareRuleModel = (result) => {
         });
         var splitRange = result.splitRange && result.splitRange.filter((range) => range.splitNameId === splitNameId);
         if (splitRange.length > 0) {
-            var range = splitRange[0];
-            var cumulative = {
-                Currency: range.startAmountCurrency,
-                'Daily Count': range.startCountDaily,
-                'Daily Amount': range.startAmountDaily,
-                'Weekly Count': range.startCountWeekly,
-                'Weekly Amount': range.startAmountWeekly,
-                'Monthly Count': range.startCountMonthly,
-                'Monthly Amount': range.startAmountMonthly,
-                Range: []
-            };
-            splitRange.forEach((srange) => {
-                cumulative.Range.push({
-                    'Start Amount': srange.startAmount,
-                    Percent: srange.percent,
-                    'Min Amount': srange.minValue,
-                    'Max Amount': srange.maxValue
-                });
+            let uniqueCurrencies = [];
+            var cumulatives = splitRange.filter((cum) => {
+                if (cum.startAmountCurrency && uniqueCurrencies.includes(cum.startAmountCurrency)) return false;
+                else if (cum.startAmountCurrency) {
+                    uniqueCurrencies.push(cum.startAmountCurrency);
+                    return true;
+                } else return false;
             });
-            split.Cumulative.push(cumulative);
-    }
+            cumulatives.forEach(function(range) {
+                var cumulative = {
+                    Currency: range.startAmountCurrency,
+                    'Daily Count': range.startCountDaily,
+                    'Daily Amount': range.startAmountDaily,
+                    'Weekly Count': range.startCountWeekly,
+                    'Weekly Amount': range.startAmountWeekly,
+                    'Monthly Count': range.startCountMonthly,
+                    'Monthly Amount': range.startAmountMonthly,
+                    Range: []
+                };
+                splitRange.forEach((srange) => {
+                    range.startAmountCurrency === srange.startAmountCurrency && cumulative.Range.push({
+                        'Start Amount': srange.startAmount,
+                        Percent: srange.percent,
+                        'Min Amount': srange.minValue,
+                        'Max Amount': srange.maxValue
+                    });
+                });
+                split.Cumulative.push(cumulative);
+            });
+        }
         result.splitAssignment && result.splitAssignment.filter((sa) => sa.splitNameId === splitNameId).forEach((assignment) => {
             split.Assignment.push({
                 Description: assignment.description,

@@ -114,7 +114,7 @@ class RuleEdit extends Component {
         if (this.context.checkPermission('history.rule.listChanges') && this.props.remoteRule) {
             tabs.push({
                 title: 'History Log',
-                component: <HistoryLog objectId={this.props.params.id} objectName={'rule'} objectDisplayName={(((this.props.remoteRule.condition || [])[0] || {}).priority)} />
+                component: <HistoryLog objectId={this.props.params.id} objectName={'rule'} objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
             });
         }
         return tabs;

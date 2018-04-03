@@ -1,13 +1,7 @@
 var prepareHistory = require('../../history/prepare');
-var historyConfig = require('../../history/config');
 
 const historyTransform = function(objectName, data) {
-    return this.bus.importMethod('history.history.transform')({
-        config: historyConfig[objectName],
-        data
-    }).then(function(transformedData) {
-        return { data: prepareHistory[objectName] && prepareHistory[objectName](transformedData, data) };
-    });
+        return { data: prepareHistory[objectName] && prepareHistory[objectName](data) };
 };
 
 var wrapper = {
@@ -58,6 +52,6 @@ module.exports = {
         });
     },
     'rule.historyTransform': function(msg, $meta) {
-        return historyTransform.call(this, 'organization', msg.data);
+        return historyTransform.call(this, 'rule', msg.data);
     }
 };

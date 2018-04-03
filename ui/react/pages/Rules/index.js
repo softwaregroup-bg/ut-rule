@@ -110,20 +110,15 @@ const Main = React.createClass({
             <div className={classnames(mainStyle.contentTableWrap, style.contentTableWrap)}>
                 <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                     <GridToolBox opened title='' >
-                    {!showDeleted ? (
                       <div className={style.actionWrap} >
-                        { this.context.checkPermission('rule.rule.edit') &&
+                        { this.context.checkPermission('rule.rule.edit') && !showDeleted &&
                             (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
-                        { this.context.checkPermission('rule.rule.remove') &&
+                        { this.context.checkPermission('rule.rule.remove') && !showDeleted &&
                             (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
                         { this.context.checkPermission('rule.rule.fetchDeleted') &&
                             (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
                               onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
-                    </div>) : (<div className={style.actionWrap} >
-                        { this.context.checkPermission('rule.rule.fetchDeleted') &&
-                            (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
-                              onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
-                              </div>) }
+                    </div>
                     </GridToolBox>
                 </div>
                 <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>

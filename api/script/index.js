@@ -1,7 +1,7 @@
 var prepareHistory = require('../../history/prepare');
 
 const historyTransform = function(objectName, data) {
-        return { data: prepareHistory[objectName] && prepareHistory[objectName](data) };
+    return { data: prepareHistory[objectName] && prepareHistory[objectName](data) };
 };
 
 var wrapper = {

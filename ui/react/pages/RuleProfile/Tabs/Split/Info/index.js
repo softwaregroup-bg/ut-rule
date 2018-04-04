@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
-import { splitTags } from '../../../../../../../config';
+import { splitTags } from '../../../../../../../common';
 import {fromJS} from 'immutable';
 import style from '../../style.css';
 
 export const Info = (props) => {
     const {
+        canEdit,
         changeInputField,
         selectedTags,
         name,
@@ -16,6 +17,7 @@ export const Info = (props) => {
         <div>
             <div className={style.inputWrapper}>
                 <Input
+                  readonly={!canEdit}
                   keyProp={'name'}
                   label='Split Name'
                   isValid={!errors.getIn(['name'])}
@@ -26,6 +28,7 @@ export const Info = (props) => {
             </div>
             <div className={style.inputWrapper}>
                 <MultiSelectBubble
+                  disabled={!canEdit}
                   name='tag'
                   label={'Tag'}
                   value={selectedTags}
@@ -38,6 +41,7 @@ export const Info = (props) => {
 };
 
 Info.propTypes = {
+    canEdit: PropTypes.bool,
     changeInputField: PropTypes.func,
     selectedTags: PropTypes.array,
     name: PropTypes.string,
@@ -45,6 +49,7 @@ Info.propTypes = {
 };
 
 Info.defaultProps = {
+    canEdit: true,
     errors: fromJS({})
 };
 

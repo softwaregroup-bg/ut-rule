@@ -1,7 +1,7 @@
 import { errorMessage } from './validator';
 import { defaultErrorState } from './Tabs/defaultState';
 import { fromJS } from 'immutable';
-import { splitTags } from '../../../../config';
+import { prepareRuleModel as prepareRule } from '../../../../common';
 
 export const tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
 
@@ -25,20 +25,25 @@ const factors = {
     sourceCategory: 'sc',
     destinationCategory: 'dc'
 };
-const propMap = {
-    country: 'countries',
-    region: 'regions',
-    city: 'cities',
-    operation: 'operations',
-    so: 'source',
-    do: 'destination',
-    co: 'channel',
-    ss: 'source',
-    ds: 'destination',
-    cs: 'channel',
-    oc: 'operation',
-    sc: 'source',
-    dc: 'destination'
+
+const conditionItemFactor = {
+    source: factors.sourceSpatial,
+    channel: factors.channelSpatial,
+    destination: factors.destinationSpatial,
+    operation: factors.operationCategory
+};
+
+const conditionActorFactor = {
+    source: factors.sourceOrganization,
+    channel: factors.channelOrganization,
+    destination: factors.destinationOrganization
+};
+
+const conditionPropertyFactor = {
+    source: factors.sourceOrganization,
+    channel: factors.channelOrganization,
+    destination: factors.destinationOrganization,
+    operation: factors.operationCategory
 };
 
 export const formatNomenclatures = (items) => {
@@ -56,14 +61,8 @@ export const formatNomenclatures = (items) => {
     return formattedPayload;
 };
 
-export const prepateRuleToSave = ({
-    destination,
-    source,
-    operation,
-    channel,
-    split,
-    limit
-}) => {
+export const prepareRuleToSave = (rule) => {
+    let { operation, channel, split, limit } = rule;
     let formattedRule = {};
     let conditionId = channel.conditionId;
     formattedRule.condition = [{
@@ -75,167 +74,61 @@ export const prepateRuleToSave = ({
         destinationAccountId: null
     }];
     formattedRule.conditionActor = [];
-    channel.organization && formattedRule.conditionActor.push(
-        {
-            actorId: channel.organization,
-            conditionId,
-            factor: factors.channelOrganization
-        }
-    );
-    source.organization && formattedRule.conditionActor.push(
-        {
-            conditionId,
-            actorId: source.organization,
-            factor: factors.sourceOrganization
-        }
-    );
-    destination.organization && formattedRule.conditionActor.push(
-        {
-            conditionId,
-            actorId: destination.organization,
-            factor: factors.destinationOrganization
-        }
-    );
+    ['channel', 'source', 'destination'].forEach(function(keyProp) {
+        var value = rule[keyProp];
+        value.organization && formattedRule.conditionActor.push(
+            {
+                actorId: value.organization,
+                conditionId,
+                factor: conditionActorFactor[keyProp]
+            }
+        );
+    });
 
     formattedRule.conditionItem = [];
 
-    channel.cities.forEach(city => {
-        formattedRule.conditionItem.push({
-            itemNameId: city.key,
-            conditionId,
-            factor: factors.channelSpatial
+    ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
+        var tab = rule[tabKey];
+        tab && ['cardProduct', 'accountProduct', 'cities', 'countries', 'regions', 'operations'].forEach(function(kepProp) {
+            var value = tab[kepProp];
+            if (value && value instanceof Array) {
+                value.forEach(function(ci) {
+                    ci.key && formattedRule.conditionItem.push({
+                        itemNameId: ci.key,
+                        conditionId,
+                        factor: conditionItemFactor[tabKey]
+                    });
+                });
+            } else if (value && !(value instanceof Object)) {
+                formattedRule.conditionItem.push({
+                    itemNameId: value,
+                    conditionId,
+                    factor: conditionItemFactor[tabKey]
+                });
+            }
         });
-    });
-
-    channel.countries.forEach(country => {
-        formattedRule.conditionItem.push({
-            conditionId,
-            itemNameId: country.key,
-            factor: factors.channelSpatial
-        });
-    });
-
-    channel.regions.forEach(region => {
-        formattedRule.conditionItem.push({
-            conditionId,
-            itemNameId: region.key,
-            factor: factors.channelSpatial
-        });
-    });
-
-    destination.cities.forEach(city => {
-        formattedRule.conditionItem.push({
-            conditionId,
-            itemNameId: city.key,
-            factor: factors.destinationSpatial
-        });
-    });
-
-    destination.countries.forEach(country => {
-        formattedRule.conditionItem.push({
-            conditionId,
-            itemNameId: country.key,
-            factor: factors.destinationSpatial
-        });
-    });
-
-    destination.regions.forEach(region => {
-        formattedRule.conditionItem.push({
-            conditionId,
-            itemNameId: region.key,
-            factor: factors.destinationSpatial
-        });
-    });
-
-    source.cities.forEach(city => {
-        formattedRule.conditionItem.push({
-            conditionId,
-            itemNameId: city.key,
-            factor: factors.sourceSpatial
-        });
-    });
-
-    source.countries.forEach(country => {
-        formattedRule.conditionItem.push({
-            conditionId,
-            itemNameId: country.key,
-            factor: factors.sourceSpatial
-        });
-    });
-
-    source.regions.forEach(region => {
-        formattedRule.conditionItem.push({
-            conditionId,
-            itemNameId: region.key,
-            factor: factors.sourceSpatial
-        });
-    });
-
-    operation.operations.forEach(operation => {
-        formattedRule.conditionItem.push({
-            conditionId,
-            itemNameId: operation.key,
-            factor: factors.operationCategory
-        });
-    });
-
-    source.cardProduct && formattedRule.conditionItem.push({
-        conditionId,
-        factor: factors.sourceSpatial,
-        itemNameId: source.cardProduct
-    });
-    source.accountProduct && formattedRule.conditionItem.push({
-        conditionId,
-        factor: factors.sourceSpatial,
-        itemNameId: source.accountProduct
-    });
-    destination.accountProduct && formattedRule.conditionItem.push({
-        conditionId,
-        factor: factors.destinationSpatial,
-        itemNameId: destination.accountProduct
     });
 
     formattedRule.conditionProperty = [];
 
-    source.properties.forEach(prop => {
-        formattedRule.conditionProperty.push({
-            conditionId,
-            factor: factors.sourceOrganization,
-            name: prop.name,
-            value: prop.value
-        });
-    });
-
-    operation.properties.forEach(prop => {
-        formattedRule.conditionProperty.push({
-            conditionId,
-            factor: factors.operationCategory,
-            name: prop.name,
-            value: prop.value
-        });
-    });
-
-    channel.properties.forEach(prop => {
-        formattedRule.conditionProperty.push({
-            conditionId,
-            factor: factors.channelOrganization,
-            name: prop.name,
-            value: prop.value
-        });
-    });
-
-    destination.properties.forEach(prop => {
-        formattedRule.conditionProperty.push({
-            conditionId,
-            factor: factors.destinationOrganization,
-            name: prop.name,
-            value: prop.value
-        });
+    ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
+        var tab = rule[tabKey];
+        if (tab) {
+            var value = tab.properties;
+            value && value.forEach(function(prop) {
+                prop.name && formattedRule.conditionProperty.push({
+                    conditionId,
+                    factor: conditionPropertyFactor[tabKey],
+                    name: prop.name,
+                    value: prop.value
+                });
+            });
+        }
     });
 
     formattedRule.limit = [];
     (limit || []).forEach(limit => {
-        formattedRule.limit.push({
+        !isEmptyValuesOnly(limit) && formattedRule.limit.push({
             conditionId,
             limitId: limit.limitId,
             currency: limit.currency,
@@ -261,8 +154,9 @@ export const prepateRuleToSave = ({
             tag: `|${split.tags.map(tag => tag.key).join('|')}|`
         };
 
-        formattedSplit.splitAssignment = [
-            ...split.assignments.map(assignment => ({
+        formattedSplit.splitAssignment = [];
+        split.assignments.forEach((assignment) => {
+            !isEmptyValuesOnly(assignment) && formattedSplit.splitAssignment.push({
                 splitNameId: assignment.splitNameId,
                 splitAssignmentId: assignment.splitAssignmentId,
                 debit: assignment.debit,
@@ -271,28 +165,31 @@ export const prepateRuleToSave = ({
                 maxValue: assignment.maxAmount,
                 percent: assignment.percent,
                 description: assignment.description
-            }))
-        ];
+            });
+        });
 
         formattedSplit.splitRange = [];
 
         split.cumulatives.forEach(cumulative => {
+            let cum = {
+                startAmountDaily: cumulative.dailyAmount,
+                startCountDaily: cumulative.dailyCount,
+                startAmountMonthly: cumulative.monthlyAmount,
+                startCountMonthly: cumulative.monthlyCount,
+                startAmountWeekly: cumulative.weeklyAmount,
+                startCountWeekly: cumulative.weeklyCount,
+                startAmountCurrency: cumulative.currency,
+                splitNameId: cumulative.splitNameId
+            };
             cumulative.ranges.forEach(range => {
-                formattedSplit.splitRange.push({
+                !isEmptyValuesOnly(range) && formattedSplit.splitRange.push({
                     splitRangeId: range.splitRangeId,
-                    splitNameId: cumulative.splitNameId,
                     startAmount: range.startAmount,
                     isSourceAmount: false,
                     minValue: range.minAmount,
                     maxValue: range.maxAmount,
                     percent: range.percent,
-                    startAmountDaily: cumulative.dailyAmount,
-                    startCountDaily: cumulative.dailyCount,
-                    startAmountMonthly: cumulative.monthlyAmount,
-                    startCountMonthly: cumulative.monthlyCount,
-                    startAmountWeekly: cumulative.weeklyAmount,
-                    startCountWeekly: cumulative.weeklyCount,
-                    startAmountCurrency: cumulative.currency
+                    ...cum
                 });
             });
         });
@@ -304,135 +201,16 @@ export const prepateRuleToSave = ({
 };
 
 export const prepareRuleModel = (result) => {
+    var rule = prepareRule(result) || {};
     var errState = fromJS(defaultErrorState).toJS();
-    var condition = (result.condition || [])[0] || {};
-    var rule = {
-        channel: {
-            conditionId: condition.conditionId,
-            priority: condition.priority,
-            properties: [],
-            countries: [],
-            cities: [],
-            regions: []
-        },
-        destination: { properties: [], countries: [], cities: [], regions: [] },
-        source: { properties: [], countries: [], cities: [], regions: [] },
-        split: {
-            splits: []
-        },
-        limit: [],
-        operation: {
-            operations: [],
-            properties: [],
-            startDate: condition.operationStartDate,
-            endDate: condition.operationEndDate
-        }
-    };
-    (result.conditionActor || []).forEach((ca) => {
-        var des = rule[propMap[ca.factor]];
-        des && (des[ca.type] = ca.actorId);
-    });
-    // condition item
-    (result.conditionItem || []).forEach((item) => {
-        if (['operation', 'country', 'city', 'region'].indexOf(item.type) > -1) {
-            var obj = rule[propMap[item.factor]] && rule[propMap[item.factor]][propMap[item.type]];
-            obj && obj.push({
-                key: item.itemNameId,
-                name: item.itemName
-            });
-        } else {
-            rule[propMap[item.factor]] && (rule[propMap[item.factor]][item.type] = item.itemNameId);
-        }
-    });
-    // condition property
-    (result.conditionProperty || []).forEach((property) => {
-        var obj = rule[propMap[property.factor]];
-        obj && obj.properties.push({
-            name: property.name,
-            value: property.value
-        });
-    });
-    // limit
-    result.limit && result.limit.sort((a, b) => a.limitId > b.limitId).forEach((limit) => {
-        errState.limit.push({});
-        rule.limit.push({
-            conditionId: condition.conditionId,
-            limitId: limit.limitId,
-            currency: limit.currency,
-            txMin: limit.minAmount,
-            txMax: limit.maxAmount,
-            dailyMaxAmount: limit.maxAmountDaily,
-            dailyMaxCount: limit.maxCountDaily,
-            weeklyMaxAmount: limit.maxAmountWeekly,
-            weeklyMaxCount: limit.maxCountWeekly,
-            monthlyMaxAmount: limit.maxAmountMonthly,
-            monthlyMaxCount: limit.maxCountMonthly
-        });
-    });
-    // split
-    result.splitName && result.splitName.forEach((splitName) => {
-        if (!splitName.name) return;
-        let splitNameId = splitName.splitNameId;
-        var split = {
-            conditionId: condition.conditionId,
-            name: splitName.name,
-            splitNameId,
-            tags: [],
-            cumulatives: [],
-            assignments: []
-        };
-        splitName.tag && splitName.tag.split('|').filter((ts) => !!ts).forEach((tagName) => {
-            var splitTag = splitTags.find((st) => st.key === tagName);
-            splitTag && split.tags.push(splitTag);
-        });
-        var splitRange = result.splitRange && result.splitRange.filter((range) => range.splitNameId === splitNameId);
-        if (splitRange.length > 0) {
-            var range = splitRange[0];
-            var cumulative = {
-                splitNameId,
-                currency: range.startAmountCurrency,
-                dailyCount: range.startCountDaily,
-                dailyAmount: range.startAmountDaily,
-                weeklyCount: range.startCountWeekly,
-                weeklyAmount: range.startAmountWeekly,
-                monthlyCount: range.startCountMonthly,
-                monthlyAmount: range.startAmountMonthly,
-                ranges: []
-            };
-            splitRange.forEach((srange) => {
-                cumulative.ranges.push({
-                    splitRangeId: srange.splitRangeId,
-                    startAmount: srange.startAmount,
-                    minAmount: srange.minValue,
-                    maxAmount: srange.maxValue,
-                    percent: srange.percent,
-                    isSourceAmount: srange.isSourceAmount
-                });
-            });
-            split.cumulatives.push(cumulative);
-        }
-        result.splitAssignment && result.splitAssignment.filter((sa) => sa.splitNameId === splitNameId).forEach((assignment) => {
-            split.assignments.push({
-                splitNameId: assignment.splitNameId,
-                splitAssignmentId: assignment.splitAssignmentId,
-                debit: assignment.debit,
-                credit: assignment.credit,
-                minAmount: assignment.minValue,
-                maxAmount: assignment.maxValue,
-                percent: assignment.percent,
-                description: assignment.description
-            });
-        });
-        rule.split.splits.push(split);
-    });
     errState.split.splits = [];
-    rule.split.splits.forEach((split) => {
+    rule.split.splits.forEach((split, sidx) => {
         errState.split.splits.push({
             tags: [],
             assignments: Array(split.assignments.length).fill({}),
-            cumulatives: [{
-                ranges: Array((((split.cumulatives[0] || {}).ranges || [])).length).fill({})
-            }]
+            cumulatives: split.cumulatives.map((cumulative) => ({
+                ranges: Array((((cumulative || {}).ranges || [])).length).fill({})
+            }))
         });
     });
     errState.limit = Array(rule.limit.length).fill({});
@@ -465,7 +243,6 @@ export const prepareRuleErrors = (rule, existErrors) => {
     split && split.splits.forEach((split, idx) => {
         let isEmptySplit = isEmptyValuesOnly(split);
         if (!isEmptySplit) {
-            let cumulative = split.cumulatives && split.cumulatives[0];
             // info
             !split.name && (errors = errors.setIn(['split', 'splits', idx, 'name'], errorMessage.splitNameRequired));
             // assignement
@@ -476,17 +253,36 @@ export const prepareRuleErrors = (rule, existErrors) => {
                     (errors = errors.setIn(['split', 'splits', idx, 'assignments', assidx, 'credit'], errorMessage.creditRequired));
             });
             // cumulative
-            cumulative && !cumulative.currency && !isEmptyValuesOnly(cumulative) &&
-            (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'currency'], errorMessage.currencyRequired));
+            split.cumulatives.forEach(function(cumulative, cidx) {
+                cumulative && !cumulative.currency && !isEmptyValuesOnly(cumulative) &&
+                (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'currency'], errorMessage.currencyRequired));
 
-            // ranges
-            cumulative && cumulative.ranges && cumulative.ranges.forEach(function(range, ridx) {
-                range && !isEmptyValuesOnly(range) && !range.startAmount &&
-                    (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', 0, 'ranges', ridx, 'startAmount'], errorMessage.startAmountRequired));
+                // ranges
+                cumulative && cumulative.ranges && cumulative.ranges.forEach(function(range, ridx) {
+                    if (ridx === 0) {
+                        cumulative.currency && !range.startAmount &&
+                            (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'ranges', ridx, 'startAmount'], errorMessage.startAmountRequired));
+                    } else {
+                        range && !isEmptyValuesOnly(range) && !range.startAmount &&
+                            (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'ranges', ridx, 'startAmount'], errorMessage.startAmountRequired));
+                    }
+                });
             });
         }
     });
     return errors.toJS();
+};
+
+export const getRuleProperties = (rule = {}) => {
+    var properties = [];
+    ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
+        var tab = rule[tabKey];
+        if (tab) {
+            var value = tab.properties;
+            value && (properties = properties.concat(value));
+        }
+    });
+    return properties;
 };
 
 export const isEmptyValuesOnly = (obj) => {
@@ -500,6 +296,26 @@ export const isEmptyValuesOnly = (obj) => {
         });
     } else tempIsEmpty = !obj;
     return tempIsEmpty;
+};
+
+export const diff = (obj1, obj2) => {
+    var diffObj = {};
+    for (var prop in obj1) {
+        if (obj1.hasOwnProperty(prop) && prop !== '__proto__') {
+            if (!obj2.hasOwnProperty(prop)) diffObj[prop] = obj1[prop];
+            else if (obj1[prop] === Object(obj1[prop])) {
+                var difference = diff(obj1[prop], obj2[prop]);
+                if (Object.keys(difference).length > 0) diffObj[prop] = difference;
+            } else if (obj1[prop] !== obj2[prop]) {
+                if (obj1[prop] === undefined) diffObj[prop] = 'undefined';
+                if (obj1[prop] === null) diffObj[prop] = null;
+                else if (typeof obj1[prop] === 'function') diffObj[prop] = 'function';
+                else if (typeof obj1[prop] === 'object') diffObj[prop] = 'object';
+                else diffObj[prop] = obj1[prop];
+            }
+        }
+    }
+    return diffObj;
 };
 
 export const isEqual = (x, y) => {

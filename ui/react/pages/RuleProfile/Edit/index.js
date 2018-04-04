@@ -18,8 +18,8 @@ import Destination from '../Tabs/Destination';
 import Split from '../Tabs/Split';
 import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
-import HistoryLog from 'ut-history/ui';
-import { prepateRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap } from '../helpers';
+import { HistoryLog } from 'ut-history/ui';
+import { prepareRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap, prepareRuleModel, diff } from '../helpers';
 let status = fromJS({
     status: 'SUCCESS',
     message: 'Rule successfully saved'
@@ -70,7 +70,7 @@ class RuleEdit extends Component {
         this.onReset(this.state.closeAfterSave);
     }
     onSave() {
-        let formattedRule = prepateRuleToSave(this.props.rule);
+        let formattedRule = prepareRuleToSave(this.props.rule);
         this.props.actions.editRule(formattedRule);
     }
     onReset(closeAfterSave) {
@@ -79,65 +79,67 @@ class RuleEdit extends Component {
     }
     getTabs() {
         let errorCount = getRuleErrorCount(this.props.errors.toJS());
+        let canEdit = this.context.checkPermission('rule.rule.edit') && !isEmptyValuesOnly(this.props.remoteRule);
         let tabs = [
             {
                 title: 'Channel',
-                component: <Channel />,
+                component: <Channel canEdit={canEdit} />,
                 errorsCount: errorCount.channel
             },
             {
                 title: 'Operation',
-                component: <Operation />,
+                component: <Operation canEdit={canEdit} />,
                 errorsCount: errorCount.operation
             },
             {
                 title: 'Source',
-                component: <Source />,
+                component: <Source canEdit={canEdit} />,
                 errorsCount: errorCount.source
             },
             {
                 title: 'Destination',
-                component: <Destination />,
+                component: <Destination canEdit={canEdit} />,
                 errorsCount: errorCount.destination
             },
             {
                 title: 'Limit',
-                component: <Limit />,
+                component: <Limit canEdit={canEdit} />,
                 errorsCount: errorCount.limit
             },
             {
                 title: 'Fee and Commission Split',
-                component: <Split />,
+                component: <Split canEdit={canEdit} />,
                 errorsCount: errorCount.split
             }
         ];
         if (this.context.checkPermission('history.rule.listChanges') && this.props.remoteRule) {
             tabs.push({
                 title: 'History Log',
-                component: <HistoryLog objectId={this.props.params.id} objectName={'rule'} objectDisplayName={((this.props.remoteRule.condition || [])[0] || {}).priority} />
+                component: <HistoryLog objectId={this.props.params.id} objectName={'rule'} objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
             });
         }
         return tabs;
     }
 
     getActionButtons() {
-        let { errors, rule } = this.props;
+        let { errors, rule, remoteRule } = this.props;
         let isEdited = true;
-        // // logic to check whether the rule has changed
-        // let { channel, destination, operation, source, limit, split } = rule;
-        // let editedRule = { channel, destination, operation, source, limit, split };
-        // if (!isEmptyValuesOnly(editedRule)) {
-        //     let remoteRuleData = prepareRuleModel(remoteRule) || {};
-        //     let remoteRuleModel = {
-        //         channel: remoteRuleData.channel,
-        //         destination: remoteRuleData.destination,
-        //         operation: remoteRuleData.operation,
-        //         source: remoteRuleData.source,
-        //         limit: remoteRuleData.limit,
-        //         split: remoteRuleData.split
-        //     };
-        //     isEdited = !isEqual(editedRule, remoteRuleModel);
-        // }
+        // logic to check whether the rule has changed
+        let { channel, destination, operation, source, limit, split } = rule;
+        let editedRule = { channel, destination, operation, source, limit, split };
+        if (!isEmptyValuesOnly(editedRule)) {
+            let remoteRuleData = prepareRuleModel(remoteRule) || {};
+            let remoteRuleModel = {
+                channel: remoteRuleData.channel,
+                destination: remoteRuleData.destination,
+                operation: remoteRuleData.operation,
+                source: remoteRuleData.source,
+                limit: remoteRuleData.limit,
+                split: remoteRuleData.split
+            };
+            isEdited = !isEmptyValuesOnly(diff(editedRule, remoteRuleModel));
+        }
+        isEdited && (isEdited = !isEmptyValuesOnly(remoteRule));
         let newErrors = prepareRuleErrors(rule, errors.toJS());
         let isValid = isEmptyValuesOnly(newErrors);
         let showError = () => {

@@ -10,6 +10,9 @@ DECLARE @endRow INT = @startRow + @pageSize - 1
 
 BEGIN
 
+    IF @conditionId IS NOT NULL AND NOT EXISTS (SELECT conditionid FROM [rule].[condition] WHERE conditionId = @conditionId)
+        RAISERROR ('rule.ruleNotExists', 16, 1)
+
     IF OBJECT_ID('tempdb..#RuleConditions') IS NOT NULL
         DROP TABLE #RuleConditions
 

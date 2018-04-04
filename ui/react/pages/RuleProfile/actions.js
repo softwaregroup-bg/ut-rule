@@ -78,6 +78,18 @@ export const removeAssignment = (splitIndex, propertyId) => ({
     params: {splitIndex, propertyId}
 });
 
+export const addCumulative = (splitIndex) => {
+    return {
+        type: actionTypes.ADD_CUMULATIVE,
+        params: {splitIndex}
+    };
+};
+
+export const removeCumulative = (splitIndex, cumulativeId) => ({
+    type: actionTypes.REMOVE_CUMULATIVE,
+    params: {splitIndex, cumulativeId}
+});
+
 export const addCumulativeRange = (splitIndex, cumulativeId) => ({
     type: actionTypes.ADD_CUMULATIVE_RANGE,
     params: {splitIndex, cumulativeId}

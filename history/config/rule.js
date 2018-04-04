@@ -3,7 +3,7 @@ let propertyTransform = (props) => ((props || []).map((prop) => ({Name: prop.nam
 let assignment = (assignments) => (
     (assignments || {}).filter((value) => !!value).map((ass) => ({
         Description: ass.description,
-        Debit: ass.Debit,
+        Debit: ass.debit,
         Credit: ass.credit,
         'Percent (%)': ass.percent,
         'Min Amount': ass.minAmount,
@@ -62,7 +62,7 @@ module.exports = {
             {key: 'destination,regions', title: 'Region', transform: conditionItemTransform},
             {key: 'destination,cities', title: 'City', transform: conditionItemTransform},
             {key: 'destination,organization', title: 'Organization'},
-            {key: 'source,accountProduct', title: 'Account Product'},
+            {key: 'destination,accountProduct', title: 'Account Product'},
             {key: 'destination,properties', title: 'Properties', transform: propertyTransform}
         ],
         single: true

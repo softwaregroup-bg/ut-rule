@@ -113,9 +113,9 @@ class ChannelTab extends Component {
                       keyProp={'organization'}
                       data={organizations}
                       defaultSelected={fieldValues.organization}
-                      placeholder='Enter Organizaton'
+                      placeholder='Enter Organization'
                       onSelect={(field) => { changeInput(field); }}
-                      label={'Organizaton'}
+                      label={'Organization'}
                     />
                 </div>
             </div>

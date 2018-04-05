@@ -32,7 +32,7 @@ export const Limits = (props) => {
         changeInput(field, destinationProp);
     };
     const renderTableHead = () => (
-        <thead>
+        <thead className={style.limitHeaderWrapper}>
             <tr>
                 <th rowSpan={2} style={{ minWidth: '100px' }}>Currency</th>
                 <th colSpan={2}>Transaction Amount</th>

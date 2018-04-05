@@ -68,12 +68,11 @@
     display: inline-block;
 }
 .propertyTable {
-    padding-top: 20px;
+    padding: 20px 0;
 }
 
 .link {
     padding-top: 8px;
-    padding-bottom: 20px;
     color: #4096FD !important;
     display: block;
     text-decoration: none;

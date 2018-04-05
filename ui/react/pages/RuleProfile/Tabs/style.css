@@ -257,7 +257,7 @@ div.dropDownRoot {
 .inputWrapper:last-child {
    border-bottom: none;
 }
-.rangeWrapper {
+.cumulativeWrapper, .rangeWrapper {
     margin-top: 20px;
 }
 

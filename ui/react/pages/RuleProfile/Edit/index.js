@@ -130,7 +130,7 @@ class RuleEdit extends Component {
                 limit: remoteRuleData.limit,
                 split: remoteRuleData.split
             };
-            isEdited = !isEmptyValuesOnly(diff(editedRule, remoteRuleModel));
+            isEdited = !isEmptyValuesOnly(diff(editedRule, remoteRuleModel)) || !isEmptyValuesOnly(diff(remoteRuleModel, editedRule));
         }
         isEdited && (isEdited = !isEmptyValuesOnly(remoteRule));
         let newErrors = prepareRuleErrors(rule, errors.toJS());

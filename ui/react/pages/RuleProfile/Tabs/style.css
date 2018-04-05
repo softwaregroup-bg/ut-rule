@@ -241,7 +241,6 @@ div.dropDownRoot {
   background-image: url('./assets/delete.png');
   width: 13px;
   height: 16px;
-  /* padding: 0 10px; */
   background-repeat: no-repeat;
 }
 
@@ -257,7 +256,7 @@ div.dropDownRoot {
 .inputWrapper:last-child {
    border-bottom: none;
 }
-.rangeWrapper {
+.cumulativeWrapper, .rangeWrapper {
     margin-top: 20px;
 }
 
@@ -326,4 +325,13 @@ div.dropDownRoot {
 }
 .innerContentBoxWrapper + .innerContentBoxWrapper {
     margin-top: 20px;
+}
+.limitHeaderWrapper th:not(:last-child) {
+    border-right: 1px solid #d6d6d6;
+}
+.limitHeaderWrapper .deleteCol {
+    width: 30px !important;
+}
+.limitContentBoxWrapper .deleteIcon {
+    margin: 0 auto !important;
 }

@@ -100,18 +100,18 @@ class SplitTab extends Component {
                             <div className={style.cumulativeWrapper}>
                               <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding} >
                                 <Cumulative
-                                    canEdit={canEdit}
-                                    addCumulative={addCumulative}
-                                    removeCumulative={removeCumulative}
-                                    setCumulativeField={setCumulative}
-                                    addCumulativeRange={addCumulativeRange}
-                                    removeCumulativeRange={removeCumulativeRange}
-                                    setCumulativeRangeField={setCumulativeRange}
-                                    cumulatives={cumulatives}
-                                    currencies={currencies}
-                                    splitIndex={index}
-                                    errors={errors.getIn(['splits', index, 'cumulatives'])}
-                                    />
+                                  canEdit={canEdit}
+                                  addCumulative={addCumulative}
+                                  removeCumulative={removeCumulative}
+                                  setCumulativeField={setCumulative}
+                                  addCumulativeRange={addCumulativeRange}
+                                  removeCumulativeRange={removeCumulativeRange}
+                                  setCumulativeRangeField={setCumulativeRange}
+                                  cumulatives={cumulatives}
+                                  currencies={currencies}
+                                  splitIndex={index}
+                                  errors={errors.getIn(['splits', index, 'cumulatives'])}
+                                />
                               </TitledContentBox>
                             </div>
                         </div>

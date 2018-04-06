@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.17.0-rc-cubalibre.6",
+  "version": "9.17.0-rc-cubalibre.9",
   "pkg": {
     "assets": [
       "api/sql/schema/*.sql",
@@ -10,8 +10,7 @@
   "dependencies": {
     "lodash.get": "4.4.2",
     "lodash.merge": "4.6.0",
-    "lodash.set": "4.3.2",
-    "ut-error": "^5.4.9"
+    "lodash.set": "4.3.2"
   },
   "devDependencies": {
     "ut-tools": "^5.30.0"
@@ -26,9 +25,10 @@
     "react-redux": "^5.0.5",
     "react-router": "^3.0.0",
     "redux": "^3.7.2",
+    "ut-error": "^5.4.9",
     "ut-front": "^8.0.1",
-    "ut-front-react": "^10.2.0-rc-cubalibre.0",
-    "ut-bus": "^6.0.0"
+    "ut-front-react": "^10.2.0-rc-cubalibre.4",
+    "ut-bus": "^6.3.0-rc-cubalibre.1"
   },
   "description": "UT Rule",
   "scripts": {
@@ -41,6 +41,7 @@
     "postpublish": "ut-postpublish",
     "postversion": "ut-postversion",
     "precommit": "ut-precommit",
+    "precover": "ut-precover",
     "prepublish": "ut-prepublish",
     "prepush": "ut-prepush",
     "pretest": "ut-pretest",

@@ -18,14 +18,13 @@ class Property extends Component {
         ));
     }
     getPropetyRowsBody() {
-        const { properties, removeProperty, changeInput, errors, canEdit } = this.props;
+        const { properties, removeProperty, changeInput, errors } = this.props;
         return properties.map((prop, index) => {
             let idx = index.toString();
             return (
                 <tr key={`${index}`}>
                     <td>
                         <Input
-                          readonly={!canEdit}
                           keyProp={['properties', index, 'name'].join(',')}
                           isValid={!errors.getIn(['properties', idx, 'name'])}
                           errorMessage={errors.getIn(['properties', idx, 'name'])}
@@ -35,7 +34,6 @@ class Property extends Component {
                     </td>
                     <td>
                         <Input
-                          readonly={!canEdit}
                           keyProp={['properties', index, 'value'].join(',')}
                           isValid={!errors.getIn(['properties', idx, 'value'])}
                           errorMessage={errors.getIn(['properties', idx, 'value'])}
@@ -44,14 +42,14 @@ class Property extends Component {
                         />
                     </td>
                     <td className={style.deleteCol}>
-                        { canEdit && <div className={style.deleteIcon} onClick={() => { removeProperty(index); }} /> }
+                        <div className={style.deleteIcon} onClick={() => { removeProperty(index); }} />
                     </td>
                 </tr>
             );
         });
     }
     render() {
-        let { addProperty, canEdit } = this.props;
+        let { addProperty } = this.props;
         return (
             <div className={style.propertyTable}>
                 <table className={style.dataGridTable}>
@@ -64,26 +62,21 @@ class Property extends Component {
                         {this.getPropetyRowsBody()}
                     </tbody>
                 </table>
-                { canEdit && <span className={style.link} onClick={addProperty}>
+                <span className={style.link} onClick={addProperty}>
                     <div className={style.plus} />
                     Add another property
-                </span> }
+                </span>
             </div>
         );
     }
 }
 
 Property.propTypes = {
-    canEdit: PropTypes.bool,
     properties: PropTypes.array,
     changeInput: PropTypes.func,
     addProperty: PropTypes.func,
     removeProperty: PropTypes.func,
     errors: PropTypes.object // immuatble object
-};
-
-Property.defaultProps = {
-    canEdit: true
 };
 
 export default Property;

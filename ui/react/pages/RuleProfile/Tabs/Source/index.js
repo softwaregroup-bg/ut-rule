@@ -12,7 +12,6 @@ import style from '../style.css';
 import * as actions from '../../actions';
 const destinationProp = 'source';
 const propTypes = {
-    canEdit: PropTypes.bool,
     rule: PropTypes.object,
     actions: PropTypes.object,
     countries: PropTypes.array,
@@ -26,7 +25,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-    canEdit: true,
     countries: [],
     regions: [],
     cities: [],
@@ -42,7 +40,6 @@ class SourceTab extends Component {
 
     renderFields() {
         const {
-            canEdit,
             countries,
             regions,
             cities,
@@ -51,7 +48,7 @@ class SourceTab extends Component {
             accountProducts,
             fieldValues
         } = this.props;
-        let readonly = !canEdit;
+
         let changeInput = (field, value) => {
             this.props.actions.changeInput(field, destinationProp);
         };
@@ -59,7 +56,6 @@ class SourceTab extends Component {
             <div>
                 <div className={style.inputWrapper}>
                     <MultiSelectBubble
-                      disabled={readonly}
                       name='country'
                       label={'Country'}
                       value={fieldValues.countries}
@@ -69,7 +65,6 @@ class SourceTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <MultiSelectBubble
-                      disabled={readonly}
                       name='region'
                       label={'Region'}
                       value={fieldValues.regions}
@@ -79,7 +74,6 @@ class SourceTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <MultiSelectBubble
-                      disabled={readonly}
                       name='city'
                       label={'City'}
                       value={fieldValues.cities}
@@ -89,7 +83,6 @@ class SourceTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
-                      disabled={readonly}
                       canSelectPlaceholder
                       keyProp={'organization'}
                       data={organizations}
@@ -101,7 +94,6 @@ class SourceTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
-                      disabled={readonly}
                       canSelectPlaceholder
                       keyProp={'cardProduct'}
                       data={cardProducts}
@@ -113,7 +105,6 @@ class SourceTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
-                      disabled={readonly}
                       canSelectPlaceholder
                       keyProp={'accountProduct'}
                       data={accountProducts}
@@ -136,8 +127,8 @@ class SourceTab extends Component {
             this.props.actions.removeProperty(index, destinationProp);
         };
         let changeInput = (field) => {
-            if (field.key.split(',').pop() === 'name' && !field.error && field.value) {
-                let isDuplicateProperty = !!properties.find((prop) => { return prop.name.toLowerCase() === field.value.toLowerCase(); });
+            if (field.key.split(',').pop() === 'name' && !field.error) {
+                let isDuplicateProperty = !!properties.find((prop) => { return prop.name === field.value; });
                 isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
             }
             this.props.actions.changeInput(field, destinationProp);
@@ -158,7 +149,6 @@ class SourceTab extends Component {
                       wrapperClassName
                     >
                       <Property
-                        canEdit={this.props.canEdit}
                         addProperty={addProperty}
                         removeProperty={removeProperty}
                         changeInput={changeInput}
@@ -187,7 +177,6 @@ const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     let immutableRule = state.ruleProfileReducer.getIn([mode, id]);
     return {
-        canEdit: ownProps.canEdit,
         rule: immutableRule ? immutableRule.toJS() : {},
         countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),

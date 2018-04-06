@@ -6,7 +6,6 @@ import { fromJS } from 'immutable';
 
 export const Assignment = (props) => {
     const {
-        canEdit,
         addAssignment,
         removeAssignment,
         changeInput,
@@ -14,7 +13,7 @@ export const Assignment = (props) => {
         splitIndex,
         errors // immutable
     } = props;
-    let readonly = !canEdit;
+
     const getHeaderCells = () => {
         return [
             {name: 'Description', key: 'description'},
@@ -36,7 +35,6 @@ export const Assignment = (props) => {
                 <tr key={`${index}`}>
                     <td>
                         <Input
-                          readonly={readonly}
                           keyProp={'description'}
                           onChange={(field) => { changeInput(index, field); }}
                           isValid={!errors.getIn([idx, 'description'])}
@@ -46,7 +44,6 @@ export const Assignment = (props) => {
                     </td>
                     <td>
                         <Input
-                          readonly={readonly}
                           keyProp={'debit'}
                           isValid={!errors.getIn([idx, 'debit'])}
                           errorMessage={errors.getIn([idx, 'debit'])}
@@ -56,7 +53,6 @@ export const Assignment = (props) => {
                     </td>
                     <td>
                         <Input
-                          readonly={readonly}
                           keyProp={'credit'}
                           isValid={!errors.getIn([idx, 'credit'])}
                           errorMessage={errors.getIn([idx, 'credit'])}
@@ -66,7 +62,6 @@ export const Assignment = (props) => {
                     </td>
                     <td>
                         <Input
-                          readonly={readonly}
                           keyProp={'percent'}
                           validators={validations.percent}
                           isValid={!errors.getIn([idx, 'percent'])}
@@ -77,7 +72,6 @@ export const Assignment = (props) => {
                     </td>
                     <td>
                         <Input
-                          readonly={readonly}
                           keyProp={'minAmount'}
                           validators={validations.amount}
                           isValid={!errors.getIn([idx, 'minAmount'])}
@@ -88,7 +82,6 @@ export const Assignment = (props) => {
                     </td>
                     <td>
                         <Input
-                          readonly={readonly}
                           keyProp={'maxAmount'}
                           validators={validations.amount}
                           isValid={!errors.getIn([idx, 'maxAmount'])}
@@ -98,7 +91,7 @@ export const Assignment = (props) => {
                         />
                     </td>
                     <td className={style.deleteCol}>
-                        { canEdit && <div className={style.deleteIcon} onClick={() => { removeAssignment(splitIndex, index); }} /> }
+                        <div className={style.deleteIcon} onClick={() => { removeAssignment(splitIndex, index); }} />
                     </td>
                 </tr>
             );
@@ -117,16 +110,15 @@ export const Assignment = (props) => {
                     {getBody()}
                 </tbody>
             </table>
-            { canEdit && <span className={style.link} onClick={() => addAssignment(splitIndex)}>
+            <span className={style.link} onClick={() => addAssignment(splitIndex)}>
                 <div className={style.plus} />
                 Add another Assignment
-            </span> }
+            </span>
         </div>
     );
 };
 
 Assignment.propTypes = {
-    canEdit: PropTypes.bool,
     addAssignment: PropTypes.func,
     removeAssignment: PropTypes.func,
     changeInput: PropTypes.func,
@@ -136,7 +128,6 @@ Assignment.propTypes = {
 };
 
 Assignment.defaultProps = {
-    canEdit: true,
     errors: fromJS({})
 };
 

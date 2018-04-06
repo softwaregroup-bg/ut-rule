@@ -13,8 +13,6 @@ import {validations, errorMessage} from '../../validator';
 import { fromJS } from 'immutable';
 const destinationProp = 'channel';
 const propTypes = {
-    mode: PropTypes.string,
-    canEdit: PropTypes.bool,
     rule: PropTypes.object,
     actions: PropTypes.object,
     countries: PropTypes.array,
@@ -26,7 +24,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-    canEdit: true,
     countries: [],
     regions: [],
     cities: [],
@@ -38,47 +35,34 @@ class ChannelTab extends Component {
         super(props, context);
         this.renderFields = this.renderFields.bind(this);
     }
-    renderPriority() {
-        const {
-            fieldValues,
-            errors,
-            mode
-        } = this.props;
-        let changeInput = (field) => {
-            this.props.actions.changeInput(field, destinationProp);
-        };
-        return (
-            <div className={style.inputWrapper}>
-              <Input
-                label='Priority'
-                keyProp='priority'
-                readonly={mode !== 'create'}
-                value={fieldValues.priority}
-                validators={validations.priority}
-                isValid={!errors.get('priority')} errorMessage={errors.get('priority')}
-                onChange={(field) => changeInput(field)}
-            />
-            </div>
-        );
-    }
+
     renderFields() {
         const {
-            canEdit,
             countries,
             regions,
             cities,
             organizations,
-            fieldValues
+            fieldValues,
+            errors
         } = this.props;
         let changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
         };
-        let readonly = !canEdit;
+
         return (
             <div>
                 <div className={style.inputWrapper}>
+                    <Input
+                      label='Priority'
+                      keyProp='priority'
+                      value={fieldValues.priority}
+                      validators={validations.priority}
+                      isValid={!errors.get('priority')} errorMessage={errors.get('priority')}
+                      onChange={(field) => changeInput(field)}
+                    />
+                </div>
+                <div className={style.inputWrapper}>
                     <MultiSelectBubble
-                      disabled={readonly}
                       name='country'
                       label={'Country'}
                       value={fieldValues.countries}
@@ -88,7 +72,6 @@ class ChannelTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <MultiSelectBubble
-                      disabled={readonly}
                       name='region'
                       label={'Region'}
                       value={fieldValues.regions}
@@ -98,7 +81,6 @@ class ChannelTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <MultiSelectBubble
-                      disabled={readonly}
                       name='city'
                       label={'City'}
                       value={fieldValues.cities}
@@ -108,7 +90,6 @@ class ChannelTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
-                      disabled={readonly}
                       canSelectPlaceholder
                       keyProp={'organization'}
                       data={organizations}
@@ -123,40 +104,29 @@ class ChannelTab extends Component {
     }
 
     renderInfoFields() {
-        let { canEdit, rule, actions, fieldValues, errors } = this.props;
-        let properties = getRuleProperties(rule);
+        let properties = getRuleProperties(this.props.rule);
         let addProperty = () => {
-            actions.addProperty(destinationProp);
+            this.props.actions.addProperty(destinationProp);
         };
         let removeProperty = (index) => {
-            actions.removeProperty(index, destinationProp);
+            this.props.actions.removeProperty(index, destinationProp);
         };
         let changeInput = (field) => {
-            if (field.key.split(',').pop() === 'name' && !field.error && field.value) {
-                let isDuplicateProperty = !!properties.find((prop) => { return prop.name.toLowerCase() === field.value.toLowerCase(); });
+            if (field.key.split(',').pop() === 'name' && !field.error) {
+                let isDuplicateProperty = !!properties.find((prop) => { return prop.name === field.value; });
                 isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
             }
-            actions.changeInput(field, destinationProp);
+            this.props.actions.changeInput(field, destinationProp);
         };
         return (
             <div className={style.contentBox}>
                 <div className={style.contentBoxWrapper}>
-                    <div className={style.innerContentBoxWrapper}>
-                        <TitledContentBox
-                          title='Priority'
-                          wrapperClassName
-                        >
-                            {this.renderPriority()}
-                        </TitledContentBox>
-                    </div>
-                    <div className={style.innerContentBoxWrapper}>
-                        <TitledContentBox
-                          title='Channel Info'
-                          wrapperClassName
-                        >
-                            {this.renderFields()}
-                        </TitledContentBox>
-                    </div>
+                    <TitledContentBox
+                      title='Channel Info'
+                      wrapperClassName
+                    >
+                        {this.renderFields()}
+                    </TitledContentBox>
                 </div>
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
@@ -164,12 +134,11 @@ class ChannelTab extends Component {
                       wrapperClassName
                     >
                         <Property
-                          canEdit={canEdit}
                           addProperty={addProperty}
                           removeProperty={removeProperty}
                           changeInput={changeInput}
-                          properties={(fieldValues || {}).properties || []}
-                          errors={errors}
+                          properties={(this.props.fieldValues || {}).properties || []}
+                          errors={this.props.errors}
                         />
                     </TitledContentBox>
                 </div>
@@ -193,8 +162,6 @@ const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     let immutableRule = state.ruleProfileReducer.getIn([mode, id]);
     return {
-        mode,
-        canEdit: ownProps.canEdit,
         rule: immutableRule ? immutableRule.toJS() : {},
         countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),

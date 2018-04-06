@@ -7,16 +7,15 @@ import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import style from '../style.css';
 import * as actions from '../../actions';
-import {validations, externalValidate, errorMessage} from '../../validator';
+import {validations, externalValidate} from '../../validator';
 import { fromJS } from 'immutable';
 const destinationProp = 'limit';
 const defaultProps = {
-    currencies: [],
-    canEdit: true
+    currencies: []
 };
 
 export const Limits = (props) => {
-    const { fieldValues, currencies, errors, canEdit } = props;
+    const { fieldValues, currencies, errors } = props;
     const { addLimit, removeLimit, changeInput } = props.actions;
     const setLimitField = (index, field) => {
         field.key = [index, field.key].join(',');
@@ -25,14 +24,10 @@ export const Limits = (props) => {
             let extVal = externalValidate[`limit_${lastKey}`];
             extVal && (field = extVal(field, fromJS(fieldValues), errors));
         }
-        if (!field.error && field.key.split(',').pop() === 'currency') {
-            let isDuplicate = !!fieldValues.find((limit) => { return limit.currency === field.value; });
-            isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.limitCurrencyUnique);
-        }
         changeInput(field, destinationProp);
     };
     const renderTableHead = () => (
-        <thead className={style.limitHeaderWrapper}>
+        <thead>
             <tr>
                 <th rowSpan={2} style={{ minWidth: '100px' }}>Currency</th>
                 <th colSpan={2}>Transaction Amount</th>
@@ -59,7 +54,6 @@ export const Limits = (props) => {
               <tr key={`Limit${index}`}>
                 <td className={style.currency}>
                     <Dropdown
-                      disabled={!canEdit}
                       style={{width: '120px'}}
                       keyProp={'currency'}
                       isValid={!errors.getIn([index, 'currency'])}
@@ -72,7 +66,6 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
-                      readonly={!canEdit}
                       keyProp='txMin'
                       value={limit.txMin}
                       validators={validations.amount}
@@ -83,7 +76,6 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
-                      readonly={!canEdit}
                       keyProp='txMax'
                       value={limit.txMax}
                       validators={validations.amount}
@@ -94,7 +86,6 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
-                      readonly={!canEdit}
                       keyProp='dailyMaxAmount'
                       value={limit.dailyMaxAmount}
                       validators={validations.amount}
@@ -105,7 +96,6 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
-                      readonly={!canEdit}
                       keyProp='dailyMaxCount'
                       value={limit.dailyMaxCount}
                       validators={validations.count}
@@ -116,7 +106,6 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
-                      readonly={!canEdit}
                       keyProp='weeklyMaxAmount'
                       validators={validations.amount}
                       isValid={!errors.getIn([index, 'weeklyMaxAmount'])}
@@ -127,7 +116,6 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
-                      readonly={!canEdit}
                       keyProp='weeklyMaxCount'
                       value={limit.weeklyMaxCount}
                       validators={validations.count}
@@ -138,7 +126,6 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
-                      readonly={!canEdit}
                       keyProp='monthlyMaxAmount'
                       value={limit.monthlyMaxAmount}
                       validators={validations.amount}
@@ -149,7 +136,6 @@ export const Limits = (props) => {
                 </td>
                 <td>
                     <Input
-                      readonly={!canEdit}
                       keyProp='monthlyMaxCount'
                       validators={validations.count}
                       isValid={!errors.getIn([index, 'monthlyMaxCount'])}
@@ -159,7 +145,7 @@ export const Limits = (props) => {
                     />
                 </td>
                 <td className={style.deleteCol}>
-                { canEdit && <div className={style.deleteIcon} onClick={() => { removeLimit(index); }} /> }
+                    <div className={style.deleteIcon} onClick={() => { removeLimit(index); }} />
                 </td>
               </tr>);
         });
@@ -179,10 +165,10 @@ export const Limits = (props) => {
                                 {renderBody()}
                             </tbody>
                         </table>
-                        { canEdit && <span className={style.link} onClick={addLimit}>
+                        <span className={style.link} onClick={addLimit}>
                             <div className={style.plus} />
                             Add another Limit
-                          </span> }
+                        </span>
                     </div>
                 </TitledContentBox>
             </div>
@@ -192,16 +178,14 @@ export const Limits = (props) => {
 
 Limits.defaultProps = defaultProps;
 Limits.propTypes = {
-    canEdit: PropTypes.bool,
     errors: PropTypes.object,
     currencies: PropTypes.array,
     fieldValues: PropTypes.array,
     actions: PropTypes.object
 };
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
-        canEdit: ownProps.canEdit,
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
         currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})

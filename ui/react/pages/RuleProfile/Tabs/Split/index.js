@@ -8,11 +8,10 @@ import Assignments from './Assignment';
 import Info from './Info';
 import Cumulative from './Cumulative';
 import * as actions from '../../actions';
-import { externalValidate, errorMessage } from '../../validator';
+import { externalValidate } from '../../validator';
 import { fromJS } from 'immutable';
 const destinationProp = 'split';
 const propTypes = {
-    canEdit: PropTypes.bool,
     currencies: PropTypes.array,
     actions: PropTypes.object,
     fieldValues: PropTypes.object,
@@ -20,16 +19,13 @@ const propTypes = {
 };
 
 const defaultProps = {
-    canEdit: true,
     currencies: []
 };
 
 class SplitTab extends Component {
     renderFields(split, index) {
-        const { currencies, errors, fieldValues, canEdit } = this.props;
+        const { currencies, errors, fieldValues } = this.props;
         const {
-            addCumulative,
-            removeCumulative,
             addAssignment,
             removeAssignment,
             changeInput,
@@ -51,26 +47,13 @@ class SplitTab extends Component {
             field = additionalValidate(field, 'split_assignement');
             changeInput(field, destinationProp);
         };
-        const setCumulative = (field, cumulativeId = 0) => {
-            field.key = ['splits', index, 'cumulatives', cumulativeId, field.key].join(',');
-            field.key.split(',').pop() === 'currency' && !field.error && field.value && (field = validateCurrency(field));
+        const setCumulative = (field) => {
+            field.key = ['splits', index, 'cumulatives', 0, field.key].join(',');
             field = additionalValidate(field, 'split_cumulative');
             changeInput(field, destinationProp);
         };
-        let validateStartAmount = (cumulativeId, rangeId, field) => {
-            var ranges = (cumulatives[cumulativeId] || {}).ranges || [];
-            let isDuplicate = !!ranges.find((range) => { return range.startAmount === field.value; });
-            isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.startAmountUnique);
-            return field;
-        };
-        let validateCurrency = (field) => {
-            let isDuplicate = !!cumulatives.find((range) => { return range.currency === field.value; });
-            isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.cumulativeCurrencyUnique);
-            return field;
-        };
         const setCumulativeRange = (cumulativeId, rangeId, field) => {
             field.key = ['splits', index, 'cumulatives', cumulativeId, 'ranges', rangeId, field.key].join(',');
-            field.key.split(',').pop() === 'startAmount' && !field.error && field.value && (field = validateStartAmount(cumulativeId, rangeId, field));
             field = additionalValidate(field, 'split_cumulative_range');
             changeInput(field, destinationProp);
         };
@@ -82,7 +65,7 @@ class SplitTab extends Component {
             <div key={index}>
                 <div className={style.splitHeader}>
                     <span className={style.label}>{name.toUpperCase() || 'SPLIT NAME'}</span>
-                    { canEdit && <Button onClick={() => removeSplit(index)} className={style.deleteButton} styleType='secondaryLight' label='DELETE SPLIT' /> }
+                    <Button onClick={() => removeSplit(index)} className={style.deleteButton} styleType='secondaryLight' label='DELETE SPLIT' />
                 </div>
                 <div className={style.splitWrapper}>
                     <div className={style.contentBox}>
@@ -91,40 +74,35 @@ class SplitTab extends Component {
                               title='Split Info'
                               wrapperClassName >
                                   <Info
-                                    canEdit={canEdit}
                                     changeInputField={setInfo}
                                     name={name}
                                     errors={errors.getIn(['splits', index])}
                                     selectedTags={tags} />
                             </TitledContentBox>
-                            <div className={style.cumulativeWrapper}>
-                              <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding} >
-                                <Cumulative
-                                  canEdit={canEdit}
-                                  addCumulative={addCumulative}
-                                  removeCumulative={removeCumulative}
-                                  setCumulativeField={setCumulative}
-                                  addCumulativeRange={addCumulativeRange}
-                                  removeCumulativeRange={removeCumulativeRange}
-                                  setCumulativeRangeField={setCumulativeRange}
-                                  cumulatives={cumulatives}
-                                  currencies={currencies}
-                                  splitIndex={index}
-                                  errors={errors.getIn(['splits', index, 'cumulatives'])}
-                                />
-                              </TitledContentBox>
+                            <div className={style.rangeWrapper}>
+                                <TitledContentBox title='Assignment'>
+                                  <Assignments
+                                    addAssignment={addAssignment}
+                                    removeAssignment={removeAssignment}
+                                    changeInput={setAssignment}
+                                    assignments={assignments}
+                                    splitIndex={index}
+                                    errors={errors.getIn(['splits', index, 'assignments'])}
+                                    />
+                                </TitledContentBox>
                             </div>
                         </div>
                         <div className={style.contentBoxWrapper}>
-                            <TitledContentBox title='Assignment'>
-                              <Assignments
-                                canEdit={canEdit}
-                                addAssignment={addAssignment}
-                                removeAssignment={removeAssignment}
-                                changeInput={setAssignment}
-                                assignments={assignments}
+                            <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding} >
+                              <Cumulative
+                                setCumulativeField={setCumulative}
+                                addCumulativeRange={addCumulativeRange}
+                                removeCumulativeRange={removeCumulativeRange}
+                                setCumulativeRangeField={setCumulativeRange}
+                                cumulatives={cumulatives}
+                                currencies={currencies}
                                 splitIndex={index}
-                                errors={errors.getIn(['splits', index, 'assignments'])}
+                                errors={errors.getIn(['splits', index, 'cumulatives'])}
                                 />
                             </TitledContentBox>
                         </div>
@@ -159,7 +137,6 @@ SplitTab.defaultProps = defaultProps;
 const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
-        canEdit: ownProps.canEdit,
         fieldValues: state.ruleProfileReducer.getIn([mode, id, 'split']).toJS(),
         currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', 'split']) || fromJS({})

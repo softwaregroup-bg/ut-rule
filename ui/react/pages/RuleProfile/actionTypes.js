@@ -18,8 +18,6 @@ export const REMOVE_LIMIT = Symbol('REMOVE_LIMIT');
 // tab split actions
 export const ADD_ASSIGNMENT = Symbol('ADD_ASSIGNMENT');
 export const REMOVE_ASSIGNMENT = Symbol('REMOVE_ASSIGNMENT');
-export const ADD_CUMULATIVE = Symbol('ADD_CUMULATIVE');
-export const REMOVE_CUMULATIVE = Symbol('REMOVE_CUMULATIVE');
 export const ADD_CUMULATIVE_RANGE = Symbol('ADD_CUMULATIVE_RANGE');
 export const REMOVE_CUMULATIVE_RANGE = Symbol('REMOVE_CUMULATIVE_RANGE');
 export const ADD_SPLIT = Symbol('ADD_SPLIT');

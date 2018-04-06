@@ -73,14 +73,14 @@ class RuleCreate extends Component {
                 errorsCount: errorCount.channel
             },
             {
-                title: 'Operation',
-                component: <Operation />,
-                errorsCount: errorCount.operation
-            },
-            {
                 title: 'Source',
                 component: <Source />,
                 errorsCount: errorCount.source
+            },
+            {
+                title: 'Operation',
+                component: <Operation />,
+                errorsCount: errorCount.operation
             },
             {
                 title: 'Destination',
@@ -88,14 +88,14 @@ class RuleCreate extends Component {
                 errorsCount: errorCount.destination
             },
             {
-                title: 'Limit',
-                component: <Limit />,
-                errorsCount: errorCount.limit
-            },
-            {
                 title: 'Fee and Commission Split',
                 component: <Split />,
                 errorsCount: errorCount.split
+            },
+            {
+                title: 'Limit',
+                component: <Limit />,
+                errorsCount: errorCount.limit
             }
         ];
         return tabs;

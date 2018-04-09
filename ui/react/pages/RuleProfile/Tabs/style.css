@@ -107,6 +107,9 @@
     font-size: 14px;
     color: #595959;
 }
+.labelWrap {
+    width: 30%;
+}
 .outerWrap .labelWrap {
     width: 25%;
     display: table-cell;

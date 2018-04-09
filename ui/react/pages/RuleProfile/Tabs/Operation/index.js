@@ -55,32 +55,34 @@ class OperationTab extends Component {
                 </div>
                 <div className={style.inputWrapper}>
                     <div className={style.outerWrap}>
-                        <div className={style.lableWrap}>Start Date</div>
                         <div className={style.inputWrap}>
-                            <DatePicker
-                              disabled={!canEdit}
-                              wrapperStyles={{backgroundColor: 'white'}}
-                              keyProp='startDate'
-                              mode='landscape'
-                              onChange={({value}) => { changeInput({key: 'startDate', value}); }}
-                              defaultValue={fieldValues.startDate}
-                            />
+                          <DatePicker
+                            label={'Start Date'}
+                            disabled={!canEdit}
+                            wrapperStyles={{backgroundColor: 'white'}}
+                            keyProp='startDate'
+                            mode='landscape'
+                            onChange={({value}) => { changeInput({key: 'startDate', value}); }}
+                            defaultValue={fieldValues.startDate}
+                            labelWrap={style.labelWrap}
+                          />
                         </div>
                     </div>
                 </div>
                 <div className={style.inputWrapper}>
                     <div className={style.outerWrap}>
-                        <div className={style.lableWrap}>End Date</div>
                         <div className={style.inputWrap}>
-                            <DatePicker
-                              disabled={!canEdit}
-                              wrapperStyles={{backgroundColor: 'white'}}
-                              keyProp='endDate'
-                              mode='landscape'
-                              onChange={({value}) => { changeInput({key: 'endDate', value}); }}
-                              minDate={minDate}
-                              defaultValue={fieldValues.endDate}
-                            />
+                          <DatePicker
+                            label={'End Date'}
+                            disabled={!canEdit}
+                            wrapperStyles={{backgroundColor: 'white'}}
+                            keyProp='endDate'
+                            mode='landscape'
+                            onChange={({value}) => { changeInput({key: 'endDate', value}); }}
+                            minDate={minDate}
+                            defaultValue={fieldValues.endDate}
+                            labelWrap={style.labelWrap}
+                          />
                         </div>
                     </div>
                 </div>

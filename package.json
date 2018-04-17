@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.17.0-rc-cubalibre.11",
+  "version": "9.17.0",
   "pkg": {
     "assets": [
       "api/sql/schema/*.sql",

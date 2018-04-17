@@ -97,34 +97,34 @@ class SplitTab extends Component {
                                     errors={errors.getIn(['splits', index])}
                                     selectedTags={tags} />
                             </TitledContentBox>
-                            <div className={style.rangeWrapper}>
-                                <TitledContentBox title='Assignment'>
-                                  <Assignments
-                                    canEdit={canEdit}
-                                    addAssignment={addAssignment}
-                                    removeAssignment={removeAssignment}
-                                    changeInput={setAssignment}
-                                    assignments={assignments}
-                                    splitIndex={index}
-                                    errors={errors.getIn(['splits', index, 'assignments'])}
-                                    />
-                                </TitledContentBox>
+                            <div className={style.cumulativeWrapper}>
+                              <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding} >
+                                <Cumulative
+                                  canEdit={canEdit}
+                                  addCumulative={addCumulative}
+                                  removeCumulative={removeCumulative}
+                                  setCumulativeField={setCumulative}
+                                  addCumulativeRange={addCumulativeRange}
+                                  removeCumulativeRange={removeCumulativeRange}
+                                  setCumulativeRangeField={setCumulativeRange}
+                                  cumulatives={cumulatives}
+                                  currencies={currencies}
+                                  splitIndex={index}
+                                  errors={errors.getIn(['splits', index, 'cumulatives'])}
+                                />
+                              </TitledContentBox>
                             </div>
                         </div>
                         <div className={style.contentBoxWrapper}>
-                            <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding} >
-                              <Cumulative
+                            <TitledContentBox title='Assignment'>
+                              <Assignments
                                 canEdit={canEdit}
-                                addCumulative={addCumulative}
-                                removeCumulative={removeCumulative}
-                                setCumulativeField={setCumulative}
-                                addCumulativeRange={addCumulativeRange}
-                                removeCumulativeRange={removeCumulativeRange}
-                                setCumulativeRangeField={setCumulativeRange}
-                                cumulatives={cumulatives}
-                                currencies={currencies}
+                                addAssignment={addAssignment}
+                                removeAssignment={removeAssignment}
+                                changeInput={setAssignment}
+                                assignments={assignments}
                                 splitIndex={index}
-                                errors={errors.getIn(['splits', index, 'cumulatives'])}
+                                errors={errors.getIn(['splits', index, 'assignments'])}
                                 />
                             </TitledContentBox>
                         </div>

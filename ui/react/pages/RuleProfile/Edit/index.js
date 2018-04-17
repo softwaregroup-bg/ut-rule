@@ -87,14 +87,14 @@ class RuleEdit extends Component {
                 errorsCount: errorCount.channel
             },
             {
-                title: 'Operation',
-                component: <Operation canEdit={canEdit} />,
-                errorsCount: errorCount.operation
-            },
-            {
                 title: 'Source',
                 component: <Source canEdit={canEdit} />,
                 errorsCount: errorCount.source
+            },
+            {
+                title: 'Operation',
+                component: <Operation />,
+                errorsCount: errorCount.operation
             },
             {
                 title: 'Destination',
@@ -102,14 +102,14 @@ class RuleEdit extends Component {
                 errorsCount: errorCount.destination
             },
             {
-                title: 'Limit',
-                component: <Limit canEdit={canEdit} />,
-                errorsCount: errorCount.limit
-            },
-            {
                 title: 'Fee and Commission Split',
                 component: <Split canEdit={canEdit} />,
                 errorsCount: errorCount.split
+            },
+            {
+                title: 'Limit',
+                component: <Limit />,
+                errorsCount: errorCount.limit
             }
         ];
         if (this.context.checkPermission('history.rule.listChanges') && this.props.remoteRule) {
@@ -137,7 +137,7 @@ class RuleEdit extends Component {
                 limit: remoteRuleData.limit,
                 split: remoteRuleData.split
             };
-            isEdited = !isEmptyValuesOnly(diff(editedRule, remoteRuleModel));
+            isEdited = !isEmptyValuesOnly(diff(editedRule, remoteRuleModel)) || !isEmptyValuesOnly(diff(remoteRuleModel, editedRule));
         }
         isEdited && (isEdited = !isEmptyValuesOnly(remoteRule));
         let newErrors = prepareRuleErrors(rule, errors.toJS());

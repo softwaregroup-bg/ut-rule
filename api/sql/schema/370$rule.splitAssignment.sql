@@ -1,5 +1,5 @@
 CREATE TABLE [rule].[splitAssignment] (
-    splitAssignmentId INT IDENTITY(1000,1) NOT NULL,
+    splitAssignmentId INT IDENTITY(1000, 1) NOT NULL,
     splitNameId INT NOT NULL,
     debit VARCHAR(50) NOT NULL,
     credit VARCHAR(50) NOT NULL,

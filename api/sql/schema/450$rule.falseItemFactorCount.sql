@@ -1,5 +1,5 @@
 CREATE FUNCTION [rule].falseItemFactorCount(
-    @conditionId int,
+    @conditionId INT,
     @items [rule].[properties] READONLY
 ) RETURNS BIGINT AS
 BEGIN

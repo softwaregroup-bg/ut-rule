@@ -1,0 +1,89 @@
+.dataGridTable {
+    width: 100%;
+    font-family: Roboto,Arial;
+    border: 1px solid #D7D6D6;
+    font-size: 14px;
+}
+.dataGridTable a {
+    color: #E93591;
+    text-decoration: none;
+}
+.dataGridTable a:hover {
+    text-decoration: underline;
+}
+.dataGridTable tr td, .dataGridTable tr th {
+    padding: 10px;
+}
+.dataGridTable tr td:last-child.deleteCol, .dataGridTable tr th:last-child.deleteCol {
+    padding: 0px;
+    text-align: center;
+    width: 23px;
+}
+.dataGridTable tr th {
+    text-align: left;
+}
+.dataGridTable tr {
+    background: #FFFFFF;
+    cursor: pointer;
+    border-bottom: 1px solid #D7D6D6;
+    -webkit-transition: background 0.2s ease-in-out;
+    transition: background 0.2s ease-in-out;
+}
+.dataGridTable tbody tr:nth-child(2) {
+    background: #FDFDFD;
+}
+.dataGridTable tbody tr.checked {
+    background: #FFFBEF !important;
+}
+.dataGridTable tbody tr.selected {
+    background: #FFFFCC !important;
+}
+.dataGridTable tbody tr.checked {
+    background: #FFFCEB;
+}
+.dataGridTable tbody tr:hover {
+    background: #F7F7F7;
+}
+.dataGridTable thead,
+.dataGridTable thead tr,
+.dataGridTable thead tr td {
+    background: #F9F9F9;
+    color: #595959;
+    font-weight: bold;
+}
+
+.deleteIcon {
+    background-image: url('./assets/delete.png');
+    width: 13px;
+    height: 16px;
+    /* padding: 0 10px; */
+    background-repeat: no-repeat;
+}
+.plus {
+    margin-right: 10px;
+    background-image: url('./assets/add_new.png');
+    background-repeat: no-repeat;
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+}
+.propertyTable {
+    padding: 20px 0;
+}
+
+.link {
+    padding-top: 8px;
+    color: #4096FD !important;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+}
+.link:hover {
+    text-decoration: underline;
+}
+
+.link > span {
+    border: 1px solid #4096FD;
+    padding: 0 5px;
+    margin-right: 10px;
+}

@@ -76,13 +76,15 @@ export const prepareRuleToSave = (rule) => {
     formattedRule.conditionActor = [];
     ['channel', 'source', 'destination'].forEach(function(keyProp) {
         var value = rule[keyProp];
-        value.organization && formattedRule.conditionActor.push(
-            {
-                actorId: value.organization,
-                conditionId,
-                factor: conditionActorFactor[keyProp]
-            }
-        );
+        ['organization', 'role'].forEach((type) => {
+            value[type] && formattedRule.conditionActor.push(
+                {
+                    actorId: value[type],
+                    conditionId,
+                    factor: conditionActorFactor[keyProp]
+                }
+            );
+        });
     });
 
     formattedRule.conditionItem = [];

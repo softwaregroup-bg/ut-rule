@@ -66,6 +66,7 @@ export const defaultTabState = {
         regions: [],
         cities: [],
         organization: '',
+        role: null,
         properties: []
     },
     destination: {
@@ -73,6 +74,7 @@ export const defaultTabState = {
         regions: [],
         cities: [],
         organization: '',
+        role: null,
         properties: [],
         accountProduct: null
     },
@@ -88,6 +90,7 @@ export const defaultTabState = {
         regions: [],
         cities: [],
         organization: '',
+        role: null,
         cardProduct: null,
         accountProduct: null,
         properties: []

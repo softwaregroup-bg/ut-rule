@@ -10,10 +10,10 @@ const removeEmpty = (obj) => {
 
 export const updatePagination = (params) => ({type: actionTypes.updatePagination, params});
 
-export function fetchRules(params) {
+export function fetchRules(params, showDeleted) {
     return {
         type: actionTypes.fetchRules,
-        method: 'rule.rule.fetch',
+        method: showDeleted ? 'rule.rule.fetchDeleted' : 'rule.rule.fetch',
         params: params || {}
     };
 };
@@ -382,5 +382,15 @@ export function fetchNomenclatures(params) {
 export function reset() {
     return {
         type: actionTypes.reset
+    };
+};
+
+export function toggleRuleOption(key, value) {
+    return {
+        type: actionTypes.toggleRuleOption,
+        params: {
+            key,
+            value
+        }
     };
 };

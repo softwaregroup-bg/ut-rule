@@ -28,7 +28,8 @@
     "ut-error": "^5.4.9",
     "ut-front": "^8.0.1",
     "ut-front-react": "^10.2.0-rc-cubalibre.4",
-    "ut-bus": "^6.3.0-rc-cubalibre.1"
+    "ut-bus": "^6.3.0-rc-cubalibre.1",
+    "ut-history": "^1.1.0-rc-cubalibre.0"
   },
   "description": "UT Rule",
   "scripts": {

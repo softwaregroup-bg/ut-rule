@@ -21,7 +21,7 @@ const defaultUiState = {
         ],
         agentRole: [],
         accountAlias: [],
-        organizationTypeList: ["businessUnit"],
+        organization: [''],
         role: []
     },
     main: {

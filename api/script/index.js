@@ -12,7 +12,7 @@ var wrapper = {
     'accountAlias': function(msg, $meta) {
         return this.bus.importMethod('db/integration.alias.list')(msg, $meta);
     },
-    'organizationTypeList': function(msg, $meta) {
+    'organization': function(msg, $meta) {
         return this.bus.importMethod('customer.organization.graphFetch')(msg, $meta).then(result => {
             let organization = result.organization;
             return {items: organization.map(v => ({ type: 'organization', value: v.id, display: v.title }))};

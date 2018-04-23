@@ -9,10 +9,7 @@ DECLARE @endRow INT = @startRow + @pageSize - 1
 
 BEGIN
     
-    IF OBJECT_ID('tempdb..#RuleConditions') IS NOT NULL
-        DROP TABLE #RuleConditions
-    
-    CREATE TABLE #RuleConditions (
+    DECLARE @RuleConditions TABLE (
         conditionId INT,
         [priority] INT, 
         operationStartDate DATETIME, 
@@ -37,7 +34,7 @@ BEGIN
         WHERE
             @conditionId IS NULL OR rc.conditionId = @conditionId)
 
-    INSERT INTO #RuleConditions( conditionId, [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
+    INSERT INTO @RuleConditions( conditionId, [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
     SELECT
         conditionId,
         [priority],
@@ -59,7 +56,7 @@ BEGIN
         rct.[operationStartDate],
         rct.[sourceAccountId],
         rct.[destinationAccountId]
-    FROM #RuleConditions rct
+    FROM @RuleConditions rct
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
@@ -67,7 +64,7 @@ BEGIN
     FROM
         [rule].conditionActor ca
     JOIN
-        #RuleConditions rct ON rct.conditionId = ca.conditionId
+        @RuleConditions rct ON rct.conditionId = ca.conditionId
     JOIN
         core.actor a ON a.actorId = ca.actorId
     LEFT JOIN -- PD: ABT-2040
@@ -82,7 +79,7 @@ BEGIN
     FROM
         [rule].conditionItem c
     JOIN
-        #RuleConditions rct ON rct.conditionId = c.conditionId
+        @RuleConditions rct ON rct.conditionId = c.conditionId
     JOIN
         core.itemName i ON i.itemNameId = c.itemNameId
     JOIN
@@ -97,7 +94,7 @@ BEGIN
     FROM
         [rule].conditionProperty cp
     JOIN
-        #RuleConditions rct ON rct.conditionId = cp.conditionId
+        @RuleConditions rct ON rct.conditionId = cp.conditionId
     WHERE
         @conditionId IS NULL OR cp.conditionId = @conditionId
 
@@ -107,7 +104,7 @@ BEGIN
     FROM
         [rule].splitName sn
     JOIN
-        #RuleConditions rct ON rct.conditionId = sn.conditionId
+        @RuleConditions rct ON rct.conditionId = sn.conditionId
     WHERE
         @conditionId IS NULL OR sn.conditionId = @conditionId
 
@@ -119,7 +116,7 @@ BEGIN
     JOIN
         [rule].splitName sn ON sn.splitNameId = sr.splitNameId
     JOIN
-        #RuleConditions rct ON rct.conditionId = sn.conditionId
+        @RuleConditions rct ON rct.conditionId = sn.conditionId
     WHERE
         @conditionId IS NULL OR sn.conditionId = @conditionId
 
@@ -131,7 +128,7 @@ BEGIN
     JOIN
         [rule].splitName sn ON sn.splitNameId = sa.splitNameId
     JOIN
-        #RuleConditions rct ON rct.conditionId = sn.conditionId
+        @RuleConditions rct ON rct.conditionId = sn.conditionId
     WHERE
         @conditionId IS NULL OR sn.conditionId = @conditionId
 
@@ -141,7 +138,7 @@ BEGIN
     FROM
         [rule].limit l
     JOIN
-        #RuleConditions rct ON rct.conditionId = l.conditionId
+        @RuleConditions rct ON rct.conditionId = l.conditionId
     WHERE
         @conditionId IS NULL OR l.conditionId = @conditionId
 
@@ -155,7 +152,7 @@ BEGIN
     JOIN
         [rule].splitName sn ON sn.splitNameId = sa.splitNameId
     JOIN
-        #RuleConditions rct ON rct.conditionId = sn.conditionId
+        @RuleConditions rct ON rct.conditionId = sn.conditionId
     WHERE
         @conditionId IS NULL OR sn.conditionId = @conditionId
 
@@ -165,7 +162,6 @@ BEGIN
         recordsTotal AS recordsTotal,
         CASE WHEN @pageNumber < (recordsTotal - 1) / @pageSize + 1 THEN @pageNumber ELSE (recordsTotal - 1) / @pageSize + 1 END AS pageNumber,
         (recordsTotal - 1) / @pageSize + 1 AS pagesTotal
-    FROM #RuleConditions
+    FROM @RuleConditions
 
-    DROP TABLE #RuleConditions
 END

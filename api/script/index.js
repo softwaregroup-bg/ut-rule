@@ -15,9 +15,9 @@ var wrapper = {
         return this.bus.importMethod('db/integration.alias.list')(msg, $meta);
     },
     'organization': function(msg, $meta) {
-        return this.bus.importMethod('customer.organization.fetch')(msg, $meta).then(result => {
+        return this.bus.importMethod('customer.organization.graphFetch')(msg, $meta).then(result => {
             let organization = result.organization;
-            return {items: organization.map(v => ({ type: 'organization', value: v.actorId, display: v.organizationName }))};
+            return {items: organization.map(v => ({ type: 'organization', value: v.id, display: v.title }))};
         });
     },
     'role': function(msg, $meta) {

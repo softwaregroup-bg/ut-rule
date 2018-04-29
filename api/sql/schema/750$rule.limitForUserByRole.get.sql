@@ -27,7 +27,7 @@ WHERE ci.itemNameId = @operationId
     AND cp.[name] = @property
 ORDER BY c.priority
 
-SELECT TOP 1 l.currency, l.maxAmount AS approvalAmount, cp.value AS approvalLevel,
+SELECT TOP 1 l.currency, l.minAmount AS minAmount, l.maxAmount AS maxAmount, cp.value AS approvalLevel,
     @maxApprovalAmount AS maxApprovalAmount, @maxApprovalLevel AS maxApprovalLevel
 FROM [rule].condition c
 JOIN [rule].conditionActor ca ON ca.conditionId = c.conditionId

@@ -16,8 +16,10 @@ var wrapper = {
     },
     'organization': function(msg, $meta) {
         return this.bus.importMethod('customer.organization.graphFetch')(msg, $meta).then(result => {
-            let organization = result.organization;
-            return {items: organization.map(v => ({ type: 'organization', value: v.id, display: v.title }))};
+            let organizations = result.organization.filter((obj, position, arr) => {
+                return arr.map(mapObj => mapObj['id']).indexOf(obj['id']) === position;
+            });
+            return {items: organizations.map(v => ({ type: 'organization', value: v.id, display: v.title }))};
         });
     },
     'role': function(msg, $meta) {

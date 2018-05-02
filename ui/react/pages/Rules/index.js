@@ -23,7 +23,8 @@ const Main = React.createClass({
         ready: PropTypes.bool,
         actions: PropTypes.object,
         uiConfig: PropTypes.object,
-        pagination: PropTypes.object
+        pagination: PropTypes.object,
+        showDeleted: PropTypes.bool
     },
     getInitialState() {
         return {
@@ -35,15 +36,16 @@ const Main = React.createClass({
     },
     fetchData(props) {
         let {pageSize, pageNumber} = props.pagination;
+        let showDeleted = props.showDeleted;
 
-        this.props.actions.fetchRules({pageSize, pageNumber});
+        this.props.actions.fetchRules({pageSize, pageNumber}, showDeleted);
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     },
     componentWillMount() {
         this.fetchData(this.props);
     },
     componentWillReceiveProps(nextProps) {
-        if (this.props.pagination.changeId !== nextProps.pagination.changeId) {
+        if (this.props.pagination.changeId !== nextProps.pagination.changeId || this.props.showDeleted !== nextProps.showDeleted) {
             this.fetchData(nextProps);
         }
     },
@@ -101,6 +103,7 @@ const Main = React.createClass({
         let uiConfig = this.state.uiConfig;
         let columns = uiConfig.main.grid.columns;
         let id = Object.keys(this.state.selectedConditions)[0];
+        let showDeleted = this.props.showDeleted;
         return <div>
             <AddTab pathname={getLink('ut-rule:rules')} title='Fees, Commissions and Limits (FCL)' />
             <Header text='Fees, Commissions and Limits (FCL)' buttons={this.getHeaderButtons()} />
@@ -108,11 +111,14 @@ const Main = React.createClass({
                 <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                     <GridToolBox opened title='' >
                       <div className={style.actionWrap} >
-                        { this.context.checkPermission('rule.rule.edit') &&
+                        { this.context.checkPermission('rule.rule.edit') && !showDeleted &&
                             (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
-                        { this.context.checkPermission('rule.rule.remove') &&
+                        { this.context.checkPermission('rule.rule.remove') && !showDeleted &&
                             (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
-                      </div>
+                        { this.context.checkPermission('rule.rule.fetchDeleted') &&
+                            (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
+                              onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
+                    </div>
                     </GridToolBox>
                 </div>
                 <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
@@ -140,6 +146,7 @@ const Main = React.createClass({
                         handleCheckboxSelect={this.handleCheckboxSelect}
                         handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
                         columns={columns}
+                        showDeleted={this.props.showDeleted}
                         />
                     </div>
                 </div>
@@ -181,7 +188,8 @@ export default connect(
                 pageSize: 25,
                 pageNumber: 1,
                 recordsTotal: 0
-            }
+            },
+            showDeleted: state.ruleList.showDeleted
         };
     },
     (dispatch) => {

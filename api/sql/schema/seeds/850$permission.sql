@@ -22,7 +22,8 @@ USING
         ('rule.rule.edit', 'rule.rule.edit', '{}'),
         ('rule.rule.fetch', 'rule.rule.fetch', '{}'),
         ('rule.rule.remove', 'rule.rule.remove', '{}'),
-        ('rule.item.fetch', 'rule.item.fetch', '{}')
+        ('rule.item.fetch', 'rule.item.fetch', '{}'),
+        ('rule.rule.fetchDeleted', 'rule.rule.fetchDeleted', '{}')
     ) AS source (actionId, description, valueMap)
 JOIN
     [user].[actionCategory] c ON c.name = 'rule'

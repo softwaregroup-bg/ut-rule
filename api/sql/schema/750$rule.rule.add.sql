@@ -4,8 +4,10 @@ ALTER PROCEDURE [rule].[rule.add]
     @conditionItem [rule].conditionItemTT READONLY,
     @conditionProperty [rule].conditionPropertyTT READONLY,
     @limit [rule].limitTT READONLY,
-    @split XML
+    @split XML,
+    @meta core.metaDataTT READONLY -- information for the logged user
 AS
+DECLARE @userId BIGINT = (SELECT [auth.actorId] FROM @meta)
 DECLARE @splitName [rule].splitNameTT,
     @splitAssignment [rule].splitAssignmentTT,
     @conditionId INT
@@ -28,14 +30,18 @@ BEGIN TRY
             operationStartDate,
             operationEndDate,
             sourceAccountId,
-            destinationAccountId
+            destinationAccountId,
+            createdOn,
+            createdBy
             )
         SELECT
             [priority],
             operationStartDate,
             operationEndDate,
             sourceAccountId,
-            destinationAccountId
+            destinationAccountId,
+            GETDATE(),
+            ISNULL(createdBy, @userId)
         FROM @condition;
 
         SET @conditionId = SCOPE_IDENTITY()

@@ -1,3 +1,5 @@
+var prepareHistory = require('../../history/prepare');
+var historyConfig = require('../../history/config');
 const errorsFactory = require('../../errors');
 var wrapper = {
     'itemName': function(msg, $meta) {
@@ -51,6 +53,16 @@ module.exports = {
             });
 
             return {items: data};
+        });
+    },
+    'rule.historyTransform': function(msg, $meta) {
+        let objectName = 'rule';
+        var rule = prepareHistory[objectName] && prepareHistory[objectName](msg.data);
+        return this.bus.importMethod('history.history.transform')({
+            config: historyConfig[objectName],
+            data: rule || {}
+        }).then(function(transformedData) {
+            return { data: transformedData };
         });
     }
 };

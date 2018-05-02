@@ -4,6 +4,7 @@ module.exports = {
 
     'item.fetch': require('./item/item.fetch'),
     'rule.fetch': require('./rule/rule.fetch'),
+    'rule.fetchDeleted': require('./rule/rule.fetch'),
     'rule.add': require('./rule/rule.add'),
     'rule.remove': require('./rule/rule.remove'),
     'rule.edit': require('./rule/rule.edit'),

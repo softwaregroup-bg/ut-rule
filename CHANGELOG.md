@@ -1,3 +1,8 @@
+<a name="9.17.0"></a>
+# [9.17.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.17.0-rc-cubalibre.11...v9.17.0) (2018-04-17)
+
+
+
 <a name="9.16.0"></a>
 # [9.16.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.15.0...v9.16.0) (2018-03-06)
 

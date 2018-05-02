@@ -4,15 +4,17 @@
     @conditionItem [rule].conditionItemTT READONLY,
     @conditionProperty [rule].conditionPropertyTT READONLY,
     @limit [rule].limitTT READONLY,
-    @split XML
+    @split XML,
+    @meta core.metaDataTT READONLY -- information for the logged user
 AS
 SET NOCOUNT ON
-
+DECLARE @userId BIGINT = (SELECT [auth.actorId] FROM @meta)
 DECLARE @splitName TABLE (splitNameId INT, rowPosition INT)
 DECLARE @splitAssignment [rule].splitAssignmentTT
 DECLARE @conditionId INT = (SELECT conditionId FROM @condition)
 
 BEGIN TRY
+
     IF EXISTS
         (
             SELECT [priority]
@@ -32,7 +34,9 @@ BEGIN TRY
             operationStartDate = c1.operationStartDate,
             operationEndDate = c1.operationEndDate,
             sourceAccountId = c1.sourceAccountId,
-            destinationAccountId = c1.destinationAccountId
+            destinationAccountId = c1.destinationAccountId,
+            updatedOn = GETDATE(),
+            updatedBy = @userId
         FROM [rule].condition c
         JOIN @condition c1 ON c.conditionId = c1.conditionId
 

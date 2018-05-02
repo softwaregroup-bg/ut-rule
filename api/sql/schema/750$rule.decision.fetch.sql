@@ -318,11 +318,11 @@ BEGIN
         a.conditionId,
         a.splitNameId,
         a.tag,
-        CAST(CASE
+        CONVERT(VARCHAR, CAST(CASE
             WHEN assignment.[percent] * a.fee / 100 > assignment.maxValue THEN maxValue
             WHEN assignment.[percent] * a.fee / 100 < assignment.minValue THEN minValue
             ELSE assignment.[percent] * a.fee / 100
-        END AS MONEY) amount,
+        END AS MONEY), 2) amount,
         ISNULL(d.accountNumber, assignment.debit) debit,
         ISNULL(c.accountNumber, assignment.credit) credit,
         assignment.description,

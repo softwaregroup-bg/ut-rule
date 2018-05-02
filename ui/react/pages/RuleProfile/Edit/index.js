@@ -18,6 +18,7 @@ import Destination from '../Tabs/Destination';
 import Split from '../Tabs/Split';
 import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
+import { HistoryLog } from 'ut-history/ui';
 import { prepareRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap, prepareRuleModel, diff } from '../helpers';
 let status = fromJS({
     status: 'SUCCESS',
@@ -111,6 +112,12 @@ class RuleEdit extends Component {
                 errorsCount: errorCount.limit
             }
         ];
+        if (this.context.checkPermission('history.rule.listChanges') && this.props.remoteRule) {
+            tabs.push({
+                title: 'History Log',
+                component: <HistoryLog objectId={this.props.params.id} objectName={'rule'} objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
+            });
+        }
         return tabs;
     }
 

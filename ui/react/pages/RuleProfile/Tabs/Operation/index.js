@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
-import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
+import MultiSelectDropdown from 'ut-front-react/components/Input/MultiSelectDropdown';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
 import Property from '../../../../components/Property';
 import { fromJS } from 'immutable';
@@ -44,13 +44,15 @@ class OperationTab extends Component {
         return (
             <div>
                 <div className={style.inputWrapper}>
-                    <MultiSelectBubble
+                    <MultiSelectDropdown
+                      boldLabel
                       disabled={!canEdit}
-                      name='opearations'
+                      keyProp='operations'
                       label={'Operation'}
-                      value={fieldValues.operations}
-                      options={operations}
-                      onChange={(value) => { changeInput({key: 'operations', value}); }}
+                      placeholder={'Select Operation'}
+                      defaultSelected={fieldValues.operations}
+                      data={operations}
+                      onSelect={(field) => { changeInput(field); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>

@@ -13,10 +13,7 @@ const defaultUiState = {
             'operation',
             'supervisor',
             'cardProduct',
-            'accountProduct',
-            'account',
-            'agentType',
-            'internalAccount'
+            'account'
         ],
         itemCode: [
             'currency'
@@ -26,7 +23,8 @@ const defaultUiState = {
         organization: [''],
         role: [''],
         agentType: [''],
-        internalAccount: ['']
+        internalAccount: [''],
+        accountProduct: ['']
     },
     main: {
         grid: {

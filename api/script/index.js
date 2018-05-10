@@ -44,6 +44,13 @@ var wrapper = {
             const internalAccounts = res.internalAccounts;
             return {items: internalAccounts.map(v => ({ type: 'internalAccount', value: v.accountNumber, display: v.label }))};
         });
+    },
+    'accountProduct': function(msg, $meta) {
+        return bus.importMethod('implementation.accountProduct.fetchDropdown')(msg, $meta)
+        .then(res => {
+            const accountProducts = res.accountProducts;
+            return {items: accountProducts.map(v => ({ type: 'accountProduct', value: v.value, display: v.display }))};
+        });
     }
 };
 

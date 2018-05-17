@@ -48,7 +48,9 @@ const conditionPropertyFactor = {
 
 export const formatNomenclatures = (items) => {
     let formattedPayload = {};
-
+    // default object properties
+    ['accountProduct', 'cardProduct', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization']
+        .forEach((objName) => (formattedPayload[objName] = []));
     items.map(item => {
         if (!formattedPayload[item.type]) {
             formattedPayload[item.type] = [];

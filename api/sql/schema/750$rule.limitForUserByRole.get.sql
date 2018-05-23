@@ -43,7 +43,7 @@ WHERE ci.itemNameId = @operationId
 
 -- get user role and max approval amount
 SELECT TOP 1
-    @roleId = t.actorId,    
+    @roleId = t.actorId,
     @maxAmount = t.maxAmount,
     @nextLevelRoleId = t2.actorId
 FROM #temp t
@@ -75,7 +75,7 @@ ELSE
 BEGIN
     SELECT
         name,
-        actorId as roleId,
+        actorId AS roleId,
         currency,
         minAmount,
         maxAmount,
@@ -87,10 +87,10 @@ BEGIN
 
     SELECT
         p.actorId,
-        p.firstName + ' ' + p.lastName as userName
+        p.firstName + ' ' + p.lastName AS userName
     FROM #temp t
     JOIN core.actorHierarchy ah ON t.actorId = ah.[object] AND ah.[object] = @nextLevelRoleId
-    JOIN customer.person p ON p.actorId = ah.subject 
+    JOIN customer.person p ON p.actorId = ah.subject
     WHERE ah.[predicate] = 'role'
 END
 

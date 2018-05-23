@@ -50,14 +50,14 @@ FROM #temp t
 JOIN core.actorHierarchy h ON t.actorId = h.[object] AND h.[subject] = @userId
 LEFT JOIN #temp t2 ON t2.minAmount = t.maxAmount
 WHERE h.[predicate] = 'role'
-ORDER BY t.priority
+ORDER BY t.maxAmount DESC
 
 -- get max approval amount and max approval level for the system
 SELECT TOP 1
     @maxApprovalAmount = maxAmount,
     @maxApprovalLevel = approvalLevel
 FROM #temp
-ORDER BY priority
+ORDER BY maxAmount DESC
 
 IF ISNULL(@nextLevel, 0) = 0
 BEGIN

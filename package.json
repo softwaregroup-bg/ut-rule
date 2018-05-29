@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.18.0-rc-diesel.6",
+  "version": "9.18.0-rc-diesel.7",
   "pkg": {
     "assets": [
       "api/sql/schema/*.sql",

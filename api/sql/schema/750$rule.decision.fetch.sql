@@ -86,7 +86,7 @@ BEGIN
         [rule].falsePropertyFactorCount(c.conditionId, @operationProperties) = 0 AND
         (@sourceAccountId IS NULL OR c.sourceAccountId IS NULL OR @sourceAccountId = c.sourceAccountId) AND
         (@destinationAccountId IS NULL OR c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId) AND
-        ((@channelType IS NULL AND c.channelType IS NULL) OR c.channelType = 'any' OR c.channelType = @channelType)
+        ((@channelType IS NULL AND c.channelType IS NULL) OR c.channelType = 'any' OR @channelType = 'any' OR c.channelType = @channelType)
     GROUP BY
         c.[priority], c.conditionId
 

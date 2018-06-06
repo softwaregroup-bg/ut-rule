@@ -1,5 +1,6 @@
 ALTER PROCEDURE [rule].[decision.lookup]
-    @channelId BIGINT,
+    @channelType NVARCHAR(100) = NULL, -- the channel/platform that is used to make the transaction (e.g. ussd/mobile/web)
+    @channelId BIGINT, -- the organization/role actorId
     @operation varchar(100),
     @operationDate datetime,
     @sourceAccount varchar(100),
@@ -158,6 +159,7 @@ BEGIN
     DELETE FROM @operationProperties WHERE value IS NULL
 
     EXEC [rule].[decision.fetch]
+        @channelType = @channelType,
         @operationProperties = @operationProperties,
         @operationDate = @operationDate,
         @sourceAccountId = @sourceAccountId,

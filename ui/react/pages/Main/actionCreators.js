@@ -79,7 +79,8 @@ export function editRule(params) {
             operationStartDate: paramsCondition.operationStartDate,
             operationEndDate: paramsCondition.operationEndDate,
             sourceAccountId: paramsCondition.sourceAccountId,
-            destinationAccountId: paramsCondition.destinationAccountId
+            destinationAccountId: paramsCondition.destinationAccountId,
+            channelType: paramsCondition.channelType || 'any'
         }];
 
         let conditionActor = [];
@@ -257,7 +258,8 @@ export function addRule(params) {
             operationStartDate: paramsCondition.operationStartDate,
             operationEndDate: paramsCondition.operationEndDate,
             sourceAccountId: paramsCondition.sourceAccountId,
-            destinationAccountId: paramsCondition.destinationAccountId
+            destinationAccountId: paramsCondition.destinationAccountId,
+            channelType: paramsCondition.channelType || 'any'
         }];
 
         let conditionActor = [];

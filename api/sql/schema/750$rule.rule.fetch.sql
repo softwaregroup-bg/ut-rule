@@ -16,6 +16,7 @@ BEGIN
         operationEndDate DATETIME, 
         sourceAccountId NVARCHAR(255), 
         destinationAccountId NVARCHAR(255),
+        channelType NVARCHAR(100),
         rowNum INT, 
         recordsTotal INT)
     
@@ -27,6 +28,7 @@ BEGIN
             rc.operationStartDate,
             rc.sourceAccountId,
             rc.destinationAccountId,
+            rc.channelType,
             ROW_NUMBER() OVER(ORDER BY rc.[priority] DESC) as rowNum,
             COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
         FROM
@@ -34,12 +36,13 @@ BEGIN
         WHERE
             @conditionId IS NULL OR rc.conditionId = @conditionId)
 
-    INSERT INTO @RuleConditions( conditionId, [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
+    INSERT INTO @RuleConditions( conditionId, [priority], operationStartDate, operationEndDate, channelType, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
     SELECT
         conditionId,
         [priority],
         operationEndDate,
         operationStartDate,
+        channelType,
         sourceAccountId,
         destinationAccountId,
         rowNum,
@@ -55,7 +58,8 @@ BEGIN
         rct.[operationEndDate],
         rct.[operationStartDate],
         rct.[sourceAccountId],
-        rct.[destinationAccountId]
+        rct.[destinationAccountId],
+        rct.channelType
     FROM @RuleConditions rct
 
     SELECT 'conditionActor' AS resultSetName

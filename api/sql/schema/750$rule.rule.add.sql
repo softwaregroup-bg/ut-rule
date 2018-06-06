@@ -30,7 +30,8 @@ BEGIN TRY
             operationStartDate,
             operationEndDate,
             sourceAccountId,
-            destinationAccountId
+            destinationAccountId,
+            channelType
         )
 	OUTPUT INSERTED.conditionId INTO @conditionIds
     SELECT
@@ -38,7 +39,8 @@ BEGIN TRY
         operationStartDate,
         operationEndDate,
         sourceAccountId,
-        destinationAccountId
+        destinationAccountId,
+        channelType
     FROM @condition;
 
     SET @conditionId = (SELECT TOP 1 conditionId FROM @conditionIds ORDER BY conditionId DESC);

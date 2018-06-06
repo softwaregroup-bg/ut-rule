@@ -60,7 +60,8 @@ const emptyCondition = {
     destinationTag: null,
     destinationId: null,
     destinationAccountProductId: null,
-    destinationAccountId: null
+    destinationAccountId: null,
+    channelType: 'any'
 };
 const emptyLimit = {
     currency: null,
@@ -241,6 +242,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             formatedData.condition[0]['destinationCountryIds'] = [];
             formatedData.condition[0]['destinationRegionIds'] = [];
             formatedData.condition[0]['destinationCityIds'] = [];
+            formatedData.condition[0]['channelType'] = formatedData.condition[0]['channelType'] || 'any';
 
             conditionItem.forEach((item) => {
                 if (item.conditionId === conditionId) {

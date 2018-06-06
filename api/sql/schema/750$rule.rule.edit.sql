@@ -32,7 +32,8 @@ BEGIN TRY
         operationStartDate = c1.operationStartDate,
         operationEndDate = c1.operationEndDate,
         sourceAccountId = c1.sourceAccountId,
-        destinationAccountId = c1.destinationAccountId
+        destinationAccountId = c1.destinationAccountId,
+        channelType = c1.channelType
     FROM [rule].condition c
     JOIN @condition c1 ON c.conditionId = c1.conditionId
 

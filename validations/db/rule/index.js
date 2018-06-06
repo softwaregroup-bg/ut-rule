@@ -35,7 +35,8 @@ module.exports = {
             destinationAccountId: joi.number().integer().allow(null).default(null),
             amount: joi.number().required().default(0),
             currency: joi.string().length(3).required().default('TZS'),
-            isSourceAmount: joi.boolean().allow(0, 1, '0', '1')
+            isSourceAmount: joi.boolean().allow(0, 1, '0', '1'),
+            channelType: joi.string().allow(null, undefined, '').optional()
         }).unknown(),
         result: joi.object().keys({
             fee: joi.object().keys({
@@ -79,6 +80,7 @@ module.exports = {
         description: 'Fetch applicable fee, limit and commission, based on passed properties of the transfer',
         notes: '',
         params: joi.object().keys({
+            channelType: joi.string().allow(null, undefined, ''),
             channelId: joi.number().integer().allow(null).default(null),
             operation: joi.string().required(),
             sourceAccount: joi.string().required(),

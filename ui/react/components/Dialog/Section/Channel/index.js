@@ -79,9 +79,41 @@ const Channel = React.createClass({
         let {channel, country, region, city, supervisor, organization, role, agentType} = this.context.nomenclatures;
         let { onSelectDropdown } = this;
         let fields = this.state.fields;
-        
+
         return (
             <div className={style.content}>
+                <div className={style.inputWrapper}>
+                  <Dropdown
+                    data={[
+                        {
+                            key: 'any',
+                            name: 'Any'
+                        },
+                        {
+                            key: 'mobile',
+                            name: 'Mobile'
+                        },
+                        {
+                            key: 'web',
+                            name: 'Web'
+                        },
+                        {
+                            key: 'system',
+                            name: 'System'
+                        },
+                        {
+                            key: 'ussd',
+                            name: 'USSD'
+                        }
+                    ]}
+                    defaultSelected={'' + (this.props.data.channelType || '')}
+                    keyProp='channelType'
+                    placeholder='Select'
+                    onSelect={onSelectDropdown}
+                    label='Channel'
+                    mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                  />
+                </div>
                 {fields.organization.visible && organization &&
                   <div className={style.inputWrapper}>
                       <Dropdown

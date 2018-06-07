@@ -1,5 +1,11 @@
 import * as actionTypes from './actionTypes';
-const defaultState = {};
+import map from 'lodash.map';
+import { getLink } from 'ut-front/react/routerHelper';
+import { fromJS } from 'immutable';
+
+const defaultState = {
+    showDeleted: false
+};
 const maxPercentageCharacters = 5;
 const amountCharacters = 14;
 const minAmountCharacters = 10;
@@ -14,15 +20,20 @@ export default (state = defaultState, action) => {
                     'fetchNomenclatures': formatNomenclatures(action.result.items)
                 });
             case actionTypes.fetchRules:
-                let formattedRules = formatRules(action.result);
-
+                let showDeleted = state.showDeleted;
+                let formattedRules = (formatRules(action.result));
+                map(formattedRules, (rule) => {
+                    rule.url = showDeleted ? getLink('ut-history:deleted', {objectId: rule.condition[0].conditionId, objectName: 'rule'}) : getLink('ut-rule:edit', {id: rule.condition[0].conditionId});
+                    return rule;
+                });
                 return Object.assign({}, state, {
                     'fetchRules': formattedRules,
                     'conditionActor': action.result.conditionActor,
                     'conditionItem': action.result.conditionItem,
                     'conditionProperty': action.result.conditionProperty,
                     'formatedGridData': getFormattedGridDataColumns(action.result, formattedRules),
-                    'pagination': {...state.pagination, ...(action.result.pagination && action.result.pagination[0])}
+                    'pagination': {...state.pagination, ...(action.result.pagination && action.result.pagination[0])},
+                    'showDeleted': showDeleted
                 });
             default:
                 break;
@@ -32,6 +43,7 @@ export default (state = defaultState, action) => {
             case actionTypes.fetchRules:
                 if (!action.params.pageSize && state.pagination) {
                     action.params = {...action.params, ...{pageSize: state.pagination.pageSize}};
+                    return {...state, ...state.showDeleted};
                 }
                 break;
             case actionTypes.reset:
@@ -41,6 +53,9 @@ export default (state = defaultState, action) => {
                 let paginationState = {pagination: {...action.params.toJS(), ...{changeId: ++changeId}}};
 
                 return {...state, ...paginationState};
+            case actionTypes.toggleRuleOption:
+                let showState = {showDeleted: action.params.value};
+                return {...state, ...showState};
         }
     }
     return state;
@@ -53,7 +68,7 @@ var formatRules = function(data) {
     var result = {};
     var splitNameConditionMap = {};
     ['condition', 'limit'].forEach(function(prop) {
-        if (data[prop].length) {
+        if (data[prop] && (data[prop].length)) {
             data[prop].forEach(function(record) {
                 if (!result[record.conditionId]) {
                     result[record.conditionId] = {};
@@ -65,7 +80,7 @@ var formatRules = function(data) {
             });
         }
     });
-    data.splitName.forEach(function(record) {
+    data.splitName && data.splitName.forEach(function(record) {
         if (!result[record.conditionId].split) {
             result[record.conditionId].split = [];
         }
@@ -81,7 +96,7 @@ var formatRules = function(data) {
     });
     ['splitRange', 'splitAssignment'].forEach(function(prop) {
         var mappedData;
-        if (data[prop].length) {
+        if (data[prop] && data[prop].length) {
             data[prop].forEach(function(record) {
                 mappedData = splitNameConditionMap[record.splitNameId];
                 result[mappedData.conditionId].split[mappedData.index][prop].push(record);
@@ -118,8 +133,9 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
     //         }]
     //     }
     // };
+    fromJS(formattedRules).toJS();
     let result = {};
-    fetchedData.conditionItem.forEach((item) => {
+    fetchedData.conditionItem && fetchedData.conditionItem.forEach((item) => {
         if (!result[item.conditionId]) {
             result[item.conditionId] = {};
         }
@@ -131,7 +147,7 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
             value: item.itemName
         });
     });
-    fetchedData.conditionProperty.forEach((property) => {
+    fetchedData.conditionProperty && fetchedData.conditionProperty.forEach((property) => {
         if (!result[property.conditionId]) {
             result[property.conditionId] = {};
         }
@@ -145,7 +161,7 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
         });
     });
 
-    fetchedData.conditionActor.forEach((actor) => {
+    fetchedData.conditionActor && fetchedData.conditionActor.forEach((actor) => {
         if (!result[actor.conditionId]) {
             result[actor.conditionId] = {};
         }

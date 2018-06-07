@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.17.0",
+  "version": "9.18.0-rc-diesel.7",
   "pkg": {
     "assets": [
       "api/sql/schema/*.sql",
@@ -10,7 +10,8 @@
   "dependencies": {
     "lodash.get": "4.4.2",
     "lodash.merge": "4.6.0",
-    "lodash.set": "4.3.2"
+    "lodash.set": "4.3.2",
+    "lodash.map": "4.6.0"
   },
   "devDependencies": {
     "ut-tools": "^5.30.0"
@@ -28,7 +29,8 @@
     "ut-error": "^5.4.9",
     "ut-front": "^8.0.1",
     "ut-front-react": "^10.2.0-rc-cubalibre.4",
-    "ut-bus": "^6.3.0-rc-cubalibre.1"
+    "ut-bus": "^6.3.0-rc-cubalibre.1",
+    "ut-history": "^1.1.0-rc-cubalibre.0"
   },
   "description": "UT Rule",
   "scripts": {

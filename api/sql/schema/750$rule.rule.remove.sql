@@ -1,7 +1,10 @@
 ALTER PROCEDURE [rule].[rule.remove]
-    @conditionId core.arrayList READONLY
+    @conditionId core.arrayList READONLY,
+    @meta core.metaDataTT READONLY -- information for the user that makes the operation
 AS
+DECLARE @userId BIGINT = (SELECT [auth.actorId] FROM @meta)
 BEGIN TRY
+
     BEGIN TRANSACTION
         DELETE x
         FROM
@@ -60,8 +63,11 @@ BEGIN TRY
             [rule].splitName x
         JOIN
             @conditionId item ON x.conditionId = item.value
-        DELETE
-            x
+
+        UPDATE x
+        SET isDeleted = 1,
+        updatedOn = GETDATE(),
+        updatedBy = @userId
         FROM
             [rule].condition x
         JOIN

@@ -7,7 +7,8 @@ module.exports = {
         userId: joi.number().integer().required(),
         operation: joi.string().optional(),
         currency: joi.string().optional(),
-        property: joi.string().optional()
+        property: joi.string().optional(),
+        nextLevel: joi.boolean().optional()
     }),
     result: joi.any()
 };

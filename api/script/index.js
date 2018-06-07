@@ -1,3 +1,5 @@
+var prepareHistory = require('../../history/prepare');
+var historyConfig = require('../../history/config');
 const errorsFactory = require('../../errors');
 var wrapper = {
     'itemName': function(msg, $meta) {
@@ -13,9 +15,11 @@ var wrapper = {
         return this.bus.importMethod('db/integration.alias.list')(msg, $meta);
     },
     'organization': function(msg, $meta) {
-        return this.bus.importMethod('customer.organization.fetch')(msg, $meta).then(result => {
-            let organization = result.organization;
-            return {items: organization.map(v => ({ type: 'organization', value: v.actorId, display: v.organizationName }))};
+        return this.bus.importMethod('customer.organization.graphFetch')(msg, $meta).then(result => {
+            let organizations = result.organization.filter((obj, position, arr) => {
+                return arr.map(mapObj => mapObj['id']).indexOf(obj['id']) === position;
+            });
+            return {items: organizations.map(v => ({ type: 'organization', value: v.id, display: v.title }))};
         });
     },
     'role': function(msg, $meta) {
@@ -51,6 +55,16 @@ module.exports = {
             });
 
             return {items: data};
+        });
+    },
+    'rule.historyTransform': function(msg, $meta) {
+        let objectName = 'rule';
+        var rule = prepareHistory[objectName] && prepareHistory[objectName](msg.data);
+        return this.bus.importMethod('history.history.transform')({
+            config: historyConfig[objectName],
+            data: rule || {}
+        }).then(function(transformedData) {
+            return { data: transformedData };
         });
     }
 };

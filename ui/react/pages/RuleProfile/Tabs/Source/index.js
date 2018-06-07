@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
-import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
+import MultiSelectDropdown from 'ut-front-react/components/Input/MultiSelectDropdown';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import { fromJS } from 'immutable';
 import Property from '../../../../components/Property';
@@ -58,34 +58,40 @@ class SourceTab extends Component {
         return (
             <div>
                 <div className={style.inputWrapper}>
-                    <MultiSelectBubble
+                    <MultiSelectDropdown
+                      boldLabel
                       disabled={readonly}
-                      name='country'
+                      keyProp='countries'
                       label={'Country'}
-                      value={fieldValues.countries}
-                      options={countries}
-                      onChange={(value) => { changeInput({key: 'countries', value}); }}
+                      placeholder='Select Country'
+                      defaultSelected={fieldValues.countries}
+                      data={countries}
+                      onSelect={(field) => { changeInput(field); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
-                    <MultiSelectBubble
+                    <MultiSelectDropdown
+                      boldLabel
                       disabled={readonly}
-                      name='region'
+                      keyProp='regions'
                       label={'Region'}
-                      value={fieldValues.regions}
-                      options={regions}
-                      onChange={(value) => { changeInput({key: 'regions', value}); }}
+                      placeholder='Select Region'
+                      defaultSelected={fieldValues.regions}
+                      data={regions}
+                      onSelect={(field) => { changeInput(field); }}
                     />
                 </div>
                 <div className={style.inputWrapper}>
-                    <MultiSelectBubble
+                    <MultiSelectDropdown
+                      boldLabel
                       disabled={readonly}
-                      name='city'
-                      label={'City'}
-                      value={fieldValues.cities}
-                      options={cities}
-                      onChange={(value) => { changeInput({key: 'cities', value}); }}
-                    />
+                      keyProp='cities'
+                      label='City'
+                      placeholder='Select City'
+                      defaultSelected={fieldValues.cities}
+                      data={cities}
+                      onSelect={(field) => { changeInput(field); }}
+                      />
                 </div>
                 <div className={style.inputWrapper}>
                     <Dropdown
@@ -94,9 +100,9 @@ class SourceTab extends Component {
                       keyProp={'organization'}
                       data={organizations}
                       defaultSelected={fieldValues.organization}
-                      placeholder='Enter Organizaton'
+                      placeholder='Select Organization'
                       onSelect={(field) => { changeInput(field); }}
-                      label={'Organizaton'}
+                      label={'Organization'}
                     />
                 </div>
                 <div className={style.inputWrapper}>
@@ -106,7 +112,7 @@ class SourceTab extends Component {
                       keyProp={'cardProduct'}
                       data={cardProducts}
                       defaultSelected={fieldValues.cardProduct}
-                      placeholder='Enter Product'
+                      placeholder='Select Product'
                       onSelect={(field) => { changeInput(field); }}
                       label={'Product'}
                     />
@@ -118,7 +124,7 @@ class SourceTab extends Component {
                       keyProp={'accountProduct'}
                       data={accountProducts}
                       defaultSelected={fieldValues.accountProduct}
-                      placeholder='Enter Account Product'
+                      placeholder='Select Account Product'
                       onSelect={(field) => { changeInput(field); }}
                       label={'Account Product'}
                     />

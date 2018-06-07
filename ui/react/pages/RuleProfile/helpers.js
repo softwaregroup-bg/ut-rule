@@ -1,6 +1,7 @@
 import { errorMessage } from './validator';
-import { defaultErrorState, emptyCumulative } from './Tabs/defaultState';
+import { defaultErrorState } from './Tabs/defaultState';
 import { fromJS } from 'immutable';
+import { prepareRuleModel as prepareRule } from '../../../../common';
 
 export const tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
 
@@ -12,20 +13,6 @@ export const tabTitleMap = {
     limit: 'Limit',
     split: 'Fee and commission split'
 };
-export const splitTags = [
-    {key: 'acquirer', name: 'Acquirer'},
-    {key: 'issuer', name: 'Issuer'},
-    {key: 'commission', name: 'Commission'},
-    {key: 'realtime', name: 'Realtime posting'},
-    {key: 'pending', name: 'Authorization required'},
-    {key: 'agent', name: 'Agent'},
-    {key: 'fee', name: 'Fee'},
-    {key: 'atm', name: 'ATM'},
-    {key: 'pos', name: 'POS'},
-    {key: 'ped', name: 'PED'},
-    {key: 'vendor', name: 'Vendor'},
-    {key: 'merchant', name: 'Merchant'}
-];
 
 const factors = {
     sourceOrganization: 'so',
@@ -59,25 +46,11 @@ const conditionPropertyFactor = {
     operation: factors.operationCategory
 };
 
-const propMap = {
-    country: 'countries',
-    region: 'regions',
-    city: 'cities',
-    operation: 'operations',
-    so: 'source',
-    do: 'destination',
-    co: 'channel',
-    ss: 'source',
-    ds: 'destination',
-    cs: 'channel',
-    oc: 'operation',
-    sc: 'source',
-    dc: 'destination'
-};
-
 export const formatNomenclatures = (items) => {
     let formattedPayload = {};
-
+    // default object properties
+    ['accountProduct', 'cardProduct', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization']
+        .forEach((objName) => (formattedPayload[objName] = []));
     items.map(item => {
         if (!formattedPayload[item.type]) {
             formattedPayload[item.type] = [];
@@ -232,146 +205,16 @@ export const prepareRuleToSave = (rule) => {
 };
 
 export const prepareRuleModel = (result) => {
+    var rule = prepareRule(result) || {};
     var errState = fromJS(defaultErrorState).toJS();
-    var condition = (result.condition || [])[0] || {};
-    var rule = {
-        channel: {
-            conditionId: condition.conditionId,
-            priority: condition.priority,
-            properties: [],
-            countries: [],
-            cities: [],
-            regions: []
-        },
-        destination: { properties: [], countries: [], cities: [], regions: [] },
-        source: { properties: [], countries: [], cities: [], regions: [] },
-        split: {
-            splits: []
-        },
-        limit: [],
-        operation: {
-            operations: [],
-            properties: [],
-            startDate: condition.operationStartDate,
-            endDate: condition.operationEndDate
-        }
-    };
-    (result.conditionActor || []).forEach((ca) => {
-        var des = rule[propMap[ca.factor]];
-        des && (des[ca.type] = ca.actorId);
-    });
-    // condition item
-    (result.conditionItem || []).forEach((item) => {
-        if (['operation', 'country', 'city', 'region'].indexOf(item.type) > -1) {
-            var obj = rule[propMap[item.factor]] && rule[propMap[item.factor]][propMap[item.type]];
-            obj && obj.push({
-                key: item.itemNameId,
-                name: item.itemName
-            });
-        } else {
-            rule[propMap[item.factor]] && (rule[propMap[item.factor]][item.type] = item.itemNameId);
-        }
-    });
-    // condition property
-    (result.conditionProperty || []).forEach((property) => {
-        var obj = rule[propMap[property.factor]];
-        obj && obj.properties.push({
-            name: property.name,
-            value: property.value
-        });
-    });
-    // limit
-    result.limit && result.limit.sort((a, b) => a.limitId > b.limitId).forEach((limit) => {
-        errState.limit.push({});
-        rule.limit.push({
-            conditionId: condition.conditionId,
-            limitId: limit.limitId,
-            currency: limit.currency,
-            txMin: limit.minAmount,
-            txMax: limit.maxAmount,
-            dailyMaxAmount: limit.maxAmountDaily,
-            dailyMaxCount: parseInt(limit.maxCountDaily) || '',
-            weeklyMaxAmount: limit.maxAmountWeekly,
-            weeklyMaxCount: parseInt(limit.maxCountWeekly) || '',
-            monthlyMaxAmount: limit.maxAmountMonthly,
-            monthlyMaxCount: parseInt(limit.maxCountMonthly) || ''
-        });
-    });
-    // split
-    result.splitName && result.splitName.forEach((splitName) => {
-        if (!splitName.name) return;
-        let splitNameId = splitName.splitNameId;
-        var split = {
-            conditionId: condition.conditionId,
-            name: splitName.name,
-            splitNameId,
-            tags: [],
-            cumulatives: [],
-            assignments: []
-        };
-        splitName.tag && splitName.tag.split('|').filter((ts) => !!ts).forEach((tagName) => {
-            var splitTag = splitTags.find((st) => st.key === tagName);
-            splitTag && split.tags.push(splitTag);
-        });
-        var splitRange = result.splitRange && result.splitRange.filter((range) => range.splitNameId === splitNameId);
-        if (splitRange.length > 0) {
-            let uniqueCurrencies = []; // ideally its good to split the cumulatives by cumulative id
-            var cumulatives = splitRange.filter((cum) => {
-                if (cum.startAmountCurrency && uniqueCurrencies.includes(cum.startAmountCurrency)) return false;
-                else if (cum.startAmountCurrency) {
-                    uniqueCurrencies.push(cum.startAmountCurrency);
-                    return true;
-                } else return false;
-            });
-            cumulatives.forEach(function(range) {
-                var cumulative = {
-                    splitNameId,
-                    currency: range.startAmountCurrency,
-                    dailyCount: parseInt(range.startCountDaily) || '',
-                    dailyAmount: range.startAmountDaily,
-                    weeklyCount: parseInt(range.startCountWeekly) || '',
-                    weeklyAmount: range.startAmountWeekly,
-                    monthlyCount: parseInt(range.startCountMonthly) || '',
-                    monthlyAmount: range.startAmountMonthly,
-                    ranges: []
-                };
-                splitRange.forEach((srange) => {
-                    range.startAmountCurrency === srange.startAmountCurrency && cumulative.ranges.push({
-                        splitRangeId: srange.splitRangeId,
-                        startAmount: srange.startAmount,
-                        minAmount: srange.minValue,
-                        maxAmount: srange.maxValue,
-                        percent: srange.percent,
-                        isSourceAmount: srange.isSourceAmount
-                    });
-                });
-                split.cumulatives.push(cumulative);
-            });
-        } else {
-            split.cumulatives.push(emptyCumulative);
-        }
-        result.splitAssignment && result.splitAssignment.filter((sa) => sa.splitNameId === splitNameId).forEach((assignment) => {
-            split.assignments.push({
-                splitNameId: assignment.splitNameId,
-                splitAssignmentId: assignment.splitAssignmentId,
-                debit: assignment.debit,
-                credit: assignment.credit,
-                minAmount: assignment.minValue,
-                maxAmount: assignment.maxValue,
-                percent: assignment.percent,
-                description: assignment.description
-            });
-        });
-        rule.split.splits.push(split);
-    });
     errState.split.splits = [];
-    rule.split.splits.forEach((split) => {
+    rule.split.splits.forEach((split, sidx) => {
         errState.split.splits.push({
             tags: [],
             assignments: Array(split.assignments.length).fill({}),
-            cumulatives: [{
-                ranges: Array((((split.cumulatives[0] || {}).ranges || [])).length).fill({})
-            }]
+            cumulatives: split.cumulatives.map((cumulative) => ({
+                ranges: Array((((cumulative || {}).ranges || [])).length).fill({})
+            }))
         });
     });
     errState.limit = Array(rule.limit.length).fill({});

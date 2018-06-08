@@ -16,7 +16,8 @@ const defaultUiState = {
             'account'
         ],
         itemCode: [
-            'currency'
+            'currency',
+            'channelType'
         ],
         agentRole: [],
         accountAlias: [],

@@ -77,7 +77,7 @@ BEGIN
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
-    INSERT INTO
+    /*INSERT INTO
         @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
     SELECT -- totals by transfer type
         t.transferTypeId,
@@ -96,7 +96,7 @@ BEGIN
         t.transferDateTime < @operationDate AND -- look ony at earlier transfers
         t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
     GROUP BY
-        t.transferTypeId
+        t.transferTypeId*/
 
     DECLARE
         @operationProperties [rule].properties

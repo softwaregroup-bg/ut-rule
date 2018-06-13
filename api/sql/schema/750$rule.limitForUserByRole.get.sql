@@ -47,19 +47,32 @@ SELECT TOP 1
     @maxAmount = t.maxAmount,
     @nextLevelRoleId = t2.actorId
 FROM #temp t
-JOIN core.actorHierarchy h ON t.actorId = h.[object] AND h.[subject] = @userId
+CROSS APPLY
+(
+    SELECT
+        r.actorId
+    FROM
+        core.actorGraph(@userId, 'memberOf', 'subject') g
+    CROSS APPLY
+        core.actorGraph(g.actorId, 'role', 'subject') r
+    WHERE
+        t.actorId = r.actorId
+) h
 LEFT JOIN #temp t2 ON t2.minAmount = t.maxAmount
-WHERE h.[predicate] = 'role'
-ORDER BY t.maxAmount DESC
+ORDER BY t.minAmount DESC
+
+-- if executed by user not in the approval hierarchy, get the lowest level
+IF @roleId IS NULL
+    SET @nextLevelRoleId = (SELECT TOP 1 actorId FROM #temp ORDER BY minAmount)
 
 -- get max approval amount and max approval level for the system
 SELECT TOP 1
     @maxApprovalAmount = maxAmount,
     @maxApprovalLevel = approvalLevel
 FROM #temp
-ORDER BY maxAmount DESC
+ORDER BY minAmount DESC
 
-IF ISNULL(@nextLevel, 0) = 0
+IF ISNULL(@nextLevel, 0) = 0 -- return user role limits and level and max approval amount and max approval level for the system
 BEGIN
     SELECT
         currency,
@@ -71,7 +84,7 @@ BEGIN
     FROM #temp
     WHERE actorId = @roleId
 END
-ELSE
+ELSE -- return next level limits and list of users with that role
 BEGIN
     SELECT
         name,
@@ -88,11 +101,16 @@ BEGIN
     SELECT
         p.actorId,
         p.firstName + ' ' + p.lastName AS userName
-    FROM #temp t
-    JOIN core.actorHierarchy ah ON t.actorId = ah.[object] AND ah.[object] = @nextLevelRoleId
-    JOIN customer.person p ON p.actorId = ah.subject
-    WHERE ah.[predicate] = 'role'
+    FROM
+    (
+        SELECT
+            r.actorId
+        FROM
+            core.actorGraph(@nextLevelRoleId, 'role', 'object') g
+        CROSS APPLY
+            core.actorGraph(g.actorId, 'memberof', 'object') r
+    ) ah
+    JOIN customer.person p ON p.actorId = ah.actorId
 END
 
 DROP TABLE #temp
-

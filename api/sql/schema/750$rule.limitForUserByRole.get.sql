@@ -11,6 +11,7 @@ DECLARE @operationId BIGINT = (
     JOIN [core].[itemType] t ON n.itemTypeId = t.itemTypeId AND t.alias = 'operation'
     WHERE itemCode = @operation)
 
+DECLARE @minApprovalAmount MONEY -- max approval amount for the system
 DECLARE @maxApprovalAmount MONEY -- max approval amount for the system
 DECLARE @maxApprovalLevel NVARCHAR(200) -- max approval level for the system
 DECLARE @roleId BIGINT -- role of the user
@@ -72,6 +73,11 @@ SELECT TOP 1
 FROM #temp
 ORDER BY minAmount DESC
 
+SELECT TOP 1
+    @minApprovalAmount = minAmount
+FROM #temp
+ORDER BY minAmount ASC
+
 IF ISNULL(@nextLevel, 0) = 0 -- return user role limits and level and max approval amount and max approval level for the system
 BEGIN
     SELECT
@@ -79,6 +85,7 @@ BEGIN
         minAmount,
         maxAmount,
         approvalLevel,
+        @minApprovalAmount AS minApprovalAmount,
         @maxApprovalAmount AS maxApprovalAmount,
         @maxApprovalLevel AS maxApprovalLevel
     FROM #temp
@@ -93,6 +100,7 @@ BEGIN
         minAmount,
         maxAmount,
         approvalLevel,
+        @minApprovalAmount AS minApprovalAmount,
         @maxApprovalAmount AS maxApprovalAmount,
         @maxApprovalLevel AS maxApprovalLevel
     FROM #temp t

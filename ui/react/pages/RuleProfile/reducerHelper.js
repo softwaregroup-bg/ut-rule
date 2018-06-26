@@ -116,6 +116,19 @@ export function addProperty(state, action, options) {
 
 export function removeProperty(state, action, options) {
     let { mode, id } = options;
+    let delPropertyName = state.getIn([mode, id, action.destinationProp, 'properties', action.params.propertyId, 'name']);
+    // remove existing property error, if the property have same name as del property
+    let errorProperties = [];
+    ['channel', 'operation', 'source', 'destination'].forEach((tabName) => {
+        state.getIn([mode, id, tabName, 'properties']) && state.getIn([mode, id, tabName, 'properties']).map(function(p, idx) {
+            if (p.get('name') === delPropertyName && !(action.destinationProp === tabName && action.params.propertyId === idx)) {
+                errorProperties.push({ tabName, idx });
+            }
+        });
+    });
+    if (errorProperties.length === 1) {
+        state = state.setIn([mode, id, 'errors', errorProperties[0].tabName, 'properties', errorProperties[0].idx], fromJS({}));
+    }
     return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.splice(action.params.propertyId, 1))
         .updateIn([mode, id, 'errors', action.destinationProp, 'properties'], d => d.splice(action.params.propertyId, 1));
 }

@@ -120,7 +120,7 @@ export function removeProperty(state, action, options) {
     // remove existing property error, if the property have same name as del property
     let errorProperties = [];
     ['channel', 'operation', 'source', 'destination'].forEach((tabName) => {
-        state.getIn([mode, id, tabName, 'properties']) && state.getIn([mode, id, tabName, 'properties']).map(function(p, idx) { 
+        state.getIn([mode, id, tabName, 'properties']) && state.getIn([mode, id, tabName, 'properties']).map(function(p, idx) {
             if (p.get('name') === delPropertyName && !(action.destinationProp === tabName && action.params.propertyId === idx)) {
                 errorProperties.push({ tabName, idx });
             }

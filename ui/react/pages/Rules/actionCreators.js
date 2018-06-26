@@ -138,7 +138,7 @@ export function editRule(params) {
         if (paramsCondition['sourceCardProductId']) {
             conditionItem.push({
                 conditionId: conditionId,
-                factor: 'ss',
+                factor: 'sc',
                 itemNameId: paramsCondition['sourceCardProductId']
             });
         }
@@ -310,7 +310,7 @@ export function addRule(params) {
 
         if (paramsCondition['sourceCardProductId']) {
             conditionItem.push({
-                factor: 'ss',
+                factor: 'sc',
                 itemNameId: paramsCondition['sourceCardProductId']
             });
         }

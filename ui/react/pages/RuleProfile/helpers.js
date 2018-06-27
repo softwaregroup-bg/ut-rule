@@ -93,7 +93,7 @@ export const prepareRuleToSave = (rule) => {
 
     ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
         var tab = rule[tabKey];
-        tab && ['cardProduct', 'accountProduct', 'cities', 'countries', 'regions', 'operations'].forEach(function(kepProp) {
+        tab && ['accountProduct', 'cities', 'countries', 'regions', 'operations'].forEach(function(kepProp) {
             var value = tab[kepProp];
             if (value && value instanceof Array) {
                 value.forEach(function(ci) {
@@ -112,6 +112,15 @@ export const prepareRuleToSave = (rule) => {
             }
         });
     });
+
+    let sc;
+    if ((sc = rule && rule['source'] && rule['source']['cardProduct'])) {
+        formattedRule.conditionItem.push({
+            itemNameId: sc,
+            conditionId,
+            factor: factors['sourceCategory']
+        })
+    }
 
     formattedRule.conditionProperty = [];
 

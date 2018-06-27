@@ -113,8 +113,8 @@ export const prepareRuleToSave = (rule) => {
         });
     });
 
-    let sc;
-    if ((sc = rule && rule['source'] && rule['source']['cardProduct'])) {
+    let sc = rule && rule['source'] && rule['source']['cardProduct'];
+    if (sc) {
         formattedRule.conditionItem.push({
             itemNameId: sc,
             conditionId,

@@ -119,7 +119,7 @@ export const prepareRuleToSave = (rule) => {
             itemNameId: sc,
             conditionId,
             factor: factors['sourceCategory']
-        })
+        });
     }
 
     formattedRule.conditionProperty = [];

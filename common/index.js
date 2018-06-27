@@ -83,14 +83,14 @@ function prepareRuleModel(dbresult) {
             conditionId: condition.conditionId,
             limitId: limit.limitId,
             currency: limit.currency,
-            txMin: limit.minAmount,
-            txMax: limit.maxAmount,
-            dailyMaxAmount: limit.maxAmountDaily,
-            dailyMaxCount: parseInt(limit.maxCountDaily) || '',
-            weeklyMaxAmount: limit.maxAmountWeekly,
-            weeklyMaxCount: parseInt(limit.maxCountWeekly) || '',
-            monthlyMaxAmount: limit.maxAmountMonthly,
-            monthlyMaxCount: parseInt(limit.maxCountMonthly) || ''
+            txMin: limit.minAmount || null,
+            txMax: limit.maxAmount || null,
+            dailyMaxAmount: limit.maxAmountDaily || null,
+            dailyMaxCount: parseInt(limit.maxCountDaily) || null,
+            weeklyMaxAmount: limit.maxAmountWeekly || null,
+            weeklyMaxCount: parseInt(limit.maxCountWeekly) || null,
+            monthlyMaxAmount: limit.maxAmountMonthly || null,
+            monthlyMaxCount: parseInt(limit.maxCountMonthly) || null
         });
     });
     // split

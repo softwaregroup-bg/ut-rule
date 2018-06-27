@@ -30,14 +30,14 @@ export const emptyAssignment = {
 };
 export const emptyLimit = {
     currency: '',
-    txMin: '',
-    txMax: '',
-    dailyMaxAmount: '',
-    dailyMaxCount: '',
-    weeklyMaxAmount: '',
-    weeklyMaxCount: '',
-    monthlyMaxAmount: '',
-    monthlyMaxCount: ''
+    txMin: null,
+    txMax: null,
+    dailyMaxAmount: null,
+    dailyMaxCount: null,
+    weeklyMaxAmount: null,
+    weeklyMaxCount: null,
+    monthlyMaxAmount: null,
+    monthlyMaxCount: null
 };
 
 export const defaultErrorState = {

@@ -86,11 +86,11 @@ function prepareRuleModel(dbresult) {
             txMin: limit.minAmount || null,
             txMax: limit.maxAmount || null,
             dailyMaxAmount: limit.maxAmountDaily || null,
-            dailyMaxCount: parseInt(limit.maxCountDaily) || null,
+            dailyMaxCount: limit.maxCountDaily || null,
             weeklyMaxAmount: limit.maxAmountWeekly || null,
-            weeklyMaxCount: parseInt(limit.maxCountWeekly) || null,
+            weeklyMaxCount: limit.maxCountWeekly || null,
             monthlyMaxAmount: limit.maxAmountMonthly || null,
-            monthlyMaxCount: parseInt(limit.maxCountMonthly) || null
+            monthlyMaxCount: limit.maxCountMonthly || null
         });
     });
     // split

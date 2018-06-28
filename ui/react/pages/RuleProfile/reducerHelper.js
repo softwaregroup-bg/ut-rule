@@ -95,7 +95,7 @@ export function updateRuleErrors(state, action, options) {
 export function changeInput(state, action, options) {
     let { mode, id } = options;
     let { error, errorMessage, value, key, clearLinkedErrors } = action.params;
-    if (value === __placeholder__) value = null;
+    if (value === __placeholder__ || value === '') value = null;
     state = state.setIn([mode, id, action.destinationProp].concat(key.split(',')), value);
     if (error) {
         return state.setIn([mode, id, 'errors', action.destinationProp].concat(key.split(',')), errorMessage);

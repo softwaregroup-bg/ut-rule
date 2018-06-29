@@ -29,6 +29,14 @@ const propMap = {
     dc: 'destination'
 };
 
+const stringify = (value) => {
+    if (value !== undefined && value !== null && value >= 0) {
+        return value.toString();
+    }
+
+    return null;
+};
+
 function prepareRuleModel(dbresult) {
     var condition = (dbresult.condition || [])[0] || {};
     var rule = {
@@ -83,14 +91,14 @@ function prepareRuleModel(dbresult) {
             conditionId: condition.conditionId,
             limitId: limit.limitId,
             currency: limit.currency,
-            txMin: limit.minAmount || null,
-            txMax: limit.maxAmount || null,
-            dailyMaxAmount: limit.maxAmountDaily || null,
-            dailyMaxCount: parseInt(limit.maxCountDaily) || null,
-            weeklyMaxAmount: limit.maxAmountWeekly || null,
-            weeklyMaxCount: parseInt(limit.maxCountWeekly) || null,
-            monthlyMaxAmount: limit.maxAmountMonthly || null,
-            monthlyMaxCount: parseInt(limit.maxCountMonthly) || null
+            txMin: stringify(limit.minAmount),
+            txMax: stringify(limit.maxAmount),
+            dailyMaxAmount: stringify(limit.maxAmountDaily),
+            dailyMaxCount: stringify(limit.maxCountDaily),
+            weeklyMaxAmount: stringify(limit.maxAmountWeekly),
+            weeklyMaxCount: stringify(limit.maxCountWeekly),
+            monthlyMaxAmount: stringify(limit.maxAmountMonthly),
+            monthlyMaxCount: stringify(limit.maxCountMonthly)
         });
     });
     // split

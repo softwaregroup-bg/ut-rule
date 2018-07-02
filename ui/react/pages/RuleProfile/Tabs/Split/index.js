@@ -75,6 +75,10 @@ class SplitTab extends Component {
             changeInput(field, destinationProp);
         };
         const setInfo = (field) => {
+            if (field.key === 'name') {
+                let isDuplicate = !!fieldValues.splits.find((sp) => { return (sp.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
+                isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.splitNameUnique);
+            }
             field.key = ['splits', index, field.key].join(',');
             changeInput(field, destinationProp);
         };

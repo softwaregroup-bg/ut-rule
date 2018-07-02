@@ -11,6 +11,7 @@ export const errorMessage = {
     currencyRequired: 'Currency is required',
     // split
     splitNameRequired: 'Split name is required',
+    splitNameUnique: 'Split name should be unique',
     minAmount: 'Min amount <= Max amount',
     maxAmount: 'Max amount >= Min amount',
     dailyCount: 'Daily count <= Weekly and Monthly count',

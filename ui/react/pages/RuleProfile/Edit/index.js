@@ -78,40 +78,44 @@ class RuleEdit extends Component {
         closeAfterSave && this.props.removeTab(this.props.activeTab.pathname);
     }
     getTabs() {
+        let { tabsConfiguration: {channel, source, operation, destination, split, limit} } = this.props;
+
         let errorCount = getRuleErrorCount(this.props.errors.toJS());
         let canEdit = this.context.checkPermission('rule.rule.edit') && !isEmptyValuesOnly(this.props.remoteRule);
+
         let tabs = [
-            {
-                title: 'Channel',
-                component: <Channel canEdit={canEdit} />,
+            channel.visible && {
+                title: channel.title || 'Channel',
+                component: <Channel />,
                 errorsCount: errorCount.channel
             },
-            {
-                title: 'Source',
-                component: <Source canEdit={canEdit} />,
+            source.visible && {
+                title: source.title || 'Source',
+                component: <Source />,
                 errorsCount: errorCount.source
             },
-            {
-                title: 'Operation',
+            operation.visible && {
+                title: operation.title || 'Operation',
                 component: <Operation />,
                 errorsCount: errorCount.operation
             },
-            {
-                title: 'Destination',
-                component: <Destination canEdit={canEdit} />,
+            destination.visible && {
+                title: destination.title || 'Destination',
+                component: <Destination />,
                 errorsCount: errorCount.destination
             },
-            {
-                title: 'Fee and Commission Split',
-                component: <Split canEdit={canEdit} />,
+            split.visible && {
+                title: split.title || 'Fee and Commission Split',
+                component: <Split />,
                 errorsCount: errorCount.split
             },
-            {
-                title: 'Limit',
+            limit.visible && {
+                title: limit.title || 'Limit',
                 component: <Limit />,
                 errorsCount: errorCount.limit
             }
-        ];
+        ].filter(v => v);
+
         if (this.context.checkPermission('history.rule.listChanges') && this.props.remoteRule) {
             tabs.push({
                 title: 'History Log',
@@ -238,6 +242,7 @@ RuleEdit.propTypes = {
     config: PropTypes.object,
     remoteRule: PropTypes.object,
     nomenclatureConfiguration: PropTypes.shape({}).isRequired,
+    tabsConfiguration: PropTypes.object.isRequired,
     errors: PropTypes.object // immutable
 };
 
@@ -249,6 +254,7 @@ const mapStateToProps = (state, ownProps) => {
         activeTab: state.tabMenu.active,
         config: state.ruleProfileReducer.get('config').toJS(),
         nomenclatureConfiguration: state.uiConfig.get('nomenclatures').toJS(),
+        tabsConfiguration: state.uiConfig.getIn(['profile', 'tabs']).toJS(),
         rule: tabState ? tabState.toJS() : {},
         remoteRule: state.ruleProfileReducer.getIn(['rules', ownProps.params.id]),
         errors: tabState ? tabState.get('errors') : fromJS({})

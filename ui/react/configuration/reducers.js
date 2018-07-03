@@ -62,8 +62,8 @@ const defaultUiState = {
             }
         }
     },
-    dialog: {
-        sections: {
+    profile: {
+        tabs: {
             channel: {
                 visible: true,
                 title: 'Channel',
@@ -234,7 +234,7 @@ const defaultUiState = {
             },
             split: {
                 visible: true,
-                title: 'Split for fees and commissions',
+                title: 'Fee and Commission Split',
                 assignmentFields: {
                     description: {
                         visible: true,

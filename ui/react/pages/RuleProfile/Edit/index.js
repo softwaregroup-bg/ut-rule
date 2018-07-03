@@ -86,32 +86,32 @@ class RuleEdit extends Component {
         let tabs = [
             channel.visible && {
                 title: channel.title || 'Channel',
-                component: <Channel />,
+                component: <Channel canEdit={canEdit} />,
                 errorsCount: errorCount.channel
             },
             source.visible && {
                 title: source.title || 'Source',
-                component: <Source />,
+                component: <Source canEdit={canEdit} />,
                 errorsCount: errorCount.source
             },
             operation.visible && {
                 title: operation.title || 'Operation',
-                component: <Operation />,
+                component: <Operation canEdit={canEdit} />,
                 errorsCount: errorCount.operation
             },
             destination.visible && {
                 title: destination.title || 'Destination',
-                component: <Destination />,
+                component: <Destination canEdit={canEdit} />,
                 errorsCount: errorCount.destination
             },
             split.visible && {
                 title: split.title || 'Fee and Commission Split',
-                component: <Split />,
+                component: <Split canEdit={canEdit} />,
                 errorsCount: errorCount.split
             },
             limit.visible && {
                 title: limit.title || 'Limit',
-                component: <Limit />,
+                component: <Limit canEdit={canEdit} />,
                 errorsCount: errorCount.limit
             }
         ].filter(v => v);

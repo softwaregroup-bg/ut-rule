@@ -17,7 +17,8 @@ const propTypes = {
     operations: PropTypes.array,
     fieldValues: PropTypes.object,
     actions: PropTypes.object,
-    errors: PropTypes.object // immutable
+    errors: PropTypes.object, // immutable
+    operationConfig: PropTypes.object.isRequired
 };
 
 const defaultProps = {
@@ -35,47 +36,47 @@ class OperationTab extends Component {
         const {
             operations,
             fieldValues,
-            canEdit
+            canEdit,
+            operationConfig: { fields }
         } = this.props;
         let changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
         };
         var minDate = fieldValues.startDate ? new Date(fieldValues.startDate) : new Date(null);
+
         return (
             <div>
-                <div className={style.inputWrapper}>
+                {fields.operation.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                       boldLabel
                       disabled={!canEdit}
                       keyProp='operations'
-                      label={'Operation'}
+                      label={fields.operation.title || 'Operation'}
                       placeholder={'Select Operation'}
                       defaultSelected={fieldValues.operations}
                       data={operations}
-                      onSelect={(field) => { changeInput(field); }}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
+                      onSelect={(field) => { changeInput(field); }} />
+                </div>}
+                {fields.operationStartDate.visible && <div className={style.inputWrapper}>
                     <div className={style.outerWrap}>
                         <div className={style.inputWrap}>
                           <DatePicker
-                            label={'Start Date'}
+                            label={fields.operationStartDate.title || 'Start Date'}
                             disabled={!canEdit}
                             wrapperStyles={{backgroundColor: 'white'}}
                             keyProp='startDate'
                             mode='landscape'
                             onChange={({value}) => { changeInput({key: 'startDate', value}); }}
                             defaultValue={fieldValues.startDate}
-                            labelWrap={style.labelWrap}
-                          />
+                            labelWrap={style.labelWrap} />
                         </div>
                     </div>
-                </div>
-                <div className={style.inputWrapper}>
+                </div>}
+                {fields.operationEndDate.visible && <div className={style.inputWrapper}>
                     <div className={style.outerWrap}>
                         <div className={style.inputWrap}>
                           <DatePicker
-                            label={'End Date'}
+                            label={fields.operationEndDate.title || 'End Date'}
                             disabled={!canEdit}
                             wrapperStyles={{backgroundColor: 'white'}}
                             keyProp='endDate'
@@ -83,11 +84,10 @@ class OperationTab extends Component {
                             onChange={({value}) => { changeInput({key: 'endDate', value}); }}
                             minDate={minDate}
                             defaultValue={fieldValues.endDate}
-                            labelWrap={style.labelWrap}
-                          />
+                            labelWrap={style.labelWrap} />
                         </div>
                     </div>
-                </div>
+                </div>}
             </div>
         );
     }
@@ -156,7 +156,8 @@ const mapStateToProps = (state, ownProps) => {
         rule: immutableRule ? immutableRule.toJS() : {},
         operations: state.ruleProfileReducer.getIn(['nomenclatures', 'operation']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
-        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),
+        operationConfig: state.uiConfig.getIn(['profile', 'tabs', 'operation']).toJS()
     };
 };
 

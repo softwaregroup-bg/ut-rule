@@ -90,10 +90,6 @@ const defaultUiState = {
                 visible: true,
                 title: 'Operation',
                 fields: {
-                    tag: {
-                        visible: true,
-                        title: 'Tag'
-                    },
                     operationStartDate: {
                         visible: true,
                         title: 'Start Date'
@@ -102,13 +98,9 @@ const defaultUiState = {
                         visible: true,
                         title: 'End Date'
                     },
-                    operationId: {
+                    operation: {
                         visible: true,
                         title: 'Operation'
-                    },
-                    properties: {
-                        visible: true,
-                        title: 'Properties'
                     }
                 }
             },

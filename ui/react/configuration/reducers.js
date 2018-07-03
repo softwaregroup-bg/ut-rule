@@ -128,21 +128,9 @@ const defaultUiState = {
                         visible: true,
                         title: 'City'
                     },
-                    role: {
-                        visible: true,
-                        title: 'Role'
-                    },
                     organization: {
                         visible: true,
                         title: 'Organization'
-                    },
-                    supervisor: {
-                        visible: true,
-                        title: 'Supervisor'
-                    },
-                    tag: {
-                        visible: true,
-                        title: 'Tag'
                     },
                     cardProduct: {
                         visible: true,
@@ -151,14 +139,6 @@ const defaultUiState = {
                     accountProduct: {
                         visible: true,
                         title: 'Account Product'
-                    },
-                    account: {
-                        visible: true,
-                        title: 'Account'
-                    },
-                    properties: {
-                        visible: true,
-                        title: 'Properties'
                     }
                 }
             },
@@ -229,10 +209,6 @@ const defaultUiState = {
                         title: 'Max Amount'
                     }
                 }
-            },
-            summary: {
-                visible: true,
-                title: 'Summary'
             }
         }
     }

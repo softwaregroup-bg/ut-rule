@@ -68,10 +68,6 @@ const defaultUiState = {
                 visible: true,
                 title: 'Channel',
                 fields: {
-                    channel: {
-                        visible: false,
-                        title: 'Type'
-                    },
                     country: {
                         visible: true,
                         title: 'Country'
@@ -87,18 +83,6 @@ const defaultUiState = {
                     organization: {
                         visible: true,
                         title: 'Organization'
-                    },
-                    supervisor: {
-                        visible: true,
-                        title: 'Supervisor'
-                    },
-                    properties: {
-                        visible: true,
-                        title: 'Properties'
-                    },
-                    role: {
-                        visible: true,
-                        title: 'Role'
                     }
                 }
             },

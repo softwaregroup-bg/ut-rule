@@ -23,7 +23,8 @@ const propTypes = {
     cities: PropTypes.array,
     organizations: PropTypes.array,
     fieldValues: PropTypes.object,
-    errors: PropTypes.object // immutable
+    errors: PropTypes.object, // immutable
+    channelConfig: PropTypes.object.isRequired
 };
 
 const defaultProps = {
@@ -69,51 +70,50 @@ class ChannelTab extends Component {
             regions,
             cities,
             organizations,
-            fieldValues
+            fieldValues,
+            channelConfig: { fields }
         } = this.props;
         let changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
         };
         let readonly = !canEdit;
+
         return (
             <div>
-                <div className={style.inputWrapper}>
+                {fields.country.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                       boldLabel
                       disabled={readonly}
                       keyProp='countries'
-                      label={'Country'}
+                      label={fields.country.title || 'Country'}
                       placeholder='Select Country'
                       defaultSelected={fieldValues.countries}
                       data={countries}
-                      onSelect={(field) => { changeInput(field); }}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
+                      onSelect={(field) => { changeInput(field); }} />
+                </div>}
+                {fields.region.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                       boldLabel
                       disabled={readonly}
                       keyProp='regions'
-                      label={'Region'}
+                      label={fields.region.title || 'Region'}
                       placeholder='Select Region'
                       defaultSelected={fieldValues.regions}
                       data={regions}
-                      onSelect={(field) => { changeInput(field); }}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
+                      onSelect={(field) => { changeInput(field); }} />
+                </div>}
+                {fields.city.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                       boldLabel
                       disabled={readonly}
                       keyProp='cities'
-                      label='City'
+                      label={fields.city.title || 'City'}
                       placeholder='Select City'
                       defaultSelected={fieldValues.cities}
                       data={cities}
-                      onSelect={(field) => { changeInput(field); }}
-                      />
-                </div>
-                <div className={style.inputWrapper}>
+                      onSelect={(field) => { changeInput(field); }} />
+                </div>}
+                {fields.organization.visible && <div className={style.inputWrapper}>
                     <Dropdown
                       disabled={readonly}
                       canSelectPlaceholder
@@ -122,9 +122,8 @@ class ChannelTab extends Component {
                       defaultSelected={fieldValues.organization}
                       placeholder='Select Organization'
                       onSelect={(field) => { changeInput(field); }}
-                      label={'Organization'}
-                    />
-                </div>
+                      label={fields.organization.title || 'Organization'} />
+                </div>}
             </div>
         );
     }
@@ -151,35 +150,31 @@ class ChannelTab extends Component {
                     <div className={style.innerContentBoxWrapper}>
                         <TitledContentBox
                           title='Priority'
-                          wrapperClassName
-                        >
+                          wrapperClassName >
                             {this.renderPriority()}
                         </TitledContentBox>
                     </div>
                     <div className={style.innerContentBoxWrapper}>
                         <TitledContentBox
                           title='Channel Info'
-                          wrapperClassName
-                        >
+                          wrapperClassName >
                             {this.renderFields()}
                         </TitledContentBox>
                     </div>
                 </div>
-                <div className={style.contentBoxWrapper}>
+                {<div className={style.contentBoxWrapper}>
                     <TitledContentBox
                       title='Properties'
-                      wrapperClassName
-                    >
+                      wrapperClassName >
                         <Property
                           canEdit={canEdit}
                           addProperty={addProperty}
                           removeProperty={removeProperty}
                           changeInput={changeInput}
                           properties={(fieldValues || {}).properties || []}
-                          errors={errors}
-                        />
+                          errors={errors} />
                     </TitledContentBox>
-                </div>
+                </div>}
             </div>
         );
     }
@@ -208,7 +203,8 @@ const mapStateToProps = (state, ownProps) => {
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
-        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),
+        channelConfig: state.uiConfig.getIn(['profile', 'tabs', 'channel']).toJS()
     };
 };
 

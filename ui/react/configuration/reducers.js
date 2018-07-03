@@ -166,41 +166,7 @@ const defaultUiState = {
             },
             split: {
                 visible: true,
-                title: 'Fee and Commission Split',
-                assignmentFields: {
-                    description: {
-                        visible: true,
-                        title: 'Description'
-                    },
-                    debit: {
-                        visible: true,
-                        title: 'Debit'
-                    },
-                    debitAlias: {
-                        visible: false,
-                        title: 'Debit'
-                    },
-                    credit: {
-                        visible: true,
-                        title: 'Credit'
-                    },
-                    creditAlias: {
-                        visible: false,
-                        title: 'Credit'
-                    },
-                    percent: {
-                        visible: true,
-                        title: '%'
-                    },
-                    minValue: {
-                        visible: true,
-                        title: 'Min Amount'
-                    },
-                    maxValue: {
-                        visible: true,
-                        title: 'Max Amount'
-                    }
-                }
+                title: 'Fee and Commission Split'
             }
         }
     }

@@ -65,39 +65,41 @@ class RuleCreate extends Component {
     }
 
     getTabs() {
+        let { tabsConfiguration: {channel, source, operation, destination, split, limit} } = this.props;
+
         let errorCount = getRuleErrorCount(this.props.errors.toJS());
         let tabs = [
-            {
-                title: 'Channel',
+            channel.visible && {
+                title: channel.title || 'Channel',
                 component: <Channel />,
                 errorsCount: errorCount.channel
             },
-            {
-                title: 'Source',
+            source.visible && {
+                title: source.title || 'Source',
                 component: <Source />,
                 errorsCount: errorCount.source
             },
-            {
-                title: 'Operation',
+            operation.visible && {
+                title: operation.title || 'Operation',
                 component: <Operation />,
                 errorsCount: errorCount.operation
             },
-            {
-                title: 'Destination',
+            destination.visible && {
+                title: destination.title || 'Destination',
                 component: <Destination />,
                 errorsCount: errorCount.destination
             },
-            {
-                title: 'Fee and Commission Split',
+            split.visible && {
+                title: split.title || 'Fee and Commission Split',
                 component: <Split />,
                 errorsCount: errorCount.split
             },
-            {
-                title: 'Limit',
+            limit.visible && {
+                title: limit.title || 'Limit',
                 component: <Limit />,
                 errorsCount: errorCount.limit
             }
-        ];
+        ].filter(v => v);
         return tabs;
     }
 
@@ -198,6 +200,7 @@ RuleCreate.propTypes = {
     activeTab: PropTypes.object,
     removeTab: PropTypes.func.isRequired,
     config: PropTypes.object,
+    tabsConfiguration: PropTypes.object.isRequired,
     nomenclatureConfiguration: PropTypes.shape({}).isRequired
 };
 
@@ -209,6 +212,7 @@ const mapStateToProps = (state, ownProps) => {
         activeTab: state.tabMenu.active,
         config: state.ruleProfileReducer.get('config').toJS(),
         nomenclatureConfiguration: state.uiConfig.get('nomenclatures').toJS(),
+        tabsConfiguration: state.uiConfig.getIn(['profile', 'tabs']).toJS(),
         rule: tabState ? tabState.toJS() : {},
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors']) || fromJS({})
     };

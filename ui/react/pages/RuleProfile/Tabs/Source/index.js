@@ -105,12 +105,13 @@ class SourceTab extends Component {
                       label={fields.organization.title || 'Organization'} />
                 </div>}
                 {fields.cardProduct.visible && <div className={style.inputWrapper}>
-                    <Dropdown
+                    <MultiSelectDropdown
+                      boldLabel
                       disabled={readonly}
                       canSelectPlaceholder
-                      keyProp={'cardProduct'}
+                      keyProp={'cardProducts'}
                       data={cardProducts}
-                      defaultSelected={fieldValues.cardProduct}
+                      defaultSelected={fieldValues.cardProducts}
                       placeholder='Select Product'
                       onSelect={(field) => { changeInput(field); }}
                       label={fields.cardProduct.title || 'Product'} />

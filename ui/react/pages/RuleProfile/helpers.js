@@ -113,12 +113,14 @@ export const prepareRuleToSave = (rule) => {
         });
     });
 
-    let sc = rule && rule['source'] && rule['source']['cardProduct'];
-    if (sc) {
-        formattedRule.conditionItem.push({
-            itemNameId: sc,
-            conditionId,
-            factor: factors['sourceCategory']
+    let cardProducts = rule && rule['source'] && rule['source']['cardProducts'];
+    if (cardProducts && cardProducts.length) {
+        cardProducts.forEach(cp => {
+            formattedRule.conditionItem.push({
+                itemNameId: cp.key,
+                conditionId,
+                factor: factors['sourceCategory']
+            });
         });
     }
 

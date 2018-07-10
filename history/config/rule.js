@@ -50,7 +50,7 @@ module.exports = {
             {key: 'source,regions', title: 'Region', transform: conditionItemTransform},
             {key: 'source,cities', title: 'City', transform: conditionItemTransform},
             {key: 'source,organization', title: 'Organization'},
-            {key: 'source,cardProduct', title: 'Product'},
+            {key: 'source,cardProducts', title: 'Product', transform: conditionItemTransform},
             {key: 'source,accountProduct', title: 'Account Product'},
             {key: 'source,properties', title: 'Properties', transform: propertyTransform}
         ],

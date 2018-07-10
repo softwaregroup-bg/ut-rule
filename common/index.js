@@ -47,7 +47,7 @@ function prepareRuleModel(dbresult) {
             properties: [],
             countries: [],
             cities: [],
-            regions: [],
+            regions: []
         },
         destination: {
             properties: [],
@@ -55,7 +55,7 @@ function prepareRuleModel(dbresult) {
             cities: [],
             regions: []
         },
-        source: { 
+        source: {
             properties: [],
             countries: [],
             cities: [],

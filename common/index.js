@@ -18,6 +18,7 @@ const propMap = {
     region: 'regions',
     city: 'cities',
     operation: 'operations',
+    cardProduct: 'cardProducts',
     so: 'source',
     do: 'destination',
     co: 'channel',
@@ -48,8 +49,19 @@ function prepareRuleModel(dbresult) {
             cities: [],
             regions: []
         },
-        destination: { properties: [], countries: [], cities: [], regions: [] },
-        source: { properties: [], countries: [], cities: [], regions: [] },
+        destination: {
+            properties: [],
+            countries: [],
+            cities: [],
+            regions: []
+        },
+        source: {
+            properties: [],
+            countries: [],
+            cities: [],
+            regions: [],
+            cardProducts: []
+        },
         split: {
             splits: []
         },
@@ -67,7 +79,7 @@ function prepareRuleModel(dbresult) {
     });
     // condition item
     (dbresult.conditionItem || []).forEach((item) => {
-        if (['operation', 'country', 'city', 'region'].indexOf(item.type) > -1) {
+        if (['operation', 'country', 'city', 'region', 'cardProduct'].indexOf(item.type) > -1) {
             var obj = rule[propMap[item.factor]] && rule[propMap[item.factor]][propMap[item.type]];
             obj && obj.push({
                 key: item.itemNameId,

@@ -91,7 +91,7 @@ export const defaultTabState = {
         cities: [],
         organization: '',
         role: null,
-        cardProduct: null,
+        cardProducts: [],
         accountProduct: null,
         properties: []
     },

@@ -35,7 +35,8 @@ class RuleEdit extends Component {
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.state = {
             closeAfterSave: false,
-            showErrorStatus: false
+            showErrorStatus: false,
+            refetchHistory: false
         };
     }
     fetchData() {
@@ -75,6 +76,7 @@ class RuleEdit extends Component {
     }
     onReset(closeAfterSave) {
         this.props.actions.resetRuleState();
+        this.setState({refetchHistory: true});
         closeAfterSave && this.props.removeTab(this.props.activeTab.pathname);
     }
     getTabs() {
@@ -113,14 +115,15 @@ class RuleEdit extends Component {
             }
         ];
         if (this.context.checkPermission('history.rule.listChanges') && this.props.remoteRule) {
+            let forcelyUpdateHistory = this.state.refetchHistory && this.props.rule.activeTab === tabs.length;
             tabs.push({
                 title: 'History Log',
-                component: <HistoryLog objectId={this.props.params.id} objectName={'rule'} objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
+                component: <HistoryLog forceUpdate={forcelyUpdateHistory} objectId={this.props.params.id} objectName={'rule'} objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
             });
+            forcelyUpdateHistory && this.setState({refetchHistory: false});
         }
         return tabs;
     }
-
     getActionButtons() {
         let { errors, rule, remoteRule } = this.props;
         let isEdited = true;
@@ -236,6 +239,7 @@ RuleEdit.propTypes = {
     updateTabTitle: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
     config: PropTypes.object,
+    hasChanged: PropTypes.bool,
     remoteRule: PropTypes.object,
     nomenclatureConfiguration: PropTypes.shape({}).isRequired,
     errors: PropTypes.object // immutable
@@ -250,6 +254,7 @@ const mapStateToProps = (state, ownProps) => {
         config: state.ruleProfileReducer.get('config').toJS(),
         nomenclatureConfiguration: state.uiConfig.get('nomenclatures').toJS(),
         rule: tabState ? tabState.toJS() : {},
+        hasChanged: tabState ? tabState.get('hasChanged') : false,
         remoteRule: state.ruleProfileReducer.getIn(['rules', ownProps.params.id]),
         errors: tabState ? tabState.get('errors') : fromJS({})
     };

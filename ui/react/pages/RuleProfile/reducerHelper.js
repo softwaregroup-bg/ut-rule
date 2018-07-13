@@ -23,8 +23,11 @@ export function fetchNomenclatures(state, action, options) {
 }
 
 export function saveRule(state, action, options) {
+    let { mode, id } = options;
     if (action.methodRequestState === methodRequestState.FINISHED && !action.error) {
-        return state.setIn(['config', 'ruleSaved'], true);
+        return state.setIn([mode, id], fromJS(prepareRuleModel(action.result)))
+            .setIn(['rules', id], action.result)
+            .setIn(['config', 'ruleSaved'], true);
     }
     return state;
 }
@@ -96,7 +99,8 @@ export function changeInput(state, action, options) {
     let { mode, id } = options;
     let { error, errorMessage, value, key, clearLinkedErrors } = action.params;
     if (value === __placeholder__ || value === '') value = null;
-    state = state.setIn([mode, id, action.destinationProp].concat(key.split(',')), value);
+    state = state.setIn([mode, id, action.destinationProp].concat(key.split(',')), value)
+        .setIn([mode, id, 'hasChanged'], !state.getIn([mode, id, 'hasChanged'], false));
     if (error) {
         return state.setIn([mode, id, 'errors', action.destinationProp].concat(key.split(',')), errorMessage);
     } else {

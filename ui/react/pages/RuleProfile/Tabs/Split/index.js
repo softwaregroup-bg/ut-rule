@@ -85,7 +85,7 @@ class SplitTab extends Component {
         return (
             <div key={index}>
                 <div className={style.splitHeader}>
-                    <span className={style.label}>{name.toUpperCase() || 'SPLIT NAME'}</span>
+                    <span className={style.label}>{name ? name.toUpperCase() : 'SPLIT NAME'}</span>
                     { canEdit && <Button onClick={() => removeSplit(index)} className={style.deleteButton} styleType='secondaryLight' label='DELETE SPLIT' /> }
                 </div>
                 <div className={style.splitWrapper}>

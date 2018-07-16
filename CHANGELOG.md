@@ -19,6 +19,7 @@
 
 ### Bug Fixes
 
+
 * add fee ([#96](https://github.com/softwaregroup-bg/ut-rule/issues/96)) ([76bd539](https://github.com/softwaregroup-bg/ut-rule/commit/76bd539))
 * add support for pkg ([7c68523](https://github.com/softwaregroup-bg/ut-rule/commit/7c68523))
 * dependencies ([17d81c9](https://github.com/softwaregroup-bg/ut-rule/commit/17d81c9))

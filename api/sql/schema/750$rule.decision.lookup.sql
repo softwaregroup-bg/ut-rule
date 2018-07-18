@@ -77,7 +77,7 @@ BEGIN
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
-    DECLARE @opDateEndMonth DATETIME = DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0)
+    DECLARE @opDateStartMonth DATETIME = DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0)
 
     INSERT INTO
         @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
@@ -96,7 +96,7 @@ BEGIN
         t.sourceAccount = @sourceAccount AND
         t.transferCurrency = @currency AND
         t.transferDateTime < @operationDate AND -- look ony at earlier transfers
-        t.transferDateTime >= @opDateEndMonth --look back up to the start of month
+        t.transferDateTime >= @opDateStartMonth --look back up to the start of month
     GROUP BY
         t.transferTypeId
 

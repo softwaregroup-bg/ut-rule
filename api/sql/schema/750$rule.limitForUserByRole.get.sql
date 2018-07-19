@@ -140,7 +140,7 @@ BEGIN TRY
         (
             SELECT
                 p.actorId,
-                p.firstName + ' ' + p.lastName AS userName,
+                p.firstName + ' ' + p.lastName AS fullName,
                 b.level
             FROM
             (
@@ -154,7 +154,7 @@ BEGIN TRY
         )
 
         --select only users from the nearest BU
-        SELECT actorId, userName
+        SELECT actorId, fullName
         FROM users
         WHERE level = (SELECT MIN(level) FROM users)
 

@@ -95,3 +95,33 @@
 .dataGridTable tr.checked table.nested.commission tr:nth-child(even){
     background: #fcd08d;
 }
+
+.reloadCol {
+    position: fixed;
+    left: 0px;
+    width: 100%;
+    background: #fff;
+    cursor: pointer;
+    max-height: 32px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* .reloadCol:hover {
+    background: inherit;
+} */
+
+.reloadCol span {
+    padding-left: 20px
+}
+
+.reloadCol label {
+    position: relative;
+    top: -6px;
+    padding-left: 32px;
+    cursor: pointer;
+}
+
+.reloadCol span svg {
+    position: absolute;
+    top: 3px;
+}

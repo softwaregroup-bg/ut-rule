@@ -44,7 +44,7 @@ export function removeRules(params) {
     return function(dispatch) {
         return dispatch({
             type: actionTypes.removeRules,
-            method: 'rule.rule.remove',
+            method: 'db/rule.rule.remove',
             params: params || {}
         }).then((result) => {
             if (result.error) {
@@ -199,7 +199,7 @@ export function editRule(params) {
 
         return dispatch({
             type: actionTypes.addRule,
-            method: 'rule.rule.edit',
+            method: 'db/rule.rule.edit',
             params: modifiedParams || {}
         }).then((result) => {
             if (result.error) {
@@ -343,7 +343,7 @@ export function addRule(params) {
 
         return dispatch({
             type: actionTypes.addRule,
-            method: 'rule.rule.add',
+            method: 'db/rule.rule.add',
             params: modifiedParams || {}
         }).then((result) => {
             if (result.error) {

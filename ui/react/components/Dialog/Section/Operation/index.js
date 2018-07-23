@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
-import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
+import MultiSelectDropdown from 'ut-front-react/components/Input/MultiSelectDropdown';
 import plusImage from '../../assets/add_new.png';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
@@ -90,13 +90,13 @@ const Operation = React.createClass({
             <div className={style.content}>
                 { fields.operationId.visible &&
                     <div className={style.inputWrapper}>
-                      <MultiSelectBubble
+                      <MultiSelectDropdown
                         keyProp='operationIds'
                         name='operationIds'
                         label={fields.operationId.title}
-                        value={this.props.data.operationIds}
-                        options={operation || []}
-                        onChange={(val) => { this.onSelectDropdown({ key: 'operationIds', value: val }); }}
+                        defaultSelected={this.props.data.operationIds}
+                        data={operation || []}
+                        onSelect={this.onSelectDropdown}
                     />
                   </div>
                 }

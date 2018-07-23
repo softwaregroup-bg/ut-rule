@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
-import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
+import MultiSelectDropdown from 'ut-front-react/components/Input/MultiSelectDropdown';
 import plusImage from '../../assets/add_new.png';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
@@ -84,37 +84,37 @@ const Destination = React.createClass({
            <div className={style.content}>
                 {fields.country.visible && country &&
                     <div className={style.inputWrapper}>
-                        <MultiSelectBubble
+                        <MultiSelectDropdown
                           keyProp='destinationCountryIds'
                           name='destinationCountryIds'
                           label={fields.country.title}
-                          value={this.props.data.destinationCountryIds}
-                          options={country}
-                          onChange={(val) => { this.onSelectDropdown({key: 'destinationCountryIds', value: val}); }}
+                          defaultSelected={this.props.data.destinationCountryIds}
+                          data={country}
+                          onSelect={onSelectDropdown}
                         />
                     </div>
                 }
                 {fields.region.visible && region &&
                     <div className={style.inputWrapper}>
-                        <MultiSelectBubble
+                        <MultiSelectDropdown
                           keyProp='destinationRegionIds'
                           name='destinationRegionIds'
                           label={fields.region.title}
-                          value={this.props.data.destinationRegionIds}
-                          options={region}
-                          onChange={(val) => { this.onSelectDropdown({key: 'destinationRegionIds', value: val}); }}
+                          defaultSelected={this.props.data.destinationRegionIds}
+                          data={region}
+                          onSelect={onSelectDropdown}
                         />
                     </div>
                 }
                 {fields.city.visible && city &&
                     <div className={style.inputWrapper}>
-                        <MultiSelectBubble
+                        <MultiSelectDropdown
                           keyProp='destinationCityIds'
                           name='destinationCityIds'
                           label={fields.city.title}
-                          value={this.props.data.destinationCityIds}
-                          options={city}
-                          onChange={(val) => { this.onSelectDropdown({key: 'destinationCityIds', value: val}); }}
+                          defaultSelected={this.props.data.destinationCityIds}
+                          data={city}
+                          onSelect={onSelectDropdown}
                         />
                     </div>
                 }

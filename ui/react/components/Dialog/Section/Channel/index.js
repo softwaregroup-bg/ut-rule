@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
-import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
+import MultiSelectDropdown from 'ut-front-react/components/Input/MultiSelectDropdown';
 import plusImage from '../../assets/add_new.png';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
@@ -97,37 +97,40 @@ const Channel = React.createClass({
                 }
                 {fields.country.visible && country &&
                   <div className={style.inputWrapper}>
-                      <MultiSelectBubble
+                      <MultiSelectDropdown
                         keyProp='channelCountryIds'
                         name='channelCountryIds'
                         label={fields.country.title}
-                        value={this.props.data.channelCountryIds}
-                        options={country}
-                        onChange={(val) => { this.onSelectDropdown({key: 'channelCountryIds', value: val}); }}
+                        placeholder={fields.country.title}
+                        defaultSelected={this.props.data.channelCountryIds}
+                        data={country}
+                        onSelect={onSelectDropdown}
                       />
                   </div>
                 }
                 {fields.region.visible && region &&
                     <div className={style.inputWrapper}>
-                        <MultiSelectBubble
+                        <MultiSelectDropdown
                           keyProp='channelRegionIds'
                           name='channelRegionIds'
                           label={fields.region.title}
-                          value={this.props.data.channelRegionIds}
-                          options={region}
-                          onChange={(val) => { this.onSelectDropdown({key: 'channelRegionIds', value: val}); }}
+                          placeholder={fields.region.title}
+                          defaultSelected={this.props.data.channelRegionIds}
+                          data={region}
+                          onSelect={onSelectDropdown}
                         />
                     </div>
                 }
                 {fields.city.visible && city &&
                     <div className={style.inputWrapper}>
-                        <MultiSelectBubble
+                        <MultiSelectDropdown
                           keyProp='channelCityIds'
                           name='channelCityIds'
                           label={fields.city.title}
-                          value={this.props.data.channelCityIds}
-                          options={city}
-                          onChange={(val) => { this.onSelectDropdown({key: 'channelCityIds', value: val}); }}
+                          placeholder={fields.city.title}
+                          defaultSelected={this.props.data.channelCityIds}
+                          data={city}
+                          onSelect={onSelectDropdown}
                         />
                     </div>
                 }

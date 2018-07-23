@@ -19,6 +19,7 @@ const Main = React.createClass({
         conditionItem: PropTypes.array,
         conditionProperty: PropTypes.array,
         nomenclatures: PropTypes.object,
+        formatedGridData: PropTypes.object,
         ready: PropTypes.bool,
         empty: PropTypes.bool,
         actions: PropTypes.object,
@@ -187,6 +188,7 @@ const Main = React.createClass({
                         />
                     }
                     <Grid
+                      formatedGridData={this.props.formatedGridData}
                       ref='grid'
                       refresh={this.refresh}
                       data={this.props.rules}
@@ -216,6 +218,7 @@ export default connect(
     (state, ownProps) => {
         return {
             rules: state.main.fetchRules,
+            formatedGridData: state.main.formatedGridData,
             conditionActor: state.main.conditionActor,
             conditionItem: state.main.conditionItem,
             conditionProperty: state.main.conditionProperty,

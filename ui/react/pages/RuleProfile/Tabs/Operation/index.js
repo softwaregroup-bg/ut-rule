@@ -139,7 +139,7 @@ class OperationTab extends Component {
     render() {
         return (
             <div>
-                {this.renderInfoFields()}
+                {Object.keys(this.props.fieldValues).length > 0 && this.renderInfoFields()}
             </div>
         );
     }
@@ -155,7 +155,7 @@ const mapStateToProps = (state, ownProps) => {
         canEdit: ownProps.canEdit,
         rule: immutableRule ? immutableRule.toJS() : {},
         operations: state.ruleProfileReducer.getIn(['nomenclatures', 'operation']).toJS(),
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),
         operationConfig: state.uiConfig.getIn(['profile', 'tabs', 'operation']).toJS()
     };

@@ -176,7 +176,7 @@ export const Limits = (props) => {
                         <table className={style.dataGridTable}>
                             {renderTableHead()}
                             <tbody>
-                                {renderBody()}
+                                {Object.keys(fieldValues).length > 0 && renderBody()}
                             </tbody>
                         </table>
                         { canEdit && <span className={style.link} onClick={addLimit}>
@@ -202,7 +202,7 @@ const mapStateToProps = (state, ownProps) => {
     let { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
         canEdit: ownProps.canEdit,
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
         currencies: state.ruleProfileReducer.getIn(['nomenclatures', 'currency']).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})
     };

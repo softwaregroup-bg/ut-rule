@@ -175,7 +175,7 @@ class SourceTab extends Component {
     render() {
         return (
             <div>
-                {this.renderInfoFields()}
+                {Object.keys(this.props.fieldValues).length > 0 && this.renderInfoFields()}
             </div>
         );
     }
@@ -196,7 +196,7 @@ const mapStateToProps = (state, ownProps) => {
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
         cardProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'cardProduct']).toJS(),
         accountProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'accountProduct']).toJS(),
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),
         sourceConfig: state.uiConfig.getIn(['profile', 'tabs', 'source']).toJS()
     };

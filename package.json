@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.19.0-rc-einstein.14",
+  "version": "9.19.0-rc-einstein.15",
   "pkg": {
     "assets": [
       "api/sql/schema/*.sql",

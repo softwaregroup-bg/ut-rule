@@ -3,10 +3,10 @@ var historyConfig = require('../../history/config');
 const errorsFactory = require('../../errors');
 var wrapper = {
     'itemName': function(msg, $meta) {
-        return this.bus.importMethod('core.itemName.fetch')(msg, $meta);
+        return this.bus.importMethod('core.itemName.fetch')(Object.assign({}, msg, {isEnabled: 1}), $meta);
     },
     'itemCode': function(msg, $meta) {
-        return this.bus.importMethod('core.itemCode.fetch')(msg, $meta);
+        return this.bus.importMethod('core.itemCode.fetch')(Object.assign({}, msg, {isEnabled: 1}), $meta);
     },
     'agentRole': function(msg, $meta) {
         return this.bus.importMethod('db/integration.agentRole.fetch')(msg, $meta);

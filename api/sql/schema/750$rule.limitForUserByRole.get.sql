@@ -24,7 +24,7 @@ BEGIN TRY
 
     IF @userId IS NULL
         SET @userId = @actorId
-    ELSE --IF @userId <> @actorId
+    ELSE IF @userId <> @actorId
     BEGIN
         --check if logged user is not on higher level than passed user and that both users are in the same hierarchy
         IF NOT EXISTS (

@@ -13,6 +13,7 @@ DECLARE @operationId BIGINT = (
     JOIN [core].[itemType] t ON n.itemTypeId = t.itemTypeId AND t.alias = 'operation'
     WHERE itemCode = @operation)
 
+DECLARE @actorId BIGINT = (SELECT [auth.actorId] FROM @meta) -- id of the logged user
 DECLARE @minApprovalAmount MONEY -- max approval amount for the system
 DECLARE @maxApprovalAmount MONEY -- max approval amount for the system
 DECLARE @maxApprovalLevel NVARCHAR(200) -- max approval level for the system
@@ -22,20 +23,19 @@ DECLARE @nextLevelRoleId BIGINT -- the id of the role with next higher limit
 BEGIN TRY
 
     IF @userId IS NULL
-        SET @userId = (SELECT [auth.actorId] FROM @meta)
-    ELSE
+        SET @userId = @actorId
+    ELSE IF @userId <> @actorId
     BEGIN
+        --check if logged user is not on higher level than passed user and that both users are in the same hierarchy
         IF NOT EXISTS (
-            --check if passed user is visible for logged user
-            SELECT *
-            FROM customer.organizationsVisibleFor(@userId) u
-            JOIN customer.organizationsVisibleFor(((SELECT [auth.actorId] FROM @meta))) a ON a.actorId = u.actorId)
-        OR EXISTS (
-            --check if logged user is not on higher level than passed user
-            SELECT *
-            FROM customer.organizationsVisibleFor(@userId) u
-            JOIN customer.organizationsVisibleFor(((SELECT [auth.actorId] FROM @meta))) a ON a.actorId = u.actorId
-            WHERE a.depth > u.depth)
+        SELECT hf.subject
+        FROM [core].[actorHierarchy] h
+        INNER JOIN [customer].[organizationHierarchyFlat] hf ON hf.[object] = h.[object]
+        INNER JOIN [core].[actorHierarchy] u ON u.object = hf.subject
+        WHERE h.[subject] = @actorId
+            AND h.[predicate] = 'memberOf'
+            AND u.[subject] = @userId
+            AND u.[predicate] = 'memberOf')
                 RAISERROR ('rule.securityViolation', 16, 1)
     END
 

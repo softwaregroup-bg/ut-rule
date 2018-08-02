@@ -35,7 +35,8 @@ class RuleEdit extends Component {
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.state = {
             closeAfterSave: false,
-            showErrorStatus: false
+            showErrorStatus: false,
+            refetchHistory: false
         };
     }
     fetchData() {
@@ -75,52 +76,58 @@ class RuleEdit extends Component {
     }
     onReset(closeAfterSave) {
         this.props.actions.resetRuleState();
+        this.setState({refetchHistory: true});
         closeAfterSave && this.props.removeTab(this.props.activeTab.pathname);
     }
     getTabs() {
+        let { tabsConfiguration: {channel, source, operation, destination, split, limit} } = this.props;
+
         let errorCount = getRuleErrorCount(this.props.errors.toJS());
         let canEdit = this.context.checkPermission('rule.rule.edit') && !isEmptyValuesOnly(this.props.remoteRule);
+
         let tabs = [
-            {
-                title: 'Channel',
+            channel.visible && {
+                title: channel.title || 'Channel',
                 component: <Channel canEdit={canEdit} />,
                 errorsCount: errorCount.channel
             },
-            {
-                title: 'Source',
+            source.visible && {
+                title: source.title || 'Source',
                 component: <Source canEdit={canEdit} />,
                 errorsCount: errorCount.source
             },
-            {
-                title: 'Operation',
-                component: <Operation />,
+            operation.visible && {
+                title: operation.title || 'Operation',
+                component: <Operation canEdit={canEdit} />,
                 errorsCount: errorCount.operation
             },
-            {
-                title: 'Destination',
+            destination.visible && {
+                title: destination.title || 'Destination',
                 component: <Destination canEdit={canEdit} />,
                 errorsCount: errorCount.destination
             },
-            {
-                title: 'Fee and Commission Split',
+            split.visible && {
+                title: split.title || 'Fee and Commission Split',
                 component: <Split canEdit={canEdit} />,
                 errorsCount: errorCount.split
             },
-            {
-                title: 'Limit',
-                component: <Limit />,
+            limit.visible && {
+                title: limit.title || 'Limit',
+                component: <Limit canEdit={canEdit} />,
                 errorsCount: errorCount.limit
             }
-        ];
+        ].filter(v => v);
+
         if (this.context.checkPermission('history.rule.listChanges') && this.props.remoteRule) {
+            let forcelyUpdateHistory = this.state.refetchHistory && this.props.rule.activeTab === tabs.length;
             tabs.push({
                 title: 'History Log',
-                component: <HistoryLog objectId={this.props.params.id} objectName={'rule'} objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
+                component: <HistoryLog forceUpdate={forcelyUpdateHistory} objectId={this.props.params.id} objectName={'rule'} objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
             });
+            forcelyUpdateHistory && this.setState({refetchHistory: false});
         }
         return tabs;
     }
-
     getActionButtons() {
         let { errors, rule, remoteRule } = this.props;
         let isEdited = true;
@@ -236,8 +243,10 @@ RuleEdit.propTypes = {
     updateTabTitle: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
     config: PropTypes.object,
+    hasChanged: PropTypes.bool,
     remoteRule: PropTypes.object,
     nomenclatureConfiguration: PropTypes.shape({}).isRequired,
+    tabsConfiguration: PropTypes.object.isRequired,
     errors: PropTypes.object // immutable
 };
 
@@ -249,7 +258,9 @@ const mapStateToProps = (state, ownProps) => {
         activeTab: state.tabMenu.active,
         config: state.ruleProfileReducer.get('config').toJS(),
         nomenclatureConfiguration: state.uiConfig.get('nomenclatures').toJS(),
+        tabsConfiguration: state.uiConfig.getIn(['profile', 'tabs']).toJS(),
         rule: tabState ? tabState.toJS() : {},
+        hasChanged: tabState ? tabState.get('hasChanged') : false,
         remoteRule: state.ruleProfileReducer.getIn(['rules', ownProps.params.id]),
         errors: tabState ? tabState.get('errors') : fromJS({})
     };

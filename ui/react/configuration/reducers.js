@@ -22,7 +22,11 @@ const defaultUiState = {
         agentRole: [],
         accountAlias: [],
         organization: [''],
-        role: []
+        role: [],
+        skipDisabled: [
+            'itemName',
+            'itemCode'
+        ]
     },
     main: {
         grid: {
@@ -62,16 +66,12 @@ const defaultUiState = {
             }
         }
     },
-    dialog: {
-        sections: {
+    profile: {
+        tabs: {
             channel: {
                 visible: true,
                 title: 'Channel',
                 fields: {
-                    channel: {
-                        visible: false,
-                        title: 'Type'
-                    },
                     country: {
                         visible: true,
                         title: 'Country'
@@ -87,18 +87,6 @@ const defaultUiState = {
                     organization: {
                         visible: true,
                         title: 'Organization'
-                    },
-                    supervisor: {
-                        visible: true,
-                        title: 'Supervisor'
-                    },
-                    properties: {
-                        visible: true,
-                        title: 'Properties'
-                    },
-                    role: {
-                        visible: true,
-                        title: 'Role'
                     }
                 }
             },
@@ -106,10 +94,6 @@ const defaultUiState = {
                 visible: true,
                 title: 'Operation',
                 fields: {
-                    tag: {
-                        visible: true,
-                        title: 'Tag'
-                    },
                     operationStartDate: {
                         visible: true,
                         title: 'Start Date'
@@ -118,13 +102,9 @@ const defaultUiState = {
                         visible: true,
                         title: 'End Date'
                     },
-                    operationId: {
+                    operation: {
                         visible: true,
                         title: 'Operation'
-                    },
-                    properties: {
-                        visible: true,
-                        title: 'Properties'
                     }
                 }
             },
@@ -144,21 +124,9 @@ const defaultUiState = {
                         visible: true,
                         title: 'City'
                     },
-                    role: {
-                        visible: true,
-                        title: 'Role'
-                    },
                     organization: {
                         visible: true,
                         title: 'Organization'
-                    },
-                    supervisor: {
-                        visible: true,
-                        title: 'Supervisor'
-                    },
-                    tag: {
-                        visible: true,
-                        title: 'Tag'
                     },
                     cardProduct: {
                         visible: true,
@@ -167,14 +135,6 @@ const defaultUiState = {
                     accountProduct: {
                         visible: true,
                         title: 'Account Product'
-                    },
-                    account: {
-                        visible: true,
-                        title: 'Account'
-                    },
-                    properties: {
-                        visible: true,
-                        title: 'Properties'
                     }
                 }
             },
@@ -198,33 +158,9 @@ const defaultUiState = {
                         visible: true,
                         title: 'Organization'
                     },
-                    supervisor: {
-                        visible: true,
-                        title: 'Supervisor'
-                    },
-                    tag: {
-                        visible: true,
-                        title: 'Tag'
-                    },
-                    cardProduct: {
-                        visible: true,
-                        title: 'Product'
-                    },
                     accountProduct: {
                         visible: true,
                         title: 'Account Product'
-                    },
-                    account: {
-                        visible: true,
-                        title: 'Account'
-                    },
-                    role: {
-                        visible: true,
-                        title: 'Role'
-                    },
-                    properties: {
-                        visible: true,
-                        title: 'Properties'
                     }
                 }
             },
@@ -234,45 +170,7 @@ const defaultUiState = {
             },
             split: {
                 visible: true,
-                title: 'Split for fees and commissions',
-                assignmentFields: {
-                    description: {
-                        visible: true,
-                        title: 'Description'
-                    },
-                    debit: {
-                        visible: true,
-                        title: 'Debit'
-                    },
-                    debitAlias: {
-                        visible: false,
-                        title: 'Debit'
-                    },
-                    credit: {
-                        visible: true,
-                        title: 'Credit'
-                    },
-                    creditAlias: {
-                        visible: false,
-                        title: 'Credit'
-                    },
-                    percent: {
-                        visible: true,
-                        title: '%'
-                    },
-                    minValue: {
-                        visible: true,
-                        title: 'Min Amount'
-                    },
-                    maxValue: {
-                        visible: true,
-                        title: 'Max Amount'
-                    }
-                }
-            },
-            summary: {
-                visible: true,
-                title: 'Summary'
+                title: 'Fee and Commission Split'
             }
         }
     }

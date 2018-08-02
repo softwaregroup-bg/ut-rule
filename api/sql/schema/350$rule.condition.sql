@@ -10,6 +10,5 @@ CREATE TABLE [rule].[condition] (
     createdOn DATETIME2 (0) NULL, -- date of the rule created
     updatedBy BIGINT NULL, -- id of the actor
     updatedOn DATETIME2 (0) NULL, --  date of the rule updated
-    CONSTRAINT [pkRuleCondition] PRIMARY KEY CLUSTERED ([conditionId] ASC),
-    CONSTRAINT [ukRuleCondtitionPriority] UNIQUE ([priority] ASC)
+    CONSTRAINT [pkRuleCondition] PRIMARY KEY CLUSTERED ([conditionId] ASC)
 )

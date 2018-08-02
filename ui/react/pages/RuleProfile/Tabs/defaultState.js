@@ -30,14 +30,14 @@ export const emptyAssignment = {
 };
 export const emptyLimit = {
     currency: '',
-    txMin: '',
-    txMax: '',
-    dailyMaxAmount: '',
-    dailyMaxCount: '',
-    weeklyMaxAmount: '',
-    weeklyMaxCount: '',
-    monthlyMaxAmount: '',
-    monthlyMaxCount: ''
+    txMin: null,
+    txMax: null,
+    dailyMaxAmount: null,
+    dailyMaxCount: null,
+    weeklyMaxAmount: null,
+    weeklyMaxCount: null,
+    monthlyMaxAmount: null,
+    monthlyMaxCount: null
 };
 
 export const defaultErrorState = {
@@ -59,6 +59,7 @@ export const defaultErrorState = {
 
 export const defaultTabState = {
     errors: defaultErrorState,
+    hasChanged: false,
     activeTab: 0,
     channel: {
         priority: '',
@@ -91,7 +92,7 @@ export const defaultTabState = {
         cities: [],
         organization: '',
         role: null,
-        cardProduct: null,
+        cardProducts: [],
         accountProduct: null,
         properties: []
     },

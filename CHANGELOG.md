@@ -2,7 +2,6 @@
 # [9.18.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.18.0-rc-diesel.7...v9.18.0) (2018-06-07)
 
 
-
 <a name="9.17.0"></a>
 # [9.17.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.17.0-rc-cubalibre.11...v9.17.0) (2018-04-17)
 
@@ -18,6 +17,7 @@
 
 
 ### Bug Fixes
+
 
 * add fee ([#96](https://github.com/softwaregroup-bg/ut-rule/issues/96)) ([76bd539](https://github.com/softwaregroup-bg/ut-rule/commit/76bd539))
 * add support for pkg ([7c68523](https://github.com/softwaregroup-bg/ut-rule/commit/7c68523))

@@ -17,6 +17,7 @@ module.exports = (create) => {
         exceedWeeklyLimitCount: create('exceedWeeklyLimitCount', Rule, 'Weekly count limit reached'),
         exceedMonthlyLimitCount: create('exceedMonthlyLimitCount', Rule, 'Monthly count limit reached'),
         duplicatedPriority: create('duplicatedPriority', Rule, 'Rule with this priority already exists'),
+        securityViolation: create('securityViolation', Rule, 'Unauthorized operation'),
         unauthorizedMinLimitAmount: create('unauthorizedMinLimitAmount', Rule, 'Transaction amount below minimum unauthorized'),
         unauthorizedMaxLimitAmount: create('unauthorizedMaxLimitAmount', Rule, 'Transaction amount above maximum unauthorized'),
         unauthorizedDailyLimitAmount: create('unauthorizedDailyLimitAmount', Rule, 'Daily amount limit unauthorized'),

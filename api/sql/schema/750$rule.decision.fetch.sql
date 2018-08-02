@@ -87,6 +87,7 @@ BEGIN
     LEFT JOIN
         @totals t ON t.transferTypeId = ISNULL(co.transferTypeId, @transferTypeId)
     WHERE
+        c.isDeleted = 0 AND
         (@operationDate IS NULL OR c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
         (@operationDate IS NULL OR c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
         [rule].falseActorFactorCount(c.conditionId, @operationProperties) = 0 AND

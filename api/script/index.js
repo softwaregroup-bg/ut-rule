@@ -43,7 +43,13 @@ module.exports = {
 
         Object.keys(msg).forEach(function(method) {
             if (wrapper[method] !== undefined && msg[method] && msg[method].length > 0) {
-                pending.push(wrapper[method].call(this, {alias: msg[method]}, Object.assign({}, $meta)));
+                var params = {
+                    alias: msg[method]
+                };
+                if (msg.skipDisabled && msg.skipDisabled.includes(method)) {
+                    params.isEnabled = 1;
+                }
+                pending.push(wrapper[method].call(this, params, Object.assign({}, $meta)));
             }
         }, this);
 

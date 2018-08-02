@@ -47,3 +47,8 @@ IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'updatedOn' AND OBJECT_ID
 BEGIN
     ALTER TABLE [rule].[condition] ADD [updatedOn] DATETIME2 (0) NULL
 END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleCondtitionPriority')
+BEGIN
+    ALTER TABLE [rule].[condition] DROP CONSTRAINT ukRuleCondtitionPriority
+END

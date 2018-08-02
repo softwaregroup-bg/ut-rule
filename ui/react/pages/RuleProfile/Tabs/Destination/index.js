@@ -21,7 +21,8 @@ const propTypes = {
     organizations: PropTypes.array,
     accountProducts: PropTypes.array,
     fieldValues: PropTypes.object,
-    errors: PropTypes.object // immutable
+    errors: PropTypes.object, // immutable
+    destinationConfig: PropTypes.object.isRequired
 };
 
 const defaultProps = {
@@ -46,51 +47,50 @@ class DestinationTab extends Component {
             cities,
             organizations,
             accountProducts,
-            fieldValues
+            fieldValues,
+            destinationConfig: { fields }
         } = this.props;
         let changeInput = (field, value) => {
             this.props.actions.changeInput(field, destinationProp);
         };
         let readonly = !canEdit;
+
         return (
             <div>
-                <div className={style.inputWrapper}>
+                {fields.country.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                       boldLabel
                       disabled={readonly}
                       keyProp='countries'
-                      label={'Country'}
+                      label={fields.country.title || 'Country'}
                       placeholder='Select Country'
                       defaultSelected={fieldValues.countries}
                       data={countries}
-                      onSelect={(field) => { changeInput(field); }}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
+                      onSelect={(field) => { changeInput(field); }} />
+                </div>}
+                {fields.region.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                       boldLabel
                       disabled={readonly}
                       keyProp='regions'
-                      label={'Region'}
+                      label={fields.region.title || 'Region'}
                       placeholder='Select Region'
                       defaultSelected={fieldValues.regions}
                       data={regions}
-                      onSelect={(field) => { changeInput(field); }}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
+                      onSelect={(field) => { changeInput(field); }} />
+                </div>}
+                {fields.city.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                       boldLabel
                       disabled={readonly}
                       keyProp='cities'
-                      label='City'
+                      label={fields.city.title || 'City'}
                       placeholder='Select City'
                       defaultSelected={fieldValues.cities}
                       data={cities}
-                      onSelect={(field) => { changeInput(field); }}
-                      />
-                </div>
-                <div className={style.inputWrapper}>
+                      onSelect={(field) => { changeInput(field); }} />
+                </div>}
+                {fields.organization.visible && <div className={style.inputWrapper}>
                     <Dropdown
                       disabled={readonly}
                       canSelectPlaceholder
@@ -99,10 +99,9 @@ class DestinationTab extends Component {
                       defaultSelected={fieldValues.organization}
                       placeholder='Select Organization'
                       onSelect={(field) => { changeInput(field); }}
-                      label={'Organization'}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
+                      label={fields.organization.title || 'Organization'} />
+                </div>}
+                {fields.accountProduct.visible && <div className={style.inputWrapper}>
                     <Dropdown
                       disabled={readonly}
                       canSelectPlaceholder
@@ -111,9 +110,8 @@ class DestinationTab extends Component {
                       defaultSelected={fieldValues.accountProduct}
                       placeholder='Select Account Product'
                       onSelect={(field) => { changeInput(field); }}
-                      label={'Account Product'}
-                    />
-                </div>
+                      label={fields.accountProduct.title || 'Account Product'} />
+                </div>}
             </div>
         );
     }
@@ -128,7 +126,7 @@ class DestinationTab extends Component {
         };
         let changeInput = (field) => {
             if (field.key.split(',').pop() === 'name' && !field.error && field.value) {
-                let isDuplicateProperty = !!properties.find((prop) => { return prop.name.toLowerCase() === field.value.toLowerCase(); });
+                let isDuplicateProperty = !!properties.find((prop) => { return (prop.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
                 isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
             }
             this.props.actions.changeInput(field, destinationProp);
@@ -138,24 +136,21 @@ class DestinationTab extends Component {
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
                       title='Destination Info'
-                      wrapperClassName
-                    >
+                      wrapperClassName >
                         {this.renderFields()}
                     </TitledContentBox>
                 </div>
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
                       title='Properties'
-                      wrapperClassName
-                    >
+                      wrapperClassName >
                       <Property
                         canEdit={this.props.canEdit}
                         addProperty={addProperty}
                         removeProperty={removeProperty}
                         changeInput={changeInput}
                         properties={(this.props.fieldValues || {}).properties || []}
-                        errors={this.props.errors}
-                        />
+                        errors={this.props.errors} />
                     </TitledContentBox>
                 </div>
             </div>
@@ -165,7 +160,7 @@ class DestinationTab extends Component {
     render() {
         return (
             <div>
-                {this.renderInfoFields()}
+                {Object.keys(this.props.fieldValues).length > 0 && this.renderInfoFields()}
             </div>
         );
     }
@@ -184,9 +179,10 @@ const mapStateToProps = (state, ownProps) => {
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
         accountProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'accountProduct']).toJS(),
-        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),
+        destinationConfig: state.uiConfig.getIn(['profile', 'tabs', 'destination']).toJS()
     };
 };
 

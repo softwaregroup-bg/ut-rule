@@ -23,8 +23,11 @@ export function fetchNomenclatures(state, action, options) {
 }
 
 export function saveRule(state, action, options) {
+    let { mode, id } = options;
     if (action.methodRequestState === methodRequestState.FINISHED && !action.error) {
-        return state.setIn(['config', 'ruleSaved'], true);
+        return state.setIn([mode, id], fromJS(prepareRuleModel(action.result)))
+            .setIn(['rules', id], action.result)
+            .setIn(['config', 'ruleSaved'], true);
     }
     return state;
 }
@@ -95,8 +98,9 @@ export function updateRuleErrors(state, action, options) {
 export function changeInput(state, action, options) {
     let { mode, id } = options;
     let { error, errorMessage, value, key, clearLinkedErrors } = action.params;
-    if (value === __placeholder__) value = null;
-    state = state.setIn([mode, id, action.destinationProp].concat(key.split(',')), value);
+    if (value === __placeholder__ || value === '') value = null;
+    state = state.setIn([mode, id, action.destinationProp].concat(key.split(',')), value)
+        .setIn([mode, id, 'hasChanged'], !state.getIn([mode, id, 'hasChanged'], false));
     if (error) {
         return state.setIn([mode, id, 'errors', action.destinationProp].concat(key.split(',')), errorMessage);
     } else {
@@ -116,6 +120,19 @@ export function addProperty(state, action, options) {
 
 export function removeProperty(state, action, options) {
     let { mode, id } = options;
+    let delPropertyName = state.getIn([mode, id, action.destinationProp, 'properties', action.params.propertyId, 'name']);
+    // remove existing property error, if the property have same name as del property
+    let errorProperties = [];
+    ['channel', 'operation', 'source', 'destination'].forEach((tabName) => {
+        state.getIn([mode, id, tabName, 'properties']) && state.getIn([mode, id, tabName, 'properties']).map(function(p, idx) {
+            if (p.get('name') === delPropertyName && !(action.destinationProp === tabName && action.params.propertyId === idx)) {
+                errorProperties.push({ tabName, idx });
+            }
+        });
+    });
+    if (errorProperties.length === 1) {
+        state = state.setIn([mode, id, 'errors', errorProperties[0].tabName, 'properties', errorProperties[0].idx], fromJS({}));
+    }
     return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.splice(action.params.propertyId, 1))
         .updateIn([mode, id, 'errors', action.destinationProp, 'properties'], d => d.splice(action.params.propertyId, 1));
 }
@@ -155,6 +172,14 @@ export function addCumulative(state, action, options) {
 export function removeCumulative(state, action, options) {
     let { mode, id } = options;
     let { splitIndex, cumulativeId } = action.params;
+    let delCumCurrency = state.getIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives', cumulativeId, 'currency']);
+    let errorCums = [];
+    state.getIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives']).map((cum, idx) => {
+        idx !== cumulativeId && cum.get('currency') === delCumCurrency && errorCums.push(idx);
+    });
+    if (errorCums.length === 1) {
+        state = state.setIn([mode, id, 'errors', 'split', 'splits', splitIndex, 'cumulatives', errorCums[0]], fromJS({ranges: []}));
+    }
     return state.updateIn(
         [mode, id, 'split', 'splits', splitIndex, 'cumulatives'],
         v => v.splice(cumulativeId, 1))
@@ -173,11 +198,20 @@ export function addCumulativeRange(state, action, options) {
 
 export function removeCumulativeRange(state, action, options) {
     let { mode, id } = options;
+    let { splitIndex, cumulativeId, rangeId } = action.params;
+    let delSa = state.getIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives', cumulativeId, 'ranges', rangeId, 'startAmount']);
+    var errRanges = [];
+    state.getIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives', cumulativeId, 'ranges']).map((range, idx) => {
+        idx !== rangeId && range.get('startAmount') === delSa && errRanges.push(idx);
+    });
+    if (errRanges.length === 1) {
+        state = state.setIn([mode, id, 'errors', 'split', 'splits', splitIndex, 'cumulatives', cumulativeId, 'ranges', errRanges[0]], fromJS({}));
+    }
     return state.updateIn(
-        [mode, id, 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
-        v => v.splice(action.params.rangeId, 1))
-        .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex,
-            'cumulatives', action.params.cumulativeId, 'ranges'], d => d.splice(action.params.rangeId, 1));
+        [mode, id, 'split', 'splits', splitIndex, 'cumulatives', cumulativeId, 'ranges'],
+        v => v.splice(rangeId, 1))
+        .updateIn([mode, id, 'errors', 'split', 'splits', splitIndex,
+            'cumulatives', cumulativeId, 'ranges'], d => d.splice(rangeId, 1));
 }
 
 export function addSplit(state, action, options) {
@@ -188,6 +222,14 @@ export function addSplit(state, action, options) {
 
 export function removeSplit(state, action, options) {
     let { mode, id } = options;
+    let delSplitName = state.getIn([mode, id, 'split', 'splits', action.params.splitIndex, 'name']);
+    let errorSplits = [];
+    state.getIn([mode, id, 'split', 'splits']).map((sp, idx) => {
+        idx !== action.params.splitIndex && sp.get('name') === delSplitName && errorSplits.push(idx);
+    });
+    if (errorSplits.length === 1) {
+        state = state.setIn([mode, id, 'errors', 'split', 'splits', errorSplits[0]], fromJS(defaultErrorState.split.splits[0]));
+    }
     return state.updateIn([mode, id, 'split', 'splits'], v => v.splice(action.params.splitIndex, 1))
         .updateIn([mode, id, 'errors', 'split', 'splits'], d => d.splice(action.params.splitIndex, 1));
 }

@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import {fromJS} from 'immutable';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
+import { updateGridColumnStorage, prepareGridFields } from 'ut-front-react/components/GridMenu/helpers';
 import style from './style.css';
-import {getStorageColumns, toggleColumnInStorage} from 'ut-front-react/components/SimpleGrid/helpers';
 import { Link } from 'react-router';
-const propInStorage = 'rules';
+const propInStorage = 'rule_grid_fields';
 
 export default React.createClass({
     propTypes: {
@@ -19,40 +19,22 @@ export default React.createClass({
         return {
             expandedGridColumns: [],
             columns: this.props.columns,
-            fields: [
-              {title: this.props.columns.priority.title, name: 'priority', visible: true},
-              {title: this.props.columns.channel.title, name: 'channel', visible: true},
-              {title: this.props.columns.operation.title, name: 'operation', visible: true},
-              {title: this.props.columns.source.title, name: 'source', visible: true},
-              {title: this.props.columns.destination.title, name: 'destination', visible: true},
-              {title: this.props.columns.limit.title, name: 'limit', visible: true},
+            fields: prepareGridFields(propInStorage, [
+                {title: this.props.columns.priority.title, name: 'priority'},
+                {title: this.props.columns.channel.title, name: 'channel'},
+                {title: this.props.columns.operation.title, name: 'operation'},
+                {title: this.props.columns.source.title, name: 'source'},
+                {title: this.props.columns.destination.title, name: 'destination'},
+                {title: this.props.columns.limit.title, name: 'limit'},
                 {
-                    title: <div>Expansion</div>,
-                    name: 'expansion',
-                    visible: true
+                    title: 'Expansion',
+                    name: 'expansion'
                 }
-            ]
+            ].map(f => {
+                f.key = f.name;
+                return f;
+            }))
         };
-    },
-    componentWillMount() {
-        this.setVisibleColumns(this.props);
-    },
-    componentWillReceiveProps(nextProps) {
-        this.setVisibleColumns(nextProps);
-    },
-    setVisibleColumns(props) {
-        let showDeleted = props.showDeleted;
-        let invisibleColumns = showDeleted ? ['channel', 'operation', 'destination', 'source', 'limit', 'expansion'] : getStorageColumns(propInStorage);
-        let fieldsWithVisibility = this.state.fields.map((field) => {
-            if (invisibleColumns.includes(field['name'])) {
-                field['visible'] = false;
-            }
-            return field;
-        });
-        this.setState({fields: fieldsWithVisibility});
-        if (!showDeleted) {
-            this.setState(this.getInitialState);
-        }
     },
     handleGridExpansion(id) {
         let expandedGridColumns = this.state.expandedGridColumns;
@@ -119,15 +101,20 @@ export default React.createClass({
     handleRowClick(record, index) {
         this.props.handleCheckboxSelect(null, record);
     },
-    toggleColumn(field) {
-        let stateFields = this.state.fields;
-        stateFields.map(stateField => {
-            if (stateField.name === field.name && stateField.name !== 'expansion') {
-                toggleColumnInStorage(propInStorage, field.name);
-                stateField.visible = !stateField.visible;
-            }
-        });
-        this.setState({fields: stateFields});
+    toggleColumn(col) {
+        var fields = this.state.fields;
+        var visibleFields = fields.filter((f) => { return f.visible !== false; });
+        if (visibleFields.length !== 1 || col.visible === false) {
+            var newFields = col && fields.map(function(f) {
+                if (col.key === f.key) {
+                    f.visible = f.visible === false ? !0 : !1;
+                }
+                return f;
+            });
+            col.visible = col.visible === false ? !0 : !1;
+            updateGridColumnStorage(propInStorage, col);
+            this.setState({fields: newFields});
+        }
     },
     getData() {
         return Object.keys(this.props.data).map((conditionId, i) => {

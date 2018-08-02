@@ -21,6 +21,7 @@ BEGIN TRY
             FROM [rule].condition
             WHERE [priority] = (SELECT [priority] FROM @condition)
             AND conditionId != @conditionId
+            AND isDeleted = 0
         )
         BEGIN
             RAISERROR ('rule.duplicatedPriority', 16, 1)

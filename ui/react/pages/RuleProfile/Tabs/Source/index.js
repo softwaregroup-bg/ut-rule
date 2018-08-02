@@ -22,7 +22,8 @@ const propTypes = {
     cardProducts: PropTypes.array,
     accountProducts: PropTypes.array,
     fieldValues: PropTypes.object,
-    errors: PropTypes.object // immutable
+    errors: PropTypes.object, // immutable
+    sourceConfig: PropTypes.object.isRequired
 };
 
 const defaultProps = {
@@ -49,51 +50,50 @@ class SourceTab extends Component {
             organizations,
             cardProducts,
             accountProducts,
-            fieldValues
+            fieldValues,
+            sourceConfig: { fields }
         } = this.props;
         let readonly = !canEdit;
         let changeInput = (field, value) => {
             this.props.actions.changeInput(field, destinationProp);
         };
+
         return (
             <div>
-                <div className={style.inputWrapper}>
+                {fields.country.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                       boldLabel
                       disabled={readonly}
                       keyProp='countries'
-                      label={'Country'}
+                      label={fields.country.title || 'Country'}
                       placeholder='Select Country'
                       defaultSelected={fieldValues.countries}
                       data={countries}
-                      onSelect={(field) => { changeInput(field); }}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
+                      onSelect={(field) => { changeInput(field); }} />
+                </div>}
+                {fields.region.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                       boldLabel
                       disabled={readonly}
                       keyProp='regions'
-                      label={'Region'}
+                      label={fields.region.title || 'Region'}
                       placeholder='Select Region'
                       defaultSelected={fieldValues.regions}
                       data={regions}
-                      onSelect={(field) => { changeInput(field); }}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
+                      onSelect={(field) => { changeInput(field); }} />
+                </div>}
+                {fields.city.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                       boldLabel
                       disabled={readonly}
                       keyProp='cities'
-                      label='City'
+                      label={fields.city.title || 'City'}
                       placeholder='Select City'
                       defaultSelected={fieldValues.cities}
                       data={cities}
-                      onSelect={(field) => { changeInput(field); }}
-                      />
-                </div>
-                <div className={style.inputWrapper}>
+                      onSelect={(field) => { changeInput(field); }} />
+                </div>}
+                {fields.organization.visible && <div className={style.inputWrapper}>
                     <Dropdown
                       disabled={readonly}
                       canSelectPlaceholder
@@ -102,22 +102,21 @@ class SourceTab extends Component {
                       defaultSelected={fieldValues.organization}
                       placeholder='Select Organization'
                       onSelect={(field) => { changeInput(field); }}
-                      label={'Organization'}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
-                    <Dropdown
+                      label={fields.organization.title || 'Organization'} />
+                </div>}
+                {fields.cardProduct.visible && <div className={style.inputWrapper}>
+                    <MultiSelectDropdown
+                      boldLabel
                       disabled={readonly}
                       canSelectPlaceholder
-                      keyProp={'cardProduct'}
+                      keyProp={'cardProducts'}
                       data={cardProducts}
-                      defaultSelected={fieldValues.cardProduct}
+                      defaultSelected={fieldValues.cardProducts}
                       placeholder='Select Product'
                       onSelect={(field) => { changeInput(field); }}
-                      label={'Product'}
-                    />
-                </div>
-                <div className={style.inputWrapper}>
+                      label={fields.cardProduct.title || 'Product'} />
+                </div>}
+                {fields.accountProduct.visible && <div className={style.inputWrapper}>
                     <Dropdown
                       disabled={readonly}
                       canSelectPlaceholder
@@ -126,9 +125,8 @@ class SourceTab extends Component {
                       defaultSelected={fieldValues.accountProduct}
                       placeholder='Select Account Product'
                       onSelect={(field) => { changeInput(field); }}
-                      label={'Account Product'}
-                    />
-                </div>
+                      label={fields.accountProduct.title || 'Account Product'} />
+                </div>}
             </div>
         );
     }
@@ -143,7 +141,7 @@ class SourceTab extends Component {
         };
         let changeInput = (field) => {
             if (field.key.split(',').pop() === 'name' && !field.error && field.value) {
-                let isDuplicateProperty = !!properties.find((prop) => { return prop.name.toLowerCase() === field.value.toLowerCase(); });
+                let isDuplicateProperty = !!properties.find((prop) => { return (prop.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
                 isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
             }
             this.props.actions.changeInput(field, destinationProp);
@@ -153,24 +151,21 @@ class SourceTab extends Component {
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
                       title='Source Info'
-                      wrapperClassName
-                    >
+                      wrapperClassName >
                         {this.renderFields()}
                     </TitledContentBox>
                 </div>
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
                       title='Properties'
-                      wrapperClassName
-                    >
+                      wrapperClassName >
                       <Property
                         canEdit={this.props.canEdit}
                         addProperty={addProperty}
                         removeProperty={removeProperty}
                         changeInput={changeInput}
                         properties={(this.props.fieldValues || {}).properties || []}
-                        errors={this.props.errors}
-                        />
+                        errors={this.props.errors} />
                     </TitledContentBox>
                 </div>
             </div>
@@ -180,7 +175,7 @@ class SourceTab extends Component {
     render() {
         return (
             <div>
-                {this.renderInfoFields()}
+                {Object.keys(this.props.fieldValues).length > 0 && this.renderInfoFields()}
             </div>
         );
     }
@@ -201,8 +196,9 @@ const mapStateToProps = (state, ownProps) => {
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
         cardProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'cardProduct']).toJS(),
         accountProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'accountProduct']).toJS(),
-        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp]).toJS(),
-        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({})
+        fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
+        errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),
+        sourceConfig: state.uiConfig.getIn(['profile', 'tabs', 'source']).toJS()
     };
 };
 

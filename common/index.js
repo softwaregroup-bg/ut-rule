@@ -18,6 +18,7 @@ const propMap = {
     region: 'regions',
     city: 'cities',
     operation: 'operations',
+    cardProduct: 'cardProducts',
     so: 'source',
     do: 'destination',
     co: 'channel',
@@ -27,6 +28,14 @@ const propMap = {
     oc: 'operation',
     sc: 'source',
     dc: 'destination'
+};
+
+const stringify = (value) => {
+    if (value !== undefined && value !== null && value >= 0) {
+        return value.toString();
+    }
+
+    return null;
 };
 
 function prepareRuleModel(dbresult) {
@@ -40,8 +49,19 @@ function prepareRuleModel(dbresult) {
             cities: [],
             regions: []
         },
-        destination: { properties: [], countries: [], cities: [], regions: [] },
-        source: { properties: [], countries: [], cities: [], regions: [] },
+        destination: {
+            properties: [],
+            countries: [],
+            cities: [],
+            regions: []
+        },
+        source: {
+            properties: [],
+            countries: [],
+            cities: [],
+            regions: [],
+            cardProducts: []
+        },
         split: {
             splits: []
         },
@@ -59,7 +79,7 @@ function prepareRuleModel(dbresult) {
     });
     // condition item
     (dbresult.conditionItem || []).forEach((item) => {
-        if (['operation', 'country', 'city', 'region'].indexOf(item.type) > -1) {
+        if (['operation', 'country', 'city', 'region', 'cardProduct'].indexOf(item.type) > -1) {
             var obj = rule[propMap[item.factor]] && rule[propMap[item.factor]][propMap[item.type]];
             obj && obj.push({
                 key: item.itemNameId,
@@ -83,14 +103,14 @@ function prepareRuleModel(dbresult) {
             conditionId: condition.conditionId,
             limitId: limit.limitId,
             currency: limit.currency,
-            txMin: limit.minAmount,
-            txMax: limit.maxAmount,
-            dailyMaxAmount: limit.maxAmountDaily,
-            dailyMaxCount: parseInt(limit.maxCountDaily) || '',
-            weeklyMaxAmount: limit.maxAmountWeekly,
-            weeklyMaxCount: parseInt(limit.maxCountWeekly) || '',
-            monthlyMaxAmount: limit.maxAmountMonthly,
-            monthlyMaxCount: parseInt(limit.maxCountMonthly) || ''
+            txMin: stringify(limit.minAmount),
+            txMax: stringify(limit.maxAmount),
+            dailyMaxAmount: stringify(limit.maxAmountDaily),
+            dailyMaxCount: stringify(limit.maxCountDaily),
+            weeklyMaxAmount: stringify(limit.maxAmountWeekly),
+            weeklyMaxCount: stringify(limit.maxCountWeekly),
+            monthlyMaxAmount: stringify(limit.maxAmountMonthly),
+            monthlyMaxCount: stringify(limit.maxCountMonthly)
         });
     });
     // split

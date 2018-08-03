@@ -32,7 +32,7 @@ const Range = React.createClass({
     onChangeInput(index) {
         let self = this;
         return (field) => {
-            self.context.onFieldChange('split.' + self.props.splitIndex + '.splitCumulative.' + self.props.cumulativeIndex + '.splitRange', index, field.key, stringifyNumber(field.value));
+            self.context.onFieldChange('split.' + self.props.splitIndex + '.splitCumulative.' + self.props.cumulativeIndex + '.splitRange', index, field.key, field.value);
         };
     },
     onDeleteRow(index) {
@@ -68,7 +68,7 @@ const Range = React.createClass({
                     <Input
                       keyProp='percent'
                       onChange={self.onChangeInput(index)}
-                      value={stringifyNumber(splitRange.percent)}
+                      value={'' + (splitRange.percent || '')}
                     />
                 </td>
                 <td>

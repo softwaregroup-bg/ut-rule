@@ -33,7 +33,11 @@ BEGIN TRY
         UPDATE c
         SET [priority] = c1.[priority],
             operationStartDate = c1.operationStartDate,
-            operationEndDate = c1.operationEndDate,
+            operationEndDate =
+                CASE
+                    WHEN c1.operationEndDate IS NULL THEN c1.operationEndDate
+                    WHEN c1.operationEndDate IS NOT NULL THEN DATEADD(ms, 86399997, CAST(CAST(c1.operationEndDate AS DATE) AS DATETIME))
+                END,
             sourceAccountId = c1.sourceAccountId,
             destinationAccountId = c1.destinationAccountId,
             updatedOn = GETDATE(),

@@ -27,17 +27,14 @@ BEGIN TRY
             RAISERROR ('rule.duplicatedPriority', 16, 1)
         END
 
+    SET @conditionId = (SELECT conditionId FROM @condition)
+
     BEGIN TRANSACTION
-        SET @conditionId = (SELECT conditionId FROM @condition)
 
         UPDATE c
         SET [priority] = c1.[priority],
             operationStartDate = c1.operationStartDate,
-            operationEndDate =
-                CASE
-                    WHEN c1.operationEndDate IS NULL THEN c1.operationEndDate
-                    WHEN c1.operationEndDate IS NOT NULL THEN DATEADD(ms, 86399997, CAST(CAST(c1.operationEndDate AS DATE) AS DATETIME))
-                END,
+            operationEndDate = DATEADD(ms, -3, DATEADD(dd, 1, DATEADD(dd, DATEDIFF(dd, 0, c1.operationEndDate), 0))), -- the last time on this date - 23:59:59.997
             sourceAccountId = c1.sourceAccountId,
             destinationAccountId = c1.destinationAccountId,
             updatedOn = GETDATE(),

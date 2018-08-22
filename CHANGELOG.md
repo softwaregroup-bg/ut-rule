@@ -1,3 +1,16 @@
+<a name="9.19.1"></a>
+## [9.19.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.19.0...v9.19.1) (2018-08-22)
+
+
+### Bug Fixes
+
+* operation end date ([d82286a](https://github.com/softwaregroup-bg/ut-rule/commit/d82286a))
+* operationEndDate ([2dac44b](https://github.com/softwaregroup-bg/ut-rule/commit/2dac44b))
+* operationEndDate to be set with the last possible time on this date - 23:59:59.997 ([19dc9c4](https://github.com/softwaregroup-bg/ut-rule/commit/19dc9c4))
+* operationEndDate to be set with the last possible time on this date - 23:59:59.997 ([a3a7441](https://github.com/softwaregroup-bg/ut-rule/commit/a3a7441))
+
+
+
 <a name="9.19.0"></a>
 # [9.19.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.19.0-rc-einstein.19...v9.19.0) (2018-08-02)
 

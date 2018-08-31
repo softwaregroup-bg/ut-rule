@@ -52,7 +52,7 @@ const Splits = React.createClass({
             // {key: 'acquirer', name: 'Acquirer'},
             {key: 'fee', name: 'Fee'},
             {key: 'vat', name: 'VAT'},
-            {key: 'wth', name: 'WTH'},
+            {key: 'wth', name: 'WHT'},
             {key: 'otherTax', name: 'Other Tax'},
             {key: 'realtime', name: 'Real Time'},
             {key: 'agentCommission', name: 'Delayed'}

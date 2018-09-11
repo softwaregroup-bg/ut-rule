@@ -704,9 +704,17 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
         // }
 
         const isEdit = this.props.isEdit;
-        const title = isEdit
-          ? 'Edit Rule'
-          : 'Create Rule';
+        const hasEditPermission = this.props.hasEditPermission;
+        let title = '';
+        if (isEdit) {
+            if (hasEditPermission) {
+                title = 'View Rule';
+            } else {
+                title = 'Edit Rule';
+            }
+        } else {
+            title = 'Create Rule';
+        }
         const extraElements = [
             <Input
               keyProp='priority'
@@ -715,22 +723,22 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
               value={'' + (this.state.data.condition[0].priority || '')}
             />
         ];
-        const actionButtons = [
-            {
+        const actionButtons = [];
+        if (!isEdit || hasEditPermission) {
+            actionButtons.push({
                 text: 'Save',
                 onClick: this.save,
                 permissions: [],
                 styleType: 'primaryLight',
                 performFullValidation: true
-            },
-            {
-                text: 'Close',
-                onClick: () => this.props.onClose(),
-                permissions: [],
-                styleType: 'secondaryDark'
-            }
-        ];
-
+            });
+        }
+        actionButtons.push({
+            text: 'Close',
+            onClick: () => this.props.onClose(),
+            permissions: [],
+            styleType: 'secondaryDark'
+        });
         return (
           <Page>
             <Container>

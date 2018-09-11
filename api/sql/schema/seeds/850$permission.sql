@@ -22,6 +22,7 @@ USING
         ('rule.rule.edit', 'rule.rule.edit', '{}'),
         ('rule.rule.fetch', 'rule.rule.fetch', '{}'),
         ('rule.rule.remove', 'rule.rule.remove', '{}'),
+        ('rule.rule.view', 'rule.rule.view', '{}'),
         ('rule.item.fetch', 'rule.item.fetch', '{}')
     ) AS source (actionId, description, valueMap)
 JOIN

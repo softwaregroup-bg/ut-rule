@@ -121,6 +121,16 @@ const Main = React.createClass({
         this.setState({
             dialog: {
                 open: true,
+                hasEditPermission: this.context.checkPermission('rule.rule.edit'),
+                conditionId: Object.keys(this.state.selectedConditions)[0]
+            }
+        });
+    },
+    viewBtnOnClick() {
+        this.setState({
+            dialog: {
+                open: true,
+                hasEditPermission: false,
                 conditionId: Object.keys(this.state.selectedConditions)[0]
             }
         });
@@ -238,6 +248,7 @@ const Main = React.createClass({
                 ? <Dialog
                     ref='dialog'
                     open={this.state.dialog.open}
+                    hasEditPermission={this.state.dialog.hasEditPermission}
                     isEdit={!!this.state.dialog.conditionId}
                     data={this.props.rules[this.state.dialog.conditionId]}
                     conditionProperty={this.props.conditionProperty}
@@ -307,9 +318,13 @@ const Main = React.createClass({
                                         label='Edit'
                                     />
                                 }
+                                {this.context.checkPermission('rule.rule.view') && <button onClick={this.viewBtnOnClick} className={classnames('button btn btn-primary', style.deleteButton)}>
+                                    View
+                                </button>
+                                }
                                 {this.context.checkPermission('rule.rule.remove') && <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
                                     Delete
-                            </button>
+                                </button>
                                 }
                             </div>
                         </ToolboxButtons>

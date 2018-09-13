@@ -314,6 +314,7 @@ const Main = React.createClass({
                                 {this.context.checkPermission('rule.rule.edit') &&
                                     <Button
                                         onClick={this.editBtnOnClick}
+                                        disabled={!this.state.canEdit}
                                         styleType='secondaryDark'
                                         label='Edit'
                                     />

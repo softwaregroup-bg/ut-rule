@@ -708,9 +708,9 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
         let title = '';
         if (isEdit) {
             if (hasEditPermission) {
-                title = 'View Rule';
-            } else {
                 title = 'Edit Rule';
+            } else {
+                title = 'View Rule';
             }
         } else {
             title = 'Create Rule';

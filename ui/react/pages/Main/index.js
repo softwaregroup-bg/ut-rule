@@ -96,6 +96,7 @@ const Main = React.createClass({
         this.setState({
             selectedConditions: selectedConditions,
             canEdit: count === 1,
+            canView: count === 1,
             canDelete: count > 0,
             showFilter: count === 0,
             showButtons: count > 0
@@ -106,6 +107,7 @@ const Main = React.createClass({
         this.setState({
             selectedConditions: isSelected ? {} : Object.keys(this.props.rules).reduce((all, key) => { all[key] = true; return all; }, {}),
             canEdit: false,
+            canView: false,
             canDelete: !isSelected
         });
     },
@@ -319,7 +321,7 @@ const Main = React.createClass({
                                         label='Edit'
                                     />
                                 }
-                                {this.context.checkPermission('rule.rule.view') && <button onClick={this.viewBtnOnClick} className={classnames('button btn btn-primary', style.deleteButton)}>
+                                {this.context.checkPermission('rule.rule.view') && <button onClick={this.viewBtnOnClick} className={classnames('button btn btn-primary', style.deleteButton)}  disabled={!this.state.canView}>
                                     View
                                 </button>
                                 }

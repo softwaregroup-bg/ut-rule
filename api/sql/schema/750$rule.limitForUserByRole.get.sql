@@ -4,6 +4,7 @@ ALTER PROCEDURE [rule].[limitForUserByRole.get] --retrieve the rule limits set p
     @currency VARCHAR(3) = 'USD', --limit currency
     @property NVARCHAR (50) = 'loanApprovalLevel', -- condition property
     @nextLevel BIT = 0, -- flag if next level limit is searched
+    @approvedAmount MONEY = NULL, -- already approved amount
     @meta core.metaDataTT READONLY -- information for the user that makes the operation
 AS
 
@@ -123,18 +124,36 @@ BEGIN TRY
     END
     ELSE -- return next level limits and list of users with that role
     BEGIN
-        SELECT
-            name,
-            actorId AS roleId,
-            currency,
-            minAmount,
-            maxAmount,
-            approvalLevel,
-            @minApprovalAmount AS minApprovalAmount,
-            @maxApprovalAmount AS maxApprovalAmount,
-            @maxApprovalLevel AS maxApprovalLevel
-        FROM #temp t
-        WHERE actorId = @nextLevelRoleId;
+        IF ISNULL(@approvedAmount, 0) = 0
+        BEGIN
+            SELECT
+                name,
+                actorId AS roleId,
+                currency,
+                minAmount,
+                maxAmount,
+                approvalLevel,
+                @minApprovalAmount AS minApprovalAmount,
+                @maxApprovalAmount AS maxApprovalAmount,
+                @maxApprovalLevel AS maxApprovalLevel
+            FROM #temp t
+            WHERE actorId = @nextLevelRoleId;
+        END
+        ELSE
+        BEGIN
+            SELECT
+                name,
+                actorId AS roleId,
+                currency,
+                minAmount,
+                maxAmount,
+                approvalLevel,
+                @minApprovalAmount AS minApprovalAmount,
+                @maxApprovalAmount AS maxApprovalAmount,
+                @maxApprovalLevel AS maxApprovalLevel
+            FROM #temp t
+            WHERE minAmount = @approvedAmount;
+        END;
 
         WITH users AS
         (
@@ -154,9 +173,11 @@ BEGIN TRY
         )
 
         --select only users from the nearest BU
-        SELECT actorId, fullName
-        FROM users
-        WHERE level = (SELECT MIN(level) FROM users)
+        SELECT u.actorId, u.fullName
+        FROM users u
+        JOIN [user].[user] uu ON uu.actorId = u.actorId
+        WHERE uu.isEnabled = 1
+            AND u.level = (SELECT MIN(level) FROM users)
 
         DROP TABLE #temp
 

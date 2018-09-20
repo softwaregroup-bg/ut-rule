@@ -32,11 +32,7 @@ var wrapper = {
 
 module.exports = {
     start: function() {
-        if (this.errors) {
-            Object.assign(this.errors, errorsFactory(this.defineError));
-        } else {
-            this.errors = errorsFactory(this.defineError);
-        }
+        Object.assign(this.errors, errorsFactory(this.bus.errors));
     },
     'item.fetch': function(msg, $meta) {
         var pending = [];

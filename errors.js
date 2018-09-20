@@ -1,30 +1,32 @@
 
-module.exports = (create) => {
-    const Rule = create('rule', null, 'ut-rule rule error', 'error');
-    return {
-        rule: cause => new Rule(cause),
-        generic: create('generic', Rule),
-        ruleNotExists: create('ruleNotExists', Rule, 'Rule does not exists'),
-        exceedMaxLimitAmount: create('exceedMaxLimitAmount', Rule, 'Transaction amount is above maximum'),
-        exceedMinLimitAmount: create('exceedMinLimitAmount', Rule, 'Transaction amount is below minimum'),
-        reachedDailyLimitAmount: create('reachedDailyLimitAmount', Rule, 'Daily amount limit reached'),
-        reachedWeeklyLimitAmount: create('reachedWeeklyLimitAmount', Rule, 'Weekly amount limit reached'),
-        reachedMonthlyLimitAmount: create('reachedMonthlyLimitAmount', Rule, 'Monthly amount limit reached'),
-        exceedDailyLimitAmount: create('exceedDailyLimitAmount', Rule, 'Daily amount limit exceeded'),
-        exceedWeeklyLimitAmount: create('exceedWeeklyLimitAmount', Rule, 'Weekly amount limit exceeded'),
-        exceedMonthlyLimitAmount: create('exceedMonthlyLimitAmount', Rule, 'Monthly amount limit exceeded'),
-        exceedDailyLimitCount: create('exceedDailyLimitCount', Rule, 'Daily count limit reached'),
-        exceedWeeklyLimitCount: create('exceedWeeklyLimitCount', Rule, 'Weekly count limit reached'),
-        exceedMonthlyLimitCount: create('exceedMonthlyLimitCount', Rule, 'Monthly count limit reached'),
-        duplicatedPriority: create('duplicatedPriority', Rule, 'Rule with this priority already exists'),
-        securityViolation: create('securityViolation', Rule, 'Unauthorized operation'),
-        unauthorizedMinLimitAmount: create('unauthorizedMinLimitAmount', Rule, 'Transaction amount below minimum unauthorized'),
-        unauthorizedMaxLimitAmount: create('unauthorizedMaxLimitAmount', Rule, 'Transaction amount above maximum unauthorized'),
-        unauthorizedDailyLimitAmount: create('unauthorizedDailyLimitAmount', Rule, 'Daily amount limit unauthorized'),
-        unauthorizedDailyLimitCount: create('unauthorizedDailyLimitCount', Rule, 'Daily count limit unauthorized'),
-        unauthorizedWeeklyLimitAmount: create('unauthorizedWeeklyLimitAmount', Rule, 'Weekly amount limit unauthorized'),
-        unauthorizedWeeklyLimitCount: create('unauthorizedWeeklyLimitCount', Rule, 'Weekly count limit unauthorized'),
-        unauthorizedMonthlyLimitAmount: create('unauthorizedMonthlyLimitAmount', Rule, 'Monthly amount limit unauthorized'),
-        unauthorizedMonthlyLimitCount: create('unauthorizedMonthlyLimitCount', Rule, 'Monthly count limit unauthorized')
-    };
+module.exports = ({defineError, getError, fetchErrors}) => {
+    if (!getError('rule')) {
+        const Rule = defineError('rule', null, 'ut-rule rule error', 'error');
+
+        defineError('generic', Rule);
+        defineError('ruleNotExists', Rule, 'Rule does not exists');
+        defineError('exceedMaxLimitAmount', Rule, 'Transaction amount is above maximum');
+        defineError('exceedMinLimitAmount', Rule, 'Transaction amount is below minimum');
+        defineError('reachedDailyLimitAmount', Rule, 'Daily amount limit reached');
+        defineError('reachedWeeklyLimitAmount', Rule, 'Weekly amount limit reached');
+        defineError('reachedMonthlyLimitAmount', Rule, 'Monthly amount limit reached');
+        defineError('exceedDailyLimitAmount', Rule, 'Daily amount limit exceeded');
+        defineError('exceedWeeklyLimitAmount', Rule, 'Weekly amount limit exceeded');
+        defineError('exceedMonthlyLimitAmount', Rule, 'Monthly amount limit exceeded');
+        defineError('exceedDailyLimitCount', Rule, 'Daily count limit reached');
+        defineError('exceedWeeklyLimitCount', Rule, 'Weekly count limit reached');
+        defineError('exceedMonthlyLimitCount', Rule, 'Monthly count limit reached');
+        defineError('duplicatedPriority', Rule, 'Rule with this priority already exists');
+        defineError('securityViolation', Rule, 'Unauthorized operation');
+        defineError('unauthorizedMinLimitAmount', Rule, 'Transaction amount below minimum unauthorized');
+        defineError('unauthorizedMaxLimitAmount', Rule, 'Transaction amount above maximum unauthorized');
+        defineError('unauthorizedDailyLimitAmount', Rule, 'Daily amount limit unauthorized');
+        defineError('unauthorizedDailyLimitCount', Rule, 'Daily count limit unauthorized');
+        defineError('unauthorizedWeeklyLimitAmount', Rule, 'Weekly amount limit unauthorized');
+        defineError('unauthorizedWeeklyLimitCount', Rule, 'Weekly count limit unauthorized');
+        defineError('unauthorizedMonthlyLimitAmount', Rule, 'Monthly amount limit unauthorized');
+        defineError('unauthorizedMonthlyLimitCount', Rule, 'Monthly count limit unauthorized');
+    }
+
+    return fetchErrors('rule');
 };

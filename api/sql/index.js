@@ -1,9 +1,14 @@
-var path = require('path');
+const path = require('path');
+const errorFactory = require('../../errors');
+
 module.exports = {
     schema: [
         {path: path.join(__dirname, 'schema'), linkSP: true},
         {path: path.join(__dirname, 'schema/seeds')}
     ],
+    start: function() {
+        errorFactory(this.bus.errors); // initialize errors
+    },
     'decision.lookup.response.receive': result => {
         if (result && Array.isArray(result.split)) {
             result.split.forEach(split => {

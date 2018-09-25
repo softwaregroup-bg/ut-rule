@@ -8,7 +8,8 @@ module.exports = {
         operation: joi.string().optional(),
         currency: joi.string().optional(),
         property: joi.string().optional(),
-        nextLevel: joi.boolean().optional()
+        nextLevel: joi.boolean().optional(),
+        approvedAmount: joi.number().optional()
     }),
     result: joi.any()
 };

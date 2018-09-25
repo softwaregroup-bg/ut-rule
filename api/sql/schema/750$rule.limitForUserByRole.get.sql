@@ -139,8 +139,10 @@ BEGIN TRY
             FROM #temp t
             WHERE actorId = @nextLevelRoleId;
         END
-        ELSE
+        ELSE -- if approved amount <> 0, return role with minApprovalAmount = @approvedAmount, for reassignment
         BEGIN
+            SET @nextLevelRoleId = (SELECT actorId FROM #temp t WHERE minAmount = @approvedAmount)
+
             SELECT
                 name,
                 actorId AS roleId,

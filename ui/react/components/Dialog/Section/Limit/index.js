@@ -127,11 +127,11 @@ const SectionLimit = React.createClass({
                             <th>Min</th>
                             <th>Max</th>
                             <th>Max Amount</th>
-                            <th>Max Count</th>
+                            <th>Max Number of Transactions</th>
                             <th>Max Amount</th>
-                            <th>Max Count</th>
+                            <th>Max Number of Transactions</th>
                             <th>Max Amount</th>
-                            <th>Max Count</th>
+                            <th>Max Number of Transactions</th>
                         </tr>
                     </thead>
                     <tbody>

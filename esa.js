@@ -3,6 +3,9 @@ module.exports = function utRule() {
         ports: [],
         modules: {
             'db/rule': require('./api/sql')
-        }
+        },
+        errors: [
+            require('./errors')
+        ]
     };
 };

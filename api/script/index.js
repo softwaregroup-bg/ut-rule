@@ -1,6 +1,5 @@
 var prepareHistory = require('../../history/prepare');
 var historyConfig = require('../../history/config');
-const errorsFactory = require('../../errors');
 var wrapper = {
     'itemName': function(msg, $meta) {
         return this.bus.importMethod('core.itemName.fetch')(msg, $meta);
@@ -31,9 +30,6 @@ var wrapper = {
 };
 
 module.exports = {
-    start: function() {
-        Object.assign(this.errors, errorsFactory(this.bus.errors));
-    },
     'item.fetch': function(msg, $meta) {
         var pending = [];
 

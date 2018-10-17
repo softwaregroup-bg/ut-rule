@@ -362,6 +362,12 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
         // creating a deep copy, needed for set()
         let data = JSON.parse(JSON.stringify(this.state.data));
         set(data, path, value === '__placeholder__' ? undefined : value);
+        
+        const pairFields = {'sourceAccountNumber': 'sourceAccountId', 'destinationAccountNumber': 'destinationAccountId'};
+        if (pairFields[key] && data[category][index][pairFields[key]]) {
+            path = [category, index, pairFields[key]].join('.');
+            set(data, path, value === '__placeholder__' ? undefined : value);
+        }
         this.setState({ data });
     },
     addLimitRow() {

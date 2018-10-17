@@ -119,6 +119,9 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules, nomenc
     //     }
     // };
     let result = {};
+    let hasValue = (value) => {
+        return value !== null && value !== undefined;
+    };
     fetchedData.conditionItem.forEach((item) => {
         if (!result[item.conditionId]) {
             result[item.conditionId] = {};
@@ -184,28 +187,28 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules, nomenc
                         value: limit.currency
                     });
                 }
-                if (limit.maxAmount && limit.minAmount) {
+                if (hasValue(limit.maxAmount) || hasValue(limit.minAmount)) {
                     result[conditionId]['limit'].push({
                         name: 'Transaction',
-                        value: (limit.maxAmount ? 'max ' + limit.maxAmount + ' ' : '') + (limit.minAmount ? 'min ' + limit.minAmount + ' ' : '')
+                        value: ( hasValue(limit.maxAmount) ? 'max ' + limit.maxAmount + ' ' : '') + (hasValue(limit.minAmount) ? 'min ' + limit.minAmount + ' ' : '')
                     });
                 }
-                if (limit.maxAmountDaily && limit.maxCountDaily) {
+                if (hasValue(limit.maxAmountDaily) || hasValue(limit.maxCountDaily)) {
                     result[conditionId]['limit'].push({
                         name: 'Daily',
-                        value: (limit.maxAmountDaily ? 'max ' + limit.maxAmountDaily + ' ' : '') + (limit.maxCountDaily ? 'count ' + limit.maxCountDaily + ' ' : '')
+                        value: (hasValue(limit.maxAmountDaily) ? 'max ' + limit.maxAmountDaily + ' ' : '') + (hasValue(limit.maxCountDaily) ? 'count ' + limit.maxCountDaily + ' ' : '')
                     });
                 }
-                if (limit.maxAmountWeekly && limit.maxCountWeekly) {
+                if (hasValue(limit.maxAmountWeekly) || hasValue(limit.maxCountWeekly)) {
                     result[conditionId]['limit'].push({
                         name: 'Weekly',
-                        value: (limit.maxAmountWeekly ? 'max ' + limit.maxAmountWeekly + ' ' : '') + (limit.maxCountWeekly ? 'count ' + limit.maxCountWeekly + ' ' : '')
+                        value: (hasValue(limit.maxAmountWeekly) ? 'max ' + limit.maxAmountWeekly + ' ' : '') + (hasValue(limit.maxCountWeekly) ? 'count ' + limit.maxCountWeekly + ' ' : '')
                     });
                 }
-                if (limit.maxAmountMonthly && limit.maxCountMonthly) {
+                if (hasValue(limit.maxAmountMonthly) || hasValue(limit.maxCountMonthly)) {
                     result[conditionId]['limit'].push({
                         name: 'Monthly',
-                        value: (limit.maxAmountMonthly ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (limit.maxCountMonthly ? 'count ' + limit.maxCountMonthly + ' ' : '')
+                        value: (hasValue(limit.maxAmountMonthly) ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (hasValue(limit.maxCountMonthly) ? 'count ' + limit.maxCountMonthly + ' ' : '')
                     });
                 }
             });

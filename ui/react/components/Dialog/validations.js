@@ -300,9 +300,6 @@ let schema = joi.object().keys({
 });
 module.exports = {
     run: (objToValidate, options = {}) => {
-        console.log(objToValidate);
-        console.log('\n===================================\n')
-        console.log(schema);
         return joi.validate(objToValidate, schema, Object.assign({}, {
             allowUnknown: true,
             abortEarly: false

@@ -232,7 +232,8 @@ let schema = joi.object().keys({
                             base: 'is required for all splits'
                         }
                     }
-                })
+                }),
+                tag: joi.array().min(1)
             }),
             splitCumulative: joi.array().items(
                  joi.object().keys({

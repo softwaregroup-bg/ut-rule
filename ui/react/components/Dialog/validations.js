@@ -300,6 +300,9 @@ let schema = joi.object().keys({
 });
 module.exports = {
     run: (objToValidate, options = {}) => {
+        console.log(objToValidate);
+        console.log('\n===================================\n')
+        console.log(schema);
         return joi.validate(objToValidate, schema, Object.assign({}, {
             allowUnknown: true,
             abortEarly: false
@@ -334,6 +337,35 @@ function customValidation(obj) {
             if (Array.isArray(splitCumulative)) {
                 for (const cummulative of splitCumulative) {
                     // amounts
+                    if (cummulative.dailyAmount) {
+                        if (!isNumber(cummulative.dailyAmount)) {
+                            errors.push('Daily Amount must be a number');
+                        } else if (isNumber(cummulative.dailyAmount) && cummulative.dailyAmount < 0) {
+                            errors.push('Daily Amount must be a positive number');
+                        }
+                    }
+
+                    if (cummulative.weeklyAmount) {
+                        if (cummulative.weeklyAmount && !isNumber(cummulative.weeklyAmount)) {
+                            errors.push('Weekly Amount must be a number');
+                        } else if (cummulative.weeklyAmount && isNumber(cummulative.weeklyAmount) && cummulative.weeklyAmount < 0) {
+                            errors.push('Weekly Amount must be a positive number');
+                        }
+                    }
+                    if (cummulative.mounthlyAmount && !isNumber(cummulative.mounthlyAmount)) {
+                        errors.push('Monthly Amount must be a number');
+                    } else if (cummulative.mounthlyAmount && isNumber(cummulative.mounthlyAmount) && cummulative.mounthlyAmount < 0) {
+                        errors.push('Monthly Amount must be a positive number');
+                    }
+                    if (isBiggerThan(cummulative.dailyAmount, cummulative.weeklyAmount)) {
+                        errors.push('Daily Amount should be smaller than Weekly Amount');
+                    }
+                    if (isBiggerThan(cummulative.dailyAmount, cummulative.mounthlyAmount)) {
+                        errors.push('Daily Amount should be smaller than Monthly Amount');
+                    }
+                    if (isBiggerThan(cummulative.weeklyAmount, cummulative.mounthlyAmount)) {
+                        errors.push('Weekly Amount should be smaller than Monthly Amount');
+                    }
                     if (isBiggerThan(cummulative.dailyAmount, cummulative.weeklyAmount)) {
                         errors.push('Daily Amount should be smaller than Weekly Amount');
                     }
@@ -344,6 +376,21 @@ function customValidation(obj) {
                         errors.push('Weekly Amount should be smaller than Monthly Amount');
                     }
                     // counts
+                    if (cummulative.dailyCount && !isNumber(cummulative.dailyCount)) {
+                        errors.push('Daily Count must be a number');
+                    } else if (cummulative.dailyCount && isNumber(cummulative.dailyCount) && cummulative.dailyCount < 0) {
+                        errors.push('Daily Count must be a positive number');
+                    }
+                    if (cummulative.weeklyCount && !isNumber(cummulative.weeklyCount)) {
+                        errors.push('Weekly Count must be a number');
+                    } else if (cummulative.weeklyCount && isNumber(cummulative.weeklyCount) && cummulative.weeklyCount < 0) {
+                        errors.push('Weekly Count must be a positive number');
+                    }
+                    if (cummulative.mounthlyCount && !isNumber(cummulative.mounthlyCount)) {
+                        errors.push('Monthly Count must be a number');
+                    } else if (cummulative.mounthlyCount && isNumber(cummulative.mounthlyCount) && cummulative.mounthlyCount < 0) {
+                        errors.push('Monthly Count must be a positive number');
+                    }
                     if (isBiggerThan(cummulative.dailyCount, cummulative.weeklyCount)) {
                         errors.push('Daily Count should be smaller than Weekly Count');
                     }
@@ -353,15 +400,62 @@ function customValidation(obj) {
                     if (isBiggerThan(cummulative.weeklyCount, cummulative.mounthlyCount)) {
                         errors.push('Weekly Count should be smaller than Monthly Count');
                     }
+              
                     const splitRange = cummulative.splitRange;
                     if (Array.isArray(splitRange)) {
                         for (const range of splitRange) {
+                            
                             if (isBiggerThan(range.minValue, range.maxValue)) {
                                 errors.push('Range Min Amount should be smaller than Range Max Amount');
                             }
                             if (!isNumber(range.startAmount)) {
                                 errors.push('Range Start Amount is required');
                             }
+
+                            if (range.percent && range.percent !=='' && !isNumber(range.percent)) {
+                                errors.push('Invalid Range percent');
+                            } else if (range.percent && range.percent!=='' && isNumber(range.percent) && range.percent<0) {
+                                errors.push('Range Percent must be positive');
+                            }
+
+                            if (range.minValue && range.minValue !=='' && !isNumber(range.minValue)) {
+                                errors.push('Invalid Range Min Amount');
+                            } else if (range.minValue && range.minValue!=='' && isNumber(range.minValue) && range.minValue<0) {
+                                errors.push('Range Min Amount must be positive');
+                            }
+
+                            if (range.maxValue && range.maxValue !=='' && !isNumber(range.maxValue)) {
+                                errors.push('Invalid Range Max Amount');
+                            } else if (range.maxValue && range.maxValue !=='' && isNumber(range.maxValue) && range.maxValue<0) {
+                                errors.push('Range Max Amount must be positive');
+                            }
+                        }
+                    }
+                }
+            }
+
+            const splitAssignment = split.splitAssignment;
+            if (Array.isArray(splitAssignment)) {
+                for (const assignment of splitAssignment) {
+                    if (assignment.minValue) {
+                        if (assignment.minValue && !isNumber(assignment.minValue)) {
+                            errors.push('Assignment Min Amount must be a number');
+                        } else if (assignment.minValue && isNumber(assignment.minValue) && assignment.minValue < 0) {
+                            errors.push('Assignment Min Amount must be a positive number');
+                        }
+                    }
+                    if (assignment.maxValue) {
+                        if (assignment.maxValue && !isNumber(assignment.maxValue)) {
+                            errors.push('Assignment Max Amount must be a number');
+                        } else if (assignment.maxValue && isNumber(assignment.maxValue) && assignment.maxValue < 0) {
+                            errors.push('Assignment Max Amount must be a positive number');
+                        }
+                    }
+                    if (assignment.percent) {
+                        if (assignment.percent && !isNumber(assignment.percent)) {
+                            errors.push('Assignment percent must be a number');
+                        } else if (assignment.percent && isNumber(assignment.percent) && assignment.percent < 0) {
+                            errors.push('Assignment percent must be a positive number');
                         }
                     }
                 }

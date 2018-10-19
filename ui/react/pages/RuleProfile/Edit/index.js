@@ -209,11 +209,11 @@ class RuleEdit extends Component {
     renderTabContainer() {
         return (
             <TabContainer
-              headerTitle={this.getTitle(this.props.remoteRule)}
-              onTabClick={this.props.actions.changeActiveTab}
-              active={this.props.rule.activeTab || 0}
-              tabs={this.getTabs()}
-              actionButtons={this.getActionButtons()}
+                headerTitle={this.getTitle(this.props.remoteRule)}
+                onTabClick={this.props.actions.changeActiveTab}
+                active={this.props.rule.activeTab || 0}
+                tabs={this.getTabs()}
+                actionButtons={this.getActionButtons()}
             />
         );
     }
@@ -243,7 +243,6 @@ RuleEdit.propTypes = {
     updateTabTitle: PropTypes.func.isRequired,
     removeTab: PropTypes.func.isRequired,
     config: PropTypes.object,
-    hasChanged: PropTypes.bool,
     remoteRule: PropTypes.object,
     nomenclatureConfiguration: PropTypes.shape({}).isRequired,
     tabsConfiguration: PropTypes.object.isRequired,

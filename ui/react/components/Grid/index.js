@@ -61,36 +61,36 @@ export default React.createClass({
         }
         if (row.operationEndDate && column === 'operation') {
             result.push(
-              <div key={result.length}>
-                  <b>End Date: </b>{row.operationEndDate.slice(0, 10)}
-              </div>
+                <div key={result.length}>
+                    <b>End Date: </b>{row.operationEndDate.slice(0, 10)}
+                </div>
             );
         }
         if (row.operationStartDate && column === 'operation') {
             result.push(
-              <div key={result.length}>
-                  <b>Start Date: </b>{row.operationStartDate.slice(0, 10)}
-              </div>
+                <div key={result.length}>
+                    <b>Start Date: </b>{row.operationStartDate.slice(0, 10)}
+                </div>
             );
         }
         if (row.destinationAccountId && column === 'destination') {
             result.push(
-              <div key={result.length}>
-                  <b>Destination Account: </b>{row.destinationAccountId}
-              </div>
+                <div key={result.length}>
+                    <b>Destination Account: </b>{row.destinationAccountId}
+                </div>
             );
         }
         if (row.priority && column === 'priority') {
             result.push(
-              <div key={result.length}>
-                  <Link to={row.url}>{ row.priority }</Link>
-              </div>
+                <div key={result.length}>
+                    <Link to={row.url}>{ row.priority }</Link>
+                </div>
             );
         }
         return (
-          <div>
-            {result}
-          </div>
+            <div>
+                {result}
+            </div>
         );
     },
     updateColumns(columns) {
@@ -174,18 +174,18 @@ export default React.createClass({
         }).toJS();
 
         return <SimpleGrid
-          globalMenu
-          toggleColumnVisibility={this.toggleColumn}
-          multiSelect
-          fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
-          handleCheckboxSelect={this.props.handleCheckboxSelect}
-          handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
-          handleRowClick={this.handleRowClick}
-          externalStyle={style}
-          mainClassName='dataGridTable'
-          rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
-          data={data}
-          transformCellValue={this.transformCellValue}
+            globalMenu
+            toggleColumnVisibility={this.toggleColumn}
+            multiSelect
+            fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
+            handleCheckboxSelect={this.props.handleCheckboxSelect}
+            handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
+            handleRowClick={this.handleRowClick}
+            externalStyle={style}
+            mainClassName='dataGridTable'
+            rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
+            data={data}
+            transformCellValue={this.transformCellValue}
         />;
     }
 });

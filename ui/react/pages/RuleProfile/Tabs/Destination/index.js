@@ -59,58 +59,58 @@ class DestinationTab extends Component {
             <div>
                 {fields.country.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
-                      boldLabel
-                      disabled={readonly}
-                      keyProp='countries'
-                      label={fields.country.title || 'Country'}
-                      placeholder='Select Country'
-                      defaultSelected={fieldValues.countries}
-                      data={countries}
-                      onSelect={(field) => { changeInput(field); }} />
+                        boldLabel
+                        disabled={readonly}
+                        keyProp='countries'
+                        label={fields.country.title || 'Country'}
+                        placeholder='Select Country'
+                        defaultSelected={fieldValues.countries}
+                        data={countries}
+                        onSelect={(field) => { changeInput(field); }} />
                 </div>}
                 {fields.region.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
-                      boldLabel
-                      disabled={readonly}
-                      keyProp='regions'
-                      label={fields.region.title || 'Region'}
-                      placeholder='Select Region'
-                      defaultSelected={fieldValues.regions}
-                      data={regions}
-                      onSelect={(field) => { changeInput(field); }} />
+                        boldLabel
+                        disabled={readonly}
+                        keyProp='regions'
+                        label={fields.region.title || 'Region'}
+                        placeholder='Select Region'
+                        defaultSelected={fieldValues.regions}
+                        data={regions}
+                        onSelect={(field) => { changeInput(field); }} />
                 </div>}
                 {fields.city.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
-                      boldLabel
-                      disabled={readonly}
-                      keyProp='cities'
-                      label={fields.city.title || 'City'}
-                      placeholder='Select City'
-                      defaultSelected={fieldValues.cities}
-                      data={cities}
-                      onSelect={(field) => { changeInput(field); }} />
+                        boldLabel
+                        disabled={readonly}
+                        keyProp='cities'
+                        label={fields.city.title || 'City'}
+                        placeholder='Select City'
+                        defaultSelected={fieldValues.cities}
+                        data={cities}
+                        onSelect={(field) => { changeInput(field); }} />
                 </div>}
                 {fields.organization.visible && <div className={style.inputWrapper}>
                     <Dropdown
-                      disabled={readonly}
-                      canSelectPlaceholder
-                      keyProp={'organization'}
-                      data={organizations}
-                      defaultSelected={fieldValues.organization}
-                      placeholder='Select Organization'
-                      onSelect={(field) => { changeInput(field); }}
-                      label={fields.organization.title || 'Organization'} />
+                        disabled={readonly}
+                        canSelectPlaceholder
+                        keyProp={'organization'}
+                        data={organizations}
+                        defaultSelected={fieldValues.organization}
+                        placeholder='Select Organization'
+                        onSelect={(field) => { changeInput(field); }}
+                        label={fields.organization.title || 'Organization'} />
                 </div>}
                 {fields.accountProduct.visible && <div className={style.inputWrapper}>
                     <Dropdown
-                      disabled={readonly}
-                      canSelectPlaceholder
-                      keyProp={'accountProduct'}
-                      data={accountProducts}
-                      defaultSelected={fieldValues.accountProduct}
-                      placeholder='Select Account Product'
-                      onSelect={(field) => { changeInput(field); }}
-                      label={fields.accountProduct.title || 'Account Product'} />
+                        disabled={readonly}
+                        canSelectPlaceholder
+                        keyProp={'accountProduct'}
+                        data={accountProducts}
+                        defaultSelected={fieldValues.accountProduct}
+                        placeholder='Select Account Product'
+                        onSelect={(field) => { changeInput(field); }}
+                        label={fields.accountProduct.title || 'Account Product'} />
                 </div>}
             </div>
         );
@@ -135,22 +135,22 @@ class DestinationTab extends Component {
             <div className={style.contentBox}>
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
-                      title='Destination Info'
-                      wrapperClassName >
+                        title='Destination Info'
+                        wrapperClassName >
                         {this.renderFields()}
                     </TitledContentBox>
                 </div>
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
-                      title='Properties'
-                      wrapperClassName >
-                      <Property
-                        canEdit={this.props.canEdit}
-                        addProperty={addProperty}
-                        removeProperty={removeProperty}
-                        changeInput={changeInput}
-                        properties={(this.props.fieldValues || {}).properties || []}
-                        errors={this.props.errors} />
+                        title='Properties'
+                        wrapperClassName >
+                        <Property
+                            canEdit={this.props.canEdit}
+                            addProperty={addProperty}
+                            removeProperty={removeProperty}
+                            changeInput={changeInput}
+                            properties={(this.props.fieldValues || {}).properties || []}
+                            errors={this.props.errors} />
                     </TitledContentBox>
                 </div>
             </div>

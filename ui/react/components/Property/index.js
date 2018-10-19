@@ -25,22 +25,22 @@ class Property extends Component {
                 <tr key={`${index}`}>
                     <td>
                         <Input
-                          readonly={!canEdit}
-                          keyProp={['properties', index, 'name'].join(',')}
-                          isValid={!errors.getIn(['properties', idx, 'name'])}
-                          errorMessage={errors.getIn(['properties', idx, 'name'])}
-                          onChange={(field) => { changeInput(field); }}
-                          value={prop.name}
+                            readonly={!canEdit}
+                            keyProp={['properties', index, 'name'].join(',')}
+                            isValid={!errors.getIn(['properties', idx, 'name'])}
+                            errorMessage={errors.getIn(['properties', idx, 'name'])}
+                            onChange={(field) => { changeInput(field); }}
+                            value={prop.name}
                         />
                     </td>
                     <td>
                         <Input
-                          readonly={!canEdit}
-                          keyProp={['properties', index, 'value'].join(',')}
-                          isValid={!errors.getIn(['properties', idx, 'value'])}
-                          errorMessage={errors.getIn(['properties', idx, 'value'])}
-                          onChange={(field) => { changeInput(field); }}
-                          value={prop.value}
+                            readonly={!canEdit}
+                            keyProp={['properties', index, 'value'].join(',')}
+                            isValid={!errors.getIn(['properties', idx, 'value'])}
+                            errorMessage={errors.getIn(['properties', idx, 'value'])}
+                            onChange={(field) => { changeInput(field); }}
+                            value={prop.value}
                         />
                     </td>
                     <td className={style.deleteCol}>

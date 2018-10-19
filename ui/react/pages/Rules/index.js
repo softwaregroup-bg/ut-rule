@@ -110,50 +110,50 @@ const Main = React.createClass({
             <div className={classnames(mainStyle.contentTableWrap, style.contentTableWrap)}>
                 <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                     <GridToolBox opened title='' >
-                      <div className={style.actionWrap} >
-                        { this.context.checkPermission('rule.rule.edit') && !showDeleted &&
+                        <div className={style.actionWrap} >
+                            { this.context.checkPermission('rule.rule.edit') && !showDeleted &&
                             (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
-                        { this.context.checkPermission('rule.rule.remove') && !showDeleted &&
+                            { this.context.checkPermission('rule.rule.remove') && !showDeleted &&
                             (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
-                        { this.context.checkPermission('rule.rule.fetchDeleted') &&
+                            { this.context.checkPermission('rule.rule.fetchDeleted') &&
                             (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
-                              onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
-                    </div>
+                                onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
+                        </div>
                     </GridToolBox>
                 </div>
                 <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
                     <div className={style.grid} >
-                      <ConfirmDialog
-                        ref={'showRuleConfirmDialog'}
-                        submitLabel='Yes'
-                        title='Warning'
-                        message={
-                            'You are about to delete ' +
+                        <ConfirmDialog
+                            ref={'showRuleConfirmDialog'}
+                            submitLabel='Yes'
+                            title='Warning'
+                            message={
+                                'You are about to delete ' +
                             (
                                 Object.keys(this.state.selectedConditions).length === 1
                                     ? '1 rule'
                                     : Object.keys(this.state.selectedConditions).length + ' rules'
                             ) +
                             '. Would you like to proceed?'}
-                        onSubmit={this.removeRules} />
-                      <Grid
-                        ref='grid'
-                        refresh={this.refresh}
-                        data={this.props.rules}
-                        selectedConditions={this.state.selectedConditions}
-                        nomenclatures={this.props.nomenclatures}
-                        formatedGridData={this.props.formatedGridData}
-                        handleCheckboxSelect={this.handleCheckboxSelect}
-                        handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
-                        columns={columns}
-                        showDeleted={this.props.showDeleted}
+                            onSubmit={this.removeRules} />
+                        <Grid
+                            ref='grid'
+                            refresh={this.refresh}
+                            data={this.props.rules}
+                            selectedConditions={this.state.selectedConditions}
+                            nomenclatures={this.props.nomenclatures}
+                            formatedGridData={this.props.formatedGridData}
+                            handleCheckboxSelect={this.handleCheckboxSelect}
+                            handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                            columns={columns}
+                            showDeleted={this.props.showDeleted}
                         />
                     </div>
                 </div>
                 <div className={style.paginationWrap}>
                     <AdvancedPagination
-                      onUpdate={this.props.actions.updatePagination}
-                      pagination={fromJS(this.props.pagination)} />
+                        onUpdate={this.props.actions.updatePagination}
+                        pagination={fromJS(this.props.pagination)} />
                 </div>
                 {false &&
                     <div>

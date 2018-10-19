@@ -17,23 +17,23 @@ export const Info = (props) => {
         <div>
             <div className={style.inputWrapper}>
                 <Input
-                  readonly={!canEdit}
-                  keyProp={'name'}
-                  label='Split Name'
-                  isValid={!errors.getIn(['name'])}
-                  errorMessage={errors.getIn(['name'])}
-                  value={name}
-                  onChange={(field) => changeInputField(field)}
+                    readonly={!canEdit}
+                    keyProp={'name'}
+                    label='Split Name'
+                    isValid={!errors.getIn(['name'])}
+                    errorMessage={errors.getIn(['name'])}
+                    value={name}
+                    onChange={(field) => changeInputField(field)}
                 />
             </div>
             <div className={style.inputWrapper}>
                 <MultiSelectBubble
-                  disabled={!canEdit}
-                  name='tag'
-                  label={'Tag'}
-                  value={selectedTags}
-                  options={splitTags}
-                  onChange={(value) => { changeInputField({key: 'tags', value}); }}
+                    disabled={!canEdit}
+                    name='tag'
+                    label={'Tag'}
+                    value={selectedTags}
+                    options={splitTags}
+                    onChange={(value) => { changeInputField({key: 'tags', value}); }}
                 />
             </div>
         </div>

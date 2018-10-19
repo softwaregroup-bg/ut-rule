@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE [rule].[rule.edit]
+ALTER PROCEDURE [rule].[rule.edit]
     @condition [rule].conditionTT READONLY,
     @conditionActor [rule].conditionActorTT READONLY,
     @conditionItem [rule].conditionItemTT READONLY,

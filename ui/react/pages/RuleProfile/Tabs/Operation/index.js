@@ -48,43 +48,43 @@ class OperationTab extends Component {
             <div>
                 {fields.operation.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
-                      boldLabel
-                      disabled={!canEdit}
-                      keyProp='operations'
-                      label={fields.operation.title || 'Operation'}
-                      placeholder={'Select Operation'}
-                      defaultSelected={fieldValues.operations}
-                      data={operations}
-                      onSelect={(field) => { changeInput(field); }} />
+                        boldLabel
+                        disabled={!canEdit}
+                        keyProp='operations'
+                        label={fields.operation.title || 'Operation'}
+                        placeholder={'Select Operation'}
+                        defaultSelected={fieldValues.operations}
+                        data={operations}
+                        onSelect={(field) => { changeInput(field); }} />
                 </div>}
                 {fields.operationStartDate.visible && <div className={style.inputWrapper}>
                     <div className={style.outerWrap}>
                         <div className={style.inputWrap}>
-                          <DatePicker
-                            label={fields.operationStartDate.title || 'Start Date'}
-                            disabled={!canEdit}
-                            wrapperStyles={{backgroundColor: 'white'}}
-                            keyProp='startDate'
-                            mode='landscape'
-                            onChange={({value}) => { changeInput({key: 'startDate', value}); }}
-                            defaultValue={fieldValues.startDate}
-                            labelWrap={style.labelWrap} />
+                            <DatePicker
+                                label={fields.operationStartDate.title || 'Start Date'}
+                                disabled={!canEdit}
+                                wrapperStyles={{backgroundColor: 'white'}}
+                                keyProp='startDate'
+                                mode='landscape'
+                                onChange={({value}) => { changeInput({key: 'startDate', value}); }}
+                                defaultValue={fieldValues.startDate}
+                                labelWrap={style.labelWrap} />
                         </div>
                     </div>
                 </div>}
                 {fields.operationEndDate.visible && <div className={style.inputWrapper}>
                     <div className={style.outerWrap}>
                         <div className={style.inputWrap}>
-                          <DatePicker
-                            label={fields.operationEndDate.title || 'End Date'}
-                            disabled={!canEdit}
-                            wrapperStyles={{backgroundColor: 'white'}}
-                            keyProp='endDate'
-                            mode='landscape'
-                            onChange={({value}) => { changeInput({key: 'endDate', value}); }}
-                            minDate={minDate}
-                            defaultValue={fieldValues.endDate}
-                            labelWrap={style.labelWrap} />
+                            <DatePicker
+                                label={fields.operationEndDate.title || 'End Date'}
+                                disabled={!canEdit}
+                                wrapperStyles={{backgroundColor: 'white'}}
+                                keyProp='endDate'
+                                mode='landscape'
+                                onChange={({value}) => { changeInput({key: 'endDate', value}); }}
+                                minDate={minDate}
+                                defaultValue={fieldValues.endDate}
+                                labelWrap={style.labelWrap} />
                         </div>
                     </div>
                 </div>}
@@ -111,24 +111,24 @@ class OperationTab extends Component {
             <div className={style.contentBox}>
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
-                      title='Operation Info'
-                      wrapperClassName
+                        title='Operation Info'
+                        wrapperClassName
                     >
                         {this.renderFields()}
                     </TitledContentBox>
                 </div>
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
-                      title='Properties'
-                      wrapperClassName
+                        title='Properties'
+                        wrapperClassName
                     >
-                      <Property
-                        canEdit={this.props.canEdit}
-                        addProperty={addProperty}
-                        removeProperty={removeProperty}
-                        changeInput={changeInput}
-                        properties={(this.props.fieldValues || {}).properties || []}
-                        errors={this.props.errors}
+                        <Property
+                            canEdit={this.props.canEdit}
+                            addProperty={addProperty}
+                            removeProperty={removeProperty}
+                            changeInput={changeInput}
+                            properties={(this.props.fieldValues || {}).properties || []}
+                            errors={this.props.errors}
                         />
                     </TitledContentBox>
                 </div>

@@ -36,65 +36,65 @@ export const Assignment = (props) => {
                 <tr key={`${index}`}>
                     <td>
                         <Input
-                          readonly={readonly}
-                          keyProp={'description'}
-                          onChange={(field) => { changeInput(index, field); }}
-                          isValid={!errors.getIn([idx, 'description'])}
-                          errorMessage={errors.getIn([idx, 'description'])}
-                          value={prop.description}
+                            readonly={readonly}
+                            keyProp={'description'}
+                            onChange={(field) => { changeInput(index, field); }}
+                            isValid={!errors.getIn([idx, 'description'])}
+                            errorMessage={errors.getIn([idx, 'description'])}
+                            value={prop.description}
                         />
                     </td>
                     <td>
                         <Input
-                          readonly={readonly}
-                          keyProp={'debit'}
-                          isValid={!errors.getIn([idx, 'debit'])}
-                          errorMessage={errors.getIn([idx, 'debit'])}
-                          onChange={(field) => { changeInput(index, field); }}
-                          value={prop.debit}
+                            readonly={readonly}
+                            keyProp={'debit'}
+                            isValid={!errors.getIn([idx, 'debit'])}
+                            errorMessage={errors.getIn([idx, 'debit'])}
+                            onChange={(field) => { changeInput(index, field); }}
+                            value={prop.debit}
                         />
                     </td>
                     <td>
                         <Input
-                          readonly={readonly}
-                          keyProp={'credit'}
-                          isValid={!errors.getIn([idx, 'credit'])}
-                          errorMessage={errors.getIn([idx, 'credit'])}
-                          onChange={(field) => { changeInput(index, field); }}
-                          value={prop.credit}
+                            readonly={readonly}
+                            keyProp={'credit'}
+                            isValid={!errors.getIn([idx, 'credit'])}
+                            errorMessage={errors.getIn([idx, 'credit'])}
+                            onChange={(field) => { changeInput(index, field); }}
+                            value={prop.credit}
                         />
                     </td>
                     <td>
                         <Input
-                          readonly={readonly}
-                          keyProp={'percent'}
-                          validators={validations.percent}
-                          isValid={!errors.getIn([idx, 'percent'])}
-                          errorMessage={errors.getIn([idx, 'percent'])}
-                          onChange={(field) => { changeInput(index, field); }}
-                          value={prop.percent}
+                            readonly={readonly}
+                            keyProp={'percent'}
+                            validators={validations.percent}
+                            isValid={!errors.getIn([idx, 'percent'])}
+                            errorMessage={errors.getIn([idx, 'percent'])}
+                            onChange={(field) => { changeInput(index, field); }}
+                            value={prop.percent}
                         />
                     </td>
                     <td>
                         <Input
-                          readonly={readonly}
-                          keyProp={'minAmount'}
-                          validators={validations.amount}
-                          isValid={!errors.getIn([idx, 'minAmount'])}
-                          errorMessage={errors.getIn([idx, 'minAmount'])}
-                          onChange={(field) => { changeInput(index, field); }}
-                          value={prop.minAmount}
+                            readonly={readonly}
+                            keyProp={'minAmount'}
+                            validators={validations.amount}
+                            isValid={!errors.getIn([idx, 'minAmount'])}
+                            errorMessage={errors.getIn([idx, 'minAmount'])}
+                            onChange={(field) => { changeInput(index, field); }}
+                            value={prop.minAmount}
                         />
                     </td>
                     <td>
                         <Input
-                          readonly={readonly}
-                          keyProp={'maxAmount'}
-                          validators={validations.amount}
-                          isValid={!errors.getIn([idx, 'maxAmount'])}
-                          errorMessage={errors.getIn([idx, 'maxAmount'])}
-                          onChange={(field) => { changeInput(index, field); }}
-                          value={prop.maxAmount}
+                            readonly={readonly}
+                            keyProp={'maxAmount'}
+                            validators={validations.amount}
+                            isValid={!errors.getIn([idx, 'maxAmount'])}
+                            errorMessage={errors.getIn([idx, 'maxAmount'])}
+                            onChange={(field) => { changeInput(index, field); }}
+                            value={prop.maxAmount}
                         />
                     </td>
                     <td className={style.deleteCol}>

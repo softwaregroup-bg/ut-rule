@@ -146,12 +146,12 @@ class RuleCreate extends Component {
     renderTabContainer() {
         return (
             <TabContainer
-              ref={`tab_container_${mode}_${id}`}
-              headerTitle='Create Rule'
-              onTabClick={this.props.actions.changeActiveTab}
-              active={this.props.rule.activeTab || 0}
-              tabs={this.getTabs()}
-              actionButtons={this.getActionButtons()}
+                ref={`tab_container_${mode}_${id}`}
+                headerTitle='Create Rule'
+                onTabClick={this.props.actions.changeActiveTab}
+                active={this.props.rule.activeTab || 0}
+                tabs={this.getTabs()}
+                actionButtons={this.getActionButtons()}
             />
         );
     }

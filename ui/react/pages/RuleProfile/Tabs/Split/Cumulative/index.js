@@ -53,69 +53,69 @@ export const Cumulative = (props) => {
             <tr className={style.rangeRow} key={`cumulative${idx}`}>
                 <td>
                     <Input
-                      readonly={readonly}
-                      keyProp='dailyCount'
-                      validators={validations.count}
-                      isValid={!errors.getIn([idx, 'dailyCount'])}
-                      errorMessage={errors.getIn([idx, 'dailyCount'])}
-                      value={cumulative.dailyCount}
-                      onChange={(field) => { setCumulativeField(field, idx); }}
+                        readonly={readonly}
+                        keyProp='dailyCount'
+                        validators={validations.count}
+                        isValid={!errors.getIn([idx, 'dailyCount'])}
+                        errorMessage={errors.getIn([idx, 'dailyCount'])}
+                        value={cumulative.dailyCount}
+                        onChange={(field) => { setCumulativeField(field, idx); }}
                     />
                 </td>
                 <td>
                     <Input
-                      readonly={readonly}
-                      keyProp='dailyAmount'
-                      validators={validations.amount}
-                      isValid={!errors.getIn([idx, 'dailyAmount'])}
-                      errorMessage={errors.getIn([idx, 'dailyAmount'])}
-                      value={cumulative.dailyAmount}
-                      onChange={(field) => { setCumulativeField(field, idx); }}
+                        readonly={readonly}
+                        keyProp='dailyAmount'
+                        validators={validations.amount}
+                        isValid={!errors.getIn([idx, 'dailyAmount'])}
+                        errorMessage={errors.getIn([idx, 'dailyAmount'])}
+                        value={cumulative.dailyAmount}
+                        onChange={(field) => { setCumulativeField(field, idx); }}
                     />
                 </td>
                 <td>
                     <Input
-                      readonly={readonly}
-                      keyProp='weeklyCount'
-                      validators={validations.count}
-                      isValid={!errors.getIn([idx, 'weeklyCount'])}
-                      errorMessage={errors.getIn([idx, 'weeklyCount'])}
-                      value={cumulative.weeklyCount}
-                      onChange={(field) => { setCumulativeField(field, idx); }}
+                        readonly={readonly}
+                        keyProp='weeklyCount'
+                        validators={validations.count}
+                        isValid={!errors.getIn([idx, 'weeklyCount'])}
+                        errorMessage={errors.getIn([idx, 'weeklyCount'])}
+                        value={cumulative.weeklyCount}
+                        onChange={(field) => { setCumulativeField(field, idx); }}
                     />
                 </td>
                 <td>
                     <Input
-                      readonly={readonly}
-                      keyProp='weeklyAmount'
-                      validators={validations.amount}
-                      isValid={!errors.getIn([idx, 'weeklyAmount'])}
-                      errorMessage={errors.getIn([idx, 'weeklyAmount'])}
-                      value={cumulative.weeklyAmount}
-                      onChange={(field) => { setCumulativeField(field, idx); }}
+                        readonly={readonly}
+                        keyProp='weeklyAmount'
+                        validators={validations.amount}
+                        isValid={!errors.getIn([idx, 'weeklyAmount'])}
+                        errorMessage={errors.getIn([idx, 'weeklyAmount'])}
+                        value={cumulative.weeklyAmount}
+                        onChange={(field) => { setCumulativeField(field, idx); }}
                     />
                 </td>
                 <td>
                     <Input
-                      readonly={readonly}
-                      keyProp='monthlyCount'
-                      validators={validations.count}
-                      isValid={!errors.getIn([idx, 'monthlyCount'])}
-                      errorMessage={errors.getIn([idx, 'monthlyCount'])}
-                      value={cumulative.monthlyCount}
-                      onChange={(field) => { setCumulativeField(field, idx); }}
+                        readonly={readonly}
+                        keyProp='monthlyCount'
+                        validators={validations.count}
+                        isValid={!errors.getIn([idx, 'monthlyCount'])}
+                        errorMessage={errors.getIn([idx, 'monthlyCount'])}
+                        value={cumulative.monthlyCount}
+                        onChange={(field) => { setCumulativeField(field, idx); }}
                     />
                 </td>
                 <td>
                     <Input
-                      readonly={readonly}
-                      inputWrapClassName={style.inputWrapper}
-                      value={cumulative.monthlyAmount}
-                      validators={validations.amount}
-                      isValid={!errors.getIn([idx, 'monthlyAmount'])}
-                      errorMessage={errors.getIn([idx, 'monthlyAmount'])}
-                      keyProp='monthlyAmount'
-                      onChange={(field) => { setCumulativeField(field, idx); }}
+                        readonly={readonly}
+                        inputWrapClassName={style.inputWrapper}
+                        value={cumulative.monthlyAmount}
+                        validators={validations.amount}
+                        isValid={!errors.getIn([idx, 'monthlyAmount'])}
+                        errorMessage={errors.getIn([idx, 'monthlyAmount'])}
+                        keyProp='monthlyAmount'
+                        onChange={(field) => { setCumulativeField(field, idx); }}
                     />
                 </td>
             </tr>
@@ -129,55 +129,55 @@ export const Cumulative = (props) => {
                 let ridx = index.toString();
                 let rerrors = errors.getIn([cumulativeId, 'ranges', ridx]) || fromJS({});
                 return (
-                <tr key={`range${index}`}>
-                    <td>
-                        <Input
-                          readonly={readonly}
-                          keyProp='startAmount'
-                          validators={validations.amount}
-                          isValid={!rerrors.getIn(['startAmount'])}
-                          errorMessage={rerrors.getIn(['startAmount'])}
-                          value={range.startAmount}
-                          onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
-                        />
-                    </td>
-                    <td>
-                        <Input
-                          readonly={readonly}
-                          keyProp='percent'
-                          validators={validations.percent}
-                          isValid={!rerrors.getIn(['percent'])}
-                          errorMessage={rerrors.getIn(['percent'])}
-                          value={range.percent}
-                          onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
-                        />
-                    </td>
-                    <td>
-                        <Input
-                          readonly={readonly}
-                          keyProp='minAmount'
-                          validators={validations.amount}
-                          isValid={!rerrors.getIn(['minAmount'])}
-                          errorMessage={rerrors.getIn(['minAmount'])}
-                          value={range.minAmount}
-                          onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
-                        />
-                    </td>
-                    <td>
-                        <Input
-                          readonly={readonly}
-                          keyProp='maxAmount'
-                          validators={validations.amount}
-                          isValid={!rerrors.getIn(['maxAmount'])}
-                          errorMessage={rerrors.getIn(['maxAmount'])}
-                          value={range.maxAmount}
-                          onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
-                        />
-                    </td>
-                    <td className={style.deleteCol}>
-                        { canEdit && showDeleteIcon && <div className={style.deleteIcon} onClick={() => { removeCumulativeRange(splitIndex, 0, index); }} /> }
-                    </td>
-                </tr>);
+                    <tr key={`range${index}`}>
+                        <td>
+                            <Input
+                                readonly={readonly}
+                                keyProp='startAmount'
+                                validators={validations.amount}
+                                isValid={!rerrors.getIn(['startAmount'])}
+                                errorMessage={rerrors.getIn(['startAmount'])}
+                                value={range.startAmount}
+                                onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
+                            />
+                        </td>
+                        <td>
+                            <Input
+                                readonly={readonly}
+                                keyProp='percent'
+                                validators={validations.percent}
+                                isValid={!rerrors.getIn(['percent'])}
+                                errorMessage={rerrors.getIn(['percent'])}
+                                value={range.percent}
+                                onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
+                            />
+                        </td>
+                        <td>
+                            <Input
+                                readonly={readonly}
+                                keyProp='minAmount'
+                                validators={validations.amount}
+                                isValid={!rerrors.getIn(['minAmount'])}
+                                errorMessage={rerrors.getIn(['minAmount'])}
+                                value={range.minAmount}
+                                onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
+                            />
+                        </td>
+                        <td>
+                            <Input
+                                readonly={readonly}
+                                keyProp='maxAmount'
+                                validators={validations.amount}
+                                isValid={!rerrors.getIn(['maxAmount'])}
+                                errorMessage={rerrors.getIn(['maxAmount'])}
+                                value={range.maxAmount}
+                                onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
+                            />
+                        </td>
+                        <td className={style.deleteCol}>
+                            { canEdit && showDeleteIcon && <div className={style.deleteIcon} onClick={() => { removeCumulativeRange(splitIndex, 0, index); }} /> }
+                        </td>
+                    </tr>);
             });
         }
     };
@@ -189,16 +189,16 @@ export const Cumulative = (props) => {
                 </div>
                 <div className={style.dropDownWrapper}>
                     <Dropdown
-                      disabled={readonly}
-                      keyProp={'currency'}
-                      isValid={!errors.getIn([idx, 'currency'])}
-                      errorMessage={errors.getIn([idx, 'currency'])}
-                      canSelectPlaceholder
-                      data={currencies}
-                      defaultSelected={cumulative.currency}
-                      placeholder='Currency'
-                      onSelect={(field) => { setCumulativeField(field, idx); }}
-                      label={'Currency'}
+                        disabled={readonly}
+                        keyProp={'currency'}
+                        isValid={!errors.getIn([idx, 'currency'])}
+                        errorMessage={errors.getIn([idx, 'currency'])}
+                        canSelectPlaceholder
+                        data={currencies}
+                        defaultSelected={cumulative.currency}
+                        placeholder='Currency'
+                        onSelect={(field) => { setCumulativeField(field, idx); }}
+                        label={'Currency'}
                     />
                 </div>
                 <table className={style.dataGridTable}>
@@ -215,19 +215,19 @@ export const Cumulative = (props) => {
                     <TitledContentBox title='Range' >
                         <div className={style.rangeInnerWrapper}>
                             <table className={style.dataGridTable}>
-                            <thead>
-                                <tr>
-                                    {getRangeCells()}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {getRangeBody(idx)}
-                            </tbody>
-                        </table>
-                        { canEdit && <span className={style.link} onClick={() => addCumulativeRange(splitIndex, idx)}>
-                            <div className={style.plus} />
+                                <thead>
+                                    <tr>
+                                        {getRangeCells()}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {getRangeBody(idx)}
+                                </tbody>
+                            </table>
+                            { canEdit && <span className={style.link} onClick={() => addCumulativeRange(splitIndex, idx)}>
+                                <div className={style.plus} />
                             Add another Range
-                        </span> }
+                            </span> }
                         </div>
                     </TitledContentBox>
                 </div>
@@ -252,7 +252,6 @@ Cumulative.propTypes = {
     cumulatives: PropTypes.array,
     currencies: PropTypes.array,
     splitIndex: PropTypes.number,
-    cumulativeId: PropTypes.number,
     addCumulative: PropTypes.func,
     removeCumulative: PropTypes.func,
     errors: PropTypes.object // immutable

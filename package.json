@@ -8,7 +8,7 @@
     ]
   },
   "dependencies": {
-    "joi": "13.1.2",
+    "joi": "13.7.0",
     "lodash.get": "4.4.2",
     "lodash.merge": "4.6.1",
     "lodash.set": "4.3.2",

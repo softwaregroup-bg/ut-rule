@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
+import MoneyInput from 'ut-front-react/components/Input/MoneyInput';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
@@ -47,21 +48,21 @@ const SectionLimit = React.createClass({
                     />
                 </td>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='minAmount'
                       value={'' + (limit.minAmount || '')}
                       onChange={this.onChangeInput(index)}
                     />
                 </td>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='maxAmount'
                       value={'' + (limit.maxAmount || '')}
                       onChange={this.onChangeInput(index)}
                     />
                 </td>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='maxAmountDaily'
                       value={'' + (limit.maxAmountDaily || '')}
                       onChange={this.onChangeInput(index)}
@@ -75,7 +76,7 @@ const SectionLimit = React.createClass({
                     />
                 </td>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='maxAmountWeekly'
                       value={'' + (limit.maxAmountWeekly || '')}
                       onChange={this.onChangeInput(index)}
@@ -89,7 +90,7 @@ const SectionLimit = React.createClass({
                     />
                 </td>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='maxAmountMonthly'
                       value={'' + (limit.maxAmountMonthly || '')}
                       onChange={this.onChangeInput(index)}

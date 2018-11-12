@@ -4,7 +4,7 @@
   "pkg": {
     "assets": [
       "api/sql/schema/*.sql",
-      "api/sql/schema/seeds/*.sql"
+      "api/sql/seed/*.sql"
     ]
   },
   "dependencies": {

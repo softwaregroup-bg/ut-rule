@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import style from '../../../style.css';
 import Input from 'ut-front-react/components/Input';
+import MoneyInput from 'ut-front-react/components/Input/MoneyInput';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
@@ -122,7 +123,7 @@ const Assignment = React.createClass({
                 }
                 {fields.minValue.visible &&
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='minValue'
                       onChange={this.onChangeInput(index)}
                       value={'' + (splitAssignment.minValue || '')}
@@ -131,7 +132,7 @@ const Assignment = React.createClass({
                 }
                 {fields.maxValue.visible &&
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='maxValue'
                       onChange={this.onChangeInput(index)}
                       value={'' + (splitAssignment.maxValue || '')}

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import style from '../../../style.css';
 import Input from 'ut-front-react/components/Input';
+import MoneyInput from 'ut-front-react/components/Input/MoneyInput';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Range from './Range';
 import plusImage from '../../../assets/add_new.png';
@@ -67,7 +68,7 @@ const Cumulative = React.createClass({
                     />
                 </td>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='dailyAmount'
                       onChange={this.onChangeInput(index)}
                       value={stringifyNumber(prop.dailyAmount)}
@@ -81,7 +82,7 @@ const Cumulative = React.createClass({
                     />
                 </td>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='weeklyAmount'
                       onChange={this.onChangeInput(index)}
                       value={stringifyNumber(prop.weeklyAmount)}
@@ -95,7 +96,7 @@ const Cumulative = React.createClass({
                     />
                 </td>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='mounthlyAmount'
                       onChange={this.onChangeInput(index)}
                       value={stringifyNumber(prop.mounthlyAmount)}

@@ -4,7 +4,8 @@ module.exports = () => function utRule() {
             return {
                 modules: {
                     'db/rule': require('./api/sql/schema'),
-                    ruleSeed: () => require('./api/sql/seed'),
+                    ruleSeed: require('./api/sql/seed'),
+                    ruleStandard: () => require('./api/sql/standard'),
                     ruleTest: () => require('./test/schema')
                 },
                 errors: [

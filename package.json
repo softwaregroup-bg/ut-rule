@@ -3,8 +3,7 @@
   "version": "9.20.0-rc-godfather.10",
   "pkg": {
     "assets": [
-      "api/sql/schema/*.sql",
-      "api/sql/seed/*.sql"
+      "api/sql/**/*.sql"
     ]
   },
   "dependencies": {

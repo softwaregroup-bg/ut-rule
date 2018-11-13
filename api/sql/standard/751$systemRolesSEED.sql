@@ -33,8 +33,7 @@ USING
         (@rulesList, 'core.itemName.fetch', '%', 1),
         (@rulesList, 'core.itemCode.fetch', '%', 1),
         (@rulesList, 'customer.organization.fetch', '%', 1),
-        (@rulesList, 'user.role.fetch', '%', 1),
-        (@rulesList, 'db/rule.rule.fetch', '%', 1)
+        (@rulesList, 'user.role.fetch', '%', 1)
     ) AS source (actorId, actionId, objectId, [level])
 ON target.actorId = source.actorId AND target.actionId = source.actionId AND target.objectId = source.objectId AND target.[level] = source.[level]
 WHEN NOT MATCHED BY TARGET THEN
@@ -64,9 +63,7 @@ USING
         (@rulesAdd, 'core.itemName.fetch', '%', 1),
         (@rulesAdd, 'core.itemCode.fetch', '%', 1),
         (@rulesAdd, 'customer.organization.fetch', '%', 1),
-        (@rulesAdd, 'user.role.fetch', '%', 1),
-        (@rulesAdd, 'db/rule.rule.fetch', '%', 1),
-        (@rulesAdd, 'db/rule.rule.add', '%', 1)
+        (@rulesAdd, 'user.role.fetch', '%', 1)
     ) AS source (actorId, actionId, objectId, [level])
 ON target.actorId = source.actorId AND target.actionId = source.actionId AND target.objectId = source.objectId AND target.[level] = source.[level]
 WHEN NOT MATCHED BY TARGET THEN
@@ -96,8 +93,6 @@ USING
         (@rulesEdit, 'core.itemCode.fetch', '%', 1),
         (@rulesEdit, 'customer.organization.fetch', '%', 1),
         (@rulesEdit, 'user.role.fetch', '%', 1),
-        (@rulesEdit, 'db/rule.rule.fetch', '%', 1),
-        (@rulesEdit, 'db/rule.rule.edit', '%', 1),
         (@rulesEdit, 'rule.rule.edit', '%', 1)
     ) AS source (actorId, actionId, objectId, [level])
 ON target.actorId = source.actorId AND target.actionId = source.actionId AND target.objectId = source.objectId AND target.[level] = source.[level]
@@ -128,8 +123,6 @@ USING
         (@rulesDelete, 'core.itemCode.fetch', '%', 1),
         (@rulesDelete, 'customer.organization.fetch', '%', 1),
         (@rulesDelete, 'user.role.fetch', '%', 1),
-        (@rulesDelete, 'db/rule.rule.fetch', '%', 1),
-        (@rulesDelete, 'db/rule.rule.remove', '%', 1),
         (@rulesDelete, 'rule.rule.remove', '%', 1)
     ) AS source (actorId, actionId, objectId, [level])
 ON target.actorId = source.actorId AND target.actionId = source.actionId AND target.objectId = source.objectId AND target.[level] = source.[level]

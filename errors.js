@@ -2,8 +2,8 @@ var create = require('ut-error').define;
 
 var Rule = create('rule');
 var Generic = create('generic', Rule);
-var ExceedMinAmount = create('exceedMinLimitAmount', Rule, 'Transaction amount is below minimum');
-var ExceedMaxAmount = create('exceedMaxLimitAmount', Rule, 'Transaction amount is above maximum');
+var ExceedMinAmount = create('exceedMinLimitAmount', Rule, 'Amount too low, please input a higher amount');
+var ExceedMaxAmount = create('exceedMaxLimitAmount', Rule, 'Amount too high, please input a smaller amount');
 var ExceedDailyLimitAmount = create('exceedDailyLimitAmount', Rule, 'Daily amount limit reached');
 var ExceedDailyLimitCount = create('exceedDailyLimitCount', Rule, 'Daily count limit reached');
 var ExceedWeeklyLimitAmount = create('exceedWeeklyLimitAmount', Rule, 'Weekly amount limit reached');

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import style from '../../../../style.css';
 import Input from 'ut-front-react/components/Input';
+import MoneyInput from 'ut-front-react/components/Input/MoneyInput';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import Checkbox from 'ut-front-react/components/Input/Checkbox';
@@ -58,7 +59,7 @@ const Range = React.createClass({
         return this.props.data.map((splitRange, index) => (
             <tr key={index}>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='startAmount'
                       onChange={this.onChangeInput(index)}
                       value={stringifyNumber(splitRange.startAmount)}
@@ -72,14 +73,14 @@ const Range = React.createClass({
                     />
                 </td>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='minValue'
                       onChange={self.onChangeInput(index)}
                       value={stringifyNumber(splitRange.minValue)}
                     />
                 </td>
                 <td>
-                    <Input
+                    <MoneyInput
                       keyProp='maxValue'
                       onChange={self.onChangeInput(index)}
                       value={stringifyNumber(splitRange.maxValue)}

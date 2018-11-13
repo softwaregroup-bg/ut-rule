@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.20.0-rc-godfather.9",
+  "version": "9.20.0-rc-godfather.10",
   "pkg": {
     "assets": [
       "api/sql/schema/*.sql",

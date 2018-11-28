@@ -1,5 +1,5 @@
 module.exports = function validation() {
-    return {
+    return {rule: {
         'decision.fetch': () => require('./decision/decision.fetch'),
         'decision.lookup': () => require('./decision/decision.lookup'),
 
@@ -10,5 +10,5 @@ module.exports = function validation() {
         'rule.remove': () => require('./rule/rule.remove'),
         'rule.edit': () => require('./rule/rule.edit'),
         'limitForUserByRole.get': () => require('./rule/rule.limitforuserbyrole.get')
-    };
+    }};
 };

@@ -29,40 +29,42 @@ var wrapper = {
     }
 };
 
-module.exports = {
-    'item.fetch': function(msg, $meta) {
-        var pending = [];
+module.exports = function rule() {
+    return {
+        'item.fetch': function(msg, $meta) {
+            var pending = [];
 
-        Object.keys(msg).forEach(function(method) {
-            if (wrapper[method] !== undefined && msg[method] && msg[method].length > 0) {
-                var params = {
-                    alias: msg[method]
-                };
-                if (msg.skipDisabled && msg.skipDisabled.includes(method)) {
-                    params.isEnabled = 1;
+            Object.keys(msg).forEach(function(method) {
+                if (wrapper[method] !== undefined && msg[method] && msg[method].length > 0) {
+                    var params = {
+                        alias: msg[method]
+                    };
+                    if (msg.skipDisabled && msg.skipDisabled.includes(method)) {
+                        params.isEnabled = 1;
+                    }
+                    pending.push(wrapper[method].call(this, params, Object.assign({}, $meta)));
                 }
-                pending.push(wrapper[method].call(this, params, Object.assign({}, $meta)));
-            }
-        }, this);
+            }, this);
 
-        return Promise.all(pending).then(function(result) {
-            var data = [];
+            return Promise.all(pending).then(function(result) {
+                var data = [];
 
-            result.forEach(function(item) {
-                data = data.concat(item[Object.keys(item)[0]]);
+                result.forEach(function(item) {
+                    data = data.concat(item[Object.keys(item)[0]]);
+                });
+
+                return {items: data};
             });
-
-            return {items: data};
-        });
-    },
-    'rule.historyTransform': function(msg, $meta) {
-        let objectName = 'rule';
-        var rule = prepareHistory[objectName] && prepareHistory[objectName](msg.data);
-        return this.bus.importMethod('history.history.transform')({
-            config: historyConfig[objectName],
-            data: rule || {}
-        }).then(function(transformedData) {
-            return { data: transformedData };
-        });
-    }
+        },
+        'rule.historyTransform': function(msg, $meta) {
+            let objectName = 'rule';
+            var rule = prepareHistory[objectName] && prepareHistory[objectName](msg.data);
+            return this.bus.importMethod('history.history.transform')({
+                config: historyConfig[objectName],
+                data: rule || {}
+            }).then(function(transformedData) {
+                return { data: transformedData };
+            });
+        }
+    };
 };

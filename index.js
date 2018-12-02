@@ -8,7 +8,7 @@ module.exports = () => function utRule() {
             require('./errors')
         ],
         orchestrator: () => [
-            require('ut-dispatch-db')(['rule']),
+            require('ut-dispatch-db')(['rule'], ['utRule.rule']),
             require('./api/script'),
             require('./errors')
         ],

@@ -31,7 +31,7 @@ var wrapper = {
 
 module.exports = function rule() {
     return {
-        'item.fetch': function(msg, $meta) {
+        'rule.item.fetch': function(msg, $meta) {
             var pending = [];
 
             Object.keys(msg).forEach(function(method) {
@@ -56,7 +56,7 @@ module.exports = function rule() {
                 return {items: data};
             });
         },
-        'rule.historyTransform': function(msg, $meta) {
+        'rule.rule.historyTransform': function(msg, $meta) {
             let objectName = 'rule';
             var rule = prepareHistory[objectName] && prepareHistory[objectName](msg.data);
             return this.bus.importMethod('history.history.transform')({

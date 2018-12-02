@@ -6,7 +6,7 @@ module.exports = function sql() {
             {path: path.join(__dirname, 'schema'), linkSP: true},
             {path: path.join(__dirname, 'schema/seeds')}
         ],
-        'decision.lookup.response.receive': result => {
+        'rule.decision.lookup.response.receive': result => {
             if (result && Array.isArray(result.split)) {
                 result.split.forEach(split => {
                     if (split.analytics && Array.isArray(split.analytics.rows)) {

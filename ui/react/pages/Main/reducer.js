@@ -1,4 +1,6 @@
 import * as actionTypes from './actionTypes';
+import { getTagData } from '../../components/Dialog/helpers';
+
 const defaultState = {};
 
 export default (state = defaultState, action) => {
@@ -27,7 +29,7 @@ var formatRules = function(data) {
     }
     var result = {};
     var splitNameConditionMap = {};
-    ['condition', 'limit'].forEach(function(prop) {
+    ['condition', 'limit', 'limitPerEntry'].forEach(function(prop) {
         if (data[prop].length) {
             data[prop].forEach(function(record) {
                 if (!result[record.conditionId]) {
@@ -69,6 +71,18 @@ var formatRules = function(data) {
                 result[resultKey].split[splitKey].splitName.tag = result[resultKey].split[splitKey].splitName.tag.split('|').filter((v) => (v !== '')).map((v) => ({key: v, name: v}));
             }
         }
+        if (result[resultKey].condition[0].operationTag !== null) {
+            const tags = getTagData();
+             // TODO: Maybe throw when not found?
+            const lookupKey = (key) => tags.find(tag => tag.key === key) || {key: key, name: key};
+            result[resultKey].condition[0].operationTag = result[resultKey].condition[0].operationTag.split('|').filter((v) => (v !== '')).map(lookupKey);
+        }
+
+        // for (var conditionKey in result[resultKey].condition) {
+        //     if (result[resultKey].condition[conditionKey].operationTag !== null) {
+        //         result[resultKey].condition[conditionKey].operationTag = result[resultKey].condition[conditionKey].operationTag.split('|').filter((v) => (v !== '')).map((v) => ({key: v, name: v}));
+        //     }
+        // }
     }
     return result;
 };

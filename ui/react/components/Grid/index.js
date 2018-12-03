@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
+import { SimpleGrid } from 'ut-front-react/components/SimpleGrid';
 import ContextMenu from '../ContextMenu';
 import style from './style.css';
 
@@ -25,13 +25,24 @@ export default React.createClass({
         // label, value, nomenclatureKey
         return arr.map((record, i) => {
             let value = record[2] && this.props.nomenclatures[record[2]] ? this.props.nomenclatures[record[2]][record[1]] : record[1];
-            return (
-                value
-                ? <div key={i}>
-                    <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
-                </div>
-                : null
-            );
+            if (Array.isArray(value)) {
+                return (
+                    <div key={i}>
+                        <b>{record[0] ? record[0] + ': ' : ''}</b>{value.map(v => v.name).join('|')}
+                    </div>
+                );
+            } else if (value) {
+                if (value && value.indexOf('T00')) {
+                    value = value.split('T')[0];
+                }
+                return (
+                    <div key={i}>
+                        <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
+                    </div>
+                );
+            } else {
+                return null;
+            }
         });
     },
     updateColumns(columns) {
@@ -40,7 +51,10 @@ export default React.createClass({
         });
     },
     handleRowClick(record, index) {
-        this.props.handleCheckboxSelect(null, record);
+        let data = record;
+        const isSelected = (this.props.selectedConditions && this.props.selectedConditions[data.id]);
+
+        this.props.handleCheckboxSelect(isSelected, record);
     },
     getData() {
         return Object.keys(this.props.data).map((conditionId, i) => {
@@ -57,9 +71,9 @@ export default React.createClass({
                     ['Country', condition.channelCountryId, 'country'],
                     ['Region', condition.channelRegionId, 'region'],
                     ['City', condition.channelCityId, 'city'],
-                    ['Organization', condition.channelOrganizationId, 'organization'],
+                    ['Business Unit', condition.channelOrganizationId, 'organization'],
                     ['Supervisor', condition.channelSupervisorId, 'supervisor'],
-                    ['Role', condition.channelRoleIds, 'roles']
+                    ['Customer Category', condition.channelRoleId, 'customerCategory']
                 ],
                 operation: columns.operation.visible && [
                     ['Operation', condition.operationId, 'operation'],
@@ -71,7 +85,7 @@ export default React.createClass({
                     ['Country', condition.sourceCountryId, 'country'],
                     ['Region', condition.sourceRegionId, 'region'],
                     ['City', condition.sourceCityId, 'city'],
-                    ['Organization', condition.sourceOrganizationId, 'organization'],
+                    ['Business Unit', condition.sourceOrganizationId, 'organization'],
                     ['Supervisor', condition.sourceSupervisorId, 'supervisor'],
                     ['Tag', condition.sourceTag]
                 ],
@@ -79,14 +93,15 @@ export default React.createClass({
                     ['Country', condition.destinationCountryId, 'country'],
                     ['Region', condition.destinationRegionId, 'region'],
                     ['City', condition.destinationCityId, 'city'],
-                    ['Organization', condition.destinationOrganizationId, 'organization'],
+                    ['Business Unit', condition.destinationOrganizationId, 'organization'],
                     ['Supervisor', condition.destinationSupervisorId, 'supervisor'],
                     ['Tag', condition.destinationTag]
                 ],
                 limit: columns.limit.visible && record.limit,
+                limitPerEntry: columns.limitPerEntry.visible && record.limitPerEntry,
                 refresh: ''
             };
-        });
+        }).sort((conditionA, conditionB) => Number(conditionA.priority) - Number(conditionB.priority));
     },
     transformCellValue(value, header, row, isHeader) {
         if (isHeader) {
@@ -127,6 +142,31 @@ export default React.createClass({
                             [
                                 'Monthly',
                                 '' + (limit.maxAmountMonthly ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (limit.maxCountMonthly ? 'count ' + limit.maxCountMonthly + ' ' : '')
+                            ],
+                            [
+                                'Lifetime',
+                                '' + (limit.maxAmountLifetime ? 'max ' + limit.maxAmountLifetime + ' ' : '') + (limit.maxCountLifetime ? 'count ' + limit.maxCountLifetime + ' ' : '')
+                            ]
+                        ]);
+                    });
+                case 'limitPerEntry':
+                    return value.map((limit, i) => {
+                        return this.buildList([
+                            [
+                                '',
+                                i === 0 ? '' : <hr />
+                            ],
+                            [
+                                'Currency',
+                                limit.currency || ''
+                            ],
+                            [
+                                'Transaction',
+                                '' + (limit.maxAmount ? 'max ' + limit.maxAmount + ' ' : '') + (limit.minAmount ? 'min ' + limit.minAmount + ' ' : '')
+                            ],
+                            [
+                                'Daily',
+                                '' + (limit.maxAmountDaily ? 'max ' + limit.maxAmountDaily + ' ' : '') + (limit.maxCountDaily ? 'count ' + limit.maxCountDaily + ' ' : '')
                             ]
                         ]);
                     });
@@ -140,34 +180,33 @@ export default React.createClass({
         let columns = this.state.columns;
 
         return <SimpleGrid
-          ref='grid'
-          multiSelect
-          fields={[
-              {title: columns.priority.title, name: 'priority'},
-              {title: columns.channel.title, name: 'channel'},
-              {title: columns.operation.title, name: 'operation'},
-              {title: columns.source.title, name: 'source'},
-              {title: columns.destination.title, name: 'destination'},
-              {title: columns.limit.title, name: 'limit'},
-              {
-                  title: <div style={{float: 'right'}}>
-                    <ContextMenu
-                      refresh={this.props.refresh}
-                      onClose={this.updateColumns}
-                      data={this.state.columns}
-                    />
-                  </div>,
-                  name: 'refresh'
-              }
-          ].filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
-          handleCheckboxSelect={this.props.handleCheckboxSelect}
-          handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
-          handleRowClick={this.handleRowClick}
-          externalStyle={style}
-          mainClassName='dataGridTable'
-          rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
-          data={data}
-          transformCellValue={this.transformCellValue}
+            ref='grid'
+            multiSelect={false}
+            fields={[
+                { title: columns.priority.title, name: 'priority' },
+                { title: columns.channel.title, name: 'channel' },
+                { title: columns.operation.title, name: 'operation' },
+                //   {title: columns.source.title, name: 'source'},
+                //   {title: columns.destination.title, name: 'destination'},
+                { title: columns.limit.title, name: 'limit' },
+                //   {title: columns.limitPerEntry.title, name: 'limitPerEntry'},
+                {
+                    title: <div style={{ float: 'right' }}>
+                        <ContextMenu
+                            refresh={this.props.refresh}
+                        />
+                    </div>,
+                    name: 'refresh'
+                }
+            ].filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
+            handleCheckboxSelect={this.props.handleCheckboxSelect}
+            handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
+            handleRowClick={this.handleRowClick}
+            externalStyle={style}
+            mainClassName='dataGridTable'
+            rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
+            data={data}
+            transformCellValue={this.transformCellValue}
         />;
     }
 });

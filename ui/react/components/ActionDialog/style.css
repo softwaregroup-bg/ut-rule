@@ -10,7 +10,9 @@
 .mainContent {
     width: 95%;
     margin: 15px auto;
+    margin-bottom: 0px;
 }
+
 .actionDialogButton {
     margin-right: 5px;
 }

@@ -1,6 +1,7 @@
 ﻿ALTER PROCEDURE [rule].[rule.edit]
     @condition [rule].conditionTT READONLY,
     @limit [rule].limitTT READONLY,
+    @limitPerEntry [rule].limitPerEntryTT READONLY,
     @split XML
 AS
 SET NOCOUNT ON
@@ -60,10 +61,28 @@ BEGIN TRY
             maxAmountWeekly = l1.maxAmountWeekly,
             maxCountWeekly = l1.maxCountWeekly,
             maxAmountMonthly = l1.maxAmountMonthly,
-            maxCountMonthly = l1.maxCountMonthly
+            maxCountMonthly = l1.maxCountMonthly,
+            -- Lifetime
+            maxAmountLifetime = l1.maxAmountLifetime,
+            maxCountLifetime = l1.maxCountLifetime
     when not matched by target then
-        insert (conditionId, currency, minAmount, maxAmount, maxAmountDaily, maxCountDaily, maxAmountWeekly, maxCountWeekly, maxAmountMonthly, maxCountMonthly)
-        values (@conditionId, l1.currency, l1.minAmount, l1.maxAmount, l1.maxAmountDaily, l1.maxCountDaily, l1.maxAmountWeekly, l1.maxCountWeekly, l1.maxAmountMonthly, l1.maxCountMonthly)
+        insert (conditionId, currency, minAmount, maxAmount, maxAmountDaily, maxCountDaily, maxAmountWeekly, maxCountWeekly, maxAmountMonthly, maxCountMonthly, maxAmountLifetime, maxCountLifetime)
+        values (@conditionId, l1.currency, l1.minAmount, l1.maxAmount, l1.maxAmountDaily, l1.maxCountDaily, l1.maxAmountWeekly, l1.maxCountWeekly, l1.maxAmountMonthly, l1.maxCountMonthly, l1.maxAmountLifetime, l1.maxCountLifetime)
+    when not matched by source and l.conditionId = @conditionId then
+        delete;
+
+    merge into [rule].limitPerEntry l
+    using @limitPerEntry l1 on l.[limitPerEntryId] = l1.limitPerEntryId
+    when matched then
+        update
+        set currency = l1.currency,
+            minAmount = l1.minAmount,
+            maxAmount = l1.maxAmount,
+            maxAmountDaily = l1.maxAmountDaily,
+            maxCountDaily = l1.maxCountDaily
+    when not matched by target then
+        insert (conditionId, currency, minAmount, maxAmount, maxAmountDaily, maxCountDaily)
+        values (@conditionId, l1.currency, l1.minAmount, l1.maxAmount, l1.maxAmountDaily, l1.maxCountDaily)
     when not matched by source and l.conditionId = @conditionId then
         delete;
 
@@ -109,7 +128,7 @@ BEGIN TRY
           ISNULL(records.x.value('(./isSourceAmount/text())[1]', 'bit'), 1) AS isSourceAmount,
           records.x.value('(./minValue/text())[1]', 'money') AS minValue,
           records.x.value('(./maxValue/text())[1]', 'money') AS maxValue,
-          records.x.value('(./percent/text())[1]', 'money') AS [percent],
+          records.x.value('(./percent/text())[1]', 'decimal(5,2)') AS [percent],
           records.x.value('(./percentBase/text())[1]', 'money') AS percentBase
       FROM @split.nodes('/data/rows/splitRange') AS records(x)
       JOIN @splitName sn on sn.rowPosition = records.x.value('for $a in .. return 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'int')
@@ -136,7 +155,7 @@ BEGIN TRY
             records.x.value('(./credit/text())[1]', 'varchar(50)') AS credit,
             records.x.value('(./minValue/text())[1]', 'money') AS minValue,
             records.x.value('(./maxValue/text())[1]', 'money') AS maxValue,
-            records.x.value('(./percent/text())[1]', 'decimal') AS [percent],
+            records.x.value('(./percent/text())[1]', 'decimal(5,2)') AS [percent],
             records.x.value('(./description/text())[1]', 'varchar(50)') AS description
         FROM @split.nodes('/data/rows/splitAssignment') AS records(x)
         JOIN @splitName sn on sn.rowPosition = records.x.value('for $a in .. return 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'int')

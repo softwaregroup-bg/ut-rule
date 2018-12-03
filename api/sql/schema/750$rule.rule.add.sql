@@ -1,6 +1,7 @@
 ALTER PROCEDURE [rule].[rule.add]
     @condition [rule].conditionTT READONLY,
     @limit [rule].limitTT READONLY,
+    @limitPerEntry [rule].limitPerEntryTT READONLY,
     @split XML
 AS
 DECLARE @splitName [rule].splitNameTT,
@@ -89,7 +90,10 @@ BEGIN TRY
         maxAmountWeekly,
         maxCountWeekly,
         maxAmountMonthly,
-        maxCountMonthly
+        maxCountMonthly,
+        -- Lifetime
+        maxAmountLifetime,
+        maxCountLifetime
     )
     SELECT @conditionId,
         [currency],
@@ -100,8 +104,28 @@ BEGIN TRY
         [maxAmountWeekly],
         [maxCountWeekly],
         [maxAmountMonthly],
-        [maxCountMonthly]
+        [maxCountMonthly],
+        -- Lifetime
+        [maxAmountLifetime],
+        [maxCountLifetime]
     FROM @limit;
+
+    INSERT INTO [rule].limitPerEntry (
+        conditionId,
+        currency,
+        minAmount,
+        maxAmount,
+        maxAmountDaily,
+        maxCountDaily
+    )
+    SELECT
+        @conditionId,
+        [currency],
+        [minAmount],
+        [maxAmount],
+        [maxAmountDaily],
+        [maxCountDaily]
+    FROM @limitPerEntry;
 
     MERGE INTO [rule].splitName
     USING @split.nodes('/*/*/splitName') AS records(r)
@@ -119,7 +143,7 @@ BEGIN TRY
           ISNULL(splitRange.x.query('*').value('(isSourceAmount)[1]', 'bit'), 1) AS isSourceAmount,
           splitRange.x.query('*').value('(minValue)[1]', 'money') AS minValue,
           splitRange.x.query('*').value('(maxValue)[1]', 'money') AS maxValue,
-          splitRange.x.query('*').value('(percent)[1]', 'money') AS [percent],
+          splitRange.x.query('*').value('(percent)[1]', 'decimal(5,2)') AS [percent],
           splitRange.x.query('*').value('(percentBase)[1]', 'money') AS percentBase
       FROM
           @split.nodes('/*/*') AS records(x)
@@ -143,7 +167,7 @@ BEGIN TRY
           splitAssignment.x.query('*').value('(credit)[1]', 'varchar(50)') AS credit,
           splitAssignment.x.query('*').value('(minValue)[1]', 'money') AS minValue,
           splitAssignment.x.query('*').value('(maxValue)[1]', 'money') AS maxValue,
-          splitAssignment.x.query('*').value('(percent)[1]', 'decimal') AS [percent],
+          splitAssignment.x.query('*').value('(percent)[1]', 'decimal(5,2)') AS [percent],
           splitAssignment.x.query('*').value('(description)[1]', 'varchar(50)') AS description
       FROM
           @split.nodes('/*/*') AS records(x)

@@ -10,13 +10,21 @@ const Summary = React.createClass({
         // label, value, nomenclatureKey
         var list = arr.map((record, i) => {
             let value = record[2] && this.props.nomenclatures[record[2]] ? this.props.nomenclatures[record[2]][record[1]] : record[1];
-            return (
-                value
-                ? <div key={i + 2}>
-                    <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
-                </div>
-                : null
-            );
+            if (Array.isArray(value)) {
+                return (
+                    <div key={`${heading || record[0]}${i}`}>
+                        <b>{record[0] ? record[0] + ': ' : ''}</b>{value.map(v => v.name).join('|')}
+                    </div>
+                );
+            } else if (value) {
+                return (
+                    <div key={`${heading || record[0]}${i}`}>
+                        <b>{record[0] ? record[0] + ': ' : ''}</b>{value}
+                    </div>
+                );
+            } else {
+                return null;
+            }
         }).filter(val => val);
         if (list.length) {
             if (heading) {
@@ -40,7 +48,7 @@ const Summary = React.createClass({
         let condition = this.props.data.condition[0];
         let limit = this.props.data.limit;
         return (
-           <table className={style.summary}>
+            <table className={style.summary}>
                 <tbody>
                     <tr>
                         <td>
@@ -50,9 +58,9 @@ const Summary = React.createClass({
                                 ['Country', condition.channelCountryId, 'country'],
                                 ['Region', condition.channelRegionId, 'region'],
                                 ['City', condition.channelCityId, 'city'],
-                                ['Organization', condition.channelOrganizationId, 'organization'],
+                                ['Business Unit', condition.channelOrganizationId, 'organization'],
                                 ['Supervisor', condition.channelSupervisorId, 'supervisor'],
-                                ['Role', condition.channelRoleId, 'role']
+                                ['Customer Category', condition.channelRoleId, 'customerCategory']
                             ], 'Condition')}
                             {this.buildList([
                                 ['Operation', condition.operationId, 'operation'],
@@ -64,7 +72,7 @@ const Summary = React.createClass({
                                 ['Country', condition.sourceCountryId, 'country'],
                                 ['Region', condition.sourceRegionId, 'region'],
                                 ['City', condition.sourceCityId, 'city'],
-                                ['Organization', condition.sourceOrganizationId, 'organization'],
+                                ['Business Unit', condition.sourceOrganizationId, 'organization'],
                                 ['Supervisor', condition.sourceSupervisorId, 'supervisor'],
                                 ['Tag', condition.sourceTag]
                             ], 'Source')}
@@ -72,7 +80,7 @@ const Summary = React.createClass({
                                 ['Country', condition.destinationCountryId, 'country'],
                                 ['Region', condition.destinationRegionId, 'region'],
                                 ['City', condition.destinationCityId, 'city'],
-                                ['Organization', condition.destinationOrganizationId, 'organization'],
+                                ['Business Unit', condition.destinationOrganizationId, 'organization'],
                                 ['Supervisor', condition.destinationSupervisorId, 'supervisor'],
                                 ['Tag', condition.destinationTag]
                             ], 'Destination')}
@@ -104,6 +112,10 @@ const Summary = React.createClass({
                                         [
                                             'Monthly',
                                             '' + (item.maxAmountMonthly ? 'max ' + item.maxAmountMonthly + ' ' : '') + (item.maxCountMonthly ? 'count ' + item.maxCountMonthly + ' ' : '')
+                                        ],
+                                        [
+                                            'Lifetime',
+                                            '' + (item.maxAmountLifetime ? 'max ' + item.maxAmountLifetime + ' ' : '') + (item.maxCountLifetime ? 'count ' + item.maxCountLifetime + ' ' : '')
                                         ]
                                     ]);
                                 }))

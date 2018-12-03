@@ -9,8 +9,8 @@ var wrapper = {
         $meta.method = 'core.itemCode.fetch';
         return bus.importMethod($meta.method)(msg, $meta);
     },
-    'agentRole': function(msg, $meta) {
-        $meta.method = 'db/integration.agentRole.fetch';
+    'customerCategory': function(msg, $meta) {
+        $meta.method = 'db/customer.customerCategory.fetch';
         return bus.importMethod($meta.method)(msg, $meta);
     },
     'accountAlias': function(msg, $meta) {
@@ -20,6 +20,14 @@ var wrapper = {
 };
 
 module.exports = {
+    'rule.add': function(msg, $meta) {
+        bus = this.bus;
+        return bus.importMethod('db/rule.rule.add')(msg, $meta).catch(errorMap);
+    },
+    'rule.edit': function(msg, $meta) {
+        bus = this.bus;
+        return bus.importMethod('db/rule.rule.edit')(msg, $meta).catch(errorMap);
+    },
     'item.fetch': function(msg, $meta) {
         bus = this.bus;
         var pending = [];
@@ -42,3 +50,8 @@ module.exports = {
     }
 };
 
+function errorMap(res) {
+    let m = res.message;
+    if (m.indexOf('ukRuleCondtitionPriority') !== -1) res.message = ('There is already an existing rule with this priority');
+    throw res;
+}

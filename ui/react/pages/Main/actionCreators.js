@@ -31,7 +31,7 @@ export function removeRules(params) {
     };
 };
 
-export function editRule(params) {
+function prepareTags(params) {
     let split = JSON.parse(JSON.stringify(params.split));
 
     split.map(s => {
@@ -42,7 +42,17 @@ export function editRule(params) {
         }, '|');
         return s;
     });
+    const operationTag = JSON.parse(JSON.stringify(params.condition[0].operationTag));
+    const tagKeys = Array.isArray(operationTag) ? operationTag.map(tag => tag.key) : [];
+    params.condition[0].operationTag = tagKeys.length > 0 ? ('|' + tagKeys.join('|') + '|') : null;
+
     params.split = {data: {rows: split}};
+    return params;
+}
+
+export function editRule(params) {
+    prepareTags(params);
+
     return function(dispatch) {
         return dispatch({
             type: actionTypes.editRule,
@@ -59,17 +69,8 @@ export function editRule(params) {
 
 export function addRule(params) {
     return function(dispatch) {
-        let split = JSON.parse(JSON.stringify(params.split));
+        prepareTags(params);
 
-        split.map(s => {
-            removeEmpty(s);
-            s.splitName.tag = s.splitName.tag.reduce((tags, tag) => {
-                tags += tag.key + '|';
-                return tags;
-            }, '|');
-            return s;
-        });
-        params.split = {data: {rows: split}};
         return dispatch({
             type: actionTypes.addRule,
             method: 'rule.rule.add',

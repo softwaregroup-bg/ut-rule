@@ -18,7 +18,7 @@ const defaultUiState = {
         ],
         itemCode: [
         ],
-        agentRole: [
+        customerCategory: [
         ],
         accountAlias: [
         ]
@@ -49,6 +49,10 @@ const defaultUiState = {
                 limit: {
                     visible: true,
                     title: 'Limit'
+                },
+                limitPerEntry: {
+                    visible: false,
+                    title: 'Limit (Daily per entry)'
                 }
             }
         }
@@ -77,7 +81,7 @@ const defaultUiState = {
                     },
                     organization: {
                         visible: true,
-                        title: 'Organization'
+                        title: 'Business Unit'
                     },
                     supervisor: {
                         visible: true,
@@ -98,7 +102,7 @@ const defaultUiState = {
                 title: 'Operation',
                 fields: {
                     tag: {
-                        visible: true,
+                        visible: false,
                         title: 'Tag'
                     },
                     operationStartDate: {
@@ -133,7 +137,7 @@ const defaultUiState = {
                     },
                     organization: {
                         visible: true,
-                        title: 'Organization'
+                        title: 'Business Unit'
                     },
                     supervisor: {
                         visible: true,
@@ -175,7 +179,7 @@ const defaultUiState = {
                     },
                     organization: {
                         visible: true,
-                        title: 'Organization'
+                        title: 'Business Unit'
                     },
                     supervisor: {
                         visible: true,
@@ -202,6 +206,10 @@ const defaultUiState = {
             limit: {
                 visible: true,
                 title: 'Limit'
+            },
+            limitPerEntry: {
+                visible: false,
+                title: 'Limit (Daily per entry)'
             },
             split: {
                 visible: true,

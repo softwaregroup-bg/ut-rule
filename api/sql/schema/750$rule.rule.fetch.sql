@@ -39,11 +39,18 @@ BEGIN
         @conditionId IS NULL OR sn.conditionId = @conditionId
 
     SELECT 'limit' AS resultSetName
-
     SELECT
         *
     FROM
         [rule].limit
+    WHERE
+        @conditionId IS NULL OR conditionId = @conditionId
+
+    SELECT 'limitPerEntry' AS resultSetName
+    SELECT
+        *
+    FROM
+        [rule].limitPerEntry
     WHERE
         @conditionId IS NULL OR conditionId = @conditionId
 END

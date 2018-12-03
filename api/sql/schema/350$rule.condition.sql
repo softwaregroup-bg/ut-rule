@@ -32,6 +32,7 @@ CREATE TABLE [rule].[condition] (
     destinationId BIGINT,
     destinationAccountProductId BIGINT,
     destinationAccountId BIGINT,
+    isSystem BIT NOT NULL DEFAULT(0),
     CONSTRAINT [pkRuleCondition] PRIMARY KEY CLUSTERED ([conditionId] ASC),
     CONSTRAINT [ukRuleCondtitionPriority] UNIQUE ([priority] ASC)
 )

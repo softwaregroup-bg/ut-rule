@@ -1,12 +1,14 @@
 ALTER PROCEDURE [rule].[decision.lookup]
     @channelId BIGINT,
     @operation varchar(100),
+    @operationTag VARCHAR(100) = NULL,
     @operationDate datetime,
     @sourceAccount varchar(100),
     @destinationAccount varchar(100),
     @amount money,
     @currency varchar(3),
-    @isSourceAmount BIT=0
+    @isSourceAmount BIT=0,
+    @isSourceAccount BIT = 1
 AS
 BEGIN
     DECLARE
@@ -43,7 +45,10 @@ BEGIN
         @amountWeekly MONEY,
         @countWeekly BIGINT,
         @amountMonthly MONEY,
-        @countMonthly BIGINT
+        @countMonthly BIGINT,
+        -- Lifetime
+        @amountLifetime MONEY,
+        @countLifetime BIGINT
 
     SELECT
         @channelCountryId = countryId,
@@ -101,23 +106,47 @@ BEGIN
         @countWeekly = 0,
         @amountMonthly = 0,
         @countMonthly = 0,
+        -- Lifetime
+        @amountLifetime = 0,
+        @countLifetime = 0,
         @operationDate = ISNULL(@operationDate, GETDATE())
 
     SELECT
-        @amountDaily = SUM(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END),
-        @countDaily = COUNT(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END),
-        @amountWeekly = SUM(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END),--week starts on Mon
-        @countWeekly = COUNT(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END),--week starts on Mon
-        @amountMonthly = SUM(transferAmount),
-        @countMonthly = COUNT(transferAmount)
+        @amountDaily = ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
+        @countDaily = ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN transferAmount END), 0),
+        @amountWeekly = ISNULL(SUM(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
+        @countWeekly = ISNULL(COUNT(CASE WHEN transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN transferAmount END), 0),--week starts on Mon
+        @amountMonthly = ISNULL(SUM(transferAmount), 0),
+        @countMonthly = ISNULL(COUNT(transferAmount), 0)
     FROM
         [integration].[vTransfer]
     WHERE
-        sourceAccount = @sourceAccount AND
+        ( (@isSourceAccount= 1 AND sourceAccount = @sourceAccount) OR (@isSourceAccount = 0 AND channelId = @channelId) ) AND
         transferTypeId = @operationId AND
         transferCurrency = @currency AND
         transferDateTime < @operationDate AND -- look ony at earlier transfers
         transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
+        -- add cases bellow for P2P
+        AND
+            transferIdPrevTxn is NULL -- get only the first part of P2P txns. Also Balance Enquiries dont have prevIds
+            AND issuerTxState IN (2) -- get only successful txns
+
+    -- Lifetime
+    SELECT
+        @amountLifetime = SUM(transferAmount),
+        @countLifetime = COUNT(transferAmount)
+    FROM
+        [integration].[vTransfer]
+    WHERE
+        ( (@isSourceAccount= 1 AND sourceAccount = @sourceAccount) OR (@isSourceAccount = 0 AND channelId = @channelId) ) AND
+        transferTypeId = @operationId AND
+        transferCurrency = @currency AND
+        transferDateTime < @operationDate -- look ony at earlier transfers from the beginning
+        -- add cases bellow for P2P
+        AND
+            transferIdPrevTxn is NULL -- get only the first part of P2P txns. Also Balance Enquiries dont have prevIds
+            AND issuerTxState IN (2) -- get only successful txns
+
 
     EXEC [rule].[decision.fetch]
         @channelCountryId = @channelCountryId,
@@ -129,6 +158,7 @@ BEGIN
         @channelId = @channelId,
         @operationId = @operationId,
         @operationDate = @operationDate,
+        @operationTag = @operationTag,
         @sourceCountryId = @sourceCountryId,
         @sourceRegionId = @sourceRegionId,
         @sourceCityId = @sourceCityId,
@@ -153,6 +183,9 @@ BEGIN
         @countWeekly = @countWeekly,
         @amountMonthly = @amountMonthly,
         @countMonthly = @countMonthly,
+        -- Lifetime
+        @amountLifetime = @amountLifetime,
+        @countLifetime = @countLifetime,
         @currency = @currency,
         @isSourceAmount = @isSourceAmount
 END

@@ -2,6 +2,19 @@
     @conditionId core.arrayList READONLY
 AS
 BEGIN TRY
+    IF EXISTS
+    ( 
+        SELECT 1
+        FROM 
+            [rule].condition x
+        JOIN
+            @conditionId item ON x.conditionId = item.value AND x.isSystem = 1
+    )
+    BEGIN
+       RAISERROR('rule.removeIsSystem', 16, 1)
+       RETURN
+    END
+
     BEGIN TRANSACTION
         SELECT 'limit' AS resultSetName
         DELETE x
@@ -9,6 +22,15 @@ BEGIN TRY
             deleted.*
         FROM
             [rule].limit x
+        JOIN
+            @conditionId item ON x.conditionId = item.value
+
+        SELECT 'limitPerEntry' AS resultSetName
+        DELETE x
+        OUTPUT
+            deleted.*
+        FROM
+            [rule].limitPerEntry x
         JOIN
             @conditionId item ON x.conditionId = item.value
 

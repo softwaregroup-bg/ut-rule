@@ -36,6 +36,9 @@ const Splits = React.createClass({
     onChangeInput(index) {
         let self = this;
         return (field) => {
+            if (field && field.value && field.value.trim) {
+                field.value = field.value.trim();
+            }
             self.context.onFieldChange('split', index, field.key, field.value);
         };
     },
@@ -51,7 +54,8 @@ const Splits = React.createClass({
             {key: 'issuer', name: 'Issuer'},
             {key: 'commission', name: 'Commission'},
             {key: 'realtime', name: 'Realtime posting'},
-            {key: 'pending', name: 'Authorization required'}
+            {key: 'pending', name: 'Authorization required'} // ,
+            // {key: 'expressCentre', name: 'Express Center Agents'}
         ];
     },
     defaultSelected(origin, selected) {

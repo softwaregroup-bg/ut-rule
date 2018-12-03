@@ -2,8 +2,10 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Grid from '../../components/Grid';
+import FlatButton from 'material-ui/FlatButton';
 import Dialog from '../../components/Dialog';
-import Prompt from '../../components/Prompt';
+import MaterialDialog from 'material-ui/Dialog';
+// import Prompt from '../../components/Prompt';
 import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
@@ -23,6 +25,9 @@ const Main = React.createClass({
         uiConfig: PropTypes.object,
         columns: PropTypes.object,
         sections: PropTypes.object
+    },
+    contextTypes: {
+        checkPermission: PropTypes.func
     },
     getInitialState() {
         return {
@@ -53,7 +58,7 @@ const Main = React.createClass({
         return nextProps.ready;
     },
     handleCheckboxSelect(isSelected, data) {
-        let selectedConditions = this.state.selectedConditions;
+        let selectedConditions = []; // this.state.selectedConditions;
         if (isSelected === null) {
             isSelected = selectedConditions[data.id];
         }
@@ -103,7 +108,24 @@ const Main = React.createClass({
     },
     dialogOnSave(data) {
         let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
-        this.setState(this.getInitialState(), () => this.props.actions[action](data));
+        // Trigger the action & if it comes back with no error -> clear the dialog;
+        // otherwise - keep the data, as we don't want the user to have to input it again
+        if (data && data.limit) {
+            data.limit.forEach(lim => {
+                Object.keys(lim).forEach(key => {
+                    if (lim[key] === '') {
+                        lim[key] = null;
+                    }
+                });
+            });
+        }
+
+        return this.props.actions[action](data).then(result => {
+            if (!result.error) {
+                this.setState(this.getInitialState());
+            }
+            return true;
+        });
     },
     removeRules() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
@@ -133,64 +155,100 @@ const Main = React.createClass({
         let columns = uiConfig.main.grid.columns;
         let sections = uiConfig.dialog.sections;
 
+        const actions = [
+            <FlatButton
+                label='Cancel'
+                primary
+                onClick={this.hidePrompt}
+            />,
+            <FlatButton
+                label='Delete'
+                primary
+                onClick={this.removeRules}
+            />
+        ];
+
         return <div className={mainStyle.contentTableWrap}>
             <AddTab pathname={this.props.location.pathname} title='Rule Management' />
             <div className={style.header}>
-                <Header text='Rule Management' buttons={[{text: 'Create Rule', onClick: this.createBtnOnClick}]} />
+                <Header text='Rule Management' buttons={[{ text: 'Create Rule', onClick: this.createBtnOnClick, permissions: ['rule.rule.add'] }]} />
             </div>
             <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
                 <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
                     <GridToolbox opened title='' >
                         <div className={style.gridToolBoxButtons}>
-                            <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
-                                Edit
-                            </button>
-                            <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
-                                Delete
-                            </button>
+                            {this.context.checkPermission('rule.rule.edit') &&
+                                <button onClick={this.editBtnOnClick} className='button btn btn-primary' disabled={!this.state.canEdit}>
+                                    Edit
+                                </button>
+                            }
+                            {this.context.checkPermission('rule.rule.remove') &&
+                                <button onClick={this.showPrompt} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canEdit}>
+                                    Delete
+                                </button>
+                            }
                         </div>
                     </GridToolbox>
                 </div>
                 <div className={style.grid} >
                     {this.state.dialog.open &&
                         <Dialog
-                          ref='dialog'
-                          open={this.state.dialog.open}
-                          data={this.props.rules[this.state.dialog.conditionId]}
-                          nomenclatures={this.props.nomenclatures}
-                          onSave={this.dialogOnSave}
-                          onClose={this.dialogOnClose}
-                          sections={sections}
+                            ref='dialog'
+                            open={this.state.dialog.open}
+                            data={this.props.rules[this.state.dialog.conditionId]}
+                            nomenclatures={this.props.nomenclatures}
+                            onSave={this.dialogOnSave}
+                            onClose={this.dialogOnClose}
+                            sections={sections}
                         />
                     }
-                    {this.state.prompt &&
+                    {/* {this.state.prompt &&
                         <Prompt
-                          ref='prompt'
-                          open={this.state.prompt}
-                          message={
-                            'You are about to delete ' +
-                            (
-                                Object.keys(this.state.selectedConditions).length === 1
-                                    ? '1 rule'
-                                    : Object.keys(this.state.selectedConditions).length + ' rules'
-                            ) +
-                            '. Would you like to proceed?'
-                        }
-                          onOk={this.removeRules}
-                          onCancel={this.hidePrompt}
+                            ref='prompt'
+                            open={this.state.prompt}
+                            message={
+                                'You are about to delete ' +
+                                (
+                                    Object.keys(this.state.selectedConditions).length === 1
+                                        ? '1 rule'
+                                        : Object.keys(this.state.selectedConditions).length + ' rules'
+                                ) +
+                                '. Would you like to proceed?'
+                            }
+                            onOk={this.removeRules}
+                            onCancel={this.hidePrompt}
                         />
+                    } */}
+                    {this.state.prompt &&
+                        <MaterialDialog
+                            ref='deleteComfirmDialog'
+                            title='WARNING'
+                            actions={actions}
+                            modal={false}
+                            open={this.state.prompt}
+                            onRequestClose={this.hidePrompt}
+                        >
+                            {'You are about to delete ' +
+                                (
+                                    Object.keys(this.state.selectedConditions).length === 1
+                                        ? '1 rule'
+                                        : Object.keys(this.state.selectedConditions).length + ' rules'
+                                ) +
+                                '. Would you like to proceed?'
+                            }
+                        </MaterialDialog>
                     }
                     <Grid
-                      ref='grid'
-                      refresh={this.refresh}
-                      data={this.props.rules}
-                      selectedConditions={this.state.selectedConditions}
-                      nomenclatures={this.props.nomenclatures}
-                      handleCheckboxSelect={this.handleCheckboxSelect}
-                      handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
-                      columns={columns}
+                        ref='grid'
+                        refresh={this.refresh}
+                        data={this.props.rules}
+                        selectedConditions={this.state.selectedConditions}
+                        nomenclatures={this.props.nomenclatures}
+                        handleCheckboxSelect={this.handleCheckboxSelect}
+                        handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                        columns={columns}
                     />
-                    </div>
+                </div>
             </div>
             {false &&
                 <div>

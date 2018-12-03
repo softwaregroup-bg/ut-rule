@@ -8,6 +8,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @channelId BIGINT,
     @operationId BIGINT,
     @operationDate DATETIME,
+    @operationTag VARCHAR(100),
     @sourceCountryId BIGINT,
     @sourceRegionId BIGINT,
     @sourceCityId BIGINT,
@@ -32,6 +33,9 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @countWeekly BIGINT,
     @amountMonthly MONEY,
     @countMonthly BIGINT,
+    -- Lifetime
+    @amountLifetime MONEY,
+    @countLifetime BIGINT,
     @currency VARCHAR(3),
     @isSourceAmount BIT
 AS
@@ -55,7 +59,10 @@ BEGIN
         @maxAmountWeekly MONEY,
         @maxCountWeekly BIGINT,
         @maxAmountMonthly MONEY,
-        @maxCountMonthly BIGINT
+        @maxCountMonthly BIGINT,
+        -- Lifetime
+        @maxAmountLifetime MONEY,
+        @maxCountLifetime BIGINT
 
     INSERT INTO
         @matches
@@ -73,7 +80,8 @@ BEGIN
         (@channelRoleId IS NULL OR c.channelRoleId IS NULL OR @channelRoleId = c.channelRoleId) AND
         (@channelId IS NULL OR c.channelId IS NULL OR @channelId = c.channelId) AND
         (@operationId IS NULL OR c.operationId IS NULL OR @operationId = c.operationId) AND
-        (c.operationTag IS NULL OR @operationId IS NULL OR EXISTS(SELECT * from core.itemTag t WHERE t.itemNameId = @operationId AND c.operationTag LIKE '%|' + t.tag + '|%')) AND
+        ((@operationTag IS NULL AND c.operationTag IS NULL) OR (@operationTag IS NOT NULL AND c.operationTag LIKE '%|' + @operationTag + '|%')) AND
+        -- (c.operationTag IS NULL OR @operationId IS NULL OR EXISTS(SELECT * from core.itemTag t WHERE t.itemNameId = @operationId AND c.operationTag LIKE '%|' + t.tag + '|%')) AND
         (@operationDate IS NULL OR c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
         (@operationDate IS NULL OR c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
         (@sourceCountryId IS NULL OR c.sourceCountryId IS NULL OR @sourceCountryId = c.sourceCountryId) AND
@@ -104,7 +112,10 @@ BEGIN
         @maxAmountWeekly = NULL,
         @maxCountWeekly = NULL,
         @maxAmountMonthly = NULL,
-        @maxCountMonthly = NULL
+        @maxCountMonthly = NULL,
+        -- Lifetime
+        @maxAmountLifetime = NULL,
+        @maxCountLifetime = NULL
 
     SELECT TOP 1
         @minAmount = l.minAmount,
@@ -114,7 +125,10 @@ BEGIN
         @maxAmountWeekly = l.maxAmountWeekly,
         @maxCountWeekly = l.maxCountWeekly,
         @maxAmountMonthly = l.maxAmountMonthly,
-        @maxCountMonthly = l.maxCountMonthly
+        @maxCountMonthly = l.maxCountMonthly,
+        -- Lifetime
+        @maxAmountLifetime = l.maxAmountLifetime,
+        @maxCountLifetime = l.maxCountLifetime
     FROM
         @matches AS c
     JOIN
@@ -155,6 +169,14 @@ BEGIN
         RETURN
     END
 
+    -- Lifetime Amount
+    IF @amount + @amountLifetime > @maxAmountLifetime
+    BEGIN
+        RAISERROR('rule.exceedLifetimeLimitAmount', 16, 1)
+        RETURN
+    END
+
+
     IF @countDaily >= @maxCountDaily
     BEGIN
         RAISERROR('rule.exceedDailyLimitCount', 16, 1)
@@ -173,6 +195,13 @@ BEGIN
         RETURN
     END
 
+    -- Lifetime Count
+    IF @countLifetime >= @maxCountLifetime
+    BEGIN
+        RAISERROR('rule.exceedLifetimeLimitCount', 16, 1)
+        RETURN
+    END
+
     DECLARE @fee TABLE(
         conditionId int,
         splitNameId int,
@@ -180,7 +209,7 @@ BEGIN
         tag VARCHAR(MAX)
     );
 
-    WITH split(conditionId, splitNameId, tag, minFee, maxFee, calcFee, rnk) AS (
+    WITH split(conditionId, splitNameId, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
         SELECT
             c.conditionId,
             r.splitNameId,
@@ -191,7 +220,8 @@ BEGIN
                 WHEN @amount > ISNULL(r.percentBase, 0) THEN @amount - ISNULL(r.percentBase, 0)
                 ELSE 0
             END / 100,
-            RANK() OVER (PARTITION BY n.splitNameId ORDER BY c.priority, r.startAmount DESC, r.splitRangeId)
+            RANK() OVER (PARTITION BY n.splitNameId ORDER BY c.priority, r.startAmount DESC, r.splitRangeId),
+            RANK() OVER (ORDER BY c.priority, c.conditionId)
         FROM
             @matches AS c
         JOIN
@@ -203,6 +233,7 @@ BEGIN
             COALESCE(@isSourceAmount, 0) = r.isSourceAmount AND
             @amount >= r.startAmount
     )
+
     INSERT INTO
         @fee(conditionId, splitNameId, fee, tag)
     SELECT
@@ -217,7 +248,9 @@ BEGIN
     FROM
         split s
     WHERE
-        s.rnk = 1
+        s.rnk1 = 1 AND
+        s.rnk2  = 1
+
 
     SELECT 'amount' AS resultSetName, 1 single
     SELECT

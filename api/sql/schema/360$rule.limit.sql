@@ -10,6 +10,8 @@ CREATE TABLE [rule].[limit] (
 	maxCountWeekly BIGINT,
 	maxAmountMonthly MONEY,
 	maxCountMonthly BIGINT,
+	maxAmountLifetime MONEY,
+	maxCountLifetime BIGINT,
 	CONSTRAINT [pkRuleLimit] PRIMARY KEY CLUSTERED (limitId ASC),
     CONSTRAINT ukRuleLimitConditionCurrency UNIQUE (conditionId, currency),
 	CONSTRAINT [fkRuleLimit_condition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId)

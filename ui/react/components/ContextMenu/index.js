@@ -73,9 +73,9 @@ export default React.createClass({
                     <List ref='list'>
                         {
                             [
-                                <ListItem key={0} primaryText='Reload Grid' onClick={this.props.refresh} leftIcon={<ReloadIcon />} />,
-                                <Divider key={1} />,
-                                <Subheader key={2}>Manage Columns</Subheader>
+                                <ListItem key={0} primaryText='Reload Grid' onClick={this.props.refresh} leftIcon={<ReloadIcon />} />
+                                // <Divider key={1} />,
+                                // <Subheader key={2}>Manage Columns</Subheader>
                             ].concat(Object.keys(this.state.data).map((record, i) => {
                                 let checkBoxCkecked = (event, checked) => this.checkBoxChecked(event, checked, record);
                                 return <ListItem

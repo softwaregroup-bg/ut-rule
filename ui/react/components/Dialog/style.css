@@ -167,6 +167,7 @@ div.dropDownRoot {
     padding-left: 10px !important;
     padding-right: 1px !important;
     background-color: white;
+    overflow: hidden;
 }
 
 .contentStyle {

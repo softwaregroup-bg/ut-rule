@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
 import style from '../../style.css';
-import Input from 'ut-front-react/components/Input';
 import DatePicker from 'ut-front-react/components/DatePicker/Simple';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
+import MultiSelect from 'ut-front-react/components/Input/MultiSelectDropdown';
+import { getTagData } from '../../helpers';
 
 const Operation = React.createClass({
     propTypes: {
@@ -18,6 +19,17 @@ const Operation = React.createClass({
             fields: this.props.fields
         };
     },
+    defaultSelected(origin, selected) {
+        let result = [];
+
+        selected.forEach(function(row) {
+            result.push(origin.filter(function(r) {
+                return r.key === row.key;
+            })[0]);
+        });
+
+        return result;
+    },
     onChangeInput(field) {
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
@@ -31,20 +43,27 @@ const Operation = React.createClass({
         this.context.onFieldChange('condition', 0, field.key, field.value);
     },
     render() {
-        let { onChangeInput, onChangeDate } = this;
-        let { operation } = this.context.nomenclatures;
-        let fields = this.state.fields;
-
+        const { onChangeInput, onChangeDate } = this;
+        const { operation } = this.context.nomenclatures;
+        const fields = this.state.fields;
         return (
             <div className={style.content}>
                 {fields.tag.visible &&
                     <div className={style.inputWrapper}>
-                        <Input
+                        <MultiSelect
+                          placeholder='Select Tags'
+                          defaultSelected={this.defaultSelected(getTagData(), this.props.data.operationTag || [])}
+                          onSelect={onChangeInput}
+                          data={getTagData()}
+                          label='Tag'
+                          keyProp='operationTag'
+                        />
+                        {/* <Input
                           keyProp='operationTag'
                           label={fields.tag.title}
                           onChange={onChangeInput}
                           value={'' + (this.props.data.operationTag || '')}
-                        />
+                        / --> */}
                     </div>
                 }
                 {fields.operationId.visible &&

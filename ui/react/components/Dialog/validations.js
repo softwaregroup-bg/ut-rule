@@ -4,7 +4,7 @@ import joi from 'joi-browser';
 let schema = joi.object().keys({
     condition: joi.array().items(
         joi.object().keys({
-            priority: joi.number().min(1).required().options({
+            priority: joi.number().integer().min(1).required().options({
                 language: {
                     key: '"Priority" ',
                     string: {
@@ -24,6 +24,56 @@ let schema = joi.object().keys({
                         base: 'is required for all limits'
                     }
                 }
+            }),
+            minAmount: joi.number().max(999999).optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Min Value" '
+                }
+            }),
+            maxAmount: joi.number().max(999999).optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Value" '
+                }
+            }),
+            maxAmountDaily: joi.number().max(999999).optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Daily Value" '
+                }
+            }),
+            maxCountDaily: joi.number().integer().min(0).max(999999).optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Count Daily Value" '
+                }
+            }),
+            maxAmountWeekly: joi.number().max(999999).optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Weekly Value" '
+                }
+            }),
+            maxCountWeekly: joi.number().integer().min(0).max(999999).optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Count Weekly Value" '
+                }
+            }),
+            maxAmountMonthly: joi.number().max(999999).optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Monthly Value" '
+                }
+            }),
+            maxCountMonthly: joi.number().integer().min(0).max(999999).optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Count Monthly Value" '
+                }
+            }),
+            maxCountLifetime: joi.number().integer().min(0).max(999999).optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Count Lifetime Value" '
+                }
+            }),
+            maxAmountLifetime: joi.number().max(999999).optional().allow(null).allow('').options({
+                language: {
+                    key: '"Transaction Limit Max Amount Lifetime Value" '
+                }
             })
         })
     ),
@@ -40,24 +90,39 @@ let schema = joi.object().keys({
                 })
             }),
             splitRange: joi.array().items(
-                 joi.object().keys({
-                     startAmount: joi.number().min(1).required().options({
-                         language: {
-                             key: '"Range Start Amount" ',
-                             number: {
-                                 base: 'is required for all splits'
-                             }
-                         }
-                     }),
-                     startAmountCurrency: joi.string().required().options({
-                         language: {
-                             key: '"Range Start Amount Currency" ',
-                             string: {
-                                 base: 'is required for all splits'
-                             }
-                         }
-                     })
-                 })
+                joi.object().keys({
+                    startAmount: joi.number().min(1).max(999999).required().options({
+                        language: {
+                            key: '"Range Start Amount" ',
+                            number: {
+                                base: 'is required for all splits'
+                            }
+                        }
+                    }),
+                    startAmountCurrency: joi.string().required().options({
+                        language: {
+                            key: '"Range Start Amount Currency" ',
+                            string: {
+                                base: 'is required for all splits'
+                            }
+                        }
+                    }),
+                    percent: joi.number().max(999999).optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Split Percentage Value" '
+                        }
+                    }),
+                    minValue: joi.number().max(999999).optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Split Range Min Amount Value" '
+                        }
+                    }),
+                    maxValue: joi.number().max(999999).optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Split Range Max Amount Value" '
+                        }
+                    })
+                })
             ),
             splitAssignment: joi.array().items(
                 joi.object().keys({
@@ -83,6 +148,21 @@ let schema = joi.object().keys({
                             string: {
                                 base: 'is required for all splits'
                             }
+                        }
+                    }),
+                    percent: joi.number().max(999999).optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Assignment Percentage Value" '
+                        }
+                    }),
+                    minValue: joi.number().max(999999).optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Assignment Range Min Amount Value" '
+                        }
+                    }),
+                    maxValue: joi.number().max(999999).optional().allow(null).allow('').options({
+                        language: {
+                            key: '"Assignment Range Max Amount Value" '
                         }
                     })
                 })

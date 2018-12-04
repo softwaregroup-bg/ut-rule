@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "6.3.0-mpay.0",
+  "version": "6.3.0-mpay.1",
   "main": "api/sql/index.js",
   "dependencies": {
     "classnames": "2.2.5",

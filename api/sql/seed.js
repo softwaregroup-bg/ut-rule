@@ -1,4 +1,4 @@
 var path = require('path');
-module.exports = {
-    schema: [{path: path.join(__dirname, 'seed'), linkSP: true}]
+module.exports = function sqlSeed() {
+    return {schema: [{path: path.join(__dirname, 'seed'), linkSP: true}]};
 };

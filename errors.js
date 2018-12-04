@@ -1,5 +1,5 @@
 
-module.exports = ({defineError, getError, fetchErrors}) => {
+module.exports = function error({utError: {defineError, getError, fetchErrors}}) {
     if (!getError('rule')) {
         const Rule = defineError('rule', null, 'ut-rule rule error', 'error');
 

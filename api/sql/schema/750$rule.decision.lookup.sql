@@ -133,8 +133,8 @@ BEGIN
 
     -- Lifetime
     SELECT
-        @amountLifetime = SUM(transferAmount),
-        @countLifetime = COUNT(transferAmount)
+        @amountLifetime = ISNULL(SUM(transferAmount), 0),
+        @countLifetime = ISNULL(COUNT(transferAmount), 0)
     FROM
         [integration].[vTransfer]
     WHERE

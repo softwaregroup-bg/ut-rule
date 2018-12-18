@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.20.0-rc-godfather.12",
+  "version": "9.20.0-rc-godfather.13",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {

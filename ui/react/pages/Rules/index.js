@@ -4,7 +4,7 @@ import { fromJS } from 'immutable';
 import { bindActionCreators } from 'redux';
 import Grid from '../../components/Grid';
 import ConfirmDialog from 'ut-front-react/components/ConfirmDialog';
-import { getLink } from 'ut-front/react/routerHelper';
+import { getLink } from 'ut-front-react/routerHelper';
 import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';

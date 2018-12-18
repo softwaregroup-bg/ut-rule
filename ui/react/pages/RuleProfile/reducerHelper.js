@@ -1,7 +1,7 @@
 import { methodRequestState } from 'ut-front-react/constants';
 import { formatNomenclatures, prepareRuleModel } from './helpers';
 import { fromJS } from 'immutable';
-import { getLink } from 'ut-front/react/routerHelper';
+import { getLink } from 'ut-front-react/routerHelper';
 import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange, defaultErrorState, emptyCumulative } from './Tabs/defaultState';
 const __placeholder__ = '__placeholder__';
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fromJS } from 'immutable';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
-import { getLink } from 'ut-front/react/routerHelper';
+import { getLink } from 'ut-front-react/routerHelper';
 import { removeTab } from 'ut-front-react/containers/TabMenu/actions';
 import Page from 'ut-front-react/components/PageLayout/Page';
 import Container from 'ut-front-react/components/PageLayout/Container';

@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import map from 'lodash.map';
-import { getLink } from 'ut-front/react/routerHelper';
+import { getLink } from 'ut-front-react/routerHelper';
 import { fromJS } from 'immutable';
 
 const defaultState = {

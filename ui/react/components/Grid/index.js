@@ -3,7 +3,7 @@ import {fromJS} from 'immutable';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
 import { updateGridColumnStorage, prepareGridFields } from 'ut-front-react/components/GridMenu/helpers';
 import style from './style.css';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 const propInStorage = 'rule_grid_fields';
 
 export default React.createClass({

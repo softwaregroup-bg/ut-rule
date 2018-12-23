@@ -41,10 +41,10 @@ class RuleEdit extends Component {
     }
     fetchData() {
         let { fetchNomenclatures, changeRuleProfile, getRule } = this.props.actions;
-        let { nomenclatureConfiguration, config, params, remoteRule } = this.props;
+        let { nomenclatureConfiguration, config, match, remoteRule } = this.props;
         let { nomenclaturesFetched } = config || {};
-        changeRuleProfile(mode, params.id);
-        !remoteRule && getRule(this.props.params.id);
+        changeRuleProfile(mode, match.params.id);
+        !remoteRule && getRule(match.params.id);
         !nomenclaturesFetched && fetchNomenclatures(nomenclatureConfiguration);
     }
     componentWillMount() {
@@ -54,13 +54,13 @@ class RuleEdit extends Component {
         return remoteRule ? baseTabTitle.concat(' - ', ((remoteRule.condition || [])[0] || {}).priority) : baseTabTitle;
     }
     componentWillReceiveProps(nextProps) {
-        let { id } = nextProps.params;
+        let { id } = nextProps.match.params;
         let { remoteRule, updateTabTitle } = nextProps;
         let { changeRuleProfile, getRule } = this.props.actions;
-        if (id && id !== this.props.params.id) {
+        if (id && id !== this.props.match.params.id) {
             changeRuleProfile(mode, id);
         } else if (this.props.config.id && !remoteRule && remoteRule !== this.props.remoteRule) {
-            getRule(nextProps.params.id);
+            getRule(nextProps.match.params.id);
         }
         if (this.getTitle(remoteRule) !== this.getTitle(this.props.remoteRule)) {
             let pathname = getLink('ut-rule:edit', { id });
@@ -122,7 +122,7 @@ class RuleEdit extends Component {
             let forcelyUpdateHistory = this.state.refetchHistory && this.props.rule.activeTab === tabs.length;
             tabs.push({
                 title: 'History Log',
-                component: <HistoryLog forceUpdate={forcelyUpdateHistory} objectId={this.props.params.id} objectName={'rule'} objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
+                component: <HistoryLog forceUpdate={forcelyUpdateHistory} objectId={this.props.match.params.id} objectName={'rule'} objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
             });
             forcelyUpdateHistory && this.setState({refetchHistory: false});
         }
@@ -219,7 +219,7 @@ class RuleEdit extends Component {
     }
     render() {
         let { ruleSaved } = this.props.config;
-        let { id } = this.props.params;
+        let { id } = this.props.match.params;
         return (
             <Page>
                 <AddTab pathname={getLink('ut-rule:edit', { id })} title={this.getTitle(this.props.remoteRule)} />
@@ -237,7 +237,7 @@ class RuleEdit extends Component {
 
 RuleEdit.propTypes = {
     rule: PropTypes.object,
-    params: PropTypes.object,
+    match: PropTypes.object.isRequired,
     actions: PropTypes.object,
     activeTab: PropTypes.object,
     updateTabTitle: PropTypes.func.isRequired,
@@ -252,7 +252,7 @@ RuleEdit.propTypes = {
 RuleEdit.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
-    let tabState = state.ruleProfileReducer.getIn([mode, ownProps.params.id]);
+    let tabState = state.ruleProfileReducer.getIn([mode, ownProps.match.params.id]);
     return {
         activeTab: state.tabMenu.active,
         config: state.ruleProfileReducer.get('config').toJS(),
@@ -260,7 +260,7 @@ const mapStateToProps = (state, ownProps) => {
         tabsConfiguration: state.uiConfig.getIn(['profile', 'tabs']).toJS(),
         rule: tabState ? tabState.toJS() : {},
         hasChanged: tabState ? tabState.get('hasChanged') : false,
-        remoteRule: state.ruleProfileReducer.getIn(['rules', ownProps.params.id]),
+        remoteRule: state.ruleProfileReducer.getIn(['rules', ownProps.match.params.id]),
         errors: tabState ? tabState.get('errors') : fromJS({})
     };
 };

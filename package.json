@@ -27,6 +27,7 @@
     "react-hot-loader": "^4.6.3",
     "react-redux": "^5.0.5",
     "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
     "redux": "^3.7.2",
     "ut-front": "^8.5.0-rc-godfather.4",
     "ut-front-react": "^10.5.0-rc-godfather.6",

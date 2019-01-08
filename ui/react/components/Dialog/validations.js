@@ -233,14 +233,14 @@ let schema = joi.object().keys({
                         }
                     }
                 }),
-                tag: joi.array().min(1)
+                tag: joi.array().min(1).label('Tag')
             }),
             splitCumulative: joi.array().items(
                  joi.object().keys({
                      currency: joi.string().required().options({
                          language: {
                              key: '"Currency" ',
-                             number: {
+                             string: {
                                  base: 'is required for all splits cumulatives'
                              }
                          }

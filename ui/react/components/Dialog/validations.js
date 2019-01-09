@@ -240,7 +240,7 @@ let schema = joi.object().keys({
                      currency: joi.string().required().options({
                          language: {
                              key: '"Currency" ',
-                             number: {
+                             string: {
                                  base: 'is required for all splits cumulatives'
                              }
                          }

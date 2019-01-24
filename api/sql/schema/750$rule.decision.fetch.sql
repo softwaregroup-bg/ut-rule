@@ -115,10 +115,8 @@ BEGIN
         @countMonthly = ISNULL(c.countMonthly, 0)
     FROM
         @matches AS c
-    JOIN
-        [rule].limit AS l ON l.conditionId = c.conditionId
-    WHERE
-        l.currency = @currency
+    LEFT JOIN -- do not apply INNER JOIN, rule with less priority may not have limit
+        [rule].limit AS l ON l.conditionId = c.conditionId AND l.currency = @currency
     ORDER BY
         c.priority,
         l.limitId

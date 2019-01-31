@@ -151,8 +151,17 @@ const Main = React.createClass({
     },
     removeRules() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
+
+        let priorityArray = [];
+        Object.keys(this.state.selectedConditions).forEach(el => {
+            if (this.props.rules.hasOwnProperty(el)) {
+                priorityArray.push({ conditionId: this.props.rules[el].condition[0].conditionId, priority: this.props.rules[el].condition[0].priority });
+            }
+        });
+
         this.setState(this.getInitialState(), () => this.props.actions.removeRules({
-            conditionId: conditionsArray
+            conditionId: conditionsArray,
+            condition: priorityArray // data for alert notification api (ruleNewPriority)
         }));
     },
     refresh() {
@@ -291,20 +300,20 @@ const Main = React.createClass({
                                     />
                                 </div>
                                 <div className={style.multiFilterSeparated}>
-                                <MultiSelectDropdown
-                                    defaultSelected={operationIds}
-                                    label='Operations'
-                                    data={Object.keys(this.props.nomenclatures.operation).map(key => {
-                                        return {
-                                            key,
-                                            name: this.props.nomenclatures.operation[key]
-                                        };
-                                    }) || []}
-                                    keyProp='operationIds'
-                                    placeholder="Select"
-                                    onSelect={this.onSelectDropdown}
-                                    type="dropdownMultiSelect"
-                                />
+                                    <MultiSelectDropdown
+                                        defaultSelected={operationIds}
+                                        label='Operations'
+                                        data={Object.keys(this.props.nomenclatures.operation).map(key => {
+                                            return {
+                                                key,
+                                                name: this.props.nomenclatures.operation[key]
+                                            };
+                                        }) || []}
+                                        keyProp='operationIds'
+                                        placeholder="Select"
+                                        onSelect={this.onSelectDropdown}
+                                        type="dropdownMultiSelect"
+                                    />
                                 </div>
                                 <div className={style.clearFilterSeparated}>
                                     <ToolboxClearFilter filterData={filterData} clearFilter={this.clearFilter} />
@@ -321,7 +330,7 @@ const Main = React.createClass({
                                         label='Edit'
                                     />
                                 }
-                                {this.context.checkPermission('rule.rule.view') && <button onClick={this.viewBtnOnClick} className={classnames('button btn btn-primary', style.deleteButton)}  disabled={!this.state.canView}>
+                                {this.context.checkPermission('rule.rule.view') && <button onClick={this.viewBtnOnClick} className={classnames('button btn btn-primary', style.deleteButton)} disabled={!this.state.canView}>
                                     View
                                 </button>
                                 }
@@ -339,7 +348,7 @@ const Main = React.createClass({
                                     ref='prompt'
                                     open={this.state.prompt}
                                     message={
-                                       'Are you sure you want to delete the selected rule?'
+                                        'Are you sure you want to delete the selected rule?'
                                     }
                                     title='Delete Rule'
                                     onOk={this.removeRules}

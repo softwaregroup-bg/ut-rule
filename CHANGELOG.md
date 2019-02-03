@@ -1,3 +1,33 @@
+# [9.20.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.19.1...v9.20.0) (2019-02-03)
+
+
+### Bug Fixes
+
+* assets ([610ce36](https://github.com/softwaregroup-bg/ut-rule/commit/610ce36))
+* dependencies ([89f94bf](https://github.com/softwaregroup-bg/ut-rule/commit/89f94bf))
+* dependency ([f55e1c3](https://github.com/softwaregroup-bg/ut-rule/commit/f55e1c3))
+* dependency ([d65388f](https://github.com/softwaregroup-bg/ut-rule/commit/d65388f))
+* fetch users based on max approval amount ([#155](https://github.com/softwaregroup-bg/ut-rule/issues/155)) ([1ce9e31](https://github.com/softwaregroup-bg/ut-rule/commit/1ce9e31))
+* front end microservices ([10afa13](https://github.com/softwaregroup-bg/ut-rule/commit/10afa13))
+* ignore package-lock ([3ff41c7](https://github.com/softwaregroup-bg/ut-rule/commit/3ff41c7))
+* make ruleSeed function ([454031a](https://github.com/softwaregroup-bg/ut-rule/commit/454031a))
+* move history seeds ([7fdb31d](https://github.com/softwaregroup-bg/ut-rule/commit/7fdb31d))
+* react-router upgrade & hot reload ([f61f93d](https://github.com/softwaregroup-bg/ut-rule/commit/f61f93d))
+* remove error initialization in ports ([39cae14](https://github.com/softwaregroup-bg/ut-rule/commit/39cae14))
+* seed ([a1185c0](https://github.com/softwaregroup-bg/ut-rule/commit/a1185c0))
+* split standard and seed ([a5b4ca3](https://github.com/softwaregroup-bg/ut-rule/commit/a5b4ca3))
+* upgrade dependencies ([286fcbe](https://github.com/softwaregroup-bg/ut-rule/commit/286fcbe))
+* upgrade joi ([458d7d4](https://github.com/softwaregroup-bg/ut-rule/commit/458d7d4))
+
+
+### Features
+
+* add max approved amount as input ([2fc54ef](https://github.com/softwaregroup-bg/ut-rule/commit/2fc54ef))
+* composable microservices ([31c7c14](https://github.com/softwaregroup-bg/ut-rule/commit/31c7c14))
+* export partial microservices ([#163](https://github.com/softwaregroup-bg/ut-rule/issues/163)) ([636de5b](https://github.com/softwaregroup-bg/ut-rule/commit/636de5b))
+
+
+
 <a name="9.19.1"></a>
 ## [9.19.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.19.0...v9.19.1) (2018-08-22)
 

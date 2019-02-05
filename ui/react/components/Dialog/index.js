@@ -37,6 +37,7 @@ const emptyCondition = {
     channelRoleId: null,
     channelAgentTypeId: null,
     channelId: null,
+    channelTypeIds: null,
     operationIds: [],
     operationTag: null,
     operationStartDate: null,
@@ -235,6 +236,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             formatedData.condition[0]['channelRegionIds'] = [];
             formatedData.condition[0]['channelCityIds'] = [];
             formatedData.condition[0]['operationIds'] = [];
+            formatedData.condition[0]['channelTypeIds'] = [];
             formatedData.condition[0]['sourceCountryIds'] = [];
             formatedData.condition[0]['sourceRegionIds'] = [];
             formatedData.condition[0]['sourceCityIds'] = [];
@@ -244,7 +246,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
 
             conditionItem.forEach((item) => {
                 if (item.conditionId === conditionId) {
-                    if (['operation', 'country', 'city', 'region'].indexOf(item.type) > -1) {
+                    if (['operation', 'country', 'city', 'region', 'channelType'].indexOf(item.type) > -1) {
                         switch (item.factor) {
                             case 'ds':
                                 formatedData.condition[0][`destination${capitalizeFirstLetter(item.type)}Ids`].push({
@@ -265,7 +267,9 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
                                 });
                                 break;
                             case 'cs':
-                                formatedData.condition[0][`channel${capitalizeFirstLetter(item.type)}Ids`].push({
+                                const key = item.type === 'channelType' ? 'channelTypeIds' : `channel${capitalizeFirstLetter(item.type)}Ids`;
+
+                                formatedData.condition[0][key].push({
                                     key: item.itemNameId,
                                     name: nomenclatures[item.type][item.itemNameId]
                                 });

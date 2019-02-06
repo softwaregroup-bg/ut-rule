@@ -37,7 +37,7 @@ const emptyCondition = {
     channelRoleId: null,
     channelAgentTypeId: null,
     channelId: null,
-    channelTypeIds: null,
+    channelTypeIds: [],
     operationIds: [],
     operationTag: null,
     operationStartDate: null,

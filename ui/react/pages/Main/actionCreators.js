@@ -286,7 +286,7 @@ export function addRule(params) {
             channelCityIds: 'cs',
             channelCountryIds: 'cs',
             channelRegionIds: 'cs',
-            channelTypeId: 'cs',
+            channelTypeIds: 'cs',
             destinationCityIds: 'ds',
             destinationCountryIds: 'ds',
             destinationRegionIds: 'ds',

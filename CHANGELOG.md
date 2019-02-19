@@ -1,3 +1,12 @@
+## [9.20.1](https://github.com/softwaregroup-bg/ut-rule/compare/v9.20.0...v9.20.1) (2019-02-19)
+
+
+### Bug Fixes
+
+* update peer dependencies ([fdfb7e3](https://github.com/softwaregroup-bg/ut-rule/commit/fdfb7e3))
+
+
+
 # [9.20.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.19.1...v9.20.0) (2019-02-03)
 
 

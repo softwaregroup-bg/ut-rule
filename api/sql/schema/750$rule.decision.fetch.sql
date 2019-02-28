@@ -8,7 +8,13 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @currency VARCHAR(3),
     @isSourceAmount BIT,
     @sourceAccount varchar(100),
-    @destinationAccount varchar(100)
+    @destinationAccount varchar(100),
+    @sourceAccountBalance MONEY,
+    @sourceAccountMinBalance MONEY,
+    @sourceAccountMaxBalance MONEY,
+    @destinationAccountBalance MONEY,
+    @destinationAccountMinBalance MONEY,
+    @destinationAccountMaxBalance MONEY
 AS
 BEGIN
     DECLARE @transferTypeId BIGINT
@@ -30,7 +36,18 @@ BEGIN
         countMonthly bigint
     )
 
-    SET @operationDate = IsNull(@operationDate, GETDATE())
+    DECLARE @split TABLE(
+        conditionId int,
+        splitNameId int,
+        tag VARCHAR(MAX),
+        amount MONEY,
+        debit VARCHAR(50),
+        credit VARCHAR(50),
+        [description] VARCHAR(50),
+        analytics XML
+    );
+
+    SET @operationDate = ISNULL(@operationDate, GETDATE())
 
     DECLARE
         @calcCommission MONEY,
@@ -50,7 +67,11 @@ BEGIN
         @maxAmountWeekly MONEY,
         @maxCountWeekly BIGINT,
         @maxAmountMonthly MONEY,
-        @maxCountMonthly BIGINT
+        @maxCountMonthly BIGINT,
+        @sourceDebit MONEY,
+        @sourceCredit MONEY,
+        @destinationDebit MONEY,
+        @destinationCredit MONEY
 
     INSERT INTO
         @matches(
@@ -221,8 +242,8 @@ BEGIN
         s.conditionId,
         s.splitNameId,
         CASE
-            WHEN s.calcFee>s.maxFee THEN s.maxFee
-            WHEN s.calcFee<s.minFee THEN s.minFee
+            WHEN s.calcFee > s.maxFee THEN s.maxFee
+            WHEN s.calcFee < s.minFee THEN s.minFee
             ELSE s.calcFee
         END fee,
         s.tag
@@ -231,17 +252,6 @@ BEGIN
     WHERE
         s.rnk1 = 1 AND
         s.rnk2 = 1
-
-    SELECT 'amount' AS resultSetName, 1 single
-    SELECT
-        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|otherTax|%') otherTax,
-        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|wth|%') wth,
-        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|vat|%') vat,
-        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|fee|%' AND tag NOT LIKE '%|issuer|%') acquirerFee,
-        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%') issuerFee,
-        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|commission|%' OR tag LIKE '%|agentCommission|%') commission,
-        @operationDate transferDateTime,
-        @transferTypeId transferTypeId
 
     DECLARE @map [core].map
 
@@ -263,7 +273,7 @@ BEGIN
 
     DELETE FROM @map WHERE [value] IS NULL
 
-    SELECT 'split' AS resultSetName
+    INSERT INTO @split (conditionId, splitNameId, tag, amount, debit, credit, description, analytics)
     SELECT
         a.conditionId,
         a.splitNameId,
@@ -285,4 +295,76 @@ BEGIN
         integration.vAssignment d ON d.accountId = assignment.debit
     LEFT JOIN
         integration.vAssignment c ON c.accountId = assignment.credit
+
+
+    SELECT @sourceDebit = ISNULL(SUM(amount), 0)
+    FROM @split
+    WHERE debit = @sourceAccount
+    GROUP BY debit
+
+    SELECT @destinationDebit = ISNULL(SUM(amount), 0)
+    FROM @split
+    WHERE debit = @destinationAccount
+    GROUP BY debit
+
+    SELECT @sourceCredit = ISNULL(SUM(amount), 0)
+    FROM @split
+    WHERE credit = @sourceAccount
+    GROUP BY credit
+
+    SELECT @destinationCredit = ISNULL(SUM(amount), 0)
+    FROM @split
+    WHERE credit = @destinationAccount
+    GROUP BY credit
+
+    IF @sourceAccountBalance IS NOT NULL
+        AND ISNULL (@sourceAccountMinBalance, 0) > @sourceAccountBalance + ISNULL(@sourceCredit, 0) - ISNULL(@sourceDebit, 0)
+    BEGIN
+        RAISERROR('rule.exceedSourceAccountMinBalance', 16, 1)
+        RETURN
+    END
+
+    IF @sourceAccountBalance IS NOT NULL
+        AND @sourceAccountMaxBalance IS NOT NULL
+        AND @sourceAccountMaxBalance < @sourceAccountBalance + ISNULL(@sourceCredit, 0) - ISNULL(@sourceDebit, 0)
+    BEGIN
+        RAISERROR('rule.exceedSourceAccountMinBalance', 16, 1)
+        RETURN
+    END
+
+    IF @destinationAccountBalance IS NOT NULL
+        AND ISNULL (@destinationAccountMinBalance, 0) > @destinationAccountBalance + ISNULL(@destinationCredit, 0) - ISNULL(@destinationDebit, 0)
+    BEGIN
+        RAISERROR('rule.exceedDestinationAccountMinBalance', 16, 1)
+        RETURN
+    END
+
+    IF @destinationAccountBalance IS NOT NULL
+        AND @destinationAccountMaxBalance IS NOT NULL
+        AND @destinationAccountMaxBalance < @destinationAccountBalance + ISNULL(@destinationCredit, 0) - ISNULL(@destinationDebit, 0)
+    BEGIN
+        RAISERROR('rule.exceedDestinationAccountMaxBalance', 16, 1)
+        RETURN
+    END
+
+    SELECT 'amount' AS resultSetName, 1 single
+    SELECT
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|otherTax|%') otherTax,
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|wth|%') wth,
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|vat|%') vat,
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|fee|%' AND tag NOT LIKE '%|issuer|%') acquirerFee,
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%') issuerFee,
+        (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|commission|%' OR tag LIKE '%|agentCommission|%') commission,
+        @operationDate transferDateTime,
+        @transferTypeId transferTypeId
+
+    SELECT 'split' AS resultSetName
+    SELECT *
+    FROM @split
+
+    SELECT 'accountBalance' AS resultSetName
+    SELECT
+        @sourceAccountBalance + ISNULL(@sourceCredit, 0) - ISNULL(@sourceDebit, 0) AS newSourceAccountBalance,
+        @destinationAccountBalance + ISNULL(@destinationCredit, 0) - ISNULL(@destinationDebit, 0) AS newDestinationAccountBalance
+
 END

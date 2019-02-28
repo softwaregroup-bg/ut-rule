@@ -1,18 +1,13 @@
-CREATE FUNCTION [rule].falseItemFactorCount(
+ALTER FUNCTION [rule].[falseItemFactorCount](
     @conditionId int,
     @items [rule].[properties] READONLY
-) RETURNS BIGINT AS
+) RETURNS INT AS
 BEGIN
     RETURN (
-        SELECT COUNT(*) FROM [rule].conditionItem WHERE conditionId = @conditionId AND factor NOT IN (
-            SELECT
-                ci.factor
-            FROM
-                [rule].conditionItem ci
-            JOIN
-                @items a ON a.[factor] = ci.factor AND ci.itemNameId = a.value
-            WHERE
-                ci.conditionId = @conditionId
-        )
+        SELECT COUNT(*)
+        FROM [rule].conditionItem ci
+        LEFT JOIN @items a ON a.[factor] = ci.factor AND ci.itemNameId = a.value
+        WHERE conditionId = @conditionId
+            AND a.factor IS NULL
     )
 END

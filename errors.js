@@ -11,6 +11,10 @@ var ExceedWeeklyLimitCount = create('exceedWeeklyLimitCount', Rule, 'Weekly coun
 var ExceedMonthlyLimitAmount = create('exceedMonthlyLimitAmount', Rule, 'Monthly amount limit reached');
 var ExceedMonthlyLimitCount = create('exceedMonthlyLimitCount', Rule, 'Monthly count limit reached');
 var DuplicatedPriority = create('duplicatedPriority', Rule, 'Rule with this priority already exists');
+var ExceedSourceAccountMinBalance = create('exceedSourceAccountMinBalance', Rule, 'Source account min balance violation');
+var ExceedSourceAccountMaxBalance = create('exceedSourceAccountMaxBalance', Rule, 'Source account max balance violation');
+var ExceedDestinationAccountMinBalance = create('exceedDestinationAccountMinBalance', Rule, 'Destination account min balance violation');
+var ExceedDestinationAccountMaxBalance = create('exceedDestinationAccountMaxBalance', Rule, 'Destination account max balance violation');
 
 module.exports = {
     rule: cause => new Rule(cause),
@@ -23,5 +27,9 @@ module.exports = {
     exceedWeeklyLimitCount: cause => new ExceedWeeklyLimitCount(cause),
     exceedMonthlyLimitAmount: cause => new ExceedMonthlyLimitAmount(cause),
     exceedMonthlyLimitCount: cause => new ExceedMonthlyLimitCount(cause),
-    duplicatedPriority: cause => new DuplicatedPriority(cause)
+    duplicatedPriority: cause => new DuplicatedPriority(cause),
+    exceedSourceAccountMinBalance: cause => new ExceedSourceAccountMinBalance(cause),
+    exceedSourceAccountMaxBalance: cause => new ExceedSourceAccountMaxBalance(cause),
+    exceedDestinationAccountMinBalance: cause => new ExceedDestinationAccountMinBalance(cause),
+    exceedDestinationAccountMaxBalance: cause => new ExceedDestinationAccountMaxBalance(cause),
 };

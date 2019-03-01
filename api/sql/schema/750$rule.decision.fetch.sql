@@ -328,7 +328,7 @@ BEGIN
         AND @sourceAccountMaxBalance IS NOT NULL
         AND @sourceAccountMaxBalance < @sourceAccountBalance + ISNULL(@sourceCredit, 0) - ISNULL(@sourceDebit, 0)
     BEGIN
-        RAISERROR('rule.exceedSourceAccountMinBalance', 16, 1)
+        RAISERROR('rule.exceedSourceAccountMaxBalance', 16, 1)
         RETURN
     END
 

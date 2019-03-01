@@ -296,7 +296,14 @@ let schema = joi.object().keys({
                 })
             )
         })
-    )
+    ).unique((a, b) => a.splitName.name === b.splitName.name).options({
+        language: {
+            key: '"Split Duplicate" ',
+            array: {
+                unique: 'Rules cannot contain splits with same names'
+            }
+        }
+    })
 });
 module.exports = {
     run: (objToValidate, options = {}) => {

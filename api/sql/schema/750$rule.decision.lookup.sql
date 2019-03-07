@@ -155,18 +155,18 @@ BEGIN
         ('ss', 'source.country', @sourceCountryId),
         ('ss', 'source.region', @sourceRegionId),
         ('ss', 'source.city', @sourceCityId),
+        ('ss', 'source.riskProfile', @sourceAccountRiskProfileId),
         --source category
         ('sc', 'source.account.product', @sourceAccountProductId),
-        ('sc', 'source.account.riskProfile', @sourceAccountRiskProfileId),
         ('sc', 'source.account.category', @sourceAccountCategoryId),
         ('sc', 'source.card.product', @sourceCardProductId),
         --destination spatial
         ('ds', 'destination.country', @destinationCountryId),
         ('ds', 'destination.region', @destinationRegionId),
         ('ds', 'destination.city', @destinationCityId),
+        ('ds', 'destination.riskProfile', @destinationAccountRiskProfileId),
         --destination category
         ('dc', 'destination.account.product', @destinationAccountProductId),
-        ('dc', 'destination.account.riskProfile', @destinationAccountRiskProfileId),
         ('dc', 'destination.account.category', @destinationAccountCategoryId)
 
     DELETE FROM @operationProperties WHERE value IS NULL

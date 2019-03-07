@@ -1,13 +1,18 @@
-ALTER FUNCTION [rule].falseActorFactorCount(
-    @conditionId int,
+ALTER FUNCTION [rule].[falseActorFactorCount](
+    @conditionId INT,
     @actors [rule].[properties] READONLY
-) RETURNS INT AS
+) RETURNS BIT AS
 BEGIN
     RETURN (
-        SELECT COUNT(*)
-        FROM [rule].conditionActor ci
-        LEFT JOIN @actors a ON a.[factor] = ci.factor AND ci.actorId = a.value
-        WHERE conditionId = @conditionId
-            AND a.factor IS NULL
+        SELECT COUNT(*) FROM [rule].conditionActor WHERE conditionId = @conditionId AND factor NOT IN (
+            SELECT
+                ca.factor
+            FROM
+                [rule].conditionActor ca
+            JOIN
+                @actors a ON a.[factor] = ca.factor AND ca.actorId = a.value
+            WHERE
+                ca.conditionId = @conditionId
         )
+    )
 END

@@ -1,58 +1,26 @@
 ALTER PROCEDURE [rule].[decision.lookup]
-    @channelId BIGINT,
-    @operation VARCHAR(100),
+    @channelType NVARCHAR(200),
+    @operation NVARCHAR(200),
     @operationDate DATETIME,
     @sourceAccount VARCHAR(100),
-    @sourceCardProductId BIGINT = NULL,
     @destinationAccount VARCHAR(100),
     @amount MONEY,
     @currency VARCHAR(3),
-    @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL,
     @destinationAccountOwnerId BIGINT = NULL,
-    @sourceAccountBalance MONEY = NULL,
-    @sourceAccountMinBalance MONEY = NULL,
-    @sourceAccountMaxBalance MONEY = NULL,
     @sourceAccountRiskProfileId BIGINT = NULL,
     @sourceAccountCategoryId BIGINT = NULL,
-    @destinationAccountBalance MONEY = NULL,
-    @destinationAccountMinBalance MONEY = NULL,
-    @destinationAccountMaxBalance MONEY = NULL,
     @destinationAccountRiskProfileId BIGINT = NULL,
     @destinationAccountCategoryId BIGINT = NULL
 AS
 BEGIN
     DECLARE
-        @channelCountryId BIGINT,
-        @channelRegionId BIGINT,
-        @channelCityId BIGINT,
-
+        @channelId BIGINT,
         @operationId BIGINT,
-
-        @sourceCountryId BIGINT,
-        @sourceRegionId BIGINT,
-        @sourceCityId BIGINT,
-        @sourceOwnerId BIGINT,
-        @sourceAccountProductId BIGINT,
         @sourceAccountId NVARCHAR(255),
-
-        @destinationCountryId BIGINT,
-        @destinationRegionId BIGINT,
-        @destinationCityId BIGINT,
-        @destinationOwnerId BIGINT,
-        @destinationAccountProductId BIGINT,
         @destinationAccountId NVARCHAR(255),
 
         @totals [rule].totals
-
-    SELECT
-        @channelCountryId = countryId,
-        @channelRegionId = regionId,
-        @channelCityId = cityId
-    FROM
-        [integration].[vChannel]
-    WHERE
-        channelId = @channelId
 
     SELECT
         @operationId = n.itemNameId
@@ -64,30 +32,13 @@ BEGIN
         itemCode = @operation
 
     SELECT
-        @sourceCountryId = countryId,
-        @sourceRegionId = regionId,
-        @sourceCityId = cityId,
-        @sourceOwnerId = ownerId,
-        @sourceAccountProductId = accountProductId,
-        @sourceAccountId = accountId
+        @channelId = n.itemNameId
     FROM
-        [integration].[vAccount]
+        [core].[itemName] n
+    JOIN
+        [core].[itemType] t ON n.itemTypeId = t.itemTypeId AND t.alias = 'channelType'
     WHERE
-        accountNumber = @sourceAccount AND
-        (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL)
-
-    SELECT
-        @destinationCountryId = countryId,
-        @destinationRegionId = regionId,
-        @destinationCityId = cityId,
-        @destinationOwnerId = ownerId,
-        @destinationAccountProductId = accountProductId,
-        @destinationAccountId = accountId
-    FROM
-        [integration].[vAccount]
-    WHERE
-        accountNumber = @destinationAccount AND
-        (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
+        itemCode = @channelType
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 
@@ -118,9 +69,17 @@ BEGIN
     INSERT INTO
         @operationProperties(factor, name, value)
     SELECT
-        'co', 'channel.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, r.actorId
+        'sr', 'source.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, r.actorId
     FROM
-        core.actorGraph(@channelId, 'memberOf', 'subject') g
+        core.actorGraph(@sourceAccountOwnerId, 'memberOf', 'subject') g
+    CROSS APPLY
+        core.actorGraph(g.actorId, 'role', 'subject') r
+    WHERE
+        g.actorId <> r.actorId
+    UNION SELECT
+        'dr', 'destination.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, r.actorId
+    FROM
+        core.actorGraph(@destinationAccountOwnerId, 'memberOf', 'subject') g
     CROSS APPLY
         core.actorGraph(g.actorId, 'role', 'subject') r
     WHERE
@@ -128,45 +87,26 @@ BEGIN
     UNION SELECT
         'so', 'source.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
-        core.actorGraph(@sourceOwnerId, 'memberOf', 'subject') g
+        core.actorGraph(@sourceAccountOwnerId, 'memberOf', 'subject') g
     UNION SELECT
         'do', 'destination.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
-        core.actorGraph(@destinationOwnerId, 'memberOf', 'subject') g
-    UNION SELECT
-        'co', 'channel.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
-    FROM
-        core.actorGraph(@channelId, 'memberOf', 'subject') g
-    UNION SELECT
-        'co', 'agentOf.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
-    FROM
-        core.actorGraph(@channelId, 'agentOf', 'subject') g
+        core.actorGraph(@destinationAccountOwnerId, 'memberOf', 'subject') g
 
     INSERT INTO
         @operationProperties(factor, name, value)
     VALUES
         --channel spatial
-        ('cs', 'channel.country', @channelCountryId),
-        ('cs', 'channel.region', @channelRegionId),
-        ('cs', 'channel.city', @channelCityId),
+        ('cs', 'channel.type', @channelId),
         --operation category
         ('oc', 'operation.id', @operationId),
         --source spatial
-        ('ss', 'source.country', @sourceCountryId),
-        ('ss', 'source.region', @sourceRegionId),
-        ('ss', 'source.city', @sourceCityId),
         ('ss', 'source.riskProfile', @sourceAccountRiskProfileId),
         --source category
-        ('sc', 'source.account.product', @sourceAccountProductId),
         ('sc', 'source.account.category', @sourceAccountCategoryId),
-        ('sc', 'source.card.product', @sourceCardProductId),
         --destination spatial
-        ('ds', 'destination.country', @destinationCountryId),
-        ('ds', 'destination.region', @destinationRegionId),
-        ('ds', 'destination.city', @destinationCityId),
         ('ds', 'destination.riskProfile', @destinationAccountRiskProfileId),
         --destination category
-        ('dc', 'destination.account.product', @destinationAccountProductId),
         ('dc', 'destination.account.category', @destinationAccountCategoryId)
 
     DELETE FROM @operationProperties WHERE value IS NULL
@@ -179,13 +119,6 @@ BEGIN
         @amount = @amount,
         @totals = @totals,
         @currency = @currency,
-        @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
-        @destinationAccount = @destinationAccount,
-        @sourceAccountBalance = @sourceAccountBalance,
-        @sourceAccountMinBalance = @sourceAccountMinBalance,
-        @sourceAccountMaxBalance = @sourceAccountMaxBalance,
-        @destinationAccountBalance = @destinationAccountBalance,
-        @destinationAccountMinBalance = @destinationAccountMinBalance,
-        @destinationAccountMaxBalance = @destinationAccountMaxBalance
+        @destinationAccount = @destinationAccount
 END

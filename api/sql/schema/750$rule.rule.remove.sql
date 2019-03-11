@@ -3,37 +3,33 @@ ALTER PROCEDURE [rule].[rule.remove]
 AS
 BEGIN TRY
     BEGIN TRANSACTION
-        -- SELECT 'limit' AS resultSetName -- PD: ABT-2667
-        DELETE x        
+
+        DELETE x
         FROM
             [rule].limit x
         JOIN
             @conditionId item ON x.conditionId = item.value
 
-        -- SELECT 'conditionActor' AS resultSetName -- PD: ABT-2667
-        DELETE x        
+        DELETE x
         FROM
             [rule].conditionActor x
         JOIN
             @conditionId item ON x.conditionId = item.value
 
-        -- SELECT 'conditionItem' AS resultSetName -- PD: ABT-2667
-        DELETE x        
-        FROM 
+        DELETE x
+        FROM
             [rule].conditionItem x
         JOIN
             @conditionId item ON x.conditionId = item.value
-    
-        -- SELECT 'conditionProperty' AS resultSetName -- PD: ABT-2667
-        DELETE x       
-        FROM 
+
+        DELETE x
+        FROM
             [rule].conditionProperty x
         JOIN
             @conditionId item ON x.conditionId = item.value
 
-        -- SELECT 'splitRange' AS resultSetName -- PD: ABT-2667
         DELETE
-            x       
+            x
         FROM
             [rule].splitRange x
         JOIN
@@ -41,39 +37,15 @@ BEGIN TRY
         JOIN
             @conditionId item ON s.conditionId = item.value
 
-        -- SELECT 'splitAnalytic' AS resultSetName -- PD: ABT-2667
         DELETE
-            x        
-        FROM
-            [rule].splitAnalytic x
-        JOIN   
-            [rule].splitAssignment y ON y.splitAssignmentId = x.splitAssignmentId
-        JOIN
-            [rule].splitName s ON s.splitNameId = y.splitNameId
-        JOIN
-            @conditionId item ON s.conditionId = item.value         
-        
-        -- SELECT 'splitAssignment' AS resultSetName -- PD: ABT-2667
-        DELETE
-            x        
-        FROM
-            [rule].splitAssignment x
-        JOIN
-            [rule].splitName s ON s.splitNameId = x.splitNameId
-        JOIN
-            @conditionId item ON s.conditionId = item.value
-
-        -- SELECT 'splitName' AS resultSetName -- PD: ABT-2667
-        DELETE
-            x       
+            x
         FROM
             [rule].splitName x
         JOIN
             @conditionId item ON x.conditionId = item.value
 
-        -- SELECT 'condition' AS resultSetName -- PD: ABT-2667
         DELETE
-            x       
+            x
         FROM
             [rule].condition x
         JOIN

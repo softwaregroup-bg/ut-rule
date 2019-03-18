@@ -13,7 +13,8 @@ const defaultUiState = {
             'operation',
             'supervisor',
             'cardProduct',
-            'account'
+            'account',
+            'channelType'
         ],
         itemCode: [
             'currency'
@@ -105,6 +106,10 @@ const defaultUiState = {
                     agentType: {
                         visible: true,
                         title: 'Agent Type'
+                    },
+                    channelType: {
+                        visible: true,
+                        title: 'Access Channel'
                     }
                 }
             },

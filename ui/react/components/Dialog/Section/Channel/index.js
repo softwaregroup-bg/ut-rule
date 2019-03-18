@@ -3,7 +3,6 @@ import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
-import plusImage from '../../assets/add_new.png';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 
@@ -76,7 +75,7 @@ const Channel = React.createClass({
         ));
     },
     render() {
-        let {channel, country, region, city, supervisor, organization, role, agentType} = this.context.nomenclatures;
+        let { organization, role, agentType, channelType } = this.context.nomenclatures;
         let { onSelectDropdown } = this;
         let fields = this.state.fields;
         
@@ -124,6 +123,19 @@ const Channel = React.createClass({
                         mergeStyles={{dropDownRoot: style.dropDownRoot}}
                         disabled={this.props.data.channelRoleId}
                       />
+                  </div>
+                }
+
+                {fields.channelType.visible &&
+                    <div className={style.inputWrapper}>
+                      <MultiSelectBubble
+                        keyProp='channelTypeIds'
+                        name='channelTypeIds'
+                        label={fields.channelType.title}
+                        value={this.props.data.channelTypeIds}
+                        options={channelType || []}
+                        onChange={(val) => { this.onSelectDropdown({ key: 'channelTypeIds', value: val }); }}
+                    />
                   </div>
                 }
             </div>

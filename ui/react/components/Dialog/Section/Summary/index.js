@@ -53,7 +53,8 @@ const Summary = React.createClass({
                                 ['Organization', condition.channelOrganizationId, 'organization'],
                                 ['Supervisor', condition.channelSupervisorId, 'supervisor'],
                                 ['Role', condition.channelRoleId, 'role'],
-                                ['Agent Type', condition.channelAgentTypeId, 'agentType']
+                                ['Agent Type', condition.channelAgentTypeId, 'agentType'],
+                                ['Access Channel', condition.channelTypeId, 'channelType']
                             ], 'Condition')}
                             {this.buildList([
                                 ['Operation', condition.operationId, 'operation'],

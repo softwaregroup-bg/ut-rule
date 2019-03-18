@@ -9,13 +9,15 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @currency varchar(3),
     @isSourceAmount BIT=0,
     @sourceAccountOwnerId BIGINT = NULL,
-    @destinationAccountOwnerId BIGINT = NULL
+    @destinationAccountOwnerId BIGINT = NULL,
+    @channelType varchar(100) = NULL
 AS
 BEGIN
     DECLARE
         @channelCountryId BIGINT,
         @channelRegionId BIGINT,
         @channelCityId BIGINT,
+        @channelTypeId BIGINT,
 
         @operationId BIGINT,
 
@@ -52,6 +54,15 @@ BEGIN
         [core].[itemType] t ON n.itemTypeId = t.itemTypeId AND t.alias = 'operation'
     WHERE
         itemCode = @operation
+
+    SELECT
+        @channelTypeId = n.itemNameId
+    FROM
+        [core].[itemName] n
+    JOIN
+        [core].[itemType] t ON n.itemTypeId = t.itemTypeId AND t.alias = 'channelType'
+    WHERE
+        itemCode = @channelType
 
     SELECT
         @sourceCountryId = countryId,
@@ -139,6 +150,7 @@ BEGIN
         ('cs', 'channel.country', @channelCountryId),
         ('cs', 'channel.region', @channelRegionId),
         ('cs', 'channel.city', @channelCityId),
+        ('cs', 'channel.type', @channelTypeId),
         --operation category
         ('oc', 'operation.id', @operationId),
         --source spatial

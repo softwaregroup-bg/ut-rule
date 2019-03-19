@@ -48,23 +48,34 @@ const Splits = React.createClass({
         };
     },
     getTagData() {
-        return [
-            // {key: 'acquirer', name: 'Acquirer'},
-            {key: 'fee', name: 'Fee'},
-            {key: 'vat', name: 'VAT'},
-            {key: 'wth', name: 'WHT'},
-            {key: 'otherTax', name: 'Other Tax'},
-            {key: 'realtime', name: 'Real Time'},
-            {key: 'agentCommission', name: 'Delayed'},
-            {key: 'commission', name: 'Commission real time'}
-            // {key: 'issuer', name: 'Issuer'},
-            // {key: 'commission', name: 'Commission'},
-            // {key: 'pending', name: 'Authorization required'},
-            // {key: 'agent', name: 'Agent'},
-            // {key: 'atm', name: 'ATM'},
-            // {key: 'pos', name: 'POS'},
-            // {key: 'ped', name: 'PED'},
-        ];
+    let tags = [ // {key: 'acquirer', name: 'Acquirer'},
+    {key: 'fee', name: 'Fee', disabled: false},
+    {key: 'vat', name: 'VAT', disabled: false},
+    {key: 'wth', name: 'WHT', disabled: false},
+    {key: 'otherTax', name: 'Other Tax', disabled: false},
+    {key: 'realtime', name: 'Real Time', disabled: false},
+    {key: 'agentCommission', name: 'Delayed', disabled: false},
+    {key: 'commission', name: 'Commission real time', disabled: false}
+    // {key: 'issuer', name: 'Issuer'},
+    // {key: 'commission', name: 'Commission'},
+    // {key: 'pending', name: 'Authorization required'},
+    // {key: 'agent', name: 'Agent'},
+    // {key: 'atm', name: 'ATM'},
+    // {key: 'pos', name: 'POS'},
+    // {key: 'ped', name: 'PED'},]
+    ];
+    for (let i = 0; i < this.props.data.length; i++) {
+       if (this.props.data && this.props.data[i].disabledElements){ 
+        for (let y = 0; y < this.props.data[i].disabledElements.length; y++) {
+            for (let z = 0; z < tags.length; z++) {
+              if (this.props.data[i].disabledElements[y].key === tags[z].key) 
+              tags[z].disabled = true;
+            }
+        }
+    }
+    }
+
+        return tags;
     },
     defaultSelected(origin, selected) {
         let result = [];
@@ -103,6 +114,7 @@ const Splits = React.createClass({
                           data={self.getTagData()}
                           label='Tag'
                           keyProp='splitName.tag'
+                          disabled={self.getTagData().disabled}
                         />
                     </div>
                 </div>

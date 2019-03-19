@@ -167,6 +167,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
     },
     componentWillMount() {
         var formatedData = {};
+        // this.setDisabledDropDownElements(0, this.props.data);
         if (this.props.data) {
             let conditionId = this.props.data.condition[0].conditionId;
             let { conditionActor, conditionItem, conditionProperty, nomenclatures } = this.props;
@@ -357,6 +358,19 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             nomenclatures: formattedNomenclatures
         };
     },
+    setDisabledDropDownElements(index, data) {
+        let previousSelectedElements = [];
+        for (let y = 0; y < data.split.length; y++) {
+            if (index !== y) {
+                for (let z = 0; z < data.split[y].splitName.tag.length; z++) {
+                previousSelectedElements.push (data.split[y].splitName.tag[z]);
+                data.split[index].disabledElements = previousSelectedElements;
+                }
+            }
+        }
+    
+            this.setState({ data }); 
+    },
     onFieldChange(category, index, key, value) {
         let path = [category, index, key].join('.');
         // creating a deep copy, needed for set()
@@ -368,7 +382,8 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
             path = [category, index, pairFields[key]].join('.');
             set(data, path, value === '__placeholder__' ? undefined : value);
         }
-        this.setState({ data });
+
+    this.setDisabledDropDownElements(index, data);
     },
     addLimitRow() {
         let limitObject = Object.assign({}, emptyLimit);

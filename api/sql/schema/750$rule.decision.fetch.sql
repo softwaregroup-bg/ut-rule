@@ -6,15 +6,8 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @amount MONEY,
     @totals [rule].totals READONLY,
     @currency VARCHAR(3),
-    @isSourceAmount BIT,
     @sourceAccount varchar(100),
-    @destinationAccount varchar(100),
-    @sourceAccountBalance MONEY,
-    @sourceAccountMinBalance MONEY,
-    @sourceAccountMaxBalance MONEY,
-    @destinationAccountBalance MONEY,
-    @destinationAccountMinBalance MONEY,
-    @destinationAccountMaxBalance MONEY
+    @destinationAccount varchar(100)
 AS
 BEGIN
     DECLARE @transferTypeId BIGINT
@@ -36,17 +29,6 @@ BEGIN
         countMonthly bigint
     )
 
-    DECLARE @split TABLE(
-        conditionId int,
-        splitNameId int,
-        tag VARCHAR(MAX),
-        amount MONEY,
-        debit VARCHAR(50),
-        credit VARCHAR(50),
-        [description] VARCHAR(50),
-        analytics XML
-    );
-
     SET @operationDate = ISNULL(@operationDate, GETDATE())
 
     DECLARE
@@ -67,11 +49,7 @@ BEGIN
         @maxAmountWeekly MONEY,
         @maxCountWeekly BIGINT,
         @maxAmountMonthly MONEY,
-        @maxCountMonthly BIGINT,
-        @sourceDebit MONEY,
-        @sourceCredit MONEY,
-        @destinationDebit MONEY,
-        @destinationCredit MONEY
+        @maxCountMonthly BIGINT
 
     INSERT INTO
         @matches(
@@ -227,7 +205,6 @@ BEGIN
             [rule].splitRange AS r ON r.splitNameId = n.splitNameId
         WHERE
             @currency = r.startAmountCurrency AND
-            COALESCE(@isSourceAmount, 0) = r.isSourceAmount AND
             @amount >= r.startAmount AND
             c.amountDaily >= r.startAmountDaily AND
             c.countDaily >= r.startCountDaily AND
@@ -253,100 +230,6 @@ BEGIN
         s.rnk1 = 1 AND
         s.rnk2 = 1
 
-    DECLARE @map [core].map
-
-    INSERT INTO
-        @map([key], [value])
-    SELECT
-        '$' + '{' + name + '}', CASE WHEN factor IN ('so', 'do', 'co') THEN 'actor:' ELSE 'item:' END + CAST(value AS varchar(100))
-    FROM
-        @operationProperties
-
-    INSERT INTO
-        @map([key], [value])
-    VALUES -- note that ${} is replaced by SQL port
-        ('$' + '{operation.currency}', CAST(@currency AS VARCHAR(100))),
-        ('$' + '{source.account.id}', 'account:' + CAST(@sourceAccountId AS VARCHAR(100))),
-        ('$' + '{source.account.number}', CAST(@sourceAccount AS VARCHAR(100))),
-        ('$' + '{destination.account.id}', 'account:' + CAST(@destinationAccountId AS VARCHAR(100))),
-        ('$' + '{destination.account.number}', CAST(@destinationAccount AS VARCHAR(100)))
-
-    DELETE FROM @map WHERE [value] IS NULL
-
-    INSERT INTO @split (conditionId, splitNameId, tag, amount, debit, credit, description, analytics)
-    SELECT
-        a.conditionId,
-        a.splitNameId,
-        a.tag,
-        CAST(CASE
-            WHEN assignment.[percent] * a.fee / 100 > assignment.maxValue THEN maxValue
-            WHEN assignment.[percent] * a.fee / 100 < assignment.minValue THEN minValue
-            ELSE assignment.[percent] * a.fee / 100
-        END AS MONEY) amount,
-        ISNULL(d.accountNumber, assignment.debit) debit,
-        ISNULL(c.accountNumber, assignment.credit) credit,
-        assignment.description,
-        assignment.analytics
-    FROM
-        @fee a
-    CROSS APPLY
-        [rule].assignment(a.splitNameId, @map) assignment
-    LEFT JOIN
-        integration.vAssignment d ON d.accountId = assignment.debit
-    LEFT JOIN
-        integration.vAssignment c ON c.accountId = assignment.credit
-
-
-    SELECT @sourceDebit = ISNULL(SUM(amount), 0)
-    FROM @split
-    WHERE debit = @sourceAccount
-    GROUP BY debit
-
-    SELECT @destinationDebit = ISNULL(SUM(amount), 0)
-    FROM @split
-    WHERE debit = @destinationAccount
-    GROUP BY debit
-
-    SELECT @sourceCredit = ISNULL(SUM(amount), 0)
-    FROM @split
-    WHERE credit = @sourceAccount
-    GROUP BY credit
-
-    SELECT @destinationCredit = ISNULL(SUM(amount), 0)
-    FROM @split
-    WHERE credit = @destinationAccount
-    GROUP BY credit
-
-    IF @sourceAccountBalance IS NOT NULL
-        AND ISNULL (@sourceAccountMinBalance, 0) > @sourceAccountBalance + ISNULL(@sourceCredit, 0) - ISNULL(@sourceDebit, 0)
-    BEGIN
-        RAISERROR('rule.exceedSourceAccountMinBalance', 16, 1)
-        RETURN
-    END
-
-    IF @sourceAccountBalance IS NOT NULL
-        AND @sourceAccountMaxBalance IS NOT NULL
-        AND @sourceAccountMaxBalance < @sourceAccountBalance + ISNULL(@sourceCredit, 0) - ISNULL(@sourceDebit, 0)
-    BEGIN
-        RAISERROR('rule.exceedSourceAccountMaxBalance', 16, 1)
-        RETURN
-    END
-
-    IF @destinationAccountBalance IS NOT NULL
-        AND ISNULL (@destinationAccountMinBalance, 0) > @destinationAccountBalance + ISNULL(@destinationCredit, 0) - ISNULL(@destinationDebit, 0)
-    BEGIN
-        RAISERROR('rule.exceedDestinationAccountMinBalance', 16, 1)
-        RETURN
-    END
-
-    IF @destinationAccountBalance IS NOT NULL
-        AND @destinationAccountMaxBalance IS NOT NULL
-        AND @destinationAccountMaxBalance < @destinationAccountBalance + ISNULL(@destinationCredit, 0) - ISNULL(@destinationDebit, 0)
-    BEGIN
-        RAISERROR('rule.exceedDestinationAccountMaxBalance', 16, 1)
-        RETURN
-    END
-
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
         (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|otherTax|%') otherTax,
@@ -357,14 +240,4 @@ BEGIN
         (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|commission|%' OR tag LIKE '%|agentCommission|%') commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
-
-    SELECT 'split' AS resultSetName
-    SELECT *
-    FROM @split
-
-    SELECT 'accountBalance' AS resultSetName
-    SELECT
-        @sourceAccountBalance + ISNULL(@sourceCredit, 0) - ISNULL(@sourceDebit, 0) AS newSourceAccountBalance,
-        @destinationAccountBalance + ISNULL(@destinationCredit, 0) - ISNULL(@destinationDebit, 0) AS newDestinationAccountBalance
-
 END

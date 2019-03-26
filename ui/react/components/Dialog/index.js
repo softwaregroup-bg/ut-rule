@@ -21,6 +21,7 @@ import Page from 'ut-front-react/components/PageLayout/Page';
 import Container from 'ut-front-react/components/PageLayout/Container';
 import Content from 'ut-front-react/components/PageLayout/Content';
 import TabContainer from 'ut-front-react/containers/TabContainer';
+import Dropdown from 'ut-front-react/components/Input/Dropdown';
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -273,15 +274,27 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
                         }
                     } else {
                         switch (item.factor) {
-                            case 'ds':
-                                formatedData.condition[0][`destinationAccountProductId`] = item.itemNameId;
+                            case 'cs':
+                                formatedData.condition[0][`channelId`] = item.itemNameId;
                                 break;
                             case 'ss':
-                                if (item.type === 'accountProduct') {
-                                    formatedData.condition[0][`sourceAccountProductId`] = item.itemNameId;
-                                } else {
-                                    formatedData.condition[0][`sourceCardProductId`] = item.itemNameId;
-                                }
+                                formatedData.condition[0][`sourceAccountRiskProfileId`] = item.itemNameId;
+                                break;
+                            case 'sc':
+                                formatedData.condition[0][`sourceAccountCategoryId`] = item.itemNameId;
+                                break;
+                            case 'ds':
+                                formatedData.condition[0][`destinationAccountRiskProfileId`] = item.itemNameId;
+                                break;
+                            case 'dc':
+                                formatedData.condition[0][`destinationAccountCategoryId`] = item.itemNameId;
+                                break;
+                            // case 'ss':
+                            //     if (item.type === 'accountProduct') {
+                            //         formatedData.condition[0][`sourceAccountProductId`] = item.itemNameId;
+                            //     } else {
+                            //         formatedData.condition[0][`sourceCardProductId`] = item.itemNameId;
+                            //     }
                         }
                     }
                 }
@@ -334,6 +347,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
                 }
             }
         });
+
         this.setState({
             data: merge({}, this.state.data, formatedData), // here we get the data
             isEditing: this.props.data !== undefined
@@ -362,7 +376,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
         // creating a deep copy, needed for set()
         let data = JSON.parse(JSON.stringify(this.state.data));
         set(data, path, value === '__placeholder__' ? undefined : value);
-        
+
         const pairFields = {'sourceAccountNumber': 'sourceAccountId', 'destinationAccountNumber': 'destinationAccountId'};
         if (pairFields[key] && data[category][index][pairFields[key]]) {
             path = [category, index, pairFields[key]].join('.');
@@ -572,21 +586,45 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
     },
     render() {
         let sections = this.state.sections;
+        const { nomenclatures } = this.props;
         const tabs = [];
+
+        let formattedNomenclatures = {};
+
+        Object.keys(nomenclatures).map((nomKey) => {
+            formattedNomenclatures[nomKey] = Object.keys(nomenclatures[nomKey]).map((key) => {
+                return {
+                    key,
+                    name: nomenclatures[nomKey][key]
+                };
+            });
+        });
 
         if (sections.channel.visible) {
             tabs.push({
                 title: 'Channel',
                 component:
-                  <Accordion noCollapse title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
-                    <Channel
-                      data={this.state.data.condition[0]}
-                      fields={sections.channel.fields}
-                      properties={this.state.data.channelProperties}
-                      addPropertyRow={this.addChannelPropertyRow}
-                      deletePropetyRow={this.deleteChannelPropertyRow}
-                    />
-                  </Accordion>
+                    <div className={style.inputWrapper}>
+                        <Dropdown
+                            canSelectPlaceholder
+                            data={formattedNomenclatures.channelType || []}
+                            defaultSelected={'' + ((this.state.data.condition[0] || {}).channelId || '')}
+                            keyProp='channelId'
+                            placeholder={'Channel Type'}
+                            onSelect={this.onChangeInput}
+                            label={'Channel Type'}
+                            mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                        />
+                    </div>
+                //   <Accordion noCollapse title={sections.channel.title} fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body} >
+                //     <Channel
+                //       data={this.state.data.condition[0]}
+                //       fields={sections.channel.fields}
+                //       properties={this.state.data.channelProperties}
+                //       addPropertyRow={this.addChannelPropertyRow}
+                //       deletePropetyRow={this.deleteChannelPropertyRow}
+                //     />
+                //   </Accordion>
             });
         }
 

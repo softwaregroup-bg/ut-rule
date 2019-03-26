@@ -11,6 +11,7 @@ const Source = React.createClass({
     propTypes: {
         data: PropTypes.object.isRequired,
         fields: PropTypes.object,
+        nomenclatures: PropTypes.object,
         addPropertyRow: PropTypes.func.isRequired,
         properties: PropTypes.array.isRequired
     },
@@ -76,7 +77,9 @@ const Source = React.createClass({
         ));
     },
     render() {
-        let { country, region, city, cardProduct, accountProduct, account, organization, supervisor, role } = this.context.nomenclatures;
+        let { country, region, city, cardProduct, accountProduct,
+            account, organization, supervisor, role, riskProfile,
+            accountCategory } = this.context.nomenclatures;
         let { onSelectDropdown } = this;
         let fields = this.state.fields;
 
@@ -109,29 +112,30 @@ const Source = React.createClass({
                         />
                   </div>
                 }
-                {fields.accountProduct.visible && accountProduct &&
-                    <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='sourceAccountProductId'
-                          label={fields.accountProduct.title}
-                          data={accountProduct || []}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.sourceAccountProductId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
-                        />
-                    </div>
-                }
-                {fields.account.visible &&
-                    <div className={style.inputWrapper}>
-                        <Input
-                          label={fields.account.title}
-                          keyProp='sourceAccountNumber'
-                          onChange={this.onChangeInput}
-                          value={'' + (this.props.data.sourceAccountNumber || '')}
-                        />
-                    </div>
-                }
+                <div className={style.inputWrapper}>
+                    <Dropdown
+                    canSelectPlaceholder
+                    data={riskProfile || []}
+                    defaultSelected={'' + (this.props.data.sourceAccountRiskProfileId || '')}
+                    keyProp='sourceAccountRiskProfileId'
+                    placeholder={'Risk Profile'}
+                    onSelect={onSelectDropdown}
+                    label={'Risk Profile'}
+                    mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                    />
+                </div>
+                <div className={style.inputWrapper}>
+                    <Dropdown
+                    canSelectPlaceholder
+                    data={accountCategory || []}
+                    defaultSelected={'' + (this.props.data.sourceAccountCategoryId || '')}
+                    keyProp='sourceAccountCategoryId'
+                    placeholder={'Account Category'}
+                    onSelect={onSelectDropdown}
+                    label={'Account Category'}
+                    mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                    />
+                </div>
             </div>
         );
     }

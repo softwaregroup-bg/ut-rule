@@ -13,7 +13,10 @@ const defaultUiState = {
             'operation',
             'supervisor',
             'cardProduct',
-            'account'
+            'account',
+            'channelType',
+            'accountCategory',
+            'riskProfile'
         ],
         itemCode: [
             'currency'

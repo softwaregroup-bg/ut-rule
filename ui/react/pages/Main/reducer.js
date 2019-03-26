@@ -79,7 +79,7 @@ var formatRules = function(data) {
             splitRange: []
         });
     });
-    ['splitRange', 'splitAssignment'].forEach(function(prop) {
+    ['splitRange'].forEach(function(prop) {
         var mappedData;
         if (data[prop].length) {
             data[prop].forEach(function(record) {

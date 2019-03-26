@@ -145,6 +145,46 @@ export function editRule(params) {
             });
         }
 
+        if (paramsCondition['destinationAccountCategoryId']) {
+            conditionItem.push({
+                conditionId: conditionId,
+                factor: 'ds',
+                itemNameId: paramsCondition['destinationAccountCategoryId']
+            });
+        }
+
+        if (paramsCondition['sourceAccountCategoryId']) {
+            conditionItem.push({
+                conditionId: conditionId,
+                factor: 'ss',
+                itemNameId: paramsCondition['sourceAccountCategoryId']
+            });
+        }
+
+        if (paramsCondition['destinationRiskProfileId']) {
+            conditionItem.push({
+                conditionId: conditionId,
+                factor: 'ds',
+                itemNameId: paramsCondition['destinationRiskProfileId']
+            });
+        }
+
+        if (paramsCondition['sourceRiskProfileId']) {
+            conditionItem.push({
+                conditionId: conditionId,
+                factor: 'ss',
+                itemNameId: paramsCondition['sourceRiskProfileId']
+            });
+        }
+
+        if (paramsCondition['channelId']) {
+            conditionItem.push({
+                conditionId: conditionId,
+                factor: 'cs',
+                itemNameId: paramsCondition['channelId']
+            });
+        }
+
         if (paramsCondition['sourceCardProductId']) {
             conditionItem.push({
                 conditionId: conditionId,
@@ -316,6 +356,41 @@ export function addRule(params) {
             conditionItem.push({
                 factor: 'ss',
                 itemNameId: paramsCondition['sourceAccountProductId']
+            });
+        }
+
+        if (paramsCondition['destinationAccountCategoryId']) {
+            conditionItem.push({
+                factor: 'dc',
+                itemNameId: paramsCondition['destinationAccountCategoryId']
+            });
+        }
+
+        if (paramsCondition['sourceAccountCategoryId']) {
+            conditionItem.push({
+                factor: 'sc',
+                itemNameId: paramsCondition['sourceAccountCategoryId']
+            });
+        }
+
+        if (paramsCondition['destinationAccountRiskProfileId']) {
+            conditionItem.push({
+                factor: 'ds',
+                itemNameId: paramsCondition['destinationAccountRiskProfileId']
+            });
+        }
+
+        if (paramsCondition['sourceAccountRiskProfileId']) {
+            conditionItem.push({
+                factor: 'ss',
+                itemNameId: paramsCondition['sourceAccountRiskProfileId']
+            });
+        }
+
+        if (paramsCondition['channelId']) {
+            conditionItem.push({
+                factor: 'cs',
+                itemNameId: paramsCondition['channelId']
             });
         }
 

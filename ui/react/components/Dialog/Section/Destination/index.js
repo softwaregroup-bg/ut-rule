@@ -10,6 +10,7 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 const Destination = React.createClass({
     propTypes: {
         data: PropTypes.object.isRequired,
+        nomenclatures: PropTypes.object,
         fields: PropTypes.object,
         addPropertyRow: PropTypes.func.isRequired,
         properties: PropTypes.array.isRequired
@@ -76,7 +77,9 @@ const Destination = React.createClass({
         ));
     },
     render() {
-        let { country, region, city, accountProduct, account, organization, supervisor, role } = this.context.nomenclatures;
+        let { country, region, city, accountProduct, account,
+            organization, supervisor, role, riskProfile,
+            accountCategory } = this.context.nomenclatures;
         let { onSelectDropdown } = this;
         let fields = this.state.fields;
 
@@ -108,29 +111,30 @@ const Destination = React.createClass({
                         />
                     </div>
                 }
-                {fields.accountProduct.visible && accountProduct &&
-                    <div className={style.inputWrapper}>
-                        <Dropdown
-                          canSelectPlaceholder
-                          keyProp='destinationAccountProductId'
-                          label={fields.accountProduct.title}
-                          data={accountProduct || []}
-                          onSelect={onSelectDropdown}
-                          defaultSelected={'' + (this.props.data.destinationAccountProductId || '')}
-                          mergeStyles={{dropDownRoot: style.dropDownRoot}}
-                        />
-                    </div>
-                }
-                {fields.account.visible &&
-                    <div className={style.inputWrapper}>
-                        <Input
-                          label={fields.account.title}
-                          keyProp='destinationAccountNumber'
-                          onChange={this.onChangeInput}
-                          value={'' + (this.props.data.destinationAccountNumber || '')}
-                        />
-                    </div>
-                }
+                <div className={style.inputWrapper}>
+                    <Dropdown
+                    canSelectPlaceholder
+                    data={riskProfile || []}
+                    defaultSelected={'' + (this.props.data.destinationAccountRiskProfileId || '')}
+                    keyProp='destinationAccountRiskProfileId'
+                    placeholder={'Risk Profile'}
+                    onSelect={onSelectDropdown}
+                    label={'Risk Profile'}
+                    mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                    />
+                </div>
+                <div className={style.inputWrapper}>
+                    <Dropdown
+                    canSelectPlaceholder
+                    data={accountCategory || []}
+                    defaultSelected={'' + (this.props.data.destinationAccountCategoryId || '')}
+                    keyProp='destinationAccountCategoryId'
+                    placeholder={'Account Category'}
+                    onSelect={onSelectDropdown}
+                    label={'Account Category'}
+                    mergeStyles={{dropDownRoot: style.dropDownRoot}}
+                    />
+                </div>
             </div>
         );
     }

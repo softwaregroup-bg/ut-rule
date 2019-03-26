@@ -118,7 +118,7 @@ const Splits = React.createClass({
                         />
                     </div>
                 </Accordion>
-                <Accordion title='Assignment' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
+                {/* <Accordion title='Assignment' fullWidth externalTitleClasses={style.title} externalBodyClasses={style.body}>
                     <div className={style.content}>
                         <Assignment
                           splitIndex={index}
@@ -128,7 +128,7 @@ const Splits = React.createClass({
                           fields={this.state.config.assignmentFields}
                         />
                     </div>
-                </Accordion>
+                </Accordion> */}
                 <button className={style.statusActionButton} onClick={self.onDeleteRow(index)}>
                     Delete this Split
                 </button>

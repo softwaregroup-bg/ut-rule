@@ -274,15 +274,27 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
                         }
                     } else {
                         switch (item.factor) {
-                            case 'ds':
-                                formatedData.condition[0][`destinationAccountProductId`] = item.itemNameId;
+                            case 'cs':
+                                formatedData.condition[0][`channelId`] = item.itemNameId;
                                 break;
                             case 'ss':
-                                if (item.type === 'accountProduct') {
-                                    formatedData.condition[0][`sourceAccountProductId`] = item.itemNameId;
-                                } else {
-                                    formatedData.condition[0][`sourceCardProductId`] = item.itemNameId;
-                                }
+                                formatedData.condition[0][`sourceAccountRiskProfileId`] = item.itemNameId;
+                                break;
+                            case 'sc':
+                                formatedData.condition[0][`sourceAccountCategoryId`] = item.itemNameId;
+                                break;
+                            case 'ds':
+                                formatedData.condition[0][`destinationAccountRiskProfileId`] = item.itemNameId;
+                                break;
+                            case 'dc':
+                                formatedData.condition[0][`destinationAccountCategoryId`] = item.itemNameId;
+                                break;
+                            // case 'ss':
+                            //     if (item.type === 'accountProduct') {
+                            //         formatedData.condition[0][`sourceAccountProductId`] = item.itemNameId;
+                            //     } else {
+                            //         formatedData.condition[0][`sourceCardProductId`] = item.itemNameId;
+                            //     }
                         }
                     }
                 }
@@ -335,6 +347,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
                 }
             }
         });
+
         this.setState({
             data: merge({}, this.state.data, formatedData), // here we get the data
             isEditing: this.props.data !== undefined

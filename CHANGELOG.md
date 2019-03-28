@@ -1,3 +1,12 @@
+## [9.20.3](https://github.com/softwaregroup-bg/ut-rule/compare/v9.20.2...v9.20.3) (2019-03-28)
+
+
+### Bug Fixes
+
+* move seed config ([44c2868](https://github.com/softwaregroup-bg/ut-rule/commit/44c2868))
+
+
+
 ## [9.20.2](https://github.com/softwaregroup-bg/ut-rule/compare/v9.20.1...v9.20.2) (2019-03-22)
 
 

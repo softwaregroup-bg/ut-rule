@@ -273,10 +273,10 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
                         }
                     } else {
                         switch (item.factor) {
-                            case 'ds':
+                            case 'dc':
                                 formatedData.condition[0][`destinationAccountProductId`] = item.itemNameId;
                                 break;
-                            case 'ss':
+                            case 'sc':
                                 if (item.type === 'accountProduct') {
                                     formatedData.condition[0][`sourceAccountProductId`] = item.itemNameId;
                                 } else {

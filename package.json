@@ -16,8 +16,8 @@
     "lodash.map": "4.6.0"
   },
   "devDependencies": {
-    "tap": "^12.5.3",
-    "ut-tools": "^6.8.10"
+    "tap": "^12.6.1",
+    "ut-tools": "^6.15.0"
   },
   "peerDependencies": {
     "classnames": "^2.2.5",
@@ -29,12 +29,12 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "redux": "^3.7.2",
-    "ut-front": "^9.1.0",
-    "ut-front-react": "^11.0.0",
-    "ut-bus": "^7.1.1",
-    "ut-history": "^1.4.3",
+    "ut-front": "^9.1.1",
+    "ut-front-react": "^11.0.2",
+    "ut-bus": "^7.2.1",
+    "ut-history": "^1.4.6",
     "ut-dispatch-db": "^1.1.1",
-    "ut-run": "^10.0.3"
+    "ut-run": "^10.3.1"
   },
   "description": "UT Rule",
   "scripts": {

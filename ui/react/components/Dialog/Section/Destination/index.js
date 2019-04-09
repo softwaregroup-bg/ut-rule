@@ -78,7 +78,7 @@ const Destination = React.createClass({
     },
     render() {
         let { country, region, city, accountProduct, account,
-            organization, supervisor, role, riskProfile,
+            organization, supervisor, role, riskProfile, highRiskProfile,
             accountCategory } = this.context.nomenclatures;
         let { onSelectDropdown } = this;
         let fields = this.state.fields;
@@ -114,7 +114,7 @@ const Destination = React.createClass({
                 <div className={style.inputWrapper}>
                     <Dropdown
                     canSelectPlaceholder
-                    data={riskProfile || []}
+                    data={(riskProfile || []).concat(highRiskProfile || [])}
                     defaultSelected={'' + (this.props.data.destinationAccountRiskProfileId || '')}
                     keyProp='destinationAccountRiskProfileId'
                     placeholder={'Risk Profile'}

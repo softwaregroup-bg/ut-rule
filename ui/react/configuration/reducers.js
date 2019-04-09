@@ -16,7 +16,8 @@ const defaultUiState = {
             'account',
             'channelType',
             'accountCategory',
-            'riskProfile'
+            'riskProfile',
+            'highRiskProfile'
         ],
         itemCode: [
             'currency'

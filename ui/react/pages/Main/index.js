@@ -196,7 +196,7 @@ const Main = React.createClass({
     },
     onInputChange({ key, value, initValue, error, errorMessage }) {
         let data = this.state.filterData;
-        if (isNaN(value) && value !== '') {
+        if ((isNaN(value) && value !== '') || value < 0) {
             data.priority[key].isValid = false;
             data.priority[key].value = null;
             this.setState({

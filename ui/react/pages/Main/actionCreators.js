@@ -133,7 +133,7 @@ export function editRule(params) {
         if (paramsCondition['destinationAccountProductId']) {
             conditionItem.push({
                 conditionId: conditionId,
-                factor: 'ds',
+                factor: 'dc',
                 itemNameId: paramsCondition['destinationAccountProductId']
             });
         }
@@ -141,7 +141,7 @@ export function editRule(params) {
         if (paramsCondition['sourceAccountProductId']) {
             conditionItem.push({
                 conditionId: conditionId,
-                factor: 'ss',
+                factor: 'sc',
                 itemNameId: paramsCondition['sourceAccountProductId']
             });
         }
@@ -149,7 +149,7 @@ export function editRule(params) {
         if (paramsCondition['sourceCardProductId']) {
             conditionItem.push({
                 conditionId: conditionId,
-                factor: 'ss',
+                factor: 'sc',
                 itemNameId: paramsCondition['sourceCardProductId']
             });
         }
@@ -309,21 +309,21 @@ export function addRule(params) {
 
         if (paramsCondition['destinationAccountProductId']) {
             conditionItem.push({
-                factor: 'ds',
+                factor: 'dc',
                 itemNameId: paramsCondition['destinationAccountProductId']
             });
         }
 
         if (paramsCondition['sourceAccountProductId']) {
             conditionItem.push({
-                factor: 'ss',
+                factor: 'sc',
                 itemNameId: paramsCondition['sourceAccountProductId']
             });
         }
 
         if (paramsCondition['sourceCardProductId']) {
             conditionItem.push({
-                factor: 'ss',
+                factor: 'sc',
                 itemNameId: paramsCondition['sourceCardProductId']
             });
         }

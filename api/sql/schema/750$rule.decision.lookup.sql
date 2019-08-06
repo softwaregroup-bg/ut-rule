@@ -16,6 +16,7 @@ BEGIN
         @channelCountryId BIGINT,
         @channelRegionId BIGINT,
         @channelCityId BIGINT,
+        @channelTenantId BIGINT,
 
         @operationId BIGINT,
 
@@ -23,6 +24,7 @@ BEGIN
         @sourceRegionId BIGINT,
         @sourceCityId BIGINT,
         @sourceOwnerId BIGINT,
+        @sourceTenantId BIGINT,
         @sourceAccountProductId BIGINT,
         @sourceAccountId NVARCHAR(255),
 
@@ -30,6 +32,7 @@ BEGIN
         @destinationRegionId BIGINT,
         @destinationCityId BIGINT,
         @destinationOwnerId BIGINT,
+        @destinationTenantId BIGINT,
         @destinationAccountProductId BIGINT,
         @destinationAccountId NVARCHAR(255),
 
@@ -38,7 +41,8 @@ BEGIN
     SELECT
         @channelCountryId = countryId,
         @channelRegionId = regionId,
-        @channelCityId = cityId
+        @channelCityId = cityId,
+        @channelTenantId = tenantId
     FROM
         [integration].[vChannel]
     WHERE
@@ -59,7 +63,8 @@ BEGIN
         @sourceCityId = cityId,
         @sourceOwnerId = ownerId,
         @sourceAccountProductId = accountProductId,
-        @sourceAccountId = accountId
+        @sourceAccountId = accountId,
+        @sourceTenantId = tenantId
     FROM
         [integration].[vAccount]
     WHERE
@@ -72,7 +77,8 @@ BEGIN
         @destinationCityId = cityId,
         @destinationOwnerId = ownerId,
         @destinationAccountProductId = accountProductId,
-        @destinationAccountId = accountId
+        @destinationAccountId = accountId,
+        @destinationTenantId = tenantId
     FROM
         [integration].[vAccount]
     WHERE
@@ -139,12 +145,16 @@ BEGIN
         ('cs', 'channel.country', @channelCountryId),
         ('cs', 'channel.region', @channelRegionId),
         ('cs', 'channel.city', @channelCityId),
+        --channel tenant
+        ('ct', 'channel.tenant.id', @channelTenantId),
         --operation category
         ('oc', 'operation.id', @operationId),
         --source spatial
         ('ss', 'source.country', @sourceCountryId),
         ('ss', 'source.region', @sourceRegionId),
         ('ss', 'source.city', @sourceCityId),
+        --source tenant
+        ('st', 'source.tenant.id', @sourceTenantId),
         --source category
         ('sc', 'source.account.product', @sourceAccountProductId),
         ('sc', 'source.card.product', @sourceCardProductId),
@@ -152,6 +162,8 @@ BEGIN
         ('ds', 'destination.country', @destinationCountryId),
         ('ds', 'destination.region', @destinationRegionId),
         ('ds', 'destination.city', @destinationCityId),
+        --source tenant
+        ('dt', 'destination.tenant.id', @destinationTenantId),
         --destination category
         ('dc', 'destination.account.product', @destinationAccountProductId)
 

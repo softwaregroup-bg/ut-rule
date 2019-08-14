@@ -9,9 +9,9 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceAccountOwnerId BIGINT = NULL,
     @destinationAccountOwnerId BIGINT = NULL,
     @sourceAccountRiskProfileId BIGINT = NULL,
-    @sourceAccountCategoryId BIGINT = NULL,
+    @sourceAccountCategory NVARCHAR(200) = NULL,
     @destinationAccountRiskProfileId BIGINT = NULL,
-    @destinationAccountCategoryId BIGINT = NULL
+    @destinationAccountCategory NVARCHAR(200) = NULL
 AS
 BEGIN
     DECLARE
@@ -19,7 +19,8 @@ BEGIN
         @operationId BIGINT,
         @sourceAccountId NVARCHAR(255),
         @destinationAccountId NVARCHAR(255),
-
+        @sourceAccountCategoryId BIGINT,
+        @destinationAccountCategoryId BIGINT,
         @totals [rule].totals
 
     SELECT
@@ -39,6 +40,26 @@ BEGIN
         [core].[itemType] t ON n.itemTypeId = t.itemTypeId AND t.alias = 'channelType'
     WHERE
         itemCode = @channelType
+    
+    IF @sourceAccountCategory IS NOT NULL
+        SELECT
+            @sourceAccountCategoryId = n.itemNameId
+        FROM
+            [core].[itemName] n
+        JOIN
+            [core].[itemType] t ON n.itemTypeId = t.itemTypeId AND t.alias = 'accountCategory'
+        WHERE
+            itemCode = @sourceAccountCategory
+
+    IF @destinationAccountCategory IS NOT NULL
+        SELECT
+            @destinationAccountCategoryId = n.itemNameId
+        FROM
+            [core].[itemName] n
+        JOIN
+            [core].[itemType] t ON n.itemTypeId = t.itemTypeId AND t.alias = 'accountCategory'
+        WHERE
+            itemCode = @destinationAccountCategory
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
 

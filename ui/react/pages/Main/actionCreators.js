@@ -148,7 +148,7 @@ export function editRule(params) {
         if (paramsCondition['destinationAccountCategoryId']) {
             conditionItem.push({
                 conditionId: conditionId,
-                factor: 'ds',
+                factor: 'dc',
                 itemNameId: paramsCondition['destinationAccountCategoryId']
             });
         }
@@ -156,24 +156,24 @@ export function editRule(params) {
         if (paramsCondition['sourceAccountCategoryId']) {
             conditionItem.push({
                 conditionId: conditionId,
-                factor: 'ss',
+                factor: 'sc',
                 itemNameId: paramsCondition['sourceAccountCategoryId']
             });
         }
 
-        if (paramsCondition['destinationRiskProfileId']) {
+        if (paramsCondition['destinationAccountRiskProfileId']) {
             conditionItem.push({
                 conditionId: conditionId,
                 factor: 'ds',
-                itemNameId: paramsCondition['destinationRiskProfileId']
+                itemNameId: paramsCondition['destinationAccountRiskProfileId']
             });
         }
 
-        if (paramsCondition['sourceRiskProfileId']) {
+        if (paramsCondition['sourceAccountRiskProfileId']) {
             conditionItem.push({
                 conditionId: conditionId,
                 factor: 'ss',
-                itemNameId: paramsCondition['sourceRiskProfileId']
+                itemNameId: paramsCondition['sourceAccountRiskProfileId']
             });
         }
 
@@ -251,7 +251,7 @@ export function editRule(params) {
         };
 
         return dispatch({
-            type: actionTypes.addRule,
+            type: actionTypes.editRule,
             method: 'db/rule.rule.edit',
             params: modifiedParams || {}
         }).then((result) => {

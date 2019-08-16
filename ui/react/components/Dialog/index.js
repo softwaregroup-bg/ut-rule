@@ -28,7 +28,7 @@ function capitalizeFirstLetter(string) {
 };
 
 const emptyCondition = {
-    priority: null,
+    priority: '',
     channelCountryIds: [],
     channelRegionIds: [],
     channelCityIds: [],
@@ -231,7 +231,7 @@ export default connect(() => ({}), {checkAccountExists})(React.createClass({
                     }
                 }
             });
-
+            formatedData.condition[0]['priority'] = formatedData.condition[0]['priority'].toString();
             formatedData.condition[0]['channelCountryIds'] = [];
             formatedData.condition[0]['channelRegionIds'] = [];
             formatedData.condition[0]['channelCityIds'] = [];

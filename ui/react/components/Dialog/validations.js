@@ -112,12 +112,16 @@ let schema = joi.object().keys({
     }),
     condition: joi.array().items(
         joi.object().keys({
-            priority: joi.number().integer().min(1).max(2147483647).required().options({
+                priority: joi.string().regex(/^\d+$/).required().options({
                 language: {
                     key: '"Priority" ',
-                    number: {
-                        base: 'is required for all conditions and should be a integer'
+                    string: {
+                        base: 'is required for all conditions and should be a integer',
+                        regex: {
+                            base: 'is required for all conditions and should be a integer'
+                        }
                     }
+
                 }
             })
         })
@@ -469,4 +473,14 @@ function isNumber(n) {
 
 function isBiggerThan(n1, n2) {
     return isNumber(n1) && isNumber(n2) && Number(n1) > Number(n2);
+}
+
+export const getAddEditFormValidators = () => {
+    return [
+        {
+            type: validationTypes.regex,
+            value: /^\d+$/,
+            errorMessage: 'fsdfsdf'
+        }
+    ];
 }

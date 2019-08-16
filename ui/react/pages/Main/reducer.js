@@ -160,7 +160,7 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules, nomenc
             actor.type = 'agentType';
         }
 
-        if (actor.type === 'organization' && nomenclatures && nomenclatures.organization && nomenclatures.organization[actor.actorId]) {
+        if (actor.type === 'Organization' && nomenclatures && nomenclatures.organization && nomenclatures.organization[actor.actorId]) {
             actor.displayName = nomenclatures.organization[actor.actorId];
         }
 

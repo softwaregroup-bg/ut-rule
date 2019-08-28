@@ -2,8 +2,6 @@ import React, { PropTypes } from 'react';
 import style from '../../style.css';
 import Input from 'ut-front-react/components/Input';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
-import MultiSelectBubble from 'ut-front-react/components/MultiSelectBubble';
-import plusImage from '../../assets/add_new.png';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 

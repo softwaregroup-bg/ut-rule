@@ -5,6 +5,17 @@ import style from './style.css';
 import {getStorageColumns, toggleColumnInStorage} from 'ut-front-react/components/SimpleGrid/helpers';
 const propInStorage = 'rules';
 
+const fixNaming = name => {
+    switch(name) {
+        case 'agentType':
+            return 'Agent type';
+        case 'channelType':
+            return 'Channel type';
+        default:
+            return name
+    }
+};
+
 export default React.createClass({
     propTypes: {
         data: PropTypes.object,
@@ -64,9 +75,12 @@ export default React.createClass({
                 for (let index in condition[keyToInclude]) {
                     let record = condition[keyToInclude][index];
                     if (index > 4 && !this.state.expandedGridColumns.some(v => v === row.priority)) break;
+                    if(column === 'channel') {
+                        record.name = fixNaming(record.name)
+                    }
                     // PD: ABT-2040
                     result.push(<div key={result.length}>
-                        <b>{record.name + ':'}</b>{record.translatedValue || record.value} 
+                        <b>{record.name + ': '}</b>{record.translatedValue || record.value}
                     </div>);
                 }
             }

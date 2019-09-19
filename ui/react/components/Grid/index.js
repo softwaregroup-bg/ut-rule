@@ -198,7 +198,7 @@ export default React.createClass({
 
         return <SimpleGrid
           ref='grid'
-          globalMenu
+          //   globalMenu
           toggleColumnVisibility={this.toggleColumn}
           multiSelect
           fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}

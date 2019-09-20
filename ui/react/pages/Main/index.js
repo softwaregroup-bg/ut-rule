@@ -308,6 +308,8 @@ const Main = React.createClass({
                                                 key,
                                                 name: this.props.nomenclatures.operation[key]
                                             };
+                                        }).sort((a, b) => {
+                                            return a.name.toUpperCase().localeCompare(b.name.toUpperCase());
                                         }) || []}
                                         keyProp='operationIds'
                                         placeholder="Select"

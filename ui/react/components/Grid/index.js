@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import {fromJS} from 'immutable';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
 import { updateGridColumnStorage, prepareGridFields } from 'ut-front-react/components/GridMenu/helpers';
+import Text from 'ut-front-react/components/Text';
+
 import style from './style.css';
 import { Link } from 'react-router-dom';
 const propInStorage = 'rule_grid_fields';
@@ -173,19 +175,22 @@ export default React.createClass({
             return a.get('priority') - b.get('priority');
         }).toJS();
 
-        return <SimpleGrid
-            globalMenu
-            toggleColumnVisibility={this.toggleColumn}
-            multiSelect
-            fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
-            handleCheckboxSelect={this.props.handleCheckboxSelect}
-            handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
-            handleRowClick={this.handleRowClick}
-            externalStyle={style}
-            mainClassName='dataGridTable'
-            rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
-            data={data}
-            transformCellValue={this.transformCellValue}
-        />;
+        return (
+            <SimpleGrid
+                globalMenu
+                cssStandard
+                emptyRowsMsg={<Text>No result</Text>}
+                toggleColumnVisibility={this.toggleColumn}
+                multiSelect
+                fields={this.state.fields.filter((column) => (!this.state.columns[column.name] || this.state.columns[column.name].visible))}
+                handleCheckboxSelect={this.props.handleCheckboxSelect}
+                handleHeaderCheckboxSelect={this.props.handleHeaderCheckboxSelect}
+                handleRowClick={this.handleRowClick}
+                externalStyle={style}
+                mainClassName='dataGridTable'
+                rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
+                data={data}
+                transformCellValue={this.transformCellValue} />
+        );
     }
 });

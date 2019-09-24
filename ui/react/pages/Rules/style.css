@@ -13,13 +13,6 @@
     padding: 50px;
 }
 
-.paginationWrap {
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-    padding: 0 40px 0 20px;
-}
-
 .contentTableWrap {
     padding: 0px;
 }
@@ -32,13 +25,10 @@
     padding: 10px 20px;
 }
 
-.actionBarWrap > div, .actionBarWrap > div > div {
-    width: 100%;
-}
-
 .actionWrap {
     display: flex;
     justify-content: flex-end;
+    width: 100%;
  }
 
  .actionWrap button {

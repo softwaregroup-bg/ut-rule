@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import { fromJS } from 'immutable';
 import { bindActionCreators } from 'redux';
 import Grid from '../../components/Grid';
+import ResizibleContainer from 'ut-front-react/components/ResiziblePageLayout/Container';
+import resizibleTypes from 'ut-front-react/components/ResiziblePageLayout/resizibleTypes';
 import ConfirmDialog from 'ut-front-react/components/ConfirmDialog';
 import { getLink } from 'ut-front-react/routerHelper';
-import mainStyle from 'ut-front-react/assets/index.css';
 import { AddTab } from 'ut-front-react/containers/TabMenu';
 import Header from 'ut-front-react/components/PageLayout/Header';
 import GridToolBox from 'ut-front-react/components/SimpleGridToolbox';
 import AdvancedPagination from 'ut-front-react/components/AdvancedPagination';
 import Button from 'ut-front-react/components/StandardButton';
-import classnames from 'classnames';
 import style from './style.css';
 import * as actionCreators from './actionCreators';
 
@@ -104,69 +104,57 @@ const Main = React.createClass({
         let columns = uiConfig.main.grid.columns;
         let id = Object.keys(this.state.selectedConditions)[0];
         let showDeleted = this.props.showDeleted;
-        return <div>
-            <AddTab pathname={getLink('ut-rule:rules')} title='Fees, Commissions and Limits (FCL)' />
-            <Header text='Fees, Commissions and Limits (FCL)' buttons={this.getHeaderButtons()} />
-            <div className={classnames(mainStyle.contentTableWrap, style.contentTableWrap)}>
-                <div className={classnames(mainStyle.actionBarWrap, style.actionBarWrap)}>
-                    <GridToolBox opened title='' >
-                        <div className={style.actionWrap} >
-                            { this.context.checkPermission('rule.rule.edit') && !showDeleted &&
-                            (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
-                            { this.context.checkPermission('rule.rule.remove') && !showDeleted &&
-                            (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
-                            { this.context.checkPermission('rule.rule.fetchDeleted') &&
-                            (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
-                                onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
-                        </div>
-                    </GridToolBox>
+        let content = [
+            <GridToolBox cssStandard opened title='' >
+                <div className={style.actionWrap} >
+                    { this.context.checkPermission('rule.rule.edit') && !showDeleted &&
+                    (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
+                    { this.context.checkPermission('rule.rule.remove') && !showDeleted &&
+                    (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
+                    { this.context.checkPermission('rule.rule.fetchDeleted') &&
+                    (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
+                        onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
                 </div>
-                <div className={classnames(mainStyle.tableWrap, style.tableWrap)}>
-                    <div className={style.grid} >
-                        <ConfirmDialog
-                            ref={'showRuleConfirmDialog'}
-                            submitLabel='Yes'
-                            title='Warning'
-                            message={
-                                'You are about to delete ' +
-                            (
-                                Object.keys(this.state.selectedConditions).length === 1
-                                    ? '1 rule'
-                                    : Object.keys(this.state.selectedConditions).length + ' rules'
-                            ) +
-                            '. Would you like to proceed?'}
-                            onSubmit={this.removeRules} />
-                        <Grid
-                            ref='grid'
-                            refresh={this.refresh}
-                            data={this.props.rules}
-                            selectedConditions={this.state.selectedConditions}
-                            nomenclatures={this.props.nomenclatures}
-                            formatedGridData={this.props.formatedGridData}
-                            handleCheckboxSelect={this.handleCheckboxSelect}
-                            handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
-                            columns={columns}
-                            showDeleted={this.props.showDeleted}
-                        />
-                    </div>
-                </div>
-                <div className={style.paginationWrap}>
-                    <AdvancedPagination
-                        onUpdate={this.props.actions.updatePagination}
-                        pagination={fromJS(this.props.pagination)} />
-                </div>
-                {false &&
-                    <div>
-                        <div className={style.rulesNomenclatures}>
-                            RULES <br /><hr /><br /><pre>{JSON.stringify(this.props.rules, null, 2)}</pre>
-                        </div>
-                        <div className={style.rulesNomenclatures}>
-                            NOMENCLATURES <br /><hr /><br /><pre>{JSON.stringify(this.props.nomenclatures, null, 2)}</pre>
-                        </div>
-                    </div>
-                }
+            </GridToolBox>,
+            <Grid
+                ref='grid'
+                refresh={this.refresh}
+                data={this.props.rules}
+                selectedConditions={this.state.selectedConditions}
+                nomenclatures={this.props.nomenclatures}
+                formatedGridData={this.props.formatedGridData}
+                handleCheckboxSelect={this.handleCheckboxSelect}
+                handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
+                columns={columns}
+                showDeleted={this.props.showDeleted} />,
+            <AdvancedPagination
+                cssStandard
+                onUpdate={this.props.actions.updatePagination}
+                pagination={fromJS(this.props.pagination)} />
+        ];
+        let resizibleContainerCols = [
+            {type: resizibleTypes.CONTENT, id: 'cardReasonContent', minWidth: 1200, child: content}
+        ];
+        return (
+            <div>
+                <AddTab pathname={getLink('ut-rule:rules')} title='Fees, Commissions and Limits (FCL)' />
+                <Header text='Fees, Commissions and Limits (FCL)' buttons={this.getHeaderButtons()} />
+                <ResizibleContainer cssStandard cols={resizibleContainerCols} />
+                <ConfirmDialog
+                    ref={'showRuleConfirmDialog'}
+                    submitLabel='Yes'
+                    title='Warning'
+                    message={
+                        'You are about to delete ' +
+                    (
+                        Object.keys(this.state.selectedConditions).length === 1
+                            ? '1 rule'
+                            : Object.keys(this.state.selectedConditions).length + ' rules'
+                    ) +
+                    '. Would you like to proceed?'}
+                    onSubmit={this.removeRules} />
             </div>
-        </div>;
+        );
     }
 });
 

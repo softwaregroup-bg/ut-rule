@@ -105,16 +105,14 @@ const Main = React.createClass({
         let id = Object.keys(this.state.selectedConditions)[0];
         let showDeleted = this.props.showDeleted;
         let content = [
-            <GridToolBox cssStandard opened title='' >
-                <div className={style.actionWrap} >
-                    { this.context.checkPermission('rule.rule.edit') && !showDeleted &&
-                    (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
-                    { this.context.checkPermission('rule.rule.remove') && !showDeleted &&
-                    (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
-                    { this.context.checkPermission('rule.rule.fetchDeleted') &&
-                    (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
-                        onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
-                </div>
+            <GridToolBox contentWrapClassName={style.actionWrap} cssStandard opened title='' >
+                { this.context.checkPermission('rule.rule.edit') && !showDeleted &&
+                (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
+                { this.context.checkPermission('rule.rule.remove') && !showDeleted &&
+                (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
+                { this.context.checkPermission('rule.rule.fetchDeleted') &&
+                (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
+                    onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
             </GridToolBox>,
             <Grid
                 ref='grid'

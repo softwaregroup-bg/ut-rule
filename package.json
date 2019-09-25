@@ -17,12 +17,12 @@
   },
   "devDependencies": {
     "tap": "^12.6.1",
-    "ut-tools": "^6.15.0"
+    "ut-tools": "^6.25.2"
   },
   "peerDependencies": {
     "classnames": "^2.2.5",
-    "immutable": "^3.8.1",
-    "material-ui": "^0.16.5",
+    "immutable": "^4.0.0-rc.12",
+    "material-ui": "^0.20.2",
     "react": "^15.6.1",
     "react-hot-loader": "^4.6.3",
     "react-redux": "^5.0.5",
@@ -30,11 +30,11 @@
     "react-router-dom": "^4.3.1",
     "redux": "^3.7.2",
     "ut-front": "^9.1.1",
-    "ut-front-react": "^11.0.2",
-    "ut-bus": "^7.2.1",
-    "ut-history": "^1.4.6",
+    "ut-front-react": "^11.0.8",
+    "ut-bus": "^7.5.1",
+    "ut-history": "^1.4.7",
     "ut-dispatch-db": "^1.1.1",
-    "ut-run": "^10.3.1"
+    "ut-run": "^10.10.4"
   },
   "description": "UT Rule",
   "scripts": {

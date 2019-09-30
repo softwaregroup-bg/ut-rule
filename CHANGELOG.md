@@ -1,3 +1,12 @@
+## [9.20.5](https://github.com/softwaregroup-bg/ut-rule/compare/v9.20.4...v9.20.5) (2019-09-30)
+
+
+### Bug Fixes
+
+* toolbox buttons position ([eb45100](https://github.com/softwaregroup-bg/ut-rule/commit/eb45100))
+
+
+
 ## [9.20.4](https://github.com/softwaregroup-bg/ut-rule/compare/v9.20.3...v9.20.4) (2019-03-28)
 
 

@@ -397,3 +397,10 @@ export function reset() {
         type: actionTypes.reset
     };
 };
+
+export function editFilters({ filterData }) {
+    return {
+        type: actionTypes.CHANGE_FILTER_FIELD,
+        params: { filterData }
+    };
+}

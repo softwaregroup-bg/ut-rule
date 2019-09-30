@@ -1,5 +1,24 @@
+import { REMOVE_TAB } from 'ut-front-react/containers/TabMenu/actionTypes';
+
 import * as actionTypes from './actionTypes';
-const defaultState = {};
+
+const defaultState = {
+    filterData: {
+        operationIds: [],
+        priority: {
+            from: {
+                value: null,
+                isValid: true
+            },
+            to: {
+                value: null,
+                isValid: true
+            }
+        },
+        errorMessage: 'Enter numerical values'
+    }
+};
+
 const maxPercentageCharacters = 5;
 const amountCharacters = 14;
 const minAmountCharacters = 10;
@@ -41,7 +60,28 @@ export default (state = defaultState, action) => {
                 let paginationState = {pagination: {...action.params.toJS(), ...{changeId: ++changeId}}};
 
                 return {...state, ...paginationState};
-        }
+            case actionTypes.CHANGE_FILTER_FIELD:
+                return Object.assign({}, state, {
+                    'filterData': action.params.filterData
+                });
+            case REMOVE_TAB:
+                return Object.assign({}, state, {
+                    'filterData': {
+                        operationIds: [],
+                        priority: {
+                            from: {
+                                value: null,
+                                isValid: true
+                            },
+                            to: {
+                                value: null,
+                                isValid: true
+                            }
+                        },
+                        errorMessage: 'Enter numerical values'
+                        }
+                    });
+                }
     }
     return state;
 };

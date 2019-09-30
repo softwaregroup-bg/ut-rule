@@ -9,3 +9,4 @@ export const fetchNomenclatures = Symbol.for('fetchNomenclatures');
 export const reset = Symbol.for('reset');
 export const updatePagination = Symbol.for('updatePagination');
 export const CHECK_ACCOUNT_EXISTS = Symbol('CHECK_ACCOUNT_EXISTS');
+export const CHANGE_FILTER_FIELD = Symbol('CHANGE_FILTER_FIELD');

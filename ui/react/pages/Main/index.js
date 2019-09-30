@@ -48,28 +48,14 @@ const Main = React.createClass({
             },
             showFilter: false,
             showButtons: true,
-            filterData: {
-                operationIds: [],
-                priority: {
-                    from: {
-                        value: null,
-                        isValid: true
-                    },
-                    to: {
-                        value: null,
-                        isValid: true
-                    }
-                },
-                errorMessage: 'Enter numerical values'
-            },
             uiConfig: this.props.uiConfig.toJS()
         };
     },
     fetchData(props) {
-        let { pageSize, pageNumber } = props.pagination;
+        // let { pageSize, pageNumber } = props.pagination;
 
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures)
-            .then(() => this.props.actions.fetchRules({ pageSize, pageNumber }));
+            .then(() => this.fetchRulesWithFilter());
     },
     componentWillMount() {
         this.fetchData(this.props);
@@ -179,37 +165,35 @@ const Main = React.createClass({
     },
     fetchRulesWithFilter() {
         let { pageSize, pageNumber } = this.props.pagination;
-        let { from, to } = this.state.filterData.priority;
-        let operationType = this.state.filterData.operationIds.map(operation => {
+        let { from, to } = this.props.filterData.priority;
+        let operationType = this.props.filterData.operationIds.map(operation => {
             return Number(operation.key);
         });
         this.props.actions.fetchRules({ operationType, pageSize, pageNumber, minPriority: from.value, maxPriority: to.value });
     },
     onSelectDropdown(field) {
-        let data = this.state.filterData;
+        let data = this.props.filterData;
         data[field.key] = field.value;
-        this.setState({
+        this.props.actions.editFilters({
             filterData: data
-        }, () => {
-            this.fetchRulesWithFilter();
         });
+        this.fetchRulesWithFilter();
     },
     onInputChange({ key, value, initValue, error, errorMessage }) {
-        let data = this.state.filterData;
+        let data = this.props.filterData;
         if (isNaN(value) && value !== '') {
             data.priority[key].isValid = false;
             data.priority[key].value = null;
-            this.setState({
+            this.props.actions.editFilters({
                 filterData: data
             });
         } else {
             data.priority[key].value = value === '' ? null : value;
             data.priority[key].isValid = true;
-            this.setState({
+            this.props.actions.editFilters({
                 filterData: data
-            }, () => {
-                this.fetchRulesWithFilter();
             });
+            this.fetchRulesWithFilter();
         }
     },
     toggleGridToolBox(val) {
@@ -233,7 +217,7 @@ const Main = React.createClass({
             },
             errorMessage: 'Enter numerical values'
         };
-        this.setState({
+        this.props.actions.editFilters({
             filterData
         });
         let { pageSize, pageNumber } = this.props.pagination;
@@ -243,8 +227,9 @@ const Main = React.createClass({
         if (!this.props.ready) {
             return null;
         }
-        let { showFilter, showButtons, filterData, selectedConditions } = this.state;
-        let { errorMessage, priority, operationIds } = this.state.filterData;
+        let { showFilter, showButtons, selectedConditions } = this.state;
+        let { filterData } = this.props;
+        let { errorMessage, priority, operationIds } = filterData;
         let uiConfig = this.state.uiConfig;
         let columns = uiConfig.main.grid.columns;
         let sections = uiConfig.dialog.sections;
@@ -411,7 +396,8 @@ export default connect(
                 pageSize: 25,
                 pageNumber: 1,
                 recordsTotal: 0
-            }
+            },
+            filterData: state.main.filterData
         };
     },
     (dispatch) => {

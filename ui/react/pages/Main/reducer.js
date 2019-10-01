@@ -65,24 +65,27 @@ export default (state = defaultState, action) => {
                     'filterData': action.params.filterData
                 });
             case REMOVE_TAB:
-                return Object.assign({}, state, {
-                    'filterData': {
-                        operationIds: [],
-                        priority: {
-                            from: {
-                                value: null,
-                                isValid: true
+                if (action.pathname === '/rule') {
+                    return Object.assign({}, state, {
+                        'filterData': {
+                            operationIds: [],
+                            priority: {
+                                from: {
+                                    value: null,
+                                    isValid: true
+                                },
+                                to: {
+                                    value: null,
+                                    isValid: true
+                                }
                             },
-                            to: {
-                                value: null,
-                                isValid: true
+                            errorMessage: 'Enter numerical values'
                             }
-                        },
-                        errorMessage: 'Enter numerical values'
-                        }
-                    });
+                        });
+                    }
                 }
     }
+
     return state;
 };
 

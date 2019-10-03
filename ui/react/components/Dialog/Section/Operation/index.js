@@ -83,6 +83,12 @@ const Operation = React.createClass({
     render() {
         let { onChangeDate } = this;
         let { operation } = this.context.nomenclatures;
+
+        let sortedOperations =
+          operation && operation.length > 0
+            ? operation.sort((a, b) => a.name.localeCompare(b.name))
+            : [];
+
         let fields = this.state.fields;
 
         return (
@@ -94,7 +100,7 @@ const Operation = React.createClass({
                         name='operationIds'
                         label={fields.operationId.title}
                         value={this.props.data.operationIds}
-                        options={operation || []}
+                        options={sortedOperations}
                         onChange={(val) => { this.onSelectDropdown({ key: 'operationIds', value: val }); }}
                     />
                   </div>

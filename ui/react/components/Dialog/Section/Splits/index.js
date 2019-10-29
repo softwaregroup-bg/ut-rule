@@ -47,16 +47,16 @@ const Splits = React.createClass({
             self.props.deleteSplitRow(index);
         };
     },
-    getTagData() {
+    getTagData(itemsEnabled) {
         return [
             // {key: 'acquirer', name: 'Acquirer'},
-            {key: 'fee', name: 'Fee'},
-            {key: 'vat', name: 'VAT'},
-            {key: 'wth', name: 'WHT'},
-            {key: 'otherTax', name: 'Other Tax'},
-            {key: 'realtime', name: 'Real Time'},
-            {key: 'agentCommission', name: 'Delayed'},
-            {key: 'commission', name: 'Commission real time'}
+            { key: 'fee', name: 'Fee', disabled: itemsEnabled['fee'] },
+            { key: 'vat', name: 'VAT', disabled: itemsEnabled['vat'] },
+            { key: 'wth', name: 'WHT', disabled: itemsEnabled['wth'] },
+            { key: 'otherTax', name: 'Other Tax', disabled: itemsEnabled['otherTax'] },
+            { key: 'realtime', name: 'Real Time', disabled: itemsEnabled['realtime'] },
+            { key: 'agentCommission', name: 'Delayed', disabled: itemsEnabled['agentCommission'] },
+            { key: 'commission', name: 'Commission real time', disabled: itemsEnabled['commission'] }
             // {key: 'issuer', name: 'Issuer'},
             // {key: 'commission', name: 'Commission'},
             // {key: 'pending', name: 'Authorization required'},
@@ -84,8 +84,18 @@ const Splits = React.createClass({
     createSplitRows() {
         var self = this;
 
-        return this.props.data.map((split, index) => (
-            <div key={index} style={{marginBottom: '20px'}}>
+        return this.props.data.map((split, index, splits) => {
+            let itemsEnabled = {};
+            if (splits.length) {
+                splits.map((existingSplit, currentIndex) => {
+                    if (currentIndex !== index) {
+                        let tagsArray = existingSplit.splitName.tag;
+                        tagsArray.map((tag) => (itemsEnabled[tag.key] = true));
+                    }
+                });
+            }
+
+            return (<div key={index} style={{marginBottom: '20px'}}>
                 <div className={style.border}>
                     <div className={style.splitInput}>
                         <Input
@@ -98,9 +108,9 @@ const Splits = React.createClass({
                     <div className={style.splitInput}>
                         <MultiSelect
                           placeholder='Select Tags'
-                          defaultSelected={self.defaultSelected(self.getTagData(), split.splitName.tag)}
+                          defaultSelected={self.defaultSelected(self.getTagData(itemsEnabled), split.splitName.tag)}
                           onSelect={self.onChangeInput(index)}
-                          data={self.getTagData()}
+                          data={self.getTagData(itemsEnabled)}
                           label='Tag'
                           keyProp='splitName.tag'
                         />
@@ -132,8 +142,8 @@ const Splits = React.createClass({
                 <button className={style.statusActionButton} onClick={self.onDeleteRow(index)}>
                     Delete this Split
                 </button>
-            </div>
-        ));
+            </div>);
+        });
     },
     render() {
         return (

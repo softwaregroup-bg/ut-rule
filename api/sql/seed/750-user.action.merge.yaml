@@ -1,0 +1,46 @@
+category:
+  - name: rule
+action:
+  - {category: rule, action: 'rule.decision.fetch', description: 'rule.decision.fetch'}
+  - {category: rule, action: 'rule.decision.lookup', description: 'rule decision lookup'}
+  - {category: rule, action: 'rule.item.fetch', description: 'rule item fetch'}
+  - {category: rule, action: 'rule.operation.lookup', description: 'rule.operation.lookup'}
+  - {category: rule, action: 'rule.rule.add', description: 'rule add'}
+  - {category: rule, action: 'rule.rule.edit', description: 'rule edit'}
+  - {category: rule, action: 'rule.rule.fetch', description: 'rule fetch'}
+  - {category: rule, action: 'rule.rule.fetchDeleted', description: 'deleted rule fetch'}
+  - {category: rule, action: 'rule.rule.nav', description: 'Access to Rule tab'}
+  - {category: rule, action: 'rule.rule.remove', description: 'rule remove'}
+field:
+  - {code: rule, name: Rule Management}
+role:
+  - {field: rule, role: Create Rule}
+  - {field: rule, role: Delete Rule}
+  - {field: rule, role: Edit Rule}
+  - {field: rule, role: List Rules}
+roleAction:
+  - {role: Create Rule, action: 'rule.item.fetch'}
+  - {role: Create Rule, action: 'rule.rule.add'}
+  - {role: Create Rule, action: 'rule.rule.fetch'}
+  - {role: Create Rule, action: 'rule.rule.nav'}
+  - {role: Delete Rule, action: 'rule.item.fetch'}
+  - {role: Delete Rule, action: 'rule.rule.fetch'}
+  - {role: Delete Rule, action: 'rule.rule.nav'}
+  - {role: Delete Rule, action: 'rule.rule.remove'}
+  - {role: Edit Rule, action: 'rule.item.fetch'}
+  - {role: Edit Rule, action: 'rule.rule.edit'}
+  - {role: Edit Rule, action: 'rule.rule.fetch'}
+  - {role: Edit Rule, action: 'rule.rule.nav'}
+  - {role: KYC Activate/Deactivate, action: 'rule.rule.nav'}
+  - {role: KYC Add, action: 'rule.rule.nav'}
+  - {role: KYC Delete, action: 'rule.rule.nav'}
+  - {role: KYC Edit, action: 'rule.rule.nav'}
+  - {role: KYC History Log, action: 'rule.rule.nav'}
+  - {role: KYC View, action: 'rule.rule.nav'}
+  - {role: List Rules, action: 'rule.item.fetch'}
+  - {role: List Rules, action: 'rule.rule.fetch'}
+  - {role: List Rules, action: 'rule.rule.nav'}
+  - {role: MobileClient, action: 'rule.decision.lookup'}
+  - {role: Rule History Log, action: 'rule.item.fetch'}
+  - {role: Rule History Log, action: 'rule.rule.fetch'}
+  - {role: View Deleted Items, action: 'rule.rule.fetchDeleted'}

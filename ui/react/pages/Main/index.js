@@ -308,7 +308,7 @@ const Main = React.createClass({
                                                 key,
                                                 name: this.props.nomenclatures.operation[key]
                                             };
-                                        }) || []}
+                                        }).sort((a, b) => a.name.localeCompare(b.name)) || []}
                                         keyProp='operationIds'
                                         placeholder="Select"
                                         onSelect={this.onSelectDropdown}

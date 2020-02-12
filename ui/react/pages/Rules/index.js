@@ -35,8 +35,8 @@ const Main = React.createClass({
         };
     },
     fetchData(props) {
-        let {pageSize, pageNumber} = props.pagination;
-        let showDeleted = props.showDeleted;
+        const {pageSize, pageNumber} = props.pagination;
+        const showDeleted = props.showDeleted;
 
         this.props.actions.fetchRules({pageSize, pageNumber}, showDeleted);
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
@@ -53,7 +53,7 @@ const Main = React.createClass({
         return nextProps.ready;
     },
     handleCheckboxSelect(isSelected, data) {
-        let selectedConditions = this.state.selectedConditions;
+        const selectedConditions = this.state.selectedConditions;
         if (isSelected === null) {
             isSelected = selectedConditions[data.id];
         }
@@ -62,7 +62,7 @@ const Main = React.createClass({
         } else {
             selectedConditions[data.id] = true;
         }
-        let count = Object.keys(selectedConditions).length;
+        const count = Object.keys(selectedConditions).length;
         this.setState({
             selectedConditions: selectedConditions,
             canEdit: count === 1,
@@ -78,7 +78,7 @@ const Main = React.createClass({
         });
     },
     removeRules() {
-        let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
+        const conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
         this.setState(this.getInitialState(), () => this.props.actions.removeRules({
             conditionId: conditionsArray
         }));
@@ -87,10 +87,10 @@ const Main = React.createClass({
         this.setState(this.getInitialState(), () => this.props.actions.reset());
     },
     showConfirm() {
-        this.refs['showRuleConfirmDialog'] && this.refs['showRuleConfirmDialog'].open();
+        this.refs.showRuleConfirmDialog && this.refs.showRuleConfirmDialog.open();
     },
     getHeaderButtons() {
-        let buttons = [];
+        const buttons = [];
         this.context.checkPermission('rule.rule.add') &&
             buttons.push({text: 'Create Rule', href: getLink('ut-rule:create'), styleType: 'primaryLight'});
         return buttons;
@@ -100,19 +100,21 @@ const Main = React.createClass({
             return null;
         }
 
-        let uiConfig = this.state.uiConfig;
-        let columns = uiConfig.main.grid.columns;
-        let id = Object.keys(this.state.selectedConditions)[0];
-        let showDeleted = this.props.showDeleted;
-        let content = [
-            <GridToolBox contentWrapClassName={style.actionWrap} cssStandard opened title='' >
-                { this.context.checkPermission('rule.rule.edit') && !showDeleted &&
+        const uiConfig = this.state.uiConfig;
+        const columns = uiConfig.main.grid.columns;
+        const id = Object.keys(this.state.selectedConditions)[0];
+        const showDeleted = this.props.showDeleted;
+        const content = [
+            <GridToolBox contentWrapClassName={style.actionWrap} cssStandard opened title=''>
+                {this.context.checkPermission('rule.rule.edit') && !showDeleted &&
                 (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
-                { this.context.checkPermission('rule.rule.remove') && !showDeleted &&
+                {this.context.checkPermission('rule.rule.remove') && !showDeleted &&
                 (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
-                { this.context.checkPermission('rule.rule.fetchDeleted') &&
-                (<Button className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
-                    onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label={'Show Deleted'} />)}
+                {this.context.checkPermission('rule.rule.fetchDeleted') &&
+                (<Button
+                    className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
+                    onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label='Show Deleted'
+                />)}
             </GridToolBox>,
             <Grid
                 ref='grid'
@@ -124,13 +126,15 @@ const Main = React.createClass({
                 handleCheckboxSelect={this.handleCheckboxSelect}
                 handleHeaderCheckboxSelect={this.handleHeaderCheckboxSelect}
                 columns={columns}
-                showDeleted={this.props.showDeleted} />,
+                showDeleted={this.props.showDeleted}
+            />,
             <AdvancedPagination
                 cssStandard
                 onUpdate={this.props.actions.updatePagination}
-                pagination={fromJS(this.props.pagination)} />
+                pagination={fromJS(this.props.pagination)}
+            />
         ];
-        let resizibleContainerCols = [
+        const resizibleContainerCols = [
             {type: resizibleTypes.CONTENT, id: 'cardReasonContent', minWidth: 1200, child: content}
         ];
         return (
@@ -139,7 +143,7 @@ const Main = React.createClass({
                 <Header text='Fees, Commissions and Limits (FCL)' buttons={this.getHeaderButtons()} />
                 <ResizibleContainer cssStandard cols={resizibleContainerCols} />
                 <ConfirmDialog
-                    ref={'showRuleConfirmDialog'}
+                    ref='showRuleConfirmDialog'
                     submitLabel='Yes'
                     title='Warning'
                     message={
@@ -149,8 +153,10 @@ const Main = React.createClass({
                             ? '1 rule'
                             : Object.keys(this.state.selectedConditions).length + ' rules'
                     ) +
-                    '. Would you like to proceed?'}
-                    onSubmit={this.removeRules} />
+                    '. Would you like to proceed?'
+                    }
+                    onSubmit={this.removeRules}
+                />
             </div>
         );
     }

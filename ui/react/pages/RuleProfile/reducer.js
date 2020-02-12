@@ -25,7 +25,7 @@ const defaultState = {
 };
 
 export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
-    let options = state.get('config').toJS();
+    const options = state.get('config').toJS();
     switch (action.type) {
         case actionTypes.CHANGE_RULE_PROFILE:
             return reducerHelper.changeRuleProfile(state, action, options);

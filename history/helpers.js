@@ -1,6 +1,6 @@
-let { prepareRuleModel } = require('../common');
+const { prepareRuleModel } = require('../common');
 const prepareRule = (result) => {
-    var rule = prepareRuleModel(result);
+    const rule = prepareRuleModel(result);
     return rule;
 };
 

@@ -38,10 +38,10 @@ class SplitTab extends Component {
             removeSplit
         } = this.props.actions;
         const { name, assignments, tags, cumulatives } = split;
-        let additionalValidate = (field, fnprefix) => {
+        const additionalValidate = (field, fnprefix) => {
             if (!field.error) {
-                let lastKey = field.key.split(',').pop();
-                let extVal = externalValidate[`${fnprefix}_${lastKey}`];
+                const lastKey = field.key.split(',').pop();
+                const extVal = externalValidate[`${fnprefix}_${lastKey}`];
                 extVal && (field = extVal(field, fromJS(fieldValues), errors));
             }
             return field;
@@ -57,14 +57,14 @@ class SplitTab extends Component {
             field = additionalValidate(field, 'split_cumulative');
             changeInput(field, destinationProp);
         };
-        let validateStartAmount = (cumulativeId, rangeId, field) => {
-            var ranges = (cumulatives[cumulativeId] || {}).ranges || [];
-            let isDuplicate = !!ranges.find((range) => { return range.startAmount === field.value; });
+        const validateStartAmount = (cumulativeId, rangeId, field) => {
+            const ranges = (cumulatives[cumulativeId] || {}).ranges || [];
+            const isDuplicate = !!ranges.find((range) => { return range.startAmount === field.value; });
             isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.startAmountUnique);
             return field;
         };
-        let validateCurrency = (field) => {
-            let isDuplicate = !!cumulatives.find((range) => { return range.currency === field.value; });
+        const validateCurrency = (field) => {
+            const isDuplicate = !!cumulatives.find((range) => { return range.currency === field.value; });
             isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.cumulativeCurrencyUnique);
             return field;
         };
@@ -76,7 +76,7 @@ class SplitTab extends Component {
         };
         const setInfo = (field) => {
             if (field.key === 'name') {
-                let isDuplicate = !!fieldValues.splits.find((sp) => { return (sp.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
+                const isDuplicate = !!fieldValues.splits.find((sp) => { return (sp.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
                 isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.splitNameUnique);
             }
             field.key = ['splits', index, field.key].join(',');
@@ -86,23 +86,25 @@ class SplitTab extends Component {
             <div key={index}>
                 <div className={style.splitHeader}>
                     <span className={style.label}>{name ? name.toUpperCase() : 'SPLIT NAME'}</span>
-                    { canEdit && <Button onClick={() => removeSplit(index)} className={style.deleteButton} styleType='secondaryLight' label='DELETE SPLIT' /> }
+                    {canEdit && <Button onClick={() => removeSplit(index)} className={style.deleteButton} styleType='secondaryLight' label='DELETE SPLIT' />}
                 </div>
                 <div className={style.splitWrapper}>
                     <div className={style.contentBox}>
                         <div className={style.contentBoxWrapper}>
                             <TitledContentBox
                                 title='Split Info'
-                                wrapperClassName >
+                                wrapperClassName
+                            >
                                 <Info
                                     canEdit={canEdit}
                                     changeInputField={setInfo}
                                     name={name}
                                     errors={errors.getIn(['splits', index])}
-                                    selectedTags={tags} />
+                                    selectedTags={tags}
+                                />
                             </TitledContentBox>
                             <div className={style.cumulativeWrapper}>
-                                <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding} >
+                                <TitledContentBox title='Cumulative' externalContentClasses={style.contentPadding}>
                                     <Cumulative
                                         canEdit={canEdit}
                                         addCumulative={addCumulative}
@@ -137,6 +139,7 @@ class SplitTab extends Component {
             </div>
         );
     }
+
     // componentWillMount() {
     //     // add empty split by default if split is null
     //     !this.props.fieldValues.splits && this.props.actions.addSplit();
@@ -161,7 +164,7 @@ SplitTab.propTypes = propTypes;
 SplitTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
-    let { mode, id } = state.ruleProfileReducer.get('config').toJS();
+    const { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
         canEdit: ownProps.canEdit,
         fieldValues: state.ruleProfileReducer.getIn([mode, id, 'split']).toJS(),

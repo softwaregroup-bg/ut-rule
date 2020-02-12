@@ -8,6 +8,7 @@ class Property extends Component {
         this.getPropetyRowsBody = this.getPropetyRowsBody.bind(this);
         this.getPropertyHeaderCells = this.getPropertyHeaderCells.bind(this);
     }
+
     getPropertyHeaderCells() {
         return [
             {name: 'Name', key: 'name'},
@@ -17,10 +18,11 @@ class Property extends Component {
             <th key={i} className={cell.className || ''}>{cell.name}</th>
         ));
     }
+
     getPropetyRowsBody() {
         const { properties, removeProperty, changeInput, errors, canEdit } = this.props;
         return properties.map((prop, index) => {
-            let idx = index.toString();
+            const idx = index.toString();
             return (
                 <tr key={`${index}`}>
                     <td>
@@ -44,14 +46,15 @@ class Property extends Component {
                         />
                     </td>
                     <td className={style.deleteCol}>
-                        { canEdit && <div className={style.deleteIcon} onClick={() => { removeProperty(index); }} /> }
+                        {canEdit && <div className={style.deleteIcon} onClick={() => { removeProperty(index); }} />}
                     </td>
                 </tr>
             );
         });
     }
+
     render() {
-        let { addProperty, canEdit } = this.props;
+        const { addProperty, canEdit } = this.props;
         return (
             <div className={style.propertyTable}>
                 <table className={style.dataGridTable}>
@@ -60,14 +63,14 @@ class Property extends Component {
                             {this.getPropertyHeaderCells()}
                         </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                         {this.getPropetyRowsBody()}
                     </tbody>
                 </table>
-                { canEdit && <span className={style.link} onClick={addProperty}>
+                {canEdit && <span className={style.link} onClick={addProperty}>
                     <div className={style.plus} />
                     Add another property
-                </span> }
+                </span>}
             </div>
         );
     }

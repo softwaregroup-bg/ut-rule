@@ -14,7 +14,7 @@ export const Assignment = (props) => {
         splitIndex,
         errors // immutable
     } = props;
-    let readonly = !canEdit;
+    const readonly = !canEdit;
     const getHeaderCells = () => {
         return [
             {name: 'Description', key: 'description'},
@@ -31,13 +31,13 @@ export const Assignment = (props) => {
 
     const getBody = () => {
         return assignments.map((prop, index) => {
-            let idx = index.toString();
+            const idx = index.toString();
             return (
                 <tr key={`${index}`}>
                     <td>
                         <Input
                             readonly={readonly}
-                            keyProp={'description'}
+                            keyProp='description'
                             onChange={(field) => { changeInput(index, field); }}
                             isValid={!errors.getIn([idx, 'description'])}
                             errorMessage={errors.getIn([idx, 'description'])}
@@ -47,7 +47,7 @@ export const Assignment = (props) => {
                     <td>
                         <Input
                             readonly={readonly}
-                            keyProp={'debit'}
+                            keyProp='debit'
                             isValid={!errors.getIn([idx, 'debit'])}
                             errorMessage={errors.getIn([idx, 'debit'])}
                             onChange={(field) => { changeInput(index, field); }}
@@ -57,7 +57,7 @@ export const Assignment = (props) => {
                     <td>
                         <Input
                             readonly={readonly}
-                            keyProp={'credit'}
+                            keyProp='credit'
                             isValid={!errors.getIn([idx, 'credit'])}
                             errorMessage={errors.getIn([idx, 'credit'])}
                             onChange={(field) => { changeInput(index, field); }}
@@ -67,7 +67,7 @@ export const Assignment = (props) => {
                     <td>
                         <Input
                             readonly={readonly}
-                            keyProp={'percent'}
+                            keyProp='percent'
                             validators={validations.percent}
                             isValid={!errors.getIn([idx, 'percent'])}
                             errorMessage={errors.getIn([idx, 'percent'])}
@@ -78,7 +78,7 @@ export const Assignment = (props) => {
                     <td>
                         <Input
                             readonly={readonly}
-                            keyProp={'minAmount'}
+                            keyProp='minAmount'
                             validators={validations.amount}
                             isValid={!errors.getIn([idx, 'minAmount'])}
                             errorMessage={errors.getIn([idx, 'minAmount'])}
@@ -89,7 +89,7 @@ export const Assignment = (props) => {
                     <td>
                         <Input
                             readonly={readonly}
-                            keyProp={'maxAmount'}
+                            keyProp='maxAmount'
                             validators={validations.amount}
                             isValid={!errors.getIn([idx, 'maxAmount'])}
                             errorMessage={errors.getIn([idx, 'maxAmount'])}
@@ -98,7 +98,7 @@ export const Assignment = (props) => {
                         />
                     </td>
                     <td className={style.deleteCol}>
-                        { canEdit && <div className={style.deleteIcon} onClick={() => { removeAssignment(splitIndex, index); }} /> }
+                        {canEdit && <div className={style.deleteIcon} onClick={() => { removeAssignment(splitIndex, index); }} />}
                     </td>
                 </tr>
             );
@@ -113,14 +113,14 @@ export const Assignment = (props) => {
                         {getHeaderCells()}
                     </tr>
                 </thead>
-                <tbody >
+                <tbody>
                     {getBody()}
                 </tbody>
             </table>
-            { canEdit && <span className={style.link} onClick={() => addAssignment(splitIndex)}>
+            {canEdit && <span className={style.link} onClick={() => addAssignment(splitIndex)}>
                 <div className={style.plus} />
                 Add another Assignment
-            </span> }
+            </span>}
         </div>
     );
 };

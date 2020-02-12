@@ -39,9 +39,9 @@ export default React.createClass({
         };
     },
     handleGridExpansion(id) {
-        let expandedGridColumns = this.state.expandedGridColumns;
+        const expandedGridColumns = this.state.expandedGridColumns;
         if (expandedGridColumns.some(v => v === id)) {
-            let index = expandedGridColumns.indexOf(id);
+            const index = expandedGridColumns.indexOf(id);
             expandedGridColumns.splice(index, 1);
         } else {
             expandedGridColumns.push(id);
@@ -49,11 +49,11 @@ export default React.createClass({
         this.setState({expandedGridColumns});
     },
     renderGridColumn(condition, keysToInclude, row, column) {
-        let result = [];
-        for (let keyToInclude of keysToInclude) {
+        const result = [];
+        for (const keyToInclude of keysToInclude) {
             if (Array.isArray(condition[keyToInclude])) {
-                for (let index in condition[keyToInclude]) {
-                    let record = condition[keyToInclude][index];
+                for (const index in condition[keyToInclude]) {
+                    const record = condition[keyToInclude][index];
                     if (index > 4 && !this.state.expandedGridColumns.some(v => v === row.priority)) break;
                     result.push(<div key={result.length}>
                         <b>{record.name + ':'}</b>{record.value}
@@ -85,7 +85,7 @@ export default React.createClass({
         if (row.priority && column === 'priority') {
             result.push(
                 <div key={result.length}>
-                    <Link to={row.url}>{ row.priority }</Link>
+                    <Link to={row.url}>{row.priority}</Link>
                 </div>
             );
         }
@@ -104,10 +104,10 @@ export default React.createClass({
         this.props.handleCheckboxSelect(null, record);
     },
     toggleColumn(col) {
-        var fields = this.state.fields;
-        var visibleFields = fields.filter((f) => { return f.visible !== false; });
+        const fields = this.state.fields;
+        const visibleFields = fields.filter((f) => { return f.visible !== false; });
         if (visibleFields.length !== 1 || col.visible === false) {
-            var newFields = col && fields.map(function(f) {
+            const newFields = col && fields.map(function(f) {
                 if (col.key === f.key) {
                     f.visible = f.visible === false ? !0 : !1;
                 }
@@ -120,9 +120,9 @@ export default React.createClass({
     },
     getData() {
         return Object.keys(this.props.data).map((conditionId, i) => {
-            let record = this.props.data[conditionId];
-            let condition = record.condition[0];
-            let columns = this.state.columns;
+            const record = this.props.data[conditionId];
+            const condition = record.condition[0];
+            const columns = this.state.columns;
             return {
                 id: conditionId,
                 destinationAccountId: condition.destinationAccountId,
@@ -162,16 +162,17 @@ export default React.createClass({
                     return this.renderGridColumn(value, ['split'], row, 'split');
                 case 'priority':
                     return this.renderGridColumn(value, ['priority'], row, 'priority');
-                case 'expansion':
-                    let expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
+                case 'expansion': {
+                    const expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
                     return <a onClick={(e) => { e.preventDefault(); this.handleGridExpansion(row.priority); }}>{expansionText}</a>;
+                }
                 default:
                     return value;
             }
         }
     },
     render() {
-        let data = fromJS(this.getData()).sort((a, b) => {
+        const data = fromJS(this.getData()).sort((a, b) => {
             return a.get('priority') - b.get('priority');
         }).toJS();
 
@@ -190,7 +191,8 @@ export default React.createClass({
                 mainClassName='dataGridTable'
                 rowsChecked={data.filter(x => this.props.selectedConditions[x.id])}
                 data={data}
-                transformCellValue={this.transformCellValue} />
+                transformCellValue={this.transformCellValue}
+            />
         );
     }
 });

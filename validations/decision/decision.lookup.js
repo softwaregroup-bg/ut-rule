@@ -1,4 +1,4 @@
-var joi = require('joi');
+const joi = require('joi');
 
 module.exports = {
     description: 'Fetch applicable fee, limit and commission, based on passed properties of the transfer',

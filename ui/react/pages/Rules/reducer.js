@@ -17,24 +17,25 @@ export default (state = defaultState, action) => {
         switch (action.type) {
             case actionTypes.fetchNomenclatures:
                 return Object.assign({}, state, {
-                    'fetchNomenclatures': formatNomenclatures(action.result.items)
+                    fetchNomenclatures: formatNomenclatures(action.result.items)
                 });
-            case actionTypes.fetchRules:
-                let showDeleted = state.showDeleted;
-                let formattedRules = (formatRules(action.result));
+            case actionTypes.fetchRules: {
+                const showDeleted = state.showDeleted;
+                const formattedRules = (formatRules(action.result));
                 map(formattedRules, (rule) => {
                     rule.url = showDeleted ? getLink('ut-history:deleted', {objectId: rule.condition[0].conditionId, objectName: 'rule'}) : getLink('ut-rule:edit', {id: rule.condition[0].conditionId});
                     return rule;
                 });
                 return Object.assign({}, state, {
-                    'fetchRules': formattedRules,
-                    'conditionActor': action.result.conditionActor,
-                    'conditionItem': action.result.conditionItem,
-                    'conditionProperty': action.result.conditionProperty,
-                    'formatedGridData': getFormattedGridDataColumns(action.result, formattedRules),
-                    'pagination': {...state.pagination, ...(action.result.pagination && action.result.pagination[0])},
-                    'showDeleted': showDeleted
+                    fetchRules: formattedRules,
+                    conditionActor: action.result.conditionActor,
+                    conditionItem: action.result.conditionItem,
+                    conditionProperty: action.result.conditionProperty,
+                    formatedGridData: getFormattedGridDataColumns(action.result, formattedRules),
+                    pagination: {...state.pagination, ...(action.result.pagination && action.result.pagination[0])},
+                    showDeleted: showDeleted
                 });
+            }
             default:
                 break;
         }
@@ -48,25 +49,27 @@ export default (state = defaultState, action) => {
                 break;
             case actionTypes.reset:
                 return defaultState;
-            case actionTypes.updatePagination:
+            case actionTypes.updatePagination: {
                 let changeId = (state.pagination.changeId || 0);
-                let paginationState = {pagination: {...action.params.toJS(), ...{changeId: ++changeId}}};
+                const paginationState = {pagination: {...action.params.toJS(), ...{changeId: ++changeId}}};
 
                 return {...state, ...paginationState};
-            case actionTypes.toggleRuleOption:
-                let showState = {showDeleted: action.params.value};
+            }
+            case actionTypes.toggleRuleOption: {
+                const showState = {showDeleted: action.params.value};
                 return {...state, ...showState};
+            }
         }
     }
     return state;
 };
 
-var formatRules = function(data) {
+const formatRules = function(data) {
     if (!data.condition.length) {
         return {};
     }
-    var result = {};
-    var splitNameConditionMap = {};
+    const result = {};
+    const splitNameConditionMap = {};
     ['condition', 'limit'].forEach(function(prop) {
         if (data[prop] && (data[prop].length)) {
             data[prop].forEach(function(record) {
@@ -95,7 +98,7 @@ var formatRules = function(data) {
         });
     });
     ['splitRange', 'splitAssignment'].forEach(function(prop) {
-        var mappedData;
+        let mappedData;
         if (data[prop] && data[prop].length) {
             data[prop].forEach(function(record) {
                 mappedData = splitNameConditionMap[record.splitNameId];
@@ -103,8 +106,8 @@ var formatRules = function(data) {
             });
         }
     });
-    for (var resultKey in result) {
-        for (var splitKey in result[resultKey].split) {
+    for (const resultKey in result) {
+        for (const splitKey in result[resultKey].split) {
             if (result[resultKey].split[splitKey].splitName.tag !== null) {
                 result[resultKey].split[splitKey].splitName.tag = result[resultKey].split[splitKey].splitName.tag.split('|').filter((v) => (v !== '')).map((v) => ({key: v, name: v}));
             }
@@ -134,7 +137,7 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
     //     }
     // };
     fromJS(formattedRules).toJS();
-    let result = {};
+    const result = {};
     fetchedData.conditionItem && fetchedData.conditionItem.forEach((item) => {
         if (!result[item.conditionId]) {
             result[item.conditionId] = {};
@@ -175,42 +178,42 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
         });
     });
     Object.keys(formattedRules).forEach((conditionId) => {
-        let limitArray = formattedRules[conditionId].limit;
-        let splitArray = formattedRules[conditionId].split;
+        const limitArray = formattedRules[conditionId].limit;
+        const splitArray = formattedRules[conditionId].split;
         if (!result[conditionId]) {
             result[conditionId] = {};
         }
         if (limitArray && limitArray.length) {
             limitArray.forEach((limit) => {
-                if (!result[conditionId]['limit']) {
-                    result[conditionId]['limit'] = [];
+                if (!result[conditionId].limit) {
+                    result[conditionId].limit = [];
                 }
                 if (limit.currency) {
-                    result[conditionId]['limit'].push({
+                    result[conditionId].limit.push({
                         name: 'Currency',
                         value: limit.currency
                     });
                 }
                 if (limit.maxAmount && limit.minAmount) {
-                    result[conditionId]['limit'].push({
+                    result[conditionId].limit.push({
                         name: 'Transaction',
                         value: (limit.maxAmount ? 'max ' + limit.maxAmount + ' ' : '') + (limit.minAmount ? 'min ' + limit.minAmount + ' ' : '')
                     });
                 }
                 if (limit.maxAmountDaily && limit.maxCountDaily) {
-                    result[conditionId]['limit'].push({
+                    result[conditionId].limit.push({
                         name: 'Daily',
                         value: (limit.maxAmountDaily ? 'max ' + limit.maxAmountDaily + ' ' : '') + (limit.maxCountDaily ? 'count ' + limit.maxCountDaily + ' ' : '')
                     });
                 }
                 if (limit.maxAmountWeekly && limit.maxCountWeekly) {
-                    result[conditionId]['limit'].push({
+                    result[conditionId].limit.push({
                         name: 'Weekly',
                         value: (limit.maxAmountWeekly ? 'max ' + limit.maxAmountWeekly + ' ' : '') + (limit.maxCountWeekly ? 'count ' + limit.maxCountWeekly + ' ' : '')
                     });
                 }
                 if (limit.maxAmountMonthly && limit.maxCountMonthly) {
-                    result[conditionId]['limit'].push({
+                    result[conditionId].limit.push({
                         name: 'Monthly',
                         value: (limit.maxAmountMonthly ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (limit.maxCountMonthly ? 'count ' + limit.maxCountMonthly + ' ' : '')
                     });
@@ -219,11 +222,11 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
         }
         if (splitArray && splitArray.length) {
             splitArray.forEach((split) => {
-                if (!result[conditionId]['split']) {
-                    result[conditionId]['split'] = [];
+                if (!result[conditionId].split) {
+                    result[conditionId].split = [];
                 }
                 if (split.splitName && split.splitName.name) {
-                    result[conditionId]['split'].push({
+                    result[conditionId].split.push({
                         name: 'Name',
                         value: split.splitName.name
                     }, {
@@ -233,27 +236,27 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
                 if (split.splitRange && split.splitRange.length) {
                     split.splitRange.forEach((range) => {
                         if (range.startAmountCurrency) {
-                            result[conditionId]['split'].push({
+                            result[conditionId].split.push({
                                 name: 'Currency',
                                 value: range.startAmountCurrency
                             });
                         }
                         if (range.startAmountDaily) {
-                            result[conditionId]['split'].push({
+                            result[conditionId].split.push({
                                 renderOnlyValue: true,
                                 boldValue: true,
                                 value: `Daily Count <= ${range.startAmountDaily}`
                             });
                         }
                         if (range.startAmount) {
-                            let name = `${getPaddedStringWithSpaces(`Amount >= ${range.startAmount}`, amountCharacters)}`.split('');
-                            let value = `${getPaddedStringWithSpaces(range.percent ? `${range.percent}%;` : '', maxPercentageCharacters)} ${getPaddedStringWithSpaces(range.minValue ? `min: ${range.minValue};` : '', minAmountCharacters)} ${getPaddedStringWithSpaces(range.maxValue ? `max: ${range.maxValue};` : '', maxAmountCharacters)} ${getPaddedStringWithSpaces(range.percentBase ? `base: ${range.percentBase};` : '', basePercentageCharacters)}`.trim().split('');
-                            result[conditionId]['split'].push({
+                            const name = `${getPaddedStringWithSpaces(`Amount >= ${range.startAmount}`, amountCharacters)}`.split('');
+                            const value = `${getPaddedStringWithSpaces(range.percent ? `${range.percent}%;` : '', maxPercentageCharacters)} ${getPaddedStringWithSpaces(range.minValue ? `min: ${range.minValue};` : '', minAmountCharacters)} ${getPaddedStringWithSpaces(range.maxValue ? `max: ${range.maxValue};` : '', maxAmountCharacters)} ${getPaddedStringWithSpaces(range.percentBase ? `base: ${range.percentBase};` : '', basePercentageCharacters)}`.trim().split('');
+                            result[conditionId].split.push({
                                 name: name,
                                 value: value
                             });
                         }
-                        result[conditionId]['split'].push({
+                        result[conditionId].split.push({
                             setEmptyRow: true
                         });
                     });
@@ -266,7 +269,7 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
 
 const getPaddedStringWithSpaces = function(str, maxStringLength) {
     if (maxStringLength > str.length) {
-        let whitespace = ' ';
+        const whitespace = ' ';
         return str + whitespace.repeat(maxStringLength - str.length);
     }
     return str;

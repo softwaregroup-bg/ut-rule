@@ -21,12 +21,12 @@ export const Limits = (props) => {
     const setLimitField = (index, field) => {
         field.key = [index, field.key].join(',');
         if (!field.error) {
-            let lastKey = field.key.split(',').pop();
-            let extVal = externalValidate[`limit_${lastKey}`];
+            const lastKey = field.key.split(',').pop();
+            const extVal = externalValidate[`limit_${lastKey}`];
             extVal && (field = extVal(field, fromJS(fieldValues), errors));
         }
         if (!field.error && field.key.split(',').pop() === 'currency') {
-            let isDuplicate = !!fieldValues.find((limit) => { return limit.currency === field.value; });
+            const isDuplicate = !!fieldValues.find((limit) => { return limit.currency === field.value; });
             isDuplicate && (field.error = true) && (field.errorMessage = errorMessage.limitCurrencyUnique);
         }
         changeInput(field, destinationProp);
@@ -61,7 +61,7 @@ export const Limits = (props) => {
                         <Dropdown
                             disabled={!canEdit}
                             style={{width: '120px'}}
-                            keyProp={'currency'}
+                            keyProp='currency'
                             isValid={!errors.getIn([index, 'currency'])}
                             errorMessage={errors.getIn([index, 'currency'])}
                             data={currencies}
@@ -159,7 +159,7 @@ export const Limits = (props) => {
                         />
                     </td>
                     <td className={style.deleteCol}>
-                        { canEdit && <div className={style.deleteIcon} onClick={() => { removeLimit(index); }} /> }
+                        {canEdit && <div className={style.deleteIcon} onClick={() => { removeLimit(index); }} />}
                     </td>
                 </tr>);
         });
@@ -179,10 +179,10 @@ export const Limits = (props) => {
                                 {Object.keys(fieldValues).length > 0 && renderBody()}
                             </tbody>
                         </table>
-                        { canEdit && <span className={style.link} onClick={addLimit}>
+                        {canEdit && <span className={style.link} onClick={addLimit}>
                             <div className={style.plus} />
                             Add another Limit
-                        </span> }
+                        </span>}
                     </div>
                 </TitledContentBox>
             </div>
@@ -199,7 +199,7 @@ Limits.propTypes = {
     actions: PropTypes.object
 };
 const mapStateToProps = (state, ownProps) => {
-    let { mode, id } = state.ruleProfileReducer.get('config').toJS();
+    const { mode, id } = state.ruleProfileReducer.get('config').toJS();
     return {
         canEdit: ownProps.canEdit,
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),

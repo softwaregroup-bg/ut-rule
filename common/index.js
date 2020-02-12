@@ -39,8 +39,8 @@ const stringify = (value) => {
 };
 
 function prepareRuleModel(dbresult) {
-    var condition = (dbresult.condition || [])[0] || {};
-    var rule = {
+    const condition = (dbresult.condition || [])[0] || {};
+    const rule = {
         channel: {
             conditionId: condition.conditionId,
             priority: condition.priority,
@@ -74,13 +74,13 @@ function prepareRuleModel(dbresult) {
         }
     };
     (dbresult.conditionActor || []).forEach((ca) => {
-        var des = rule[propMap[ca.factor]];
+        const des = rule[propMap[ca.factor]];
         des && (des[ca.type] = ca.actorId);
     });
     // condition item
     (dbresult.conditionItem || []).forEach((item) => {
         if (['operation', 'country', 'city', 'region', 'cardProduct'].indexOf(item.type) > -1) {
-            var obj = rule[propMap[item.factor]] && rule[propMap[item.factor]][propMap[item.type]];
+            const obj = rule[propMap[item.factor]] && rule[propMap[item.factor]][propMap[item.type]];
             obj && obj.push({
                 key: item.itemNameId,
                 name: item.itemName
@@ -91,7 +91,7 @@ function prepareRuleModel(dbresult) {
     });
     // condition property
     (dbresult.conditionProperty || []).forEach((property) => {
-        var obj = rule[propMap[property.factor]];
+        const obj = rule[propMap[property.factor]];
         obj && obj.properties.push({
             name: property.name,
             value: property.value
@@ -116,8 +116,8 @@ function prepareRuleModel(dbresult) {
     // split
     dbresult.splitName && dbresult.splitName.forEach((splitName) => {
         if (!splitName.name) return;
-        let splitNameId = splitName.splitNameId;
-        var split = {
+        const splitNameId = splitName.splitNameId;
+        const split = {
             conditionId: condition.conditionId,
             name: splitName.name,
             splitNameId,
@@ -126,13 +126,13 @@ function prepareRuleModel(dbresult) {
             assignments: []
         };
         splitName.tag && splitName.tag.split('|').filter((ts) => !!ts).forEach((tagName) => {
-            var splitTag = splitTags.find((st) => st.key === tagName);
+            const splitTag = splitTags.find((st) => st.key === tagName);
             splitTag && split.tags.push(splitTag);
         });
-        var splitRange = dbresult.splitRange && dbresult.splitRange.filter((range) => range.splitNameId === splitNameId);
+        const splitRange = dbresult.splitRange && dbresult.splitRange.filter((range) => range.splitNameId === splitNameId);
         if (splitRange.length > 0) {
-            let uniqueCurrencies = []; // ideally its good to split the cumulatives by cumulative id
-            var cumulatives = splitRange.filter((cum) => {
+            const uniqueCurrencies = []; // ideally its good to split the cumulatives by cumulative id
+            const cumulatives = splitRange.filter((cum) => {
                 if (cum.startAmountCurrency && uniqueCurrencies.includes(cum.startAmountCurrency)) return false;
                 else if (cum.startAmountCurrency) {
                     uniqueCurrencies.push(cum.startAmountCurrency);
@@ -140,7 +140,7 @@ function prepareRuleModel(dbresult) {
                 } else return false;
             });
             cumulatives.forEach(function(range) {
-                var cumulative = {
+                const cumulative = {
                     splitNameId,
                     currency: range.startAmountCurrency,
                     dailyCount: parseInt(range.startCountDaily) || '',

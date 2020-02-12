@@ -19,7 +19,7 @@ import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
 import { prepareRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap } from '../helpers';
 
-let status = fromJS({
+const status = fromJS({
     status: 'SUCCESS',
     message: 'Rule successfully created'
 });
@@ -41,9 +41,9 @@ class RuleCreate extends Component {
     }
 
     fetchData() {
-        let { fetchNomenclatures, changeRuleProfile } = this.props.actions;
-        let { nomenclatureConfiguration, config } = this.props;
-        let { nomenclaturesFetched } = config || {};
+        const { fetchNomenclatures, changeRuleProfile } = this.props.actions;
+        const { nomenclatureConfiguration, config } = this.props;
+        const { nomenclaturesFetched } = config || {};
         changeRuleProfile(mode, id);
         !nomenclaturesFetched && fetchNomenclatures(nomenclatureConfiguration);
     }
@@ -51,11 +51,13 @@ class RuleCreate extends Component {
     componentWillMount() {
         this.fetchData();
     }
+
     handleDialogClose() {
         this.onReset(this.state.closeAfterSave);
     }
+
     onSave() {
-        let formattedRule = prepareRuleToSave(this.props.rule);
+        const formattedRule = prepareRuleToSave(this.props.rule);
         this.props.actions.createRule(formattedRule);
     }
 
@@ -65,10 +67,10 @@ class RuleCreate extends Component {
     }
 
     getTabs() {
-        let { tabsConfiguration: {channel, source, operation, destination, split, limit} } = this.props;
+        const { tabsConfiguration: {channel, source, operation, destination, split, limit} } = this.props;
 
-        let errorCount = getRuleErrorCount(this.props.errors.toJS());
-        let tabs = [
+        const errorCount = getRuleErrorCount(this.props.errors.toJS());
+        const tabs = [
             channel.visible && {
                 title: channel.title || 'Channel',
                 component: <Channel />,
@@ -104,28 +106,28 @@ class RuleCreate extends Component {
     }
 
     getActionButtons() {
-        let { errors, rule } = this.props;
-        let newErrors = prepareRuleErrors(rule, errors.toJS());
-        let isValid = isEmptyValuesOnly(newErrors);
-        let showError = () => {
+        const { errors, rule } = this.props;
+        const newErrors = prepareRuleErrors(rule, errors.toJS());
+        const isValid = isEmptyValuesOnly(newErrors);
+        const showError = () => {
             !isEmptyValuesOnly(newErrors) && this.props.actions.updateRuleErrors(newErrors);
             this.setState({showErrorStatus: true});
         };
-        let create = () => {
+        const create = () => {
             if (!isValid) return showError();
             this.state.closeAfterSave && this.setState({
                 closeAfterSave: false
             });
             this.onSave();
         };
-        let createAndClose = () => {
+        const createAndClose = () => {
             if (!isValid) return showError();
             this.setState({
                 closeAfterSave: true
             });
             this.onSave();
         };
-        let actionButtons = [{
+        const actionButtons = [{
             text: 'Close',
             onClick: () => {
                 return this.onReset(true);
@@ -143,6 +145,7 @@ class RuleCreate extends Component {
         });
         return actionButtons;
     }
+
     renderTabContainer() {
         return (
             <TabContainer
@@ -155,29 +158,31 @@ class RuleCreate extends Component {
             />
         );
     }
+
     renderErrorStatusDialog() {
-        let errorCount = getRuleErrorCount(this.props.errors.toJS());
+        const errorCount = getRuleErrorCount(this.props.errors.toJS());
         let totalErrors = 0;
         let totalErrorTabs = 0;
         let tabErrorMsg = '';
-        let close = () => {
+        const close = () => {
             this.setState({showErrorStatus: false});
         };
-        for (var key in errorCount) {
+        for (const key in errorCount) {
             if (errorCount[key]) {
                 totalErrorTabs++;
                 totalErrors += errorCount[key];
-                let currentErrorString = errorCount[key] > 1 ? 'errors' : 'error';
+                const currentErrorString = errorCount[key] > 1 ? 'errors' : 'error';
                 tabErrorMsg += `<li>${tabTitleMap[key]}: ${errorCount[key]} ${currentErrorString}</li>`;
             }
         }
-        let errorString = totalErrors > 1 ? 'errors' : 'error';
-        let tabString = totalErrorTabs > 1 ? 'tabs' : 'tab';
-        let statusErrorMessage = `Your request can not be saved because you have ${errorString} in the following ${tabString}:<ul>${tabErrorMsg}</ul>`;
+        const errorString = totalErrors > 1 ? 'errors' : 'error';
+        const tabString = totalErrorTabs > 1 ? 'tabs' : 'tab';
+        const statusErrorMessage = `Your request can not be saved because you have ${errorString} in the following ${tabString}:<ul>${tabErrorMsg}</ul>`;
         return <StatusDialog onClose={close} status={fromJS({status: 'failed', message: statusErrorMessage})} />;
     }
+
     render() {
-        let { ruleSaved } = this.props.config;
+        const { ruleSaved } = this.props.config;
         return (
             <Page>
                 <AddTab pathname={getLink('ut-rule:create')} title='Create Rule' />
@@ -207,7 +212,7 @@ RuleCreate.propTypes = {
 RuleCreate.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
-    let tabState = state.ruleProfileReducer.getIn([mode, id]);
+    const tabState = state.ruleProfileReducer.getIn([mode, id]);
     return {
         activeTab: state.tabMenu.active,
         config: state.ruleProfileReducer.get('config').toJS(),

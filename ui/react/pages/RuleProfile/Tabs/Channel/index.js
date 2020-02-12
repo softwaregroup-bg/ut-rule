@@ -40,13 +40,14 @@ class ChannelTab extends Component {
         super(props, context);
         this.renderFields = this.renderFields.bind(this);
     }
+
     renderPriority() {
         const {
             fieldValues,
             errors,
             mode
         } = this.props;
-        let changeInput = (field) => {
+        const changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
         };
         return (
@@ -63,6 +64,7 @@ class ChannelTab extends Component {
             </div>
         );
     }
+
     renderFields() {
         const {
             canEdit,
@@ -73,10 +75,10 @@ class ChannelTab extends Component {
             fieldValues,
             channelConfig: { fields }
         } = this.props;
-        let changeInput = (field) => {
+        const changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
         };
-        let readonly = !canEdit;
+        const readonly = !canEdit;
 
         return (
             <div>
@@ -89,7 +91,8 @@ class ChannelTab extends Component {
                         placeholder='Select Country'
                         defaultSelected={fieldValues.countries}
                         data={countries}
-                        onSelect={(field) => { changeInput(field); }} />
+                        onSelect={(field) => { changeInput(field); }}
+                    />
                 </div>}
                 {fields.region.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
@@ -100,7 +103,8 @@ class ChannelTab extends Component {
                         placeholder='Select Region'
                         defaultSelected={fieldValues.regions}
                         data={regions}
-                        onSelect={(field) => { changeInput(field); }} />
+                        onSelect={(field) => { changeInput(field); }}
+                    />
                 </div>}
                 {fields.city.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
@@ -111,35 +115,37 @@ class ChannelTab extends Component {
                         placeholder='Select City'
                         defaultSelected={fieldValues.cities}
                         data={cities}
-                        onSelect={(field) => { changeInput(field); }} />
+                        onSelect={(field) => { changeInput(field); }}
+                    />
                 </div>}
                 {fields.organization.visible && <div className={style.inputWrapper}>
                     <Dropdown
                         disabled={readonly}
                         canSelectPlaceholder
-                        keyProp={'organization'}
+                        keyProp='organization'
                         data={organizations}
                         defaultSelected={fieldValues.organization}
                         placeholder='Select Organization'
                         onSelect={(field) => { changeInput(field); }}
-                        label={fields.organization.title || 'Organization'} />
+                        label={fields.organization.title || 'Organization'}
+                    />
                 </div>}
             </div>
         );
     }
 
     renderInfoFields() {
-        let { canEdit, rule, actions, fieldValues, errors } = this.props;
-        let properties = getRuleProperties(rule);
-        let addProperty = () => {
+        const { canEdit, rule, actions, fieldValues, errors } = this.props;
+        const properties = getRuleProperties(rule);
+        const addProperty = () => {
             actions.addProperty(destinationProp);
         };
-        let removeProperty = (index) => {
+        const removeProperty = (index) => {
             actions.removeProperty(index, destinationProp);
         };
-        let changeInput = (field) => {
+        const changeInput = (field) => {
             if (field.key.split(',').pop() === 'name' && !field.error && field.value) {
-                let isDuplicateProperty = !!properties.find((prop) => { return (prop.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
+                const isDuplicateProperty = !!properties.find((prop) => { return (prop.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
                 isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
             }
             actions.changeInput(field, destinationProp);
@@ -150,31 +156,35 @@ class ChannelTab extends Component {
                     <div className={style.innerContentBoxWrapper}>
                         <TitledContentBox
                             title='Priority'
-                            wrapperClassName >
+                            wrapperClassName
+                        >
                             {this.renderPriority()}
                         </TitledContentBox>
                     </div>
                     <div className={style.innerContentBoxWrapper}>
                         <TitledContentBox
                             title='Channel Info'
-                            wrapperClassName >
+                            wrapperClassName
+                        >
                             {this.renderFields()}
                         </TitledContentBox>
                     </div>
                 </div>
-                {<div className={style.contentBoxWrapper}>
+                <div className={style.contentBoxWrapper}>
                     <TitledContentBox
                         title='Properties'
-                        wrapperClassName >
+                        wrapperClassName
+                    >
                         <Property
                             canEdit={canEdit}
                             addProperty={addProperty}
                             removeProperty={removeProperty}
                             changeInput={changeInput}
                             properties={(fieldValues || {}).properties || []}
-                            errors={errors} />
+                            errors={errors}
+                        />
                     </TitledContentBox>
-                </div>}
+                </div>
             </div>
         );
     }
@@ -182,7 +192,7 @@ class ChannelTab extends Component {
     render() {
         return (
             <div>
-                { Object.keys(this.props.fieldValues).length > 0 && this.renderInfoFields()}
+                {Object.keys(this.props.fieldValues).length > 0 && this.renderInfoFields()}
             </div>
         );
     }
@@ -192,8 +202,8 @@ ChannelTab.propTypes = propTypes;
 ChannelTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
-    let { mode, id } = state.ruleProfileReducer.get('config').toJS();
-    let immutableRule = state.ruleProfileReducer.getIn([mode, id]);
+    const { mode, id } = state.ruleProfileReducer.get('config').toJS();
+    const immutableRule = state.ruleProfileReducer.getIn([mode, id]);
     return {
         mode,
         canEdit: ownProps.canEdit,

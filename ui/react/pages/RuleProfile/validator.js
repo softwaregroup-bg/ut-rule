@@ -56,21 +56,21 @@ export const validations = {
 // used to validate amount, count o split, limit fields
 const validate = (order) => {
     return function fieldValidate(field, tabObj, errors, clearLinkedErrors = true) {
-        let smallArr = [];
-        let highArr = [];
-        let baseKeyArr = field.key.split(',').slice(0, field.key.split(',').length - 1);
-        let values = tabObj.getIn(baseKeyArr).toJS();
-        let value = parseFloat(field.value || 0);
-        let key = field.key.split(',').pop();
+        const smallArr = [];
+        const highArr = [];
+        const baseKeyArr = field.key.split(',').slice(0, field.key.split(',').length - 1);
+        const values = tabObj.getIn(baseKeyArr).toJS();
+        const value = parseFloat(field.value || 0);
+        const key = field.key.split(',').pop();
         if (clearLinkedErrors) { // this is the logic to clear errors of its related object when it gets valid
-            let clonedOrder = order.slice(0);
+            const clonedOrder = order.slice(0);
             clonedOrder.splice(order.indexOf(key), 1);
             tabObj = tabObj.setIn(field.key.split(','), field.value);
             field.clearLinkedErrors = [];
             clonedOrder.forEach((lkey) => {
-                var ckeyArr = [...baseKeyArr, lkey];
-                var ckey = ckeyArr.join(',');
-                var cfield = fieldValidate({
+                const ckeyArr = [...baseKeyArr, lkey];
+                const ckey = ckeyArr.join(',');
+                const cfield = fieldValidate({
                     key: ckey,
                     value: tabObj.getIn(ckeyArr),
                     error: !!errors.getIn(ckeyArr),

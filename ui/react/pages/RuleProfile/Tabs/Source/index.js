@@ -53,8 +53,8 @@ class SourceTab extends Component {
             fieldValues,
             sourceConfig: { fields }
         } = this.props;
-        let readonly = !canEdit;
-        let changeInput = (field, value) => {
+        const readonly = !canEdit;
+        const changeInput = (field, value) => {
             this.props.actions.changeInput(field, destinationProp);
         };
 
@@ -69,7 +69,8 @@ class SourceTab extends Component {
                         placeholder='Select Country'
                         defaultSelected={fieldValues.countries}
                         data={countries}
-                        onSelect={(field) => { changeInput(field); }} />
+                        onSelect={(field) => { changeInput(field); }}
+                    />
                 </div>}
                 {fields.region.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
@@ -80,7 +81,8 @@ class SourceTab extends Component {
                         placeholder='Select Region'
                         defaultSelected={fieldValues.regions}
                         data={regions}
-                        onSelect={(field) => { changeInput(field); }} />
+                        onSelect={(field) => { changeInput(field); }}
+                    />
                 </div>}
                 {fields.city.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
@@ -91,57 +93,61 @@ class SourceTab extends Component {
                         placeholder='Select City'
                         defaultSelected={fieldValues.cities}
                         data={cities}
-                        onSelect={(field) => { changeInput(field); }} />
+                        onSelect={(field) => { changeInput(field); }}
+                    />
                 </div>}
                 {fields.organization.visible && <div className={style.inputWrapper}>
                     <Dropdown
                         disabled={readonly}
                         canSelectPlaceholder
-                        keyProp={'organization'}
+                        keyProp='organization'
                         data={organizations}
                         defaultSelected={fieldValues.organization}
                         placeholder='Select Organization'
                         onSelect={(field) => { changeInput(field); }}
-                        label={fields.organization.title || 'Organization'} />
+                        label={fields.organization.title || 'Organization'}
+                    />
                 </div>}
                 {fields.cardProduct.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                         boldLabel
                         disabled={readonly}
                         canSelectPlaceholder
-                        keyProp={'cardProducts'}
+                        keyProp='cardProducts'
                         data={cardProducts}
                         defaultSelected={fieldValues.cardProducts}
                         placeholder='Select Product'
                         onSelect={(field) => { changeInput(field); }}
-                        label={fields.cardProduct.title || 'Product'} />
+                        label={fields.cardProduct.title || 'Product'}
+                    />
                 </div>}
                 {fields.accountProduct.visible && <div className={style.inputWrapper}>
                     <Dropdown
                         disabled={readonly}
                         canSelectPlaceholder
-                        keyProp={'accountProduct'}
+                        keyProp='accountProduct'
                         data={accountProducts}
                         defaultSelected={fieldValues.accountProduct}
                         placeholder='Select Account Product'
                         onSelect={(field) => { changeInput(field); }}
-                        label={fields.accountProduct.title || 'Account Product'} />
+                        label={fields.accountProduct.title || 'Account Product'}
+                    />
                 </div>}
             </div>
         );
     }
 
     renderInfoFields() {
-        let properties = getRuleProperties(this.props.rule);
-        let addProperty = () => {
+        const properties = getRuleProperties(this.props.rule);
+        const addProperty = () => {
             this.props.actions.addProperty(destinationProp);
         };
-        let removeProperty = (index) => {
+        const removeProperty = (index) => {
             this.props.actions.removeProperty(index, destinationProp);
         };
-        let changeInput = (field) => {
+        const changeInput = (field) => {
             if (field.key.split(',').pop() === 'name' && !field.error && field.value) {
-                let isDuplicateProperty = !!properties.find((prop) => { return (prop.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
+                const isDuplicateProperty = !!properties.find((prop) => { return (prop.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
                 isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
             }
             this.props.actions.changeInput(field, destinationProp);
@@ -151,21 +157,24 @@ class SourceTab extends Component {
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
                         title='Source Info'
-                        wrapperClassName >
+                        wrapperClassName
+                    >
                         {this.renderFields()}
                     </TitledContentBox>
                 </div>
                 <div className={style.contentBoxWrapper}>
                     <TitledContentBox
                         title='Properties'
-                        wrapperClassName >
+                        wrapperClassName
+                    >
                         <Property
                             canEdit={this.props.canEdit}
                             addProperty={addProperty}
                             removeProperty={removeProperty}
                             changeInput={changeInput}
                             properties={(this.props.fieldValues || {}).properties || []}
-                            errors={this.props.errors} />
+                            errors={this.props.errors}
+                        />
                     </TitledContentBox>
                 </div>
             </div>
@@ -185,8 +194,8 @@ SourceTab.propTypes = propTypes;
 SourceTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
-    let { mode, id } = state.ruleProfileReducer.get('config').toJS();
-    let immutableRule = state.ruleProfileReducer.getIn([mode, id]);
+    const { mode, id } = state.ruleProfileReducer.get('config').toJS();
+    const immutableRule = state.ruleProfileReducer.getIn([mode, id]);
     return {
         canEdit: ownProps.canEdit,
         rule: immutableRule ? immutableRule.toJS() : {},

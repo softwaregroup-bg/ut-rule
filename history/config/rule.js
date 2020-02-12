@@ -1,6 +1,6 @@
-let conditionItemTransform = (value) => ((value || []).filter(({name}) => !!name).map(({name}) => name).join(', '));
-let propertyTransform = (props) => ((props || []).map((prop) => ({Name: prop.name, Value: prop.value})));
-let assignment = (assignments) => (
+const conditionItemTransform = (value) => ((value || []).filter(({name}) => !!name).map(({name}) => name).join(', '));
+const propertyTransform = (props) => ((props || []).map((prop) => ({Name: prop.name, Value: prop.value})));
+const assignment = (assignments) => (
     (assignments || {}).filter((value) => !!value).map((ass) => ({
         Description: ass.description,
         Debit: ass.debit,
@@ -10,7 +10,7 @@ let assignment = (assignments) => (
         'Max Amount': ass.maxAmount
     }))
 );
-let cumulative = (cumulatives) => (
+const cumulative = (cumulatives) => (
     (cumulatives || []).filter((value) => !!value).map((cum) => ({
         Currency: cum.currency,
         'Daily Count': cum.dailyCount,
@@ -28,13 +28,13 @@ let cumulative = (cumulatives) => (
     }))
 );
 module.exports = {
-    'Priority': {
+    Priority: {
         keys: [
             {key: 'channel,priority', title: 'Priority'}
         ],
         single: true
     },
-    'Channel': {
+    Channel: {
         keys: [
             {key: 'channel,countries', title: 'Country', transform: conditionItemTransform},
             {key: 'channel,regions', title: 'Region', transform: conditionItemTransform},
@@ -44,7 +44,7 @@ module.exports = {
         ],
         single: true
     },
-    'Source': {
+    Source: {
         keys: [
             {key: 'source,countries', title: 'Country', transform: conditionItemTransform},
             {key: 'source,regions', title: 'Region', transform: conditionItemTransform},
@@ -56,7 +56,7 @@ module.exports = {
         ],
         single: true
     },
-    'Destination': {
+    Destination: {
         keys: [
             {key: 'destination,countries', title: 'Country', transform: conditionItemTransform},
             {key: 'destination,regions', title: 'Region', transform: conditionItemTransform},
@@ -67,7 +67,7 @@ module.exports = {
         ],
         single: true
     },
-    'Operation': {
+    Operation: {
         keys: [
             {key: 'operation,operations', title: 'Operation', transform: conditionItemTransform},
             {key: 'operation,startDate', title: 'Start Date', transform: (value) => { return value ? new Date(value).toLocaleDateString() : null; }},

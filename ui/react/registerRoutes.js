@@ -1,7 +1,7 @@
 import { registerRoute } from 'ut-front-react/routerHelper';
 
 export default () => {
-    let mainRoute = 'ut-rule:home';
+    const mainRoute = 'ut-rule:home';
     registerRoute(mainRoute).path('/rule');
     registerRoute('ut-rule:rules').path('rules').parent(mainRoute);
     registerRoute('ut-rule:create').path('create').parent('ut-rule:rules');

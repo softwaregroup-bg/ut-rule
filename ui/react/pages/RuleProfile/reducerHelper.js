@@ -23,7 +23,7 @@ export function fetchNomenclatures(state, action, options) {
 }
 
 export function saveRule(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     if (action.methodRequestState === methodRequestState.FINISHED && !action.error) {
         return state.setIn([mode, id], fromJS(prepareRuleModel(action.result)))
             .setIn(['rules', id], action.result)
@@ -33,7 +33,7 @@ export function saveRule(state, action, options) {
 }
 
 export function getRule(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     if (action.methodRequestState === methodRequestState.FINISHED && !action.error) {
         return state.setIn([mode, id], fromJS(prepareRuleModel(action.result)))
             .setIn(['rules', id], action.result);
@@ -42,7 +42,7 @@ export function getRule(state, action, options) {
 }
 
 export function resetRuleProfile(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     if (mode === 'create') {
         return state.setIn(['config', 'ruleSaved'], false).setIn([mode, id], fromJS(defaultTabState));
     } else {
@@ -54,10 +54,10 @@ export function removeTab(state, action, options) {
     if (action.pathname === getLink('ut-rule:create')) {
         state = state.deleteIn(['create', 'create']);
     } else {
-        var urlPath = getLink('ut-rule:edit');
-        var pathParams = getUrlParams(urlPath, action.pathname);
+        const urlPath = getLink('ut-rule:edit');
+        const pathParams = getUrlParams(urlPath, action.pathname);
         if (pathParams) {
-            let { id } = pathParams;
+            const { id } = pathParams;
             id && (state = state.deleteIn(['edit', id]).deleteIn(['rules', id]));
             if (options.id === id) {
                 state = state.setIn(['config', 'ruleSaved'], false);
@@ -68,9 +68,9 @@ export function removeTab(state, action, options) {
 };
 
 export function deleteRule(state, action, options) {
-    let { id } = options;
+    const { id } = options;
     (action.methodRequestState === methodRequestState.FINISHED) && (action.params.conditionId || []).forEach(function(conId) {
-        let conditionId = String(conId);
+        const conditionId = String(conId);
         if (state.getIn(['rules', conditionId]) || state.getIn(['edit', conditionId])) {
             state = state.deleteIn(['edit', conditionId])
                 .deleteIn(['rules', conditionId]);
@@ -83,7 +83,7 @@ export function deleteRule(state, action, options) {
 }
 
 export function changeActiveTab(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     if (mode && id && action.params.id) {
         return state.setIn([mode, id, 'activeTab'], action.params.id);
     }
@@ -91,12 +91,12 @@ export function changeActiveTab(state, action, options) {
 }
 // error update
 export function updateRuleErrors(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     return state.setIn([mode, id, 'errors'], fromJS(action.params.errors));
 }
 // common tab actions
 export function changeInput(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     let { error, errorMessage, value, key, clearLinkedErrors } = action.params;
     if (value === __placeholder__ || value === '') value = null;
     state = state.setIn([mode, id, action.destinationProp].concat(key.split(',')), value)
@@ -113,16 +113,16 @@ export function changeInput(state, action, options) {
 };
 
 export function addProperty(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     return state.updateIn([mode, id, action.destinationProp, 'properties'], v => v.push(fromJS({name: '', value: ''})))
         .updateIn([mode, id, 'errors', action.destinationProp, 'properties'], e => e.push(fromJS({})));
 }
 
 export function removeProperty(state, action, options) {
-    let { mode, id } = options;
-    let delPropertyName = state.getIn([mode, id, action.destinationProp, 'properties', action.params.propertyId, 'name']);
+    const { mode, id } = options;
+    const delPropertyName = state.getIn([mode, id, action.destinationProp, 'properties', action.params.propertyId, 'name']);
     // remove existing property error, if the property have same name as del property
-    let errorProperties = [];
+    const errorProperties = [];
     ['channel', 'operation', 'source', 'destination'].forEach((tabName) => {
         state.getIn([mode, id, tabName, 'properties']) && state.getIn([mode, id, tabName, 'properties']).map(function(p, idx) {
             if (p.get('name') === delPropertyName && !(action.destinationProp === tabName && action.params.propertyId === idx)) {
@@ -138,42 +138,42 @@ export function removeProperty(state, action, options) {
 }
 // limit actions
 export function addLimit(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     return state.updateIn([mode, id, 'limit'], v => v.push(fromJS(emptyLimit)))
         .updateIn([mode, id, 'errors', 'limit'], e => e.push(fromJS({})));
 }
 
 export function removeLimit(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     return state.updateIn([mode, id, 'limit'], v => v.splice(action.params.limitId, 1))
         .updateIn([mode, id, 'errors', 'limit'], d => d.splice(action.params.limitId, 1));
 }
 
 // split actions
 export function addAssignment(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     return state.updateIn([mode, id, 'split', 'splits', action.params.splitIndex, 'assignments'], v => v.push(fromJS(emptyAssignment)))
         .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex, 'assignments'], e => e.push(fromJS({})));
 }
 
 export function removeAssignment(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     return state.updateIn([mode, id, 'split', 'splits', action.params.splitIndex, 'assignments'], v => v.splice(action.params.propertyId, 1))
         .updateIn([mode, id, 'errors', 'split', 'splits', action.params.splitIndex, 'assignments'], d => d.splice(action.params.propertyId, 1));
 }
 
 export function addCumulative(state, action, options) {
-    let { mode, id } = options;
-    let { splitIndex } = action.params;
+    const { mode, id } = options;
+    const { splitIndex } = action.params;
     return state.updateIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives'], v => v.push(fromJS(emptyCumulative)))
         .updateIn([mode, id, 'errors', 'split', 'splits', splitIndex, 'cumulatives'], e => e.push(fromJS({ranges: []})));
 }
 
 export function removeCumulative(state, action, options) {
-    let { mode, id } = options;
-    let { splitIndex, cumulativeId } = action.params;
-    let delCumCurrency = state.getIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives', cumulativeId, 'currency']);
-    let errorCums = [];
+    const { mode, id } = options;
+    const { splitIndex, cumulativeId } = action.params;
+    const delCumCurrency = state.getIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives', cumulativeId, 'currency']);
+    const errorCums = [];
     state.getIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives']).map((cum, idx) => {
         idx !== cumulativeId && cum.get('currency') === delCumCurrency && errorCums.push(idx);
     });
@@ -188,7 +188,7 @@ export function removeCumulative(state, action, options) {
 }
 
 export function addCumulativeRange(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     return state.updateIn(
         [mode, id, 'split', 'splits', action.params.splitIndex, 'cumulatives', action.params.cumulativeId, 'ranges'],
         v => v.push(fromJS(emptyRange)))
@@ -197,10 +197,10 @@ export function addCumulativeRange(state, action, options) {
 }
 
 export function removeCumulativeRange(state, action, options) {
-    let { mode, id } = options;
-    let { splitIndex, cumulativeId, rangeId } = action.params;
-    let delSa = state.getIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives', cumulativeId, 'ranges', rangeId, 'startAmount']);
-    var errRanges = [];
+    const { mode, id } = options;
+    const { splitIndex, cumulativeId, rangeId } = action.params;
+    const delSa = state.getIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives', cumulativeId, 'ranges', rangeId, 'startAmount']);
+    const errRanges = [];
     state.getIn([mode, id, 'split', 'splits', splitIndex, 'cumulatives', cumulativeId, 'ranges']).map((range, idx) => {
         idx !== rangeId && range.get('startAmount') === delSa && errRanges.push(idx);
     });
@@ -215,15 +215,15 @@ export function removeCumulativeRange(state, action, options) {
 }
 
 export function addSplit(state, action, options) {
-    let { mode, id } = options;
+    const { mode, id } = options;
     return state.updateIn([mode, id, 'split', 'splits'], v => v.push(fromJS(emptySplit)))
         .updateIn([mode, id, 'errors', 'split', 'splits'], e => e.push(fromJS(defaultErrorState.split.splits[0])));
 }
 
 export function removeSplit(state, action, options) {
-    let { mode, id } = options;
-    let delSplitName = state.getIn([mode, id, 'split', 'splits', action.params.splitIndex, 'name']);
-    let errorSplits = [];
+    const { mode, id } = options;
+    const delSplitName = state.getIn([mode, id, 'split', 'splits', action.params.splitIndex, 'name']);
+    const errorSplits = [];
     state.getIn([mode, id, 'split', 'splits']).map((sp, idx) => {
         idx !== action.params.splitIndex && sp.get('name') === delSplitName && errorSplits.push(idx);
     });
@@ -236,11 +236,11 @@ export function removeSplit(state, action, options) {
 
 function getUrlParams(queryPath, pathname) {
     if (pathname.startsWith(queryPath.split(':')[0])) {
-        let object = {};
-        let pathArray = pathname.split('/');
+        const object = {};
+        const pathArray = pathname.split('/');
         queryPath.split('/').forEach(function(rkey, index) {
             if (rkey.match(/^:/)) {
-                var key = rkey.slice(1);
+                const key = rkey.slice(1);
                 object[key] = pathArray[index];
             }
         });

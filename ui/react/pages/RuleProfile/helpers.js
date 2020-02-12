@@ -47,7 +47,7 @@ const conditionPropertyFactor = {
 };
 
 export const formatNomenclatures = (items) => {
-    let formattedPayload = {};
+    const formattedPayload = {};
     // default object properties
     ['accountProduct', 'cardProduct', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization']
         .forEach((objName) => (formattedPayload[objName] = []));
@@ -64,9 +64,9 @@ export const formatNomenclatures = (items) => {
 };
 
 export const prepareRuleToSave = (rule) => {
-    let { operation, channel, split, limit } = rule;
-    let formattedRule = {};
-    let conditionId = channel.conditionId;
+    const { operation, channel, split, limit } = rule;
+    const formattedRule = {};
+    const conditionId = channel.conditionId;
     formattedRule.condition = [{
         conditionId,
         priority: channel.priority,
@@ -77,7 +77,7 @@ export const prepareRuleToSave = (rule) => {
     }];
     formattedRule.conditionActor = [];
     ['channel', 'source', 'destination'].forEach(function(keyProp) {
-        var value = rule[keyProp];
+        const value = rule[keyProp];
         ['organization', 'role'].forEach((type) => {
             value[type] && formattedRule.conditionActor.push(
                 {
@@ -92,9 +92,9 @@ export const prepareRuleToSave = (rule) => {
     formattedRule.conditionItem = [];
 
     ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
-        var tab = rule[tabKey];
+        const tab = rule[tabKey];
         tab && ['accountProduct', 'cities', 'countries', 'regions', 'operations'].forEach(function(kepProp) {
-            var value = tab[kepProp];
+            const value = tab[kepProp];
             if (value && value instanceof Array) {
                 value.forEach(function(ci) {
                     ci.key && formattedRule.conditionItem.push({
@@ -113,13 +113,13 @@ export const prepareRuleToSave = (rule) => {
         });
     });
 
-    let cardProducts = rule && rule['source'] && rule['source']['cardProducts'];
+    const cardProducts = rule && rule.source && rule.source.cardProducts;
     if (cardProducts && cardProducts.length) {
         cardProducts.forEach(cp => {
             formattedRule.conditionItem.push({
                 itemNameId: cp.key,
                 conditionId,
-                factor: factors['sourceCategory']
+                factor: factors.sourceCategory
             });
         });
     }
@@ -127,9 +127,9 @@ export const prepareRuleToSave = (rule) => {
     formattedRule.conditionProperty = [];
 
     ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
-        var tab = rule[tabKey];
+        const tab = rule[tabKey];
         if (tab) {
-            var value = tab.properties;
+            const value = tab.properties;
             value && value.forEach(function(prop) {
                 prop.name && formattedRule.conditionProperty.push({
                     conditionId,
@@ -161,7 +161,7 @@ export const prepareRuleToSave = (rule) => {
     formattedRule.split = {data: {rows: []}};
     split.splits.forEach(split => {
         if (!split.name) return;
-        let formattedSplit = {};
+        const formattedSplit = {};
         formattedSplit.splitName = {
             conditionId,
             splitNameId: split.splitNameId,
@@ -186,7 +186,7 @@ export const prepareRuleToSave = (rule) => {
         formattedSplit.splitRange = [];
 
         split.cumulatives.forEach(cumulative => {
-            let cum = {
+            const cum = {
                 startAmountDaily: cumulative.dailyAmount,
                 startCountDaily: cumulative.dailyCount,
                 startAmountMonthly: cumulative.monthlyAmount,
@@ -216,8 +216,8 @@ export const prepareRuleToSave = (rule) => {
 };
 
 export const prepareRuleModel = (result) => {
-    var rule = prepareRule(result) || {};
-    var errState = fromJS(defaultErrorState).toJS();
+    const rule = prepareRule(result) || {};
+    const errState = fromJS(defaultErrorState).toJS();
     errState.split.splits = [];
     rule.split.splits.forEach((split, sidx) => {
         errState.split.splits.push({
@@ -237,8 +237,8 @@ export const prepareRuleModel = (result) => {
 };
 
 export const prepareRuleErrors = (rule, existErrors) => {
-    var errors = fromJS(existErrors || defaultErrorState);
-    let { destination, source, operation, channel, split, limit } = rule;
+    let errors = fromJS(existErrors || defaultErrorState);
+    const { destination, source, operation, channel, split, limit } = rule;
     channel && !channel.priority && (errors = errors.setIn(['channel', 'priority'], errorMessage.priorityRequired));
     channel && channel.properties && channel.properties.forEach((prop, idx) => {
         prop.value && !prop.name && (errors = errors.setIn(['channel', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
@@ -256,7 +256,7 @@ export const prepareRuleErrors = (rule, existErrors) => {
         !lim.currency && !isEmptyValuesOnly(lim) && (errors = errors.setIn(['limit', idx, 'currency'], errorMessage.currencyRequired));
     });
     split && split.splits.forEach((split, idx) => {
-        let isEmptySplit = isEmptyValuesOnly(split);
+        const isEmptySplit = isEmptyValuesOnly(split);
         if (!isEmptySplit) {
             // info
             !split.name && (errors = errors.setIn(['split', 'splits', idx, 'name'], errorMessage.splitNameRequired));
@@ -289,11 +289,11 @@ export const prepareRuleErrors = (rule, existErrors) => {
 };
 
 export const getRuleProperties = (rule = {}) => {
-    var properties = [];
+    let properties = [];
     ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
-        var tab = rule[tabKey];
+        const tab = rule[tabKey];
         if (tab) {
-            var value = tab.properties;
+            const value = tab.properties;
             value && (properties = properties.concat(value));
         }
     });
@@ -301,7 +301,7 @@ export const getRuleProperties = (rule = {}) => {
 };
 
 export const isEmptyValuesOnly = (obj) => {
-    var tempIsEmpty = true;
+    let tempIsEmpty = true;
     if (obj && typeof obj === 'object') {
         Object.keys(obj).forEach((objKey) => {
             if (!isEmptyValuesOnly(obj[objKey])) {
@@ -314,12 +314,12 @@ export const isEmptyValuesOnly = (obj) => {
 };
 
 export const diff = (obj1, obj2) => {
-    var diffObj = {};
-    for (var prop in obj1) {
-        if (obj1.hasOwnProperty(prop) && prop !== '__proto__') {
-            if (!obj2.hasOwnProperty(prop)) diffObj[prop] = obj1[prop];
+    const diffObj = {};
+    for (const prop in obj1) {
+        if (Object.prototype.hasOwnProperty.call(obj1, prop) && prop !== '__proto__') {
+            if (!Object.prototype.hasOwnProperty.call(obj2, prop)) diffObj[prop] = obj1[prop];
             else if (obj1[prop] === Object(obj1[prop])) {
-                var difference = diff(obj1[prop], obj2[prop]);
+                const difference = diff(obj1[prop], obj2[prop]);
                 if (Object.keys(difference).length > 0) diffObj[prop] = difference;
             } else if (obj1[prop] !== obj2[prop]) {
                 if (obj1[prop] === undefined) diffObj[prop] = 'undefined';
@@ -336,8 +336,8 @@ export const diff = (obj1, obj2) => {
 export const isEqual = (x, y) => {
     if ((typeof x === 'object' && x != null) && (typeof y === 'object' && y != null)) {
         if (Object.keys(x).length !== Object.keys(y).length) return false;
-        for (var prop in x) {
-            if (y.hasOwnProperty(prop)) {
+        for (const prop in x) {
+            if (Object.prototype.hasOwnProperty.call(y, prop)) {
                 if (!isEqual(x[prop], y[prop])) return false;
             } // else return false;
         }
@@ -347,8 +347,8 @@ export const isEqual = (x, y) => {
 };
 
 export const getRuleErrorCount = (errors) => {
-    let flattenObj = flatten(errors);
-    let errorCount = {};
+    const flattenObj = flatten(errors);
+    const errorCount = {};
     tabs.map((tab) => {
         errorCount[tab] = Object.keys(flattenObj).filter((fkey) => flattenObj[fkey] && fkey.startsWith(tab)).length;
     });
@@ -356,13 +356,13 @@ export const getRuleErrorCount = (errors) => {
 };
 
 export const flatten = function(ob) {
-    var result = {};
-    for (var i in ob) {
-        if (!ob.hasOwnProperty(i)) continue;
+    const result = {};
+    for (const i in ob) {
+        if (!Object.prototype.hasOwnProperty.call(ob, i)) continue;
         if ((typeof ob[i]) === 'object') {
-            var flatObject = flatten(ob[i]);
-            for (var x in flatObject) {
-                if (!flatObject.hasOwnProperty(x)) continue;
+            const flatObject = flatten(ob[i]);
+            for (const x in flatObject) {
+                if (!Object.prototype.hasOwnProperty.call(flatObject, x)) continue;
                 result[i + '.' + x] = flatObject[x];
             }
         } else {

@@ -15,7 +15,7 @@ module.exports = function sql() {
                             return prev;
                         }, {});
                     } else if (split.analytics && split.analytics.rows && split.analytics.rows.name && split.analytics.rows.value) {
-                        var analytics = {};
+                        const analytics = {};
                         analytics[split.analytics.rows.name] = split.analytics.rows.value;
                         split.analytics = analytics;
                     }

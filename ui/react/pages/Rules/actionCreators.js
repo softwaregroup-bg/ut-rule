@@ -35,7 +35,7 @@ export function removeRules(params) {
 
 export function editRule(params) {
     return function(dispatch) {
-        let split = JSON.parse(JSON.stringify(params.split));
+        const split = JSON.parse(JSON.stringify(params.split));
         split.map(s => {
             s.splitRange = [];
             s.splitCumulative.map(c => {
@@ -61,10 +61,10 @@ export function editRule(params) {
             return s;
         });
 
-        let paramsCondition = params.condition[0];
-        let conditionId = paramsCondition.conditionId;
+        const paramsCondition = params.condition[0];
+        const conditionId = paramsCondition.conditionId;
 
-        let condition = [{
+        const condition = [{
             conditionId: conditionId,
             priority: paramsCondition.priority,
             operationStartDate: paramsCondition.operationStartDate,
@@ -73,8 +73,8 @@ export function editRule(params) {
             destinationAccountId: paramsCondition.destinationAccountId
         }];
 
-        let conditionActor = [];
-        let conditionActionFields = {
+        const conditionActor = [];
+        const conditionActionFields = {
             channelOrganizationId: 'co',
             channelRoleId: 'co',
             destinationOrganizationId: 'do',
@@ -83,7 +83,7 @@ export function editRule(params) {
             sourceRoleId: 'so'
         };
 
-        for (var key in conditionActionFields) {
+        for (const key in conditionActionFields) {
             if (paramsCondition[key]) {
                 conditionActor.push({
                     conditionId: conditionId,
@@ -93,8 +93,8 @@ export function editRule(params) {
             }
         }
 
-        let conditionItem = [];
-        let conditionItemFields = {
+        const conditionItem = [];
+        const conditionItemFields = {
             channelCityIds: 'cs',
             channelCountryIds: 'cs',
             channelRegionIds: 'cs',
@@ -107,7 +107,7 @@ export function editRule(params) {
             operationIds: 'oc'
         };
 
-        for (key in conditionItemFields) {
+        for (const key in conditionItemFields) {
             if (paramsCondition[key]) {
                 paramsCondition[key].forEach(value => {
                     conditionItem.push({
@@ -119,31 +119,31 @@ export function editRule(params) {
             }
         }
 
-        if (paramsCondition['destinationAccountProductId']) {
+        if (paramsCondition.destinationAccountProductId) {
             conditionItem.push({
                 conditionId: conditionId,
                 factor: 'ds',
-                itemNameId: paramsCondition['destinationAccountProductId']
+                itemNameId: paramsCondition.destinationAccountProductId
             });
         }
 
-        if (paramsCondition['sourceAccountProductId']) {
+        if (paramsCondition.sourceAccountProductId) {
             conditionItem.push({
                 conditionId: conditionId,
                 factor: 'ss',
-                itemNameId: paramsCondition['sourceAccountProductId']
+                itemNameId: paramsCondition.sourceAccountProductId
             });
         }
 
-        if (paramsCondition['sourceCardProductId']) {
+        if (paramsCondition.sourceCardProductId) {
             conditionItem.push({
                 conditionId: conditionId,
                 factor: 'sc',
-                itemNameId: paramsCondition['sourceCardProductId']
+                itemNameId: paramsCondition.sourceCardProductId
             });
         }
 
-        let conditionProperty = [];
+        const conditionProperty = [];
 
         params.channelProperties.forEach((property) => {
             conditionProperty.push({
@@ -181,7 +181,7 @@ export function editRule(params) {
             });
         });
 
-        var modifiedParams = {
+        const modifiedParams = {
             condition,
             conditionActor,
             conditionItem,
@@ -215,7 +215,7 @@ export function editRule(params) {
 
 export function addRule(params) {
     return function(dispatch) {
-        let split = JSON.parse(JSON.stringify(params.split));
+        const split = JSON.parse(JSON.stringify(params.split));
         split.map(s => {
             s.splitRange = [];
             s.splitCumulative.map(c => {
@@ -240,9 +240,9 @@ export function addRule(params) {
             }, '|');
             return s;
         });
-        let paramsCondition = params.condition[0];
+        const paramsCondition = params.condition[0];
 
-        let condition = [{
+        const condition = [{
             priority: paramsCondition.priority,
             operationStartDate: paramsCondition.operationStartDate,
             operationEndDate: paramsCondition.operationEndDate,
@@ -250,8 +250,8 @@ export function addRule(params) {
             destinationAccountId: paramsCondition.destinationAccountId
         }];
 
-        let conditionActor = [];
-        let conditionActionFields = {
+        const conditionActor = [];
+        const conditionActionFields = {
             channelOrganizationId: 'co',
             channelRoleId: 'co',
             destinationOrganizationId: 'do',
@@ -260,7 +260,7 @@ export function addRule(params) {
             sourceRoleId: 'so'
         };
 
-        for (var key in conditionActionFields) {
+        for (const key in conditionActionFields) {
             if (paramsCondition[key]) {
                 conditionActor.push({
                     factor: conditionActionFields[key],
@@ -269,8 +269,8 @@ export function addRule(params) {
             }
         }
 
-        let conditionItem = [];
-        let conditionItemFields = {
+        const conditionItem = [];
+        const conditionItemFields = {
             channelCityIds: 'cs',
             channelCountryIds: 'cs',
             channelRegionIds: 'cs',
@@ -294,28 +294,28 @@ export function addRule(params) {
             }
         }
 
-        if (paramsCondition['destinationAccountProductId']) {
+        if (paramsCondition.destinationAccountProductId) {
             conditionItem.push({
                 factor: 'ds',
-                itemNameId: paramsCondition['destinationAccountProductId']
+                itemNameId: paramsCondition.destinationAccountProductId
             });
         }
 
-        if (paramsCondition['sourceAccountProductId']) {
+        if (paramsCondition.sourceAccountProductId) {
             conditionItem.push({
                 factor: 'ss',
-                itemNameId: paramsCondition['sourceAccountProductId']
+                itemNameId: paramsCondition.sourceAccountProductId
             });
         }
 
-        if (paramsCondition['sourceCardProductId']) {
+        if (paramsCondition.sourceCardProductId) {
             conditionItem.push({
                 factor: 'sc',
-                itemNameId: paramsCondition['sourceCardProductId']
+                itemNameId: paramsCondition.sourceCardProductId
             });
         }
 
-        let conditionProperty = [];
+        const conditionProperty = [];
 
         params.channelProperties.forEach((property) => {
             conditionProperty.push({
@@ -349,7 +349,7 @@ export function addRule(params) {
             });
         });
 
-        var modifiedParams = {
+        const modifiedParams = {
             condition,
             conditionActor,
             conditionItem,

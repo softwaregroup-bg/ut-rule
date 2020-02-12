@@ -18,7 +18,7 @@ export const Info = (props) => {
             <div className={style.inputWrapper}>
                 <Input
                     readonly={!canEdit}
-                    keyProp={'name'}
+                    keyProp='name'
                     label='Split Name'
                     isValid={!errors.getIn(['name'])}
                     errorMessage={errors.getIn(['name'])}
@@ -30,7 +30,7 @@ export const Info = (props) => {
                 <MultiSelectBubble
                     disabled={!canEdit}
                     name='tag'
-                    label={'Tag'}
+                    label='Tag'
                     value={selectedTags}
                     options={splitTags}
                     onChange={(value) => { changeInputField({key: 'tags', value}); }}

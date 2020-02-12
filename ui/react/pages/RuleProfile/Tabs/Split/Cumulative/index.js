@@ -22,7 +22,7 @@ export const Cumulative = (props) => {
         splitIndex,
         errors // immutable
     } = props;
-    let readonly = !canEdit;
+    const readonly = !canEdit;
     const getHeaderCells = () => {
         return [
             {name: 'Daily Count', key: 'dailyCount'},
@@ -48,7 +48,7 @@ export const Cumulative = (props) => {
     };
 
     const getBody = (idx) => {
-        let cumulative = cumulatives[idx] || {};
+        const cumulative = cumulatives[idx] || {};
         return (
             <tr className={style.rangeRow} key={`cumulative${idx}`}>
                 <td>
@@ -124,10 +124,10 @@ export const Cumulative = (props) => {
 
     const getRangeBody = (cumulativeId) => {
         if (cumulatives[cumulativeId] && cumulatives[cumulativeId].ranges) {
-            let showDeleteIcon = cumulatives[cumulativeId].ranges.length !== 1;
+            const showDeleteIcon = cumulatives[cumulativeId].ranges.length !== 1;
             return cumulatives[cumulativeId].ranges.map((range, index) => {
-                let ridx = index.toString();
-                let rerrors = errors.getIn([cumulativeId, 'ranges', ridx]) || fromJS({});
+                const ridx = index.toString();
+                const rerrors = errors.getIn([cumulativeId, 'ranges', ridx]) || fromJS({});
                 return (
                     <tr key={`range${index}`}>
                         <td>
@@ -175,22 +175,22 @@ export const Cumulative = (props) => {
                             />
                         </td>
                         <td className={style.deleteCol}>
-                            { canEdit && showDeleteIcon && <div className={style.deleteIcon} onClick={() => { removeCumulativeRange(splitIndex, 0, index); }} /> }
+                            {canEdit && showDeleteIcon && <div className={style.deleteIcon} onClick={() => { removeCumulativeRange(splitIndex, 0, index); }} />}
                         </td>
                     </tr>);
             });
         }
     };
-    let cumulativeElements = (cumulatives || []).map((cumulative, idx) => {
+    const cumulativeElements = (cumulatives || []).map((cumulative, idx) => {
         return (
             <div className={classnames(style.propertyTable, style.cumulativeContainer)} key={`cumulativeElement${idx}`}>
                 <div>
-                    { canEdit && <Button onClick={() => removeCumulative(splitIndex, idx)} className={classnames(style.deleteButton, style.deleteCumulative)} styleType='secondaryLight' label='DELETE CUMULATIVE' /> }
+                    {canEdit && <Button onClick={() => removeCumulative(splitIndex, idx)} className={classnames(style.deleteButton, style.deleteCumulative)} styleType='secondaryLight' label='DELETE CUMULATIVE' />}
                 </div>
                 <div className={style.dropDownWrapper}>
                     <Dropdown
                         disabled={readonly}
-                        keyProp={'currency'}
+                        keyProp='currency'
                         isValid={!errors.getIn([idx, 'currency'])}
                         errorMessage={errors.getIn([idx, 'currency'])}
                         canSelectPlaceholder
@@ -198,7 +198,7 @@ export const Cumulative = (props) => {
                         defaultSelected={cumulative.currency}
                         placeholder='Currency'
                         onSelect={(field) => { setCumulativeField(field, idx); }}
-                        label={'Currency'}
+                        label='Currency'
                     />
                 </div>
                 <table className={style.dataGridTable}>
@@ -207,12 +207,12 @@ export const Cumulative = (props) => {
                             {getHeaderCells()}
                         </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                         {getBody(idx)}
                     </tbody>
                 </table>
                 <div className={style.rangeWrapper}>
-                    <TitledContentBox title='Range' >
+                    <TitledContentBox title='Range'>
                         <div className={style.rangeInnerWrapper}>
                             <table className={style.dataGridTable}>
                                 <thead>
@@ -224,10 +224,10 @@ export const Cumulative = (props) => {
                                     {getRangeBody(idx)}
                                 </tbody>
                             </table>
-                            { canEdit && <span className={style.link} onClick={() => addCumulativeRange(splitIndex, idx)}>
+                            {canEdit && <span className={style.link} onClick={() => addCumulativeRange(splitIndex, idx)}>
                                 <div className={style.plus} />
-                            Add another Range
-                            </span> }
+                                Add another Range
+                            </span>}
                         </div>
                     </TitledContentBox>
                 </div>
@@ -236,10 +236,10 @@ export const Cumulative = (props) => {
     });
     return (<div>
         {cumulativeElements}
-        { canEdit && <span className={style.link} onClick={() => addCumulative(splitIndex)}>
+        {canEdit && <span className={style.link} onClick={() => addCumulative(splitIndex)}>
             <div className={style.plus} />
-                Add Cumulative
-        </span> }
+            Add Cumulative
+        </span>}
     </div>);
 };
 

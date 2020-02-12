@@ -39,10 +39,10 @@ class OperationTab extends Component {
             canEdit,
             operationConfig: { fields }
         } = this.props;
-        let changeInput = (field) => {
+        const changeInput = (field) => {
             this.props.actions.changeInput(field, destinationProp);
         };
-        var minDate = fieldValues.startDate ? new Date(fieldValues.startDate) : new Date(null);
+        const minDate = fieldValues.startDate ? new Date(fieldValues.startDate) : new Date(null);
 
         return (
             <div>
@@ -52,10 +52,11 @@ class OperationTab extends Component {
                         disabled={!canEdit}
                         keyProp='operations'
                         label={fields.operation.title || 'Operation'}
-                        placeholder={'Select Operation'}
+                        placeholder='Select Operation'
                         defaultSelected={fieldValues.operations}
                         data={operations}
-                        onSelect={(field) => { changeInput(field); }} />
+                        onSelect={(field) => { changeInput(field); }}
+                    />
                 </div>}
                 {fields.operationStartDate.visible && <div className={style.inputWrapper}>
                     <div className={style.outerWrap}>
@@ -68,7 +69,8 @@ class OperationTab extends Component {
                                 mode='landscape'
                                 onChange={({value}) => { changeInput({key: 'startDate', value}); }}
                                 defaultValue={fieldValues.startDate}
-                                labelWrap={style.labelWrap} />
+                                labelWrap={style.labelWrap}
+                            />
                         </div>
                     </div>
                 </div>}
@@ -84,7 +86,8 @@ class OperationTab extends Component {
                                 onChange={({value}) => { changeInput({key: 'endDate', value}); }}
                                 minDate={minDate}
                                 defaultValue={fieldValues.endDate}
-                                labelWrap={style.labelWrap} />
+                                labelWrap={style.labelWrap}
+                            />
                         </div>
                     </div>
                 </div>}
@@ -93,16 +96,16 @@ class OperationTab extends Component {
     }
 
     renderInfoFields() {
-        let properties = getRuleProperties(this.props.rule);
-        let addProperty = () => {
+        const properties = getRuleProperties(this.props.rule);
+        const addProperty = () => {
             this.props.actions.addProperty(destinationProp);
         };
-        let removeProperty = (index) => {
+        const removeProperty = (index) => {
             this.props.actions.removeProperty(index, destinationProp);
         };
-        let changeInput = (field) => {
+        const changeInput = (field) => {
             if (field.key.split(',').pop() === 'name' && !field.error && field.value) {
-                let isDuplicateProperty = !!properties.find((prop) => { return (prop.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
+                const isDuplicateProperty = !!properties.find((prop) => { return (prop.name || '').toLowerCase() === (field.value || '').toLowerCase(); });
                 isDuplicateProperty && (field.error = true) && (field.errorMessage = errorMessage.propertyNameUnique);
             }
             this.props.actions.changeInput(field, destinationProp);
@@ -149,8 +152,8 @@ OperationTab.propTypes = propTypes;
 OperationTab.defaultProps = defaultProps;
 
 const mapStateToProps = (state, ownProps) => {
-    let { mode, id } = state.ruleProfileReducer.get('config').toJS();
-    let immutableRule = state.ruleProfileReducer.getIn([mode, id]);
+    const { mode, id } = state.ruleProfileReducer.get('config').toJS();
+    const immutableRule = state.ruleProfileReducer.getIn([mode, id]);
     return {
         canEdit: ownProps.canEdit,
         rule: immutableRule ? immutableRule.toJS() : {},

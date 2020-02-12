@@ -1,3 +1,7 @@
+## [9.20.6](https://github.com/softwaregroup-bg/ut-rule/compare/v9.20.5...v9.20.6) (2020-02-12)
+
+
+
 ## [9.20.5](https://github.com/softwaregroup-bg/ut-rule/compare/v9.20.4...v9.20.5) (2019-09-30)
 
 

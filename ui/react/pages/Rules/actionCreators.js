@@ -283,7 +283,7 @@ export function addRule(params) {
             operationIds: 'oc'
         };
 
-        for (key in conditionItemFields) {
+        for (const key in conditionItemFields) {
             if (paramsCondition[key]) {
                 paramsCondition[key].forEach(value => {
                     conditionItem.push({

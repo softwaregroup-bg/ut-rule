@@ -161,7 +161,7 @@ BEGIN TRY
         (
             SELECT
                 p.actorId,
-                p.firstName + ' ' + p.lastName AS fullName,
+                /*p.firstName + ' ' + p.lastName*/ '' AS fullName,
                 b.level
             FROM
             (

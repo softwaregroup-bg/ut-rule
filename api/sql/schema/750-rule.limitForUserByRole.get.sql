@@ -161,7 +161,8 @@ BEGIN TRY
         (
             SELECT
                 p.actorId,
-                /*p.firstName + ' ' + p.lastName*/ '' AS fullName,
+                p.firstName,
+                p.lastName,
                 b.level
             FROM
             (
@@ -175,7 +176,7 @@ BEGIN TRY
         )
 
         --select only users from the nearest BU
-        SELECT u.actorId, u.fullName
+        SELECT u.actorId, u.firstName, u.lastName
         FROM users u
         JOIN [user].[user] uu ON uu.actorId = u.actorId
         WHERE uu.isEnabled = 1

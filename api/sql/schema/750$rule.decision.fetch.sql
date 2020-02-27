@@ -30,7 +30,7 @@ BEGIN
         countMonthly bigint
     )
 
-    SET @operationDate = IsNull(@operationDate, GETDATE())
+    SET @operationDate = ISNULL(@operationDate, GETDATE())
 
     DECLARE
         @calcCommission MONEY,
@@ -223,8 +223,8 @@ BEGIN
         s.conditionId,
         s.splitNameId,
         CASE
-            WHEN s.calcFee>s.maxFee THEN s.maxFee
-            WHEN s.calcFee<s.minFee THEN s.minFee
+            WHEN s.calcFee > s.maxFee THEN s.maxFee
+            WHEN s.calcFee < s.minFee THEN s.minFee
             ELSE s.calcFee
         END fee,
         s.tag
@@ -277,6 +277,8 @@ BEGIN
         END AS MONEY) amount,
         ISNULL(d.accountNumber, assignment.debit) debit,
         ISNULL(c.accountNumber, assignment.credit) credit,
+        ISNULL(d.tenantId, assignment.debitTenantId) debitTenantId,
+        ISNULL(c.tenantId, assignment.creditTenantId) creditTenantId,
         assignment.description,
         assignment.analytics
     FROM

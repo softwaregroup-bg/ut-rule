@@ -1,13 +1,15 @@
 ALTER PROCEDURE [rule].[decision.lookup]
     @channelId BIGINT,
-    @operation varchar(100),
-    @operationDate datetime,
-    @sourceAccount varchar(100),
+    @operation VARCHAR(100),
+    @operationDate DATETIME,
+    @sourceAccount VARCHAR(100),
+    @sourceTenantId BIGINT,
     @sourceCardProductId BIGINT = NULL,
-    @destinationAccount varchar(100),
-    @amount money,
-    @currency varchar(3),
-    @isSourceAmount BIT=0,
+    @destinationAccount VARCHAR(100),
+    @destinationTenantId BIGINT,
+    @amount MONEY,
+    @currency VARCHAR(3),
+    @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL,
     @destinationAccountOwnerId BIGINT = NULL
 AS
@@ -16,7 +18,7 @@ BEGIN
         @channelCountryId BIGINT,
         @channelRegionId BIGINT,
         @channelCityId BIGINT,
-
+        @channelTenantId BIGINT,
         @operationId BIGINT,
 
         @sourceCountryId BIGINT,
@@ -38,7 +40,8 @@ BEGIN
     SELECT
         @channelCountryId = countryId,
         @channelRegionId = regionId,
-        @channelCityId = cityId
+        @channelCityId = cityId,
+        @channelTenantId = tenantId
     FROM
         [integration].[vChannel]
     WHERE
@@ -64,6 +67,7 @@ BEGIN
         [integration].[vAccount]
     WHERE
         accountNumber = @sourceAccount AND
+        tenantId = @sourceTenantId AND
         (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL)
 
     SELECT
@@ -73,10 +77,12 @@ BEGIN
         @destinationOwnerId = ownerId,
         @destinationAccountProductId = accountProductId,
         @destinationAccountId = accountId
+
     FROM
         [integration].[vAccount]
     WHERE
         accountNumber = @destinationAccount AND
+        tenantId = @destinationTenantId AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
@@ -87,8 +93,8 @@ BEGIN
         t.transferTypeId,
         ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount ELSE 0 END), 0),
         ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN 1 ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount ELSE 0 END), 0),--week starts on Mon
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN 1 ELSE 0 END), 0),--week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount ELSE 0 END), 0), --week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN 1 ELSE 0 END), 0), --week starts on Mon
         ISNULL(SUM(t.transferAmount), 0),
         ISNULL(COUNT(t.transferAmount), 0)
     FROM
@@ -96,9 +102,10 @@ BEGIN
     WHERE
         t.success = 1 AND
         t.sourceAccount = @sourceAccount AND
+        t.sourceTenantId = @sourceTenantId AND
         t.transferCurrency = @currency AND
         t.transferDateTime < @operationDate AND -- look ony at earlier transfers
-        t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate),0) --look back up to the start of month
+        t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate), 0) --look back up to the start of month
     GROUP BY
         t.transferTypeId
 
@@ -110,27 +117,27 @@ BEGIN
     SELECT
         'co', 'channel.role' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, r.actorId
     FROM
-        core.actorGraph(@channelId,'memberOf','subject') g
+        core.actorGraph(@channelId, 'memberOf', 'subject') g
     CROSS APPLY
-        core.actorGraph(g.actorId,'role','subject') r
+        core.actorGraph(g.actorId, 'role', 'subject') r
     WHERE
         g.actorId <> r.actorId
     UNION SELECT
         'so', 'source.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
-        core.actorGraph(@sourceOwnerId,'memberOf','subject') g
+        core.actorGraph(@sourceOwnerId, 'memberOf', 'subject') g
     UNION SELECT
         'do', 'destination.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
-        core.actorGraph(@destinationOwnerId,'memberOf','subject') g
+        core.actorGraph(@destinationOwnerId, 'memberOf', 'subject') g
     UNION SELECT
         'co', 'channel.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
-        core.actorGraph(@channelId,'memberOf','subject') g
+        core.actorGraph(@channelId, 'memberOf', 'subject') g
     UNION SELECT
         'co', 'agentOf.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
-        core.actorGraph(@channelId,'agentOf','subject') g
+        core.actorGraph(@channelId, 'agentOf', 'subject') g
 
     INSERT INTO
         @operationProperties(factor, name, value)
@@ -139,12 +146,16 @@ BEGIN
         ('cs', 'channel.country', @channelCountryId),
         ('cs', 'channel.region', @channelRegionId),
         ('cs', 'channel.city', @channelCityId),
+        --channel tenant
+        ('ct', 'channel.tenant.id', @channelTenantId),
         --operation category
         ('oc', 'operation.id', @operationId),
         --source spatial
         ('ss', 'source.country', @sourceCountryId),
         ('ss', 'source.region', @sourceRegionId),
         ('ss', 'source.city', @sourceCityId),
+        --source tenant
+        ('st', 'source.tenant.id', @sourceTenantId),
         --source category
         ('sc', 'source.account.product', @sourceAccountProductId),
         ('sc', 'source.card.product', @sourceCardProductId),
@@ -152,6 +163,8 @@ BEGIN
         ('ds', 'destination.country', @destinationCountryId),
         ('ds', 'destination.region', @destinationRegionId),
         ('ds', 'destination.city', @destinationCityId),
+        --source tenant
+        ('dt', 'destination.tenant.id', @destinationTenantId),
         --destination category
         ('dc', 'destination.account.product', @destinationAccountProductId)
 

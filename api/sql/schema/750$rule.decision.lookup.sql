@@ -18,7 +18,6 @@ BEGIN
         @channelCountryId BIGINT,
         @channelRegionId BIGINT,
         @channelCityId BIGINT,
-        @channelTenantId BIGINT,
         @operationId BIGINT,
 
         @sourceCountryId BIGINT,
@@ -40,8 +39,7 @@ BEGIN
     SELECT
         @channelCountryId = countryId,
         @channelRegionId = regionId,
-        @channelCityId = cityId,
-        @channelTenantId = tenantId
+        @channelCityId = cityId
     FROM
         [integration].[vChannel]
     WHERE
@@ -93,8 +91,8 @@ BEGIN
         t.transferTypeId,
         ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount ELSE 0 END), 0),
         ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN 1 ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN t.transferAmount ELSE 0 END), 0), --week starts on Mon
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate-1), 0) THEN 1 ELSE 0 END), 0), --week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate - 1), 0) THEN t.transferAmount ELSE 0 END), 0), --week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate - 1), 0) THEN 1 ELSE 0 END), 0), --week starts on Mon
         ISNULL(SUM(t.transferAmount), 0),
         ISNULL(COUNT(t.transferAmount), 0)
     FROM
@@ -146,16 +144,12 @@ BEGIN
         ('cs', 'channel.country', @channelCountryId),
         ('cs', 'channel.region', @channelRegionId),
         ('cs', 'channel.city', @channelCityId),
-        --channel tenant
-        ('ct', 'channel.tenant.id', @channelTenantId),
         --operation category
         ('oc', 'operation.id', @operationId),
         --source spatial
         ('ss', 'source.country', @sourceCountryId),
         ('ss', 'source.region', @sourceRegionId),
         ('ss', 'source.city', @sourceCityId),
-        --source tenant
-        ('st', 'source.tenant.id', @sourceTenantId),
         --source category
         ('sc', 'source.account.product', @sourceAccountProductId),
         ('sc', 'source.card.product', @sourceCardProductId),
@@ -163,8 +157,6 @@ BEGIN
         ('ds', 'destination.country', @destinationCountryId),
         ('ds', 'destination.region', @destinationRegionId),
         ('ds', 'destination.city', @destinationCityId),
-        --source tenant
-        ('dt', 'destination.tenant.id', @destinationTenantId),
         --destination category
         ('dc', 'destination.account.product', @destinationAccountProductId)
 

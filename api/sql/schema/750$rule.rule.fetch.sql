@@ -1,25 +1,25 @@
 ALTER PROCEDURE [rule].[rule.fetch]
-    @conditionId INT = NULL,
-    @pageSize INT = 25,    -- how many rows will be returned per page
-    @pageNumber INT = 1   -- which page number to display
+    @conditionId INT = NULL, -- filter by certain rule
+    @pageSize INT = 25, -- how many rows will be returned per page
+    @pageNumber INT = 1 -- which page number to display
 AS
 
 DECLARE @startRow INT = (@pageNumber - 1) * @pageSize + 1
 DECLARE @endRow INT = @startRow + @pageSize - 1
 
 BEGIN
-    
+
     DECLARE @RuleConditions TABLE (
         conditionId INT,
-        [priority] INT, 
-        operationStartDate DATETIME, 
-        operationEndDate DATETIME, 
-        sourceAccountId NVARCHAR(255), 
+        [priority] INT,
+        operationStartDate DATETIME,
+        operationEndDate DATETIME,
+        sourceAccountId NVARCHAR(255),
         destinationAccountId NVARCHAR(255),
-        rowNum INT, 
-        recordsTotal INT)
-    
-    ;WITH CTE AS (
+        rowNum INT,
+        recordsTotal INT);
+
+    WITH CTE AS (
         SELECT
             rc.conditionId,
             rc.[priority],
@@ -27,7 +27,7 @@ BEGIN
             rc.operationStartDate,
             rc.sourceAccountId,
             rc.destinationAccountId,
-            ROW_NUMBER() OVER(ORDER BY rc.[priority] DESC) as rowNum,
+            ROW_NUMBER() OVER(ORDER BY rc.[priority] DESC) AS rowNum,
             COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
         FROM
             [rule].condition rc
@@ -60,22 +60,22 @@ BEGIN
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
-        ca.*, a.actorType AS [type], ur.[name] as roleName -- PD: ABT-2040
+        ca.*, a.actorType AS [type], ur.[name] AS roleName
     FROM
         [rule].conditionActor ca
     JOIN
         @RuleConditions rct ON rct.conditionId = ca.conditionId
     JOIN
         core.actor a ON a.actorId = ca.actorId
-    LEFT JOIN -- PD: ABT-2040
-		[user].[role] ur ON ur.actorId = a.actorId AND a.actorType = 'role' -- PD: ABT-2040
+    LEFT JOIN
+        [user].[role] ur ON ur.actorId = a.actorId AND a.actorType = 'role'
     WHERE
         @conditionId IS NULL OR ca.conditionId = @conditionId
 
 
     SELECT 'conditionItem' AS resultSetName
     SELECT
-        c.*, t.alias AS [type], t.name as itemTypeName, i.itemName
+        c.*, t.alias AS [type], t.name AS itemTypeName, i.itemName
     FROM
         [rule].conditionItem c
     JOIN

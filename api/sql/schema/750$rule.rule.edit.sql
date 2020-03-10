@@ -221,7 +221,8 @@ BEGIN TRY
         WHEN NOT MATCHED BY TARGET THEN
         INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description, debitTenantId, creditTenantId)
         VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description, debitTenantId, creditTenantId)
-        OUTPUT INSERTED.* INTO @splitAssignment;
+        OUTPUT INSERTED.splitNameId, INSERTED.debit, INSERTED.credit, INSERTED.minValue, INSERTED.maxValue, INSERTED.[percent], INSERTED.description, INSERTED.debitTenantId, INSERTED.creditTenantId
+        INTO @splitAssignment(splitNameId, debit, credit, minValue, maxValue, [percent], description, debitTenantId, creditTenantId);
 
         MERGE INTO [rule].splitAnalytic x
         USING (

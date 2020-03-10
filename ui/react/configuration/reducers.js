@@ -88,7 +88,7 @@ const defaultUiState = {
                     },
                     organization: {
                         visible: true,
-                        title: 'Organization'
+                        title: 'Tenant'
                     },
                     supervisor: {
                         visible: true,
@@ -156,7 +156,7 @@ const defaultUiState = {
                     },
                     organization: {
                         visible: true,
-                        title: 'Organization'
+                        title: 'Tenant'
                     },
                     supervisor: {
                         visible: true,
@@ -202,7 +202,7 @@ const defaultUiState = {
                     },
                     organization: {
                         visible: true,
-                        title: 'Organization'
+                        title: 'Tenant'
                     },
                     supervisor: {
                         visible: true,

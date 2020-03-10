@@ -18,10 +18,10 @@ var wrapper = {
         return bus.importMethod($meta.method)(msg, $meta);
     },
     'organization': function(msg, $meta) {
-        $meta.method = 'customer.organization.fetch';
+        $meta.method = 'tenant.tenant.list';
         return bus.importMethod($meta.method)(msg, $meta).then(result => {
-            let organization = result.organization;
-            return {items: organization.map(v => ({ type: 'organization', value: v.actorId, display: v.organizationName }))};
+            let organization = (result.tenant || []);
+            return {items: organization.map(v => ({ type: 'organization', value: v.actorId, display: v.name }))};
         });
     },
     'role': function(msg, $meta) {
@@ -42,7 +42,12 @@ var wrapper = {
         return bus.importMethod('implementation.internalAccount.fetchDropdown')(msg, Object.assign({}, $meta, {method: 'implementation.internalAccount.fetch'}))
         .then(res => {
             const internalAccounts = res.internalAccounts;
-            return {items: internalAccounts.map(v => ({ type: 'internalAccount', value: v.accountNumber, display: v.label }))};
+            return {items: internalAccounts.map(v => ({
+                type: 'internalAccount',
+                value: v.accountNumber,
+                display: v.tenantName ? `${v.tenantName} - ${(v.label || v.accountNumber)}` : `${v.label || v.accountNumber}`,
+                tenantId: v.tenantId
+            }))};
         });
     },
     'accountProduct': function(msg, $meta) {

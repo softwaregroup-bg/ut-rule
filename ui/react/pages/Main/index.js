@@ -147,7 +147,11 @@ const Main = React.createClass({
     },
     dialogOnSave(data) {
         let action = this.state.dialog.conditionId ? 'editRule' : 'addRule';
-        this.setState(this.getInitialState(), () => this.props.actions[action](data));
+        this.props.actions[action](data)
+            .then((result) => {
+                !result.error && this.setState(this.getInitialState());
+            })
+            .catch(() =>{})
     },
     removeRules() {
         let conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));

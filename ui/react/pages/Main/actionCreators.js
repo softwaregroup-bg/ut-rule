@@ -45,6 +45,23 @@ export function removeRules(params) {
 export function editRule(params) {
     return function(dispatch) {
         let split = JSON.parse(JSON.stringify(params.split));
+        split = (split || []).map(s => {
+            s.splitAssignment = (s.splitAssignment || []).map(a => {
+                // split assignment debit, credit is combo of tenantid-account number
+                var debitComponents = a.debit.split('-');
+                var creditComponents = a.credit.split('-');
+                if (debitComponents.length === 2) {
+                    a.debit = debitComponents.pop();
+                    a.debitTenantId =  (debitComponents || []).pop();
+                }
+                if (creditComponents.length === 2) {
+                    a.credit = creditComponents.pop();
+                    a.creditTenantId =  (creditComponents || []).pop();
+                }
+                return a;
+            });
+            return s;
+        });
         split.map(s => {
             s.splitRange = [];
             s.splitCumulative.map(c => {
@@ -226,6 +243,23 @@ export function editRule(params) {
 export function addRule(params) {
     return function(dispatch) {
         let split = JSON.parse(JSON.stringify(params.split));
+        split = (split || []).map(s => {
+            s.splitAssignment = (s.splitAssignment || []).map(a => {
+                // split assignment debit, credit is combo of tenantid-account number
+                var debitComponents = a.debit.split('-');
+                var creditComponents = a.credit.split('-');
+                if (debitComponents.length === 2) {
+                    a.debit = debitComponents.pop();
+                    a.debitTenantId =  (debitComponents || []).pop();
+                }
+                if (creditComponents.length === 2) {
+                    a.credit = creditComponents.pop();
+                    a.creditTenantId =  (creditComponents || []).pop();
+                }
+                return a;
+            });
+            return s;
+        });
         split.map(s => {
             s.splitRange = [];
             s.splitCumulative.map(c => {

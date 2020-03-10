@@ -59,7 +59,6 @@ const Assignment = React.createClass({
     createAssignmentRows() {
         let fields = this.state.fields;
         let {internalAccount} = this.context.nomenclatures;
-
         return this.props.data.map((splitAssignment, index) => (
             <tr key={index}>
                 {fields.description.visible &&

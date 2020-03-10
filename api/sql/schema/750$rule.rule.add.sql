@@ -147,7 +147,8 @@ BEGIN TRY
             ON splitRange.x.value('(../splitName/name)[1]', 'nvarchar(50)') = sn.name;
 
         INSERT INTO [rule].splitAssignment (splitNameId, debit, credit, minValue, maxValue, [percent], description, debitTenantId, creditTenantId)
-        OUTPUT INSERTED.* INTO @splitAssignment
+        OUTPUT INSERTED.splitNameId, INSERTED.debit, INSERTED.credit, INSERTED.minValue, INSERTED.maxValue, INSERTED.[percent], INSERTED.description, INSERTED.debitTenantId, INSERTED.creditTenantId
+        INTO @splitAssignment(splitNameId, debit, credit, minValue, maxValue, [percent], description, debitTenantId, creditTenantId)
         SELECT
             sn.splitNameId AS splitNameId,
             splitAssignment.x.value('(debit)[1]', 'varchar(50)') AS debit,

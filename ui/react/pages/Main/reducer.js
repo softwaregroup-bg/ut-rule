@@ -79,10 +79,25 @@ var formatRules = function(data) {
             splitRange: []
         });
     });
-    ['splitRange', 'splitAssignment'].forEach(function(prop) {
+    ['splitRange'].forEach(function(prop) {
         var mappedData;
         if (data[prop].length) {
             data[prop].forEach(function(record) {
+                mappedData = splitNameConditionMap[record.splitNameId];
+                result[mappedData.conditionId].split[mappedData.index][prop].push(record);
+            });
+        }
+    });
+    ['splitAssignment'].forEach(function(prop) {
+        var mappedData;
+        if (data[prop].length) {
+            data[prop].forEach(function(record) {
+                if (record.debitTenantId) {
+                    record.debit = `${record.debitTenantId}-${record.debit}`
+                }
+                if (record.creditTenantId) {
+                    record.credit = `${record.creditTenantId}-${record.credit}`
+                }
                 mappedData = splitNameConditionMap[record.splitNameId];
                 result[mappedData.conditionId].split[mappedData.index][prop].push(record);
             });
@@ -99,14 +114,19 @@ var formatRules = function(data) {
 };
 
 const formatNomenclatures = function(data) {
-    return data.reduce(function(all, record) {
+    let result = data.reduce(function(all, record) {
+        let display = record.display;
+        let value = record.value;
         if (!all[record.type]) {
             all[record.type] = {};
         }
-        all[record.type][record.value] = record.display;
-
+        if (record.type === 'internalAccount' && record.tenantId) {
+            value = `${record.tenantId}-${record.value}`;
+        }
+        all[record.type][value] = display;
         return all;
     }, {});
+    return result;
 };
 
 const getFormattedGridDataColumns = function(fetchedData, formattedRules, nomenclatures) {

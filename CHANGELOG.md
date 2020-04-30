@@ -1,3 +1,13 @@
+# [10.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.20.6...v10.0.0) (2020-04-30)
+
+
+### Features
+
+* return first and last name separately ([7fc0471](https://github.com/softwaregroup-bg/ut-rule/commit/7fc04712de602b2bbc678fdff0787171f585d289))
+* update first and last name in person table to varbinary. Update procedure to avoid build failure due to column type change. ([2dce498](https://github.com/softwaregroup-bg/ut-rule/commit/2dce498a10a5887aec10afede603d299eb6448ca))
+
+
+
 ## [9.20.6](https://github.com/softwaregroup-bg/ut-rule/compare/v9.20.5...v9.20.6) (2020-02-12)
 
 

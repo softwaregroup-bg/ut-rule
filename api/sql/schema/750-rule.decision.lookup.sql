@@ -101,8 +101,8 @@ BEGIN
     -- if check credentials has been setup for the account and/or the account product, assign the value to variable. account is with higher priority
     SET @credentialsCheck = CASE WHEN COALESCE (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
 
-    SELECT @operationDate = ISNULL(@operationDate, SYSDATETIME())
-    SELECT @operationDateUTC = SYSUTCDATETIME()
+    SELECT @operationDate = ISNULL(@operationDate, GETDATE())
+    SELECT @operationDateUTC = GETUTCDATE()
     SELECT @diff = DATEDIFF(HOUR, @operationDate, @operationDateUTC)
     SELECT @operationDate = DATEADD (HOUR, @diff , DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0))
     SELECT @operationDateWeek = DATEADD (HOUR, @diff, DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate), 0))

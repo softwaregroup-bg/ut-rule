@@ -105,7 +105,7 @@ BEGIN
     SELECT @operationDateUTC = GETUTCDATE()
     SELECT @diff = DATEDIFF(HOUR, @operationDate, @operationDateUTC)
     SELECT @operationDate = DATEADD (HOUR, @diff , DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0))
-    SELECT @operationDateWeek = DATEADD (HOUR, @diff, DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate), 0))
+    SELECT @operationDateWeek = DATEADD (HOUR, @diff, DATEADD(WEEK, DATEDIFF(WEEK, 0, DATEADD(day, -1, @operationDate)), 0))
     SELECT @operationDateMonth = DATEADD (HOUR, @diff, DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate), 0))
 
     INSERT INTO

@@ -1,11 +1,11 @@
 ALTER PROCEDURE [rule].[decision.lookup]
     @channelId BIGINT, -- the id of the channel triggering transaction
     @operation VARCHAR(100), -- the operation name
-    @operationDate datetime, -- the date when operation is triggered
+    @operationDate DATETIME2, -- the date when operation is triggered
     @sourceAccount VARCHAR(100), -- source account number
     @sourceCardProductId BIGINT = NULL, -- product id of the card
     @destinationAccount VARCHAR(100), -- destination account number
-    @amount money, -- operation amount
+    @amount MONEY, -- operation amount
     @currency VARCHAR(3), -- operation currency
     @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
@@ -15,6 +15,11 @@ ALTER PROCEDURE [rule].[decision.lookup]
 AS
 BEGIN
     DECLARE
+        @operationDateUTC DATETIME2,
+        @operationDateWeek DATETIME2,
+        @operationDateMonth DATETIME2,
+        @diff INT,
+
         @channelCountryId BIGINT,
         @channelRegionId BIGINT,
         @channelCityId BIGINT,
@@ -96,16 +101,21 @@ BEGIN
     -- if check credentials has been setup for the account and/or the account product, assign the value to variable. account is with higher priority
     SET @credentialsCheck = CASE WHEN COALESCE (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
 
-    SELECT @operationDate = ISNULL(@operationDate, GETDATE())
+    SELECT @operationDate = ISNULL(@operationDate, SYSDATETIME())
+    SELECT @operationDateUTC = SYSUTCDATETIME()
+    SELECT @diff = DATEDIFF(HOUR, @operationDate, @operationDateUTC)
+    SELECT @operationDate = DATEADD (HOUR, @diff , DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0))
+    SELECT @operationDateWeek = DATEADD (HOUR, @diff, DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate), 0))
+    SELECT @operationDateMonth = DATEADD (HOUR, @diff, DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate), 0))
 
     INSERT INTO
         @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
     SELECT -- totals by transfer type
         t.transferTypeId,
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN 1 ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate - 1), 0) THEN t.transferAmount ELSE 0 END), 0), --week starts on Mon
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate - 1), 0) THEN 1 ELSE 0 END), 0), --week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @operationDate THEN t.transferAmount ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @operationDate THEN 1 ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @operationDateWeek THEN t.transferAmount ELSE 0 END), 0), --week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @operationDateWeek THEN 1 ELSE 0 END), 0), --week starts on Mon
         ISNULL(SUM(t.transferAmount), 0),
         ISNULL(COUNT(t.transferAmount), 0)
     FROM
@@ -115,7 +125,7 @@ BEGIN
         t.sourceAccount = @sourceAccount AND
         t.transferCurrency = @currency AND
         t.transferDateTime < @operationDate AND -- look ony at earlier transfers
-        t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate), 0) --look back up to the start of month
+        t.transferDateTime >= @operationDateMonth --look back up to the start of month
     GROUP BY
         t.transferTypeId
 

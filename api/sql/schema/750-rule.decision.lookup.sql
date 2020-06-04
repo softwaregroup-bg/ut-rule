@@ -1,7 +1,7 @@
 ALTER PROCEDURE [rule].[decision.lookup]
     @channelId BIGINT, -- the id of the channel triggering transaction
     @operation VARCHAR(100), -- the operation name
-    @operationDate DATETIME2, -- the date when operation is triggered
+    @operationDate DATETIME, -- the date when operation is triggered
     @sourceAccount VARCHAR(100), -- source account number
     @sourceCardProductId BIGINT = NULL, -- product id of the card
     @destinationAccount VARCHAR(100), -- destination account number
@@ -15,9 +15,9 @@ ALTER PROCEDURE [rule].[decision.lookup]
 AS
 BEGIN
     DECLARE
-        @operationDateUTC DATETIME2,
-        @operationDateWeek DATETIME2,
-        @operationDateMonth DATETIME2,
+        @operationDateUTC DATETIME,
+        @operationDateWeek DATETIME,
+        @operationDateMonth DATETIME,
         @diff INT,
 
         @channelCountryId BIGINT,

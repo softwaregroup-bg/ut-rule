@@ -15,7 +15,7 @@ ALTER PROCEDURE [rule].[decision.lookup]
 AS
 BEGIN
     DECLARE
-        @operationDateUTC DATETIME,
+        @operationDateDay DATETIME,
         @operationDateWeek DATETIME,
         @operationDateMonth DATETIME,
         @diff INT,
@@ -102,18 +102,17 @@ BEGIN
     SET @credentialsCheck = CASE WHEN COALESCE (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
-    SELECT @operationDateUTC = GETUTCDATE()
-    SELECT @diff = DATEDIFF(HOUR, @operationDate, @operationDateUTC)
-    SELECT @operationDate = DATEADD (HOUR, @diff , DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0))
-    SELECT @operationDateWeek = DATEADD (HOUR, @diff, DATEADD(WEEK, DATEDIFF(WEEK, 0, DATEADD(day, -1, @operationDate)), 0))
-    SELECT @operationDateMonth = DATEADD (HOUR, @diff, DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate), 0))
+    SELECT @diff = DATEDIFF(HOUR, @operationDate, GETUTCDATE()) -- capture difference between local time and UTC
+    SELECT @operationDateDay = DATEADD (HOUR, @diff , DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0)) -- convert to UTC
+    SELECT @operationDateWeek = DATEADD (HOUR, @diff, DATEADD(WEEK, DATEDIFF(WEEK, 0, DATEADD(day, -1, @operationDate)), 0)) -- convert to UTC
+    SELECT @operationDateMonth = DATEADD (HOUR, @diff, DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate), 0)) -- convert to UTC
 
     INSERT INTO
         @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
     SELECT -- totals by transfer type
         t.transferTypeId,
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= @operationDate THEN t.transferAmount ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= @operationDate THEN 1 ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @operationDateDay THEN t.transferAmount ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @operationDateDay THEN 1 ELSE 0 END), 0),
         ISNULL(SUM(CASE WHEN t.transferDateTime >= @operationDateWeek THEN t.transferAmount ELSE 0 END), 0), --week starts on Mon
         ISNULL(SUM(CASE WHEN t.transferDateTime >= @operationDateWeek THEN 1 ELSE 0 END), 0), --week starts on Mon
         ISNULL(SUM(t.transferAmount), 0),

@@ -102,7 +102,7 @@ BEGIN
     SET @credentialsCheck = CASE WHEN COALESCE (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
 
     SELECT @operationDate = ISNULL(@operationDate, GETDATE())
-    SELECT @diff = DATEDIFF(HOUR, @operationDate, GETUTCDATE()) -- capture difference between local time and UTC
+    SELECT @diff = DATEDIFF(HOUR, GETDATE(), GETUTCDATE()) -- capture difference between local time and UTC
     SELECT @operationDateDay = DATEADD (HOUR, @diff , DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0)) -- convert to UTC
     SELECT @operationDateWeek = DATEADD (HOUR, @diff, DATEADD(WEEK, DATEDIFF(WEEK, 0, DATEADD(day, -1, @operationDate)), 0)) -- convert to UTC
     SELECT @operationDateMonth = DATEADD (HOUR, @diff, DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate), 0)) -- convert to UTC

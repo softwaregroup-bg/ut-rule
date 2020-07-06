@@ -17,6 +17,7 @@ BEGIN
     DECLARE
         @channelId BIGINT,
         @operationId BIGINT,
+		@paymentAggregator BIGINT,
         @sourceAccountId NVARCHAR(255),
         @destinationAccountId NVARCHAR(255),
         @sourceAccountCategoryId BIGINT,
@@ -32,7 +33,14 @@ BEGIN
     WHERE
         itemCode = @operation
 
-    SELECT
+	IF @operation LIKE 'walletToVendorBill' + '%'
+		SET @paymentAggregator = (SELECT o.itemNameId FROM implementation.operation o WHERE o.operation ='walletToVendorBill')
+	IF @operation LIKE 'walletToVendorMNO' + '%'
+		SET @paymentAggregator = (SELECT o.itemNameId FROM implementation.operation o WHERE o.operation = 'walletToVendorMNO')
+	IF @operation LIKE 'walletToVendorSelfMNO' + '%'
+		SET @paymentAggregator = (SELECT o.itemNameId FROM implementation.operation o WHERE o.operation = 'walletToVendorSelfMNO')	
+	
+	SELECT
         @channelId = n.itemNameId
     FROM
         [core].[itemName] n
@@ -121,6 +129,7 @@ BEGIN
         ('cs', 'channel.type', @channelId),
         --operation category
         ('oc', 'operation.id', @operationId),
+		('oc', 'aggregator.id', @paymentAggregator),
         --source spatial
         ('ss', 'source.riskProfile', @sourceAccountRiskProfileId),
         --source category

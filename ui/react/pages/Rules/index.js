@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import { fromJS } from 'immutable';
 import { bindActionCreators } from 'redux';
@@ -15,8 +16,10 @@ import Button from 'ut-front-react/components/StandardButton';
 import style from './style.css';
 import * as actionCreators from './actionCreators';
 
-const Main = React.createClass({
-    propTypes: {
+class Main extends React.Component {
+    static displayName = 'Main'
+
+    static propTypes = {
         rules: PropTypes.object,
         nomenclatures: PropTypes.object,
         formatedGridData: PropTypes.object,
@@ -25,33 +28,44 @@ const Main = React.createClass({
         uiConfig: PropTypes.object,
         pagination: PropTypes.object,
         showDeleted: PropTypes.bool
-    },
-    getInitialState() {
-        return {
+    }
+
+    static contextTypes = {
+        checkPermission: PropTypes.func.isRequired
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
             selectedConditions: {},
             canEdit: false,
             canDelete: false,
-            uiConfig: this.props.uiConfig.toJS()
+            uiConfig: props.uiConfig.toJS()
         };
-    },
+    }
+
     fetchData(props) {
         const {pageSize, pageNumber} = props.pagination;
         const showDeleted = props.showDeleted;
 
         this.props.actions.fetchRules({pageSize, pageNumber}, showDeleted);
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
-    },
+    }
+
     componentWillMount() {
         this.fetchData(this.props);
-    },
+    }
+
     componentWillReceiveProps(nextProps) {
         if (this.props.pagination.changeId !== nextProps.pagination.changeId || this.props.showDeleted !== nextProps.showDeleted) {
             this.fetchData(nextProps);
         }
-    },
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
         return nextProps.ready;
-    },
+    }
+
     handleCheckboxSelect(isSelected, data) {
         const selectedConditions = this.state.selectedConditions;
         if (isSelected === null) {
@@ -69,32 +83,38 @@ const Main = React.createClass({
             canDelete: count > 0
         });
         return !isSelected;
-    },
+    }
+
     handleHeaderCheckboxSelect(isSelected) {
         this.setState({
             selectedConditions: isSelected ? {} : Object.keys(this.props.rules).reduce((all, key) => { all[key] = true; return all; }, {}),
             canEdit: false,
             canDelete: !isSelected
         });
-    },
+    }
+
     removeRules() {
         const conditionsArray = Object.keys(this.state.selectedConditions).map((key) => (parseInt(key, 10)));
         this.setState(this.getInitialState(), () => this.props.actions.removeRules({
             conditionId: conditionsArray
         }));
-    },
+    }
+
     refresh() {
         this.setState(this.getInitialState(), () => this.props.actions.reset());
-    },
+    }
+
     showConfirm() {
         this.refs.showRuleConfirmDialog && this.refs.showRuleConfirmDialog.open();
-    },
+    }
+
     getHeaderButtons() {
         const buttons = [];
         this.context.checkPermission('rule.rule.add') &&
             buttons.push({text: 'Create Rule', href: getLink('ut-rule:create'), styleType: 'primaryLight'});
         return buttons;
-    },
+    }
+
     render() {
         if (!this.props.ready) {
             return null;
@@ -105,7 +125,7 @@ const Main = React.createClass({
         const id = Object.keys(this.state.selectedConditions)[0];
         const showDeleted = this.props.showDeleted;
         const content = [
-            <GridToolBox contentWrapClassName={style.actionWrap} cssStandard opened title=''>
+            <GridToolBox key='toolbox' contentWrapClassName={style.actionWrap} cssStandard opened title=''>
                 {this.context.checkPermission('rule.rule.edit') && !showDeleted &&
                 (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
                 {this.context.checkPermission('rule.rule.remove') && !showDeleted &&
@@ -117,6 +137,7 @@ const Main = React.createClass({
                 />)}
             </GridToolBox>,
             <Grid
+                key='grid'
                 ref='grid'
                 refresh={this.refresh}
                 data={this.props.rules}
@@ -129,6 +150,7 @@ const Main = React.createClass({
                 showDeleted={this.props.showDeleted}
             />,
             <AdvancedPagination
+                key='pagination'
                 cssStandard
                 onUpdate={this.props.actions.updatePagination}
                 pagination={fromJS(this.props.pagination)}
@@ -160,10 +182,6 @@ const Main = React.createClass({
             </div>
         );
     }
-});
-
-Main.contextTypes = {
-    checkPermission: PropTypes.func.isRequired
 };
 
 export default connect(

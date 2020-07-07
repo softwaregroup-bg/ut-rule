@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {fromJS} from 'immutable';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
 import { updateGridColumnStorage, prepareGridFields } from 'ut-front-react/components/GridMenu/helpers';
@@ -8,37 +9,37 @@ import style from './style.css';
 import { Link } from 'react-router-dom';
 const propInStorage = 'rule_grid_fields';
 
-export default React.createClass({
-    propTypes: {
+export default class extends React.Component {
+    static propTypes = {
         data: PropTypes.object,
         columns: PropTypes.object,
         formatedGridData: PropTypes.object,
         selectedConditions: PropTypes.object,
         handleCheckboxSelect: PropTypes.func,
         handleHeaderCheckboxSelect: PropTypes.func
-    },
-    getInitialState(state) {
-        return {
-            expandedGridColumns: [],
-            columns: this.props.columns,
-            fields: prepareGridFields(propInStorage, [
-                {title: this.props.columns.priority.title, name: 'priority'},
-                {title: this.props.columns.channel.title, name: 'channel'},
-                {title: this.props.columns.operation.title, name: 'operation'},
-                {title: this.props.columns.source.title, name: 'source'},
-                {title: this.props.columns.destination.title, name: 'destination'},
-                {title: this.props.columns.limit.title, name: 'limit'},
-                {
-                    title: 'Expansion',
-                    name: 'expansion'
-                }
-            ].map(f => {
-                f.key = f.name;
-                return f;
-            }))
-        };
-    },
-    handleGridExpansion(id) {
+    };
+
+    state = {
+        expandedGridColumns: [],
+        columns: this.props.columns,
+        fields: prepareGridFields(propInStorage, [
+            {title: this.props.columns.priority.title, name: 'priority'},
+            {title: this.props.columns.channel.title, name: 'channel'},
+            {title: this.props.columns.operation.title, name: 'operation'},
+            {title: this.props.columns.source.title, name: 'source'},
+            {title: this.props.columns.destination.title, name: 'destination'},
+            {title: this.props.columns.limit.title, name: 'limit'},
+            {
+                title: 'Expansion',
+                name: 'expansion'
+            }
+        ].map(f => {
+            f.key = f.name;
+            return f;
+        }))
+    };
+
+    handleGridExpansion = (id) => {
         const expandedGridColumns = this.state.expandedGridColumns;
         if (expandedGridColumns.some(v => v === id)) {
             const index = expandedGridColumns.indexOf(id);
@@ -47,8 +48,9 @@ export default React.createClass({
             expandedGridColumns.push(id);
         }
         this.setState({expandedGridColumns});
-    },
-    renderGridColumn(condition, keysToInclude, row, column) {
+    };
+
+    renderGridColumn = (condition, keysToInclude, row, column) => {
         const result = [];
         for (const keyToInclude of keysToInclude) {
             if (Array.isArray(condition[keyToInclude])) {
@@ -94,16 +96,19 @@ export default React.createClass({
                 {result}
             </div>
         );
-    },
-    updateColumns(columns) {
+    };
+
+    updateColumns = (columns) => {
         this.setState({
             columns: columns
         });
-    },
-    handleRowClick(record, index) {
+    };
+
+    handleRowClick = (record, index) => {
         this.props.handleCheckboxSelect(null, record);
-    },
-    toggleColumn(col) {
+    };
+
+    toggleColumn = (col) => {
         const fields = this.state.fields;
         const visibleFields = fields.filter((f) => { return f.visible !== false; });
         if (visibleFields.length !== 1 || col.visible === false) {
@@ -117,8 +122,9 @@ export default React.createClass({
             updateGridColumnStorage(propInStorage, col);
             this.setState({fields: newFields});
         }
-    },
-    getData() {
+    };
+
+    getData = () => {
         return Object.keys(this.props.data).map((conditionId, i) => {
             const record = this.props.data[conditionId];
             const condition = record.condition[0];
@@ -139,8 +145,9 @@ export default React.createClass({
                 url: record.url
             };
         });
-    },
-    transformCellValue(value, header, row, isHeader) {
+    };
+
+    transformCellValue = (value, header, row, isHeader) => {
         if (isHeader) {
             return value;
         } else {
@@ -170,7 +177,8 @@ export default React.createClass({
                     return value;
             }
         }
-    },
+    };
+
     render() {
         const data = fromJS(this.getData()).sort((a, b) => {
             return a.get('priority') - b.get('priority');
@@ -195,4 +203,4 @@ export default React.createClass({
             />
         );
     }
-});
+}

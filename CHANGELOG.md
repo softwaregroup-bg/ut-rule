@@ -1,3 +1,12 @@
+# [11.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v10.0.0...v11.0.0) (2020-07-07)
+
+
+### Features
+
+* react 16 ([03fc3fb](https://github.com/softwaregroup-bg/ut-rule/commit/03fc3fb36d74f1ce61d006dc3b907fffef3629c3))
+
+
+
 # [10.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v9.20.6...v10.0.0) (2020-04-30)
 
 

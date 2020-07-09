@@ -1,3 +1,7 @@
+## [11.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.0.0...v11.0.1) (2020-07-09)
+
+
+
 # [11.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v10.0.0...v11.0.0) (2020-07-07)
 
 

@@ -103,10 +103,7 @@ const formatNomenclatures = function(data) {
         if (!all[record.type]) {
             all[record.type] = {};
         }
-        // Remove non operation values
-        if (!(record.type==='operation' && ['walletToVendorBill', 'walletToVendorMNO', 'walletToVendorSelfMNO'].includes(record.itemCode))) {
-            all[record.type][record.value] = record.display;
-        }   
+        all[record.type][record.value] = record.display;
 
         return all;
     }, {});

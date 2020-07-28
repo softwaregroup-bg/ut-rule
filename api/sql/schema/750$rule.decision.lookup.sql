@@ -92,7 +92,28 @@ BEGIN
     GROUP BY
         t.transferTypeId
 
-    DECLARE
+    IF @operation LIKE 'walletToVendorBill' + '%'
+	    INSERT INTO @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
+		SELECT @paymentAggregator, SUM(amountDaily), SUM(countDaily), SUM(amountWeekly), SUM(countWeekly), SUM(amountMonthly), SUM(countMonthly)
+		FROM @totals t
+		JOIN implementation.operation o ON t.transferTypeId = o.itemNameId
+		WHERE o.operation LIKE 'walletToVendorBill' + '%'
+
+	IF @operation LIKE 'walletToVendorMNO' + '%'
+	    INSERT INTO @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
+		SELECT @paymentAggregator, SUM(amountDaily), SUM(countDaily), SUM(amountWeekly), SUM(countWeekly), SUM(amountMonthly), SUM(countMonthly)
+		FROM @totals t
+		JOIN implementation.operation o ON t.transferTypeId = o.itemNameId
+		WHERE o.operation LIKE 'walletToVendorMNO' + '%'
+
+	IF @operation LIKE 'walletToVendorSelfMNO' + '%'
+	    INSERT INTO @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
+		SELECT @paymentAggregator, SUM(amountDaily), SUM(countDaily), SUM(amountWeekly), SUM(countWeekly), SUM(amountMonthly), SUM(countMonthly)
+		FROM @totals t
+		JOIN implementation.operation o ON t.transferTypeId = o.itemNameId
+		WHERE o.operation LIKE 'walletToVendorSelfMNO' + '%'
+	
+	DECLARE
         @operationProperties [rule].properties
 
     INSERT INTO

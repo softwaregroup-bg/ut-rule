@@ -1,9 +1,10 @@
 const path = require('path');
 
-module.exports = function sql() {
+module.exports = function sql({config}) {
     return {
+        namespace: 'db/rule',
         schema: [
-            {path: path.join(__dirname, 'schema'), linkSP: true},
+            {path: path.join(__dirname, 'schema'), linkSP: true, config},
             {path: path.join(__dirname, 'schema/seeds')}
         ],
         'rule.decision.lookup.response.receive': result => {

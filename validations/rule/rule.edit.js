@@ -21,7 +21,7 @@ module.exports = {
             joi.object().keys({
                 limitId: joi.number().integer().min(0).optional(),
                 conditionId: joi.number().integer().min(0).required(),
-                currency: joi.string().alphanum().max(4).required(),
+                currency: joi.string().alphanum().max(4).required().allow('EGP'),
                 minAmount: joi.number().integer().min(0).allow(null),
                 maxAmount: joi.number().integer().min(0).allow(null),
                 maxAmountDaily: joi.number().integer().min(0).allow(null),
@@ -51,7 +51,7 @@ module.exports = {
                                 startCountMonthly: joi.number().integer().min(0).allow(null),
                                 startAmountWeekly: joi.number().integer().min(0).allow(null),
                                 startCountWeekly: joi.number().integer().min(0).allow(null),
-                                startAmountCurrency: joi.string().alphanum().max(4)
+                                startAmountCurrency: joi.string().alphanum().max(4).allow('EGP')
                             })
                         ).allow(null),
                         splitCumulative: joi.array().items(
@@ -62,7 +62,7 @@ module.exports = {
                                 mounthlyCount: joi.number().integer().min(0).allow(null),
                                 weeklyAmount: joi.number().integer().min(0).allow(null),
                                 weeklyCount: joi.number().integer().min(0).allow(null),
-                                currency: joi.string().alphanum().max(4),
+                                currency: joi.string().alphanum().max(4).allow('EGP'),
                                 splitRange: joi.array().items(
                                     joi.object().keys({
                                         startAmount: joi.number().integer().min(0).allow(null),
@@ -76,7 +76,7 @@ module.exports = {
                                         startCountMonthly: joi.number().integer().min(0).allow(null),
                                         startAmountWeekly: joi.number().integer().min(0).allow(null),
                                         startCountWeekly: joi.number().integer().min(0).allow(null),
-                                        startAmountCurrency: joi.string().alphanum().max(4)
+                                        startAmountCurrency: joi.string().alphanum().max(4).allow('EGP')
                                     })
                                 ).allow(null)
                             })

@@ -111,7 +111,7 @@ const Destination = React.createClass({
                         />
                     </div>
                 }
-                <div className={style.inputWrapper}>
+                {/* <div className={style.inputWrapper}>
                     <Dropdown
                     canSelectPlaceholder
                     data={(riskProfile || []).concat(highRiskProfile || [])}
@@ -134,7 +134,7 @@ const Destination = React.createClass({
                     label={'Account Category'}
                     mergeStyles={{dropDownRoot: style.dropDownRoot}}
                     />
-                </div>
+                </div> */}
             </div>
         );
     }

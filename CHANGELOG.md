@@ -1,3 +1,12 @@
+## [11.0.4](https://github.com/softwaregroup-bg/ut-rule/compare/v11.0.3...v11.0.4) (2020-11-09)
+
+
+### Bug Fixes
+
+* bind handleCheckboxSelect methods into constructure ([#198](https://github.com/softwaregroup-bg/ut-rule/issues/198)) ([c6d5b59](https://github.com/softwaregroup-bg/ut-rule/commit/c6d5b598027950e01386ed6c9d83f512920d8b53))
+
+
+
 ## [11.0.3](https://github.com/softwaregroup-bg/ut-rule/compare/v11.0.2...v11.0.3) (2020-07-29)
 
 

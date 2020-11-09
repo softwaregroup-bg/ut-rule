@@ -42,6 +42,9 @@ class Main extends React.Component {
             canDelete: false,
             uiConfig: props.uiConfig.toJS()
         };
+
+        this.handleCheckboxSelect = this.handleCheckboxSelect.bind(this);
+        this.handleHeaderCheckboxSelect = this.handleHeaderCheckboxSelect.bind(this);
     }
 
     fetchData(props) {

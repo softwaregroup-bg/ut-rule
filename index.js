@@ -1,5 +1,6 @@
 module.exports = () => function utRule() {
     return {
+        config: require('./config'),
         adapter: () => [
             require('./api/sql/schema'),
             require('./api/sql/seed'),

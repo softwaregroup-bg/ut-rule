@@ -1,3 +1,12 @@
+# [11.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v11.0.4...v11.1.0) (2020-11-19)
+
+
+### Features
+
+* config layer ([897c9c8](https://github.com/softwaregroup-bg/ut-rule/commit/897c9c83ecca8425bdc6149633404ecb950c2172))
+
+
+
 ## [11.0.4](https://github.com/softwaregroup-bg/ut-rule/compare/v11.0.3...v11.0.4) (2020-11-09)
 
 

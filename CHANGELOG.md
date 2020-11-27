@@ -1,3 +1,12 @@
+## [11.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.1.0...v11.1.1) (2020-11-27)
+
+
+### Bug Fixes
+
+* kustomize defaults ([7fb53ba](https://github.com/softwaregroup-bg/ut-rule/commit/7fb53ba9c3445690beee3b5f437922c9dd6e1da8))
+
+
+
 # [11.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v11.0.4...v11.1.0) (2020-11-19)
 
 

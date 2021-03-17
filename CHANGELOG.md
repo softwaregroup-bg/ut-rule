@@ -1,3 +1,12 @@
+# [11.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v11.1.1...v11.2.0) (2021-03-17)
+
+
+### Features
+
+* ut-portal ([0fcdd74](https://github.com/softwaregroup-bg/ut-rule/commit/0fcdd7484ef6d9c87343dc08143c61840dcf09d0))
+
+
+
 ## [11.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.1.0...v11.1.1) (2020-11-27)
 
 

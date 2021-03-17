@@ -9,7 +9,7 @@ import style from './style.css';
 import { Link } from 'react-router-dom';
 const propInStorage = 'rule_grid_fields';
 
-export default class extends React.Component {
+export default class Grid extends React.Component {
     static propTypes = {
         data: PropTypes.object,
         columns: PropTypes.object,

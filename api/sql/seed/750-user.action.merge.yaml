@@ -40,7 +40,7 @@ roleAction:
   - {role: List Rules, action: 'rule.item.fetch'}
   - {role: List Rules, action: 'rule.rule.fetch'}
   - {role: List Rules, action: 'rule.rule.nav'}
-  - {role: MobileClient, action: 'rule.decision.lookup'}
+  - {role: mobileWallet, action: 'rule.decision.lookup'}
   - {role: Rule History Log, action: 'rule.item.fetch'}
   - {role: Rule History Log, action: 'rule.rule.fetch'}
   - {role: View Deleted Items, action: 'rule.rule.fetchDeleted'}

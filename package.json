@@ -12,10 +12,15 @@
     "lodash.get": "4.4.2",
     "lodash.map": "4.6.0",
     "lodash.merge": "4.6.2",
-    "lodash.set": "4.3.2"
+    "lodash.set": "4.3.2",
+    "react-select": "^4.3.0"
   },
   "devDependencies": {
     "tap": "^14.10.7",
+    "ut-front-react": ">=12.3.0-redux.2 <=12.3.0-redux.999",
+    "ut-history": "^3.2.0",
+    "ut-port-script": "^7.2.0",
+    "ut-portal": "^7.10.0",
     "ut-run": "10.49.1",
     "ut-tools": "^6.37.0"
   },
@@ -38,6 +43,8 @@
   "scripts": {
     "lint": "ut-lint .",
     "release": "ut-release",
+    "storybook": "ut-portal storybook -p 6006 --ci",
+    "portal": "ut-portal",
     "changelog": "ut-changelog",
     "check": "ut-check",
     "cover": "ut-cover-parallel",

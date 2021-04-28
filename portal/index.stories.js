@@ -1,4 +1,4 @@
-import {app} from 'ut-portal/storybook';
+import { app } from 'ut-portal/storybook';
 import portal from './';
 
 export default {
@@ -27,34 +27,34 @@ const page = app({
             title: 'Business unit 2'
         }]
     }),
-    'rule.item.fetch': () => ({items: []}),
+    'rule.item.fetch': () => ({ items: [] }),
     'rule.rule.fetch': () => ({
-            condition:[],
-            conditionActor:[],
-            conditionItem:[],
-            conditionProperty:[],
-            splitName:[],
-            splitRange:[],
-            splitAssignment:[],
-            limit:[],
-            splitAnalytic:[],
-            pagination:[]
-    }),
-    'rule.rule.add': ()=>({
-            condition:[],
-            conditionActor:[],
-            conditionItem:[],
-            conditionProperty:[],
-            splitName:[],
-            splitRange:[],
-            splitAssignment:[],
-            limit:[],
-            splitAnalytic:[],
-            pagination:[]
-    }),
-    'rule.rule.fetchDeleted': ()=> ({
         condition: [],
-        pagination:[]
+        conditionActor: [],
+        conditionItem: [],
+        conditionProperty: [],
+        splitName: [],
+        splitRange: [],
+        splitAssignment: [],
+        limit: [],
+        splitAnalytic: [],
+        pagination: []
+    }),
+    'rule.rule.add': () => ({
+        condition: [],
+        conditionActor: [],
+        conditionItem: [],
+        conditionProperty: [],
+        splitName: [],
+        splitRange: [],
+        splitAssignment: [],
+        limit: [],
+        splitAnalytic: [],
+        pagination: []
+    }),
+    'rule.rule.fetchDeleted': () => ({
+        condition: [],
+        pagination: []
     })
 }, [
     portal()

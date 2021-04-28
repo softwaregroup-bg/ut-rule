@@ -14,6 +14,7 @@ module.exports = () => function utRule() {
             require('./errors')
         ],
         gateway: () => [
+            require('./errors'),
             require('./validations')
         ]
     };

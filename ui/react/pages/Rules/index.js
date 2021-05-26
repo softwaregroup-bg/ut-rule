@@ -73,7 +73,7 @@ class Main extends React.Component {
             canEdit: false,
             canDelete: false,
             uiConfig: this.props.uiConfig.toJS()
-        }
+        };
     }
 
     shouldComponentUpdate(nextProps, nextState) {

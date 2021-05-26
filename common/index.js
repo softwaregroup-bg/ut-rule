@@ -75,7 +75,7 @@ function prepareRuleModel(dbresult) {
     };
     (dbresult.conditionActor || []).forEach((ca) => {
         const des = rule[propMap[ca.factor]];
-        des && (des[ca.type] = ca.actorId);
+        des && (des[ca.type] = parseInt(ca.actorId));
     });
     // condition item
     (dbresult.conditionItem || []).forEach((item) => {

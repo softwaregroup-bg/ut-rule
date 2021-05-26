@@ -154,7 +154,7 @@ function prepareRuleModel(dbresult) {
                 splitRange.forEach((srange) => {
                     range.startAmountCurrency === srange.startAmountCurrency && cumulative.ranges.push({
                         splitRangeId: srange.splitRangeId,
-                        startAmount: srange.startAmount,
+                        startAmount: parseInt(srange.startAmount) || '0',
                         minAmount: srange.minValue,
                         maxAmount: srange.maxValue,
                         percent: srange.percent,

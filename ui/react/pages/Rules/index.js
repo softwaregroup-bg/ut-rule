@@ -45,6 +45,8 @@ class Main extends React.Component {
 
         this.handleCheckboxSelect = this.handleCheckboxSelect.bind(this);
         this.handleHeaderCheckboxSelect = this.handleHeaderCheckboxSelect.bind(this);
+        this.showConfirm = this.showConfirm.bind(this);
+        this.removeRules = this.removeRules.bind(this);
     }
 
     fetchData(props) {
@@ -63,6 +65,15 @@ class Main extends React.Component {
         if (this.props.pagination.changeId !== nextProps.pagination.changeId || this.props.showDeleted !== nextProps.showDeleted) {
             this.fetchData(nextProps);
         }
+    }
+
+    getInitialState() {
+        return {
+            selectedConditions: {},
+            canEdit: false,
+            canDelete: false,
+            uiConfig: this.props.uiConfig.toJS()
+        };
     }
 
     shouldComponentUpdate(nextProps, nextState) {

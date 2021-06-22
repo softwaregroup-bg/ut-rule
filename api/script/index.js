@@ -68,23 +68,17 @@ module.exports = function rule() {
         },
         'rule.rule.add': async function(msg, $meta) {
             const {notification, ...result} = await this.bus.importMethod('db/rule.rule.add')(msg, $meta);
-            try {
-                await this.bus.importMethod('notice.message.push')(notification, $meta);
-            } catch (error) {};
+            await this.bus.importMethod('notice.message.push')(notification, $meta);
             return result;
         },
         'rule.rule.edit': async function(msg, $meta) {
             const {notification, ...result} = await this.bus.importMethod('db/rule.rule.edit')(msg, $meta);
-            try {
-                await this.bus.importMethod('notice.message.push')(notification, $meta);
-            } catch (error) {};
+            await this.bus.importMethod('notice.message.push')(notification, $meta);
             return result;
         },
         'rule.rule.remove': async function(msg, $meta) {
             const {notification, ...result} = await this.bus.importMethod('db/rule.rule.remove')(msg, $meta);
-            try {
-                await this.bus.importMethod('notice.message.push')(notification, $meta);
-            } catch (error) {};
+            await this.bus.importMethod('notice.message.push')(notification, $meta);
             return result;
         }
     };

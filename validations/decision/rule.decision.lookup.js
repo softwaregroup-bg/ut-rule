@@ -12,14 +12,16 @@ module.exports = ({
             destinationAccount: joi.string().required(),
             amount: joi.number().required(),
             currency: joi.string().required(),
-            isSourceAmount: joi.boolean().allow(0, 1, '0', '1')
+            isSourceAmount: joi.boolean().allow(0, 1, '0', '1'),
+            sourceCardProductId: joi.number().integer().allow(null)
         }),
         result: joi.object().keys({
             amount: joi.object().keys({
-                acquirerFee: joi.number().required(),
-                issuerFee: joi.number().required(),
-                commission: joi.number().required(),
-                transferDateTime: joi.string().required(),
+                acquirerFee: joi.number().allow(null),
+                issuerFee: joi.number().allow(null),
+                processorFee: joi.number().allow(null),
+                commission: joi.number().allow(null),
+                transferDateTime: joi.date().required(),
                 transferTypeId: joi.string().required()
             }),
             split: joi.array().items(

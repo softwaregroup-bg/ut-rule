@@ -61,13 +61,15 @@ declare namespace rule.decision.lookup {
     amount: number;
     currency: string;
     isSourceAmount?: 0 | 1 | '0' | '1';
+    sourceCardProductId?: number | null;
   }
   export interface result {
     amount?: {
-      acquirerFee: number;
-      issuerFee: number;
-      commission: number;
-      transferDateTime: string;
+      acquirerFee?: number | null;
+      issuerFee?: number | null;
+      processorFee?: number | null;
+      commission?: number | null;
+      transferDateTime: Date;
       transferTypeId: string;
     };
     split?: ({

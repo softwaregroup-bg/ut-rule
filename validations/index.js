@@ -10,6 +10,7 @@ module.exports = function validation() {
         require('./rule/rule.rule.add'),
         require('./rule/rule.rule.edit'),
         require('./rule/rule.rule.fetch'),
+        require('./rule/rule.rule.fetchDeleted'),
         require('./rule/rule.rule.remove')
     ];
 };

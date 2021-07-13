@@ -117,6 +117,11 @@ declare namespace rule.rule.fetch {
   export type result = any;
 }
 
+declare namespace rule.rule.fetchDeleted {
+  export type params = any;
+  export type result = any;
+}
+
 declare namespace rule.rule.remove {
   export type params = any;
   export type result = any;
@@ -137,6 +142,8 @@ export interface handlers {
   ruleRuleEdit: ut.remoteHandler<rule.rule.edit.params, rule.rule.edit.result>,
   'rule.rule.fetch': ut.remoteHandler<rule.rule.fetch.params, rule.rule.fetch.result>,
   ruleRuleFetch: ut.remoteHandler<rule.rule.fetch.params, rule.rule.fetch.result>,
+  'rule.rule.fetchDeleted': ut.remoteHandler<rule.rule.fetchDeleted.params, rule.rule.fetchDeleted.result>,
+  ruleRuleFetchDeleted: ut.remoteHandler<rule.rule.fetchDeleted.params, rule.rule.fetchDeleted.result>,
   'rule.rule.remove': ut.remoteHandler<rule.rule.remove.params, rule.rule.remove.result>,
   ruleRuleRemove: ut.remoteHandler<rule.rule.remove.params, rule.rule.remove.result>
 }

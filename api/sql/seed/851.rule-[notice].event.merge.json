@@ -1,0 +1,21 @@
+{
+    "event":[{
+        "template": "rule.rule.add",
+        "name": "A new rule has been created",
+        "type":"multicast",
+        "tags": "outcome.rulePriority, outcome.creationDateTime"
+    },
+    {
+        "template": "rule.rule.edit",
+        "name": "An existing rule has been edited",
+        "type":"multicast",
+        "tags": "outcome.rulePriority, outcome.editDateTime"
+    },
+    {
+        "template": "rule.rule.remove",
+        "name": "A rule has been deleted",
+        "type":"multicast",
+        "tags": "outcome.rulePriority, outcome.deletionDateTime"
+    }
+]
+}

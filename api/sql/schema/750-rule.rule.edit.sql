@@ -284,6 +284,19 @@ BEGIN TRY
 
     COMMIT TRANSACTION
 
+    DECLARE @outcome XML = (
+        SELECT
+            @conditionId [key],
+            c.priority rulePriority,
+            GETDATE() editDateTime
+        FROM
+            @condition c
+        FOR XML RAW, BINARY BASE64, TYPE
+    )
+
+    EXEC core.outcome @proc = @@PROCID, @outcome = @outcome, @meta = @meta
+
+
     EXEC [rule].[rule.fetch] @conditionId = @conditionId
 END TRY
 BEGIN CATCH

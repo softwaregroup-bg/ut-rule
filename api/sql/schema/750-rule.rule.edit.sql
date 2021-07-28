@@ -291,7 +291,7 @@ BEGIN TRY
             GETDATE() editDateTime
         FROM
             @condition c
-        FOR XML RAW, BINARY BASE64, TYPE
+        FOR XML RAW
     )
 
     EXEC core.outcome @proc = @@PROCID, @outcome = @outcome, @meta = @meta

@@ -82,7 +82,7 @@ BEGIN TRY
             [rule].condition x
         JOIN
             @conditionId item ON x.conditionId = item.value
-        FOR XML RAW, BINARY BASE64, TYPE
+        FOR XML RAW
     )
 
     EXEC core.outcome @proc = @@PROCID, @outcome = @outcome, @meta = @meta

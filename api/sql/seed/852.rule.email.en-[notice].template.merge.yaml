@@ -1,0 +1,19 @@
+template:
+    - template: rule.rule.add
+      subject: A new rule has been created
+      priority: 1
+      encryptedBody: |-
+        A new rule has been created with priority ${outcome.rulePriority}. 
+        You can check its details in Fees, Commissions and Limits (FCL) menu.
+    - template: rule.rule.edit
+      subject: An existing rule has been edited
+      priority: 1
+      encryptedBody: |-
+        Rule with priority ${outcome.rulePriority} has been edited. 
+        You can check its details in Fees, Commissions and Limits (FCL) menu.
+    - template: rule.rule.remove
+      subject: A rule has been deleted
+      priority: 1
+      encryptedBody: Rule with priority ${outcome.rulePriority} has been deleted.
+channel: email
+language: en

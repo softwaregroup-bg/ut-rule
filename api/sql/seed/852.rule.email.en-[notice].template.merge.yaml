@@ -1,3 +1,5 @@
+channel: email
+language: en
 template:
     - template: rule.rule.add
       subject: A new rule has been created
@@ -15,5 +17,3 @@ template:
       subject: A rule has been deleted
       priority: 1
       encryptedBody: Rule with priority ${outcome.rulePriority} has been deleted.
-channel: email
-language: en

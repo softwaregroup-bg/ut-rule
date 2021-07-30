@@ -72,6 +72,20 @@ BEGIN TRY
             [rule].condition x
         JOIN
             @conditionId item ON x.conditionId = item.value
+
+        DECLARE @outcome XML = (
+        SELECT
+            x.conditionId [key],
+            x.priority rulePriority,
+            GETDATE() deletionDateTime
+        FROM
+            [rule].condition x
+        JOIN
+            @conditionId item ON x.conditionId = item.value
+        FOR XML RAW
+    )
+
+    EXEC core.outcome @proc = @@PROCID, @outcome = @outcome, @meta = @meta
     COMMIT TRANSACTION
 END TRY
 BEGIN CATCH

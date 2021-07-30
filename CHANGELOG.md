@@ -1,3 +1,12 @@
+# [11.3.0](https://github.com/softwaregroup-bg/ut-rule/compare/v11.2.6...v11.3.0) (2021-07-30)
+
+
+### Features
+
+* add outcome notification flow and notification templates ([#206](https://github.com/softwaregroup-bg/ut-rule/issues/206)) ([8d7db1a](https://github.com/softwaregroup-bg/ut-rule/commit/8d7db1a24dc4439da4287cf6a9d3006e87df01c0))
+
+
+
 ## [11.2.6](https://github.com/softwaregroup-bg/ut-rule/compare/v11.2.5...v11.2.6) (2021-07-13)
 
 

@@ -150,6 +150,34 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
             value: item.itemName
         });
     });
+
+    fetchedData.condition && fetchedData.condition.forEach((conditionItem) => {
+        if (!result[conditionItem.conditionId]) {
+            result[conditionItem.conditionId] = {};
+        }
+        if (!result[conditionItem.conditionId].cs) {
+            result[conditionItem.conditionId].cs = [];
+        }
+        if (conditionItem.agentTypeName) {
+            result[conditionItem.conditionId].cs.push({
+                name: 'Agent Type',
+                value: conditionItem.agentTypeName
+            });
+        }
+        if (conditionItem.superAgent) {
+            result[conditionItem.conditionId].cs.push({
+                name: 'Super Agent',
+                value: conditionItem.superAgent
+            });
+        }
+        if (conditionItem.financialInstitution) {
+            result[conditionItem.conditionId].cs.push({
+                name: 'Financial Institution',
+                value: conditionItem.financialInstitution
+            });
+        }
+    });
+
     fetchedData.conditionProperty && fetchedData.conditionProperty.forEach((property) => {
         if (!result[property.conditionId]) {
             result[property.conditionId] = {};
@@ -174,7 +202,7 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
 
         result[actor.conditionId][actor.factor].push({
             name: actor.type,
-            value: actor.actorId
+            value: actor.organizationName || actor.actorId
         });
     });
     Object.keys(formattedRules).forEach((conditionId) => {

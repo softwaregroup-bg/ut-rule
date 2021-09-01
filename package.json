@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "9.20.6",
+  "version": "9.20.6-visanet.0",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {
@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "tap": "^12.6.1",
-    "ut-tools": "^6.33.2"
+    "ut-tools": "^6.38.2"
   },
   "peerDependencies": {
     "classnames": "^2.2.5",

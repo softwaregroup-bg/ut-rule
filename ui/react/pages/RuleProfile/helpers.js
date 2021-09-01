@@ -67,13 +67,17 @@ export const prepareRuleToSave = (rule) => {
     const { operation, channel, split, limit } = rule;
     const formattedRule = {};
     const conditionId = channel.conditionId;
+
     formattedRule.condition = [{
         conditionId,
         priority: channel.priority,
         operationStartDate: operation.startDate || null,
         operationEndDate: operation.endDate || null,
         sourceAccontId: null,
-        destinationAccountId: null
+        destinationAccountId: null,
+        superAgentId: channel.superAgent,
+        financialInstitutionId: channel.financialInstitution,
+        agentTypeId: channel.agentType
     }];
     formattedRule.conditionActor = [];
     ['channel', 'source', 'destination'].forEach(function(keyProp) {

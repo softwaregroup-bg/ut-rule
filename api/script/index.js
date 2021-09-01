@@ -52,7 +52,7 @@ module.exports = function rule() {
                 result.forEach(function(item) {
                     data = data.concat(item[Object.keys(item)[0]]);
                 });
-
+                data = data.filter(item => item && (item.type !== 'operation' || (item.type === 'operation' && !item.itemCode.includes('Base'))));
                 return {items: data};
             });
         },

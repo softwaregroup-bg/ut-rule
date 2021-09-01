@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import MultiSelectDropdown from 'ut-front-react/components/Input/MultiSelectDropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
@@ -18,6 +18,9 @@ const propTypes = {
     canEdit: PropTypes.bool,
     rule: PropTypes.object,
     actions: PropTypes.object,
+    superAgents: PropTypes.object,
+    institutions: PropTypes.object,
+    agentTypes: PropTypes.object,
     countries: PropTypes.array,
     regions: PropTypes.array,
     cities: PropTypes.array,
@@ -39,6 +42,20 @@ class ChannelTab extends Component {
     constructor(props, context) {
         super(props, context);
         this.renderFields = this.renderFields.bind(this);
+        this.renderOtherFields = this.renderOtherFields.bind(this);
+    }
+
+    componentWillMount() {
+        const { superAgents, institutions, agentTypes } = this.props;
+        if (!superAgents || superAgents.size < 1) {
+            this.props.actions.fetchSuperAgents(fromJS({isEnabled: true, statusId: 'approved'}));
+        }
+        if (!institutions || institutions.size < 1) {
+            this.props.actions.fetchFinancialInstitutions(fromJS({isEnabled: true, statusId: 'approved'}));
+        }
+        if (!agentTypes || agentTypes.size < 1) {
+            this.props.actions.fetchAgentType();
+        }
     }
 
     renderPriority() {
@@ -125,9 +142,70 @@ class ChannelTab extends Component {
                         keyProp='organization'
                         data={organizations}
                         defaultSelected={fieldValues.organization}
-                        placeholder='Select Organization'
+                        placeholder='Select Processing Unit'
                         onSelect={(field) => { changeInput(field); }}
-                        label={fields.organization.title || 'Organization'}
+                        label={fields.organization.title || 'Processing Unit'}
+                    />
+                </div>}
+            </div>
+        );
+    }
+
+    renderOtherFields() {
+        const { canEdit, fieldValues, superAgents, institutions, agentTypes, channelConfig: { fields } } = this.props;
+        const changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
+        };
+        const readonly = !canEdit;
+
+        const superAgentList = superAgents && superAgents.toJS && superAgents.toJS().filter(item => item && item.commercialName && item.isEnabled && item.statusId === 'approved').map(item => {
+            return { key: item.actorId, name: item.commercialName };
+        });
+
+        const institutionList = institutions && institutions.toJS && institutions.toJS().filter(item => item && item.commercialName && item.isEnabled && item.statusId === 'approved').map(item => {
+            return { key: item.actorId, name: item.commercialName };
+        });
+
+        const agentTypeList = agentTypes && agentTypes.toJS && agentTypes.toJS().filter(type => type && type.name).map(type => {
+            return { key: type.actorId, name: type.name };
+        });
+
+        return (
+            <div>
+                {fields.agentType.visible && <div className={style.inputWrapper}>
+                    <Dropdown
+                        disabled={readonly}
+                        canSelectPlaceholder
+                        keyProp='agentType'
+                        data={agentTypeList}
+                        defaultSelected={fieldValues.agentType}
+                        placeholder='Select Agent Type'
+                        onSelect={(field) => { changeInput(field); }}
+                        label={fields.agentType.title || 'Agent Type'}
+                    />
+                </div>}
+                {fields.superAgent.visible && <div className={style.inputWrapper}>
+                    <Dropdown
+                        disabled={readonly}
+                        canSelectPlaceholder
+                        keyProp='superAgent'
+                        data={superAgentList}
+                        defaultSelected={fieldValues.superAgent}
+                        placeholder='Select Super Agent'
+                        onSelect={(field) => { changeInput(field); }}
+                        label={fields.superAgent.title || 'Super Agent'}
+                    />
+                </div>}
+                {fields.financialInstitution.visible && <div className={style.inputWrapper}>
+                    <Dropdown
+                        disabled={readonly}
+                        canSelectPlaceholder
+                        keyProp='financialInstitution'
+                        data={institutionList}
+                        defaultSelected={fieldValues.financialInstitution}
+                        placeholder='Select Financial Institutions'
+                        onSelect={(field) => { changeInput(field); }}
+                        label={fields.financialInstitution.title || 'Financial Institutions'}
                     />
                 </div>}
             </div>
@@ -167,23 +245,34 @@ class ChannelTab extends Component {
                             wrapperClassName
                         >
                             {this.renderFields()}
+                            {this.renderOtherFields()}
                         </TitledContentBox>
                     </div>
                 </div>
                 <div className={style.contentBoxWrapper}>
-                    <TitledContentBox
-                        title='Properties'
-                        wrapperClassName
-                    >
-                        <Property
-                            canEdit={canEdit}
-                            addProperty={addProperty}
-                            removeProperty={removeProperty}
-                            changeInput={changeInput}
-                            properties={(fieldValues || {}).properties || []}
-                            errors={errors}
-                        />
-                    </TitledContentBox>
+                    <div className={style.innerContentBoxWrapper}>
+                        <TitledContentBox
+                            title='Properties'
+                            wrapperClassName
+                        >
+                            <Property
+                                canEdit={canEdit}
+                                addProperty={addProperty}
+                                removeProperty={removeProperty}
+                                changeInput={changeInput}
+                                properties={(fieldValues || {}).properties || []}
+                                errors={errors}
+                            />
+                        </TitledContentBox>
+                    </div>
+                    {/* <div className={style.innerContentBoxWrapper}>
+                        <TitledContentBox
+                            title='Others'
+                            wrapperClassName
+                        >
+                            {this.renderOtherFields()}
+                        </TitledContentBox>
+                    </div> */}
                 </div>
             </div>
         );
@@ -214,7 +303,10 @@ const mapStateToProps = (state, ownProps) => {
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),
-        channelConfig: state.uiConfig.getIn(['profile', 'tabs', 'channel']).toJS()
+        channelConfig: state.uiConfig.getIn(['profile', 'tabs', 'channel']).toJS(),
+        superAgents: state.ruleProfileReducer.getIn(['remote', 'superAgent']) || List(),
+        institutions: state.ruleProfileReducer.getIn(['remote', 'institutions']) || List(),
+        agentTypes: state.ruleProfileReducer.getIn(['remote', 'agentTypes']) || List()
     };
 };
 

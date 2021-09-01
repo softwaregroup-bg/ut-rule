@@ -10,7 +10,11 @@ module.exports = {
         destinationAccount: joi.string().required(),
         amount: joi.number().required(),
         currency: joi.string().required(),
-        isSourceAmount: joi.boolean().allow(0, 1, '0', '1')
+        isSourceAmount: joi.boolean().allow(0, 1, '0', '1'),
+        agentTypeId: joi.number().integer().allow(null).default(null).optional(),
+        superAgentId: joi.number().integer().allow(null).default(null).optional(),
+        financialInstitutionId: joi.number().integer().allow(null).default(null).optional(),
+        isTransactionValidate: joi.number().integer().allow(null).optional()
     }),
     result: joi.object().keys({
         amount: joi.object().keys({

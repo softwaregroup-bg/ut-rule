@@ -44,11 +44,11 @@ const defaultUiState = {
                     title: 'Operation'
                 },
                 source: {
-                    visible: true,
+                    visible: false,
                     title: 'Source'
                 },
                 destination: {
-                    visible: true,
+                    visible: false,
                     title: 'Destination'
                 },
                 limit: {
@@ -73,20 +73,32 @@ const defaultUiState = {
                 title: 'Channel',
                 fields: {
                     country: {
-                        visible: true,
+                        visible: false,
                         title: 'Country'
                     },
                     region: {
-                        visible: true,
+                        visible: false,
                         title: 'Region'
                     },
                     city: {
-                        visible: true,
+                        visible: false,
                         title: 'City'
                     },
                     organization: {
                         visible: true,
                         title: 'Organization'
+                    },
+                    superAgent: {
+                        visible: true,
+                        title: 'Super Agent'
+                    },
+                    financialInstitution: {
+                        visible: true,
+                        title: 'Financial Institution'
+                    },
+                    agentType: {
+                        visible: true,
+                        title: 'Agent Type'
                     }
                 }
             },
@@ -109,27 +121,27 @@ const defaultUiState = {
                 }
             },
             source: {
-                visible: true,
+                visible: false,
                 title: 'Source',
                 fields: {
                     country: {
-                        visible: true,
+                        visible: false,
                         title: 'Country'
                     },
                     region: {
-                        visible: true,
+                        visible: false,
                         title: 'Region'
                     },
                     city: {
-                        visible: true,
+                        visible: false,
                         title: 'City'
                     },
                     organization: {
-                        visible: true,
+                        visible: false,
                         title: 'Organization'
                     },
                     cardProduct: {
-                        visible: true,
+                        visible: false,
                         title: 'Product'
                     },
                     accountProduct: {
@@ -139,23 +151,23 @@ const defaultUiState = {
                 }
             },
             destination: {
-                visible: true,
+                visible: false,
                 title: 'Destination',
                 fields: {
                     country: {
-                        visible: true,
+                        visible: false,
                         title: 'Country'
                     },
                     region: {
-                        visible: true,
+                        visible: false,
                         title: 'Region'
                     },
                     city: {
-                        visible: true,
+                        visible: false,
                         title: 'City'
                     },
                     organization: {
-                        visible: true,
+                        visible: false,
                         title: 'Organization'
                     },
                     accountProduct: {
@@ -187,7 +199,6 @@ export function uiConfig(state = defaultStateImmutable, action) {
                 return newConfigState;
             }
     }
-
     return state;
 }
 

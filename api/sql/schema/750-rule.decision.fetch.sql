@@ -13,15 +13,17 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @credentialsCheck INT, -- credentials from account or account product
     @credentials INT = NULL, -- the passed credentials to validate operation success
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
-AS
+    AS
 BEGIN
     DECLARE @transferTypeId BIGINT
-    SELECT
-        @transferTypeId = CAST(value AS BIGINT)
-    FROM
-        @operationProperties
-    WHERE
-        name = 'operation.id'
+    SELECT @transferTypeId = CAST(value AS BIGINT)
+    FROM @operationProperties
+    WHERE name = 'operation.id'
+    -- hack for balance enquiry. Allow ut-rule to save 0 as start amount
+    -- IF @amount = 0
+    -- BEGIN
+    -- SET @amount = 1
+    -- END;
 
     DECLARE @matches TABLE (
         [priority] INT,
@@ -61,16 +63,15 @@ BEGIN
         @limitId INT
 
     --find all conditions(rules) that match based on the input information
-    INSERT INTO
-        @matches(
-            [priority],
-            conditionId,
-            amountDaily,
-            countDaily,
-            amountWeekly,
-            countWeekly,
-            amountMonthly,
-            countMonthly)
+    INSERT INTO @matches(
+        [priority],
+        conditionId,
+        amountDaily,
+        countDaily,
+        amountWeekly,
+        countWeekly,
+        amountMonthly,
+        countMonthly)
     SELECT
         c.[priority],
         c.conditionId,
@@ -80,18 +81,16 @@ BEGIN
         ISNULL(SUM(t.countWeekly), 0),
         ISNULL(SUM(t.amountMonthly), 0),
         ISNULL(SUM(t.countMonthly), 0)
-    FROM
-        [rule].condition c
-    LEFT JOIN
-        [rule].vConditionOperation co ON co.conditionId = c.conditionId
-    LEFT JOIN
-        @totals t ON t.transferTypeId = ISNULL(co.transferTypeId, @transferTypeId)
+    FROM [rule].condition c
+    LEFT JOIN [rule].vConditionOperation co ON co.conditionId = c.conditionId
+    LEFT JOIN @totals t ON t.transferTypeId = ISNULL(co.transferTypeId, @transferTypeId)
     WHERE
         c.isDeleted = 0 AND
         (@operationDate IS NULL OR c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
         (@operationDate IS NULL OR c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
-        [rule].falseActorFactorCount(c.conditionId, @operationProperties) = 0 AND
-        [rule].falseItemFactorCount(c.conditionId, @operationProperties) = 0 AND
+        -- [rule].falseActorFactorCount(c.conditionId, @operationProperties) = 0 AND
+        -- [rule].falseItemFactorCount(c.conditionId, @operationProperties) = 0 AND
+        co.transferTypeId = @transferTypeId AND
         [rule].falsePropertyFactorCount(c.conditionId, @operationProperties) = 0 AND
         (@sourceAccountId IS NULL OR c.sourceAccountId IS NULL OR @sourceAccountId = c.sourceAccountId) AND
         (@destinationAccountId IS NULL OR c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)
@@ -132,19 +131,19 @@ BEGIN
         [rule].limit AS l ON l.conditionId = c.conditionId
     WHERE
         l.currency = @currency AND (--violation of condition limits
-            @amount < l.minAmount OR
-            @amount > l.maxAmount OR
-            @amount + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
-            @amount + ISNULL(c.amountWeekly, 0) > l.maxAmountWeekly OR
-            @amount + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
-            ISNULL(c.countDaily, 0) >= l.maxCountDaily OR
-            ISNULL(c.countWeekly, 0) >= l.maxCountWeekly OR
-            ISNULL(c.countMonthly, 0) >= l.maxCountMonthly
-        ) AND (--violation of limit credentials
-            @credentials IS NULL OR -- no checked credentials passed by the backend
-            ISNULL(l.[credentials], 0) = 0 OR -- limit credentials equal to NULL or 0 means that condition limits cannot be exceeded
-            @credentials & ISNULL (@credentialsCheck, l.[credentials]) <> ISNULL (@credentialsCheck, l.[credentials])
-        )
+        @amount < l.minAmount OR
+        @amount > l.maxAmount OR
+        @amount + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
+        @amount + ISNULL(c.amountWeekly, 0) > l.maxAmountWeekly OR
+        @amount + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
+        ISNULL(c.countDaily, 0) >= l.maxCountDaily OR
+        ISNULL(c.countWeekly, 0) >= l.maxCountWeekly OR
+        ISNULL(c.countMonthly, 0) >= l.maxCountMonthly
+    ) AND (--violation of limit credentials
+        @credentials IS NULL OR -- no checked credentials passed by the backend
+        ISNULL(l.[credentials], 0) = 0 OR -- limit credentials equal to NULL or 0 means that condition limits cannot be exceeded
+        @credentials & ISNULL (@credentialsCheck, l.[credentials]) <> ISNULL (@credentialsCheck, l.[credentials])
+    )
     ORDER BY
         c.[priority],
         l.[priority]
@@ -189,8 +188,8 @@ BEGIN
             @amount + @amountMonthly AS accumulatedAmountMonthly,
             ISNULL (@credentialsCheck, @limitCredentials) AS [credentials]
 
-        IF ISNULL (@isTransactionValidate, 0) = 0 RETURN -- if only validation - proceed, else stop execution
-    END
+            IF ISNULL (@isTransactionValidate, 0) = 0 RETURN -- if only validation - proceed, else stop execution
+        END
     ELSE -- if not exists a condition limit which is violated, check if credentials are correct. If not return error and result
     IF @amount > @maxAmountParam AND ISNULL(@credentials, 0) & @credentialsCheck <> @credentialsCheck
     BEGIN
@@ -220,7 +219,7 @@ BEGIN
         IF ISNULL (@isTransactionValidate, 0) = 0 RETURN -- if only validation - proceed, else stop execution
     END
 
-    DECLARE @fee TABLE(
+    DECLARE @fee TABLE (
         conditionId INT,
         splitNameId INT,
         fee MONEY,
@@ -229,46 +228,38 @@ BEGIN
 
     -- calculate the operation fees based on the matched conditions (rules), and select these with highest priority
     WITH split(conditionId, splitNameId, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
-        SELECT
-            c.conditionId,
-            r.splitNameId,
-            n.tag,
-            r.minValue,
-            r.maxValue,
-            ISNULL(r.[percent], 0) * CASE
-                WHEN @amount > ISNULL(r.percentBase, 0) THEN @amount - ISNULL(r.percentBase, 0)
-                ELSE 0
-            END / 100,
-            RANK() OVER (PARTITION BY n.splitNameId ORDER BY
-                c.priority,
-                r.startCountMonthly DESC,
-                r.startAmountMonthly DESC,
-                r.startCountWeekly DESC,
-                r.startAmountWeekly DESC,
-                r.startCountDaily DESC,
-                r.startAmountDaily DESC,
-                r.startAmount DESC,
-                r.splitRangeId),
-            RANK() OVER (ORDER BY c.priority, c.conditionId)
-        FROM
-            @matches AS c
-        JOIN
-            [rule].splitName AS n ON n.conditionId = c.conditionId
-        JOIN
-            [rule].splitRange AS r ON r.splitNameId = n.splitNameId
-        WHERE
-            @currency = r.startAmountCurrency AND
-            COALESCE(@isSourceAmount, 0) = r.isSourceAmount AND
-            @amount >= r.startAmount AND
-            c.amountDaily >= r.startAmountDaily AND
-            c.countDaily >= r.startCountDaily AND
-            c.amountWeekly >= r.startAmountWeekly AND
-            c.countWeekly >= r.startCountWeekly AND
-            c.amountMonthly >= r.startAmountMonthly AND
-            c.countMonthly >= r.startCountMonthly
+    SELECT
+        c.conditionId,
+        r.splitNameId,
+        n.tag,
+        r.minValue,
+        r.maxValue,
+        CASE WHEN r.minValue = r.maxValue AND (r.[percent] IS NULL OR r.[percent] = 0) THEN r.minValue
+            ELSE (CASE WHEN ((ISNULL(r.[percent], 0) * CASE WHEN @amount < 0 THEN 0 ELSE @amount END / 100) < r.minValue) THEN r.minValue
+                WHEN ((ISNULL(r.[percent], 0) * CASE WHEN @amount < 0 THEN 0 ELSE @amount END / 100) > r.maxValue) THEN r.maxValue
+                ELSE (ISNULL(r.[percent], 0) * CASE WHEN @amount < 0 THEN 0 ELSE @amount END / 100)
+            END)
+        END,
+        RANK() OVER (PARTITION BY n.splitNameId ORDER BY
+            c.priority,
+            r.startCountMonthly DESC,
+            r.startAmountMonthly DESC,
+            r.startCountWeekly DESC,
+            r.startAmountWeekly DESC,
+            r.startCountDaily DESC,
+            r.startAmountDaily DESC,
+            r.startAmount DESC,
+            r.splitRangeId),
+        RANK() OVER (ORDER BY c.priority, c.conditionId)
+    FROM @matches AS c
+    LEFT JOIN [rule].splitName AS n ON n.conditionId = c.conditionId
+    LEFT JOIN [rule].splitRange AS r ON r.splitNameId = n.splitNameId
+    WHERE
+        @currency = r.startAmountCurrency AND
+        @amount >= r.startAmount
     )
-    INSERT INTO
-        @fee(conditionId, splitNameId, fee, tag)
+
+    INSERT INTO @fee(conditionId, splitNameId, fee, tag)
     SELECT
         s.conditionId,
         s.splitNameId,
@@ -276,10 +267,9 @@ BEGIN
             WHEN s.calcFee > s.maxFee THEN s.maxFee
             WHEN s.calcFee < s.minFee THEN s.minFee
             ELSE s.calcFee
-        END fee,
+            END fee,
         s.tag
-    FROM
-        split s
+    FROM split s
     WHERE
         s.rnk1 = 1 AND
         s.rnk2 = 1
@@ -288,7 +278,7 @@ BEGIN
     SELECT
         (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%') acquirerFee,
         (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%') issuerFee,
-        NULL processorFee, -- @TODO calc processor fee
+        (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|fee|%') processorFee,
         (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%') commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
@@ -296,21 +286,17 @@ BEGIN
     DECLARE @map [core].map
 
     -- calculate the splits based on the selected condition
-    INSERT INTO
-        @map([key], [value])
-    SELECT
-        '$' + '{' + name + '}', CASE WHEN factor IN ('so', 'do', 'co') THEN 'actor:' ELSE 'item:' END + CAST(value AS VARCHAR(100))
-    FROM
-        @operationProperties
+    INSERT INTO @map([key], [value])
+    SELECT '$' + '{' + name + '}', CASE WHEN factor IN ('so', 'do', 'co') THEN 'actor:' ELSE 'item:' END + CAST(value AS VARCHAR(100))
+    FROM @operationProperties
 
-    INSERT INTO
-        @map([key], [value])
+    INSERT INTO @map([key], [value])
     VALUES -- note that ${} is replaced by SQL port
-        ('$' + '{operation.currency}', CAST(@currency AS VARCHAR(100))),
-        ('$' + '{source.account.id}', 'account:' + CAST(@sourceAccountId AS VARCHAR(100))),
-        ('$' + '{source.account.number}', CAST(@sourceAccount AS VARCHAR(100))),
-        ('$' + '{destination.account.id}', 'account:' + CAST(@destinationAccountId AS VARCHAR(100))),
-        ('$' + '{destination.account.number}', CAST(@destinationAccount AS VARCHAR(100)))
+    ('$' + '{operation.currency}', CAST(@currency AS VARCHAR(100))),
+    ('$' + '{source.account.id}', 'account:' + CAST(@sourceAccountId AS VARCHAR(100))),
+    ('$' + '{source.account.number}', CAST(@sourceAccount AS VARCHAR(100))),
+    ('$' + '{destination.account.id}', 'account:' + CAST(@destinationAccountId AS VARCHAR(100))),
+    ('$' + '{destination.account.number}', CAST(@destinationAccount AS VARCHAR(100)))
 
     DELETE FROM @map WHERE [value] IS NULL
 
@@ -320,20 +306,16 @@ BEGIN
         a.splitNameId,
         a.tag,
         CONVERT(VARCHAR, CAST(CASE
-            WHEN assignment.[percent] * a.fee / 100 > assignment.maxValue THEN maxValue
-            WHEN assignment.[percent] * a.fee / 100 < assignment.minValue THEN minValue
-            ELSE assignment.[percent] * a.fee / 100
-        END AS MONEY), 2) amount,
+            WHEN CAST(assignment.[percent] AS MONEY) * a.fee / 100 > CAST(assignment.maxValue AS MONEY) THEN maxValue
+            WHEN CAST(assignment.[percent] AS MONEY) * a.fee / 100 < CAST(assignment.minValue AS MONEY) THEN minValue
+            ELSE CAST(assignment.[percent] AS MONEY) * a.fee / 100
+            END AS MONEY), 2) amount,
         ISNULL(d.accountNumber, assignment.debit) debit,
         ISNULL(c.accountNumber, assignment.credit) credit,
         assignment.description,
         assignment.analytics
-    FROM
-        @fee a
-    CROSS APPLY
-        [rule].assignment(a.splitNameId, @map) assignment
-    LEFT JOIN
-        integration.vAssignment d ON d.accountId = assignment.debit
-    LEFT JOIN
-        integration.vAssignment c ON c.accountId = assignment.credit
+    FROM @fee a
+    CROSS APPLY [rule].assignment(a.splitNameId, @map) assignment
+    LEFT JOIN integration.vAssignment d ON d.accountId = assignment.debit
+    LEFT JOIN integration.vAssignment c ON c.accountId = assignment.credit
 END

@@ -18,6 +18,9 @@ const defaultState = {
     config: {
         nomenclaturesFetched: false,
         ruleSaved: false,
+        institutions: false,
+        superAgent: false,
+        agentType: false,
         mode: null,
         id: null
     },
@@ -78,6 +81,12 @@ export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
             return reducerHelper.removeTab(state, action, options);
         case DELETE_RULE:
             return reducerHelper.deleteRule(state, action, options);
+        case actionTypes.FETCH_SUPERAGENT:
+            return reducerHelper.fetchSuperAgents(state, action, options);
+        case actionTypes.FETCH_FINANCIALINSTITUTIONS:
+            return reducerHelper.fetchFinancialInstitutions(state, action, options);
+        case actionTypes.FETCH_AGENTTYPE:
+            return reducerHelper.fetchAgentType(state, action, options);
         default:
             return state;
     }

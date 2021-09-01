@@ -18,7 +18,7 @@ import Destination from '../Tabs/Destination';
 import Split from '../Tabs/Split';
 import Limit from '../Tabs/Limit';
 import * as actions from '../actions';
-import { HistoryLog } from 'ut-history/ui';
+// import { HistoryLog } from 'ut-history/ui';
 import { prepareRuleToSave, prepareRuleErrors, isEmptyValuesOnly, getRuleErrorCount, tabTitleMap, prepareRuleModel, diff } from '../helpers';
 const status = fromJS({
     status: 'SUCCESS',
@@ -126,14 +126,14 @@ class RuleEdit extends Component {
             }
         ].filter(v => v);
 
-        if (this.context.checkPermission('history.rule.listChanges') && this.props.remoteRule) {
-            const forcelyUpdateHistory = this.state.refetchHistory && this.props.rule.activeTab === tabs.length;
-            tabs.push({
-                title: 'History Log',
-                component: <HistoryLog forceUpdate={forcelyUpdateHistory} objectId={this.props.match.params.id} objectName='rule' objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
-            });
-            forcelyUpdateHistory && this.setState({refetchHistory: false});
-        }
+        // if (this.context.checkPermission('history.rule.listChanges') && this.props.remoteRule) {
+        //     const forcelyUpdateHistory = this.state.refetchHistory && this.props.rule.activeTab === tabs.length;
+        //     tabs.push({
+        //         title: 'History Log',
+        //         component: <HistoryLog forceUpdate={forcelyUpdateHistory} objectId={this.props.match.params.id} objectName='rule' objectDisplayName={String(((this.props.remoteRule.condition || [])[0] || {}).priority || '')} />
+        //     });
+        //     forcelyUpdateHistory && this.setState({refetchHistory: false});
+        // }
         return tabs;
     }
 

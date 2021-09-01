@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Input from 'ut-front-react/components/Input';
+import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import {validations} from '../../../validator';
 import style from '../../style.css';
 import { fromJS } from 'immutable';
@@ -28,6 +29,11 @@ export const Assignment = (props) => {
             <th key={i} className={cell.className || ''}>{cell.name}</th>
         ));
     };
+    const dropDownData = [
+        {key: '01', name: 'Agent Float Account'},
+        {key: '02', name: 'Bank Fee Account'},
+        {key: '03', name: 'Customer Account'}
+    ];
 
     const getBody = () => {
         return assignments.map((prop, index) => {
@@ -44,7 +50,7 @@ export const Assignment = (props) => {
                             value={prop.description}
                         />
                     </td>
-                    <td>
+                    {/* <td>
                         <Input
                             readonly={readonly}
                             keyProp='debit'
@@ -53,8 +59,36 @@ export const Assignment = (props) => {
                             onChange={(field) => { changeInput(index, field); }}
                             value={prop.debit}
                         />
+                    </td> */}
+                    <td>
+                        <Dropdown
+                            disabled={readonly}
+                            canSelectPlaceholder
+                            keyProp='debit'
+                            data={dropDownData}
+                            defaultSelected={prop.debit}
+                            placeholder='Select Account'
+                            onSelect={(field) => { changeInput(index, field); }}
+                            // label={'Debit'}
+                            isValid={!errors.getIn([idx, 'debit'])}
+                            errorMessage={errors.getIn([idx, 'debit'])}
+                        />
                     </td>
                     <td>
+                        <Dropdown
+                            disabled={readonly}
+                            canSelectPlaceholder
+                            keyProp='credit'
+                            data={dropDownData}
+                            defaultSelected={prop.credit}
+                            placeholder='Select Account'
+                            onSelect={(field) => { changeInput(index, field); }}
+                            // label={'Credit'}
+                            isValid={!errors.getIn([idx, 'credit'])}
+                            errorMessage={errors.getIn([idx, 'credit'])}
+                        />
+                    </td>
+                    {/* <td>
                         <Input
                             readonly={readonly}
                             keyProp='credit'
@@ -63,7 +97,7 @@ export const Assignment = (props) => {
                             onChange={(field) => { changeInput(index, field); }}
                             value={prop.credit}
                         />
-                    </td>
+                    </td> */}
                     <td>
                         <Input
                             readonly={readonly}

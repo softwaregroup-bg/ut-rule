@@ -247,3 +247,30 @@ function getUrlParams(queryPath, pathname) {
         return object;
     } else return null;
 };
+
+export const fetchSuperAgents = (state, action) => {
+    if (action.methodRequestState === methodRequestState.FINISHED) {
+        return state
+            .setIn(['config', 'superAgent'], true)
+            .setIn(['remote', 'superAgent'], fromJS(action.result && action.result.superAgent));
+    }
+    return state;
+};
+
+export const fetchFinancialInstitutions = (state, action) => {
+    if (action.methodRequestState === methodRequestState.FINISHED) {
+        return state
+            .setIn(['config', 'institutions'], true)
+            .setIn(['remote', 'institutions'], fromJS(action.result && action.result.institution));
+    }
+    return state;
+};
+
+export const fetchAgentType = (state, action) => {
+    if (action.methodRequestState === methodRequestState.FINISHED) {
+        return state
+            .setIn(['config', 'agentType'], true)
+            .setIn(['remote', 'agentTypes'], fromJS(action.result && action.result.agentType));
+    }
+    return state;
+};

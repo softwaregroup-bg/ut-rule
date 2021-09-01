@@ -37,6 +37,9 @@ BEGIN TRY
             operationEndDate = DATEADD(ms, -3, DATEADD(dd, 1, DATEADD(dd, DATEDIFF(dd, 0, c1.operationEndDate), 0))), -- the last time on this date - 23:59:59.997
             sourceAccountId = c1.sourceAccountId,
             destinationAccountId = c1.destinationAccountId,
+            agentTypeId = c1.agentTypeId,
+            superAgentId = c1.superAgentId,
+            financialInstitutionId = c1.financialInstitutionId,
             updatedOn = GETDATE(),
             updatedBy = @userId
         FROM [rule].condition c

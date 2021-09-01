@@ -19,6 +19,24 @@ export const createRule = (params) => ({
     params: params || {}
 });
 
+export const fetchFinancialInstitutions = (params) => ({
+    type: actionTypes.FETCH_FINANCIALINSTITUTIONS,
+    method: 'agent.institution.fetch',
+    params: params || {}
+});
+
+export const fetchSuperAgents = (params) => ({
+    type: actionTypes.FETCH_SUPERAGENT,
+    method: 'agent.superAgent.fetch',
+    params: params || {}
+});
+
+export const fetchAgentType = () => ({
+    type: actionTypes.FETCH_AGENTTYPE,
+    method: 'agent.agentType.fetch',
+    params: {}
+});
+
 export const editRule = (params) => ({
     type: actionTypes.EDIT_RULE,
     method: 'rule.rule.edit',

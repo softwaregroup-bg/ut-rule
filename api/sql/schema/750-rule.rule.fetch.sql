@@ -23,6 +23,12 @@ BEGIN
         operationStartDate DATETIME,
         sourceAccountId NVARCHAR(255),
         destinationAccountId NVARCHAR(255),
+        agentTypeId BIGINT,
+        superAgentId BIGINT,
+        financialInstitutionId BIGINT,
+        agentTypeName VARCHAR(100),
+        superAgent VARCHAR(100),
+        financialInstitution VARCHAR(100),
         rowNum INT,
         recordsTotal INT);
     WITH CTE AS (
@@ -33,14 +39,23 @@ BEGIN
             rc.operationStartDate,
             rc.sourceAccountId,
             rc.destinationAccountId,
+            rc.agentTypeId,
+            rc.superAgentId,
+            rc.financialInstitutionId,
+            ur.name AS agentTypeName,
+            asg.commercialName AS superAgent,
+            ci.commercialName AS financialInstitution,
             ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
             COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
-        FROM
-            [rule].condition rc
+        FROM [rule].condition rc
+        LEFT JOIN [agent].[superAgent] asg ON rc.superAgentId = asg.actorId
+        LEFT JOIN [agent].[institution] ci ON rc.financialInstitutionId = ci.actorId
+        LEFT JOIN [agent].[agentType] aat ON aat.actorId = rc.agentTypeId
+        JOIN [user].[role] ur ON ur.actorId = aat.actorId AND ur.isEnabled = 1
         WHERE
             (@conditionId IS NULL OR rc.conditionId = @conditionId ) AND rc.isDeleted = 0 )
 
-    INSERT INTO #RuleConditions( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
+    INSERT INTO #RuleConditions( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, agentTypeId, superAgentId, agentTypeName, financialInstitutionId, superAgent, financialInstitution, rowNum, recordsTotal)
     SELECT
         conditionId,
         [priority],
@@ -48,11 +63,16 @@ BEGIN
         operationStartDate,
         sourceAccountId,
         destinationAccountId,
+        agentTypeId,
+        superAgentId,
+        agentTypeName,
+        financialInstitutionId,
+        superAgent,
+        financialInstitution,
         rowNum,
         recordsTotal
     FROM CTE
     WHERE (rowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
-
 
     SELECT 'condition' AS resultSetName
     SELECT
@@ -61,18 +81,26 @@ BEGIN
         rct.[operationEndDate],
         rct.[operationStartDate],
         rct.[sourceAccountId],
-        rct.[destinationAccountId]
+        rct.[destinationAccountId],
+        rct.[agentTypeId],
+        rct.[superAgentId],
+        rct.[agentTypeName],
+        rct.[financialInstitutionId],
+        rct.[superAgent],
+        rct.[financialInstitution]
     FROM #RuleConditions rct
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
-        ca.*, a.actorType AS [type]
+        ca.*, a.actorType AS [type], co.[organizationName]
     FROM
         [rule].conditionActor ca
     JOIN
         #RuleConditions rct ON rct.conditionId = ca.conditionId
     JOIN
         core.actor a ON a.actorId = ca.actorId
+    LEFT JOIN
+        [customer].[organization] co ON co.actorId = a.actorId AND a.actorType = 'organization'
     WHERE
         @conditionId IS NULL OR ca.conditionId = @conditionId
 

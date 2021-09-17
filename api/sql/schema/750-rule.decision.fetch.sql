@@ -333,7 +333,7 @@ BEGIN
     CROSS APPLY
         [rule].assignment(a.splitNameId, @map) assignment
     LEFT JOIN
-        integration.vAssignment d ON d.accountId = assignment.debit
+        integration.vAssignment d ON CAST(d.accountId AS VARCHAR(100)) = assignment.debit
     LEFT JOIN
-        integration.vAssignment c ON c.accountId = assignment.credit
+        integration.vAssignment c ON CAST(c.accountId AS VARCHAR(100)) = assignment.credit
 END

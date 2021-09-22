@@ -128,7 +128,7 @@ class ChannelTab extends Component {
                         defaultSelected={fieldValues.organization}
                         placeholder='Select Business Unit'
                         onSelect={(field) => { changeInput(field); }}
-                        label={fields.organization.title || 'Business Unit'}
+                        label={'Business Unit' || fields.organization.title}
                     />
                 </div>}
             </div>

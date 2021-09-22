@@ -4,7 +4,8 @@ const splitTags = [
     {key: 'commission', name: 'Commission'},
     {key: 'fee', name: 'Fee'},
     {key: 'vendor', name: 'Vendor'},
-    {key: 'levy', name: 'Government Levy'}
+    {key: 'levy', name: 'Government Levy'},
+    {key: 'vat', name: 'VAT'}
 ];
 
 const propMap = {

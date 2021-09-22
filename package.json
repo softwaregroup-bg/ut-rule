@@ -15,13 +15,13 @@
     "lodash.set": "4.3.2"
   },
   "devDependencies": {
-    "tap": "^14.10.7",
+    "tap": "^15.0.9",
     "ut-front-react": ">=12.3.0-redux.2 <=12.3.0-redux.999",
     "ut-history": "^3.2.0",
     "ut-port-script": "^7.2.0",
     "ut-portal": "^7.10.0",
     "ut-run": "10.49.1",
-    "ut-tools": "^6.37.0",
+    "ut-tools": "^6.39.0",
     "react-select": "^1.0.0-rc.2"
   },
   "peerDependencies": {

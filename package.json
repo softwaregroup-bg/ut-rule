@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "11.4.0-nmb.3",
+  "version": "11.4.0-nmb.4",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {

@@ -81,7 +81,7 @@ const defaultUiState = {
                         title: 'Region'
                     },
                     city: {
-                        visible: true,
+                        visible: false,
                         title: 'City'
                     },
                     organization: {
@@ -121,19 +121,19 @@ const defaultUiState = {
                         title: 'Region'
                     },
                     city: {
-                        visible: true,
+                        visible: false,
                         title: 'City'
                     },
                     organization: {
                         visible: true,
-                        title: 'Organization'
+                        title: 'Business Unit'
                     },
                     cardProduct: {
-                        visible: true,
+                        visible: false,
                         title: 'Product'
                     },
                     accountProduct: {
-                        visible: true,
+                        visible: false,
                         title: 'Account Product'
                     }
                 }
@@ -151,15 +151,15 @@ const defaultUiState = {
                         title: 'Region'
                     },
                     city: {
-                        visible: true,
+                        visible: false,
                         title: 'City'
                     },
                     organization: {
                         visible: true,
-                        title: 'Organization'
+                        title: 'Business Unit'
                     },
                     accountProduct: {
-                        visible: true,
+                        visible: false,
                         title: 'Account Product'
                     }
                 }

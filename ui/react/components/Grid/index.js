@@ -57,8 +57,9 @@ export default class Grid extends React.Component {
                 for (const index in condition[keyToInclude]) {
                     const record = condition[keyToInclude][index];
                     if (index > 4 && !this.state.expandedGridColumns.some(v => v === row.priority)) break;
+                    const name = record.name === 'organization' ? 'Business Unit' : record.name;
                     result.push(<div key={result.length}>
-                        <b>{record.name + ':'}</b>{record.value}
+                        <b>{name + ':'}</b>{record.value}
                     </div>);
                 }
             }

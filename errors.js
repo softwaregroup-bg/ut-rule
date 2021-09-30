@@ -5,8 +5,8 @@ module.exports = function error({utError: {defineError, getError, fetchErrors}})
 
         defineError('generic', Rule, 'Rule generic');
         defineError('ruleNotExists', Rule, 'Rule does not exists');
-        defineError('exceedMaxLimitAmount', Rule, 'Transaction amount is above maximum');
-        defineError('exceedMinLimitAmount', Rule, 'Transaction amount is below minimum');
+        defineError('exceedMaxLimitAmount', Rule, 'Transaction Limit exceeded');
+        defineError('exceedMinLimitAmount', Rule, 'Transaction Limit exceeded');
         defineError('reachedDailyLimitAmount', Rule, 'Daily amount limit reached');
         defineError('reachedWeeklyLimitAmount', Rule, 'Weekly amount limit reached');
         defineError('reachedMonthlyLimitAmount', Rule, 'Monthly amount limit reached');

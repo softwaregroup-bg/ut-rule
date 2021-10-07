@@ -2,12 +2,14 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @operationProperties [rule].properties READONLY, -- properties collected based on the input information that will be checked against rule conditions (roles, products etc.)
     @operationDate DATETIME, -- the date when operation is triggered
     @sourceAccountId NVARCHAR(255), -- source account id
+	@sourceAvailableAccountId BIGINT, -- source available account id
     @destinationAccountId NVARCHAR(255), -- destination account id
     @amount MONEY, -- operation amount
     @totals [rule].totals READONLY, -- totals by transfer type (amountDaily, countDaily, amountWeekly ... etc.)
     @currency VARCHAR(3), -- operation currenc
     @isSourceAmount BIT,
     @sourceAccount VARCHAR(100), -- source account number
+	@sourceAvailableAccountNumber VARCHAR(50), -- source available account number
     @destinationAccount VARCHAR(100), -- destination account number
     @maxAmountParam MONEY, -- max amount from account or account product, after which credential validation is required
     @credentialsCheck INT, -- credentials from account or account product
@@ -293,6 +295,7 @@ BEGIN
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
 
+
     DECLARE @map [core].map
 
     -- calculate the splits based on the selected condition
@@ -307,8 +310,8 @@ BEGIN
         @map([key], [value])
     VALUES -- note that ${} is replaced by SQL port
         ('$' + '{operation.currency}', CAST(@currency AS VARCHAR(100))),
-        ('$' + '{source.account.id}', 'account:' + CAST(@sourceAccountId AS VARCHAR(100))),
-        ('$' + '{source.account.number}', CAST(@sourceAccount AS VARCHAR(100))),
+        ('$' + '{source.account.id}', 'account:' + CAST(@sourceAvailableAccountId AS VARCHAR(100))),
+        ('$' + '{source.account.number}', CAST(@sourceAvailableAccountNumber AS VARCHAR(100))),
         ('$' + '{destination.account.id}', 'account:' + CAST(@destinationAccountId AS VARCHAR(100))),
         ('$' + '{destination.account.number}', CAST(@destinationAccount AS VARCHAR(100)))
 

@@ -31,6 +31,8 @@ BEGIN
         @sourceAccountCheckMask INT,
         @sourceProductCheckAmount MONEY,
         @sourceProductCheckMask INT,
+		@sourceAvailableAccountNumber VARCHAR(50),
+		@sourceAvailableAccountId BIGINT,
         @maxAmountParam MONEY,
         @credentialsCheck INT,
 
@@ -71,9 +73,11 @@ BEGIN
         @sourceAccountCheckAmount = accountCheckAmount,
         @sourceAccountCheckMask = accountCheckMask,
         @sourceProductCheckAmount = productCheckAmount,
-        @sourceProductCheckMask = productCheckMask
+        @sourceProductCheckMask = productCheckMask,
+		@sourceAvailableAccountNumber = availableAccountNumber,
+		@sourceAvailableAccountId = availableAccountId
     FROM
-        [integration].[vAccount]
+        [integration].[vAccountSimple]
     WHERE
         accountNumber = @sourceAccount AND
         (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL)
@@ -86,7 +90,7 @@ BEGIN
         @destinationAccountProductId = accountProductId,
         @destinationAccountId = accountId
     FROM
-        [integration].[vAccount]
+        [integration].[vAccountSimple]
     WHERE
         accountNumber = @destinationAccount AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
@@ -178,12 +182,14 @@ BEGIN
         @operationProperties = @operationProperties,
         @operationDate = @operationDate,
         @sourceAccountId = @sourceAccountId,
+		@sourceAvailableAccountId = @sourceAvailableAccountId,
         @destinationAccountId = @destinationAccountId,
         @amount = @amount,
         @totals = @totals,
         @currency = @currency,
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
+		@sourceAvailableAccountNumber = @sourceAvailableAccountNumber,
         @destinationAccount = @destinationAccount,
         @maxAmountParam = @maxAmountParam,
         @credentialsCheck = @credentialsCheck,

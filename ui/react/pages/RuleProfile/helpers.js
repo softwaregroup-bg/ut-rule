@@ -371,3 +371,27 @@ export const flatten = function(ob) {
     }
     return result;
 };
+
+export const formatValue = (value, sep) => {
+    const formatter = new Intl.NumberFormat('en-US', {style: 'decimal'});
+    value = value.replace(/,/g, '');
+    if (value.indexOf('.') !== -1) {
+        const grp = value.split('.');
+        if (grp[1].length > 0) {
+            grp[0] = formatter.format(grp[0]);
+            grp[1] = formatter.format(grp[1]);
+            return grp.join('.');
+        } else {
+            return formatter.format(value) + '.';
+        }
+    } else {
+        value = formatter.format(value);
+        return value;
+    }
+};
+
+export const reverseFormatter = (obj) => {
+    const value = obj.value.replace(/,/g, '');
+    obj.value = value;
+    return obj;
+};

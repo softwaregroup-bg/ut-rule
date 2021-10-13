@@ -42,6 +42,7 @@
   "description": "UT Rule",
   "scripts": {
     "lint": "ut-lint .",
+    "lint-fix": "ut-lint . --fix",
     "release": "ut-release",
     "storybook": "ut-portal storybook -p 6006 --ci",
     "portal": "ut-portal",

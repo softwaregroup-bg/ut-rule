@@ -6,6 +6,7 @@ import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import Button from 'ut-front-react/components/StandardButton';
 import { fromJS } from 'immutable';
 import classnames from 'classnames';
+import { formatValue, reverseFormatter } from '../../../helpers';
 import {validations} from '../../../validator';
 import style from '../../style.css';
 
@@ -71,7 +72,10 @@ export const Cumulative = (props) => {
                         isValid={!errors.getIn([idx, 'dailyAmount'])}
                         errorMessage={errors.getIn([idx, 'dailyAmount'])}
                         value={cumulative.dailyAmount}
-                        onChange={(field) => { setCumulativeField(field, idx); }}
+                        onChange={(field) => { setCumulativeField(reverseFormatter(field), idx); }}
+                        renderText={(value) => {
+                            return formatValue(value);
+                        }}
                     />
                 </td>
                 <td>
@@ -93,7 +97,10 @@ export const Cumulative = (props) => {
                         isValid={!errors.getIn([idx, 'weeklyAmount'])}
                         errorMessage={errors.getIn([idx, 'weeklyAmount'])}
                         value={cumulative.weeklyAmount}
-                        onChange={(field) => { setCumulativeField(field, idx); }}
+                        onChange={(field) => { setCumulativeField(reverseFormatter(field), idx); }}
+                        renderText={(value) => {
+                            return formatValue(value);
+                        }}
                     />
                 </td>
                 <td>
@@ -116,7 +123,10 @@ export const Cumulative = (props) => {
                         isValid={!errors.getIn([idx, 'monthlyAmount'])}
                         errorMessage={errors.getIn([idx, 'monthlyAmount'])}
                         keyProp='monthlyAmount'
-                        onChange={(field) => { setCumulativeField(field, idx); }}
+                        onChange={(field) => { setCumulativeField(reverseFormatter(field), idx); }}
+                        renderText={(value) => {
+                            return formatValue(value);
+                        }}
                     />
                 </td>
             </tr>
@@ -139,7 +149,10 @@ export const Cumulative = (props) => {
                                 isValid={!rerrors.getIn(['startAmount'])}
                                 errorMessage={rerrors.getIn(['startAmount'])}
                                 value={range.startAmount}
-                                onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
+                                onChange={(field) => { setCumulativeRangeField(cumulativeId, index, reverseFormatter(field)); }}
+                                renderText={(value) => {
+                                    return formatValue(value);
+                                }}
                             />
                         </td>
                         <td>
@@ -161,7 +174,10 @@ export const Cumulative = (props) => {
                                 isValid={!rerrors.getIn(['minAmount'])}
                                 errorMessage={rerrors.getIn(['minAmount'])}
                                 value={range.minAmount}
-                                onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
+                                onChange={(field) => { setCumulativeRangeField(cumulativeId, index, reverseFormatter(field)); }}
+                                renderText={(value) => {
+                                    return formatValue(value);
+                                }}
                             />
                         </td>
                         <td>
@@ -172,7 +188,10 @@ export const Cumulative = (props) => {
                                 isValid={!rerrors.getIn(['maxAmount'])}
                                 errorMessage={rerrors.getIn(['maxAmount'])}
                                 value={range.maxAmount}
-                                onChange={(field) => { setCumulativeRangeField(cumulativeId, index, field); }}
+                                onChange={(field) => { setCumulativeRangeField(cumulativeId, index, reverseFormatter(field)); }}
+                                renderText={(value) => {
+                                    return formatValue(value);
+                                }}
                             />
                         </td>
                         <td className={style.deleteCol}>

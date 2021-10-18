@@ -209,7 +209,7 @@ BEGIN TRY
                 records.x.value('(./credit/text())[1]', 'VARCHAR(50)') AS credit,
                 records.x.value('(./minValue/text())[1]', 'money') AS minValue,
                 records.x.value('(./maxValue/text())[1]', 'money') AS maxValue,
-                records.x.value('(./percent/text())[1]', 'decimal') AS [percent],
+                TRY_CAST(records.x.value('(./percent/text())[1]', 'VARCHAR(20)') AS DECIMAL(9, 2)) AS [percent],
                 records.x.value('(./description/text())[1]', 'VARCHAR(50)') AS description
             FROM @split.nodes('/data/rows/splitAssignment') AS records(x)
             JOIN @splitName sn ON sn.rowPosition = records.x.value('for $a in .. return 1 + count($a/../*[.[(local-name()="rows")] << $a])', 'INT')

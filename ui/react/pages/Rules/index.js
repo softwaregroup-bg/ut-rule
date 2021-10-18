@@ -129,6 +129,10 @@ class Main extends React.Component {
         return buttons;
     }
 
+    parseFormattedData() {
+
+    }
+
     render() {
         if (!this.props.ready) {
             return null;

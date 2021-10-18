@@ -374,7 +374,7 @@ export const flatten = function(ob) {
 
 export const formatValue = (value, sep) => {
     const formatter = new Intl.NumberFormat('en-US', {style: 'decimal'});
-    value = value.replace(/,/g, '');
+    value = `${value}`.replace(/,/g, '');
     if (value.indexOf('.') !== -1) {
         const grp = value.split('.');
         if (grp[1].length > 0) {

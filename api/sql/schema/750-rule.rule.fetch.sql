@@ -66,13 +66,15 @@ BEGIN
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
-        ca.*, a.actorType AS [type]
+        ca.*, a.actorType AS [type], IIF(a.actorType = 'role', r.name, IIF(a.actorType = 'organization', org.organizationName, NULL)) name
     FROM
         [rule].conditionActor ca
     JOIN
         #RuleConditions rct ON rct.conditionId = ca.conditionId
     JOIN
         core.actor a ON a.actorId = ca.actorId
+    LEFT JOIN [user].role r ON r.actorId = a.actorId AND a.actorType = 'role'
+    LEFT JOIN [customer].organization org ON org.actorId = a.actorId AND a.actorType = 'organization'
     WHERE
         @conditionId IS NULL OR ca.conditionId = @conditionId
 

@@ -174,7 +174,8 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
 
         result[actor.conditionId][actor.factor].push({
             name: actor.type,
-            value: actor.actorId
+            value: actor.name ? actor.name : actor.actorId
+            // value: actor.actorId
         });
     });
     Object.keys(formattedRules).forEach((conditionId) => {

@@ -15,6 +15,13 @@ DECLARE @conditionId INT = (SELECT conditionId FROM @condition)
 
 BEGIN TRY
 
+    DECLARE @actionID VARCHAR(100) = OBJECT_SCHEMA_NAME(@@PROCID) + '.' + OBJECT_NAME(@@PROCID), @return INT = 0
+    EXEC @return = [user].[permission.check] @actionId = @actionID, @objectId = NULL, @meta = @meta
+    IF @return != 0
+    BEGIN
+        RETURN 55555
+    END
+
     IF EXISTS
         (
             SELECT [priority]

@@ -2,6 +2,7 @@ import * as actionTypes from './actionTypes';
 import map from 'lodash.map';
 import { getLink } from 'ut-front-react/routerHelper';
 import { fromJS } from 'immutable';
+import { formatValue } from '../RuleProfile/helpers';
 
 const defaultState = {
     showDeleted: false
@@ -198,25 +199,25 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
                 if (limit.maxAmount && limit.minAmount) {
                     result[conditionId].limit.push({
                         name: 'Transaction',
-                        value: (limit.maxAmount ? 'max ' + limit.maxAmount + ' ' : '') + (limit.minAmount ? 'min ' + limit.minAmount + ' ' : '')
+                        value: (formatValue(limit.maxAmount) ? 'max ' + formatValue(limit.maxAmount) + ' ' : '') + (formatValue(limit.minAmount) ? 'min ' + formatValue(limit.minAmount) + ' ' : '')
                     });
                 }
                 if (limit.maxAmountDaily && limit.maxCountDaily) {
                     result[conditionId].limit.push({
                         name: 'Daily',
-                        value: (limit.maxAmountDaily ? 'max ' + limit.maxAmountDaily + ' ' : '') + (limit.maxCountDaily ? 'count ' + limit.maxCountDaily + ' ' : '')
+                        value: (formatValue(limit.maxAmountDaily) ? 'max ' + formatValue(limit.maxAmountDaily) + ' ' : '') + (formatValue(limit.maxCountDaily) ? 'count ' + formatValue(limit.maxCountDaily) + ' ' : '')
                     });
                 }
                 if (limit.maxAmountWeekly && limit.maxCountWeekly) {
                     result[conditionId].limit.push({
                         name: 'Weekly',
-                        value: (limit.maxAmountWeekly ? 'max ' + limit.maxAmountWeekly + ' ' : '') + (limit.maxCountWeekly ? 'count ' + limit.maxCountWeekly + ' ' : '')
+                        value: (formatValue(limit.maxAmountWeekly) ? 'max ' + formatValue(limit.maxAmountWeekly) + ' ' : '') + (formatValue(limit.maxCountWeekly) ? 'count ' + formatValue(limit.maxCountWeekly) + ' ' : '')
                     });
                 }
                 if (limit.maxAmountMonthly && limit.maxCountMonthly) {
                     result[conditionId].limit.push({
                         name: 'Monthly',
-                        value: (limit.maxAmountMonthly ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (limit.maxCountMonthly ? 'count ' + limit.maxCountMonthly + ' ' : '')
+                        value: (formatValue(limit.maxAmountMonthly) ? 'max ' + formatValue(limit.maxAmountMonthly) + ' ' : '') + (formatValue(limit.maxCountMonthly) ? 'count ' + formatValue(limit.maxCountMonthly) + ' ' : '')
                     });
                 }
             });

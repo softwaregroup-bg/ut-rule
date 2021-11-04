@@ -142,7 +142,7 @@ BEGIN TRY
             ISNULL(splitRange.x.value('(isSourceAmount)[1]', 'BIT'), 1) AS isSourceAmount,
             IIF(splitRange.x.value('(minValue)[1]', 'money') = 0, NULL, splitRange.x.value('(minValue)[1]', 'money')) AS minValue,
             IIF(splitRange.x.value('(maxValue)[1]', 'money') = 0, NULL, splitRange.x.value('(maxValue)[1]', 'money')) AS maxValue,
-            TRY_CAST(splitRange.x.value('(percent)[1]', 'VARCHAR(20)') AS DECIMAL) AS [percent],
+            TRY_CAST(splitRange.x.value('(percent)[1]', 'VARCHAR(20)') AS DECIMAL(9, 5)) AS [percent],
             splitRange.x.value('(percentBase)[1]', 'money') AS percentBase
         FROM
             @split.nodes('/data/rows/splitRange') AS splitRange(x)
@@ -192,7 +192,7 @@ BEGIN TRY
             splitAssignment.x.value('(credit)[1]', 'VARCHAR(50)') AS credit,
             IIF(splitAssignment.x.value('(minValue)[1]', 'money') = 0, NULL, splitAssignment.x.value('(minValue)[1]', 'money')) AS minValue,
             IIF(splitAssignment.x.value('(maxValue)[1]', 'money') = 0, NULL, splitAssignment.x.value('(maxValue)[1]', 'money')) AS maxValue,
-            TRY_CAST(splitAssignment.x.value('(percent)[1]', 'VARCHAR(20)') AS DECIMAL(9, 2)) AS [percent],
+            TRY_CAST(splitAssignment.x.value('(percent)[1]', 'VARCHAR(20)') AS DECIMAL(9, 5)) AS [percent],
             splitAssignment.x.value('(description)[1]', 'VARCHAR(50)') AS description
         FROM
             @split.nodes('/data/rows/splitAssignment') AS splitAssignment(x)

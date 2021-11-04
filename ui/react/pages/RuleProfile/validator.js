@@ -46,7 +46,7 @@ export const validations = {
         {type: textValidations.numberOnly, errorMessage: 'Please enter a valid number'}
     ],
     percent: [
-        {type: textValidations.decimalOnly, precision: 12, scale: 2, errorMessage: 'Please enter a valid percent ex. 10.500'}
+        {type: textValidations.decimalOnly, precision: 12, scale: 5, errorMessage: 'Please enter a valid percent ex. 10.50000'}
     ],
     amount: [
         {type: textValidations.decimalOnly, precision: 12, scale: 2, errorMessage: 'Please enter a valid amount ex. 10.50'}

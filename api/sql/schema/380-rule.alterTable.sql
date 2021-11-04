@@ -52,3 +52,8 @@ IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleCondtitionPriority')
 BEGIN
     ALTER TABLE [rule].[condition] DROP CONSTRAINT ukRuleCondtitionPriority
 END
+
+IF EXISTS(SELECT 1 FROM sys.columns c JOIN sys.types y ON y.user_type_id = c.user_type_id WHERE c.Name = N'percent' AND c.scale = 2 AND OBJECT_ID = OBJECT_ID(N'rule.splitAssignment'))
+BEGIN
+    ALTER TABLE [rule].[splitAssignment] ALTER COLUMN [percent] DECIMAL(9, 5)
+END

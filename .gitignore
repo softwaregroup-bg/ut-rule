@@ -22,3 +22,5 @@ npm-debug.*
 package-lock.json
 yarn.lock
 .scannerwork
+test.js
+data.txt

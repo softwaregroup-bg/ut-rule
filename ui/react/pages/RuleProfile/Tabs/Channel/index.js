@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fromJS } from 'immutable';
-import MultiSelectDropdown from 'ut-front-react/components/Input/MultiSelectDropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
 import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Input from 'ut-front-react/components/Input';
@@ -19,9 +18,6 @@ const propTypes = {
     canEdit: PropTypes.bool,
     rule: PropTypes.object,
     actions: PropTypes.object,
-    countries: PropTypes.array,
-    regions: PropTypes.array,
-    cities: PropTypes.array,
     organizations: PropTypes.array,
     fieldValues: PropTypes.object,
     errors: PropTypes.object, // immutable
@@ -30,9 +26,6 @@ const propTypes = {
 
 const defaultProps = {
     canEdit: true,
-    countries: [],
-    regions: [],
-    cities: [],
     organizations: []
 };
 
@@ -69,9 +62,6 @@ class ChannelTab extends Component {
     renderFields() {
         const {
             canEdit,
-            countries,
-            regions,
-            cities,
             organizations,
             fieldValues,
             channelConfig: { fields }
@@ -173,9 +163,6 @@ const mapStateToProps = (state, ownProps) => {
         mode,
         canEdit: ownProps.canEdit,
         rule: immutableRule ? immutableRule.toJS() : {},
-        countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
-        regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
-        cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),

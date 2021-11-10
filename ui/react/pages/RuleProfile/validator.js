@@ -41,13 +41,7 @@ export const validations = {
     priority: [
         {type: textValidations.isRequired, errorMessage: errorMessage.priorityRequired},
         {type: textValidations.numberOnly, errorMessage: 'Priority should be a number'},
-        {type: textValidations.regex, value: /^[1-9][0-9]{0,9}/, errorMessage: 'Priority should be between 1 and 9999999999'},
-        {
-            type: textValidations.length,
-            minVal: 1,
-            maxVal: 10,
-            errorMessage: 'Priority can not be more than 10 digits long.'
-        }
+        {type: textValidations.regex, value: /^[1-9][0-9]{0,9}$/, errorMessage: 'Priority should be between 1 and 9999999999'}
     ],
     count: [
         {type: textValidations.numberOnly, errorMessage: 'Please enter a valid number'}

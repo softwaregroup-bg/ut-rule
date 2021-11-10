@@ -16,12 +16,12 @@
   },
   "devDependencies": {
     "tap": "^14.10.7",
-    "ut-front-react": ">=12.3.0-redux.2 <=12.3.0-redux.999",
-    "ut-history": "^3.2.0",
+    "ut-front-react": ">=12.7.2",
+    "ut-history": "^3.2.9",
     "ut-port-script": "^7.2.0",
-    "ut-portal": "^7.10.0",
-    "ut-run": "10.49.1",
-    "ut-tools": "^6.37.0",
+    "ut-portal": "^7.34.4",
+    "ut-run": "10.64.6",
+    "ut-tools": "^6.39.0",
     "react-select": "^1.0.0-rc.2"
   },
   "peerDependencies": {
@@ -34,10 +34,10 @@
     "react-router": "^4.3.1 || ^5.2.0",
     "react-router-dom": "^4.3.1 || ^5.2.0",
     "redux": "^3.7.2 || ^4.0.5",
-    "ut-dispatch-db": "^1.3.0",
-    "ut-front-react": "^12.3.0",
-    "ut-history": "^3.2.0",
-    "ut-run": "^10.49.1"
+    "ut-dispatch-db": "^1.4.1",
+    "ut-front-react": "^12.7.2",
+    "ut-history": "^3.2.9",
+    "ut-run": "^10.64.6"
   },
   "description": "UT Rule",
   "scripts": {

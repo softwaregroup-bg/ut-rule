@@ -83,42 +83,6 @@ class ChannelTab extends Component {
 
         return (
             <div>
-                {/* {fields.country.visible && <div className={style.inputWrapper}>
-                    <MultiSelectDropdown
-                        boldLabel
-                        disabled={readonly}
-                        keyProp='countries'
-                        label={fields.country.title || 'Country'}
-                        placeholder='Select Country'
-                        defaultSelected={fieldValues.countries}
-                        data={countries}
-                        onSelect={(field) => { changeInput(field); }}
-                    />
-                </div>}
-                {fields.region.visible && <div className={style.inputWrapper}>
-                    <MultiSelectDropdown
-                        boldLabel
-                        disabled={readonly}
-                        keyProp='regions'
-                        label={fields.region.title || 'Region'}
-                        placeholder='Select Region'
-                        defaultSelected={fieldValues.regions}
-                        data={regions}
-                        onSelect={(field) => { changeInput(field); }}
-                    />
-                </div>}
-                {fields.city.visible && <div className={style.inputWrapper}>
-                    <MultiSelectDropdown
-                        boldLabel
-                        disabled={readonly}
-                        keyProp='cities'
-                        label={fields.city.title || 'City'}
-                        placeholder='Select City'
-                        defaultSelected={fieldValues.cities}
-                        data={cities}
-                        onSelect={(field) => { changeInput(field); }}
-                    />
-                </div>} */}
                 {fields.organization.visible && <div className={style.inputWrapper}>
                     <Dropdown
                         disabled={readonly}

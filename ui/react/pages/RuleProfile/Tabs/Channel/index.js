@@ -83,7 +83,7 @@ class ChannelTab extends Component {
 
         return (
             <div>
-                {fields.country.visible && <div className={style.inputWrapper}>
+                {/* {fields.country.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
                         boldLabel
                         disabled={readonly}
@@ -118,7 +118,7 @@ class ChannelTab extends Component {
                         data={cities}
                         onSelect={(field) => { changeInput(field); }}
                     />
-                </div>}
+                </div>} */}
                 {fields.organization.visible && <div className={style.inputWrapper}>
                     <Dropdown
                         disabled={readonly}

@@ -1,3 +1,12 @@
+## [11.3.2](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.1...v11.3.2) (2021-11-17)
+
+
+### Bug Fixes
+
+* **ECNT-728:** System allows input 0 for priority ([#217](https://github.com/softwaregroup-bg/ut-rule/issues/217)) ([4304a46](https://github.com/softwaregroup-bg/ut-rule/commit/4304a466ed8df713cf0b5134ed8dc83362d769d4))
+
+
+
 ## [11.3.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.0...v11.3.1) (2021-08-06)
 
 

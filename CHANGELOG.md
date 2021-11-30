@@ -1,3 +1,12 @@
+# [11.4.0](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.3...v11.4.0) (2021-11-30)
+
+
+### Features
+
+* MSA-1103, add filter by operation code ([#221](https://github.com/softwaregroup-bg/ut-rule/issues/221)) ([351e0b5](https://github.com/softwaregroup-bg/ut-rule/commit/351e0b5a2b5bd2946199d40ade1c2d13a76010f6))
+
+
+
 ## [11.3.3](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.2...v11.3.3) (2021-11-30)
 
 

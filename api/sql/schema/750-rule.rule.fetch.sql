@@ -1,6 +1,6 @@
 ALTER PROCEDURE [rule].[rule.fetch]
     @conditionId INT = NULL,
-    @operationCode NVARCHAR(200), -- used for filtering, the code of the operation for which the rules are defined
+    @operationCode NVARCHAR(200) = NULL, -- used for filtering, the code of the operation for which the rules are defined
     @pageSize INT = 25, -- how many rows will be returned per page
     @pageNumber INT = 1, -- which page number to display,
     @meta core.metaDataTT READONLY -- information for the logged user

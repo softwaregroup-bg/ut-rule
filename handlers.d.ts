@@ -1,151 +1,157 @@
-declare namespace rule.decision.fetch {
+declare namespace ruleTableTypes {}
+declare namespace rule_decision_fetch {
   export interface params {
-    channelCountryId?: number | null;
-    channelRegionId?: number | null;
-    channelCityId?: number | null;
-    channelOrganizationId?: number | null;
-    channelSupervisorId?: number | null;
-    channelTags?: string;
-    channelRoleId?: number | null;
-    channelId?: number | null;
-    operationId?: number | null;
-    operationTags?: string;
-    operationDate?: Date;
-    sourceCountryId?: number | null;
-    sourceRegionId?: number | null;
-    sourceCityId?: number | null;
-    sourceOrganizationId?: number | null;
-    sourceSupervisorId?: number | null;
-    sourceTags?: string;
-    sourceId?: number | null;
-    sourceProductId?: number | null;
-    sourceAccountId?: number | null;
-    destinationCountryId?: number | null;
-    destinationRegionId?: number | null;
-    destinationCityId?: number | null;
-    destinationOrganizationId?: number | null;
-    destinationSupervisorId?: number | null;
-    destinationTags?: string;
-    destinationId?: number | null;
-    destinationProductId?: number | null;
-    destinationAccountId?: number | null;
-    amount: number;
-    currency: string;
-    isSourceAmount?: 0 | 1 | '0' | '1';
     /**
      * Unknown Property
      */
-    [x: string]: any;
+    [x: string]: unknown;
+    amount: number;
+    channelCityId?: number | null;
+    channelCountryId?: number | null;
+    channelId?: number | null;
+    channelOrganizationId?: number | null;
+    channelRegionId?: number | null;
+    channelRoleId?: number | null;
+    channelSupervisorId?: number | null;
+    channelTags?: string;
+    currency: string;
+    destinationAccountId?: number | null;
+    destinationCityId?: number | null;
+    destinationCountryId?: number | null;
+    destinationId?: number | null;
+    destinationOrganizationId?: number | null;
+    destinationProductId?: number | null;
+    destinationRegionId?: number | null;
+    destinationSupervisorId?: number | null;
+    destinationTags?: string;
+    isSourceAmount?: 0 | 1 | '0' | '1';
+    operationDate?: Date;
+    operationId?: number | null;
+    operationTags?: string;
+    sourceAccountId?: number | null;
+    sourceCityId?: number | null;
+    sourceCountryId?: number | null;
+    sourceId?: number | null;
+    sourceOrganizationId?: number | null;
+    sourceProductId?: number | null;
+    sourceRegionId?: number | null;
+    sourceSupervisorId?: number | null;
+    sourceTags?: string;
   }
   export interface result {
-    fee?: {
-      amount?: number;
-    };
     commission?: {
       amount?: number;
-    };
+    } | null;
+    fee?: {
+      amount?: number;
+    } | null;
     limit?: {
-      minAmount?: number | null;
-      maxAmount?: number | null;
       count?: number | null;
-    };
+      maxAmount?: number | null;
+      minAmount?: number | null;
+    } | null;
   }
 }
 
-declare namespace rule.decision.lookup {
+declare namespace rule_decision_lookup {
   export interface params {
+    amount: number;
     channelId?: number | null;
+    currency: string;
+    destinationAccount: string;
+    isSourceAmount?: 0 | 1 | '0' | '1';
     operation: string;
     sourceAccount: string;
-    destinationAccount: string;
-    amount: number;
-    currency: string;
-    isSourceAmount?: 0 | 1 | '0' | '1';
     sourceCardProductId?: number | null;
   }
   export interface result {
     amount?: {
       acquirerFee?: number | null;
+      commission?: number | null;
       issuerFee?: number | null;
       processorFee?: number | null;
-      commission?: number | null;
       transferDateTime: Date;
       transferTypeId: string;
     };
     split?: ({
-    conditionId: number;
-    splitNameId: number;
-    tag: string | null;
-    amount: number;
-    debit: string;
-    credit: string;
-    description?: string | null;
-    analytics?: string | null;
-  })[];
+      amount: number;
+      analytics?: string | null;
+      conditionId: number;
+      credit: string;
+      debit: string;
+      description?: string | null;
+      splitNameId: number;
+      tag: string | null;
+    })[];
   }
 }
 
-declare namespace rule.item.fetch {
+declare namespace rule_item_fetch {
   export type params = any;
   export type result = any;
 }
 
-declare namespace rule.limitForUserByRole.get {
+declare namespace rule_limitForUserByRole_get {
   export interface params {
-    userId: number;
-    operation?: string;
-    currency?: string;
-    property?: string;
-    nextLevel?: boolean;
     approvedAmount?: number;
+    currency?: string;
+    nextLevel?: boolean;
+    operation?: string;
+    property?: string;
+    userId: number;
   }
   export type result = any;
 }
 
-declare namespace rule.rule.add {
+declare namespace rule_rule_add {
   export type params = any;
   export type result = any;
 }
 
-declare namespace rule.rule.edit {
+declare namespace rule_rule_edit {
   export type params = any;
   export type result = any;
 }
 
-declare namespace rule.rule.fetch {
+declare namespace rule_rule_fetch {
   export type params = any;
   export type result = any;
 }
 
-declare namespace rule.rule.fetchDeleted {
+declare namespace rule_rule_fetchDeleted {
   export type params = any;
   export type result = any;
 }
 
-declare namespace rule.rule.remove {
+declare namespace rule_rule_remove {
   export type params = any;
   export type result = any;
 }
 
 import ut from 'ut-run';
-export interface handlers {
-  'rule.decision.fetch': ut.remoteHandler<rule.decision.fetch.params, rule.decision.fetch.result>,
-  ruleDecisionFetch: ut.remoteHandler<rule.decision.fetch.params, rule.decision.fetch.result>,
-  'rule.decision.lookup': ut.remoteHandler<rule.decision.lookup.params, rule.decision.lookup.result>,
-  ruleDecisionLookup: ut.remoteHandler<rule.decision.lookup.params, rule.decision.lookup.result>,
-  'rule.item.fetch': ut.remoteHandler<rule.item.fetch.params, rule.item.fetch.result>,
-  ruleItemFetch: ut.remoteHandler<rule.item.fetch.params, rule.item.fetch.result>,
-  'rule.limitForUserByRole.get': ut.remoteHandler<rule.limitForUserByRole.get.params, rule.limitForUserByRole.get.result>,
-  'rule.rule.add': ut.remoteHandler<rule.rule.add.params, rule.rule.add.result>,
-  ruleRuleAdd: ut.remoteHandler<rule.rule.add.params, rule.rule.add.result>,
-  'rule.rule.edit': ut.remoteHandler<rule.rule.edit.params, rule.rule.edit.result>,
-  ruleRuleEdit: ut.remoteHandler<rule.rule.edit.params, rule.rule.edit.result>,
-  'rule.rule.fetch': ut.remoteHandler<rule.rule.fetch.params, rule.rule.fetch.result>,
-  ruleRuleFetch: ut.remoteHandler<rule.rule.fetch.params, rule.rule.fetch.result>,
-  'rule.rule.fetchDeleted': ut.remoteHandler<rule.rule.fetchDeleted.params, rule.rule.fetchDeleted.result>,
-  ruleRuleFetchDeleted: ut.remoteHandler<rule.rule.fetchDeleted.params, rule.rule.fetchDeleted.result>,
-  'rule.rule.remove': ut.remoteHandler<rule.rule.remove.params, rule.rule.remove.result>,
-  ruleRuleRemove: ut.remoteHandler<rule.rule.remove.params, rule.rule.remove.result>
+export interface ports<location = ''> {
+
+}
+interface methods extends ports {}
+
+export interface handlers<location = ''> {
+  'rule.decision.fetch'?: ut.handler<rule_decision_fetch.params, rule_decision_fetch.result, location>,
+  ruleDecisionFetch?: ut.handler<rule_decision_fetch.params, rule_decision_fetch.result, location>,
+  'rule.decision.lookup'?: ut.handler<rule_decision_lookup.params, rule_decision_lookup.result, location>,
+  ruleDecisionLookup?: ut.handler<rule_decision_lookup.params, rule_decision_lookup.result, location>,
+  'rule.item.fetch'?: ut.handler<rule_item_fetch.params, rule_item_fetch.result, location>,
+  ruleItemFetch?: ut.handler<rule_item_fetch.params, rule_item_fetch.result, location>,
+  'rule.limitForUserByRole.get'?: ut.handler<rule_limitForUserByRole_get.params, rule_limitForUserByRole_get.result, location>,
+  'rule.rule.add'?: ut.handler<rule_rule_add.params, rule_rule_add.result, location>,
+  ruleRuleAdd?: ut.handler<rule_rule_add.params, rule_rule_add.result, location>,
+  'rule.rule.edit'?: ut.handler<rule_rule_edit.params, rule_rule_edit.result, location>,
+  ruleRuleEdit?: ut.handler<rule_rule_edit.params, rule_rule_edit.result, location>,
+  'rule.rule.fetch'?: ut.handler<rule_rule_fetch.params, rule_rule_fetch.result, location>,
+  ruleRuleFetch?: ut.handler<rule_rule_fetch.params, rule_rule_fetch.result, location>,
+  'rule.rule.fetchDeleted'?: ut.handler<rule_rule_fetchDeleted.params, rule_rule_fetchDeleted.result, location>,
+  ruleRuleFetchDeleted?: ut.handler<rule_rule_fetchDeleted.params, rule_rule_fetchDeleted.result, location>,
+  'rule.rule.remove'?: ut.handler<rule_rule_remove.params, rule_rule_remove.result, location>,
+  ruleRuleRemove?: ut.handler<rule_rule_remove.params, rule_rule_remove.result, location>
 }
 
 export interface errors {
@@ -198,12 +204,16 @@ export interface errors {
   errorRuleUnauthorizedWeeklyLimitCount: ut.error
 }
 
-import login from 'ut-login/handlers'
+import login, {loginTableTypes} from 'ut-login/handlers'
 interface methods extends login.handlers {}
 
-import core from 'ut-core/handlers'
+import core, {coreTableTypes} from 'ut-core/handlers'
 interface methods extends core.handlers {}
 
 export type libFactory = ut.libFactory<methods, errors>
-export type handlerFactory = ut.handlerFactory<methods, errors>
-export type handlerSet = ut.handlerSet<methods, errors>
+export type handlerFactory = ut.handlerFactory<methods, errors, handlers<'local'>>
+export type handlerSet = ut.handlerSet<methods, errors, handlers<'local'>>
+
+import portal from 'ut-portal'
+export type pageFactory = portal.pageFactory<methods, errors>
+export type pageSet = portal.pageSet<methods, errors>

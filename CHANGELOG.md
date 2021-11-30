@@ -1,3 +1,12 @@
+## [11.4.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.4.0...v11.4.1) (2021-11-30)
+
+
+### Bug Fixes
+
+* set operationCode=Null by default when fetching rules ([deb2564](https://github.com/softwaregroup-bg/ut-rule/commit/deb2564dc767e1231d35c8a6ea2d2d243135ea65))
+
+
+
 # [11.4.0](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.3...v11.4.0) (2021-11-30)
 
 

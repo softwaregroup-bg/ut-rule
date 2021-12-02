@@ -11,13 +11,15 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
     @credentials INT = NULL, -- the passed credentials to validate operation success
-    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
+    @isTransactionValidate BIT = 0, -- flag showing if operation is only validated (1) or executed (0)
+    @meta core.metaDataTT READONLY -- information for the user that makes the operation
 AS
 BEGIN
     DECLARE
         @channelCountryId BIGINT,
         @channelRegionId BIGINT,
         @channelCityId BIGINT,
+        @channelOrganizationId BIGINT,
 
         @operationId BIGINT,
 
@@ -46,7 +48,8 @@ BEGIN
     SELECT
         @channelCountryId = countryId,
         @channelRegionId = regionId,
-        @channelCityId = cityId
+        @channelCityId = cityId,
+        @channelOrganizationId = organizationId
     FROM
         [integration].[vChannel]
     WHERE
@@ -156,6 +159,7 @@ BEGIN
         ('cs', 'channel.country', @channelCountryId),
         ('cs', 'channel.region', @channelRegionId),
         ('cs', 'channel.city', @channelCityId),
+        ('cs', 'channel.organization', @channelOrganizationId),
         --operation category
         ('oc', 'operation.id', @operationId),
         --source spatial
@@ -188,5 +192,6 @@ BEGIN
         @maxAmountParam = @maxAmountParam,
         @credentialsCheck = @credentialsCheck,
         @credentials = @credentials,
-        @isTransactionValidate = @isTransactionValidate
+        @isTransactionValidate = @isTransactionValidate,
+        @meta = @meta
 END

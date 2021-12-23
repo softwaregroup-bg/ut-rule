@@ -1,3 +1,43 @@
+# [11.5.0](https://github.com/softwaregroup-bg/ut-rule/compare/v11.4.1...v11.5.0) (2021-12-23)
+
+
+### Features
+
+* ui model #UTCORE-121 ([71e85a1](https://github.com/softwaregroup-bg/ut-rule/commit/71e85a134662a9ad0b4ea36106c9baa7901fed58)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
+## [11.4.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.4.0...v11.4.1) (2021-11-30)
+
+
+### Bug Fixes
+
+* set operationCode=Null by default when fetching rules ([deb2564](https://github.com/softwaregroup-bg/ut-rule/commit/deb2564dc767e1231d35c8a6ea2d2d243135ea65))
+
+
+
+# [11.4.0](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.3...v11.4.0) (2021-11-30)
+
+
+### Features
+
+* MSA-1103, add filter by operation code ([#221](https://github.com/softwaregroup-bg/ut-rule/issues/221)) ([351e0b5](https://github.com/softwaregroup-bg/ut-rule/commit/351e0b5a2b5bd2946199d40ade1c2d13a76010f6))
+
+
+
+## [11.3.3](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.2...v11.3.3) (2021-11-30)
+
+
+
+## [11.3.2](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.1...v11.3.2) (2021-11-17)
+
+
+### Bug Fixes
+
+* **ECNT-728:** System allows input 0 for priority ([#217](https://github.com/softwaregroup-bg/ut-rule/issues/217)) ([4304a46](https://github.com/softwaregroup-bg/ut-rule/commit/4304a466ed8df713cf0b5134ed8dc83362d769d4))
+
+
+
 ## [11.3.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.0...v11.3.1) (2021-08-06)
 
 

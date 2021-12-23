@@ -1,21 +1,6 @@
-// @ts-check
-import route from './route';
-import page from './page';
-import reducer from './reducer';
+import {component} from 'ut-model';
 
-import RuleBrowse from './rule.rule.browse';
-import RuleNew from './rule.rule.new';
-import RuleOpen from './rule.rule.open';
+import model from '../../model';
 
-/** @type { import("../../handlers").handlerSet } */
-export default function component() {
-    route();
-    return [
-        () => ({ namespace: 'component/rule' }),
-        page,
-        reducer,
-        RuleBrowse,
-        RuleNew,
-        RuleOpen
-    ];
-};
+/** @type { import("../../handlers").pageSet } */
+export default component(model);

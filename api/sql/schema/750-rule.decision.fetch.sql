@@ -34,7 +34,7 @@ BEGIN
         countMonthly BIGINT
     )
 
-    SET @operationDate = ISNULL(@operationDate, GETUTCDATE())
+    SET @operationDate = ISNULL(@operationDate, GETDATE())
 
     DECLARE
         @calcCommission MONEY,

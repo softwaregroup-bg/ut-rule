@@ -41,7 +41,7 @@ BEGIN TRY
             operationEndDate,
             sourceAccountId,
             destinationAccountId,
-            GETUTCDATE(),
+            GETDATE(),
             ISNULL(createdBy, @userId)
         FROM @condition;
 

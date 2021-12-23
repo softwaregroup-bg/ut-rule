@@ -1,3 +1,28 @@
+## [11.5.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.5.0...v11.5.1) (2021-12-23)
+
+
+
+# [12.0.0-utc.3](https://github.com/softwaregroup-bg/ut-rule/compare/v11.4.1...v12.0.0-utc.3) (2021-12-01)
+
+
+
+# [12.0.0-utc.2](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.2...v12.0.0-utc.2) (2021-11-18)
+
+
+
+# [12.0.0-utc.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.0-utc.0...v12.0.0-utc.1) (2021-09-20)
+
+
+
+# [12.0.0-utc.0](https://github.com/softwaregroup-bg/ut-rule/compare/v11.3.1...v12.0.0-utc.0) (2021-09-17)
+
+
+### Bug Fixes
+
+* **MSA-419:** udpate dates from local datetime to utc ([4f290f7](https://github.com/softwaregroup-bg/ut-rule/commit/4f290f7360eb031fb0891b9d7550e0b963102f55))
+
+
+
 # [11.5.0](https://github.com/softwaregroup-bg/ut-rule/compare/v11.4.1...v11.5.0) (2021-12-23)
 
 

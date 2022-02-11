@@ -66,7 +66,7 @@ BEGIN TRY
 
         UPDATE x
         SET isDeleted = 1,
-        updatedOn = GETDATE(),
+        updatedOn = GETUTCDATE(),
         updatedBy = @userId
         FROM
             [rule].condition x

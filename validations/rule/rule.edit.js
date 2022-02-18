@@ -69,7 +69,7 @@ module.exports = {
                                         isSourceAmount: joi.boolean(),
                                         minValue: joi.number().integer().min(0).allow(null),
                                         maxValue: joi.number().integer().min(0).allow(null).optional(),
-                                        percent: joi.string().regex(/^\d*\.?\d*$/).allow(null).optional(),,
+                                        percent: joi.string().regex(/^\d*\.?\d*$/).allow(null).optional(),
                                         startAmountDaily: joi.number().integer().min(0).allow(null),
                                         startCountDaily: joi.number().integer().min(0).allow(null),
                                         startAmountMonthly: joi.number().integer().min(0).allow(null),

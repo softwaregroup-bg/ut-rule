@@ -228,7 +228,7 @@ BEGIN TRY
         SELECT
             @conditionId [key],
             c.priority rulePriority,
-            GETDATE() creationDateTime
+            GETUTCDATE() creationDateTime
         FROM
             @condition c
         FOR XML RAW

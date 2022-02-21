@@ -288,7 +288,7 @@ BEGIN TRY
         SELECT
             @conditionId [key],
             c.priority rulePriority,
-            GETDATE() editDateTime
+            GETUTCDATE() editDateTime
         FROM
             @condition c
         FOR XML RAW

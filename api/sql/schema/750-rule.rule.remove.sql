@@ -77,7 +77,7 @@ BEGIN TRY
         SELECT
             x.conditionId [key],
             x.priority rulePriority,
-            GETDATE() deletionDateTime
+            GETUTCDATE() deletionDateTime
         FROM
             [rule].condition x
         JOIN

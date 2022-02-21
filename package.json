@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "12.0.0-timezone.0",
+  "version": "12.0.0-timezone.1",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {

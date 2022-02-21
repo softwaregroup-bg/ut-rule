@@ -64,7 +64,7 @@ module.exports = () => ({
             exclude: joi.any(),
             clearing: joi.boolean()
         }).required().messages(utc),
-        sqlTest: joi.boolean(), // unused config to be removed in next major version
+        sqlTest: joi.any().forbidden().messages({'any.unknown': 'utRule.sqlTest was removed in version 12'}),
         sqlSeed: [
             joi.boolean(),
             joi.object({

@@ -4,9 +4,11 @@
 
 - Changed datetime values in DB to use UTC
 - When editing rules, the times reported to ut-notice and ut-audit will be in UTC
+- Removed the unused `utRule.sqlTest` configuration
 
 ## Upgrade Steps
 
+- Remove `utRule.sqlTest` from the configuration, if it exists there.
 - Make sure you upgrade ut-transfer to ^8.0.0 and read the release notes
   for that version.
 - Make sure to set utRule.sql.utc=true in the configuration to indicate that

@@ -1,3 +1,7 @@
+## [12.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.0...v12.0.1) (2022-02-21)
+
+
+
 # [12.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.0-timezone.1...v12.0.0) (2022-02-21)
 
 

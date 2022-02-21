@@ -2,6 +2,14 @@ const test = {
     sqlStandard: true
 };
 
+const utc = {
+    'any.required': `
+    Configuration value utRule.sql.utc=true is required.
+    Check the release notes in /ut-rule/doc/release-v12.md
+    before adding it to your configuration.
+`
+};
+
 module.exports = () => ({
     // environments
     dev: {
@@ -19,6 +27,9 @@ module.exports = () => ({
         gateway: true
     },
     types: {
+        sql: {
+            utc: true
+        },
         gateway: true
     },
     doc: {
@@ -26,6 +37,9 @@ module.exports = () => ({
     },
     // test types
     unit: {
+        sql: {
+            utc: true
+        },
         adapter: true,
         orchestrator: true,
         gateway: true,
@@ -46,9 +60,10 @@ module.exports = () => ({
         gateway: joi.boolean(),
         test: joi.boolean(),
         sql: joi.object({
+            utc: joi.valid(true).required().messages(utc),
             exclude: joi.any(),
             clearing: joi.boolean()
-        }),
+        }).required().messages(utc),
         sqlTest: joi.boolean(), // unused config to be removed in next major version
         sqlSeed: [
             joi.boolean(),

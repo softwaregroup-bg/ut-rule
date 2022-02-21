@@ -27,6 +27,9 @@ module.exports = () => ({
         gateway: true
     },
     types: {
+        sql: {
+            utc: true
+        },
         gateway: true
     },
     doc: {

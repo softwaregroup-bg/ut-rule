@@ -54,6 +54,14 @@ module.exports = () => ({
     db: {
         adapter: true
     },
+    microservice: {
+        sql: {
+            utc: true
+        },
+        adapter: true,
+        orchestrator: true,
+        gateway: true
+    },
     validation: ({joi}) => joi.object({
         adapter: joi.boolean(),
         orchestrator: joi.boolean(),

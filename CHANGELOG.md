@@ -1,3 +1,12 @@
+## [12.0.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.1...v12.0.2) (2022-02-21)
+
+
+### Bug Fixes
+
+* add microservice config ([f8336df](https://github.com/softwaregroup-bg/ut-rule/commit/f8336dfd0323a49a88d9de5adee2cd0a89cfbca7))
+
+
+
 ## [12.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.0...v12.0.1) (2022-02-21)
 
 

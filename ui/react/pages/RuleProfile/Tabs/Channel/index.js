@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { fromJS } from 'immutable';
 import MultiSelectDropdown from 'ut-front-react/components/Input/MultiSelectDropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
-import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Input from 'ut-front-react/components/Input';
 import Property from '../../../../components/Property';
 import style from '../style.css';

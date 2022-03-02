@@ -25,7 +25,7 @@
     "ut-port-script": "^7.2.0",
     "ut-portal": "^7.10.0",
     "ut-run": "^10.64.7",
-    "ut-tools": "^6.39.0"
+    "ut-tools": "^6.40.2"
   },
   "peerDependencies": {
     "classnames": "^2.2.6",

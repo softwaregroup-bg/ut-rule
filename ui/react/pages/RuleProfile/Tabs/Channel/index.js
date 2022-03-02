@@ -120,7 +120,7 @@ class ChannelTab extends Component {
                     />
                 </div>}
                 {fields.organization.visible && <div className={style.inputWrapper}>
-                    <Dropdown
+                    <MultiSelectDropdown
                         disabled={readonly}
                         canSelectPlaceholder
                         keyProp='organization'

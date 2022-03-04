@@ -66,7 +66,7 @@ export const defaultTabState = {
         countries: [],
         regions: [],
         cities: [],
-        organization: '',
+        organization: [],
         role: null,
         properties: []
     },

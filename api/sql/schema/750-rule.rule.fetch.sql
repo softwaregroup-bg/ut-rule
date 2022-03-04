@@ -60,13 +60,14 @@ BEGIN
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
-        ca.*, a.actorType AS [type]
+        ca.*, a.actorType AS [type], co.organizationName
     FROM
         [rule].conditionActor ca
     JOIN
         #RuleConditions rct ON rct.conditionId = ca.conditionId
     JOIN
         core.actor a ON a.actorId = ca.actorId
+    LEFT JOIN [customer].[organization] co ON co.actorId = ca.actorId
 
     SELECT 'conditionItem' AS resultSetName
     SELECT

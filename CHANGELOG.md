@@ -1,3 +1,12 @@
+# [12.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.2...v12.1.0) (2022-03-04)
+
+
+### Features
+
+* PS-261 - Support multiple selection for Channel organization input ([#226](https://github.com/softwaregroup-bg/ut-rule/issues/226)) ([e300e67](https://github.com/softwaregroup-bg/ut-rule/commit/e300e671d8cd12a12b024565b9164c5e37d9e2ae))
+
+
+
 ## [12.0.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.1...v12.0.2) (2022-02-21)
 
 

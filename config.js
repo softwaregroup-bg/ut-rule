@@ -1,5 +1,6 @@
 const test = {
-    sqlStandard: true
+    sqlStandard: true,
+    sqlTest: true
 };
 
 const utc = {
@@ -72,7 +73,12 @@ module.exports = () => ({
             exclude: joi.any(),
             clearing: joi.boolean()
         }).required().messages(utc),
-        sqlTest: joi.any().forbidden().messages({'any.unknown': 'utRule.sqlTest was removed in version 12'}),
+        sqlTest: [
+            joi.boolean(),
+            joi.object({
+                exclude: joi.any()
+            })
+        ],
         sqlSeed: [
             joi.boolean(),
             joi.object({

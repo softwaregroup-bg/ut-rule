@@ -11,17 +11,31 @@ END
 
 DECLARE @selfRegistrationProductId BIGINT,
     @selfRegistrationItemNameId BIGINT,
-    @suffix VARCHAR(20)
+    @selfRegistrationSuffix VARCHAR(20),
+    @erpProductId BIGINT,
+    @erpItemNameId BIGINT,
+    @erpSuffix VARCHAR(20)
+
 SELECT
     @selfRegistrationProductId = productId,
     @selfRegistrationItemNameId = itemNameId
 FROM [ledger].[product]
 WHERE [name] = 'selfRegistration'
 
-IF EXISTS(SELECT 1 FROM [ledger].[productSubAccountType] WHERE productId = @selfRegistrationProductId)
-    SET @suffix = 'available'
+SELECT
+    @erpProductId = productId,
+    @erpItemNameId = itemNameId
+FROM [ledger].[product]
+WHERE [name] = 'ERP GL Product'
 
-SET @suffix = ISNULL(@suffix, '')
+IF EXISTS(SELECT 1 FROM [ledger].[productSubAccountType] WHERE productId = @selfRegistrationProductId)
+    SET @selfRegistrationSuffix = 'available'
+IF EXISTS(SELECT 1 FROM [ledger].[productSubAccountType] WHERE productId = @erpProductId)
+    SET @erpSuffix = 'available'
+
+
+SET @selfRegistrationSuffix = ISNULL(@selfRegistrationSuffix, '')
+SET @erpSuffix = ISNULL(@erpSuffix, '')
 
 IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 10)
 BEGIN
@@ -51,8 +65,8 @@ BEGIN
                 <isSourceAmount>0</isSourceAmount>
             </splitRange>
             <splitAssignment>
-                <debit>$' + '{source.account.number}' + @suffix + N'</debit>
-                <credit>$' + '{destination.account.number}' + @suffix + N'</credit>
+                <debit>$' + '{source.account.number}' + @selfRegistrationSuffix + N'</debit>
+                <credit>$' + '{destination.account.number}' + @selfRegistrationSuffix + N'</credit>
                 <percent>100</percent>
                 <description>wallet pending payments</description>
             </splitAssignment>
@@ -97,7 +111,7 @@ BEGIN
             </splitRange>
             <splitAssignment>
                 <debit>$' + '{source.account.number}</debit>
-                <credit>$' + '{destination.account.number}' + @suffix + N'</credit>
+                <credit>$' + '{destination.account.number}' + @selfRegistrationSuffix + N'</credit>
                 <percent>100</percent>
                 <description>wallet push transfers</description>
             </splitAssignment>
@@ -143,10 +157,58 @@ BEGIN
                 <isSourceAmount>0</isSourceAmount>
             </splitRange>
             <splitAssignment>
-                <debit>$' + '{source.account.number}' + @suffix + N'</debit>
+                <debit>$' + '{source.account.number}' + @selfRegistrationSuffix + N'</debit>
                 <credit>' + @accountNumber + N'</credit>
                 <percent>100</percent>
                 <description>Wallet To Account</description>
+            </splitAssignment>
+        </rows>
+    </data>'
+
+    EXEC [rule].[rule.add]
+        @condition,
+        @conditionActor,
+        @conditionItem,
+        @conditionProperty,
+        @limit,
+        @split
+END
+
+DELETE FROM @condition
+DELETE FROM @conditionItem
+
+IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 13)
+BEGIN
+    INSERT INTO @condition ([priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
+    VALUES (13, NULL, NULL, NULL, NULL)
+
+    INSERT INTO @conditionItem (factor, itemNameId)
+    SELECT 'oc', itemNameId
+    FROM core.itemName cin
+    JOIN core.itemType cit ON cit.itemTypeId = cin.itemTypeId
+    WHERE cit.alias = 'operation' AND itemCode IN ('walletToWallet', 'requestMoney', 'qrPayment')
+    UNION ALL
+    SELECT 'dc', @erpItemNameId
+    UNION ALL
+    SELECT 'sc', @selfRegistrationItemNameId
+
+    SET @split = N'<data>
+        <rows>
+            <splitName>
+                <name>wallet pending erp payments</name>
+                <tag>pending</tag>
+            </splitName>
+            <splitRange>
+                <startAmount>0</startAmount>
+                <startAmountCurrency>' + @currency + '</startAmountCurrency>
+                <percent>100</percent>
+                <isSourceAmount>0</isSourceAmount>
+            </splitRange>
+            <splitAssignment>
+                <debit>$' + '{source.account.number}' + @selfRegistrationSuffix + N'</debit>
+                <credit>$' + '{destination.account.number}' + @erpSuffix + N'</credit>
+                <percent>100</percent>
+                <description>wallet pending erp payments</description>
             </splitAssignment>
         </rows>
     </data>'

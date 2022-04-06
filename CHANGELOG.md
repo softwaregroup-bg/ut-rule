@@ -1,3 +1,12 @@
+## [12.1.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.2...v12.1.3) (2022-04-06)
+
+
+### Bug Fixes
+
+* wallet to erp rule, #UTCORE-121 ([#227](https://github.com/softwaregroup-bg/ut-rule/issues/227)) ([487dc37](https://github.com/softwaregroup-bg/ut-rule/commit/487dc3768ab0b62e0c65494e1900842571ef8ab7)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
 ## [12.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.1...v12.1.2) (2022-03-30)
 
 

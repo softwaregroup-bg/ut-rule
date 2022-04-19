@@ -5,7 +5,7 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceAccount VARCHAR(100), -- source account number
     @sourceCardProductId BIGINT = NULL, -- product id of the card
     @destinationAccount VARCHAR(100), -- destination account number
-    @amount VARCHAR(21), -- operation amount
+    @amount DECIMAL(12, 2), -- operation amount
     @currency VARCHAR(3), -- operation currency
     @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id

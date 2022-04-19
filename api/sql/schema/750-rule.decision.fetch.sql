@@ -3,7 +3,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @operationDate DATETIME, -- the date when operation is triggered
     @sourceAccountId NVARCHAR(255), -- source account id
     @destinationAccountId NVARCHAR(255), -- destination account id
-    @amount VARCHAR(21), -- operation amount
+    @amount DECIMAL(12, 2), -- operation amount
     @totals [rule].totals READONLY, -- totals by transfer type (amountDaily, countDaily, amountWeekly ... etc.)
     @currency VARCHAR(3), -- operation currenc
     @isSourceAmount BIT,

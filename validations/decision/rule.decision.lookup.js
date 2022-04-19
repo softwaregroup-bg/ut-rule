@@ -10,7 +10,7 @@ module.exports = ({
             operation: joi.string().required(),
             sourceAccount: joi.string().required(),
             destinationAccount: joi.string().required(),
-            amount: joi.number().required(),
+            amount: joi.string().required(),
             currency: joi.string().required(),
             isSourceAmount: joi.boolean().allow(0, 1, '0', '1'),
             sourceCardProductId: joi.number().integer().allow(null)

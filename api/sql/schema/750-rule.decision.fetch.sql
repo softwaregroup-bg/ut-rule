@@ -3,7 +3,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @operationDate DATETIME, -- the date when operation is triggered
     @sourceAccountId NVARCHAR(255), -- source account id
     @destinationAccountId NVARCHAR(255), -- destination account id
-    @amount VARCHAR(21), -- operation amount
+    @amount MONEY, -- operation amount
     @totals [rule].totals READONLY, -- totals by transfer type (amountDaily, countDaily, amountWeekly ... etc.)
     @currency VARCHAR(3), -- operation currenc
     @isSourceAmount BIT,
@@ -132,11 +132,11 @@ BEGIN
         [rule].limit AS l ON l.conditionId = c.conditionId
     WHERE
         l.currency = @currency AND (--violation of condition limits
-            CONVERT(MONEY, @amount) < l.minAmount OR
-            CONVERT(MONEY, @amount) > l.maxAmount OR
-            CONVERT(MONEY, @amount) + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
-            CONVERT(MONEY, @amount) + ISNULL(c.amountWeekly, 0) > l.maxAmountWeekly OR
-            CONVERT(MONEY, @amount) + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
+            @amount < l.minAmount OR
+            @amount > l.maxAmount OR
+            @amount + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
+            @amount + ISNULL(c.amountWeekly, 0) > l.maxAmountWeekly OR
+            @amount + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
             ISNULL(c.countDaily, 0) >= l.maxCountDaily OR
             ISNULL(c.countWeekly, 0) >= l.maxCountWeekly OR
             ISNULL(c.countMonthly, 0) >= l.maxCountMonthly
@@ -153,8 +153,8 @@ BEGIN
     BEGIN
         DECLARE @type VARCHAR (20) = CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END
         DECLARE @error VARCHAR (50) = CASE
-            WHEN CONVERT(MONEY, @amount) > @maxAmount THEN @type + 'MaxLimitAmount'
-            WHEN CONVERT(MONEY, @amount) < @minAmount THEN @type + 'MinLimitAmount'
+            WHEN @amount > @maxAmount THEN @type + 'MaxLimitAmount'
+            WHEN @amount < @minAmount THEN @type + 'MinLimitAmount'
             WHEN @amountDaily >= @maxAmountDaily THEN 'rule.reachedDailyLimitAmount'
             WHEN @amountWeekly >= @maxAmountWeekly THEN 'rule.reachedWeeklyLimitAmount'
             WHEN @amountMonthly >= @maxAmountMonthly THEN 'rule.reachedMonthlyLimitAmount'
@@ -192,7 +192,7 @@ BEGIN
         IF ISNULL (@isTransactionValidate, 0) = 0 RETURN -- if only validation - proceed, else stop execution
     END
     ELSE -- if not exists a condition limit which is violated, check if credentials are correct. If not return error and result
-    IF CONVERT(MONEY, @amount) > @maxAmountParam AND ISNULL(@credentials, 0) & @credentialsCheck <> @credentialsCheck
+    IF @amount > @maxAmountParam AND ISNULL(@credentials, 0) & @credentialsCheck <> @credentialsCheck
     BEGIN
         SELECT
             'ut-error' resultSetName,
@@ -259,7 +259,7 @@ BEGIN
         WHERE
             @currency = r.startAmountCurrency AND
             COALESCE(@isSourceAmount, 0) = r.isSourceAmount AND
-            CONVERT(MONEY, @amount) >= r.startAmount AND
+            @amount >= r.startAmount AND
             c.amountDaily >= r.startAmountDaily AND
             c.countDaily >= r.startCountDaily AND
             c.amountWeekly >= r.startAmountWeekly AND
@@ -286,10 +286,10 @@ BEGIN
 
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
-        (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%') acquirerFee,
-        (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%') issuerFee,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%')) acquirerFee,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%')) issuerFee,
         NULL processorFee, -- @TODO calc processor fee
-        (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%') commission,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%')) commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
 

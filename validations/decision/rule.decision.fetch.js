@@ -35,7 +35,7 @@ module.exports = ({
             destinationId: joi.number().integer().allow(null).default(null),
             destinationProductId: joi.number().integer().allow(null).default(null),
             destinationAccountId: joi.number().integer().allow(null).default(null),
-            amount: joi.number().required().default(0),
+            amountString: joi.string().required(),
             currency: joi.string().length(3).required().default('TZS'),
             isSourceAmount: joi.boolean().allow(0, 1, '0', '1')
         }).unknown(),

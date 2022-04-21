@@ -179,7 +179,7 @@ BEGIN
         @operationDate = @operationDate,
         @sourceAccountId = @sourceAccountId,
         @destinationAccountId = @destinationAccountId,
-        @amount = @amount,
+        @amountString = @amount,
         @totals = @totals,
         @currency = @currency,
         @isSourceAmount = @isSourceAmount,

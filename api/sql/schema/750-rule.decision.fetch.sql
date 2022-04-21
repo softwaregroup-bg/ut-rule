@@ -3,7 +3,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @operationDate DATETIME, -- the date when operation is triggered
     @sourceAccountId NVARCHAR(255), -- source account id
     @destinationAccountId NVARCHAR(255), -- destination account id
-    @amount MONEY, -- operation amount
+    @amountString VARCHAR(21), -- operation amount
     @totals [rule].totals READONLY, -- totals by transfer type (amountDaily, countDaily, amountWeekly ... etc.)
     @currency VARCHAR(3), -- operation currenc
     @isSourceAmount BIT,
@@ -14,7 +14,9 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @credentials INT = NULL, -- the passed credentials to validate operation success
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
-BEGIN
+BEGIN TRY
+    DECLARE @amount MONEY = TRY_CONVERT(MONEY, @amountString)
+    IF @amount IS NULL RAISERROR('rule.amount', 16, 1)
     DECLARE @transferTypeId BIGINT
     SELECT
         @transferTypeId = CAST(value AS BIGINT)
@@ -286,10 +288,10 @@ BEGIN
 
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
-        (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%') acquirerFee,
-        (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%') issuerFee,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%')) acquirerFee,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%')) issuerFee,
         NULL processorFee, -- @TODO calc processor fee
-        (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%') commission,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%')) commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
 
@@ -336,4 +338,10 @@ BEGIN
         integration.vAssignment d ON CAST(d.accountId AS VARCHAR(100)) = assignment.debit
     LEFT JOIN
         integration.vAssignment c ON CAST(c.accountId AS VARCHAR(100)) = assignment.credit
-END
+END TRY
+BEGIN CATCH
+    IF @@trancount > 0
+        ROLLBACK TRANSACTION
+    EXEC [core].[error]
+    RETURN 55555
+END CATCH

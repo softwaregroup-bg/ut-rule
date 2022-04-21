@@ -15,7 +15,9 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
 BEGIN
-    DECLARE @amount MONEY = CONVERT(MONEY, @amountString)
+    DECLARE @amount MONEY = TRY_CONVERT(MONEY, @amountString)
+    IF @amount IS NULL
+        RETURN 55555
     DECLARE @transferTypeId BIGINT
     SELECT
         @transferTypeId = CAST(value AS BIGINT)

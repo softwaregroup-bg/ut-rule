@@ -14,7 +14,6 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
 BEGIN
-    DECLARE @amountTMoney MONEY = @amount
     DECLARE
         @channelCountryId BIGINT,
         @channelRegionId BIGINT,
@@ -180,7 +179,7 @@ BEGIN
         @operationDate = @operationDate,
         @sourceAccountId = @sourceAccountId,
         @destinationAccountId = @destinationAccountId,
-        @amount = @amountTMoney,
+        @amount = @amount,
         @totals = @totals,
         @currency = @currency,
         @isSourceAmount = @isSourceAmount,

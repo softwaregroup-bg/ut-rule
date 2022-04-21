@@ -16,6 +16,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
 AS
 BEGIN TRY
     DECLARE @amount MONEY = TRY_CONVERT(MONEY, @amountString)
+    IF @amount IS NULL RAISERROR('rule.amount', 16, 1)
     DECLARE @transferTypeId BIGINT
     SELECT
         @transferTypeId = CAST(value AS BIGINT)

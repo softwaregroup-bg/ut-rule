@@ -14,10 +14,13 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @credentials INT = NULL, -- the passed credentials to validate operation success
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
-BEGIN
+BEGIN TRY
     DECLARE @amount MONEY = TRY_CONVERT(MONEY, @amountString)
     IF @amount IS NULL
+        BEGIN
+            RAISERROR('rule.amount', 16, 1)
         RETURN 55555
+    END
     DECLARE @transferTypeId BIGINT
     SELECT
         @transferTypeId = CAST(value AS BIGINT)
@@ -339,4 +342,10 @@ BEGIN
         integration.vAssignment d ON CAST(d.accountId AS VARCHAR(100)) = assignment.debit
     LEFT JOIN
         integration.vAssignment c ON CAST(c.accountId AS VARCHAR(100)) = assignment.credit
-END
+END TRY
+BEGIN CATCH
+    IF @@trancount > 0
+        ROLLBACK TRANSACTION
+    EXEC [core].[error]
+    RETURN 55555
+END CATCH

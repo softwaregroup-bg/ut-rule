@@ -1,3 +1,12 @@
+## [12.1.4](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.3...v12.1.4) (2022-04-21)
+
+
+### Bug Fixes
+
+* **MSA-2182:** edit amount type rounding is not correct ([#228](https://github.com/softwaregroup-bg/ut-rule/issues/228)) ([90d18df](https://github.com/softwaregroup-bg/ut-rule/commit/90d18df241cd626b47e415f3582f8f2e0fa3404b))
+
+
+
 ## [12.1.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.2...v12.1.3) (2022-04-06)
 
 

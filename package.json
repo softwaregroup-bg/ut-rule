@@ -13,17 +13,17 @@
     "lodash.map": "4.6.0",
     "lodash.merge": "4.6.2",
     "lodash.set": "4.3.2",
-    "ut-model": "^7.5.1"
+    "ut-model": "^8.0.1"
   },
   "devDependencies": {
     "react-select": "^1.0.0-rc.2",
-    "tap": "^15.1.5",
-    "ut-front-react": ">=12.4.0-redux.4 <=12.4.0-redux.999",
+    "tap": "^16.1.0",
+    "ut-front-react": "^13.1.1",
     "ut-core": "^8.19.4",
-    "ut-customer": "^9.7.61",
+    "ut-customer": "^10.3.32",
     "ut-history": "^3.2.0",
     "ut-port-script": "^7.2.0",
-    "ut-portal": "^7.10.0",
+    "ut-portal": "^8.0.3",
     "ut-run": "^10.64.7",
     "ut-tools": "^6.40.2"
   },

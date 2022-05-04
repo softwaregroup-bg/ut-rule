@@ -288,10 +288,28 @@ BEGIN TRY
 
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
-        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), 0) acquirerFee,
-        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), 0) issuerFee,
+        CASE WHEN @scale = 2 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), 0)
+		  WHEN @scale = 3 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 3), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%')), 0)
+		  WHEN @scale = 4 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), 2)
+		  WHEN @scale = 1 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 1), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%')), 0)
+		  WHEN @scale = 0 THEN CONVERT(VARCHAR(21), CONVERT(INT, (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%')), 0)
+        ELSE CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), 2)
+	   END AS acquirerFee,
+        CASE WHEN @scale = 2 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), 0)
+		  WHEN @scale = 3 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 3), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%')), 0)
+		  WHEN @scale = 4 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), 2)
+		  WHEN @scale = 1 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 1), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%')), 0)
+		  WHEN @scale = 0 THEN CONVERT(VARCHAR(21), CONVERT(INT, (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%')), 0)
+        ELSE CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), 2)
+	   END AS issuerFee,
         NULL processorFee, -- @TODO calc processor fee
-        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), 0) commission,
+        CASE WHEN @scale = 2 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), 0)
+		  WHEN @scale = 3 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 3), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%')), 0)
+		  WHEN @scale = 4 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), 2)
+		  WHEN @scale = 1 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 1), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%')), 0)
+		  WHEN @scale = 0 THEN CONVERT(VARCHAR(21), CONVERT(INT, (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%')), 0)
+        ELSE CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), 2)
+	   END AS commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
 

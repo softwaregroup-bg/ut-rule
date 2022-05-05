@@ -15,6 +15,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
 BEGIN TRY
+    DECLARE @scale TINYINT = ISNULL((SELECT scale FROM core.currency), 2)
     DECLARE @amount MONEY = TRY_CONVERT(MONEY, @amountString)
     IF @amount IS NULL RAISERROR('rule.amount', 16, 1)
     DECLARE @transferTypeId BIGINT

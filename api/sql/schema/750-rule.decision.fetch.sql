@@ -15,6 +15,11 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
 BEGIN TRY
+
+    DECLARE @scale TINYINT = ISNULL((SELECT scale
+    FROM core.currency c
+        JOIN core.itemName it ON it.itemNameId = c.itemNameId
+    WHERE itemCode = @currency), 2)
     DECLARE @amount MONEY = TRY_CONVERT(MONEY, @amountString)
     IF @amount IS NULL RAISERROR('rule.amount', 16, 1)
     DECLARE @transferTypeId BIGINT
@@ -288,10 +293,10 @@ BEGIN TRY
 
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
-        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%')) acquirerFee,
-        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%')) issuerFee,
+        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), @scale), 2) acquirerFee,
+        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), @scale), 2) issuerFee,
         NULL processorFee, -- @TODO calc processor fee
-        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%')) commission,
+        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), @scale), 2) commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
 
@@ -321,11 +326,11 @@ BEGIN TRY
         a.conditionId,
         a.splitNameId,
         a.tag,
-        CONVERT(VARCHAR, CAST(CASE
+        CONVERT(VARCHAR, ROUND(CAST(CASE
             WHEN assignment.[percent] * a.fee / 100 > assignment.maxValue THEN maxValue
             WHEN assignment.[percent] * a.fee / 100 < assignment.minValue THEN minValue
             ELSE assignment.[percent] * a.fee / 100
-        END AS MONEY), 2) amount,
+        END AS MONEY), @scale), 2) amount,
         ISNULL(d.accountNumber, assignment.debit) debit,
         ISNULL(c.accountNumber, assignment.credit) credit,
         assignment.description,

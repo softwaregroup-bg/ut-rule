@@ -15,7 +15,11 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
 BEGIN TRY
-    DECLARE @scale TINYINT = ISNULL((SELECT scale FROM core.currency), 2)
+
+    DECLARE @scale TINYINT = ISNULL((SELECT scale
+    FROM core.currency c
+        JOIN core.itemName it ON it.itemNameId = c.itemNameId
+    WHERE itemCode = @currency), 2)
     DECLARE @amount MONEY = TRY_CONVERT(MONEY, @amountString)
     IF @amount IS NULL RAISERROR('rule.amount', 16, 1)
     DECLARE @transferTypeId BIGINT
@@ -289,28 +293,10 @@ BEGIN TRY
 
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
-        CASE WHEN @scale = 2 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), 0)
-		  WHEN @scale = 3 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 3), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%')), 0)
-		  WHEN @scale = 4 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), 2)
-		  WHEN @scale = 1 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 1), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%')), 0)
-		  WHEN @scale = 0 THEN CONVERT(VARCHAR(21), CONVERT(INT, (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%')), 0)
-        ELSE CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), 2)
-	   END AS acquirerFee,
-        CASE WHEN @scale = 2 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), 0)
-		  WHEN @scale = 3 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 3), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%')), 0)
-		  WHEN @scale = 4 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), 2)
-		  WHEN @scale = 1 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 1), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%')), 0)
-		  WHEN @scale = 0 THEN CONVERT(VARCHAR(21), CONVERT(INT, (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%')), 0)
-        ELSE CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), 2)
-	   END AS issuerFee,
+        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), @scale)) acquirerFee,
+        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), @scale)) issuerFee,
         NULL processorFee, -- @TODO calc processor fee
-        CASE WHEN @scale = 2 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), 0)
-		  WHEN @scale = 3 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 3), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%')), 0)
-		  WHEN @scale = 4 THEN CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), 2)
-		  WHEN @scale = 1 THEN CONVERT(VARCHAR(21), CONVERT(DECIMAL(19, 1), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%')), 0)
-		  WHEN @scale = 0 THEN CONVERT(VARCHAR(21), CONVERT(INT, (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%')), 0)
-        ELSE CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), 2)
-	   END AS commission,
+        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), @scale)) commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
 

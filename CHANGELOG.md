@@ -1,3 +1,12 @@
+## [12.1.6](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.5...v12.1.6) (2022-05-05)
+
+
+### Bug Fixes
+
+* **ECNT2-1263:** rounding ([#229](https://github.com/softwaregroup-bg/ut-rule/issues/229)) ([bb564a6](https://github.com/softwaregroup-bg/ut-rule/commit/bb564a605ae3eb516ce762875bc25a0e7b2f83d4))
+
+
+
 ## [12.1.5](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.4...v12.1.5) (2022-05-03)
 
 

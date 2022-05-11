@@ -19,7 +19,9 @@ module.exports = ({joi}) => ({
                     operationEndDate: {title: 'End Date'},
                     operationStartDate: {title: 'Start Date'},
                     sourceAccountId: {title: 'Source Account'},
-                    destinationAccountId: {title: 'Destination Account'}
+                    destinationAccountId: {title: 'Destination Account'},
+                    createdOn: {title: 'Creation Date'},
+                    updatedOn: {title: 'Last Modification Date'}
                 }
             },
             conditionActor: {

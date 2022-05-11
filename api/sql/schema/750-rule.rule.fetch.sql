@@ -27,13 +27,15 @@ BEGIN
         operationStartDate DATETIME,
         sourceAccountId NVARCHAR(255),
         destinationAccountId NVARCHAR(255),
+        createdOn DATETIME,
+        updatedOn DATETIME,
         rowNum INT,
         recordsTotal INT)
 
-    INSERT INTO #RuleConditions(conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
+    INSERT INTO #RuleConditions(conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, createdOn, updatedOn, rowNum, recordsTotal)
     SELECT rc.conditionId, rc.[priority],
         rc.operationEndDate, rc.operationStartDate,
-        rc.sourceAccountId, rc.destinationAccountId,
+        rc.sourceAccountId, rc.destinationAccountId, rc.createdOn, rc.updatedOn,
         ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
         COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
     FROM [rule].condition rc
@@ -54,7 +56,9 @@ BEGIN
         rct.[operationEndDate],
         rct.[operationStartDate],
         rct.[sourceAccountId],
-        rct.[destinationAccountId]
+        rct.[destinationAccountId],
+        rct.[createdOn],
+        rct.[updatedOn]
     FROM #RuleConditions rct
     ORDER BY rct.[priority] ASC
 

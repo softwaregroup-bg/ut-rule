@@ -177,7 +177,7 @@ END
 DELETE FROM @condition
 DELETE FROM @conditionItem
 
-IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 13)
+IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 13) AND @erpItemNameId IS NOT NULL
 BEGIN
     INSERT INTO @condition ([priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
     VALUES (13, NULL, NULL, NULL, NULL)

@@ -24,3 +24,13 @@ export const ADD_CUMULATIVE_RANGE = Symbol('ADD_CUMULATIVE_RANGE');
 export const REMOVE_CUMULATIVE_RANGE = Symbol('REMOVE_CUMULATIVE_RANGE');
 export const ADD_SPLIT = Symbol('ADD_SPLIT');
 export const REMOVE_SPLIT = Symbol('REMOVE_SPLIT');
+
+export const GET_SINGLE_RULE = Symbol('GET_SINGLE_RULE');
+export const SET_ACTIVE_TAB = Symbol('SET_ACTIVE_TAB');
+export const CLOSE_CONFIRM_DIALOG = Symbol('CLOSE_CONFIRM_DIALOG');
+export const OPEN_CONFIRM_DIALOG = Symbol('OPEN_CONFIRM_DIALOG');
+export const CHANGE_CONFIRM_DIALOG_VALUE = Symbol('CHANGE_CONFIRM_DIALOG_VALUE');
+export const UPDATE_USER_ERRORS = Symbol('UPDATE_USER_ERRORS');
+export const APPROVE_RULE = Symbol('APPROVE_RULE');
+export const REJECT_RULE = Symbol('REJECT_RULE');
+export const DISCARD_RULE = Symbol('DISCARD_RULE');

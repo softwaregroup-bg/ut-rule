@@ -40,7 +40,8 @@ class Main extends React.Component {
             selectedConditions: {},
             canEdit: false,
             canDelete: false,
-            uiConfig: props.uiConfig.toJS()
+            uiConfig: props.uiConfig.toJS(),
+            selectedData: {}
         };
 
         this.handleCheckboxSelect = this.handleCheckboxSelect.bind(this);
@@ -50,10 +51,10 @@ class Main extends React.Component {
     }
 
     fetchData(props) {
-        const {pageSize, pageNumber} = props.pagination;
+        const { pageSize, pageNumber } = props.pagination;
         const showDeleted = props.showDeleted;
 
-        this.props.actions.fetchRules({pageSize, pageNumber}, showDeleted);
+        this.props.actions.fetchRules({ pageSize, pageNumber }, showDeleted);
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     }
 
@@ -72,7 +73,8 @@ class Main extends React.Component {
             selectedConditions: {},
             canEdit: false,
             canDelete: false,
-            uiConfig: this.props.uiConfig.toJS()
+            uiConfig: this.props.uiConfig.toJS(),
+            selectedData: {}
         };
     }
 
@@ -81,6 +83,7 @@ class Main extends React.Component {
     }
 
     handleCheckboxSelect(isSelected, data) {
+        // console.log('selected', isSelected, 'data', data);
         const selectedConditions = this.state.selectedConditions;
         if (isSelected === null) {
             isSelected = selectedConditions[data.id];
@@ -94,7 +97,8 @@ class Main extends React.Component {
         this.setState({
             selectedConditions: selectedConditions,
             canEdit: count === 1,
-            canDelete: count > 0
+            canDelete: count > 0,
+            selectedData: !isSelected ? data : {}
         });
         return !isSelected;
     }
@@ -125,7 +129,7 @@ class Main extends React.Component {
     getHeaderButtons() {
         const buttons = [];
         this.context.checkPermission('rule.rule.add') &&
-            buttons.push({text: 'Create Rule', href: getLink('ut-rule:create'), styleType: 'primaryLight'});
+            buttons.push({ text: 'Create Rule', href: getLink('ut-rule:create'), styleType: 'primaryLight' });
         return buttons;
     }
 
@@ -136,22 +140,28 @@ class Main extends React.Component {
 
         const uiConfig = this.state.uiConfig;
         const columns = uiConfig.main.grid.columns;
+        // console.log('columns for grid', columns);
         const id = Object.keys(this.state.selectedConditions)[0];
+        // console.log('this.state.selectedConditions', this.state.selectedData);
+        const selectedStatus = this.state.selectedData.status || '';
         const showDeleted = this.props.showDeleted;
         const content = [
             <GridToolBox key='toolbox' contentWrapClassName={style.actionWrap} cssStandard opened title=''>
-                {this.context.checkPermission('rule.rule.edit') && !showDeleted &&
-                (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
+                {this.context.checkPermission('rule.rule.edit') && !showDeleted && id &&
+                    (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
                 {this.context.checkPermission('rule.rule.remove') && !showDeleted &&
-                (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
+                    (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
+                {this.context.checkPermission('rule.rule.approve') && (selectedStatus !== 'approved') && id &&
+                    (<Button label='Validate' href={getLink('ut-rule:validate', { id })} disabled={!(selectedStatus !== 'approved')} className='defaultBtn' />)}
                 {this.context.checkPermission('rule.rule.fetchDeleted') &&
-                (<Button
-                    className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
-                    onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label='Show Deleted'
-                />)}
+                    (<Button
+                        className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
+                        onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label='Show Deleted'
+                    />)}
             </GridToolBox>,
             <Grid
                 key='grid'
+                multiSelect
                 ref='grid'
                 refresh={this.refresh}
                 data={this.props.rules}
@@ -171,7 +181,7 @@ class Main extends React.Component {
             />
         ];
         const resizibleContainerCols = [
-            {type: resizibleTypes.CONTENT, id: 'cardReasonContent', minWidth: 1200, child: content}
+            { type: resizibleTypes.CONTENT, id: 'cardReasonContent', minWidth: 1200, child: content }
         ];
         return (
             <div>
@@ -184,12 +194,12 @@ class Main extends React.Component {
                     title='Warning'
                     message={
                         'You are about to delete ' +
-                    (
-                        Object.keys(this.state.selectedConditions).length === 1
-                            ? '1 rule'
-                            : Object.keys(this.state.selectedConditions).length + ' rules'
-                    ) +
-                    '. Would you like to proceed?'
+                        (
+                            Object.keys(this.state.selectedConditions).length === 1
+                                ? '1 rule'
+                                : Object.keys(this.state.selectedConditions).length + ' rules'
+                        ) +
+                        '. Would you like to proceed?'
                     }
                     onSubmit={this.removeRules}
                 />
@@ -200,6 +210,7 @@ class Main extends React.Component {
 
 export default connect(
     (state, ownProps) => {
+        // console.log('status ui', state.ruleProfileReducer.toJS());
         return {
             rules: state.ruleList.fetchRules,
             nomenclatures: state.ruleList.fetchNomenclatures,

@@ -51,6 +51,10 @@ const defaultUiState = {
                     visible: true,
                     title: 'Destination'
                 },
+                status: {
+                    visible: true,
+                    title: 'Status'
+                },
                 limit: {
                     visible: true,
                     title: 'Limit'

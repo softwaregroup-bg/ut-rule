@@ -6,5 +6,6 @@ export default () => {
     registerRoute('ut-rule:rules').path('rules').parent(mainRoute);
     registerRoute('ut-rule:create').path('create').parent('ut-rule:rules');
     registerRoute('ut-rule:edit').path('edit/:id').parent('ut-rule:rules');
+    registerRoute('ut-rule:validate').path('validate/:id').parent('ut-rule:rules');
     return mainRoute;
 };

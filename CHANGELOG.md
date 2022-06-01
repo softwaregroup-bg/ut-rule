@@ -1,3 +1,21 @@
+## [12.1.8](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.7...v12.1.8) (2022-06-01)
+
+
+### Bug Fixes
+
+* hide table titles #UTCORE-121 ([0b67ca9](https://github.com/softwaregroup-bg/ut-rule/commit/0b67ca9b9868a8e8c018ed18cc286ef09d5a84a5)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
+## [12.1.7](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.6...v12.1.7) (2022-05-25)
+
+
+### Bug Fixes
+
+* Run ERP seed if only exist. BPS-57 ([#230](https://github.com/softwaregroup-bg/ut-rule/issues/230)) ([9011c28](https://github.com/softwaregroup-bg/ut-rule/commit/9011c28893bf3cc8678733ab13eb35f7bd6bb460))
+
+
+
 ## [12.1.6](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.5...v12.1.6) (2022-05-05)
 
 

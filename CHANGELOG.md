@@ -1,3 +1,12 @@
+## [12.1.8](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.7...v12.1.8) (2022-06-01)
+
+
+### Bug Fixes
+
+* hide table titles #UTCORE-121 ([0b67ca9](https://github.com/softwaregroup-bg/ut-rule/commit/0b67ca9b9868a8e8c018ed18cc286ef09d5a84a5)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
 ## [12.1.7](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.6...v12.1.7) (2022-05-25)
 
 

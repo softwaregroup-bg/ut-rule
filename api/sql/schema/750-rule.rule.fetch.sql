@@ -1,10 +1,3 @@
-USE [impl-paasDev]
-    GO
-/****** Object:  StoredProcedure [rule].[rule.fetch]    Script Date: 28/05/2022 12:46:10 pm ******/
-SET ANSI_NULLS ON
-    GO
-SET QUOTED_IDENTIFIER ON
-    GO
 ALTER PROCEDURE [rule].[rule.fetch]
     @conditionId INT = NULL,
     @pageSize INT = 25,

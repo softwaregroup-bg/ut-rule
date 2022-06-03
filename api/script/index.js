@@ -65,21 +65,6 @@ module.exports = function rule() {
             }).then(function(transformedData) {
                 return { data: transformedData };
             });
-        },
-        'rule.rule.addUnapproved': function(msg, $meta) {
-            return this.bus.importMethod('db/rule.rule.addUnapproved')(msg, $meta);
-        },
-        'rule.rule.get': function(msg, $meta) {
-            return this.bus.importMethod('db/rule.rule.get')(msg, $meta);
-        },
-        'rule.rule.approve': function(msg, $meta) {
-            return this.bus.importMethod('db/rule.rule.approve')(msg, $meta);
-        },
-        'rule.rule.reject': function(msg, $meta) {
-            return this.bus.importMethod('db/rule.rule.reject')(msg, $meta);
-        },
-        'rule.rule.discard': function(msg, $meta) {
-            return this.bus.importMethod('db/rule.rule.discard')(msg, $meta);
         }
     };
 };

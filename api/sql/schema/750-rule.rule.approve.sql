@@ -49,7 +49,8 @@ BEGIN TRY
                         c.operationStartDate = cu.operationStartDate,
                         c.operationEndDate = cu.operationEndDate,
                         c.sourceAccountId = cu.sourceAccountId,
-                        c.priority = cu.priority
+                        c.priority = cu.priority,
+                        c.isEnabled = cu.isEnabled
                     FROM [rule].[condition] c
                     INNER JOIN [rule].[conditionUnapproved] cu ON cu.conditionId = c.conditionId
                     WHERE c.conditionId = @conditionId
@@ -57,8 +58,8 @@ BEGIN TRY
             ELSE
                 BEGIN
                     SET IDENTITY_INSERT [rule].[condition] ON -- allow conditionId to be inserted in the condition table
-                    INSERT INTO [rule].[condition] (conditionId, priority, status, operationStartDate, operationEndDate, sourceAccountId, isDeleted, createdBy, updatedBy)
-                    SELECT cu.conditionId, cu.priority, 'approved', cu.operationStartDate, cu.operationEndDate, cu.sourceAccountId, 0, cu.createdBy, cu.updatedBy
+                    INSERT INTO [rule].[condition] (conditionId, priority, status, operationStartDate, operationEndDate, sourceAccountId, isDeleted, createdBy, updatedBy, isEnabled)
+                    SELECT cu.conditionId, cu.priority, 'approved', cu.operationStartDate, cu.operationEndDate, cu.sourceAccountId, 0, cu.createdBy, cu.updatedBy, cu.isEnabled
                     FROM [rule].[conditionUnapproved] cu
                     WHERE cu.conditionId = @conditionId
                     SET IDENTITY_INSERT [rule].[condition] OFF

@@ -87,3 +87,15 @@ IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = N'status' AND OBJECT_ID = O
         WITH CHECK ADD CONSTRAINT [fk_splitAnalytic_status] FOREIGN KEY ([status])
         REFERENCES [core].[status] ([statusId])
     END
+
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = N'isEnabled' AND OBJECT_ID = OBJECT_ID(N'rule.condition')) -- add column if it does not exist
+    BEGIN
+        ALTER TABLE [rule].[condition]
+        ADD isEnabled BIT NOT NULL DEFAULT(0)
+    END
+
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = N'isEnabled' AND OBJECT_ID = OBJECT_ID(N'rule.conditionUnapproved')) -- add column if it does not exist
+    BEGIN
+        ALTER TABLE [rule].[conditionUnapproved]
+        ADD isEnabled BIT NOT NULL DEFAULT(0)
+    END

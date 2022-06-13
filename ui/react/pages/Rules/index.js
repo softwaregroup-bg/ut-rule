@@ -48,6 +48,8 @@ class Main extends React.Component {
         this.handleHeaderCheckboxSelect = this.handleHeaderCheckboxSelect.bind(this);
         this.showConfirm = this.showConfirm.bind(this);
         this.removeRules = this.removeRules.bind(this);
+        this.showRuleLockConfirm = this.showRuleLockConfirm.bind(this);
+        this.lockRule = this.lockRule.bind(this);
     }
 
     fetchData(props) {
@@ -118,6 +120,19 @@ class Main extends React.Component {
         }));
     }
 
+    lockRule() {
+        const id = Object.keys(this.state.selectedConditions)[0];
+        const selectedData = this.state.selectedData;
+        this.props.actions.lockUnlockRule({ conditionId: id, isEnabled: Number(Boolean(!(selectedData.isEnabled === 'Locked'))) }).then(() => {
+            this.refresh();
+            this.fetchData(this.props);
+        });
+    }
+
+    showRuleLockConfirm() {
+        this.refs.showRuleLockDialog && this.refs.showRuleLockDialog.open();
+    }
+
     refresh() {
         this.setState(this.getInitialState(), () => this.props.actions.reset());
     }
@@ -144,6 +159,8 @@ class Main extends React.Component {
         const id = Object.keys(this.state.selectedConditions)[0];
         // console.log('this.state.selectedConditions', this.state.selectedData);
         const selectedStatus = this.state.selectedData.status || '';
+        const selectedData = this.state.selectedData;
+        const isLocked = this.state.selectedData.isEnabled === 'Locked';
         const showDeleted = this.props.showDeleted;
         const content = [
             <GridToolBox key='toolbox' contentWrapClassName={style.actionWrap} cssStandard opened title=''>
@@ -151,6 +168,8 @@ class Main extends React.Component {
                     (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
                 {this.context.checkPermission('rule.rule.remove') && !showDeleted &&
                     (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
+                {this.context.checkPermission('rule.rule.lock') && id && (selectedStatus === 'approved') &&
+                    (<Button label={isLocked ? 'Unlock' : 'Lock'} className='defaultBtn' onClick={this.showRuleLockConfirm} />)}
                 {this.context.checkPermission('rule.rule.approve') && (selectedStatus !== 'approved') && id &&
                     (<Button label='Validate' href={getLink('ut-rule:validate', { id })} disabled={!(selectedStatus !== 'approved')} className='defaultBtn' />)}
                 {this.context.checkPermission('rule.rule.fetchDeleted') &&
@@ -202,6 +221,13 @@ class Main extends React.Component {
                         '. Would you like to proceed?'
                     }
                     onSubmit={this.removeRules}
+                />
+                <ConfirmDialog
+                    ref='showRuleLockDialog'
+                    submitLabel='Yes'
+                    title='Warning'
+                    message={`You are about to ${selectedData.isEnabled ? 'unlock' : 'lock'} rule. Would you like to proceed?`}
+                    onSubmit={this.lockRule}
                 />
             </div>
         );

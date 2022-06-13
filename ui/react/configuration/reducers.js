@@ -55,6 +55,10 @@ const defaultUiState = {
                     visible: true,
                     title: 'Status'
                 },
+                lock: {
+                    visible: true,
+                    title: 'Lock'
+                },
                 limit: {
                     visible: true,
                     title: 'Limit'

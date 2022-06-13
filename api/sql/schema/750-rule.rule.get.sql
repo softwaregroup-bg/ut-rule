@@ -39,7 +39,8 @@ BEGIN
         c.[sourceAccountId],
         c.[destinationAccountId],
         c.status,
-        CASE WHEN co.conditionId IS NULL THEN 1 ELSE 0 END AS [isNew]
+        CASE WHEN co.conditionId IS NULL THEN 1 ELSE 0 END AS [isNew],
+        c.[isEnabled]
     FROM [rule].condition c
         LEFT JOIN [rule].conditionUnapproved co ON co.conditionId = c.conditionId
     WHERE c.conditionId = @conditionId
@@ -54,7 +55,8 @@ BEGIN
         c.[destinationAccountId],
         c.[rejectReason],
         c.status,
-        CASE WHEN co.conditionId IS NULL THEN 1 ELSE 0 END AS [isNew]
+        CASE WHEN co.conditionId IS NULL THEN 1 ELSE 0 END AS [isNew],
+        c.[isEnabled]
     FROM [rule].conditionUnapproved c
         LEFT JOIN [rule].[condition] co ON co.conditionId = c.conditionId
     WHERE c.conditionId = @conditionId

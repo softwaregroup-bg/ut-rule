@@ -80,6 +80,10 @@ const generalInfoMapper = (values) => {
             key: 'Status',
             value: capitalizeFirstLetter(values.getIn(['condition', 'status']))
         },
+        {
+            key: 'Lock',
+            value: values.getIn(['condition', 'isEnabled']) ? 'Lock' : 'Unlock'
+        },
         ...parseConditionItemData(values.get('conditionItem'), 'cs'),
         ...parseConditionPropertyData(values.get('conditionProperty'), 'co'),
         ...parseConditionActorData(values.get('conditionActor'), 'co')

@@ -47,6 +47,11 @@ export default class Grid extends React.Component {
         if (findStatus.length === 0) {
             fields.splice(2, 0, { title: this.props.columns.status.title, name: 'status' }); // insert column to the 3rd position
         }
+
+        const findLock = fields.filter(item => item.name === 'isEnabled');
+        if (findLock.length === 0) {
+            fields.splice(5, 0, { title: this.props.columns.lock.title, name: 'isEnabled' }); // insert column to the 6th position
+        }
         return fields;
     }
 
@@ -109,13 +114,6 @@ export default class Grid extends React.Component {
                 </div>
             );
         }
-        if (row.status && column === 'status') {
-            result.push(
-                <div key={result.length}>
-                    <b>{row.status}</b>
-                </div>
-            );
-        }
 
         return (
             <div>
@@ -161,6 +159,7 @@ export default class Grid extends React.Component {
                 operationEndDate: condition.operationEndDate,
                 operationStartDate: condition.operationStartDate,
                 status: condition.status,
+                isEnabled: !condition.isEnabled ? 'Unlocked' : 'Locked',
                 priority: columns.priority.visible && condition.priority,
                 channel: columns.channel.visible && this.props.formatedGridData[conditionId],
                 operation: columns.operation.visible && this.props.formatedGridData[conditionId],

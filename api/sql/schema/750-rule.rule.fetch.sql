@@ -45,7 +45,8 @@ BEGIN
         destinationAccountId NVARCHAR(255),
         rowNum INT,
         status VARCHAR(20),
-        recordsTotal INT
+        recordsTotal INT,
+        isEnabled INT
     );
     WITH
         CTE
@@ -57,32 +58,16 @@ BEGIN
             rc.operationStartDate,
             rc.sourceAccountId,
             rc.destinationAccountId,
-            rc.status,
+            CASE WHEN rcu.status IS NOT NULL THEN rcu.status ELSE rc.status END AS status,
+            rc.isEnabled,
             ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
             COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
         FROM
             [rule].condition rc
-        WHERE (@conditionId IS NULL OR rc.conditionId = @conditionId ) AND rc.isDeleted = 0
-
-    UNION ALL
-
-        SELECT
-            urc.conditionId,
-            urc.[priority],
-            urc.operationEndDate,
-            urc.operationStartDate,
-            urc.sourceAccountId,
-            urc.destinationAccountId,
-            urc.status,
-            ROW_NUMBER() OVER(ORDER BY urc.[priority] ASC) AS rowNum,
-            COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
-        FROM
-            [rule].conditionUnapproved urc
-        WHERE (@conditionId IS NULL OR urc.conditionId = @conditionId ) AND urc.isDeleted = 0
-        )
+        WHERE (@conditionId IS NULL OR rc.conditionId = @conditionId ) AND rc.isDeleted = 0)
 
     INSERT INTO #RuleConditions
-        ( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal, status)
+        ( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal, status, isEnabled)
     SELECT
         conditionId,
         [priority],
@@ -92,7 +77,8 @@ BEGIN
         destinationAccountId,
         rowNum,
         recordsTotal,
-        status
+        status,
+        isEnabled
     FROM CTE
     WHERE (rowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
 
@@ -105,7 +91,8 @@ BEGIN
         rct.[operationStartDate],
         rct.[sourceAccountId],
         rct.[destinationAccountId],
-        rct.status
+        rct.status,
+        rct.isEnabled
     FROM #RuleConditions rct
 
     SELECT 'conditionActor' AS resultSetName

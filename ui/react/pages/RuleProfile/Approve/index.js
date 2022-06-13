@@ -248,8 +248,12 @@ class RuleApprove extends Component {
         if (isDeleted || isRejected) {
             newValues = currentValues;
         }
+        if (currentValues.getIn(['condition', 'isEnabled'])) {
+            newValues = currentValues.set('condition', newValues.get('condition'));
+        }
 
         const options = { isNew, isDeleted };
+
         return immutable.fromJS([
             mapGeneralInfoData(currentValues, newValues, options),
             operationInfoData(currentValues, newValues, options),
@@ -263,12 +267,12 @@ class RuleApprove extends Component {
         const { id, newValues, location, confirmDialog, value, errors, canSubmit, updateErrors, changeConfirmDialogValue } = this.props;
 
         const rejectReason = newValues.getIn(['condition', 'rejectReason']);
-        const isNew = newValues.getIn(['condition', 'isNew']) === 1;
-        const isDeleted = newValues.getIn(['condition', 'isDeleted']);
+        const isNew = newValues.getIn(['condition', 'isNew']) || null;
+        const isDeleted = newValues.getIn(['condition', 'isDeleted']) || null;
         const isRejected = newValues.getIn(['condition', 'status']) === 'rejected';
         const compareGridStaticStrings = {
             headingIsNew: 'New Rule',
-            headingWillBeDeleted: 'User will be deleted'
+            headingWillBeDeleted: 'Rule will be deleted'
         };
 
         const pathname = getLink('ut-rule:validate', { id });

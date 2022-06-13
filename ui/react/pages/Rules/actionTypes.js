@@ -9,3 +9,4 @@ export const fetchNomenclatures = Symbol.for('fetchNomenclatures');
 export const reset = Symbol.for('reset');
 export const updatePagination = Symbol.for('updatePagination');
 export const toggleRuleOption = Symbol.for('toggleRuleOption');
+export const lockUnlockRule = Symbol.for('logUnlockRule');

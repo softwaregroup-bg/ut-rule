@@ -16,6 +16,7 @@ module.exports = function validation() {
         require('./rule/rule.rule.get'),
         require('./rule/rule.rule.approve'),
         require('./rule/rule.rule.reject'),
-        require('./rule/rule.rule.discard')
+        require('./rule/rule.rule.discard'),
+        require('./rule/rule.rule.lock')
     ];
 };

@@ -164,7 +164,7 @@ class Main extends React.Component {
         const showDeleted = this.props.showDeleted;
         const content = [
             <GridToolBox key='toolbox' contentWrapClassName={style.actionWrap} cssStandard opened title=''>
-                {this.context.checkPermission('rule.rule.edit') && !showDeleted && id &&
+                {this.context.checkPermission('rule.rule.edit') && !showDeleted && id && selectedStatus === 'approved' && !isLocked &&
                     (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
                 {this.context.checkPermission('rule.rule.remove') && !showDeleted &&
                     (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}

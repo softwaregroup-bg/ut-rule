@@ -38,7 +38,7 @@ BEGIN
         c.[operationStartDate],
         c.[sourceAccountId],
         c.[destinationAccountId],
-        c.status,
+        CASE WHEN co.status IS NOT NULL THEN co.status ELSE c.status END AS [status],
         CASE WHEN co.conditionId IS NULL THEN 1 ELSE 0 END AS [isNew],
         c.[isEnabled]
     FROM [rule].condition c
@@ -66,39 +66,45 @@ BEGIN
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
-        cca.conditionId, cca.factor, cca.actorId, cca.status, org.organizationName AS actorId, a.actorType AS [type] -- ca.*, a.actorType AS [type]
+        cca.conditionId, cca.factor, cca.actorId, CASE WHEN cau.status IS NOT NULL THEN cau.status ELSE cca.status END AS [status], org.organizationName AS actorId, a.actorType AS [type]
+    -- ca.*, a.actorType AS [type]
     FROM [rule].conditionActor cca
-    JOIN
-        core.actor a ON a.actorId = cca.actorId
-    JOIN
-        customer.organization org ON org.actorId = cca.actorId
+        JOIN
+            core.actor a ON a.actorId = cca.actorId
+        JOIN
+            customer.organization org ON org.actorId = cca.actorId
+        LEFT JOIN
+            [rule].conditionActorUnapproved cau ON cau.conditionId = cca.conditionId
     WHERE cca.conditionId = @conditionId
 
     SELECT 'conditionActorUnapproved' AS resultSetName
     SELECT
-        cca.conditionId, cca.factor, cca.actorId, cca.status, org.organizationName AS actorId, a.actorType AS [type] -- ca.*, a.actorType AS [type]
+        cca.conditionId, cca.factor, cca.actorId, cca.status, org.organizationName AS actorId, a.actorType AS [type]
+    -- ca.*, a.actorType AS [type]
     FROM [rule].conditionActorUnapproved cca
-    JOIN
-        core.actor a ON a.actorId = cca.actorId
-    JOIN
-        customer.organization org ON org.actorId = cca.actorId
+        JOIN
+            core.actor a ON a.actorId = cca.actorId
+        JOIN
+            customer.organization org ON org.actorId = cca.actorId
     WHERE cca.conditionId = @conditionId
 
 
 
     SELECT 'conditionItem' AS resultSetName
     SELECT
-        c.conditionId, c.factor, c.status, t.alias AS [type], t.name AS itemTypeName, i.itemName AS itemName
+        c.conditionId, c.factor, CASE WHEN ciu.status IS NOT NULL THEN ciu.status ELSE c.status END AS [status], t.alias AS [type], t.name AS itemTypeName, i.itemName AS itemName
     FROM [rule].conditionItem AS c
         JOIN core.itemName i ON i.itemNameId = c.itemNameId
         JOIN core.itemType t ON t.itemTypeId = i.itemTypeId
+        LEFT JOIN
+            [rule].conditionItemUnapproved ciu ON ciu.conditionId = c.conditionId
     WHERE c.conditionId = @conditionId
 
 
     SELECT 'conditionItemUnapproved' AS resultSetName
     SELECT
         c.conditionId, c.factor, c.status, t.alias AS [type], t.name AS itemTypeName, i.itemName AS itemName
-        FROM [rule].conditionItemUnapproved AS c
+    FROM [rule].conditionItemUnapproved AS c
         JOIN core.itemName i ON i.itemNameId = c.itemNameId
         JOIN core.itemType t ON t.itemTypeId = i.itemTypeId
     WHERE c.conditionId = @conditionId
@@ -107,8 +113,9 @@ BEGIN
 
     SELECT 'conditionProperty' AS resultSetName
     SELECT
-        cp.*
+        cp.conditionId, cp.factor, cp.name, cp.value, CASE WHEN cpu.status IS NOT NULL THEN cpu.status ELSE cp.status END AS [status]
     FROM [rule].conditionProperty cp
+        LEFT JOIN [rule].conditionPropertyUnapproved cpu ON cpu.conditionId = cp.conditionId
     WHERE cp.conditionId = @conditionId
 
 
@@ -123,8 +130,9 @@ BEGIN
 
     SELECT 'splitName' AS resultSetName
     SELECT
-        sn.*
+        sn.conditionId, sn.name, sn.splitNameId, sn.tag, CASE WHEN snu.status IS NOT NULL THEN snu.status ELSE sn.status END AS [status]
     FROM [rule].splitName sn
+        LEFT JOIN [rule].splitNameUnapproved snu ON snu.conditionId = sn.conditionId
     WHERE sn.conditionId = @conditionId
 
     SELECT 'splitNameUnapproved' AS resultSetName
@@ -137,9 +145,13 @@ BEGIN
 
     SELECT 'splitRange' AS resultSetName
     SELECT
-        sr.*
+        sr.isSourceAmount, sr.maxValue, sr.minValue, sr.[percent], sr.percentBase, sr.splitNameId, sr.startAmount, sr.startAmountCurrency,
+        sr.startAmountDaily, sr.startAmountMonthly, sr.startAmountWeekly, sr.startCountDaily, sr.startCountMonthly, sr.startCountWeekly,
+        CASE WHEN sru.status IS NOT NULL THEN sru.status ELSE sr.status END AS [status]
     FROM [rule].splitRange sr
         JOIN [rule].splitName sn ON sn.splitNameId = sr.splitNameId
+        LEFT JOIN [rule].splitNameUnapproved snu ON snu.conditionId = sn.conditionId
+        LEFT JOIN [rule].splitRangeUnapproved sru ON sru.splitNameId = snu.splitNameId
     WHERE sn.conditionId = @conditionId
 
     SELECT 'splitRangeUnapproved' AS resultSetName
@@ -154,9 +166,10 @@ BEGIN
 
     SELECT 'splitAssignment' AS resultSetName
     SELECT
-        sa.*
+        sa.credit, sa.debit, sa.description, sa.maxValue, sa.minValue, sa.[percent], sa.splitAssignmentId, sa.splitNameId, CASE WHEN sau.status IS NOT NULL THEN sau.status ELSE sa.status END AS status
     FROM [rule].splitAssignment sa
         JOIN [rule].splitName sn ON sn.splitNameId = sa.splitNameId
+        LEFT JOIN [rule].splitAssignmentUnapproved sau ON sau.splitAssignmentId = sa.splitAssignmentId
     WHERE sn.conditionId = @conditionId
 
     SELECT 'splitAssignmentUnapproved' AS resultSetName
@@ -171,8 +184,10 @@ BEGIN
 
     SELECT 'limit' AS resultSetName
     SELECT
-        l.*
+        l.conditionId, l.credentials, l.currency, l.limitId, l.maxAmount, l.maxAmountDaily, l.maxAmountMonthly, l.maxAmountWeekly,
+        l.maxCountDaily, l.maxCountMonthly, l.maxCountWeekly, l.minAmount, l.priority, CASE WHEN lu.status IS NOT NULL THEN lu.status ELSE l.status END AS [status]
     FROM [rule].limit l
+        LEFT JOIN [rule].limitUnapproved lu ON lu.limitId = l.limitId
     WHERE l.conditionId = @conditionId
 
     SELECT 'limitUnapproved' AS resultSetName
@@ -186,10 +201,11 @@ BEGIN
 
     SELECT 'splitAnalytic' AS resultSetName
     SELECT
-        san.*
+        san.name, san.splitAnalyticId, san.splitAssignmentId, san.value, CASE WHEN sau.status IS NOT NULL THEN sau.status ELSE san.status END AS [status]
     FROM [rule].splitAnalytic san
         JOIN [rule].splitAssignment sa ON sa.splitAssignmentId = san.splitAssignmentId
         JOIN [rule].splitName sn ON sn.splitNameId = sa.splitNameId
+        LEFT JOIN [rule].splitAnalyticUnapproved sau ON sau.splitAnalyticId = san.splitAnalyticId
     WHERE sn.conditionId = @conditionId
 
     SELECT 'splitAnalyticUnapproved' AS resultSetName
@@ -200,4 +216,4 @@ BEGIN
         JOIN [rule].splitNameUnapproved sn ON sn.splitNameId = sa.splitNameId
     WHERE sn.conditionId = @conditionId
 
-END
+    END

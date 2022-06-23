@@ -238,7 +238,7 @@ class RuleApprove extends Component {
         let { currentValues, newValues } = this.props;
         // console.log('this.props current', currentValues.toJS());
         // console.log('this.props new', newValues.toJS());
-        const isNew = currentValues.getIn(['condition', 'isNew']);
+        const isNew = newValues.getIn(['condition', 'isNew']);
         const isDeleted = newValues.getIn(['condition', 'isDeleted']);
         const isRejected = currentValues.getIn(['condition', 'status']) === 'rejected';
 

@@ -53,18 +53,27 @@ BEGIN
         AS
         (
             SELECT rc.conditionId,
-            rc.[priority],
-            rc.operationEndDate,
-            rc.operationStartDate,
-            rc.sourceAccountId,
-            rc.destinationAccountId,
-            CASE WHEN rcu.status IS NOT NULL THEN rcu.status ELSE rc.status END AS status,
-            rc.isEnabled,
-            ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
-            COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
+                rc.[priority],
+                rc.operationEndDate,
+                rc.operationStartDate,
+                rc.sourceAccountId,
+                rc.destinationAccountId,
+                rc.status,
+                rc.isEnabled,
+                ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
+                COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
         FROM
-            [rule].condition rc
-        WHERE (@conditionId IS NULL OR rc.conditionId = @conditionId ) AND rc.isDeleted = 0)
+        (
+            SELECT c.conditionId, c.status, c.[priority], c.operationStartDate, c.operationEndDate, c.sourceAccountId, c.destinationAccountId, 0 AS [isDeleted], c.isEnabled
+            FROM [rule].condition c
+            LEFT JOIN [rule].conditionUnapproved cu ON cu.conditionId = c.conditionId
+            UNION ALL
+            SELECT cu.conditionId, cu.status, cu.[priority], cu.operationStartDate, cu.operationEndDate, cu.sourceAccountId, cu.destinationAccountId, cu.isDeleted, cu.isEnabled
+            FROM [rule].conditionUnapproved cu
+            LEFT JOIN [rule].condition c ON c.conditionId = cu.conditionId
+        ) rc
+            WHERE (@conditionId IS NULL OR rc.conditionId = @conditionId ) AND rc.isDeleted = 0
+        )
 
     INSERT INTO #RuleConditions
         ( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal, status, isEnabled)
@@ -102,7 +111,7 @@ BEGIN
     -- ca.*, a.actorType AS [type]
     FROM
         (
-        SELECT ca.conditionId, ca.status, ca.factor, ca.actorId
+            SELECT ca.conditionId, ca.status, ca.factor, ca.actorId
             FROM [rule].conditionActor ca
 
         UNION ALL
@@ -195,7 +204,7 @@ BEGIN
         sa.*
     FROM
         (
-        SELECT *
+            SELECT *
             FROM [rule].splitAssignment
 
         UNION ALL
@@ -212,7 +221,8 @@ BEGIN
         l.*
     FROM
         (
-    SELECT * FROM [rule].limit
+            SELECT *
+            FROM [rule].limit
 
         UNION ALL
 

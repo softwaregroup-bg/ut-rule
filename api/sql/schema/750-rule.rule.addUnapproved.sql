@@ -41,14 +41,15 @@ BEGIN TRY
             destinationAccountId,
             createdOn,
             createdBy,
-            status)
+            status
+            )
         SELECT
             [priority],
             operationStartDate,
             operationEndDate,
             sourceAccountId,
             destinationAccountId,
-            GETUTCDATE(),
+            GETDATE(),
             ISNULL(createdBy, @userId),
             'pending'
         FROM @condition;
@@ -99,7 +100,7 @@ BEGIN TRY
             'pending'
         FROM @conditionProperty
 
-        INSERT INTO [rule].limitUnapproved (
+        INSERT INTO [rule].limitUnapproved(
             conditionId,
             currency,
             minAmount,
@@ -153,7 +154,7 @@ BEGIN TRY
             splitRange.x.value('(maxValue)[1]', 'money') AS maxValue,
             splitRange.x.value('(percent)[1]', 'money') AS [percent],
             splitRange.x.value('(percentBase)[1]', 'money') AS percentBase,
-            status
+            'pending' AS status
         FROM
             @split.nodes('/data/rows/splitRange') AS splitRange(x)
         JOIN
@@ -206,7 +207,7 @@ BEGIN TRY
             splitAssignment.x.value('(maxValue)[1]', 'money') AS maxValue,
             splitAssignment.x.value('(percent)[1]', 'decimal') AS [percent],
             splitAssignment.x.value('(description)[1]', 'VARCHAR(50)') AS description,
-            status
+            'pending' AS status
         FROM
             @split.nodes('/data/rows/splitAssignment') AS splitAssignment(x)
         JOIN
@@ -227,7 +228,7 @@ BEGIN TRY
             sn.splitAssignmentId AS splitAssignmentId,
             records.x.value('(name)[1]', 'NVARCHAR(50)') AS [name],
             records.x.value('(value)[1]', 'NVARCHAR(150)') AS [value],
-            status
+            'pending' AS status
         FROM
             @split.nodes('/data/rows/splitAssignment/splitAnalytic') records(x)
         JOIN

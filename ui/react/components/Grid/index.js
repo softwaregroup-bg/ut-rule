@@ -101,7 +101,7 @@ export default class Grid extends React.Component {
                 </div>
             );
         }
-        if (row.priority && column === 'priority' && row.status === 'approved') {
+        if (row.priority && column === 'priority' && row.status === 'approved' && row.isEnabled !== 'Locked') {
             result.push(
                 <div key={result.length}>
                     <Link to={row.url}>{row.priority}</Link>

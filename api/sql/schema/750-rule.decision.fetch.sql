@@ -66,6 +66,8 @@ BEGIN TRY
         @limitCredentials INT,
         @limitMaxAmount MONEY,
         @limitId INT
+    DECLARE @maxCustomerDebitTurnover MONEY = (SELECT TRY_CONVERT(MONEY, [value]) FROM core.configuration WHERE [key] = 'maxCustomerDebitTurnover')
+    DECLARE @debitTurnover MONEY = 0
 
     --find all conditions(rules) that match based on the input information
     INSERT INTO
@@ -156,7 +158,24 @@ BEGIN TRY
         c.[priority],
         l.[priority]
 
-    IF @limitId IS NOT NULL -- if exists a condition limit which is violated, identify the exact violation and return error with result
+    IF @maxCustomerDebitTurnover IS NOT NULL
+    BEGIN
+        DECLARE @accountId BIGINT, @fromDate DATETIME2(7), @debitTurnover MONEY = 0
+
+        SELECT @accountId = a.accountId, @fromDate = a.createdOn
+        FROM ledger.account a
+        WHERE (a.accountNumber = @sourceAccount AND a.parentAccountId IS NULL)
+            OR (a.accountNumber LIKE @sourceAccount + '-%' AND a.subAccountTypeId IN (SELECT sub.subAccountTypeId FROM ledger.subAccountType sub WHERE sub.code = 'available'))
+
+        SET @fromDate = DATEADD(YEAR, DATEDIFF(YEAR, @fromDate, @operationDate), @fromDate)
+
+        -- totals debit turnover from all transfer types
+        SET @debitTurnover = (SELECT SUM(j.debitAmount) AS debitTurnover
+        FROM ledger.journal j
+        WHERE j.accountId = @accountId AND j.createdOn >= @fromDate AND j.debitAmount > 0 AND j.isReversed = 0)
+    END
+
+    IF @limitId IS NOT NULL OR (@amount + ISNULL(@debitTurnover, 0) > @maxCustomerDebitTurnover) -- if exists a condition limit which is violated, identify the exact violation and return error with result
     BEGIN
         DECLARE @type VARCHAR (20) = CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END
         DECLARE @error VARCHAR (50) = CASE
@@ -171,6 +190,7 @@ BEGIN TRY
             WHEN @countDaily >= @maxCountDaily THEN @type + 'DailyLimitCount'
             WHEN @countWeekly >= @maxCountWeekly THEN @type + 'WeeklyLimitCount'
             WHEN @countMonthly >= @maxCountMonthly THEN @type + 'MonthlyLimitCount'
+            WHEN @amount + ISNULL(@debitTurnover, 0) > @maxCustomerDebitTurnover THEN 'rule.reachedTurnoverLimitAmount'
         END
 
         SELECT
@@ -194,6 +214,8 @@ BEGIN TRY
             @amount + @amountDaily AS accumulatedAmountDaily,
             @amount + @amountWeekly AS accumulatedAmountWeekly,
             @amount + @amountMonthly AS accumulatedAmountMonthly,
+            @maxCustomerDebitTurnover AS maxCustomerDebitTurnover,
+            @amount + ISNULL(@debitTurnover, 0) AS accumulatedTurnover,
             ISNULL (@credentialsCheck, @limitCredentials) AS [credentials]
 
         IF ISNULL (@isTransactionValidate, 0) = 0 RETURN -- if only validation - proceed, else stop execution

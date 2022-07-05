@@ -1,17 +1,21 @@
 ALTER PROCEDURE [rule].[rule.fetch]
     @conditionId INT = NULL,
+    @operationCode NVARCHAR(200) = NULL, -- used for filtering, the code of the operation for which the rules are defined
     @pageSize INT = 25, -- how many rows will be returned per page
     @pageNumber INT = 1, -- which page number to display,
     @meta core.metaDataTT READONLY -- information for the logged user
 AS
-DECLARE @userId BIGINT = (SELECT [auth.actorId] FROM @meta)
-DECLARE @startRow INT = (@pageNumber - 1) * @pageSize + 1
-DECLARE @endRow INT = @startRow + @pageSize - 1
+SET NOCOUNT ON
 
 BEGIN
-
     IF @conditionId IS NOT NULL AND NOT EXISTS (SELECT conditionid FROM [rule].[condition] WHERE conditionId = @conditionId)
         RAISERROR ('rule.ruleNotExists', 16, 1)
+
+    DECLARE @operationId BIGINT = (SELECT itemNameId FROM core.itemName i
+        JOIN core.itemType it ON i.itemTypeId = it.itemTypeId
+        WHERE it.alias = 'operation' AND i.itemCode = @operationCode)
+
+    DECLARE @recordsTotal INT = 0
 
     IF OBJECT_ID('tempdb..#RuleConditions') IS NOT NULL
         DROP TABLE #RuleConditions
@@ -24,35 +28,24 @@ BEGIN
         sourceAccountId NVARCHAR(255),
         destinationAccountId NVARCHAR(255),
         rowNum INT,
-        recordsTotal INT);
-    WITH CTE AS (
-        SELECT
-            rc.conditionId,
-            rc.[priority],
-            rc.operationEndDate,
-            rc.operationStartDate,
-            rc.sourceAccountId,
-            rc.destinationAccountId,
-            ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
-            COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
-        FROM
-            [rule].condition rc
-        WHERE
-            (@conditionId IS NULL OR rc.conditionId = @conditionId ) AND rc.isDeleted = 0 )
+        recordsTotal INT)
 
-    INSERT INTO #RuleConditions( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
-    SELECT
-        conditionId,
-        [priority],
-        operationEndDate,
-        operationStartDate,
-        sourceAccountId,
-        destinationAccountId,
-        rowNum,
-        recordsTotal
-    FROM CTE
-    WHERE (rowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
+    INSERT INTO #RuleConditions(conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
+    SELECT rc.conditionId, rc.[priority],
+        rc.operationEndDate, rc.operationStartDate,
+        rc.sourceAccountId, rc.destinationAccountId,
+        ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
+        COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
+    FROM [rule].condition rc
+    WHERE (@conditionId IS NULL OR rc.conditionId = @conditionId )
+        AND rc.isDeleted = 0
+        AND (@operationId IS NULL
+            OR EXISTS(SELECT * FROM [rule].conditionItem ri WHERE ri.conditionId = rc.conditionId AND ri.factor = 'oc' AND ri.itemNameId = @operationId))
+    ORDER BY rc.[priority] ASC
+        OFFSET (@pageNumber - 1) * @PageSize ROWS
+    FETCH NEXT @PageSize ROWS ONLY
 
+    SET @recordsTotal = ISNULL((SELECT TOP 1 recordsTotal FROM #RuleConditions), 0)
 
     SELECT 'condition' AS resultSetName
     SELECT
@@ -63,6 +56,7 @@ BEGIN
         rct.[sourceAccountId],
         rct.[destinationAccountId]
     FROM #RuleConditions rct
+    ORDER BY rct.[priority] ASC
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
@@ -89,9 +83,6 @@ BEGIN
         core.itemName i ON i.itemNameId = c.itemNameId
     JOIN
         core.itemType t ON t.itemTypeId = i.itemTypeId
-    WHERE
-        @conditionId IS NULL OR c.conditionId = @conditionId
-
 
     SELECT 'conditionProperty' AS resultSetName
     SELECT
@@ -100,8 +91,6 @@ BEGIN
         [rule].conditionProperty cp
     JOIN
         #RuleConditions rct ON rct.conditionId = cp.conditionId
-    WHERE
-        @conditionId IS NULL OR cp.conditionId = @conditionId
 
     SELECT 'splitName' AS resultSetName
     SELECT
@@ -110,8 +99,6 @@ BEGIN
         [rule].splitName sn
     JOIN
         #RuleConditions rct ON rct.conditionId = sn.conditionId
-    WHERE
-        @conditionId IS NULL OR sn.conditionId = @conditionId
 
     SELECT 'splitRange' AS resultSetName
     SELECT
@@ -122,8 +109,6 @@ BEGIN
         [rule].splitName sn ON sn.splitNameId = sr.splitNameId
     JOIN
         #RuleConditions rct ON rct.conditionId = sn.conditionId
-    WHERE
-        @conditionId IS NULL OR sn.conditionId = @conditionId
 
     SELECT 'splitAssignment' AS resultSetName
     SELECT
@@ -134,8 +119,6 @@ BEGIN
         [rule].splitName sn ON sn.splitNameId = sa.splitNameId
     JOIN
         #RuleConditions rct ON rct.conditionId = sn.conditionId
-    WHERE
-        @conditionId IS NULL OR sn.conditionId = @conditionId
 
     SELECT 'limit' AS resultSetName
     SELECT
@@ -144,8 +127,6 @@ BEGIN
         [rule].limit l
     JOIN
         #RuleConditions rct ON rct.conditionId = l.conditionId
-    WHERE
-        @conditionId IS NULL OR l.conditionId = @conditionId
 
     SELECT 'splitAnalytic' AS resultSetName
     SELECT
@@ -158,16 +139,9 @@ BEGIN
         [rule].splitName sn ON sn.splitNameId = sa.splitNameId
     JOIN
         #RuleConditions rct ON rct.conditionId = sn.conditionId
-    WHERE
-        @conditionId IS NULL OR sn.conditionId = @conditionId
 
     SELECT 'pagination' AS resultSetName
-    SELECT TOP 1
-        @pageSize AS pageSize,
-        recordsTotal AS recordsTotal,
-        CASE WHEN @pageNumber < (recordsTotal - 1) / @pageSize + 1 THEN @pageNumber ELSE (recordsTotal - 1) / @pageSize + 1 END AS pageNumber,
-        (recordsTotal - 1) / @pageSize + 1 AS pagesTotal
-    FROM #RuleConditions
+    SELECT @pageSize AS pageSize, @recordsTotal AS recordsTotal, @pageNumber AS pageNumber, (@recordsTotal - 1) / @pageSize + 1 AS pagesTotal
 
     DROP TABLE #RuleConditions
 END

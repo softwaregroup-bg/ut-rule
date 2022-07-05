@@ -79,13 +79,23 @@ export const prepareRuleToSave = (rule) => {
     ['channel', 'source', 'destination'].forEach(function(keyProp) {
         const value = rule[keyProp];
         ['organization', 'role'].forEach((type) => {
-            value[type] && formattedRule.conditionActor.push(
-                {
-                    actorId: value[type],
-                    conditionId,
-                    factor: conditionActorFactor[keyProp]
-                }
-            );
+            if (value[type] && value[type] instanceof Array) {
+                value[type].forEach(function(ci) {
+                    ci.key && formattedRule.conditionActor.push({
+                        actorId: ci.key,
+                        conditionId,
+                        factor: conditionActorFactor[keyProp]
+                    });
+                });
+            } else {
+                value[type] && formattedRule.conditionActor.push(
+                    {
+                        actorId: value[type],
+                        conditionId,
+                        factor: conditionActorFactor[keyProp]
+                    }
+                );
+            }
         });
     });
 

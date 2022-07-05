@@ -73,7 +73,7 @@ BEGIN TRY
 
         UPDATE x
         SET isDeleted = 1,
-        updatedOn = GETDATE(),
+        updatedOn = GETUTCDATE(),
         updatedBy = @userId
         FROM
             [rule].condition x
@@ -84,7 +84,7 @@ BEGIN TRY
         SELECT
             x.conditionId [key],
             x.priority rulePriority,
-            GETDATE() deletionDateTime
+            GETUTCDATE() deletionDateTime
         FROM
             [rule].condition x
         JOIN

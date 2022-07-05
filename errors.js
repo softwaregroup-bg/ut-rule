@@ -4,6 +4,7 @@ module.exports = function error({utError: {defineError, getError, fetchErrors}})
         const Rule = defineError('rule', null, 'ut-rule rule error', 'error');
 
         defineError('generic', Rule, 'Rule generic');
+        defineError('amount', Rule, 'Invalid amount');
         defineError('ruleNotExists', Rule, 'Rule does not exists');
         defineError('exceedMaxLimitAmount', Rule, 'Transaction Limit exceeded');
         defineError('exceedMinLimitAmount', Rule, 'Transaction Limit exceeded');

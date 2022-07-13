@@ -160,7 +160,7 @@ BEGIN TRY
 
     IF @maxCustomerDebitTurnover IS NOT NULL
     BEGIN
-        DECLARE @accountId BIGINT, @fromDate DATETIME2(7), @debitTurnover MONEY = 0
+        DECLARE @accountId BIGINT, @fromDate DATETIME2(7)
 
         SELECT @accountId = a.accountId, @fromDate = a.createdOn
         FROM ledger.account a

@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "12.2.0-turnover.0",
+  "version": "12.2.0-turnover.1",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {

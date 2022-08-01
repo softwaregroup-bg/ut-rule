@@ -46,7 +46,7 @@ BEGIN
     SELECT 'oc', itemNameId
     FROM core.itemName cin
     JOIN core.itemType cit ON cit.itemTypeId = cin.itemTypeId
-    WHERE cit.alias = 'operation' AND itemCode IN ('walletToWallet', 'requestMoney', 'qrPayment')
+    WHERE cit.alias = 'operation' AND itemCode IN ('walletToWallet', 'requestMoney', 'qrPayment', 'adjustment', 'adjustmentDebit', 'adjustmentCredit')
     UNION ALL
     SELECT 'dc', @selfRegistrationItemNameId
     UNION ALL
@@ -209,54 +209,6 @@ BEGIN
                 <credit>$' + '{destination.account.number}' + @erpSuffix + N'</credit>
                 <percent>100</percent>
                 <description>wallet pending erp payments</description>
-            </splitAssignment>
-        </rows>
-    </data>'
-
-    EXEC [rule].[rule.add]
-        @condition,
-        @conditionActor,
-        @conditionItem,
-        @conditionProperty,
-        @limit,
-        @split
-END
-
-DELETE FROM @condition
-DELETE FROM @conditionItem
-
-IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 14)
-BEGIN
-    INSERT INTO @condition ([priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
-    VALUES (14, NULL, NULL, NULL, NULL)
-
-    INSERT INTO @conditionItem (factor, itemNameId)
-    SELECT 'oc', itemNameId
-    FROM core.itemName cin
-    JOIN core.itemType cit ON cit.itemTypeId = cin.itemTypeId
-    WHERE cit.alias = 'operation' AND itemCode IN ('adjustment', 'adjustmentDebit', 'adjustmentCredit')
-    UNION ALL
-    SELECT 'dc', @selfRegistrationItemNameId
-    UNION ALL
-    SELECT 'sc', @selfRegistrationItemNameId
-
-    SET @split = N'<data>
-        <rows>
-            <splitName>
-                <name>wallet adjustment</name>
-                <tag>realtime</tag>
-            </splitName>
-            <splitRange>
-                <startAmount>0</startAmount>
-                <startAmountCurrency>' + @currency + '</startAmountCurrency>
-                <percent>100</percent>
-                <isSourceAmount>0</isSourceAmount>
-            </splitRange>
-            <splitAssignment>
-                <debit>$' + '{source.account.number}' + @selfRegistrationSuffix + N'</debit>
-                <credit>$' + '{destination.account.number}' + @selfRegistrationSuffix + N'</credit>
-                <percent>100</percent>
-                <description>wallet adjustment</description>
             </splitAssignment>
         </rows>
     </data>'

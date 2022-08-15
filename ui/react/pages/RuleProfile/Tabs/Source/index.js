@@ -103,7 +103,7 @@ class SourceTab extends Component {
                         canSelectPlaceholder
                         keyProp='organization'
                         data={organizations}
-                        defaultSelected={fieldValues.organization}
+                        defaultSelected={Array.isArray(fieldValues.organization) ? fieldValues.organization?.[0]?.key : fieldValues.organization}
                         placeholder='Select Organization'
                         onSelect={(field) => { changeInput(field); }}
                         label={fields.organization.title || 'Organization'}

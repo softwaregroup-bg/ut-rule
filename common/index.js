@@ -45,14 +45,16 @@ function prepareRuleModel(dbresult) {
             properties: [],
             countries: [],
             cities: [],
-            regions: []
+            regions: [],
+            organization: []
         },
         source: {
             properties: [],
             countries: [],
             cities: [],
             regions: [],
-            cardProducts: []
+            cardProducts: [],
+            organization: []
         },
         split: {
             splits: []
@@ -70,7 +72,7 @@ function prepareRuleModel(dbresult) {
             const des = rule[propMap[ca.factor]];
             des && des[ca.type] && des[ca.type].push({
                 key: parseInt(ca.actorId),
-                name: ca.organizationName
+                name: ca.organizationName || ca.name
             });
         } else {
             rule[propMap[ca.factor]] && (rule[propMap[ca.factor]][ca.type] = parseInt(ca.actorId));

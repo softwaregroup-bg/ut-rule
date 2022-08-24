@@ -1,3 +1,12 @@
+# [12.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.9...v12.2.0) (2022-08-24)
+
+
+### Features
+
+* bill payment test data ([#238](https://github.com/softwaregroup-bg/ut-rule/issues/238)) ([439fa4e](https://github.com/softwaregroup-bg/ut-rule/commit/439fa4ec9c4965e965da5b1fbf8d36a3e3fc1649))
+
+
+
 ## [12.1.9](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.8...v12.1.9) (2022-08-01)
 
 

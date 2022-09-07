@@ -1,3 +1,12 @@
+## [12.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.0...v12.2.1) (2022-09-07)
+
+
+### Bug Fixes
+
+* renamed account ([#239](https://github.com/softwaregroup-bg/ut-rule/issues/239)) ([53ca795](https://github.com/softwaregroup-bg/ut-rule/commit/53ca795e9662488848ad9270729626e4b2d9ab8a))
+
+
+
 # [12.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.9...v12.2.0) (2022-08-24)
 
 

@@ -50,7 +50,7 @@ BEGIN
             </splitRange>
             <splitAssignment>
                 <debit>${destination.account.number}</debit>
-                <credit>merchant_fee</credit>
+                <credit>merchant_tax</credit>
                 <percent>100</percent>
                 <description>bill payment fee</description>
             </splitAssignment>

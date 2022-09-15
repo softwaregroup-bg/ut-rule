@@ -128,6 +128,11 @@ declare namespace rule_rule_remove {
   export type result = any;
 }
 
+declare namespace rule_ruleOutOp_save {
+  export type params = any;
+  export type result = any;
+}
+
 import ut from 'ut-run';
 export interface ports<location = ''> {
 
@@ -151,7 +156,8 @@ export interface handlers<location = ''> {
   'rule.rule.fetchDeleted'?: ut.handler<rule_rule_fetchDeleted.params, rule_rule_fetchDeleted.result, location>,
   ruleRuleFetchDeleted?: ut.handler<rule_rule_fetchDeleted.params, rule_rule_fetchDeleted.result, location>,
   'rule.rule.remove'?: ut.handler<rule_rule_remove.params, rule_rule_remove.result, location>,
-  ruleRuleRemove?: ut.handler<rule_rule_remove.params, rule_rule_remove.result, location>
+  ruleRuleRemove?: ut.handler<rule_rule_remove.params, rule_rule_remove.result, location>,
+  'rule.ruleOutOp.save'?: ut.handler<rule_ruleOutOp_save.params, rule_ruleOutOp_save.result, location>
 }
 
 export interface errors {
@@ -215,7 +221,8 @@ interface methods extends core.handlers {}
 export type libFactory = ut.libFactory<methods, errors>
 export type handlerFactory = ut.handlerFactory<methods, errors, handlers<'local'>>
 export type handlerSet = ut.handlerSet<methods, errors, handlers<'local'>>
+export type test = ut.test<methods & handlers>
 
-import portal from 'ut-portal/handlers'
+import portal from 'ut-portal'
 export type pageFactory = portal.pageFactory<methods, errors>
 export type pageSet = portal.pageSet<methods, errors>

@@ -1,0 +1,10 @@
+{
+    "console": true,
+    "utCustomer": {
+        "sql": {
+            "ledger": true,
+            "notice": true,
+            "integration": true
+        }
+    }
+}

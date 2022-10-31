@@ -28,8 +28,10 @@ const factors = {
 
 const conditionItemFactor = {
     source: factors.sourceSpatial,
+    sourceCategory: factors.sourceCategory,
     channel: factors.channelSpatial,
     destination: factors.destinationSpatial,
+    destinationCategory: factors.destinationCategory,
     operation: factors.operationCategory
 };
 
@@ -105,19 +107,23 @@ export const prepareRuleToSave = (rule) => {
         const tab = rule[tabKey];
         tab && ['accountProduct', 'cities', 'countries', 'regions', 'operations'].forEach(function(kepProp) {
             const value = tab[kepProp];
+            let factor = conditionItemFactor[tabKey];
+            if (kepProp === 'accountProduct' && ['source', 'destination'].includes(tabKey)) {
+                factor = tabKey === 'source' ? conditionItemFactor.sourceCategory : conditionItemFactor.destinationCategory;
+            }
             if (value && value instanceof Array) {
                 value.forEach(function(ci) {
                     ci.key && formattedRule.conditionItem.push({
                         itemNameId: ci.key,
                         conditionId,
-                        factor: conditionItemFactor[tabKey]
+                        factor
                     });
                 });
             } else if (value && !(value instanceof Object)) {
                 formattedRule.conditionItem.push({
                     itemNameId: value,
                     conditionId,
-                    factor: conditionItemFactor[tabKey]
+                    factor
                 });
             }
         });

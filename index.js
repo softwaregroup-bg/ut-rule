@@ -1,4 +1,4 @@
-module.exports = () => function utRule() {
+module.exports = require('ut-run').microservice(module, require, () => function utRule() {
     return {
         config: require('./config'),
         adapter: () => [
@@ -21,4 +21,4 @@ module.exports = () => function utRule() {
             ...require('./test/steps')
         ]
     };
-};
+});

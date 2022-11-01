@@ -197,8 +197,20 @@ export default class Grid extends React.Component {
                 case 'priority':
                     return this.renderGridColumn(value, ['priority'], row, 'priority');
                 case 'expansion': {
-                    const expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
-                    return <a onClick={(e) => { e.preventDefault(); this.handleGridExpansion(row.priority); }}>{expansionText}</a>;
+                    let showText;
+                    Object.values(row?.channel).every(data => {
+                        if (data.length >= 10) {
+                            showText = true;
+                            return false;
+                        }
+                        return true;
+                    });
+                    if (showText) {
+                        const expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
+                        return <a onClick={(e) => { e.preventDefault(); this.handleGridExpansion(row.priority); }}>{expansionText}</a>;
+                    } else {
+                        return '';
+                    }
                 }
                 default:
                     return value;

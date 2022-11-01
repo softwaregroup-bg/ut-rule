@@ -46,7 +46,7 @@ BEGIN
     SELECT 'oc', itemNameId
     FROM core.itemName cin
     JOIN core.itemType cit ON cit.itemTypeId = cin.itemTypeId
-    WHERE cit.alias = 'operation' AND itemCode IN ('walletToWallet', 'requestMoney', 'qrPayment')
+    WHERE cit.alias = 'operation' AND itemCode IN ('walletToWallet', 'requestMoney', 'qrPayment', 'adjustment', 'adjustmentDebit', 'adjustmentCredit')
     UNION ALL
     SELECT 'dc', @selfRegistrationItemNameId
     UNION ALL

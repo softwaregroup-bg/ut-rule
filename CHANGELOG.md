@@ -1,3 +1,38 @@
+## [12.2.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.2...v12.2.3) (2022-11-01)
+
+
+### Bug Fixes
+
+* hide 'see more' action BPS-229 ([#242](https://github.com/softwaregroup-bg/ut-rule/issues/242)) ([d17e86f](https://github.com/softwaregroup-bg/ut-rule/commit/d17e86f1283a807890b666912c534385288110d5))
+
+
+
+## [12.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.1...v12.2.2) (2022-10-24)
+
+
+
+## [12.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.0...v12.2.1) (2022-09-07)
+
+
+### Bug Fixes
+
+* renamed account ([#239](https://github.com/softwaregroup-bg/ut-rule/issues/239)) ([53ca795](https://github.com/softwaregroup-bg/ut-rule/commit/53ca795e9662488848ad9270729626e4b2d9ab8a))
+
+
+
+# [12.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.9...v12.2.0) (2022-08-24)
+
+
+### Features
+
+* bill payment test data ([#238](https://github.com/softwaregroup-bg/ut-rule/issues/238)) ([439fa4e](https://github.com/softwaregroup-bg/ut-rule/commit/439fa4ec9c4965e965da5b1fbf8d36a3e3fc1649))
+
+
+
+## [12.1.9](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.8...v12.1.9) (2022-08-01)
+
+
+
 ## [12.1.8](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.7...v12.1.8) (2022-06-01)
 
 

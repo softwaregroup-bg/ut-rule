@@ -17,7 +17,7 @@ import style from './style.css';
 import * as actionCreators from './actionCreators';
 
 class Main extends React.Component {
-    static displayName = 'Main'
+    static displayName = 'Main';
 
     static propTypes = {
         rules: PropTypes.object,
@@ -28,11 +28,11 @@ class Main extends React.Component {
         uiConfig: PropTypes.object,
         pagination: PropTypes.object,
         showDeleted: PropTypes.bool
-    }
+    };
 
     static contextTypes = {
         checkPermission: PropTypes.func.isRequired
-    }
+    };
 
     constructor(props, context) {
         super(props, context);
@@ -97,7 +97,7 @@ class Main extends React.Component {
         }
         const count = Object.keys(selectedConditions).length;
         this.setState({
-            selectedConditions: selectedConditions,
+            selectedConditions,
             canEdit: count === 1,
             canDelete: count > 0,
             selectedData: !isSelected ? data : {}

@@ -10,7 +10,7 @@ AS
 SET NOCOUNT ON
 DECLARE @userId BIGINT = (SELECT [auth.actorId] FROM @meta)
 DECLARE @splitName TABLE (splitNameId INT, rowPosition INT)
-DECLARE @splitAssignment [rule].splitAssignmentTT
+DECLARE @splitAssignment [rule].splitAssignmentUnapprovedTT
 DECLARE @conditionId INT = (SELECT conditionId FROM @condition)
 
 BEGIN TRY
@@ -18,7 +18,7 @@ BEGIN TRY
     IF EXISTS
         (
             SELECT [priority]
-            FROM [rule].condition
+            FROM [rule].conditionUnapproved
             WHERE [priority] = (SELECT [priority] FROM @condition)
             AND conditionId != @conditionId
             AND isDeleted = 0
@@ -39,10 +39,10 @@ BEGIN TRY
             destinationAccountId = c1.destinationAccountId,
             updatedOn = GETDATE(),
             updatedBy = @userId
-        FROM [rule].condition c
+        FROM [rule].conditionUnapproved c
         JOIN @condition c1 ON c.conditionId = c1.conditionId
 
-        MERGE INTO [rule].conditionActor ca
+        MERGE INTO [rule].conditionActorUnapproved ca
         USING @conditionActor ca1
             ON ca.conditionId = ca1.conditionId AND ca.factor = ca1.factor AND ca.actorId = ca1.actorId
         WHEN NOT MATCHED BY TARGET THEN
@@ -51,7 +51,7 @@ BEGIN TRY
         WHEN NOT MATCHED BY SOURCE AND ca.conditionId = @conditionId THEN
             DELETE;
 
-        MERGE INTO [rule].conditionItem ci
+        MERGE INTO [rule].conditionItemUnapproved ci
         USING @conditionItem ci1
             ON ci.conditionId = ci1.conditionId AND ci.factor = ci1.factor AND ci.itemNameId = ci1.itemNameId
         WHEN NOT MATCHED BY TARGET THEN
@@ -60,7 +60,7 @@ BEGIN TRY
         WHEN NOT MATCHED BY SOURCE AND ci.conditionId = @conditionId THEN
             DELETE;
 
-        MERGE INTO [rule].conditionProperty cp
+        MERGE INTO [rule].conditionPropertyUnapproved cp
         USING @conditionProperty cp1
             ON cp.conditionId = cp1.conditionId AND cp.factor = cp1.factor AND cp.name = cp1.name
         WHEN MATCHED THEN
@@ -72,7 +72,7 @@ BEGIN TRY
         WHEN NOT MATCHED BY SOURCE AND cp.conditionId = @conditionId THEN
             DELETE;
 
-        MERGE INTO [rule].limit l
+        MERGE INTO [rule].limitUnapproved l
         USING @limit l1 ON l.[limitId] = l1.limitId
         WHEN MATCHED THEN
             UPDATE
@@ -94,25 +94,25 @@ BEGIN TRY
             DELETE;
 
         DELETE x
-        FROM [rule].splitRange x
-        JOIN [rule].splitName sn ON x.splitNameId = sn.splitNameId
+        FROM [rule].splitRangeUnapproved x
+        JOIN [rule].splitNameUnapproved sn ON x.splitNameId = sn.splitNameId
         LEFT JOIN @split.nodes('/data/rows/splitRange/splitRangeId') AS records(x) ON x.splitRangeId = records.x.value('(./text())[1]', 'INT')
         WHERE sn.conditionId = @conditionId AND records.x.value('(./text())[1]', 'INT') IS NULL
 
         DELETE x
-        FROM [rule].splitAnalytic x
-        JOIN [rule].splitAssignment sa ON x.splitAssignmentId = sa.splitAssignmentId
-        JOIN [rule].splitName sn ON sa.splitNameId = sn.splitNameId
+        FROM [rule].splitAnalyticUnapproved x
+        JOIN [rule].splitAssignmentUnapproved sa ON x.splitAssignmentId = sa.splitAssignmentId
+        JOIN [rule].splitNameUnapproved sn ON sa.splitNameId = sn.splitNameId
         LEFT JOIN @split.nodes('/data/rows/splitAssignment/splitAnalytic/splitAnalyticId') AS records(x) ON x.splitAnalyticId = records.x.value('(./text())[1]', 'INT')
         WHERE sn.conditionId = @conditionId AND records.x.value('(./text())[1]', 'INT') IS NULL
 
         DELETE x
-        FROM [rule].splitAssignment x
-        JOIN [rule].splitName sn ON x.splitNameId = sn.splitNameId
+        FROM [rule].splitAssignmentUnapproved x
+        JOIN [rule].splitNameUnapproved sn ON x.splitNameId = sn.splitNameId
         LEFT JOIN @split.nodes('/data/rows/splitAssignment/splitAssignmentId') AS records(x) ON x.splitAssignmentId = records.x.value('(./text())[1]', 'INT')
         WHERE sn.conditionId = @conditionId AND records.x.value('(./text())[1]', 'INT') IS NULL
 
-        MERGE INTO [rule].splitName x
+        MERGE INTO [rule].splitNameUnapproved x
         USING
         (
             SELECT records.r.value('(./splitNameId)[1]', 'INT') AS splitNameId,
@@ -132,7 +132,7 @@ BEGIN TRY
             DELETE
         OUTPUT INSERTED.splitNameId, sn.rowPos INTO @splitName;
 
-        MERGE INTO [rule].splitRange x
+        MERGE INTO [rule].splitRangeUnapproved x
         USING
         (
         SELECT records.x.value('(./splitRangeId)[1]', 'INT') AS splitRangeId,
@@ -200,7 +200,7 @@ BEGIN TRY
             r.[percent],
             r.percentBase);
 
-        MERGE INTO [rule].splitAssignment x
+        MERGE INTO [rule].splitAssignmentUnapproved x
         USING
         (
             SELECT records.x.value('(./splitAssignmentId)[1]', 'INT') AS splitAssignmentId,
@@ -227,7 +227,7 @@ BEGIN TRY
         VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
         OUTPUT INSERTED.* INTO @splitAssignment;
 
-        MERGE INTO [rule].splitAnalytic x
+        MERGE INTO [rule].splitAnalyticUnapproved x
         USING (
         SELECT DISTINCT -- new splitAnalytic & new splitAssignment
             NULL AS [splitAnalyticId],
@@ -297,7 +297,7 @@ BEGIN TRY
     EXEC core.outcome @proc = @@PROCID, @outcome = @outcome, @meta = @meta
 
 
-    EXEC [rule].[rule.fetch] @conditionId = @conditionId
+    EXEC [rule].[rule.fetch] @meta = @meta, @conditionId = @conditionId
 END TRY
 BEGIN CATCH
     IF @@TRANCOUNT > 0

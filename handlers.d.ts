@@ -5,7 +5,7 @@ declare namespace rule_decision_fetch {
      * Unknown Property
      */
     [x: string]: unknown;
-    amount: number;
+    amountString: string;
     channelCityId?: number | null;
     channelCountryId?: number | null;
     channelId?: number | null;
@@ -55,7 +55,7 @@ declare namespace rule_decision_fetch {
 
 declare namespace rule_decision_lookup {
   export interface params {
-    amount: number;
+    amount: string;
     channelId?: number | null;
     currency: string;
     destinationAccount: string;
@@ -156,6 +156,8 @@ export interface handlers<location = ''> {
 
 export interface errors {
   'error.rule': ut.error,
+  'error.rule.amount': ut.error,
+  errorRuleAmount: ut.error,
   'error.rule.duplicatedPriority': ut.error,
   errorRuleDuplicatedPriority: ut.error,
   'error.rule.exceedDailyLimitAmount': ut.error,
@@ -213,6 +215,8 @@ interface methods extends core.handlers {}
 export type libFactory = ut.libFactory<methods, errors>
 export type handlerFactory = ut.handlerFactory<methods, errors, handlers<'local'>>
 export type handlerSet = ut.handlerSet<methods, errors, handlers<'local'>>
+export type test = ut.test<methods & handlers>
+export type steps = ut.steps<methods & handlers>
 
 import portal from 'ut-portal'
 export type pageFactory = portal.pageFactory<methods, errors>

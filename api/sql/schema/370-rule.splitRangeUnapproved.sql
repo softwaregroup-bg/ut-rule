@@ -1,0 +1,22 @@
+CREATE TABLE [rule].[splitRangeUnapproved] (
+    splitRangeId INT IDENTITY(1000, 1) NOT NULL,
+    splitNameId INT NOT NULL,
+    startAmount MONEY NOT NULL,
+    startAmountCurrency VARCHAR(3) NOT NULL,
+    startAmountDaily MONEY NOT NULL,
+    startCountDaily BIGINT NOT NULL,
+    startAmountWeekly MONEY NOT NULL,
+    startCountWeekly BIGINT NOT NULL,
+    startAmountMonthly MONEY NOT NULL,
+    startCountMonthly BIGINT NOT NULL,
+    isSourceAmount BIT NOT NULL,
+    minValue MONEY,
+    maxValue MONEY,
+    [percent] DECIMAL(9, 2),
+    percentBase MONEY,
+    status VARCHAR(20) NULL DEFAULT('pending'),
+    CONSTRAINT [pkRuleSplitRangeUnapproved] PRIMARY KEY CLUSTERED (splitRangeId ASC),
+    CONSTRAINT [ukRuleSplitRangeUnapproved_splitNameId__startAmount__startAmountCurrency] UNIQUE (splitNameId, startAmount, startAmountCurrency, startAmountDaily, startCountDaily, startAmountWeekly, startCountWeekly, startAmountMonthly, startCountMonthly),
+    CONSTRAINT [fkRuleSplitRangeUnapproved_ruleSplitName] FOREIGN KEY (splitNameId) REFERENCES [rule].[splitNameUnapproved](splitNameId),
+    CONSTRAINT fkRuleSplitRangeUnapproved_status FOREIGN KEY(status) REFERENCES [core].[status] (statusId)
+)

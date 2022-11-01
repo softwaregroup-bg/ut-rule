@@ -1,3 +1,12 @@
+## [12.2.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.2...v12.2.3) (2022-11-01)
+
+
+### Bug Fixes
+
+* hide 'see more' action BPS-229 ([#242](https://github.com/softwaregroup-bg/ut-rule/issues/242)) ([d17e86f](https://github.com/softwaregroup-bg/ut-rule/commit/d17e86f1283a807890b666912c534385288110d5))
+
+
+
 ## [12.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.1...v12.2.2) (2022-10-24)
 
 

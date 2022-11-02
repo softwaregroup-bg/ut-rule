@@ -15,6 +15,7 @@ module.exports = {
     utPortal: true,
     utBrowser: true,
     utLogin: true,
+    utRule: true,
     utCore: true,
     utCustomer: true,
     utDocument: true,

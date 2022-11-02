@@ -1,3 +1,12 @@
+# [12.3.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.3...v12.3.0) (2022-11-02)
+
+
+### Features
+
+* rule condition ui #UTCORE-121 ([aa91548](https://github.com/softwaregroup-bg/ut-rule/commit/aa9154833cbf81c48d8f046a7a2902260bca8bca)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
 ## [12.2.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.2...v12.2.3) (2022-11-01)
 
 

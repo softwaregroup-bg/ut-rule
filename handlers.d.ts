@@ -86,6 +86,75 @@ declare namespace rule_decision_lookup {
   }
 }
 
+declare namespace rule_dropdown_list {
+  export interface params {}
+  export interface result {
+    'rule.accountProduct'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.cardProduct'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.channel'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.city'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.country'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.currency'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.operation'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.region'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.role'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+  }
+}
+
 declare namespace rule_item_fetch {
   export type params = any;
   export type result = any;
@@ -139,6 +208,8 @@ export interface handlers<location = ''> {
   ruleDecisionFetch?: ut.handler<rule_decision_fetch.params, rule_decision_fetch.result, location>,
   'rule.decision.lookup'?: ut.handler<rule_decision_lookup.params, rule_decision_lookup.result, location>,
   ruleDecisionLookup?: ut.handler<rule_decision_lookup.params, rule_decision_lookup.result, location>,
+  'rule.dropdown.list'?: ut.handler<rule_dropdown_list.params, rule_dropdown_list.result, location>,
+  ruleDropdownList?: ut.handler<rule_dropdown_list.params, rule_dropdown_list.result, location>,
   'rule.item.fetch'?: ut.handler<rule_item_fetch.params, rule_item_fetch.result, location>,
   ruleItemFetch?: ut.handler<rule_item_fetch.params, rule_item_fetch.result, location>,
   'rule.limitForUserByRole.get'?: ut.handler<rule_limitForUserByRole_get.params, rule_limitForUserByRole_get.result, location>,

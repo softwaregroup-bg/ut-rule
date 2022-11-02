@@ -16,7 +16,9 @@ module.exports = {
     utBrowser: true,
     utLogin: true,
     utRule: {
-        utc: true
+        sql: {
+            utc: true
+        }
     },
     utCore: true,
     utCustomer: true,

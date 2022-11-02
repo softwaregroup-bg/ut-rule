@@ -72,7 +72,7 @@ export const prepareRuleToSave = (rule) => {
         priority: channel.priority,
         operationStartDate: operation.startDate || null,
         operationEndDate: operation.endDate || null,
-        sourceAccontId: null,
+        sourceAccountId: null,
         destinationAccountId: null
     }];
     formattedRule.conditionActor = [];

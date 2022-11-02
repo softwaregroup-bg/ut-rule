@@ -36,6 +36,8 @@ export default (state = defaultState, action) => {
                     showDeleted
                 });
             }
+            case actionTypes.lockUnlockRule:
+                return state;
             default:
                 break;
         }

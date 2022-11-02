@@ -13,6 +13,7 @@
     "lodash.map": "4.6.0",
     "lodash.merge": "4.6.2",
     "lodash.set": "4.3.2",
+    "ut-function.common-joi": "^1.8.0",
     "ut-model": "^8.8.1"
   },
   "devDependencies": {

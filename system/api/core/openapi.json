@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "core",
-        "version": "8.24.11"
+        "version": "8.25.0"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -8039,6 +8039,229 @@
                 ]
             }
         },
+        "/rpc/core/portal/get": {
+            "post": {
+                "description": "core.portal.get",
+                "operationId": "core.portal.get",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "id": {
+                                        "description": "Unique identifier of the request",
+                                        "example": "1",
+                                        "oneOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "maxLength": 36,
+                                                "minLength": 1,
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "jsonrpc": {
+                                        "description": "Version of the JSON-RPC protocol",
+                                        "enum": [
+                                            "2.0"
+                                        ],
+                                        "example": "2.0",
+                                        "type": "string"
+                                    },
+                                    "method": {
+                                        "description": "Name of the method",
+                                        "enum": [
+                                            "core.portal.get"
+                                        ],
+                                        "example": "core.portal.get",
+                                        "type": "string"
+                                    },
+                                    "params": {
+                                        "additionalProperties": false,
+                                        "description": "Method parameters",
+                                        "properties": {
+                                            "dictName": {
+                                                "items": {
+                                                    "maxLength": 100,
+                                                    "minLength": 1,
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            },
+                                            "languageId": {
+                                                "minimum": 1,
+                                                "type": "number"
+                                            },
+                                            "orderByKey": {
+                                                "type": "number"
+                                            },
+                                            "organizationId": {
+                                                "type": "string"
+                                            },
+                                            "updatedAfter": {
+                                                "format": "date-time",
+                                                "nullable": true,
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "timeout": {
+                                        "description": "Timeout in milliseconds",
+                                        "example": null,
+                                        "nullable": true,
+                                        "type": "number"
+                                    }
+                                },
+                                "required": [
+                                    "jsonrpc",
+                                    "method"
+                                ],
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "id": {
+                                            "description": "Unique identifier of the request",
+                                            "example": "1",
+                                            "maxLength": 36,
+                                            "minLength": 1,
+                                            "type": "string"
+                                        },
+                                        "jsonrpc": {
+                                            "description": "Version of the JSON-RPC protocol",
+                                            "enum": [
+                                                "2.0"
+                                            ],
+                                            "example": "2.0",
+                                            "type": "string"
+                                        },
+                                        "method": {
+                                            "description": "Name of the method",
+                                            "enum": [
+                                                "core.portal.get"
+                                            ],
+                                            "example": "core.portal.get",
+                                            "type": "string"
+                                        },
+                                        "result": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "configuration": {
+                                                    "additionalProperties": true,
+                                                    "properties": {},
+                                                    "type": "object"
+                                                },
+                                                "translations": {
+                                                    "items": {
+                                                        "additionalProperties": false,
+                                                        "properties": {
+                                                            "dictionaryAlias": {
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            },
+                                                            "dictionaryCode": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "dictionaryKey": {
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            },
+                                                            "dictionaryName": {
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            },
+                                                            "iso2Code": {
+                                                                "maxLength": 2,
+                                                                "minLength": 2,
+                                                                "type": "string"
+                                                            },
+                                                            "itemNameId": {
+                                                                "oneOf": [
+                                                                    {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    {
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "languageId": {
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            },
+                                                            "locale": {
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            },
+                                                            "parentItemCode": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "parentItemName": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "parentItemTypeName": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "translatedValue": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "dictionaryKey",
+                                                            "dictionaryName",
+                                                            "dictionaryAlias",
+                                                            "iso2Code",
+                                                            "locale",
+                                                            "languageId",
+                                                            "translatedValue"
+                                                        ],
+                                                        "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "jsonrpc",
+                                        "method"
+                                    ],
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "Successful response"
+                    },
+                    "default": {
+                        "content": {},
+                        "description": "Invalid request"
+                    }
+                },
+                "summary": "Portal config",
+                "tags": [
+                    "core"
+                ]
+            }
+        },
         "/rpc/core/translation/add": {
             "post": {
                 "description": "core.translation.add",
@@ -8131,6 +8354,90 @@
                         "content": {
                             "application/json": {
                                 "schema": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "id": {
+                                            "description": "Unique identifier of the request",
+                                            "example": "1",
+                                            "maxLength": 36,
+                                            "minLength": 1,
+                                            "type": "string"
+                                        },
+                                        "jsonrpc": {
+                                            "description": "Version of the JSON-RPC protocol",
+                                            "enum": [
+                                                "2.0"
+                                            ],
+                                            "example": "2.0",
+                                            "type": "string"
+                                        },
+                                        "method": {
+                                            "description": "Name of the method",
+                                            "enum": [
+                                                "core.translation.add"
+                                            ],
+                                            "example": "core.translation.add",
+                                            "type": "string"
+                                        },
+                                        "result": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "translation": {
+                                                    "items": {
+                                                        "additionalProperties": false,
+                                                        "properties": {
+                                                            "itemName": {
+                                                                "title": "Item Name",
+                                                                "type": "string"
+                                                            },
+                                                            "itemNameId": {
+                                                                "type": "number"
+                                                            },
+                                                            "itemNameTranslation": {
+                                                                "nullable": true,
+                                                                "title": "Translation",
+                                                                "type": "string"
+                                                            },
+                                                            "itemTranslationId": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
+                                                            "itemTypeId": {
+                                                                "type": "number"
+                                                            },
+                                                            "itemTypeName": {
+                                                                "minLength": 1,
+                                                                "title": "Item Type",
+                                                                "type": "string"
+                                                            },
+                                                            "language": {
+                                                                "title": "Language",
+                                                                "type": "string"
+                                                            },
+                                                            "languageId": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "itemTypeId",
+                                                            "itemTypeName",
+                                                            "language",
+                                                            "itemNameId",
+                                                            "itemName"
+                                                        ],
+                                                        "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "jsonrpc",
+                                        "method"
+                                    ],
                                     "type": "object"
                                 }
                             }
@@ -8461,6 +8768,90 @@
                         "content": {
                             "application/json": {
                                 "schema": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "id": {
+                                            "description": "Unique identifier of the request",
+                                            "example": "1",
+                                            "maxLength": 36,
+                                            "minLength": 1,
+                                            "type": "string"
+                                        },
+                                        "jsonrpc": {
+                                            "description": "Version of the JSON-RPC protocol",
+                                            "enum": [
+                                                "2.0"
+                                            ],
+                                            "example": "2.0",
+                                            "type": "string"
+                                        },
+                                        "method": {
+                                            "description": "Name of the method",
+                                            "enum": [
+                                                "core.translation.edit"
+                                            ],
+                                            "example": "core.translation.edit",
+                                            "type": "string"
+                                        },
+                                        "result": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "translation": {
+                                                    "items": {
+                                                        "additionalProperties": false,
+                                                        "properties": {
+                                                            "itemName": {
+                                                                "title": "Item Name",
+                                                                "type": "string"
+                                                            },
+                                                            "itemNameId": {
+                                                                "type": "number"
+                                                            },
+                                                            "itemNameTranslation": {
+                                                                "nullable": true,
+                                                                "title": "Translation",
+                                                                "type": "string"
+                                                            },
+                                                            "itemTranslationId": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
+                                                            "itemTypeId": {
+                                                                "type": "number"
+                                                            },
+                                                            "itemTypeName": {
+                                                                "minLength": 1,
+                                                                "title": "Item Type",
+                                                                "type": "string"
+                                                            },
+                                                            "language": {
+                                                                "title": "Language",
+                                                                "type": "string"
+                                                            },
+                                                            "languageId": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "itemTypeId",
+                                                            "itemTypeName",
+                                                            "language",
+                                                            "itemNameId",
+                                                            "itemName"
+                                                        ],
+                                                        "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "jsonrpc",
+                                        "method"
+                                    ],
                                     "type": "object"
                                 }
                             }

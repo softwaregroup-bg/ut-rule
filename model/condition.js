@@ -5,10 +5,6 @@ module.exports = ({joi}) => ({
     browser: {
         fetch: ({condition, paging}) => ({...condition, ...paging})
     },
-    methods: {
-        fetch: 'rule.rule.fetch',
-        get: 'rule.rule.fetch'
-    },
     nameField: 'condition.priority',
     schema: {
         properties: {
@@ -20,7 +16,8 @@ module.exports = ({joi}) => ({
                     operationStartDate: {title: 'Start Date', widget: {type: 'date-time'}},
                     sourceAccountId: {title: 'Account'},
                     destinationAccountId: {title: 'Account'}
-                }
+                },
+                required: ['priority']
             },
             conditionActor: {
                 title: '',
@@ -185,15 +182,23 @@ module.exports = ({joi}) => ({
                     city: {
                         widget: {type: 'multiSelect', dropdown: 'rule.city'}
                     },
-                    organization: {
-                        widget: {type: 'multiSelect'}
+                    actor: {
+                        title: 'Organization',
+                        widget: {
+                            type: 'multiSelectTree',
+                            dropdown: 'customer.organizationTreeNodes'
+                        }
+                    },
+                    actorTag: {
+                        title: 'Organization Tag',
+                        widget: {type: 'chips'}
                     }
                 }
             },
             operation: {
                 properties: {
                     type: {
-                        widget: {type: 'multiSelect'}
+                        widget: {type: 'multiSelect', dropdown: 'rule.operation'}
                     },
                     tag: {
                         widget: {type: 'chips'}
@@ -202,20 +207,22 @@ module.exports = ({joi}) => ({
             },
             source: {
                 properties: {
-                    customer: {
-                        widget: {type: 'multiSelect'}
+                    actor: {
+                        title: 'Organization',
+                        widget: {
+                            type: 'multiSelectTree',
+                            dropdown: 'customer.organizationTreeNodes'
+                        }
                     },
-                    customerTag: {
+                    actorTag: {
+                        title: 'Organization Tag',
                         widget: {type: 'chips'}
                     },
                     accountProduct: {
-                        widget: {type: 'multiSelect'}
+                        widget: {type: 'multiSelect', dropdown: 'rule.accountProduct'}
                     },
                     cardProduct: {
-                        widget: {type: 'multiSelect'}
-                    },
-                    accountTag: {
-                        widget: {type: 'chips'}
+                        widget: {type: 'multiSelect', dropdown: 'rule.cardProduct'}
                     },
                     country: {
                         widget: {type: 'multiSelect', dropdown: 'rule.country'}
@@ -225,28 +232,27 @@ module.exports = ({joi}) => ({
                     },
                     city: {
                         widget: {type: 'multiSelect', dropdown: 'rule.city'}
-                    },
-                    account: {
-                        widget: {type: 'multiSelect'}
                     }
                 }
             },
             destination: {
                 properties: {
-                    customer: {
-                        widget: {type: 'multiSelect'}
+                    actor: {
+                        title: 'Organization',
+                        widget: {
+                            type: 'multiSelectTree',
+                            dropdown: 'customer.organizationTreeNodes'
+                        }
                     },
-                    customerTag: {
+                    actorTag: {
+                        title: 'Organization Tag',
                         widget: {type: 'chips'}
                     },
                     accountProduct: {
-                        widget: {type: 'multiSelect'}
+                        widget: {type: 'multiSelect', dropdown: 'rule.accountProduct'}
                     },
                     cardProduct: {
-                        widget: {type: 'multiSelect'}
-                    },
-                    accountTag: {
-                        widget: {type: 'chips'}
+                        widget: {type: 'multiSelect', dropdown: 'rule.cardProduct'}
                     },
                     country: {
                         widget: {type: 'multiSelect', dropdown: 'rule.country'}
@@ -256,9 +262,6 @@ module.exports = ({joi}) => ({
                     },
                     city: {
                         widget: {type: 'multiSelect', dropdown: 'rule.city'}
-                    },
-                    account: {
-                        widget: {type: 'multiSelect'}
                     }
                 }
             }
@@ -296,7 +299,8 @@ module.exports = ({joi}) => ({
                 'channel.country',
                 'channel.region',
                 'channel.city',
-                'channel.organization'
+                'channel.actor',
+                'channel.actorTag'
             ]
         },
         operation: {
@@ -313,14 +317,13 @@ module.exports = ({joi}) => ({
             className: 'lg:col-4',
             label: 'Holder',
             widgets: [
-                'source.customer',
-                'source.customerTag',
-                'source.cardProduct',
-                'source.accountProduct',
-                'source.accountTag',
                 'source.country',
                 'source.region',
                 'source.city',
+                'source.actor',
+                'source.actorTag',
+                'source.cardProduct',
+                'source.accountProduct',
                 'condition.sourceAccountId'
             ]
         },
@@ -328,14 +331,13 @@ module.exports = ({joi}) => ({
             className: 'lg:col-4',
             label: 'Counterparty',
             widgets: [
-                'destination.customer',
-                'destination.customerTag',
-                'destination.cardProduct',
-                'destination.accountProduct',
-                'destination.accountTag',
                 'destination.country',
                 'destination.region',
                 'destination.city',
+                'destination.actor',
+                'destination.actorTag',
+                'destination.cardProduct',
+                'destination.accountProduct',
                 'condition.destinationAccountId'
             ]
         },

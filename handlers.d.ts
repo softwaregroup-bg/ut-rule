@@ -1,4 +1,24 @@
 declare namespace ruleTableTypes {}
+declare namespace rule_condition_add {
+  export type params = any;
+  export type result = any;
+}
+
+declare namespace rule_condition_edit {
+  export type params = any;
+  export type result = any;
+}
+
+declare namespace rule_condition_fetch {
+  export type params = any;
+  export type result = any;
+}
+
+declare namespace rule_condition_get {
+  export type params = any;
+  export type result = any;
+}
+
 declare namespace rule_decision_fetch {
   export interface params {
     /**
@@ -204,6 +224,14 @@ export interface ports<location = ''> {
 interface methods extends ports {}
 
 export interface handlers<location = ''> {
+  'rule.condition.add'?: ut.handler<rule_condition_add.params, rule_condition_add.result, location>,
+  ruleConditionAdd?: ut.handler<rule_condition_add.params, rule_condition_add.result, location>,
+  'rule.condition.edit'?: ut.handler<rule_condition_edit.params, rule_condition_edit.result, location>,
+  ruleConditionEdit?: ut.handler<rule_condition_edit.params, rule_condition_edit.result, location>,
+  'rule.condition.fetch'?: ut.handler<rule_condition_fetch.params, rule_condition_fetch.result, location>,
+  ruleConditionFetch?: ut.handler<rule_condition_fetch.params, rule_condition_fetch.result, location>,
+  'rule.condition.get'?: ut.handler<rule_condition_get.params, rule_condition_get.result, location>,
+  ruleConditionGet?: ut.handler<rule_condition_get.params, rule_condition_get.result, location>,
   'rule.decision.fetch'?: ut.handler<rule_decision_fetch.params, rule_decision_fetch.result, location>,
   ruleDecisionFetch?: ut.handler<rule_decision_fetch.params, rule_decision_fetch.result, location>,
   'rule.decision.lookup'?: ut.handler<rule_decision_lookup.params, rule_decision_lookup.result, location>,

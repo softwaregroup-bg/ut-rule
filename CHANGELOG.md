@@ -1,3 +1,12 @@
+## [12.3.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.1...v12.3.2) (2022-11-04)
+
+
+### Bug Fixes
+
+* rule.condition save/load ([ad3d6ba](https://github.com/softwaregroup-bg/ut-rule/commit/ad3d6ba64edef987646af7655945b8791e18dae4))
+
+
+
 ## [12.3.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.0...v12.3.1) (2022-11-03)
 
 

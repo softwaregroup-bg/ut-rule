@@ -44,6 +44,10 @@ function conditionSend({
     destination,
     operation,
     channel,
+    splitName,
+    splitAssignment,
+    splitRange,
+    splitAnalytic,
     ...params
 }) {
     return {
@@ -74,7 +78,22 @@ function conditionSend({
             .concat(destination?.city?.map(itemNameId => ({itemNameId, factor: 'ds', type: 'city'})))
             .concat(destination?.cardProduct?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'cardProduct'})))
             .concat(destination?.accountProduct?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'accountProduct'})))
-            .filter(Boolean)
+            .filter(Boolean),
+        split: {
+            data: {
+                rows: splitName?.map(item => ({
+                    splitName: {
+                        ...item,
+                        tag: item.tag ? `|${item.tag.join('|')}|` : null
+                    },
+                    splitRange: splitRange?.filter(range => range.splitNameId === item.splitNameId),
+                    splitAssignment: splitAssignment?.filter(assignment => assignment.splitNameId === item.splitNameId).map(assignment => ({
+                        ...assignment,
+                        splitAnalytic: splitAnalytic?.filter(analytic => analytic.splitAssignmentId === assignment.splitAssignmentId)
+                    }))
+                })) || []
+            }
+        }
     };
 }
 
@@ -82,6 +101,7 @@ function conditionReceive({
     conditionItem,
     conditionActor,
     conditionProperty,
+    splitName,
     ...response
 }) {
     function get(list, factor, type, key) {
@@ -92,6 +112,10 @@ function conditionReceive({
     }
     return {
         ...response,
+        splitName: splitName.map(item => ({
+            ...item,
+            tag: item.tag?.split('|').filter(Boolean) || []
+        })),
         operation: {
             tag: getTag(conditionProperty, 'oc'),
             type: get(conditionItem, 'oc', 'operation', 'itemNameId')
@@ -124,6 +148,56 @@ function conditionReceive({
     };
 }
 
+function describe(conditionId, factor, name, value) {
+    return item =>
+        item &&
+        (item.conditionId === conditionId) &&
+        (item.factor === factor) &&
+        item[name] &&
+        (item[value] === '1' ? [item[name]] : [item[name], item[value]]);
+}
+
+function conditionMap({
+    condition,
+    conditionItem,
+    conditionActor,
+    conditionProperty,
+    ...rest
+}) {
+    return {
+        ...rest,
+        condition: condition.map(row => ({
+            ...row,
+            operation: [
+                row.operationStartDate && ['Start Date', new Date(row.operationStartDate).toLocaleString()],
+                row.operationEndDate && ['End Date', new Date(row.operationEndDate).toLocaleString()]
+            ]
+                .concat(conditionItem.map(describe(row.conditionId, 'oc', 'itemTypeName', 'itemName')))
+                .concat(conditionProperty.map(describe(row.conditionId, 'oc', 'name', 'value')))
+                .filter(Boolean),
+            channel: []
+                .concat(conditionItem.map(describe(row.conditionId, 'cs', 'itemTypeName', 'itemName')))
+                .concat(conditionActor.map(describe(row.conditionId, 'co', 'type', 'organizationName')))
+                .concat(conditionProperty.map(describe(row.conditionId, 'co', 'name', 'value')))
+                .filter(Boolean),
+            source: []
+                .concat(conditionItem.map(describe(row.conditionId, 'sc', 'itemTypeName', 'itemName')))
+                .concat(conditionItem.map(describe(row.conditionId, 'ss', 'itemTypeName', 'itemName')))
+                .concat(conditionActor.map(describe(row.conditionId, 'so', 'type', 'organizationName')))
+                .concat(conditionProperty.map(describe(row.conditionId, 'sc', 'name', 'value')))
+                .concat(row.sourceAccountId && [['Account', row.sourceAccountId]])
+                .filter(Boolean),
+            destination: []
+                .concat(conditionItem.map(describe(row.conditionId, 'dc', 'itemTypeName', 'itemName')))
+                .concat(conditionItem.map(describe(row.conditionId, 'ds', 'itemTypeName', 'itemName')))
+                .concat(conditionActor.map(describe(row.conditionId, 'do', 'type', 'organizationName')))
+                .concat(conditionProperty.map(describe(row.conditionId, 'dc', 'name', 'value')))
+                .concat(row.destinationAccountId && [['Account', row.destinationAccountId]])
+                .filter(Boolean)
+        }))
+    };
+}
+
 module.exports = function rule({
     import: {
         db$ruleRuleFetch,
@@ -139,7 +213,7 @@ module.exports = function rule({
             return conditionReceive(await db$ruleRuleEdit(conditionSend(condition), $meta));
         },
         async 'rule.condition.fetch'(params, $meta) {
-            return db$ruleRuleFetch(params, $meta);
+            return conditionMap(await db$ruleRuleFetch(params, $meta));
         },
         async 'rule.condition.get'(params, $meta) {
             return conditionReceive(await db$ruleRuleFetch(params, $meta));

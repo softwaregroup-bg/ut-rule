@@ -106,6 +106,15 @@ BEGIN
         [rule].splitName sn ON sn.splitNameId = sr.splitNameId
     JOIN
         #RuleConditions rct ON rct.conditionId = sn.conditionId
+    ORDER BY
+        sr.startCountMonthly DESC,
+        sr.startAmountMonthly DESC,
+        sr.startCountWeekly DESC,
+        sr.startAmountWeekly DESC,
+        sr.startCountDaily DESC,
+        sr.startAmountDaily DESC,
+        sr.startAmount DESC,
+        sr.splitRangeId
 
     SELECT 'splitAssignment' AS resultSetName
     SELECT

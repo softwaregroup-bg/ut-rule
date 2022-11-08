@@ -2,6 +2,7 @@
 module.exports = ({joi}) => ({
     subject: 'rule',
     object: 'condition',
+    objectTitle: 'Rule',
     browser: {
         fetch: ({condition, paging}) => ({...condition, ...paging})
     },
@@ -11,9 +12,13 @@ module.exports = ({joi}) => ({
             condition: {
                 properties: {
                     conditionId: {},
-                    priority: {title: 'Priority'},
+                    priority: {type: 'integer', title: 'Priority'},
                     operationEndDate: {title: 'End Date', widget: {type: 'date-time'}},
                     operationStartDate: {title: 'Start Date', widget: {type: 'date-time'}},
+                    channel: {widget: {type: 'json', keyValue: true, fieldClass: 'justify-content-start'}},
+                    operation: {widget: {type: 'json', keyValue: true, fieldClass: 'justify-content-start'}},
+                    source: {widget: {type: 'json', keyValue: true, fieldClass: 'justify-content-start'}},
+                    destination: {widget: {type: 'json', keyValue: true, fieldClass: 'justify-content-start'}},
                     sourceAccountId: {title: 'Account'},
                     destinationAccountId: {title: 'Account'}
                 },
@@ -55,17 +60,42 @@ module.exports = ({joi}) => ({
                     parent: 'condition',
                     autoSelect: true,
                     selectionMode: 'single',
-                    widgets: ['name', 'tag']
+                    hidden: [
+                        'conditionId',
+                        'splitNameId',
+                        'tag'
+                    ],
+                    widgets: ['name']
                 },
                 items: {
                     properties: {
                         splitNameId: {
                             default: {
-                                function: 'max'
+                                function: 'min'
                             }
                         },
                         name: {},
-                        tag: {}
+                        tag: {
+                            title: '',
+                            widget: {
+                                type: 'multiSelectPanel',
+                                itemClassName: 'col-2',
+                                options: [
+                                    {value: 'acquirer', label: 'Acquirer'},
+                                    {value: 'issuer', label: 'Issuer'},
+                                    {value: 'commission', label: 'Commission'},
+                                    {value: 'realtime', label: 'Realtime posting'},
+                                    {value: 'pending', label: 'Authorization required'},
+                                    {value: 'agent', label: 'Agent'},
+                                    {value: 'fee', label: 'Fee'},
+                                    {value: 'atm', label: 'ATM'},
+                                    {value: 'pos', label: 'POS'},
+                                    {value: 'ped', label: 'PED'},
+                                    {value: 'vendor', label: 'Vendor'},
+                                    {value: 'merchant', label: 'Merchant'}
+                                ]
+                            }
+                        }
                     }
                 }
             },
@@ -78,15 +108,19 @@ module.exports = ({joi}) => ({
                         splitNameId: 'splitNameId'
                     },
                     parent: '$.selected.splitName',
+                    hidden: [
+                        'splitRangeId',
+                        'splitNameId'
+                    ],
                     widgets: [
                         'startAmountCurrency',
                         'startAmount',
                         'startAmountDaily',
-                        'startAmountMonthly',
-                        'startAmountWeekly',
                         'startCountDaily',
-                        'startCountMonthly',
+                        'startAmountWeekly',
                         'startCountWeekly',
+                        'startAmountMonthly',
+                        'startCountMonthly',
                         'minValue',
                         'maxValue',
                         'percent',
@@ -95,18 +129,24 @@ module.exports = ({joi}) => ({
                 },
                 items: {
                     properties: {
+                        splitRangeId: {
+                            default: {
+                                function: 'min'
+                            }
+                        },
+                        splitNameId: {},
                         startAmountCurrency: {},
-                        startAmount: {type: 'number'},
-                        startAmountDaily: {type: 'number'},
-                        startAmountMonthly: {type: 'number'},
-                        startAmountWeekly: {type: 'number'},
+                        startAmount: {widget: {type: 'currency'}},
+                        startAmountDaily: {widget: {type: 'currency'}},
+                        startAmountMonthly: {widget: {type: 'currency'}},
+                        startAmountWeekly: {widget: {type: 'currency'}},
                         startCountDaily: {type: 'integer'},
                         startCountMonthly: {type: 'integer'},
                         startCountWeekly: {type: 'integer'},
-                        minValue: {type: 'number'},
-                        maxValue: {type: 'number'},
-                        percent: {type: 'number'},
-                        percentBase: {type: 'number'}
+                        minValue: {widget: {type: 'currency'}},
+                        maxValue: {widget: {type: 'currency'}},
+                        percent: {type: 'number', widget: {minFractionDigits: 2}},
+                        percentBase: {type: 'number', widget: {type: 'currency'}}
                     }
                 }
             },
@@ -118,17 +158,50 @@ module.exports = ({joi}) => ({
                     master: {
                         splitNameId: 'splitNameId'
                     },
+                    hidden: [
+                        'splitAssignmentId',
+                        'splitNameId'
+                    ],
                     parent: '$.selected.splitName',
-                    widgets: ['description', 'debit', 'credit', 'percent', 'minAmount', 'maxAmount']
+                    widgets: ['description', 'debit', 'credit', 'percent', 'minValue', 'maxValue']
                 },
                 items: {
                     properties: {
+                        splitAssignmentId: {
+                            default: {
+                                function: 'min'
+                            }
+                        },
+                        splitNameId: {},
                         description: {},
                         debit: {},
                         credit: {},
-                        minValue: {},
-                        maxValue: {},
-                        percent: {}
+                        minValue: {widget: { type: 'currency'}},
+                        maxValue: {widget: { type: 'currency'}},
+                        percent: {type: 'number'}
+                    }
+                }
+            },
+            splitAnalytic: {
+                title: '',
+                widget: {
+                    type: 'table',
+                    selectionMode: 'single',
+                    master: {
+                        splitAssignmentId: 'splitAssignmentId'
+                    },
+                    hidden: [
+                        'splitAssignmentId',
+                        'splitAnalyticId'
+                    ],
+                    parent: '$.selected.splitAssignment',
+                    widgets: ['name', 'value']
+                },
+                items: {
+                    properties: {
+                        splitAssignmentId: {},
+                        name: {},
+                        value: {}
                     }
                 }
             },
@@ -272,10 +345,10 @@ module.exports = ({joi}) => ({
             label: 'Fees, Commissions and Limits (FCL)',
             widgets: [
                 'condition.priority',
-                'condition.operationEndDate',
-                'condition.operationStartDate',
-                'condition.sourceAccountId',
-                'condition.destinationAccountId'
+                'condition.channel',
+                'condition.operation',
+                'condition.source',
+                'condition.destination'
             ]
         },
         splitName: {
@@ -283,14 +356,25 @@ module.exports = ({joi}) => ({
             label: 'Name',
             widgets: ['splitName']
         },
+        splitTag: {
+            className: 'lg:col-10',
+            label: 'Tags',
+            widgets: ['$.edit.splitName.tag']
+        },
         splitRange: {
             className: 'lg:col-10',
             label: 'Amount Range',
             widgets: ['splitRange']
         },
         splitAssignment: {
+            className: 'lg:col-6',
             label: 'Splits',
             widgets: ['splitAssignment']
+        },
+        splitAnalytic: {
+            className: 'lg:col-4',
+            label: 'Split Tags',
+            widgets: ['splitAnalytic']
         },
         channel: {
             className: 'lg:col-4',
@@ -368,7 +452,10 @@ module.exports = ({joi}) => ({
                 label: 'Assignments',
                 widgets: [
                     'splitName',
-                    ['splitRange', 'splitAssignment']
+                    ['splitTag', 'splitRange'],
+                    {className: 'lg:col-2'},
+                    'splitAssignment',
+                    'splitAnalytic'
                 ]
             }]
         }

@@ -1483,25 +1483,22 @@
                                             "type": "object"
                                         },
                                         "orderBy": {
-                                            "items": {
-                                                "additionalProperties": false,
-                                                "properties": {
-                                                    "dir": {
-                                                        "enum": [
-                                                            "ASC",
-                                                            "DESC"
-                                                        ],
-                                                        "type": "string"
-                                                    },
-                                                    "field": {
-                                                        "maxLength": 128,
-                                                        "minLength": 1,
-                                                        "type": "string"
-                                                    }
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "dir": {
+                                                    "enum": [
+                                                        "ASC",
+                                                        "DESC"
+                                                    ],
+                                                    "type": "string"
                                                 },
-                                                "type": "object"
+                                                "field": {
+                                                    "maxLength": 50,
+                                                    "minLength": 1,
+                                                    "type": "string"
+                                                }
                                             },
-                                            "type": "array"
+                                            "type": "object"
                                         },
                                         "paging": {
                                             "additionalProperties": false,

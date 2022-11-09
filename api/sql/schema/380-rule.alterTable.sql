@@ -52,3 +52,18 @@ IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleCondtitionPriority')
 BEGIN
     ALTER TABLE [rule].[condition] DROP CONSTRAINT ukRuleCondtitionPriority
 END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'name' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
+BEGIN
+    ALTER TABLE [rule].[condition] ADD [name] NVARCHAR(100)
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'description' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
+BEGIN
+    ALTER TABLE [rule].[condition] ADD [description] NVARCHAR(100)
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'notes' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
+BEGIN
+    ALTER TABLE [rule].[condition] ADD notes NVARCHAR(1000)
+END

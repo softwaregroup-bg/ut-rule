@@ -1,3 +1,12 @@
+# [12.4.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.3...v12.4.0) (2022-11-10)
+
+
+### Features
+
+* CBI-366 ([#243](https://github.com/softwaregroup-bg/ut-rule/issues/243)) ([c650ba9](https://github.com/softwaregroup-bg/ut-rule/commit/c650ba9a5edd8f386445402de69dd3b89d02c8a6))
+
+
+
 ## [12.3.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.2...v12.3.3) (2022-11-08)
 
 

@@ -32,6 +32,9 @@ BEGIN TRY
             operationEndDate,
             sourceAccountId,
             destinationAccountId,
+            [name],
+            [description],
+            notes,
             createdOn,
             createdBy
             )
@@ -41,6 +44,9 @@ BEGIN TRY
             operationEndDate,
             sourceAccountId,
             destinationAccountId,
+            [name],
+            [description],
+            notes,
             GETUTCDATE(),
             ISNULL(createdBy, @userId)
         FROM @condition;

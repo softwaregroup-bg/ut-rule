@@ -37,6 +37,9 @@ BEGIN TRY
             operationEndDate = DATEADD(ms, -3, DATEADD(dd, 1, DATEADD(dd, DATEDIFF(dd, 0, c1.operationEndDate), 0))), -- the last time on this date - 23:59:59.997
             sourceAccountId = c1.sourceAccountId,
             destinationAccountId = c1.destinationAccountId,
+            [name] = c1.[name],
+            [description] = c1.[description],
+            notes = c1.notes,
             updatedOn = GETUTCDATE(),
             updatedBy = @userId
         FROM [rule].condition c
@@ -258,7 +261,7 @@ BEGIN TRY
         AND ISNULL(records.x.value('(splitAssignmentId)[1]', 'BIGINT'), 0) <> 0
         UNION ALL
         SELECT DISTINCT -- exist splitAnalytic & exist splitAssignment
-            splitAssignment.x.query('*').value('(splitAnalyticId)[1]', 'BIGINT')	AS [splitAnalyticId],
+            splitAssignment.x.query('*').value('(splitAnalyticId)[1]', 'BIGINT') AS [splitAnalyticId],
             records.x.value('(splitAssignmentId)[1]', 'BIGINT') AS [splitAssignmentId],
             splitAssignment.x.query('*').value('(name)[1]', 'NVARCHAR(50)') AS [name],
             splitAssignment.x.query('*').value('(value)[1]', 'NVARCHAR(150)') AS [value]

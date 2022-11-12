@@ -56,6 +56,7 @@ module.exports = ({joi}) => ({
                 title: '',
                 widget: {
                     type: 'table',
+                    label: 'Name',
                     master: {conditionId: 'conditionId'},
                     parent: 'condition',
                     autoSelect: true,
@@ -103,6 +104,7 @@ module.exports = ({joi}) => ({
                 title: '',
                 widget: {
                     type: 'table',
+                    label: 'Amount Range',
                     selectionMode: 'single',
                     master: {
                         splitNameId: 'splitNameId'
@@ -154,6 +156,7 @@ module.exports = ({joi}) => ({
                 title: '',
                 widget: {
                     type: 'table',
+                    label: 'Splits',
                     selectionMode: 'single',
                     master: {
                         splitNameId: 'splitNameId'
@@ -186,6 +189,7 @@ module.exports = ({joi}) => ({
                 title: '',
                 widget: {
                     type: 'table',
+                    label: 'Split Tags',
                     selectionMode: 'single',
                     master: {
                         splitAssignmentId: 'splitAssignmentId'
@@ -353,7 +357,6 @@ module.exports = ({joi}) => ({
         },
         splitName: {
             className: 'lg:col-2',
-            label: 'Name',
             widgets: ['splitName']
         },
         splitTag: {
@@ -363,17 +366,14 @@ module.exports = ({joi}) => ({
         },
         splitRange: {
             className: 'lg:col-10',
-            label: 'Amount Range',
             widgets: ['splitRange']
         },
         splitAssignment: {
             className: 'lg:col-6',
-            label: 'Splits',
             widgets: ['splitAssignment']
         },
         splitAnalytic: {
             className: 'lg:col-4',
-            label: 'Split Tags',
             widgets: ['splitAnalytic']
         },
         channel: {

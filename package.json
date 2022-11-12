@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "12.3.3",
+  "version": "12.4.1",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {
@@ -33,7 +33,7 @@
     "ut-port-jsonrpc": "^7.3.1",
     "ut-history": "^3.2.0",
     "ut-port-script": "^7.2.0",
-    "ut-portal": "^9.4.41",
+    "ut-portal": "^9.4.42",
     "ut-portal-admin": "^7.14.1",
     "ut-run": "^10.64.7",
     "ut-user": "^10.33.5"

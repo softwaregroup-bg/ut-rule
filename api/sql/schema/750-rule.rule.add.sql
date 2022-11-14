@@ -12,6 +12,13 @@ DECLARE @splitName [rule].splitNameTT,
     @splitAssignment [rule].splitAssignmentTT,
     @conditionId INT
 BEGIN TRY
+    -- checks if the user has a right to make the operation
+    DECLARE @actionID VARCHAR(100) = OBJECT_SCHEMA_NAME(@@PROCID) + '.' + OBJECT_NAME(@@PROCID), @return INT = 0
+    EXEC @return = [user].[permission.check] @actionId = @actionID, @objectId = NULL, @meta = @meta
+    IF @return != 0
+    BEGIN
+        RETURN 55555
+    END
 
     IF EXISTS
         (

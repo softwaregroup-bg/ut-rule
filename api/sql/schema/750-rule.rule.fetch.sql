@@ -1,6 +1,7 @@
 ALTER PROCEDURE [rule].[rule.fetch]
     @conditionId INT = NULL,
     @operationCode NVARCHAR(200) = NULL, -- used for filtering, the code of the operation for which the rules are defined
+    @name NVARCHAR(100) = NULL, -- filter by rule name
     @pageSize INT = 25, -- how many rows will be returned per page
     @pageNumber INT = 1, -- which page number to display,
     @meta core.metaDataTT READONLY -- information for the logged user
@@ -41,6 +42,7 @@ BEGIN
         COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
     FROM [rule].condition rc
     WHERE (@conditionId IS NULL OR rc.conditionId = @conditionId )
+        AND (@name IS NULL OR rc.[name] LIKE '%' + @name + '%')
         AND rc.isDeleted = 0
         AND (@operationId IS NULL
             OR EXISTS(SELECT * FROM [rule].conditionItem ri WHERE ri.conditionId = rc.conditionId AND ri.factor = 'oc' AND ri.itemNameId = @operationId))

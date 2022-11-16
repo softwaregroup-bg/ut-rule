@@ -4,6 +4,9 @@ DECLARE @conditionItem [rule].conditionItemTT
 DECLARE @conditionProperty [rule].conditionPropertyTT
 DECLARE @limit [rule].limitTT
 DECLARE @split XML
+DECLARE @meta core.metaDataTT
+DECLARE @sa BIGINT = (SELECT actorId FROM [user].[hash] WHERE identifier = 0x00 /*encryptStable sa*/ AND [type] = 'password')
+INSERT INTO @meta([auth.actorId], [method]) VALUES(@sa, 'rule.rule.add')
 DECLARE @currency VARCHAR(3) = CASE LEN('${utLedger.sqlStandard.defaultCurrency}')
     WHEN 3 THEN '${utLedger.sqlStandard.defaultCurrency}'
     ELSE 'USD'
@@ -79,7 +82,8 @@ BEGIN
         @conditionItem,
         @conditionProperty,
         @limit,
-        @split
+        @split,
+        @meta
 END
 
 DELETE FROM @condition
@@ -124,7 +128,8 @@ BEGIN
         @conditionItem,
         @conditionProperty,
         @limit,
-        @split
+        @split,
+        @meta
 END
 
 DELETE FROM @condition
@@ -171,7 +176,8 @@ BEGIN
         @conditionItem,
         @conditionProperty,
         @limit,
-        @split
+        @split,
+        @meta
 END
 
 DELETE FROM @condition
@@ -219,5 +225,6 @@ BEGIN
         @conditionItem,
         @conditionProperty,
         @limit,
-        @split
+        @split,
+        @meta
 END

@@ -13,3 +13,7 @@ Provides standard fees, limits and commissions API.
 * oc - operation category
 * sc - source category
 * dc - destination category
+* sk - source KYC
+* st - source type
+* dk - destination KYC
+* dt - destination type

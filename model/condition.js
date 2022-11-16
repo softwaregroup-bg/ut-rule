@@ -295,6 +295,13 @@ module.exports = ({joi}) => ({
                         title: 'Organization Tag',
                         widget: {type: 'chips'}
                     },
+                    customerType: {
+                        widget: {type: 'multiSelect', dropdown: 'customer.customerType'}
+                    },
+                    kyc: {
+                        title: 'KYC',
+                        widget: {type: 'multiSelect', dropdown: 'customer.kyc'}
+                    },
                     accountProduct: {
                         widget: {type: 'multiSelect', dropdown: 'rule.accountProduct'}
                     },
@@ -324,6 +331,13 @@ module.exports = ({joi}) => ({
                     actorTag: {
                         title: 'Organization Tag',
                         widget: {type: 'chips'}
+                    },
+                    customerType: {
+                        widget: {type: 'multiSelect', dropdown: 'customer.customerType'}
+                    },
+                    kyc: {
+                        title: 'KYC',
+                        widget: {type: 'multiSelect', dropdown: 'customer.kyc'}
                     },
                     accountProduct: {
                         widget: {type: 'multiSelect', dropdown: 'rule.accountProduct'}
@@ -406,6 +420,8 @@ module.exports = ({joi}) => ({
                 'source.city',
                 'source.actor',
                 'source.actorTag',
+                'source.customerType',
+                'source.kyc',
                 'source.cardProduct',
                 'source.accountProduct',
                 'condition.sourceAccountId'
@@ -420,6 +436,8 @@ module.exports = ({joi}) => ({
                 'destination.city',
                 'destination.actor',
                 'destination.actorTag',
+                'destination.customerType',
+                'destination.kyc',
                 'destination.cardProduct',
                 'destination.accountProduct',
                 'condition.destinationAccountId'

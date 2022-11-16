@@ -57,6 +57,10 @@ function conditionSend({
             .concat(channel?.actorTag?.split(' ').map(tag('co')))
             .concat(source?.actorTag?.split(' ').map(tag('so')))
             .concat(destination?.actorTag?.split(' ').map(tag('do')))
+            .concat(source?.kyc?.map(value => ({factor: 'sk', name: 'source.kyc', value})))
+            .concat(source?.customerType?.map(value => ({factor: 'st', name: 'source.customerType', value})))
+            .concat(destination?.kyc?.map(value => ({factor: 'dk', name: 'destination.kyc', value})))
+            .concat(destination?.customerType?.map(value => ({factor: 'dt', name: 'destination.customerType', value})))
             .filter(Boolean),
         conditionActor: []
             .concat(channel?.actor?.map(actorId => ({actorId, factor: 'co', type: 'organization'})))
@@ -107,6 +111,9 @@ function conditionReceive({
     function get(list, factor, type, key) {
         return list.filter(item => item.factor === factor && item.type === type).map(item => Number(item[key]));
     }
+    function getProp(list, factor, name) {
+        return list.filter(item => item.factor === factor && item.name === name).map(item => Number(item.value));
+    }
     function getTag(list, factor) {
         return list.filter(item => item.factor === factor).map(({name, value}) => (value && value !== '1') ? `${name}=${value}` : name).join(' ');
     }
@@ -130,6 +137,8 @@ function conditionReceive({
         source: {
             actor: get(conditionActor, 'so', 'organization', 'actorId'),
             actorTag: getTag(conditionProperty, 'so'),
+            kyc: getProp(conditionProperty, 'sk', 'source.kyc'),
+            customerType: getProp(conditionProperty, 'st', 'source.customerType'),
             cardProduct: get(conditionItem, 'sc', 'cardProduct', 'itemNameId'),
             accountProduct: get(conditionItem, 'sc', 'accountProduct', 'itemNameId'),
             country: get(conditionItem, 'ss', 'country', 'itemNameId'),
@@ -139,6 +148,8 @@ function conditionReceive({
         destination: {
             actor: get(conditionActor, 'do', 'organization', 'actorId'),
             actorTag: getTag(conditionProperty, 'do'),
+            kyc: getProp(conditionProperty, 'dk', 'destination.kyc'),
+            customerType: getProp(conditionProperty, 'dt', 'destination.customerType'),
             cardProduct: get(conditionItem, 'dc', 'cardProduct', 'itemNameId'),
             accountProduct: get(conditionItem, 'dc', 'accountProduct', 'itemNameId'),
             country: get(conditionItem, 'ds', 'country', 'itemNameId'),

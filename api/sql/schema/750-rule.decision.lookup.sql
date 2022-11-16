@@ -75,7 +75,7 @@ BEGIN
     FROM
         [integration].[vAccount]
     WHERE
-        accountNumber = @sourceAccount AND
+        (accountNumber = @sourceAccount OR @sourceAccount IS NULL) AND
         (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL)
 
     SELECT
@@ -88,7 +88,7 @@ BEGIN
     FROM
         [integration].[vAccount]
     WHERE
-        accountNumber = @destinationAccount AND
+        (accountNumber = @destinationAccount OR @destinationAccount IS NULL) AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
 
     -- if check amount has been setup for the account and/or the account product, assign the value to variable. account is with higher priority
@@ -171,6 +171,44 @@ BEGIN
         ('ds', 'destination.city', @destinationCityId),
         --destination category
         ('dc', 'destination.account.product', @destinationAccountProductId)
+
+    IF OBJECT_ID(N'customer.customer') IS NOT NULL
+    BEGIN
+        IF @sourceOwnerId IS NOT NULL
+            INSERT INTO
+                @operationProperties(factor, name, value)
+            SELECT
+                'sk', 'source.kyc', c.kycId
+            FROM
+                customer.customer c
+            WHERE
+                c.actorId = @sourceOwnerId
+            UNION SELECT
+                'st', 'source.customerType', ct.customerTypeNumber
+            FROM
+                customer.customer c
+            LEFT JOIN
+                customer.customerType ct ON ct.customerTypeId = c.customerTypeId
+            WHERE
+                c.actorId = @sourceOwnerId
+        IF @destinationOwnerId IS NOT NULL
+            INSERT INTO
+                @operationProperties(factor, name, value)
+            SELECT
+                'dk', 'destination.kyc', c.kycId
+            FROM
+                customer.customer c
+            WHERE
+                c.actorId = @destinationOwnerId
+            UNION SELECT
+                'dt', 'destination.customerType', ct.customerTypeNumber
+            FROM
+                customer.customer c
+            LEFT JOIN
+                customer.customerType ct ON ct.customerTypeId = c.customerTypeId
+            WHERE
+                c.actorId = @destinationOwnerId
+    END
 
     DELETE FROM @operationProperties WHERE value IS NULL
 

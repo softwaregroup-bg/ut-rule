@@ -67,3 +67,15 @@ IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'notes' AND OBJECT_ID = O
 BEGIN
     ALTER TABLE [rule].[condition] ADD notes NVARCHAR(1000)
 END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'pkRuleConditionProperty')
+BEGIN
+    ALTER TABLE [rule].[conditionProperty] DROP CONSTRAINT pkRuleConditionProperty
+    ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT pkRuleConditionProperty1 PRIMARY KEY CLUSTERED (conditionId, factor, [name], [value])
+END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionProperty_factor')
+BEGIN
+    ALTER TABLE [rule].[conditionProperty] DROP CONSTRAINT ccRuleConditionProperty_factor
+    ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT ccRuleConditionProperty_factor1 CHECK (factor IN ('so', 'do', 'co', 'ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sk', 'st', 'dk', 'dt'))
+END

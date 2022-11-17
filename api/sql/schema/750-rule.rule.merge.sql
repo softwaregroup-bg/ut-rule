@@ -15,8 +15,10 @@ DECLARE @userId BIGINT = (SELECT [auth.actorId] FROM @meta)
 DECLARE @conditionTT [rule].conditionTT
 BEGIN TRY
 
-    INSERT INTO @conditionTT(priority, operationStartDate, operationEndDate, sourceAccountId, destinationAccountId, name, description, notes)
-    SELECT co.priority, co. operationStartDate, co. operationEndDate, co. sourceAccountId, co. destinationAccountId, co. name, co. description, co. notes
+    INSERT INTO @conditionTT(priority, operationStartDate, operationEndDate, sourceAccountId, destinationAccountId,
+        name, description, notes, createdOn, createdBy)
+    SELECT co.priority, co. operationStartDate, co. operationEndDate, co. sourceAccountId, co. destinationAccountId,
+        co. name, co. description, co. notes, co.createdOn, co.createdBy
     FROM @condition co
     LEFT JOIN [rule].condition c ON (c.name = co.name OR c.priority = co.priority)
     WHERE c.priority IS NULL

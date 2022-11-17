@@ -18,19 +18,8 @@ BEGIN TRY
     INSERT INTO @conditionTT(priority, operationStartDate, operationEndDate, sourceAccountId, destinationAccountId, name, description, notes)
     SELECT co.priority, co. operationStartDate, co. operationEndDate, co. sourceAccountId, co. destinationAccountId, co. name, co. description, co. notes
     FROM @condition co
-    LEFT JOIN [rule].condition c ON c.name = co.name
-    WHERE c.name IS NULL
-
-    IF EXISTS
-    (
-        SELECT c.[priority]
-        FROM [rule].condition c
-        JOIN @conditionTT co ON c.[priority] = co.[priority]
-        WHERE c.isDeleted = 0
-    )
-    BEGIN
-        RAISERROR ('rule.duplicatedPriority', 16, 1)
-    END
+    LEFT JOIN [rule].condition c ON (c.name = co.name OR c.priority = co.priority)
+    WHERE c.priority IS NULL
 
     DECLARE @rules TABLE (ruleId INT, ruleName NVARCHAR(100))
     DECLARE @ruleSplitNames TABLE (splitId INT, splitNm NVARCHAR(100), ruleId INT, ruleName NVARCHAR(100))
@@ -107,5 +96,11 @@ BEGIN CATCH
     IF @@TRANCOUNT > 0
         ROLLBACK TRANSACTION;
 
-    throw;
+    DECLARE @errmsg NVARCHAR(2048)
+    SET @errmsg = error_message() + CHAR(10) + '    at ' + ISNULL(OBJECT_SCHEMA_NAME(@@PROCID, DB_ID()) + '.' + OBJECT_NAME(@@PROCID, DB_ID()), '<SQL>') +
+        ' (line:' + LTRIM(STR(ISNULL(error_line(), 1))) + ') errno:' + LTRIM(STR(ISNULL(error_number(), 0)))
+
+    EXEC [core].[errorCall] @procId = @@PROCID, @params = @callParams, @error = @errmsg
+
+    ;THROW;
 END CATCH

@@ -6,12 +6,15 @@ module.exports = ({joi}) => ({
     browser: {
         fetch: ({condition, paging}) => ({...condition, ...paging})
     },
-    nameField: 'condition.priority',
+    nameField: 'condition.name',
     schema: {
         properties: {
             condition: {
                 properties: {
                     conditionId: {},
+                    name: {},
+                    description: {},
+                    notes: {},
                     priority: {type: 'integer', title: 'Priority'},
                     operationEndDate: {title: 'End Date', widget: {type: 'date-time'}},
                     operationStartDate: {title: 'Start Date', widget: {type: 'date-time'}},
@@ -362,6 +365,7 @@ module.exports = ({joi}) => ({
         browse: {
             label: 'Fees, Commissions and Limits (FCL)',
             widgets: [
+                'condition.name',
                 'condition.priority',
                 'condition.channel',
                 'condition.operation',
@@ -390,8 +394,15 @@ module.exports = ({joi}) => ({
             className: 'lg:col-4',
             widgets: ['splitAnalytic']
         },
-        channel: {
+        condition: {
             className: 'lg:col-4',
+            label: 'Condition',
+            widgets: [
+                'condition.name',
+                'condition.priority'
+            ]
+        },
+        channel: {
             label: 'Channel',
             widgets: [
                 'channel.country',
@@ -404,7 +415,6 @@ module.exports = ({joi}) => ({
         operation: {
             label: 'Operation',
             widgets: [
-                'condition.priority',
                 'operation.type',
                 'operation.tag',
                 'condition.operationStartDate',
@@ -457,7 +467,7 @@ module.exports = ({joi}) => ({
                 label: 'Condition',
                 widgets: [
                     'hidden',
-                    ['channel', 'operation'],
+                    ['condition', 'channel', 'operation'],
                     'source',
                     'destination'
                 ]

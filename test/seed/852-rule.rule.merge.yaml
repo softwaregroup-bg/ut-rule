@@ -1,0 +1,149 @@
+condition:
+  - priority: 7
+    operationStartDate: '2022-10-31T22:00:32.577'
+    operationEndDate: '2022-11-29T23:59:59.997'
+    sourceAccountId: 1234
+    destinationAccountId: 5678
+    isDeleted: 0
+    createdBy: 1123
+    createdOn: '2022-11-04T09:57:36'
+    updatedBy: 1123
+    updatedOn: '2022-11-17T07:00:26'
+    name: Demo
+  - priority: 8
+    operationStartDate: '2022-10-31T22:00:32.577'
+    operationEndDate: '2022-11-29T23:59:59.997'
+    sourceAccountId: 1234
+    destinationAccountId: 5678
+    isDeleted: 0
+    createdBy: 1123
+    createdOn: '2022-11-04T09:57:36'
+    updatedBy: 1123
+    updatedOn: '2022-11-17T07:00:26'
+    name: Demo2
+conditionActor:
+  - {conditionName: Demo, factor: co, actorId: 1126}
+  - {conditionName: Demo, factor: co, actorId: 1127}
+  - {conditionName: Demo, factor: do, actorId: 1126}
+  - {conditionName: Demo, factor: so, actorId: 1127}
+  - {conditionName: Demo2, factor: co, actorId: 1126}
+  - {conditionName: Demo2, factor: co, actorId: 1127}
+  - {conditionName: Demo2, factor: do, actorId: 1126}
+  - {conditionName: Demo2, factor: so, actorId: 1127}
+conditionProperty:
+  - {conditionName: Demo, factor: co, name: exchange, value: 1}
+  - {conditionName: Demo, factor: oc, name: cash, value: 1}
+  - {conditionName: Demo, factor: so, name: transport, value: 1}
+  - {conditionName: Demo, factor: do, name: vat, value: tourism}
+  - {conditionName: Demo2, factor: co, name: exchange, value: 1}
+  - {conditionName: Demo2, factor: oc, name: cash, value: 1}
+  - {conditionName: Demo2, factor: so, name: transport, value: 1}
+  - {conditionName: Demo2, factor: do, name: vat, value: tourism}
+conditionItem:
+  - {conditionName: Demo, factor: cs, itemNameId: 7}
+  - {conditionName: Demo, factor: cs, itemNameId: 241}
+  - {conditionName: Demo, factor: cs, itemNameId: 596}
+  - {conditionName: Demo, factor: cs, itemNameId: 669}
+  - {conditionName: Demo, factor: oc, itemNameId: 722}
+  - {conditionName: Demo, factor: oc, itemNameId: 724}
+  - {conditionName: Demo, factor: sc, itemNameId: 721}
+  - {conditionName: Demo, factor: sc, itemNameId: 726}
+  - {conditionName: Demo, factor: ss, itemNameId: 2}
+  - {conditionName: Demo, factor: ss, itemNameId: 13}
+  - {conditionName: Demo, factor: ss, itemNameId: 598}
+  - {conditionName: Demo, factor: ss, itemNameId: 669}
+  - {conditionName: Demo, factor: ss, itemNameId: 672}
+  - {conditionName: Demo, factor: dc, itemNameId: 720}
+  - {conditionName: Demo, factor: dc, itemNameId: 723}
+  - {conditionName: Demo, factor: ds, itemNameId: 21}
+  - {conditionName: Demo, factor: ds, itemNameId: 243}
+  - {conditionName: Demo, factor: ds, itemNameId: 600}
+  - {conditionName: Demo, factor: ds, itemNameId: 669}
+  - {conditionName: Demo, factor: ds, itemNameId: 671}
+  - {conditionName: Demo2, factor: cs, itemNameId: 7}
+  - {conditionName: Demo2, factor: oc, itemNameId: 722}
+  - {conditionName: Demo2, factor: sc, itemNameId: 721}
+  - {conditionName: Demo2, factor: ss, itemNameId: 2}
+  - {conditionName: Demo2, factor: dc, itemNameId: 720}
+  - {conditionName: Demo2, factor: ds, itemNameId: 21}
+limit:
+  - {
+      conditionName: Demo, currency: BGN,
+      minAmount: 10, maxAmount: 10000,
+      maxAmountDaily: 20000, maxCountDaily: 3,
+      maxAmountWeekly: 100000, maxCountWeekly: 5,
+      maxAmountMonthly: 200000, maxCountMonthly: 10}
+  - {
+      conditionName: Demo, currency: EUR,
+      maxAmount: 5000, maxAmountDaily: 10000,
+      maxCountDaily: 3, maxAmountWeekly: 60000,
+      maxCountWeekly: 5, maxAmountMonthly: 100000,
+      maxCountMonthly: 10}
+  - {
+      conditionName: Demo, currency: USD,
+      maxCountDaily: 1, maxCountWeekly: 2, maxCountMonthly: 3}
+  - {
+      conditionName: Demo2, currency: BGN,
+      minAmount: 10, maxAmount: 10000,
+      maxAmountDaily: 20000, maxCountDaily: 3,
+      maxAmountWeekly: 100000, maxCountWeekly: 5,
+      maxAmountMonthly: 200000, maxCountMonthly: 10}
+  - {
+      conditionName: Demo2, currency: EUR,
+      maxAmount: 5000, maxAmountDaily: 10000,
+      maxCountDaily: 3, maxAmountWeekly: 60000,
+      maxCountWeekly: 5, maxAmountMonthly: 100000,
+      maxCountMonthly: 10}
+  - {
+      lconditionName: Demo2, currency: USD,
+      maxCountDaily: 1, maxCountWeekly: 2, maxCountMonthly: 3}
+splitName:
+  - {conditionName: Demo, name: fee, tag: "|fee|acquirer|"}
+  - {conditionName: Demo, name: pos, tag: "|pos|"}
+  - {conditionName: Demo, name: issuer, tag: "|issuer|"}
+  - {conditionName: Demo2, name: fee, tag: "|fee|acquirer|"}
+  - {conditionName: Demo2, name: pos, tag: "|pos|"}
+splitRange:
+  - {conditionName: Demo, splitName: fee, isSourceAmount: 1, percent: 0.7,
+     startAmount: 100, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
+     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
+  - {conditionName: Demo, splitName: pos, isSourceAmount: 1,
+     startAmount: 0, startAmountCurrency: BGN, startAmountDaily: 0, startCountDaily: 0,
+     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
+  - {conditionName: Demo, splitName: fee, isSourceAmount: 1, percent: 0.1,
+     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
+     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 10}
+  - {conditionName: Demo, splitName: fee, isSourceAmount: 1, percent: 0.2,
+     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
+     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 5000, startCountMonthly: 0}
+  - {conditionName: Demo, splitName: fee, isSourceAmount: 1, percent: 0.3,
+     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
+     startAmountWeekly: 0, startCountWeekly: 7, startAmountMonthly: 0, startCountMonthly: 0}
+  - {conditionName: Demo, splitName: fee, isSourceAmount: 1, percent: 0.4,
+     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
+     startAmountWeekly: 4000, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
+  - {conditionName: Demo, splitName: fee, isSourceAmount: 1, percent: 0.5,
+     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 2,
+     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
+  - {conditionName: Demo, splitName: fee, isSourceAmount: 1, percent: 0.6,
+     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 200, startCountDaily: 0,
+     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
+  - {conditionName: Demo, splitName: fee, isSourceAmount: 1, percent: 0.8,
+     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
+     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
+  - {conditionName: Demo2, splitName: fee, isSourceAmount: 1, percent: 0.7,
+     startAmount: 100, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
+     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
+  - {conditionName: Demo2, splitName: pos, isSourceAmount: 1,
+     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
+     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
+splitAssignment:
+  - {conditionName: Demo, splitName: fee, debit: '101', credit: '202', minValue: 5, percent: 1, description: test}
+  - {conditionName: Demo, splitName: pos, debit: debit, credit: credit, percent: 100, description: test}
+  - {conditionName: Demo2, splitName: fee, debit: '101', credit: '202', minValue: 5, percent: 1, description: test}
+  - {conditionName: Demo2, splitName: pos, debit: debit, credit: credit, percent: 100, description: test}
+splitAnalytic:
+  - {conditionName: Demo, splitName: fee, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
+  - {conditionName: Demo2, splitName: fee, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
+  - {conditionName: Demo2, splitName: pos, splitAssignmentDescription: test, name: note, value: 'PosTxn#: ${transfer.transferId}'}
+ 

@@ -75,12 +75,12 @@ BEGIN TRY
             r.startAmountWeekly, r.startCountWeekly, r.startAmountMonthly, r.startCountMonthly,
             r.isSourceAmount, r.minValue, r.maxValue, r.[percent], r.percentBase
         FROM @splitRange r
-        JOIN @ruleSplitNames n On n.splitNm = r.splitName AND n.ruleName = r.conditionName
+        JOIN @ruleSplitNames n ON n.splitNm = r.splitName AND n.ruleName = r.conditionName
 
         INSERT [rule].splitAssignment (splitNameId, debit, credit, minValue, maxValue, [percent], description)
         SELECT n.splitId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description
         FROM @splitAssignment r
-        JOIN @ruleSplitNames n On n.splitNm = r.splitName AND n.ruleName = r.conditionName
+        JOIN @ruleSplitNames n ON n.splitNm = r.splitName AND n.ruleName = r.conditionName
 
         INSERT [rule].splitAnalytic(splitAssignmentId, [name], [value])
         SELECT a.splitAssignmentId, r.[name], r.[value]

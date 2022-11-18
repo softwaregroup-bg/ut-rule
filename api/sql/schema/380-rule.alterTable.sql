@@ -83,13 +83,8 @@ IF NOT EXISTS (SELECT *
     ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT pkRuleConditionProperty PRIMARY KEY CLUSTERED (conditionId, factor, [name], [value])
 END
 
-IF EXISTS (SELECT * FROM sys.objects WHERE Object_ID = Object_ID (N'externalHistory.ruleConditionpropertyHistory') AND TYPE = 'SN')
+IF EXISTS (SELECT * FROM sys.objects WHERE Object_ID = Object_ID(N'externalHistory.ruleConditionpropertyHistory') AND TYPE = 'SN')
 BEGIN
-    DECLARE @historyDb NVARCHAR (200) = (
-        SELECT DB_NAME(DB_ID(PARSENAME(base_object_name, 3)))
-        FROM sys.synonyms
-        WHERE name = 'ruleConditionpropertyHistory')
-
     DECLARE @alter_table NVARCHAR(MAX) = REPLACE('
         IF NOT EXISTS (SELECT *
             FROM [{DBNAME}].sys.index_columns ic
@@ -102,10 +97,15 @@ BEGIN
             AND t.name = ''ruleConditionpropertyHistory''
             AND c.name = ''value''
         ) BEGIN
-            ALTER TABLE [{DBNAME}].[history].[ruleConditionpropertyHistory] DROP CONSTRAINT ukruleconditionProperty_h_conditionId_factor_name
-            ALTER TABLE [{DBNAME}].[history].[ruleConditionpropertyHistory] ADD CONSTRAINT ukruleconditionProperty_h_conditionId_factor_name_value UNIQUE NONCLUSTERED (conditionId, factor, [name], [value])
+            IF OBJECT_ID(''[{DBNAME}].[history].[ukruleconditionProperty_h_conditionId_factor_name]'') IS NOT NULL
+                ALTER TABLE [{DBNAME}].[history].[ruleConditionpropertyHistory] DROP CONSTRAINT ukruleconditionProperty_h_conditionId_factor_name
+            ALTER TABLE [{DBNAME}].[history].[ruleConditionpropertyHistory] ADD CONSTRAINT ukruleconditionProperty_h_conditionId_factor_name_value UNIQUE NONCLUSTERED (conditionId, factor, [name], [value], [auditEndDate], [endTransactionId])
         END
-    ', '{DBNAME}', @historyDb)
+    ', '{DBNAME}', (
+        SELECT DB_NAME(DB_ID(PARSENAME(base_object_name, 3)))
+        FROM sys.synonyms
+        WHERE name = 'ruleConditionpropertyHistory'
+    ))
     EXECUTE (@alter_table)
 END
 

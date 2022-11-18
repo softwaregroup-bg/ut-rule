@@ -83,7 +83,7 @@ IF NOT EXISTS (SELECT *
     ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT pkRuleConditionProperty PRIMARY KEY CLUSTERED (conditionId, factor, [name], [value])
 END
 
-IF EXISTS (SELECT * FROM sys.objects WHERE Object_ID = Object_ID(N'externalHistory.ruleConditionpropertyHistory') AND TYPE = 'SN')
+IF EXISTS (SELECT * FROM sys.objects WHERE Object_ID = OBJECT_ID(N'externalHistory.ruleConditionpropertyHistory') AND TYPE = 'SN')
 BEGIN
     DECLARE @alter_table NVARCHAR(MAX) = REPLACE('
         IF NOT EXISTS (SELECT *

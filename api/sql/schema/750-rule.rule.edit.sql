@@ -72,10 +72,7 @@ BEGIN TRY
 
         MERGE INTO [rule].conditionProperty cp
         USING @conditionProperty cp1
-            ON cp.conditionId = cp1.conditionId AND cp.factor = cp1.factor AND cp.name = cp1.name
-        WHEN MATCHED THEN
-            UPDATE
-            SET value = cp1.value
+            ON cp.conditionId = cp1.conditionId AND cp.factor = cp1.factor AND cp.name = cp1.name AND cp.value = cp1.value
         WHEN NOT MATCHED BY TARGET THEN
             INSERT (conditionId, factor, name, value)
             VALUES (@conditionId, cp1.factor, cp1.name, cp1.value)

@@ -68,10 +68,45 @@ BEGIN
     ALTER TABLE [rule].[condition] ADD notes NVARCHAR(1000)
 END
 
-IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'pkRuleConditionProperty')
-BEGIN
+IF NOT EXISTS (SELECT *
+    FROM sys.index_columns ic
+    JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id
+    JOIN sys.indexes i ON ic.object_id = i.object_id AND ic.index_id = i.index_id
+    JOIN sys.tables t ON i.object_id = t.object_id
+    JOIN sys.schemas s ON t.schema_id = s.schema_id
+    WHERE i.is_primary_key = 1
+    AND s.name = 'rule'
+    AND t.name = 'conditionProperty'
+    AND c.name = 'value'
+) BEGIN
     ALTER TABLE [rule].[conditionProperty] DROP CONSTRAINT pkRuleConditionProperty
-    ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT pkRuleConditionProperty1 PRIMARY KEY CLUSTERED (conditionId, factor, [name], [value])
+    ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT pkRuleConditionProperty PRIMARY KEY CLUSTERED (conditionId, factor, [name], [value])
+END
+
+IF EXISTS (SELECT * FROM sys.objects WHERE Object_ID = Object_ID (N'externalHistory.ruleConditionpropertyHistory') AND TYPE = 'SN')
+BEGIN
+    DECLARE @historyDb NVARCHAR (200) = (
+        SELECT DB_NAME(DB_ID(PARSENAME(base_object_name, 3)))
+        FROM sys.synonyms
+        WHERE name = 'ruleConditionpropertyHistory')
+
+    DECLARE @alter_table NVARCHAR(MAX) = REPLACE('
+        IF NOT EXISTS (SELECT *
+            FROM [{DBNAME}].sys.index_columns ic
+            JOIN [{DBNAME}].sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id
+            JOIN [{DBNAME}].sys.indexes i ON ic.object_id = i.object_id AND ic.index_id = i.index_id
+            JOIN [{DBNAME}].sys.tables t ON i.object_id = t.object_id
+            JOIN [{DBNAME}].sys.schemas s ON t.schema_id = s.schema_id
+            WHERE i.is_unique_constraint = 1
+            AND s.name = ''history''
+            AND t.name = ''ruleConditionpropertyHistory''
+            AND c.name = ''value''
+        ) BEGIN
+            ALTER TABLE [{DBNAME}].[history].[ruleConditionpropertyHistory] DROP CONSTRAINT ukruleconditionProperty_h_conditionId_factor_name
+            ALTER TABLE [{DBNAME}].[history].[ruleConditionpropertyHistory] ADD CONSTRAINT ukruleconditionProperty_h_conditionId_factor_name_value UNIQUE NONCLUSTERED (conditionId, factor, [name], [value])
+        END
+    ', '{DBNAME}', @historyDb)
+    EXECUTE (@alter_table)
 END
 
 IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionProperty_factor')

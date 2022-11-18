@@ -50,6 +50,8 @@ function conditionSend({
     splitAnalytic,
     ...params
 }) {
+    const conditionId = params.condition?.conditionId;
+    const setConditionId = conditionId == null ? item => item : item => ({conditionId, ...item});
     return {
         ...params,
         conditionProperty: []
@@ -61,12 +63,14 @@ function conditionSend({
             .concat(source?.customerType?.map(value => ({factor: 'st', name: 'source.customerType', value})))
             .concat(destination?.kyc?.map(value => ({factor: 'dk', name: 'destination.kyc', value})))
             .concat(destination?.customerType?.map(value => ({factor: 'dt', name: 'destination.customerType', value})))
-            .filter(Boolean),
+            .filter(Boolean)
+            .map(setConditionId),
         conditionActor: []
             .concat(channel?.actor?.map(actorId => ({actorId, factor: 'co', type: 'organization'})))
             .concat(destination?.actor?.map(actorId => ({actorId, factor: 'do', type: 'organization'})))
             .concat(source?.actor?.map(actorId => ({actorId, factor: 'so', type: 'organization'})))
-            .filter(Boolean),
+            .filter(Boolean)
+            .map(setConditionId),
         conditionItem: []
             .concat(operation?.type?.map(itemNameId => ({itemNameId, factor: 'oc', type: 'operation'})))
             .concat(channel?.country?.map(itemNameId => ({itemNameId, factor: 'cs', type: 'country'})))
@@ -82,7 +86,8 @@ function conditionSend({
             .concat(destination?.city?.map(itemNameId => ({itemNameId, factor: 'ds', type: 'city'})))
             .concat(destination?.cardProduct?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'cardProduct'})))
             .concat(destination?.accountProduct?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'accountProduct'})))
-            .filter(Boolean),
+            .filter(Boolean)
+            .map(setConditionId),
         split: {
             data: {
                 rows: splitName?.map(item => ({

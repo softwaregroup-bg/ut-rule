@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.39.10"
+        "version": "10.40.2"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -13511,6 +13511,16 @@
                                                 "nullable": true,
                                                 "type": "string"
                                             },
+                                            "createdFrom": {
+                                                "format": "date-time",
+                                                "nullable": true,
+                                                "type": "string"
+                                            },
+                                            "createdTo": {
+                                                "format": "date-time",
+                                                "nullable": true,
+                                                "type": "string"
+                                            },
                                             "makerId": {
                                                 "nullable": true,
                                                 "oneOf": [
@@ -13532,6 +13542,18 @@
                                             "statusId": {
                                                 "nullable": true,
                                                 "type": "string"
+                                            },
+                                            "taskId": {
+                                                "nullable": true,
+                                                "oneOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "pattern": "^[0-9]{1,19}$",
+                                                        "type": "string"
+                                                    }
+                                                ]
                                             },
                                             "taskName": {
                                                 "nullable": true,
@@ -14406,6 +14428,10 @@
                                                     },
                                                     "firstName": {
                                                         "pattern": "^\\S(.*\\S)?$",
+                                                        "type": "string"
+                                                    },
+                                                    "firstNameLocal": {
+                                                        "nullable": true,
                                                         "type": "string"
                                                     },
                                                     "gender": {
@@ -18555,6 +18581,10 @@
                                                         "pattern": "^\\S(.*\\S)?$",
                                                         "type": "string"
                                                     },
+                                                    "firstNameLocal": {
+                                                        "nullable": true,
+                                                        "type": "string"
+                                                    },
                                                     "frontEndRecordId": {
                                                         "nullable": true,
                                                         "type": "string"
@@ -18573,9 +18603,21 @@
                                                         "pattern": "^\\S(.*\\S)?$",
                                                         "type": "string"
                                                     },
+                                                    "lastNameLocal": {
+                                                        "nullable": true,
+                                                        "type": "string"
+                                                    },
                                                     "maritalStatusId": {
                                                         "nullable": true,
                                                         "type": "number"
+                                                    },
+                                                    "middleName": {
+                                                        "nullable": true,
+                                                        "type": "string"
+                                                    },
+                                                    "middleNameLocal": {
+                                                        "nullable": true,
+                                                        "type": "string"
                                                     },
                                                     "nationalId": {
                                                         "nullable": true,

@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.39.10"
+        "version": "10.40.2"
     },
     "paths": {
         "/rpc/user/action/grant": {
@@ -12550,6 +12550,20 @@
                                                 "null"
                                             ]
                                         },
+                                        "createdFrom": {
+                                            "format": "date-time",
+                                            "type": [
+                                                "string",
+                                                "null"
+                                            ]
+                                        },
+                                        "createdTo": {
+                                            "format": "date-time",
+                                            "type": [
+                                                "string",
+                                                "null"
+                                            ]
+                                        },
                                         "makerId": {
                                             "type": "integer"
                                         },
@@ -12564,6 +12578,9 @@
                                                 "string",
                                                 "null"
                                             ]
+                                        },
+                                        "taskId": {
+                                            "type": "integer"
                                         },
                                         "taskName": {
                                             "type": [
@@ -13392,6 +13409,12 @@
                                                 "firstName": {
                                                     "pattern": "^\\S(.*\\S)?$",
                                                     "type": "string"
+                                                },
+                                                "firstNameLocal": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
                                                 },
                                                 "gender": {
                                                     "type": "string"
@@ -17669,6 +17692,12 @@
                                                     "pattern": "^\\S(.*\\S)?$",
                                                     "type": "string"
                                                 },
+                                                "firstNameLocal": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "frontEndRecordId": {
                                                     "type": [
                                                         "string",
@@ -17691,9 +17720,27 @@
                                                     "pattern": "^\\S(.*\\S)?$",
                                                     "type": "string"
                                                 },
+                                                "lastNameLocal": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "maritalStatusId": {
                                                     "type": [
                                                         "number",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "middleName": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "middleNameLocal": {
+                                                    "type": [
+                                                        "string",
                                                         "null"
                                                     ]
                                                 },

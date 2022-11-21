@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.20.0"
+        "version": "10.21.0"
     },
     "paths": {
         "/rpc/customer/account/activity": {
@@ -10844,6 +10844,13 @@
                                                         "string",
                                                         "null"
                                                     ]
+                                                },
+                                                "documentNumber": {
+                                                    "maxLength": 100,
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
                                                 }
                                             },
                                             "type": "object"
@@ -14952,6 +14959,76 @@
                                             "type": "array"
                                         },
                                         "customer.kyc": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "alias": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "label": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "parent": {
+                                                        "type": "integer"
+                                                    },
+                                                    "value": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "customer.kycAttributes": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "alias": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "label": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "parent": {
+                                                        "type": "integer"
+                                                    },
+                                                    "value": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "customer.levels": {
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {

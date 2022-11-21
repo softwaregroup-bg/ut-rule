@@ -31,8 +31,9 @@ const wrapper = {
 
 const tag = factor => value => {
     if (typeof value?.split !== 'function') return;
-    const [name, ...rest] = value.split('=');
-    return {
+    const [splitName, ...rest] = value.split('=');
+    const name = splitName.trim();
+    return name && {
         factor,
         name,
         value: rest.join('=') || '1'

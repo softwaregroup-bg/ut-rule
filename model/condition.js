@@ -358,6 +358,11 @@ module.exports = ({joi}) => ({
                         widget: {type: 'multiSelect', dropdown: 'rule.city'}
                     }
                 }
+            },
+            history: {
+                widget: {
+                    params: {object: 'rule', id: '${condition.conditionId}'} // eslint-disable-line no-template-curly-in-string
+                }
             }
         }
     },
@@ -485,6 +490,11 @@ module.exports = ({joi}) => ({
                     'splitAssignment',
                     'splitAnalytic'
                 ]
+            }, {
+                icon: 'pi pi-history',
+                label: 'History',
+                id: 'history',
+                widgets: ['history']
             }]
         }
     }

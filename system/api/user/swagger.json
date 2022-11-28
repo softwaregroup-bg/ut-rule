@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.40.2"
+        "version": "10.42.1"
     },
     "paths": {
         "/rpc/user/action/grant": {
@@ -11973,6 +11973,7 @@
                                         },
                                         "rejectReason": {
                                             "minLength": 1,
+                                            "title": "Reject Reason",
                                             "type": "string"
                                         }
                                     },
@@ -12537,32 +12538,24 @@
                                     "additionalProperties": false,
                                     "description": "Method parameters",
                                     "properties": {
-                                        "businessUnit": {
+                                        "businessUnitID": {
+                                            "type": "integer"
+                                        },
+                                        "businessUnitName": {
                                             "type": [
                                                 "string",
                                                 "null"
                                             ]
                                         },
                                         "created": {
-                                            "format": "date-time",
-                                            "type": [
-                                                "string",
-                                                "null"
-                                            ]
-                                        },
-                                        "createdFrom": {
-                                            "format": "date-time",
-                                            "type": [
-                                                "string",
-                                                "null"
-                                            ]
-                                        },
-                                        "createdTo": {
-                                            "format": "date-time",
-                                            "type": [
-                                                "string",
-                                                "null"
-                                            ]
+                                            "items": {
+                                                "format": "date-time",
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ]
+                                            },
+                                            "type": "array"
                                         },
                                         "makerId": {
                                             "type": "integer"
@@ -12674,7 +12667,7 @@
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {
-                                                    "businessUnit": {
+                                                    "businessUnitName": {
                                                         "minLength": 1,
                                                         "title": "Business Unit",
                                                         "type": "string"
@@ -12714,7 +12707,7 @@
                                                     "taskName",
                                                     "taskType",
                                                     "makerId",
-                                                    "businessUnit",
+                                                    "businessUnitName",
                                                     "statusId"
                                                 ],
                                                 "type": "object"
@@ -12879,7 +12872,7 @@
                                         "task": {
                                             "additionalProperties": false,
                                             "properties": {
-                                                "businessUnit": {
+                                                "businessUnitName": {
                                                     "minLength": 1,
                                                     "title": "Business Unit",
                                                     "type": "string"
@@ -12919,7 +12912,7 @@
                                                 "taskName",
                                                 "taskType",
                                                 "makerId",
-                                                "businessUnit",
+                                                "businessUnitName",
                                                 "statusId"
                                             ],
                                             "type": "object"
@@ -23928,6 +23921,7 @@
                                         },
                                         "rejectReason": {
                                             "minLength": 1,
+                                            "title": "Reject Reason",
                                             "type": "string"
                                         }
                                     },

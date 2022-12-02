@@ -45,7 +45,7 @@ BEGIN TRY
     LEFT JOIN customer.organization o ON o.organizationName = LTRIM(RTRIM(a.Value))
 
     IF EXISTS (SELECT * FROM @conditionActor WHERE actorid IS NULL)
-        THROW 55555, 'rule.notExistingOrganizationName', 1;
+        THROW 55555, 'rule.notExistingOrganizationName', 1
 
 
     INSERT INTO @conditionItem(conditionName, factor, itemNameId)
@@ -57,7 +57,7 @@ BEGIN TRY
         AND i.itemTypeId = (SELECT i.itemTypeId FROM core.itemType WHERE alias = 'operation')
 
     IF EXISTS (SELECT * FROM @conditionActor WHERE actorid IS NULL)
-        THROW 55555, 'rule.notExistingOperationName', 1;
+        THROW 55555, 'rule.notExistingOperationName', 1
 
     INSERT INTO @conditionItem(conditionName, factor, itemNameId)
     SELECT r.name, 'cs', i.itemNameId
@@ -84,7 +84,7 @@ BEGIN TRY
         AND i.itemTypeId = (SELECT i.itemTypeId FROM core.itemType WHERE alias = 'country')
 
     IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
-        THROW 55555, 'rule.notExistingCountryName', 1;
+        THROW 55555, 'rule.notExistingCountryName', 1
 
     INSERT INTO @conditionItem(conditionName, factor, itemNameId)
     SELECT r.name, 'cs', i.itemNameId
@@ -111,7 +111,7 @@ BEGIN TRY
         AND i.itemTypeId = (SELECT i.itemTypeId FROM core.itemType WHERE alias = 'region')
 
     IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
-        THROW 55555, 'rule.notExistingRegionName', 1;
+        THROW 55555, 'rule.notExistingRegionName', 1
 
     INSERT INTO @conditionItem(conditionName, factor, itemNameId)
     SELECT r.name, 'cs', i.itemNameId
@@ -138,12 +138,12 @@ BEGIN TRY
         AND i.itemTypeId = (SELECT i.itemTypeId FROM core.itemType WHERE alias = 'city')
 
     IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
-        THROW 55555, 'rule.notExistingCityName', 1;
+        THROW 55555, 'rule.notExistingCityName', 1
 
     IF EXISTS (SELECT * FROM @condition WHERE holderCardProduct IS NOT NULL OR counterpartyCardProduct IS NOT NULL)
         AND OBJECT_ID('card.product', 'U') IS NULL
     BEGIN
-        THROW 50000, 'cbi.invalidCurrencyPair', 1;
+        ;THROW 50000, 'rule.notPossibleToGetCardProduct', 1
     END
     ELSE IF (EXISTS (SELECT * FROM @condition WHERE holderCardProduct IS NOT NULL OR counterpartyCardProduct IS NOT NULL)
         AND OBJECT_ID('card.product', 'U') IS NOT NULL
@@ -164,13 +164,13 @@ BEGIN TRY
         LEFT JOIN [card].product p ON p.name = LTRIM(RTRIM(a.Value))
 
         IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
-            THROW 55555, 'rule.notExistingCardProductName', 1;
+            THROW 55555, 'rule.notExistingCardProductName', 1
     END
 
     IF EXISTS (SELECT * FROM @condition WHERE holderAccountProduct IS NOT NULL OR counterpartyAccountProduct IS NOT NULL)
         AND OBJECT_ID('ledger.product', 'U') IS NULL
     BEGIN
-        THROW 55555, 'rule.notPossibleToGetAccountProduct', 1;
+        ;THROW 55555, 'rule.notPossibleToGetAccountProduct', 1
     END
     ELSE IF (EXISTS (SELECT * FROM @condition WHERE holderAccountProduct IS NOT NULL OR counterpartyAccountProduct IS NOT NULL)
         AND OBJECT_ID('ledger.product', 'U') IS NOT NULL
@@ -191,7 +191,7 @@ BEGIN TRY
         LEFT JOIN ledger.product p ON p.name = LTRIM(RTRIM(a.Value))
 
         IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
-            THROW 55555, 'rule.notExistingCardProductName', 1;
+            THROW 55555, 'rule.notExistingAccountProductName', 1
     END
 
     INSERT INTO @conditionProperty(conditionName, factor, name, value)

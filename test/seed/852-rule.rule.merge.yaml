@@ -3,13 +3,13 @@ condition:
     operationStartDate: '2022-10-31T22:00:32.577'
     operationEndDate: '2022-11-29T23:59:59.997'
     sourceAccountId: 1234
-    destinationAccountId: 5678    
+    destinationAccountId: 5678
     name: DemoNew
     channelOrganization: Bulgaria, Australia
     holderOrganization: Egypt, Ghana
     counterpartyOrganization: India, Kenya
     operation: Credit Adjustment, Debit Adjustment
-    channelCountry: Andorra, United Arab Emirates
+    channelCountry: Andorra, United Arab Emirates
     channelRegion: Varna, Burgas, Rousse
     channelCity: Topolovgrad, Ivaylovgrad
     holderCountry: Angola, Antarctica, Argentina
@@ -29,7 +29,7 @@ condition:
     holderKyc: LEvel 2, Level 3
     holderCustomerType: individual, corporate
     counterpartyKyc: Level 7
-    counterpartyCustomerType: corporate    
+    counterpartyCustomerType: corporate
   - priority: 80
     operationStartDate: '2022-10-31T22:00:32.577'
     operationEndDate: '2022-11-29T23:59:59.997'
@@ -60,7 +60,7 @@ condition:
     holderKyc: LEvel 1, Level 6
     holderCustomerType: individual, corporate
     counterpartyKyc: Level 4
-    counterpartyCustomerType: corporate    
+    counterpartyCustomerType: corporate
 limit:
   - {
       conditionName: DemoNew, currency: BGN,
@@ -141,4 +141,3 @@ splitAnalytic:
   - {conditionName: DemoNew, splitName: fee, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
   - {conditionName: DemoNew2, splitName: fee, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
   - {conditionName: DemoNew2, splitName: pos, splitAssignmentDescription: test, name: note, value: 'PosTxn#: ${transfer.transferId}'}
- 

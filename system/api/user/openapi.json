@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.39.10"
+        "version": "10.46.1"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -12890,6 +12890,7 @@
                                             },
                                             "rejectReason": {
                                                 "minLength": 1,
+                                                "title": "Reject Reason",
                                                 "type": "string"
                                             }
                                         },
@@ -13502,14 +13503,42 @@
                                         "additionalProperties": false,
                                         "description": "Method parameters",
                                         "properties": {
-                                            "businessUnit": {
+                                            "businessUnitID": {
+                                                "nullable": true,
+                                                "oneOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "pattern": "^[0-9]{1,19}$",
+                                                        "type": "string"
+                                                    }
+                                                ]
+                                            },
+                                            "businessUnitName": {
                                                 "nullable": true,
                                                 "type": "string"
                                             },
                                             "created": {
-                                                "format": "date-time",
-                                                "nullable": true,
-                                                "type": "string"
+                                                "oneOf": [
+                                                    {
+                                                        "items": {
+                                                            "format": "date-time",
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    {
+                                                        "enum": [
+                                                            {
+                                                                "override": true
+                                                            },
+                                                            null
+                                                        ],
+                                                        "nullable": true
+                                                    }
+                                                ]
                                             },
                                             "makerId": {
                                                 "nullable": true,
@@ -13532,6 +13561,18 @@
                                             "statusId": {
                                                 "nullable": true,
                                                 "type": "string"
+                                            },
+                                            "taskId": {
+                                                "nullable": true,
+                                                "oneOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "pattern": "^[0-9]{1,19}$",
+                                                        "type": "string"
+                                                    }
+                                                ]
                                             },
                                             "taskName": {
                                                 "nullable": true,
@@ -13618,7 +13659,7 @@
                                                     "items": {
                                                         "additionalProperties": false,
                                                         "properties": {
-                                                            "businessUnit": {
+                                                            "businessUnitName": {
                                                                 "minLength": 1,
                                                                 "title": "Business Unit",
                                                                 "type": "string"
@@ -13672,7 +13713,7 @@
                                                             "taskName",
                                                             "taskType",
                                                             "makerId",
-                                                            "businessUnit",
+                                                            "businessUnitName",
                                                             "statusId"
                                                         ],
                                                         "type": "object"
@@ -13853,7 +13894,7 @@
                                                 "task": {
                                                     "additionalProperties": false,
                                                     "properties": {
-                                                        "businessUnit": {
+                                                        "businessUnitName": {
                                                             "minLength": 1,
                                                             "title": "Business Unit",
                                                             "type": "string"
@@ -13907,7 +13948,7 @@
                                                         "taskName",
                                                         "taskType",
                                                         "makerId",
-                                                        "businessUnit",
+                                                        "businessUnitName",
                                                         "statusId"
                                                     ],
                                                     "type": "object"
@@ -14385,6 +14426,10 @@
                                             "person": {
                                                 "additionalProperties": false,
                                                 "properties": {
+                                                    "activityId": {
+                                                        "nullable": true,
+                                                        "type": "integer"
+                                                    },
                                                     "actorId": {
                                                         "nullable": true,
                                                         "type": "string"
@@ -14406,6 +14451,10 @@
                                                     },
                                                     "firstName": {
                                                         "pattern": "^\\S(.*\\S)?$",
+                                                        "type": "string"
+                                                    },
+                                                    "firstNameLocal": {
+                                                        "nullable": true,
                                                         "type": "string"
                                                     },
                                                     "gender": {
@@ -15334,6 +15383,14 @@
                                                 "person": {
                                                     "additionalProperties": false,
                                                     "properties": {
+                                                        "activity": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
+                                                        "activityId": {
+                                                            "nullable": true,
+                                                            "type": "integer"
+                                                        },
                                                         "actorId": {
                                                             "oneOf": [
                                                                 {
@@ -15461,6 +15518,14 @@
                                                     "additionalProperties": false,
                                                     "nullable": true,
                                                     "properties": {
+                                                        "activity": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
+                                                        "activityId": {
+                                                            "nullable": true,
+                                                            "type": "integer"
+                                                        },
                                                         "actorId": {
                                                             "oneOf": [
                                                                 {
@@ -18519,6 +18584,10 @@
                                                 "additionalProperties": false,
                                                 "description": "Required only for updating user names.",
                                                 "properties": {
+                                                    "activityId": {
+                                                        "nullable": true,
+                                                        "type": "integer"
+                                                    },
                                                     "actorId": {
                                                         "oneOf": [
                                                             {
@@ -18555,6 +18624,10 @@
                                                         "pattern": "^\\S(.*\\S)?$",
                                                         "type": "string"
                                                     },
+                                                    "firstNameLocal": {
+                                                        "nullable": true,
+                                                        "type": "string"
+                                                    },
                                                     "frontEndRecordId": {
                                                         "nullable": true,
                                                         "type": "string"
@@ -18573,9 +18646,21 @@
                                                         "pattern": "^\\S(.*\\S)?$",
                                                         "type": "string"
                                                     },
+                                                    "lastNameLocal": {
+                                                        "nullable": true,
+                                                        "type": "string"
+                                                    },
                                                     "maritalStatusId": {
                                                         "nullable": true,
                                                         "type": "number"
+                                                    },
+                                                    "middleName": {
+                                                        "nullable": true,
+                                                        "type": "string"
+                                                    },
+                                                    "middleNameLocal": {
+                                                        "nullable": true,
+                                                        "type": "string"
                                                     },
                                                     "nationalId": {
                                                         "nullable": true,
@@ -19543,6 +19628,14 @@
                                                 "person": {
                                                     "additionalProperties": false,
                                                     "properties": {
+                                                        "activity": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
+                                                        "activityId": {
+                                                            "nullable": true,
+                                                            "type": "integer"
+                                                        },
                                                         "actorId": {
                                                             "oneOf": [
                                                                 {
@@ -19670,6 +19763,14 @@
                                                     "additionalProperties": false,
                                                     "nullable": true,
                                                     "properties": {
+                                                        "activity": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
+                                                        "activityId": {
+                                                            "nullable": true,
+                                                            "type": "integer"
+                                                        },
                                                         "actorId": {
                                                             "oneOf": [
                                                                 {
@@ -22434,6 +22535,14 @@
                                                 "person": {
                                                     "additionalProperties": false,
                                                     "properties": {
+                                                        "activity": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
+                                                        "activityId": {
+                                                            "nullable": true,
+                                                            "type": "integer"
+                                                        },
                                                         "actorId": {
                                                             "oneOf": [
                                                                 {
@@ -22561,6 +22670,14 @@
                                                     "additionalProperties": false,
                                                     "nullable": true,
                                                     "properties": {
+                                                        "activity": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
+                                                        "activityId": {
+                                                            "nullable": true,
+                                                            "type": "integer"
+                                                        },
                                                         "actorId": {
                                                             "oneOf": [
                                                                 {
@@ -24277,6 +24394,7 @@
                                             },
                                             "rejectReason": {
                                                 "minLength": 1,
+                                                "title": "Reject Reason",
                                                 "type": "string"
                                             }
                                         },

@@ -1,3 +1,12 @@
+## [12.4.4](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.3...v12.4.4) (2022-12-07)
+
+
+### Bug Fixes
+
+* add source condition, #UTCORE-121 ([960010a](https://github.com/softwaregroup-bg/ut-rule/commit/960010a9147bc84f350ffbc7fe05ff952931d671)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
 ## [12.4.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.2...v12.4.3) (2022-11-16)
 
 

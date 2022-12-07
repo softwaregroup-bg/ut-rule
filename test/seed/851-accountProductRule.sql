@@ -101,6 +101,8 @@ BEGIN
     WHERE cit.alias = 'operation' AND itemCode IN ('refund')
     UNION ALL
     SELECT 'dc', @selfRegistrationItemNameId
+    UNION ALL
+    SELECT 'sc', @erpItemNameId
 
     SET @split = N'<data>
         <rows>

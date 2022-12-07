@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.25.1"
+        "version": "10.25.2"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -20721,6 +20721,10 @@
                                             "customerTypeId": {
                                                 "nullable": true,
                                                 "type": "integer"
+                                            },
+                                            "display": {
+                                                "nullable": true,
+                                                "type": "string"
                                             },
                                             "isActive": {
                                                 "enum": [

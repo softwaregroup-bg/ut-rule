@@ -8,7 +8,7 @@ condition:
     channelOrganization: Bulgaria, Australia
     holderOrganization: Egypt, Ghana
     counterpartyOrganization: India, Kenya
-    operation: Credit Adjustment, Debit Adjustment
+    operation: Rule Deposit, Rule Withdraw
     channelCountry: Andorra, United Arab Emirates
     channelRegion: Varna, Burgas, Rousse
     channelCity: Topolovgrad, Ivaylovgrad
@@ -18,17 +18,15 @@ condition:
     counterpartyCountry: Senegal
     counterpartyRegion: Yambol
     counterpartyCity: Ardino, Dzhebel
-    # olderCardProduct: ,
-    holderAccountProduct: selfRegistration
-    # counterpartyCardProduct: ,
-    counterpartyAccountProduct: loanProduct
+   #  holderAccountProduct: selfRegistration
+   #  counterpartyAccountProduct: loanProduct
     operationTag: cash
     channelOrganizationTag: exchange
     holderOrganizationTag: transport, vat=tourism
     counterpartyOrganizationTag: transport=5, exchange=4, cash
-    holderKyc: LEvel 2, Level 3
+    holderKyc: Level 2, Level 3
     holderCustomerType: individual, corporate
-    counterpartyKyc: Level 7
+    counterpartyKyc: Level 0
     counterpartyCustomerType: corporate
   - priority: 80
     operationStartDate: '2022-10-31T22:00:32.577'
@@ -39,7 +37,7 @@ condition:
     channelOrganization: USA
     holderOrganization: Philippines
     counterpartyOrganization: Mexico
-    operation: Bulk debit, Bulk credit
+    operation: Rule Transfer
     channelCountry: Guinea, Gambia
     channelRegion: Razgrad
     channelCity: Sarnitsa, Kaspichan
@@ -49,17 +47,15 @@ condition:
     counterpartyCountry: Jordan, Japan, Kenya
     counterpartyRegion: Montana
     counterpartyCity: Madan
-    # olderCardProduct: ,
-    holderAccountProduct: selfRegistration
-    # counterpartyCardProduct: ,
-    counterpartyAccountProduct: loanProduct
+   #  holderAccountProduct: selfRegistration
+   #  counterpartyAccountProduct: loanProduct
     operationTag: cash
     channelOrganizationTag: exchange=11
     holderOrganizationTag: transport, vat=full
     counterpartyOrganizationTag: transport, exchange, cash
-    holderKyc: LEvel 1, Level 6
+    holderKyc: Level 0, Level 1
     holderCustomerType: individual, corporate
-    counterpartyKyc: Level 4
+    counterpartyKyc: Level 2
     counterpartyCustomerType: corporate
 limit:
   - {

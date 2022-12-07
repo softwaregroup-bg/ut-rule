@@ -4,7 +4,7 @@ require('ut-portal-admin/entry')({
         require('../portal').default
     ],
     utCore: true,
-    utMicroservice: true,
+    utRule: true,
     portal: {
         test: {
             menu: [

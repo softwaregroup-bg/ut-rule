@@ -1,3 +1,13 @@
+## [12.4.5](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.4...v12.4.5) (2022-12-08)
+
+
+### Bug Fixes
+
+* issue in 851-accountProductRule ([ae8bb47](https://github.com/softwaregroup-bg/ut-rule/commit/ae8bb47a6e1127108389200e73394cacc0d9f79e))
+* some issues ([0816c19](https://github.com/softwaregroup-bg/ut-rule/commit/0816c19d512210ccd3d8c14c9445cf8b545a6cdc))
+
+
+
 ## [12.4.4](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.3...v12.4.4) (2022-12-07)
 
 

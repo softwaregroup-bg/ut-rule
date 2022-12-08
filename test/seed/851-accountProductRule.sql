@@ -89,7 +89,7 @@ END
 DELETE FROM @condition
 DELETE FROM @conditionItem
 
-IF @erpItemNameId is not null AND NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 11)
+IF @erpItemNameId IS NOT NULL AND NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 11)
 BEGIN
     INSERT INTO @condition ([priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
     VALUES (11, NULL, NULL, NULL, NULL)
@@ -103,7 +103,6 @@ BEGIN
     SELECT 'dc', @selfRegistrationItemNameId
     UNION ALL
     SELECT 'sc', @erpItemNameId
-    WHERE @erpItemNameId IS NOT NULL
 
     SET @split = N'<data>
         <rows>

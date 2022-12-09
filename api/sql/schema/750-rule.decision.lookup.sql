@@ -132,19 +132,23 @@ BEGIN
         core.actorGraph(g.actorId, 'role', 'subject') r
     WHERE
         g.actorId <> r.actorId
-    UNION SELECT
+    UNION ALL
+    SELECT
         'so', 'source.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@sourceOwnerId, 'memberOf', 'subject') g
-    UNION SELECT
+    UNION ALL
+    SELECT
         'do', 'destination.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@destinationOwnerId, 'memberOf', 'subject') g
-    UNION SELECT
+    UNION ALL
+    SELECT
         'co', 'channel.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@channelId, 'memberOf', 'subject') g
-    UNION SELECT
+    UNION ALL
+    SELECT
         'co', 'agentOf.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@channelId, 'agentOf', 'subject') g
@@ -183,7 +187,8 @@ BEGIN
                 customer.customer c
             WHERE
                 c.actorId = @sourceOwnerId
-            UNION SELECT
+            UNION ALL
+            SELECT
                 'st', 'source.customerType', ct.customerTypeNumber
             FROM
                 customer.customer c
@@ -200,7 +205,8 @@ BEGIN
                 customer.customer c
             WHERE
                 c.actorId = @destinationOwnerId
-            UNION SELECT
+            UNION ALL
+            SELECT
                 'dt', 'destination.customerType', ct.customerTypeNumber
             FROM
                 customer.customer c

@@ -216,16 +216,21 @@ BEGIN TRY
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.holderKyc, ',') a
-    LEFT JOIN customer.kyc p ON p.display = LTRIM(RTRIM(a.Value))
-    WHERE a.Value IS NOT NULL
+    FULL OUTER JOIN @conditionActor ca ON 1 = 1
+    LEFT JOIN customer.kyc p ON p.display = LTRIM(RTRIM(a.Value)) AND p.organizationId = ISNULL(ca.actorId, p.organizationId)
+    WHERE a.Value IS NOT NULL AND (factor = 'so' OR factor IS NULL)
 
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
-    SELECT r.name, 'dk', 'destination.kyc', p.kycId
+    SELECT r.name, 'dk', 'destination.kyc', k.kycId
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyKyc, ',') a
-    LEFT JOIN customer.kyc p ON p.display = LTRIM(RTRIM(a.Value))
-    WHERE a.Value IS NOT NULL
+    FULL OUTER JOIN @conditionActor ca ON 1 = 1
+    LEFT JOIN customer.kyc k ON k.display = LTRIM(RTRIM(a.Value)) AND k.organizationId = ISNULL(ca.actorId, k.organizationId)
+    WHERE a.Value IS NOT NULL AND (factor = 'do' OR factor IS NULL)
+
+    IF EXISTS (SELECT * FROM @conditionProperty WHERE [value] IS NULL)
+        THROW 55555, 'rule.notExistingKYC', 1
 
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
     SELECT r.name, 'st', 'source.customerType', p.customerTypeNumber
@@ -242,6 +247,9 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyCustomerType, ',') a
     LEFT JOIN customer.customerType p ON p.customerTypeId = LTRIM(RTRIM(a.Value))
     WHERE a.Value IS NOT NULL
+
+    IF EXISTS (SELECT * FROM @conditionProperty WHERE [value] IS NULL)
+        THROW 55555, 'rule.notExistingCustomerType', 1
 
 
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
@@ -278,6 +286,7 @@ BEGIN TRY
         FOR itn IN ([1], [2])
     ) pivot_table
 
+
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
     SELECT name, 'so', [1], ISNULL([2], '1')
     FROM
@@ -295,6 +304,7 @@ BEGIN TRY
         FOR itn IN ([1], [2])
     ) pivot_table
 
+
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
     SELECT name, 'do', [1], ISNULL([2], '1')
     FROM
@@ -311,7 +321,6 @@ BEGIN TRY
         MAX(v)
         FOR itn IN ([1], [2])
     ) pivot_table
-
 
     DECLARE @rules TABLE (ruleId INT, ruleName NVARCHAR(100))
     DECLARE @ruleSplitNames TABLE (splitId INT, splitNm NVARCHAR(100), ruleId INT, ruleName NVARCHAR(100))

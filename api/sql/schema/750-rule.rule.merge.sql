@@ -56,7 +56,7 @@ BEGIN TRY
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.operation, ',') a
-    LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
+    LEFT JOIN core.itemName i ON i.itemCode = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'operation')
     WHERE a.Value IS NOT NULL
 

@@ -16,15 +16,15 @@ condition:
   - {name: Test by holder city, holderCity: Merichleri}
   - {name: Test by holder organization tag, holderOrganizationTag: 'tourism, vat=tourism'}
   - {name: Test by holder organization, holderOrganization: 'Mercy Corps, Nobel Foundation'}
-  - {name: Test by holder type, holderCustomerType: 'corporate'}
-  - {name: Test by holder kyc, holderKyc: 'Level 2, Level 3'}
+  - {name: Test by holder type, holderCustomerType: 'corporate', operation: 'Rule Withdraw'}
+  - {name: Test by holder kyc, holderKyc: 'Level 2, Level 3', operation: 'Rule Withdraw'}
   - {name: Test by counterparty country, counterpartyCountry: Senegal}
   - {name: Test by counterparty region, counterpartyRegion: Yambol}
   - {name: Test by counterparty city, counterpartyCity: 'Ardino, Dzhebel'}
   - {name: Test by counterparty organization tag, counterpartyOrganizationTag: 'transport, exchange=currency, cash'}
   - {name: Test by counterparty organization, counterpartyOrganization: 'Oxfam, UNICEF'}
-  - {name: Test by counterparty type, counterpartyCustomerType: corporate}
-  - {name: Test by counterparty kyc, counterpartyKyc: Level 0}
+  - {name: Test by counterparty type, counterpartyCustomerType: corporate, operation: 'Rule Withdraw'}
+  - {name: Test by counterparty kyc, counterpartyKyc: Level 0, operation: 'Rule Withdraw'}
   - priority: 70
     operationStartDate: '2022-01-01T00:00:00Z'
     operationEndDate: '2022-01-31T00:00:00Z'

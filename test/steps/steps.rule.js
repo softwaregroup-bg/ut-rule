@@ -12,6 +12,26 @@ module.exports = function steps({version, callSite}) {
                 assert.ok(result.condition[0].conditionId, 'return conditionId');
             }
         }),
+        'steps.rule.condition.fetch': ({name, params}) => ({
+            ...callSite?.(),
+            method: 'rule.condition.fetch',
+            name,
+            params,
+            result(result, assert) {
+                assert.comment('conditionId: ' + result.condition[0].conditionId);
+                assert.ok(result.condition[0].conditionId, 'return conditionId');
+            }
+        }),
+        'steps.rule.condition.get': ({name, params}) => ({
+            ...callSite?.(),
+            method: 'rule.condition.get',
+            name,
+            params,
+            result(result, assert) {
+                assert.comment('conditionId: ' + result.condition[0].conditionId);
+                assert.ok(result.condition[0].conditionId, 'return conditionId');
+            }
+        }),
         'steps.rule.decision.snapshot': ({name, ...params}, callback) => ({
             ...callSite?.(),
             method: 'rule.decision.lookup',

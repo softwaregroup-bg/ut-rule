@@ -1,6 +1,6 @@
 condition:
   - {name: Test by period, operationStartDate: '2022-01-01T00:00:00Z', operationEndDate: '2022-02-01T00:00:00Z'}
-  - {name: Test by start date, operationStartDate: '2022-03-01T00:00:00Z'}
+  - {name: Test by start date, operationStartDate: '2122-03-01T00:00:00Z'}
   - {name: Test by end date, operationEndDate: '2021-12-01T00:00:00Z'}
   - {name: Test by source account, sourceAccountId: source}
   - {name: Test by destination account, destinationAccountId: destination}

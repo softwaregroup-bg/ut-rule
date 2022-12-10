@@ -25,7 +25,7 @@ module.exports = function test() {
                 },
                 ruleDecisionSnapshot({name: 'No match'}),
                 ruleDecisionSnapshot({name: 'Period', operationDate: '2022-01-10T00:00:00Z'}),
-                ruleDecisionSnapshot({name: 'Start date', operationDate: '2022-03-10T00:00:00Z'}),
+                ruleDecisionSnapshot({name: 'Start date', operationDate: '2122-03-10T00:00:00Z'}),
                 ruleDecisionSnapshot({name: 'End date', operationDate: '2021-11-10T00:00:00Z'}),
                 ruleDecisionSnapshot({name: 'Operation', operation: 'Rule Deposit'}),
                 ruleDecisionSnapshot({name: 'Channel country', channelId: 2}),

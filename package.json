@@ -26,7 +26,7 @@
     "ut-cache": "^6.0.1",
     "ut-core": "^8.27.0",
     "ut-customer": "^10.25.3",
-    "ut-db": "^8.6.0",
+    "ut-db": "^8.8.0",
     "ut-dispatch-db": "^1.5.0",
     "ut-document": "^9.12.1",
     "ut-front-react": "^13.3.2",

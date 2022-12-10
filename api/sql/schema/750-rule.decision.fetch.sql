@@ -95,13 +95,13 @@ BEGIN TRY
         @totals t ON t.transferTypeId = ISNULL(co.transferTypeId, @transferTypeId)
     WHERE
         c.isDeleted = 0 AND
-        (@operationDate IS NULL OR c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
-        (@operationDate IS NULL OR c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
+        (c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
+        (c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
         [rule].falseActorFactorCount(c.conditionId, @operationProperties) = 0 AND
         [rule].falseItemFactorCount(c.conditionId, @operationProperties) = 0 AND
         [rule].falsePropertyFactorCount(c.conditionId, @operationProperties) = 0 AND
-        (@sourceAccountId IS NULL OR c.sourceAccountId IS NULL OR @sourceAccountId = c.sourceAccountId) AND
-        (@destinationAccountId IS NULL OR c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)
+        (c.sourceAccountId IS NULL OR @sourceAccountId = c.sourceAccountId) AND
+        (c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)
     GROUP BY
         c.[priority], c.conditionId
 

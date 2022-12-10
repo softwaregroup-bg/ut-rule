@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "12.5.0-kyc.13",
+  "version": "12.5.0-kyc.14",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {

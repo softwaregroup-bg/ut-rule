@@ -100,7 +100,7 @@ export default class Grid extends React.Component {
 
     updateColumns = (columns) => {
         this.setState({
-            columns: columns
+            columns
         });
     };
 

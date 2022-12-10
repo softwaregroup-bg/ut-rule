@@ -19,7 +19,7 @@ BEGIN TRY
 
     INSERT INTO @conditionTT(priority, operationStartDate, operationEndDate, sourceAccountId, destinationAccountId,
         name, description, notes, createdBy)
-    SELECT co.priority, co. operationStartDate, co. operationEndDate, co. sourceAccountId, co. destinationAccountId,
+    SELECT ISNULL(co.priority, 1), co. operationStartDate, co. operationEndDate, co. sourceAccountId, co. destinationAccountId,
         co.name, co.description, co.notes, co.createdBy
     FROM @condition co
     LEFT JOIN [rule].condition c ON c.name = co.name
@@ -31,18 +31,21 @@ BEGIN TRY
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.channelOrganization, ',') a
     LEFT JOIN customer.organization o ON o.organizationName = LTRIM(RTRIM(a.Value))
+    WHERE c.channelOrganization IS NOT NULL
     UNION ALL
     SELECT r.name, 'so', o.actorId
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.holderOrganization, ',') a
     LEFT JOIN customer.organization o ON o.organizationName = LTRIM(RTRIM(a.Value))
+    WHERE c.holderOrganization IS NOT NULL
     UNION ALL
     SELECT r.name, 'do', o.actorId
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyOrganization, ',') a
     LEFT JOIN customer.organization o ON o.organizationName = LTRIM(RTRIM(a.Value))
+    WHERE c.counterpartyOrganization IS NOT NULL
 
     IF EXISTS (SELECT * FROM @conditionActor WHERE actorid IS NULL)
         THROW 55555, 'rule.notExistingOrganizationName', 1
@@ -55,6 +58,7 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.operation, ',') a
     LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'operation')
+    WHERE c.operation IS NOT NULL
 
     IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
         THROW 55555, 'rule.notExistingOperationName', 1
@@ -66,6 +70,7 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.channelCountry, ',') a
     LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'country')
+    WHERE c.channelCountry IS NOT NULL
 
     INSERT INTO @conditionItem(conditionName, factor, itemNameId)
     SELECT r.name, 'ss', i.itemNameId
@@ -74,6 +79,7 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.holderCountry, ',') a
     LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'country')
+    WHERE c.holderCountry IS NOT NULL
 
     INSERT INTO @conditionItem(conditionName, factor, itemNameId)
     SELECT r.name, 'ds', i.itemNameId
@@ -82,6 +88,7 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyCountry, ',') a
     LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'country')
+    WHERE c.counterpartyCountry IS NOT NULL
 
     IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
         THROW 55555, 'rule.notExistingCountryName', 1
@@ -93,6 +100,7 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.channelRegion, ',') a
     LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'region')
+    WHERE c.channelRegion IS NOT NULL
 
     INSERT INTO @conditionItem(conditionName, factor, itemNameId)
     SELECT r.name, 'ss', i.itemNameId
@@ -101,6 +109,7 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.holderRegion, ',') a
     LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'region')
+    WHERE c.holderRegion IS NOT NULL
 
     INSERT INTO @conditionItem(conditionName, factor, itemNameId)
     SELECT r.name, 'ds', i.itemNameId
@@ -109,6 +118,7 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyRegion, ',') a
     LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'region')
+    WHERE c.counterpartyRegion IS NOT NULL
 
     IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
         THROW 55555, 'rule.notExistingRegionName', 1
@@ -120,6 +130,7 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.channelCity, ',') a
     LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'city')
+    WHERE c.channelCity IS NOT NULL
 
     INSERT INTO @conditionItem(conditionName, factor, itemNameId)
     SELECT r.name, 'ss', i.itemNameId
@@ -128,6 +139,7 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.holderCity, ',') a
     LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'city')
+    WHERE c.holderCity IS NOT NULL
 
     INSERT INTO @conditionItem(conditionName, factor, itemNameId)
     SELECT r.name, 'ds', i.itemNameId
@@ -136,6 +148,7 @@ BEGIN TRY
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyCity, ',') a
     LEFT JOIN core.itemName i ON i.itemName = LTRIM(RTRIM(a.Value))
         AND i.itemTypeId = (SELECT itemTypeId FROM core.itemType WHERE alias = 'city')
+    WHERE c.counterpartyCity IS NOT NULL
 
     IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
         THROW 55555, 'rule.notExistingCityName', 1
@@ -155,6 +168,7 @@ BEGIN TRY
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.holderCardProduct, ',') a
         LEFT JOIN [card].product p ON p.name = LTRIM(RTRIM(a.Value))
+        WHERE c.holderCardProduct IS NOT NULL
 
         INSERT INTO @conditionItem(conditionName, factor, itemNameId)
         SELECT r.name, 'dc', p.productId
@@ -162,6 +176,7 @@ BEGIN TRY
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.counterpartyCardProduct, ',') a
         LEFT JOIN [card].product p ON p.name = LTRIM(RTRIM(a.Value))
+        WHERE c.counterpartyCardProduct IS NOT NULL
 
         IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
             THROW 55555, 'rule.notExistingCardProductName', 1
@@ -182,6 +197,7 @@ BEGIN TRY
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.holderAccountProduct, ',') a
         LEFT JOIN ledger.product p ON p.name = LTRIM(RTRIM(a.Value))
+        WHERE c.holderAccountProduct IS NOT NULL
 
         INSERT INTO @conditionItem(conditionName, factor, itemNameId)
         SELECT r.name, 'dc', p.itemNameId
@@ -189,6 +205,7 @@ BEGIN TRY
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.counterpartyAccountProduct, ',') a
         LEFT JOIN ledger.product p ON p.name = LTRIM(RTRIM(a.Value))
+        WHERE c.counterpartyAccountProduct IS NOT NULL
 
         IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
             THROW 55555, 'rule.notExistingAccountProductName', 1
@@ -200,6 +217,7 @@ BEGIN TRY
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.holderKyc, ',') a
     LEFT JOIN customer.kyc p ON p.display = LTRIM(RTRIM(a.Value))
+    WHERE c.holderKyc IS NOT NULL
 
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
     SELECT r.name, 'dk', 'destination.kyc', p.kycId
@@ -207,6 +225,7 @@ BEGIN TRY
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyKyc, ',') a
     LEFT JOIN customer.kyc p ON p.display = LTRIM(RTRIM(a.Value))
+    WHERE c.counterpartyKyc IS NOT NULL
 
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
     SELECT r.name, 'st', 'source.customerType', p.customerTypeNumber
@@ -214,6 +233,7 @@ BEGIN TRY
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.holderCustomerType, ',') a
     LEFT JOIN customer.customerType p ON p.customerTypeId = LTRIM(RTRIM(a.Value))
+    WHERE c.holderCustomerType IS NOT NULL
 
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
     SELECT r.name, 'dt', 'destination.customerType', p.customerTypeNumber
@@ -221,6 +241,7 @@ BEGIN TRY
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyCustomerType, ',') a
     LEFT JOIN customer.customerType p ON p.customerTypeId = LTRIM(RTRIM(a.Value))
+    WHERE c.counterpartyCustomerType IS NOT NULL
 
 
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
@@ -232,6 +253,7 @@ BEGIN TRY
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.operationTag, ',') a
         CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.Value)), '=') a2
+        WHERE c.operationTag IS NOT NULL
     ) p
     PIVOT
     (
@@ -248,6 +270,7 @@ BEGIN TRY
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.channelOrganizationTag, ',') a
         CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.Value)), '=') a2
+        WHERE c.channelOrganizationTag IS NOT NULL
     ) p
     PIVOT
     (
@@ -264,6 +287,7 @@ BEGIN TRY
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.holderOrganizationTag, ',') a
         CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.Value)), '=') a2
+        WHERE c.holderOrganizationTag IS NOT NULL
     ) p
     PIVOT
     (
@@ -280,6 +304,7 @@ BEGIN TRY
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.counterpartyOrganizationTag, ',') a
         CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.Value)), '=') a2
+        WHERE c.counterpartyOrganizationTag IS NOT NULL
     ) p
     PIVOT
     (
@@ -327,7 +352,7 @@ BEGIN TRY
         MERGE INTO [rule].splitName AS t
         USING
         (
-            SELECT ruleId, ruleName, s.name, s.tag
+            SELECT ruleId, ruleName, ISNULL(s.name, 'fee') name, ISNULL(s.tag, '|fee|acquirer|') tag
             FROM @splitName s
             JOIN @rules ON conditionName = ruleName
         ) AS s ON 1 = 0
@@ -336,24 +361,49 @@ BEGIN TRY
             VALUES (s.ruleId, s.name, s.tag)
         OUTPUT INSERTED.splitNameId, INSERTED.name, s.ruleId, s.ruleName INTO @ruleSplitNames(splitId, splitNm, ruleId, ruleName);
 
-        INSERT [rule].splitRange (splitNameId, startAmount, startAmountCurrency, startAmountDaily, startCountDaily,
-            startAmountWeekly, startCountWeekly, startAmountMonthly, startCountMonthly,
-            isSourceAmount, minValue, maxValue, [percent], percentBase)
-        SELECT n.splitId, r.startAmount, r.startAmountCurrency, r.startAmountDaily, r.startCountDaily,
-            r.startAmountWeekly, r.startCountWeekly, r.startAmountMonthly, r.startCountMonthly,
-            r.isSourceAmount, r.minValue, r.maxValue, r.[percent], r.percentBase
+        INSERT [rule].splitRange (
+            splitNameId,
+            startAmountCurrency,
+            startAmount,
+            startAmountDaily,
+            startCountDaily,
+            startAmountWeekly,
+            startCountWeekly,
+            startAmountMonthly,
+            startCountMonthly,
+            isSourceAmount,
+            minValue,
+            maxValue,
+            [percent],
+            percentBase
+        )
+        SELECT
+            n.splitId,
+            ISNULL(r.startAmountCurrency, 'USD'),
+            ISNULL(r.startAmount, 0),
+            ISNULL(r.startAmountDaily, 0),
+            ISNULL(r.startCountDaily, 0),
+            ISNULL(r.startAmountWeekly, 0),
+            ISNULL(r.startCountWeekly, 0),
+            ISNULL(r.startAmountMonthly, 0),
+            ISNULL(r.startCountMonthly, 0),
+            ISNULL(r.isSourceAmount, 0),
+            r.minValue,
+            r.maxValue,
+            r.[percent],
+            r.percentBase
         FROM @splitRange r
-        JOIN @ruleSplitNames n ON n.splitNm = r.splitName AND n.ruleName = r.conditionName
+        JOIN @ruleSplitNames n ON n.splitNm = ISNULL(r.splitName, 'fee') AND n.ruleName = r.conditionName
 
         INSERT [rule].splitAssignment (splitNameId, debit, credit, minValue, maxValue, [percent], description)
-        SELECT n.splitId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description
+        SELECT n.splitId, ISNULL(r.debit, 'debit'), ISNULL(r.credit, 'credit'), r.minValue, r.maxValue, ISNULL(r.[percent], 100), COALESCE(r.description, r.splitName, 'fee')
         FROM @splitAssignment r
-        JOIN @ruleSplitNames n ON n.splitNm = r.splitName AND n.ruleName = r.conditionName
+        JOIN @ruleSplitNames n ON n.splitNm = ISNULL(r.splitName, 'fee') AND n.ruleName = r.conditionName
 
         INSERT [rule].splitAnalytic(splitAssignmentId, [name], [value])
         SELECT a.splitAssignmentId, r.[name], r.[value]
         FROM @splitAnalytic r
-        JOIN @ruleSplitNames n ON n.splitNm = r.splitName AND n.ruleName = r.conditionName
+        JOIN @ruleSplitNames n ON n.splitNm = ISNULL(r.splitName, 'fee') AND n.ruleName = r.conditionName
         JOIN [rule].splitAssignment a ON a.splitNameId = n.splitId AND r.splitAssignmentDescription = a.description
 
     COMMIT TRANSACTION

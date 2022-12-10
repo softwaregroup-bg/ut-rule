@@ -1,0 +1,140 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Storybook",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "storybook"
+            ],
+            "console": "integratedTerminal",
+            "args": [
+                "test"
+            ],
+            "autoAttachChildProcesses": false,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "name": "Back end",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/index.js",
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "console": "integratedTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks",
+                "--nolazy",
+                "--max_old_space_size=500000"
+            ],
+            "env": {
+                "NODE_PATH": "dev"
+            },
+            "outputCapture": "std"
+        },
+        {
+            "name": "Test",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/index.test.js",
+            "cwd": "${workspaceRoot}",
+            "console": "integratedTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks",
+                "--nolazy",
+                "--max_old_space_size=500000"
+            ],
+            "env": {
+                "ut_rule_test_run__logLevel": "trace",
+                "UT_ENV": "test",
+                "NODE_PATH": "dev"
+            },
+            "outputCapture": "std"
+        },
+        {
+            "name": "Test Snapshot",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/index.test.js",
+            "cwd": "${workspaceRoot}",
+            "console": "integratedTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks",
+                "--nolazy",
+                "--max_old_space_size=500000"
+            ],
+            "env": {
+                "ut_rule_test_run__logLevel": "trace",
+                "UT_ENV": "test",
+                "TAP_SNAPSHOT": "1",
+                "NODE_PATH": "dev"
+            },
+            "outputCapture": "std"
+        },
+        {
+            "name": "Test UI",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/ui.test.js",
+            "args": [
+                "--run.logLevel=trace",
+                "${input:snapshots}"
+            ],
+            "cwd": "${workspaceRoot}",
+            "console": "integratedTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks",
+                "--nolazy",
+                "--max_old_space_size=500000"
+            ],
+            "env": {
+                "UT_ENV": "test",
+                "NODE_PATH": "dev"
+                // "PWDEBUG": 1
+            },
+            "outputCapture": "std"
+        },
+        {
+            "name": "Test single",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/index.test.js",
+            "args": [
+                "--run.logLevel=trace",
+                "--run.test.prompt"
+            ],
+            "cwd": "${workspaceRoot}",
+            "console": "integratedTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks",
+                "--nolazy",
+                "--max_old_space_size=500000"
+            ],
+            "env": {
+                "UT_ENV": "test",
+                "NODE_PATH": "dev"
+            },
+            "outputCapture": "std"
+        }
+    ],
+    "inputs": [{
+        "id": "snapshots",
+        "type": "pickString",
+        "description": "Pick parallel test to run",
+        "options": [{
+            "label": "Test snapshots",
+            "value": "--playwright"
+        }, {
+            "label": "Update snapshots",
+            "value": "--playwright.update-snapshots"
+        }, {
+            "label": "Run headed",
+            "value": "--playwright.headed"
+        }]
+    }]
+}

@@ -1,13 +1,39 @@
 condition:
+  - {name: Test by period, operationStartDate: '2022-01-01T00:00:00Z', operationEndDate: '2022-02-01T00:00:00Z'}
+  - {name: Test by start date, operationStartDate: '2022-03-01T00:00:00Z'}
+  - {name: Test by end date, operationEndDate: '2021-12-01T00:00:00Z'}
+  - {name: Test by source account, sourceAccountId: source}
+  - {name: Test by destination account, destinationAccountId: destination}
+  - {name: Test by operation tag, operationTag: cash}
+  - {name: Test by operation, operation: 'Rule Deposit, Rule Transfer'}
+  - {name: Test by channel country, channelCountry: 'Andorra, United Arab Emirates'}
+  - {name: Test by channel region, channelRegion: 'Varna, Burgas, Rousse'}
+  - {name: Test by channel city, channelCity: 'Topolovgrad, Ivaylovgrad'}
+  - {name: Test by channel organization tag, channelOrganizationTag: emv}
+  - {name: Test by channel organization, channelOrganization: 'CARE, Greenpeace'}
+  - {name: Test by holder country, holderCountry: 'Angola, Antarctica, Argentina'}
+  - {name: Test by holder region, holderRegion: 'Pleven, Sliven, Dobrich'}
+  - {name: Test by holder city, holderCity: Merichleri}
+  - {name: Test by holder organization tag, holderOrganizationTag: 'tourism, vat=tourism'}
+  - {name: Test by holder organization, holderOrganization: 'Mercy Corps, Nobel Foundation'}
+  - {name: Test by holder type, holderCustomerType: 'individual, corporate'}
+  - {name: Test by holder kyc, holderKyc: 'Level 2, Level 3'}
+  - {name: Test by counterparty country, counterpartyCountry: Senegal}
+  - {name: Test by counterparty region, counterpartyRegion: Yambol}
+  - {name: Test by counterparty city, counterpartyCity: 'Ardino, Dzhebel'}
+  - {name: Test by counterparty organization tag, counterpartyOrganizationTag: 'transport, exchange=currency, cash'}
+  - {name: Test by counterparty organization, counterpartyOrganization: 'Oxfam, UNICEF'}
+  - {name: Test by counterparty type, counterpartyCustomerType: corporate}
+  - {name: Test by counterparty kyc, counterpartyKyc: Level 0}
   - priority: 70
-    operationStartDate: '2022-10-31T22:00:32.577'
-    operationEndDate: '2022-11-29T23:59:59.997'
-    sourceAccountId: 1234
-    destinationAccountId: 5678
-    name: DemoNew
-    channelOrganization: Bulgaria, Australia
-    holderOrganization: Egypt, Ghana
-    counterpartyOrganization: India, Kenya
+    operationStartDate: '2022-01-01T00:00:00Z'
+    operationEndDate: '2022-01-31T00:00:00Z'
+    sourceAccountId: source
+    destinationAccountId: destination
+    name: Test Split Range
+    channelOrganization: CARE, Greenpeace
+    holderOrganization: Mercy Corps, Nobel Foundation
+    counterpartyOrganization: Oxfam, UNICEF
     operation: Rule Deposit, Rule Withdraw
     channelCountry: Andorra, United Arab Emirates
     channelRegion: Varna, Burgas, Rousse
@@ -21,9 +47,9 @@ condition:
    #  holderAccountProduct: selfRegistration
    #  counterpartyAccountProduct: loanProduct
     operationTag: cash
-    channelOrganizationTag: exchange
-    holderOrganizationTag: transport, vat=tourism
-    counterpartyOrganizationTag: transport=5, exchange=4, cash
+    channelOrganizationTag: emv
+    holderOrganizationTag: tourism, vat=tourism
+    counterpartyOrganizationTag: transport, exchange=currency, cash
     holderKyc: Level 2, Level 3
     holderCustomerType: individual, corporate
     counterpartyKyc: Level 0
@@ -33,7 +59,7 @@ condition:
     operationEndDate: '2022-11-29T23:59:59.997'
     sourceAccountId: 1234
     destinationAccountId: 5678
-    name: DemoNew2
+    name: Test Split Analytic
     channelOrganization: USA
     holderOrganization: Philippines
     counterpartyOrganization: Mexico
@@ -59,81 +85,122 @@ condition:
     counterpartyCustomerType: corporate
 limit:
   - {
-      conditionName: DemoNew, currency: BGN,
+      conditionName: Test Split Range, currency: BGN,
       minAmount: 10, maxAmount: 10000,
       maxAmountDaily: 20000, maxCountDaily: 3,
       maxAmountWeekly: 100000, maxCountWeekly: 5,
       maxAmountMonthly: 200000, maxCountMonthly: 10}
   - {
-      conditionName: DemoNew, currency: EUR,
+      conditionName: Test Split Range, currency: EUR,
       maxAmount: 5000, maxAmountDaily: 10000,
       maxCountDaily: 3, maxAmountWeekly: 60000,
       maxCountWeekly: 5, maxAmountMonthly: 100000,
       maxCountMonthly: 10}
   - {
-      conditionName: DemoNew, currency: USD,
+      conditionName: Test Split Range, currency: USD,
       maxCountDaily: 1, maxCountWeekly: 2, maxCountMonthly: 3}
-  - {
-      conditionName: DemoNew2, currency: BGN,
-      minAmount: 10, maxAmount: 10000,
-      maxAmountDaily: 20000, maxCountDaily: 3,
-      maxAmountWeekly: 100000, maxCountWeekly: 5,
-      maxAmountMonthly: 200000, maxCountMonthly: 10}
-  - {
-      conditionName: DemoNew2, currency: EUR,
-      maxAmount: 5000, maxAmountDaily: 10000,
-      maxCountDaily: 3, maxAmountWeekly: 60000,
-      maxCountWeekly: 5, maxAmountMonthly: 100000,
-      maxCountMonthly: 10}
-  - {
-      lconditionName: DemoNew2, currency: USD,
-      maxCountDaily: 1, maxCountWeekly: 2, maxCountMonthly: 3}
-splitName:
-  - {conditionName: DemoNew, name: fee, tag: "|fee|acquirer|"}
-  - {conditionName: DemoNew, name: pos, tag: "|pos|"}
-  - {conditionName: DemoNew, name: issuer, tag: "|issuer|"}
-  - {conditionName: DemoNew2, name: fee, tag: "|fee|acquirer|"}
-  - {conditionName: DemoNew2, name: pos, tag: "|pos|"}
-splitRange:
-  - {conditionName: DemoNew, splitName: fee, isSourceAmount: 1, percent: 0.7,
-     startAmount: 100, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
-     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
-  - {conditionName: DemoNew, splitName: pos, isSourceAmount: 1,
-     startAmount: 0, startAmountCurrency: BGN, startAmountDaily: 0, startCountDaily: 0,
-     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
-  - {conditionName: DemoNew, splitName: fee, isSourceAmount: 1, percent: 0.1,
-     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
-     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 10}
-  - {conditionName: DemoNew, splitName: fee, isSourceAmount: 1, percent: 0.2,
-     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
-     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 5000, startCountMonthly: 0}
-  - {conditionName: DemoNew, splitName: fee, isSourceAmount: 1, percent: 0.3,
-     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
-     startAmountWeekly: 0, startCountWeekly: 7, startAmountMonthly: 0, startCountMonthly: 0}
-  - {conditionName: DemoNew, splitName: fee, isSourceAmount: 1, percent: 0.4,
-     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
-     startAmountWeekly: 4000, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
-  - {conditionName: DemoNew, splitName: fee, isSourceAmount: 1, percent: 0.5,
-     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 2,
-     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
-  - {conditionName: DemoNew, splitName: fee, isSourceAmount: 1, percent: 0.6,
-     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 200, startCountDaily: 0,
-     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
-  - {conditionName: DemoNew, splitName: fee, isSourceAmount: 1, percent: 0.8,
-     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
-     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
-  - {conditionName: DemoNew2, splitName: fee, isSourceAmount: 1, percent: 0.7,
-     startAmount: 100, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
-     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
-  - {conditionName: DemoNew2, splitName: pos, isSourceAmount: 1,
-     startAmount: 0, startAmountCurrency: USD, startAmountDaily: 0, startCountDaily: 0,
-     startAmountWeekly: 0, startCountWeekly: 0, startAmountMonthly: 0, startCountMonthly: 0}
-splitAssignment:
-  - {conditionName: DemoNew, splitName: fee, debit: '101', credit: '202', minValue: 5, percent: 1, description: test}
-  - {conditionName: DemoNew, splitName: pos, debit: debit, credit: credit, percent: 100, description: test}
-  - {conditionName: DemoNew2, splitName: fee, debit: '101', credit: '202', minValue: 5, percent: 1, description: test}
-  - {conditionName: DemoNew2, splitName: pos, debit: debit, credit: credit, percent: 100, description: test}
+splitName: # defaults name: fee, tag: |fee|acquirer|
+  - {conditionName: Test by period}
+  - {conditionName: Test by start date}
+  - {conditionName: Test by end date}
+  - {conditionName: Test by source account}
+  - {conditionName: Test by destination account}
+  - {conditionName: Test by operation tag}
+  - {conditionName: Test by operation}
+  - {conditionName: Test by channel organization tag}
+  - {conditionName: Test by channel country}
+  - {conditionName: Test by channel region}
+  - {conditionName: Test by channel city}
+  - {conditionName: Test by channel organization}
+  - {conditionName: Test by holder country}
+  - {conditionName: Test by holder region}
+  - {conditionName: Test by holder city}
+  - {conditionName: Test by holder organization tag}
+  - {conditionName: Test by holder organization}
+  - {conditionName: Test by holder type}
+  - {conditionName: Test by holder kyc}
+  - {conditionName: Test by counterparty country}
+  - {conditionName: Test by counterparty region}
+  - {conditionName: Test by counterparty city}
+  - {conditionName: Test by counterparty organization tag}
+  - {conditionName: Test by counterparty organization}
+  - {conditionName: Test by counterparty type}
+  - {conditionName: Test by counterparty kyc}
+  - {conditionName: Test Split Range}
+  - {conditionName: Test Split Range, name: pos, tag: "|pos|"}
+  - {conditionName: Test Split Range, name: issuer, tag: "|issuer|"}
+  - {conditionName: Test Split Analytic}
+  - {conditionName: Test Split Analytic, name: pos, tag: "|pos|"}
+splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0, startCount*: 0, isSourceAmount: 0
+  - {conditionName: Test by period, percent: 1.1}
+  - {conditionName: Test by start date, percent: 1.2}
+  - {conditionName: Test by end date, percent: 1.3}
+  - {conditionName: Test by source account, percent: 1.4}
+  - {conditionName: Test by destination account, percent: 1.5}
+  - {conditionName: Test by operation tag, percent: 1.6}
+  - {conditionName: Test by operation, percent: 1.7}
+  - {conditionName: Test by channel organization tag, percent: 1.8}
+  - {conditionName: Test by channel country, percent: 1.9}
+  - {conditionName: Test by channel region, percent: 2.0}
+  - {conditionName: Test by channel city, percent: 2.1}
+  - {conditionName: Test by channel organization, percent: 2.2}
+  - {conditionName: Test by holder country, percent: 2.3}
+  - {conditionName: Test by holder region, percent: 2.4}
+  - {conditionName: Test by holder city, percent: 2.5}
+  - {conditionName: Test by holder organization tag, percent: 2.6}
+  - {conditionName: Test by holder organization, percent: 2.7}
+  - {conditionName: Test by holder type, percent: 2.8}
+  - {conditionName: Test by holder kyc, percent: 2.9}
+  - {conditionName: Test by counterparty country, percent: 3.0}
+  - {conditionName: Test by counterparty region, percent: 3.1}
+  - {conditionName: Test by counterparty city, percent: 3.2}
+  - {conditionName: Test by counterparty organization tag, percent: 3.3}
+  - {conditionName: Test by counterparty organization, percent: 3.4}
+  - {conditionName: Test by counterparty type, percent: 3.5}
+  - {conditionName: Test by counterparty kyc, percent: 3.6}
+  - {conditionName: Test Split Range, percent: 0.8}
+  - {conditionName: Test Split Range, percent: 0.7, startAmount: 100 }
+  - {conditionName: Test Split Range, percent: 0.6, startAmountDaily: 200}
+  - {conditionName: Test Split Range, percent: 0.5, startCountDaily: 2}
+  - {conditionName: Test Split Range, percent: 0.4, startAmountWeekly: 4000}
+  - {conditionName: Test Split Range, percent: 0.3, startCountWeekly: 7}
+  - {conditionName: Test Split Range, percent: 0.2, startAmountMonthly: 5000}
+  - {conditionName: Test Split Range, percent: 0.1, startCountMonthly: 10}
+  - {conditionName: Test Split Range, startAmountCurrency: BGN, splitName: pos}
+  - {conditionName: Test Split Analytic, percent: 0.7, startAmount: 100}
+  - {conditionName: Test Split Analytic, splitName: pos}
+splitAssignment: # defaults splitName: fee, percent: 100, description: {splitName}
+  - {conditionName: Test by period}
+  - {conditionName: Test by start date}
+  - {conditionName: Test by end date}
+  - {conditionName: Test by source account}
+  - {conditionName: Test by destination account}
+  - {conditionName: Test by operation tag}
+  - {conditionName: Test by operation}
+  - {conditionName: Test by channel organization tag}
+  - {conditionName: Test by channel country}
+  - {conditionName: Test by channel region}
+  - {conditionName: Test by channel city}
+  - {conditionName: Test by channel organization}
+  - {conditionName: Test by holder country}
+  - {conditionName: Test by holder region}
+  - {conditionName: Test by holder city}
+  - {conditionName: Test by holder organization tag}
+  - {conditionName: Test by holder organization}
+  - {conditionName: Test by holder type}
+  - {conditionName: Test by holder kyc}
+  - {conditionName: Test by counterparty country}
+  - {conditionName: Test by counterparty region}
+  - {conditionName: Test by counterparty city}
+  - {conditionName: Test by counterparty organization tag}
+  - {conditionName: Test by counterparty organization}
+  - {conditionName: Test by counterparty type}
+  - {conditionName: Test by counterparty kyc}
+  - {conditionName: Test Split Range, minValue: 5.55, percent: 10.1, description: test}
+  - {conditionName: Test Split Range, splitName: pos}
+  - {conditionName: Test Split Analytic, minValue: 6.66, percent: 10.2, description: test}
+  - {conditionName: Test Split Analytic, splitName: pos}
 splitAnalytic:
-  - {conditionName: DemoNew, splitName: fee, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
-  - {conditionName: DemoNew2, splitName: fee, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
-  - {conditionName: DemoNew2, splitName: pos, splitAssignmentDescription: test, name: note, value: 'PosTxn#: ${transfer.transferId}'}
+  - {conditionName: Test Split Range, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
+  - {conditionName: Test Split Analytic, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
+  - {conditionName: Test Split Analytic, splitName: pos, splitAssignmentDescription: test, name: note, value: 'PosTxn#: ${transfer.transferId}'}

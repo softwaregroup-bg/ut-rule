@@ -5,7 +5,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @destinationAccountId NVARCHAR(255), -- destination account id
     @amountString VARCHAR(21), -- operation amount
     @totals [rule].totals READONLY, -- totals by transfer type (amountDaily, countDaily, amountWeekly ... etc.)
-    @currency VARCHAR(3), -- operation currenc
+    @currency VARCHAR(3), -- operation currency
     @isSourceAmount BIT,
     @sourceAccount VARCHAR(100), -- source account number
     @destinationAccount VARCHAR(100), -- destination account number

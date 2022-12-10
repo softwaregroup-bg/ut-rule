@@ -41,6 +41,7 @@ module.exports = () => ({
         sql: {
             utc: true
         },
+        sqlUnitTest: true,
         adapter: true,
         orchestrator: true,
         gateway: true,
@@ -73,6 +74,12 @@ module.exports = () => ({
             exclude: joi.any(),
             clearing: joi.boolean()
         }).required().messages(utc),
+        sqlUnitTest: [
+            joi.boolean(),
+            joi.object({
+                exclude: joi.any()
+            })
+        ],
         sqlTest: [
             joi.boolean(),
             joi.object({

@@ -18,7 +18,8 @@ module.exports = {
     utRule: {
         sql: {
             utc: true
-        }
+        },
+        sqlUnit: true
     },
     utCore: true,
     utCustomer: true,

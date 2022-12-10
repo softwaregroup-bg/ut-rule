@@ -41,7 +41,6 @@ module.exports = () => ({
         sql: {
             utc: true
         },
-        sqlUnitTest: true,
         adapter: true,
         orchestrator: true,
         gateway: true,

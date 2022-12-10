@@ -1,7 +1,7 @@
 import { errorMessage } from './validator';
 import { defaultErrorState } from './Tabs/defaultState';
 import { fromJS } from 'immutable';
-import { prepareRuleModel as prepareRule } from '../../../../common';
+import { prepareRuleModel as prepareRule } from '../../../common';
 
 export const tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
 

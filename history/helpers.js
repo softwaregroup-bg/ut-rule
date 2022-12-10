@@ -1,4 +1,4 @@
-const { prepareRuleModel } = require('../common');
+const { prepareRuleModel } = require('../ui/common');
 const prepareRule = (result) => {
     const rule = prepareRuleModel(result);
     return rule;

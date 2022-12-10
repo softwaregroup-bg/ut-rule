@@ -135,7 +135,7 @@ END
 DELETE FROM @condition
 DELETE FROM @conditionItem
 
-IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 12)
+IF OBJECT_ID('ledger.account', 'U') IS NOT NULL AND NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 12)
 BEGIN
     DECLARE @accountNumber VARCHAR(35) = (SELECT accountNumber FROM [ledger].[account] WHERE accountName = 'CBS GL')
 

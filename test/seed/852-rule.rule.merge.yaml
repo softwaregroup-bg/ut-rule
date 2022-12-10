@@ -16,7 +16,7 @@ condition:
   - {name: Test by holder city, holderCity: Merichleri}
   - {name: Test by holder organization tag, holderOrganizationTag: 'tourism, vat=tourism'}
   - {name: Test by holder organization, holderOrganization: 'Mercy Corps, Nobel Foundation'}
-  - {name: Test by holder type, holderCustomerType: 'individual, corporate'}
+  - {name: Test by holder type, holderCustomerType: 'corporate'}
   - {name: Test by holder kyc, holderKyc: 'Level 2, Level 3'}
   - {name: Test by counterparty country, counterpartyCountry: Senegal}
   - {name: Test by counterparty region, counterpartyRegion: Yambol}

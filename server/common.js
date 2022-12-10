@@ -19,7 +19,7 @@ module.exports = {
         sql: {
             utc: true
         },
-        sqlUnit: true
+        sqlUnitTest: true
     },
     utCore: true,
     utCustomer: true,

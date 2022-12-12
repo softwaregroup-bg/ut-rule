@@ -44,8 +44,8 @@ BEGIN
 
     IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 10)
     BEGIN
-        INSERT INTO @condition ([priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
-        VALUES (10, NULL, NULL, NULL, NULL)
+        INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
+        VALUES ('Test account product', 10, NULL, NULL, NULL, NULL)
 
         INSERT INTO @conditionItem (factor, itemNameId)
         SELECT 'oc', itemNameId

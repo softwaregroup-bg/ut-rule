@@ -12,8 +12,8 @@ BEGIN
 
     IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 100)
     BEGIN
-        INSERT INTO @condition ([priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
-        VALUES (100, NULL, NULL, NULL, NULL)
+        INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
+        VALUES ('Test bill payment', 100, NULL, NULL, NULL, NULL)
 
         INSERT INTO @conditionItem (factor, itemNameId)
         SELECT 'oc', itemNameId

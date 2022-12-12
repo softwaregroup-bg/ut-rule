@@ -19,7 +19,14 @@ SELECT
     '' accountCheckMask,
     '' productCheckAmount,
     '' productCheckMask,
-    'rule' AS issuerId
+    'rule' AS issuerId,
+    -- integration test columns
+    1 AS methodOfOperationId,
+    'current' atmType,
+    '' supervisorId,
+    '' cardProductId,
+    '' accountAlias,
+    '' linkedAccount
 FROM (
     SELECT 'source' accountNumber, NULL countryId, NULL regionId, NULL cityId, NULL ownerId
     UNION ALL SELECT 'source-country', [value], NULL, NULL, NULL FROM core.itemRow('country', 'Angola')
@@ -48,7 +55,13 @@ SELECT
     '' accountCheckMask,
     '' productCheckAmount,
     '' productCheckMask,
-    'rule' AS issuerId
+    'rule' AS issuerId,
+    1 AS methodOfOperationId,
+    'current' atmType,
+    '' supervisorId,
+    '' cardProductId,
+    '' accountAlias,
+    '' linkedAccount
 FROM (
     SELECT 'destination' accountNumber, NULL countryId, NULL regionId, NULL cityId, NULL ownerId
     UNION ALL SELECT 'destination-country', [value], NULL, NULL, NULL FROM core.itemRow('country', 'Senegal')
@@ -77,4 +90,10 @@ SELECT
     '' accountCheckMask,
     '' productCheckAmount,
     '' productCheckMask,
-    'rule' AS issuerId
+    'rule' AS issuerId,
+    1 AS methodOfOperationId,
+    'current' atmType,
+    '' supervisorId,
+    '' cardProductId,
+    '' accountAlias,
+    '' linkedAccount

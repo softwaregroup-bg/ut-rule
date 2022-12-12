@@ -56,7 +56,12 @@ END
 IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'name' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
 BEGIN
     ALTER TABLE [rule].[condition] ADD [name] NVARCHAR(100)
+    UPDATE [rule].[condition] SET [name] = 'Rule ' + priority
+    ALTER TABLE [rule].[condition] ALTER COLUMN [name] NVARCHAR(100) NOT NULL
 END
+
+IF NOT EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleConditionName' )
+    ALTER TABLE [rule].[condition] ADD CONSTRAINT [ukRuleConditionName] UNIQUE ([name])
 
 IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'description' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
 BEGIN

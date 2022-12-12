@@ -32,6 +32,7 @@ BEGIN TRY
 
     DECLARE @matches TABLE (
         [priority] INT,
+        [name] NVARCHAR(100),
         conditionId BIGINT,
         amountDaily money,
         countDaily BIGINT,
@@ -71,6 +72,7 @@ BEGIN TRY
     INSERT INTO
         @matches(
             [priority],
+            [name],
             conditionId,
             amountDaily,
             countDaily,
@@ -80,6 +82,7 @@ BEGIN TRY
             countMonthly)
     SELECT
         c.[priority],
+        c.[name],
         c.conditionId,
         ISNULL(SUM(t.amountDaily), 0),
         ISNULL(SUM(t.countDaily), 0),
@@ -103,7 +106,7 @@ BEGIN TRY
         (c.sourceAccountId IS NULL OR @sourceAccountId = c.sourceAccountId) AND
         (c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)
     GROUP BY
-        c.[priority], c.conditionId
+        c.[priority], c.[name], c.conditionId
 
     SELECT
         @minAmount = NULL,
@@ -154,6 +157,7 @@ BEGIN TRY
         )
     ORDER BY
         c.[priority],
+        c.[name],
         l.[priority]
 
     IF @limitId IS NOT NULL -- if exists a condition limit which is violated, identify the exact violation and return error with result
@@ -248,6 +252,7 @@ BEGIN TRY
             END / 100,
             RANK() OVER (PARTITION BY n.splitNameId ORDER BY
                 c.priority,
+                c.name,
                 r.startCountMonthly DESC,
                 r.startAmountMonthly DESC,
                 r.startCountWeekly DESC,
@@ -256,7 +261,7 @@ BEGIN TRY
                 r.startAmountDaily DESC,
                 r.startAmount DESC,
                 r.splitRangeId),
-            RANK() OVER (ORDER BY c.priority, c.conditionId)
+            RANK() OVER (ORDER BY c.priority, c.name, c.conditionId)
         FROM
             @matches AS c
         JOIN

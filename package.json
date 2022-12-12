@@ -24,7 +24,7 @@
     "tap": "^16.3.2",
     "ut-browser": "^7.7.4",
     "ut-cache": "^6.0.1",
-    "ut-core": "^8.27.0",
+    "ut-core": "^8.28.0",
     "ut-customer": "^10.25.3",
     "ut-db": "^8.8.0",
     "ut-dispatch-db": "^1.5.0",

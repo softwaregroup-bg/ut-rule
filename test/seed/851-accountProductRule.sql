@@ -45,7 +45,7 @@ BEGIN
     IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 10)
     BEGIN
         INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
-        VALUES ('Test account product', 10, NULL, NULL, NULL, NULL)
+        VALUES ('Test wallet pending payments', 10, NULL, NULL, NULL, NULL)
 
         INSERT INTO @conditionItem (factor, itemNameId)
         SELECT 'oc', itemNameId
@@ -93,8 +93,8 @@ BEGIN
 
     IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 11)
     BEGIN
-        INSERT INTO @condition ([priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
-        VALUES (11, NULL, NULL, NULL, NULL)
+        INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
+        VALUES ('Test wallet push transfers', 11, NULL, NULL, NULL, NULL)
 
         INSERT INTO @conditionItem (factor, itemNameId)
         SELECT 'oc', itemNameId
@@ -141,8 +141,8 @@ BEGIN
     BEGIN
         DECLARE @accountNumber VARCHAR(35) = (SELECT accountNumber FROM [ledger].[account] WHERE accountName = 'CBS GL')
 
-        INSERT INTO @condition ([priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
-        VALUES (12, NULL, NULL, NULL, NULL)
+        INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
+        VALUES ('Test wallet to account', 12, NULL, NULL, NULL, NULL)
 
         INSERT INTO @conditionItem (factor, itemNameId)
         SELECT 'oc', itemNameId
@@ -187,8 +187,8 @@ BEGIN
 
     IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 13) AND @erpItemNameId IS NOT NULL
     BEGIN
-        INSERT INTO @condition ([priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
-        VALUES (13, NULL, NULL, NULL, NULL)
+        INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
+        VALUES ('Test wallet pending erp payments', 13, NULL, NULL, NULL, NULL)
 
         INSERT INTO @conditionItem (factor, itemNameId)
         SELECT 'oc', itemNameId

@@ -1,4 +1,4 @@
 list:
-  - {alias: accountProduct, name: Account Product, description: Account Product}
-  - {alias: cardProduct, name: Card Product, description: Card Product}
+  - {alias: accountProduct, name: accountProduct, description: Account Product}
+  - {alias: cardProduct, name: cardProduct, description: Card Product}
   - {alias: operation, name: Operation, description: Operation}

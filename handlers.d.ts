@@ -258,6 +258,8 @@ export interface errors {
   'error.rule': ut.error,
   'error.rule.amount': ut.error,
   errorRuleAmount: ut.error,
+  'error.rule.duplicatedName': ut.error,
+  errorRuleDuplicatedName: ut.error,
   'error.rule.duplicatedPriority': ut.error,
   errorRuleDuplicatedPriority: ut.error,
   'error.rule.exceedDailyLimitAmount': ut.error,

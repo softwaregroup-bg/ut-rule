@@ -5,6 +5,7 @@ module.exports = require('ut-run').microservice(module, require, () => function 
             require('./api/sql/schema'),
             require('./api/sql/seed'),
             require('./api/sql/standard'),
+            require('./test/schema'),
             require('./test/seed'),
             require('./test/unit'),
             require('./errors')

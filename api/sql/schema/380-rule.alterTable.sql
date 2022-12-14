@@ -56,13 +56,15 @@ END
 IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'name' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
 BEGIN
     ALTER TABLE [rule].[condition] ADD [name] NVARCHAR(100)
-    DECLARE @updateName NVARCHAR(MAX) = 'UPDATE [rule].[condition] SET [name] = ''Rule '' + CAST(conditionId AS VARCHAR(20))'
-    EXEC(@updateName)
-    ALTER TABLE [rule].[condition] ALTER COLUMN [name] NVARCHAR(100) NOT NULL
 END
 
 IF NOT EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleConditionName' )
+BEGIN
+    DECLARE @updateName NVARCHAR(MAX) = 'UPDATE [rule].[condition] SET [name] = ''Rule '' + CAST(conditionId AS VARCHAR(20)) WHERE [name] IS NULL'
+    EXEC(@updateName)
+    ALTER TABLE [rule].[condition] ALTER COLUMN [name] NVARCHAR(100) NOT NULL
     ALTER TABLE [rule].[condition] ADD CONSTRAINT [ukRuleConditionName] UNIQUE ([name])
+END
 
 IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'description' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
 BEGIN

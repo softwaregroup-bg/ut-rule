@@ -301,13 +301,14 @@ BEGIN TRY
     DECLARE @rateId INT
     IF @targetCurrency IS NOT NULL
     BEGIN
-        WITH rate(rateId, rate, rnk1, rnk2) AS (
+        WITH rate(conditionId, rateId, rate, rnk1, rnk2) AS (
             SELECT
                 c.conditionId,
                 r.rateId,
                 r.rate,
                 RANK() OVER (PARTITION BY n.rateId ORDER BY
                     c.priority,
+                    c.name,
                     r.startCountMonthly DESC,
                     r.startAmountMonthly DESC,
                     r.startCountWeekly DESC,
@@ -316,7 +317,7 @@ BEGIN TRY
                     r.startAmountDaily DESC,
                     r.startAmount DESC,
                     r.rateId),
-                RANK() OVER (ORDER BY c.priority, c.conditionId)
+                RANK() OVER (ORDER BY c.priority, c.name, c.conditionId)
             FROM
                 @matches AS c
             JOIN

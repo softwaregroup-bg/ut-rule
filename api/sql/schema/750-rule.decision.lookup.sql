@@ -7,6 +7,7 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @destinationAccount VARCHAR(100), -- destination account number
     @amount VARCHAR(21), -- operation amount
     @currency VARCHAR(3), -- operation currency
+    @targetCurrency VARCHAR(3) = NULL, -- currency after exchange
     @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
@@ -220,6 +221,7 @@ BEGIN
         @amountString = @amount,
         @totals = @totals,
         @currency = @currency,
+        @targetCurrency = @targetCurrency,
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
         @destinationAccount = @destinationAccount,

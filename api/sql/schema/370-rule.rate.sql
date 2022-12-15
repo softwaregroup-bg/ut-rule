@@ -10,7 +10,7 @@ CREATE TABLE [rule].[rate] (
     startCountWeekly BIGINT NOT NULL,
     startAmountMonthly MONEY NOT NULL,
     startCountMonthly BIGINT NOT NULL,
-    rate FLOAT,
+    rate DECIMAL(28, 14) NOT NULL,
     CONSTRAINT [pkRuleRate] PRIMARY KEY CLUSTERED (rateId ASC),
     CONSTRAINT [ukRuleRate_conditionId__startAmount__startAmountCurrency] UNIQUE (conditionId, targetCurrency, startAmount, startAmountCurrency, startAmountDaily, startCountDaily, startAmountWeekly, startCountWeekly, startAmountMonthly, startCountMonthly),
     CONSTRAINT [fkRuleRate_ruleCondition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId)

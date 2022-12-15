@@ -6,6 +6,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @amountString VARCHAR(21), -- operation amount
     @totals [rule].totals READONLY, -- totals by transfer type (amountDaily, countDaily, amountWeekly ... etc.)
     @currency VARCHAR(3), -- operation currency
+    @targetCurrency VARCHAR(3), -- currency after exchange
     @isSourceAmount BIT,
     @sourceAccount VARCHAR(100), -- source account number
     @destinationAccount VARCHAR(100), -- destination account number
@@ -296,8 +297,55 @@ BEGIN TRY
         s.rnk1 = 1 AND
         s.rnk2 = 1
 
+    DECLARE @settlementAmount MONEY
+    DECLARE @rateId INT
+    IF @targetCurrency IS NOT NULL
+    BEGIN
+        WITH rate(rateId, rate, rnk1, rnk2) AS (
+            SELECT
+                c.conditionId,
+                r.rateId,
+                r.rate,
+                RANK() OVER (PARTITION BY n.rateId ORDER BY
+                    c.priority,
+                    r.startCountMonthly DESC,
+                    r.startAmountMonthly DESC,
+                    r.startCountWeekly DESC,
+                    r.startAmountWeekly DESC,
+                    r.startCountDaily DESC,
+                    r.startAmountDaily DESC,
+                    r.startAmount DESC,
+                    r.rateId),
+                RANK() OVER (ORDER BY c.priority, c.conditionId)
+            FROM
+                @matches AS c
+            JOIN
+                [rule].rate AS r ON r.conditionId = c.conditionId
+            WHERE
+                @targetCurrency = r.targetCurrency AND
+                @currency = r.startAmountCurrency AND
+                @amount >= r.startAmount AND
+                c.amountDaily >= r.startAmountDaily AND
+                c.countDaily >= r.startCountDaily AND
+                c.amountWeekly >= r.startAmountWeekly AND
+                c.countWeekly >= r.startCountWeekly AND
+                c.amountMonthly >= r.startAmountMonthly AND
+                c.countMonthly >= r.startCountMonthly
+        )
+        SELECT
+            @rateId = rateId,
+            @settlementAmount = @amount * rate
+        FROM
+            rate r
+        WHERE
+            r.rnk1 = 1 AND
+            r.rnk2 = 1
+    END
+
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
+        @settlementAmount settlementAmount,
+        @rateId rateId,
         CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), @scale), 2) acquirerFee,
         CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), @scale), 2) issuerFee,
         CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|processor|%' AND tag LIKE '%|fee|%'), @scale), 2) processorFee,

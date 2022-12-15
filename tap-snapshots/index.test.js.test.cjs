@@ -12,6 +12,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -34,6 +36,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -56,6 +60,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -78,6 +84,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -100,6 +108,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -122,6 +132,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -144,6 +156,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -166,6 +180,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -188,6 +204,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -210,6 +228,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -232,6 +252,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -254,6 +276,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2021-11-10T00:00:00.000Z",
   },
   "split": Array [
@@ -276,6 +300,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -298,6 +324,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -320,6 +348,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -342,6 +372,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -364,6 +396,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -386,6 +420,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -408,6 +444,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [],
@@ -421,6 +459,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [
@@ -443,6 +483,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2022-01-10T00:00:00.000Z",
   },
   "split": Array [
@@ -465,6 +507,8 @@ Object {
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
+    "rateId": null,
+    "settlementAmount": null,
     "transferDateTime": "2122-03-10T00:00:00.000Z",
   },
   "split": Array [

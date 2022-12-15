@@ -18,6 +18,8 @@ module.exports = ({
         }),
         result: joi.object().keys({
             amount: joi.object().keys({
+                rateId: joi.number().integer().allow(null),
+                settlementAmount: joi.number().allow(null),
                 acquirerFee: joi.number().allow(null),
                 issuerFee: joi.number().allow(null),
                 processorFee: joi.number().allow(null),

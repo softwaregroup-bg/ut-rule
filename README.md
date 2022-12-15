@@ -105,6 +105,8 @@ limit:
 
 ![assignment](doc/assignment.png)
 
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable MD013 -->
 ```yaml
 splitName:
   - {splitNameId: 1002, conditionId: 1000, name: fee, tag: "|fee|acquirer|"}
@@ -144,3 +146,4 @@ splitAssignment:
 splitAnalytic:
   - {splitAnalyticId: 2001, splitAssignmentId: 1001, name: note, value: 'Txn#: ${transfer.transferId}'}
 ```
+<!-- markdownlint-restore -->

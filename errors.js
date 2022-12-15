@@ -18,6 +18,7 @@ module.exports = function error({utError: {defineError, getError, fetchErrors}})
         defineError('exceedWeeklyLimitCount', Rule, 'Weekly count limit reached');
         defineError('exceedMonthlyLimitCount', Rule, 'Monthly count limit reached');
         defineError('duplicatedPriority', Rule, 'Rule with this priority already exists');
+        defineError('duplicatedName', Rule, 'Rule with this name already exists');
         defineError('securityViolation', Rule, 'Unauthorized operation');
         defineError('unauthorizedMinLimitAmount', Rule, 'Transaction amount below minimum unauthorized');
         defineError('unauthorizedMaxLimitAmount', Rule, 'Transaction amount above maximum unauthorized');

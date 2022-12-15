@@ -16,7 +16,8 @@ BEGIN
             WHERE
                 p.factor IN ('so', 'do', 'co') AND
                 ct.conditionId = @conditionId
-            UNION SELECT
+            UNION ALL
+            SELECT
                 p.factor
             FROM
                 @properties p
@@ -27,7 +28,8 @@ BEGIN
             WHERE
                 p.factor IN ('ss', 'ds', 'cs', 'oc', 'sc', 'dc') AND
                 ct.conditionId = @conditionId
-            UNION SELECT
+            UNION ALL
+            SELECT
                 p.factor
             FROM
                 @properties p

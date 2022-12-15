@@ -22,13 +22,12 @@ BEGIN TRY
 
     IF EXISTS
         (
-            SELECT [priority]
+            SELECT [name]
             FROM [rule].condition
-            WHERE [priority] = (SELECT [priority] FROM @condition)
-                AND isDeleted = 0
+            WHERE [name] = (SELECT [name] FROM @condition)
         )
         BEGIN
-            RAISERROR ('rule.duplicatedPriority', 16, 1)
+            RAISERROR ('rule.duplicatedName', 16, 1)
         END
 
     BEGIN TRANSACTION

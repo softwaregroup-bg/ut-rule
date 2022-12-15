@@ -1,2 +1,1 @@
-const tap = require('tap');
-tap.pass('no tests');
+require('.').run({method: 'unit'});

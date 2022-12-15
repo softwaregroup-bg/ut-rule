@@ -24,14 +24,13 @@ BEGIN TRY
 
     IF EXISTS
         (
-            SELECT [priority]
+            SELECT [name]
             FROM [rule].condition
-            WHERE [priority] = (SELECT [priority] FROM @condition)
+            WHERE [name] = (SELECT [name] FROM @condition)
             AND conditionId != @conditionId
-            AND isDeleted = 0
         )
         BEGIN
-            RAISERROR ('rule.duplicatedPriority', 16, 1)
+            RAISERROR ('rule.duplicatedName', 16, 1)
         END
 
     SET @conditionId = (SELECT conditionId FROM @condition)

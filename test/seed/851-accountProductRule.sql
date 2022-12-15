@@ -91,7 +91,7 @@ BEGIN
     DELETE FROM @condition
     DELETE FROM @conditionItem
 
-    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 11)
+    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE name = 'Test wallet push transfers')
     BEGIN
         INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
         VALUES ('Test wallet push transfers', 11, NULL, NULL, NULL, NULL)
@@ -137,7 +137,7 @@ BEGIN
     DELETE FROM @condition
     DELETE FROM @conditionItem
 
-    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 12)
+    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE name = 'Test wallet to account')
     BEGIN
         DECLARE @accountNumber VARCHAR(35) = (SELECT accountNumber FROM [ledger].[account] WHERE accountName = 'CBS GL')
 
@@ -185,7 +185,7 @@ BEGIN
     DELETE FROM @condition
     DELETE FROM @conditionItem
 
-    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 13) AND @erpItemNameId IS NOT NULL
+    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE name = 'Test wallet pending erp payments') AND @erpItemNameId IS NOT NULL
     BEGIN
         INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
         VALUES ('Test wallet pending erp payments', 13, NULL, NULL, NULL, NULL)

@@ -10,7 +10,7 @@ BEGIN
     DECLARE @sa BIGINT = (SELECT actorId FROM [user].[hash] WHERE identifier = 0x00 /*encryptStable sa*/ AND [type] = 'password')
     INSERT INTO @meta([auth.actorId], [method]) VALUES(@sa, 'rule.rule.add')
 
-    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 100)
+    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE name = 'Test bill payment')
     BEGIN
         INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
         VALUES ('Test bill payment', 100, NULL, NULL, NULL, NULL)

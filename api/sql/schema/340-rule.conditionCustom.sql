@@ -1,6 +1,5 @@
 CREATE TYPE [rule].conditionCustom AS TABLE (
     conditionId INT,
-    conditionName NVARCHAR(100),
     name NVARCHAR(100),
     description NVARCHAR(100),
     notes NVARCHAR(1000),

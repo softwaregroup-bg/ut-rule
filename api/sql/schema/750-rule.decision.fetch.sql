@@ -306,7 +306,7 @@ BEGIN TRY
                 c.conditionId,
                 r.rateId,
                 r.rate,
-                RANK() OVER (PARTITION BY n.rateId ORDER BY
+                RANK() OVER (PARTITION BY r.rateId ORDER BY
                     c.priority,
                     c.name,
                     r.startCountMonthly DESC,

@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.46.6"
+        "version": "10.47.1"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -7198,6 +7198,7 @@
                                                     },
                                                     "lastChange": {
                                                         "format": "date-time",
+                                                        "nullable": true,
                                                         "type": "string"
                                                     },
                                                     "params": {
@@ -7594,6 +7595,7 @@
                                                         },
                                                         "lastChange": {
                                                             "format": "date-time",
+                                                            "nullable": true,
                                                             "type": "string"
                                                         },
                                                         "params": {

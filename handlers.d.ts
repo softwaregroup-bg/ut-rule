@@ -91,6 +91,8 @@ declare namespace rule_decision_lookup {
       commission?: number | null;
       issuerFee?: number | null;
       processorFee?: number | null;
+      rateId?: number | null;
+      settlementAmount?: number | null;
       transferDateTime: Date;
       transferTypeId: string;
     };

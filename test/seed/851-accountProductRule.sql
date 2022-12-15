@@ -42,7 +42,7 @@ BEGIN
     SET @selfRegistrationSuffix = ISNULL(@selfRegistrationSuffix, '')
     SET @erpSuffix = ISNULL(@erpSuffix, '')
 
-    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE [priority] = 10)
+    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE name = 'Test wallet pending payments')
     BEGIN
         INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
         VALUES ('Test wallet pending payments', 10, NULL, NULL, NULL, NULL)

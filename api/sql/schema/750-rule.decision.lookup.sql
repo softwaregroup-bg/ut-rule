@@ -77,7 +77,8 @@ BEGIN
         [integration].[vAccount]
     WHERE
         (accountNumber = @sourceAccount OR @sourceAccount IS NULL) AND
-        (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL)
+        (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL) AND
+        (@sourceAccountOwnerId IS NOT NULL OR @sourceAccount IS NOT NULL)
 
     SELECT
         @destinationCountryId = countryId,
@@ -90,7 +91,8 @@ BEGIN
         [integration].[vAccount]
     WHERE
         (accountNumber = @destinationAccount OR @destinationAccount IS NULL) AND
-        (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
+        (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL) AND
+        (@destinationAccountOwnerId IS NOT NULL OR @destinationAccount IS NOT NULL)
 
     -- if check amount has been setup for the account and/or the account product, assign the value to variable. account is with higher priority
     SET @maxAmountParam = CASE WHEN COALESCE (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckAmount, @sourceProductCheckAmount) END
@@ -184,7 +186,7 @@ BEGIN
                 customer.customer c
             WHERE
                 c.actorId = @sourceOwnerId
-            UNION SELECT
+            UNION ALL SELECT
                 'st', 'source.customerType', ct.customerTypeNumber
             FROM
                 customer.customer c
@@ -201,7 +203,7 @@ BEGIN
                 customer.customer c
             WHERE
                 c.actorId = @destinationOwnerId
-            UNION SELECT
+            UNION ALL SELECT
                 'dt', 'destination.customerType', ct.customerTypeNumber
             FROM
                 customer.customer c

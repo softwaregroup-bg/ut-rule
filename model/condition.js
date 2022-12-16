@@ -299,11 +299,11 @@ module.exports = ({joi}) => ({
                         widget: {type: 'chips'}
                     },
                     customerType: {
-                        widget: {type: 'multiSelect', dropdown: 'customer.customerType'}
+                        widget: {type: 'multiSelect', dropdown: 'rule.customerType'}
                     },
                     kyc: {
                         title: 'KYC',
-                        widget: {type: 'multiSelect', dropdown: 'customer.kyc'}
+                        widget: {type: 'multiSelect', dropdown: 'rule.kyc'}
                     },
                     accountProduct: {
                         widget: {type: 'multiSelect', dropdown: 'rule.accountProduct'}
@@ -336,11 +336,11 @@ module.exports = ({joi}) => ({
                         widget: {type: 'chips'}
                     },
                     customerType: {
-                        widget: {type: 'multiSelect', dropdown: 'customer.customerType'}
+                        widget: {type: 'multiSelect', dropdown: 'rule.customerType'}
                     },
                     kyc: {
                         title: 'KYC',
-                        widget: {type: 'multiSelect', dropdown: 'customer.kyc'}
+                        widget: {type: 'multiSelect', dropdown: 'rule.kyc'}
                     },
                     accountProduct: {
                         widget: {type: 'multiSelect', dropdown: 'rule.accountProduct'}

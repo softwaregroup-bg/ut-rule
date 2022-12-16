@@ -30,21 +30,21 @@ BEGIN TRY
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.channelOrganization, ',') a
-    LEFT JOIN customer.organization o ON o.organizationName = LTRIM(RTRIM(a.Value))
+    LEFT JOIN customer.organization o ON o.organizationName = LTRIM(RTRIM(a.value))
     WHERE c.channelOrganization IS NOT NULL
     UNION ALL
     SELECT r.name, 'so', o.actorId
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.holderOrganization, ',') a
-    LEFT JOIN customer.organization o ON o.organizationName = LTRIM(RTRIM(a.Value))
+    LEFT JOIN customer.organization o ON o.organizationName = LTRIM(RTRIM(a.value))
     WHERE c.holderOrganization IS NOT NULL
     UNION ALL
     SELECT r.name, 'do', o.actorId
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyOrganization, ',') a
-    LEFT JOIN customer.organization o ON o.organizationName = LTRIM(RTRIM(a.Value))
+    LEFT JOIN customer.organization o ON o.organizationName = LTRIM(RTRIM(a.value))
     WHERE c.counterpartyOrganization IS NOT NULL
 
     IF EXISTS (SELECT * FROM @conditionActor WHERE actorid IS NULL)
@@ -136,7 +136,7 @@ BEGIN TRY
         FROM @condition c
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.holderCardProduct, ',') a
-        LEFT JOIN [card].product p ON p.name = LTRIM(RTRIM(a.Value))
+        LEFT JOIN [card].product p ON p.name = LTRIM(RTRIM(a.value))
         WHERE c.holderCardProduct IS NOT NULL
 
         INSERT INTO @conditionItem(conditionName, factor, itemNameId)
@@ -144,7 +144,7 @@ BEGIN TRY
         FROM @condition c
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.counterpartyCardProduct, ',') a
-        LEFT JOIN [card].product p ON p.name = LTRIM(RTRIM(a.Value))
+        LEFT JOIN [card].product p ON p.name = LTRIM(RTRIM(a.value))
         WHERE c.counterpartyCardProduct IS NOT NULL
 
         IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
@@ -165,7 +165,7 @@ BEGIN TRY
         FROM @condition c
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.holderAccountProduct, ',') a
-        LEFT JOIN ledger.product p ON p.name = LTRIM(RTRIM(a.Value))
+        LEFT JOIN ledger.product p ON p.name = LTRIM(RTRIM(a.value))
         WHERE c.holderAccountProduct IS NOT NULL
 
         INSERT INTO @conditionItem(conditionName, factor, itemNameId)
@@ -173,7 +173,7 @@ BEGIN TRY
         FROM @condition c
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.counterpartyAccountProduct, ',') a
-        LEFT JOIN ledger.product p ON p.name = LTRIM(RTRIM(a.Value))
+        LEFT JOIN ledger.product p ON p.name = LTRIM(RTRIM(a.value))
         WHERE c.counterpartyAccountProduct IS NOT NULL
 
         IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
@@ -181,22 +181,22 @@ BEGIN TRY
     END
 
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
-    SELECT r.name, 'sk', 'source.kyc', p.kycId
+    SELECT r.name, 'sk', 'source.kyc', p.value
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.holderKyc, ',') a
-    LEFT JOIN customer.kyc p ON p.display = LTRIM(RTRIM(a.Value))
+    LEFT JOIN [rule].vKyc p ON p.label = LTRIM(RTRIM(a.value))
     WHERE c.holderKyc IS NOT NULL
 
     IF EXISTS (SELECT * FROM @conditionProperty WHERE [value] IS NULL)
         THROW 55555, 'rule.notExistingKYC', 1
 
     INSERT INTO @conditionProperty(conditionName, factor, name, value)
-    SELECT r.name, 'dk', 'destination.kyc', p.kycId
+    SELECT r.name, 'dk', 'destination.kyc', p.value
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyKyc, ',') a
-    LEFT JOIN customer.kyc p ON p.display = LTRIM(RTRIM(a.Value))
+    LEFT JOIN [rule].vKyc p ON p.label = LTRIM(RTRIM(a.value))
     WHERE c.counterpartyKyc IS NOT NULL
 
     IF EXISTS (SELECT * FROM @conditionProperty WHERE [value] IS NULL)
@@ -207,7 +207,7 @@ BEGIN TRY
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.holderCustomerType, ',') a
-    LEFT JOIN customer.customerType p ON p.customerTypeId = LTRIM(RTRIM(a.Value))
+    LEFT JOIN customer.customerType p ON p.customerTypeId = LTRIM(RTRIM(a.value))
     WHERE c.holderCustomerType IS NOT NULL
 
     IF EXISTS (SELECT * FROM @conditionProperty WHERE [value] IS NULL)
@@ -218,7 +218,7 @@ BEGIN TRY
     FROM @condition c
     JOIN @conditionTT r ON r.name = c.name
     CROSS APPLY core.DelimitedSplit8K(c.counterpartyCustomerType, ',') a
-    LEFT JOIN customer.customerType p ON p.customerTypeId = LTRIM(RTRIM(a.Value))
+    LEFT JOIN customer.customerType p ON p.customerTypeId = LTRIM(RTRIM(a.value))
     WHERE c.counterpartyCustomerType IS NOT NULL
 
     IF EXISTS (SELECT * FROM @conditionProperty WHERE [value] IS NULL)
@@ -232,7 +232,7 @@ BEGIN TRY
         FROM @condition c
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.operationTag, ',') a
-        CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.Value)), '=') a2
+        CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.value)), '=') a2
         WHERE c.operationTag IS NOT NULL
     ) p
     PIVOT
@@ -249,7 +249,7 @@ BEGIN TRY
         FROM @condition c
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.channelOrganizationTag, ',') a
-        CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.Value)), '=') a2
+        CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.value)), '=') a2
         WHERE c.channelOrganizationTag IS NOT NULL
     ) p
     PIVOT
@@ -266,7 +266,7 @@ BEGIN TRY
         FROM @condition c
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.holderOrganizationTag, ',') a
-        CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.Value)), '=') a2
+        CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.value)), '=') a2
         WHERE c.holderOrganizationTag IS NOT NULL
     ) p
     PIVOT
@@ -283,7 +283,7 @@ BEGIN TRY
         FROM @condition c
         JOIN @conditionTT r ON r.name = c.name
         CROSS APPLY core.DelimitedSplit8K(c.counterpartyOrganizationTag, ',') a
-        CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.Value)), '=') a2
+        CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.value)), '=') a2
         WHERE c.counterpartyOrganizationTag IS NOT NULL
     ) p
     PIVOT

@@ -154,6 +154,20 @@ declare namespace rule_dropdown_list {
       parent?: number | string;
       value: number | string;
     })[];
+    'rule.customerType'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.kyc'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
     'rule.operation'?: ({
       alias?: string | null | '';
       description?: string | null | '';

@@ -14,7 +14,6 @@ const utc = {
 module.exports = () => ({
     // environments
     dev: {
-        sqlTest: true,
         sqlStandard: true
     },
     test,
@@ -57,6 +56,7 @@ module.exports = () => ({
         adapter: true
     },
     microservice: {
+        sqlTest: true,
         sql: {
             utc: true
         },

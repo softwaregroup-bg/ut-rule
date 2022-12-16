@@ -50,9 +50,9 @@ condition:
     channelOrganizationTag: emv
     holderOrganizationTag: tourism, vat=tourism
     counterpartyOrganizationTag: transport, exchange=currency, cash
-    holderKyc: Level 2, Level 3
+    holderKyc: Level 2 - Individual - Bulgaria, Level 3 - Corporate - Bulgaria
     holderCustomerType: individual, corporate
-    counterpartyKyc: Level 0
+    counterpartyKyc: Level 0 - Individual - Bulgaria
     counterpartyCustomerType: corporate
   - priority: 80
     operationStartDate: '2022-10-31T22:00:32.577'
@@ -79,9 +79,9 @@ condition:
     channelOrganizationTag: exchange=11
     holderOrganizationTag: transport, vat=full
     counterpartyOrganizationTag: transport, exchange, cash
-    holderKyc: Level 0, Level 1
+    holderKyc: Level 0 - Individual - Bulgaria, Level 1 - Individual - Bulgaria
     holderCustomerType: individual, corporate
-    counterpartyKyc: Level 2
+    counterpartyKyc: Level 2 - Individual - Bulgaria
     counterpartyCustomerType: corporate
 limit:
   - {

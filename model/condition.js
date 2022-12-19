@@ -367,6 +367,15 @@ module.exports = ({joi}) => ({
         }
     },
     cards: {
+        history: {
+            className: 'col-12',
+            widgets: [{
+                name: '',
+                type: 'page',
+                page: 'history.history.browse',
+                params: {object: 'rule', id: '${condition.conditionId}'} // eslint-disable-line no-template-curly-in-string
+            }]
+        },
         browse: {
             label: 'Fees, Commissions and Limits (FCL)',
             widgets: [

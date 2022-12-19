@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.27.0"
+        "version": "10.27.1"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -24382,6 +24382,10 @@
                                             "organization": {
                                                 "additionalProperties": false,
                                                 "properties": {
+                                                    "activity": {
+                                                        "nullable": true,
+                                                        "type": "string"
+                                                    },
                                                     "activityId": {
                                                         "nullable": true,
                                                         "type": "integer"
@@ -24444,6 +24448,10 @@
                                                     },
                                                     "oldValues": {
                                                         "nullable": true
+                                                    },
+                                                    "organizationCodeBIC": {
+                                                        "nullable": true,
+                                                        "type": "string"
                                                     },
                                                     "organizationCodeIBAN": {
                                                         "nullable": true,

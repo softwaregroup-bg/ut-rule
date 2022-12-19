@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.47.2"
+        "version": "10.47.5"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -18586,6 +18586,10 @@
                                                 "additionalProperties": false,
                                                 "description": "Required only for updating user names.",
                                                 "properties": {
+                                                    "activity": {
+                                                        "nullable": true,
+                                                        "type": "string"
+                                                    },
                                                     "activityId": {
                                                         "nullable": true,
                                                         "type": "integer"

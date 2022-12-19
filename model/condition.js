@@ -6,12 +6,15 @@ module.exports = ({joi}) => ({
     browser: {
         fetch: ({condition, paging}) => ({...condition, ...paging})
     },
-    nameField: 'condition.priority',
+    nameField: 'condition.name',
     schema: {
         properties: {
             condition: {
                 properties: {
                     conditionId: {},
+                    name: {},
+                    description: {},
+                    notes: {},
                     priority: {type: 'integer', title: 'Priority'},
                     operationEndDate: {title: 'End Date', widget: {type: 'date-time'}},
                     operationStartDate: {title: 'Start Date', widget: {type: 'date-time'}},
@@ -295,6 +298,13 @@ module.exports = ({joi}) => ({
                         title: 'Organization Tag',
                         widget: {type: 'chips'}
                     },
+                    customerType: {
+                        widget: {type: 'multiSelect', dropdown: 'rule.customerType'}
+                    },
+                    kyc: {
+                        title: 'KYC',
+                        widget: {type: 'multiSelect', dropdown: 'rule.kyc'}
+                    },
                     accountProduct: {
                         widget: {type: 'multiSelect', dropdown: 'rule.accountProduct'}
                     },
@@ -325,6 +335,13 @@ module.exports = ({joi}) => ({
                         title: 'Organization Tag',
                         widget: {type: 'chips'}
                     },
+                    customerType: {
+                        widget: {type: 'multiSelect', dropdown: 'rule.customerType'}
+                    },
+                    kyc: {
+                        title: 'KYC',
+                        widget: {type: 'multiSelect', dropdown: 'rule.kyc'}
+                    },
                     accountProduct: {
                         widget: {type: 'multiSelect', dropdown: 'rule.accountProduct'}
                     },
@@ -341,13 +358,28 @@ module.exports = ({joi}) => ({
                         widget: {type: 'multiSelect', dropdown: 'rule.city'}
                     }
                 }
+            },
+            history: {
+                widget: {
+                    params: {object: 'rule', id: '${condition.conditionId}'} // eslint-disable-line no-template-curly-in-string
+                }
             }
         }
     },
     cards: {
+        history: {
+            className: 'col-12',
+            widgets: [{
+                name: '',
+                type: 'page',
+                page: 'history.history.browse',
+                params: {object: 'rule', id: '${condition.conditionId}'} // eslint-disable-line no-template-curly-in-string
+            }]
+        },
         browse: {
             label: 'Fees, Commissions and Limits (FCL)',
             widgets: [
+                'condition.name',
                 'condition.priority',
                 'condition.channel',
                 'condition.operation',
@@ -376,8 +408,15 @@ module.exports = ({joi}) => ({
             className: 'lg:col-4',
             widgets: ['splitAnalytic']
         },
-        channel: {
+        condition: {
             className: 'lg:col-4',
+            label: 'Condition',
+            widgets: [
+                'condition.name',
+                'condition.priority'
+            ]
+        },
+        channel: {
             label: 'Channel',
             widgets: [
                 'channel.country',
@@ -390,7 +429,6 @@ module.exports = ({joi}) => ({
         operation: {
             label: 'Operation',
             widgets: [
-                'condition.priority',
                 'operation.type',
                 'operation.tag',
                 'condition.operationStartDate',
@@ -406,6 +444,8 @@ module.exports = ({joi}) => ({
                 'source.city',
                 'source.actor',
                 'source.actorTag',
+                'source.customerType',
+                'source.kyc',
                 'source.cardProduct',
                 'source.accountProduct',
                 'condition.sourceAccountId'
@@ -420,6 +460,8 @@ module.exports = ({joi}) => ({
                 'destination.city',
                 'destination.actor',
                 'destination.actorTag',
+                'destination.customerType',
+                'destination.kyc',
                 'destination.cardProduct',
                 'destination.accountProduct',
                 'condition.destinationAccountId'
@@ -439,7 +481,7 @@ module.exports = ({joi}) => ({
                 label: 'Condition',
                 widgets: [
                     'hidden',
-                    ['channel', 'operation'],
+                    ['condition', 'channel', 'operation'],
                     'source',
                     'destination'
                 ]
@@ -457,6 +499,11 @@ module.exports = ({joi}) => ({
                     'splitAssignment',
                     'splitAnalytic'
                 ]
+            }, {
+                icon: 'pi pi-history',
+                label: 'History',
+                id: 'history',
+                widgets: ['history']
             }]
         }
     }

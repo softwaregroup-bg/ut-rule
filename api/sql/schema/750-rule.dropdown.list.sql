@@ -59,3 +59,11 @@ SELECT 'rule.operation' AS resultSetName
 SELECT [value], [label], [parent]
 FROM core.item(@languageId, 'operation')
 ORDER BY ISNULL(itemOrder, 99999), 2
+
+SELECT 'rule.kyc' AS resultSetName
+SELECT [value], [label], [parent]
+FROM [rule].vKyc
+
+SELECT 'rule.customerType' AS resultSetName
+SELECT [value], [label]
+FROM [rule].vCustomerType

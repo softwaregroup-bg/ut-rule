@@ -81,6 +81,7 @@ declare namespace rule_decision_lookup {
     destinationAccount: string;
     isSourceAmount?: 0 | 1 | '0' | '1';
     operation: string;
+    operationDate?: Date;
     sourceAccount: string;
     sourceCardProductId?: number | null;
   }
@@ -90,6 +91,8 @@ declare namespace rule_decision_lookup {
       commission?: number | null;
       issuerFee?: number | null;
       processorFee?: number | null;
+      rateId?: number | null;
+      settlementAmount?: number | null;
       transferDateTime: Date;
       transferTypeId: string;
     };
@@ -145,6 +148,20 @@ declare namespace rule_dropdown_list {
       value: number | string;
     })[];
     'rule.currency'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.customerType'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.kyc'?: ({
       alias?: string | null | '';
       description?: string | null | '';
       label: string;
@@ -257,6 +274,8 @@ export interface errors {
   'error.rule': ut.error,
   'error.rule.amount': ut.error,
   errorRuleAmount: ut.error,
+  'error.rule.duplicatedName': ut.error,
+  errorRuleDuplicatedName: ut.error,
   'error.rule.duplicatedPriority': ut.error,
   errorRuleDuplicatedPriority: ut.error,
   'error.rule.exceedDailyLimitAmount': ut.error,
@@ -310,6 +329,9 @@ interface methods extends login.handlers {}
 
 import core, {coreTableTypes} from 'ut-core/handlers'
 interface methods extends core.handlers {}
+
+import customer, {customerTableTypes} from 'ut-customer/handlers'
+interface methods extends customer.handlers {}
 
 export type libFactory = ut.libFactory<methods, errors>
 export type handlerFactory = ut.handlerFactory<methods, errors, handlers<'local'>>

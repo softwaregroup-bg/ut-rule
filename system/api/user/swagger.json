@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.46.3"
+        "version": "10.47.2"
     },
     "paths": {
         "/rpc/user/action/grant": {
@@ -6568,7 +6568,10 @@
                                                 },
                                                 "lastChange": {
                                                     "format": "date-time",
-                                                    "type": "string"
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
                                                 },
                                                 "params": {
                                                     "type": "string"
@@ -6950,7 +6953,10 @@
                                                 },
                                                 "lastChange": {
                                                     "format": "date-time",
-                                                    "type": "string"
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
                                                 },
                                                 "params": {
                                                     "type": "string"

@@ -1,3 +1,4 @@
+const historyTransform = require('ut-function.transform');
 const prepareHistory = require('../../history/prepare');
 const historyConfig = require('../../history/config');
 const wrapper = {
@@ -31,8 +32,9 @@ const wrapper = {
 
 const tag = factor => value => {
     if (typeof value?.split !== 'function') return;
-    const [name, ...rest] = value.split('=');
-    return {
+    const [splitName, ...rest] = value.split('=');
+    const name = splitName.trim();
+    return name && {
         factor,
         name,
         value: rest.join('=') || '1'
@@ -50,6 +52,8 @@ function conditionSend({
     splitAnalytic,
     ...params
 }) {
+    const conditionId = params.condition?.conditionId;
+    const setConditionId = conditionId == null ? item => item : item => ({conditionId, ...item});
     return {
         ...params,
         conditionProperty: []
@@ -57,12 +61,18 @@ function conditionSend({
             .concat(channel?.actorTag?.split(' ').map(tag('co')))
             .concat(source?.actorTag?.split(' ').map(tag('so')))
             .concat(destination?.actorTag?.split(' ').map(tag('do')))
-            .filter(Boolean),
+            .concat(source?.kyc?.map(value => ({factor: 'sk', name: 'source.kyc', value})))
+            .concat(source?.customerType?.map(value => ({factor: 'st', name: 'source.customerType', value})))
+            .concat(destination?.kyc?.map(value => ({factor: 'dk', name: 'destination.kyc', value})))
+            .concat(destination?.customerType?.map(value => ({factor: 'dt', name: 'destination.customerType', value})))
+            .filter(Boolean)
+            .map(setConditionId),
         conditionActor: []
             .concat(channel?.actor?.map(actorId => ({actorId, factor: 'co', type: 'organization'})))
             .concat(destination?.actor?.map(actorId => ({actorId, factor: 'do', type: 'organization'})))
             .concat(source?.actor?.map(actorId => ({actorId, factor: 'so', type: 'organization'})))
-            .filter(Boolean),
+            .filter(Boolean)
+            .map(setConditionId),
         conditionItem: []
             .concat(operation?.type?.map(itemNameId => ({itemNameId, factor: 'oc', type: 'operation'})))
             .concat(channel?.country?.map(itemNameId => ({itemNameId, factor: 'cs', type: 'country'})))
@@ -78,7 +88,8 @@ function conditionSend({
             .concat(destination?.city?.map(itemNameId => ({itemNameId, factor: 'ds', type: 'city'})))
             .concat(destination?.cardProduct?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'cardProduct'})))
             .concat(destination?.accountProduct?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'accountProduct'})))
-            .filter(Boolean),
+            .filter(Boolean)
+            .map(setConditionId),
         split: {
             data: {
                 rows: splitName?.map(item => ({
@@ -107,6 +118,9 @@ function conditionReceive({
     function get(list, factor, type, key) {
         return list.filter(item => item.factor === factor && item.type === type).map(item => Number(item[key]));
     }
+    function getProp(list, factor, name) {
+        return list.filter(item => item.factor === factor && item.name === name).map(item => Number(item.value));
+    }
     function getTag(list, factor) {
         return list.filter(item => item.factor === factor).map(({name, value}) => (value && value !== '1') ? `${name}=${value}` : name).join(' ');
     }
@@ -130,6 +144,8 @@ function conditionReceive({
         source: {
             actor: get(conditionActor, 'so', 'organization', 'actorId'),
             actorTag: getTag(conditionProperty, 'so'),
+            kyc: getProp(conditionProperty, 'sk', 'source.kyc'),
+            customerType: getProp(conditionProperty, 'st', 'source.customerType'),
             cardProduct: get(conditionItem, 'sc', 'cardProduct', 'itemNameId'),
             accountProduct: get(conditionItem, 'sc', 'accountProduct', 'itemNameId'),
             country: get(conditionItem, 'ss', 'country', 'itemNameId'),
@@ -139,6 +155,8 @@ function conditionReceive({
         destination: {
             actor: get(conditionActor, 'do', 'organization', 'actorId'),
             actorTag: getTag(conditionProperty, 'do'),
+            kyc: getProp(conditionProperty, 'dk', 'destination.kyc'),
+            customerType: getProp(conditionProperty, 'dt', 'destination.customerType'),
             cardProduct: get(conditionItem, 'dc', 'cardProduct', 'itemNameId'),
             accountProduct: get(conditionItem, 'dc', 'accountProduct', 'itemNameId'),
             country: get(conditionItem, 'ds', 'country', 'itemNameId'),
@@ -244,14 +262,12 @@ module.exports = function rule({
             });
         },
         'rule.rule.historyTransform': function(msg, $meta) {
-            const objectName = 'rule';
-            const rule = prepareHistory[objectName] && prepareHistory[objectName](msg.data);
-            return this.bus.importMethod('history.history.transform')({
-                config: historyConfig[objectName],
-                data: rule || {}
-            }).then(function(transformedData) {
-                return { data: transformedData };
-            });
+            return {
+                data: historyTransform(
+                    prepareHistory.rule(msg.data) || {},
+                    historyConfig.rule
+                )
+            };
         }
     };
 };

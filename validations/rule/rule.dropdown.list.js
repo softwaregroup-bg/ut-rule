@@ -20,6 +20,8 @@ module.exports = ({
             'rule.cardProduct': dropdownItems,
             'rule.channel': dropdownItems,
             'rule.role': dropdownItems,
+            'rule.kyc': dropdownItems,
+            'rule.customerType': dropdownItems,
             'rule.operation': dropdownItems
         })
     })

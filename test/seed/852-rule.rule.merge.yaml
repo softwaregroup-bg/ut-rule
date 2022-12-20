@@ -8,7 +8,7 @@ condition:
   - {name: Test by operation, operation: 'Rule Deposit, Rule Transfer'}
   - {name: Test by channel country, channelCountry: 'Andorra, United Arab Emirates'}
   - {name: Test by channel region, channelRegion: 'Varna, Burgas, Rousse'}
-  - {name: Test by channel city, channelCity: 'Topolovgrad, Ivaylovgrad'}
+  - {name: Test by channel city, channelCity: 'Popovo, Aitos'}
   - {name: Test by channel organization tag, channelOrganizationTag: emv}
   - {name: Test by channel organization, channelOrganization: 'CARE, Greenpeace'}
   - {name: Test by holder country, holderCountry: 'Angola, Antarctica, Argentina'}

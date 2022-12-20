@@ -57,6 +57,7 @@ module.exports = () => ({
         adapter: true
     },
     microservice: {
+        sqlTest: true,
         sql: {
             utc: true
         },

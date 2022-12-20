@@ -1,3 +1,16 @@
+## [12.5.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.0...v12.5.1) (2022-12-20)
+
+
+
+# [12.5.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.5...v12.5.0) (2022-12-19)
+
+
+### Features
+
+* kyc and customerType conditions ([49d46e0](https://github.com/softwaregroup-bg/ut-rule/commit/49d46e086e2bf8bb279b44f73acbcf7dc6b1976b))
+
+
+
 ## [12.4.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.2...v12.4.3) (2022-11-16)
 
 

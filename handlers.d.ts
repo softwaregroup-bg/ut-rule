@@ -91,6 +91,7 @@ declare namespace rule_decision_lookup {
       commission?: number | null;
       issuerFee?: number | null;
       processorFee?: number | null;
+      rateConditionName?: string | null;
       rateId?: number | null;
       settlementAmount?: number | null;
       transferDateTime: Date;
@@ -100,6 +101,7 @@ declare namespace rule_decision_lookup {
       amount: number;
       analytics?: string | null;
       conditionId: number;
+      conditionName: string;
       credit: string;
       debit: string;
       description?: string | null;

@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.27.0"
+        "version": "10.27.1"
     },
     "paths": {
         "/rpc/customer/account/activity": {
@@ -25300,6 +25300,12 @@
                                         "organization": {
                                             "additionalProperties": false,
                                             "properties": {
+                                                "activity": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "activityId": {
                                                     "type": [
                                                         "integer",
@@ -25383,6 +25389,12 @@
                                                     "type": "boolean"
                                                 },
                                                 "oldValues": {},
+                                                "organizationCodeBIC": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "organizationCodeIBAN": {
                                                     "type": [
                                                         "string",

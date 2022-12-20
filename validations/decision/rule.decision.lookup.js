@@ -19,6 +19,7 @@ module.exports = ({
         result: joi.object().keys({
             amount: joi.object().keys({
                 rateId: joi.number().integer().allow(null),
+                rateConditionName: joi.string().allow(null),
                 settlementAmount: joi.number().allow(null),
                 acquirerFee: joi.number().allow(null),
                 issuerFee: joi.number().allow(null),
@@ -30,6 +31,7 @@ module.exports = ({
             split: joi.array().items(
                 joi.object().keys({
                     conditionId: joi.number().integer().required(),
+                    conditionName: joi.string().required(),
                     splitNameId: joi.number().integer().required(),
                     tag: joi.string().required().allow(null),
                     amount: joi.number().required(),

@@ -1,3 +1,4 @@
+const historyTransform = require('ut-function.transform');
 const prepareHistory = require('../../history/prepare');
 const historyConfig = require('../../history/config');
 const wrapper = {
@@ -261,14 +262,12 @@ module.exports = function rule({
             });
         },
         'rule.rule.historyTransform': function(msg, $meta) {
-            const objectName = 'rule';
-            const rule = prepareHistory[objectName] && prepareHistory[objectName](msg.data);
-            return this.bus.importMethod('history.history.transform')({
-                config: historyConfig[objectName],
-                data: rule || {}
-            }).then(function(transformedData) {
-                return { data: transformedData };
-            });
+            return {
+                data: historyTransform(
+                    prepareHistory.rule(msg.data) || {},
+                    historyConfig.rule
+                )
+            };
         }
     };
 };

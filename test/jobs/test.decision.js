@@ -36,6 +36,20 @@ module.exports = function test() {
                     }
                 },
                 {
+                    name: 'fetch region',
+                    method: 'core.itemName.fetch',
+                    params: {
+                        alias: ['region'],
+                        isEnabled: 1
+                    },
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        this.regionId = result.items.find(
+                            (region) => region.itemCode === 'Varna'
+                        ).value;
+                    }
+                },
+                {
                     name: 'fetch city',
                     method: 'core.itemNameByItemType.fetch',
                     params: {itemType: 'city'},
@@ -51,10 +65,10 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Start date', operationDate: '2122-03-10T00:00:00Z'}),
                 ruleDecisionSnapshot({name: 'End date', operationDate: '2021-11-10T00:00:00Z'}),
                 ruleDecisionSnapshot({name: 'Operation', operation: 'Rule Deposit'}),
-                ruleDecisionSnapshot({name: 'Operation tag', operationTag: 'cash'}),
+                // ruleDecisionSnapshot({name: 'Operation tag', tag: 'cash'}),
                 ruleDecisionSnapshot({name: 'Channel country'}, ({countryId}) => ({channelId: countryId})),
-                ruleDecisionSnapshot({name: 'Channel region', channelId: 3}),
-                ruleDecisionSnapshot({name: 'Channel city', channelId: 4}),
+                ruleDecisionSnapshot({name: 'Channel region'}, ({regionId}) => ({channelId: regionId})),
+                ruleDecisionSnapshot({name: 'Channel city'}, ({cityId}) => ({channelId: cityId})),
                 ruleDecisionSnapshot({name: 'Channel organization'}, ({Greenpeace: {organization: [{actorId: channelId}]}}) => ({channelId})),
                 ruleDecisionSnapshot({name: 'Channel organization tag'}, ({Mastercard: {organization: [{actorId: channelId}]}}) => ({channelId})),
                 ruleDecisionSnapshot({name: 'Holder account', sourceAccount: 'source'}),
@@ -62,7 +76,7 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Holder region', sourceAccount: 'source-region'}),
                 ruleDecisionSnapshot({name: 'Holder city', sourceAccount: 'source-city'}),
                 ruleDecisionSnapshot({name: 'Holder type', holderCustomerType: 'corporate'}),
-                ruleDecisionSnapshot({name: 'Holder kyc', holderKyc: 'Level 2 - Individual - Bulgaria, Level 3 - Corporate - Bulgaria', operation: 'Rule Withdraw'}),
+                ruleDecisionSnapshot({name: 'Holder kyc', holderKyc: 'Level 2 - Individual - Bulgaria', operation: 'Rule Withdraw'}),
                 ruleDecisionSnapshot({name: 'Holder organization', sourceAccount: 'source-organization'}),
                 ruleDecisionSnapshot({name: 'Holder organization tag', sourceAccount: 'source-organization-tag'}),
                 ruleDecisionSnapshot({name: 'Counterparty account', destinationAccount: 'destination'}),

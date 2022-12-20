@@ -8,7 +8,7 @@
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Channel city > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 21,
+    "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -16,16 +16,7 @@ Object {
     "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
-  "split": Array [
-    Object {
-      "amount": 21,
-      "analytics": null,
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
+  "split": Array [],
 }
 `
 
@@ -104,7 +95,7 @@ Object {
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Channel region > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 20,
+    "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -112,160 +103,7 @@ Object {
     "settlementAmount": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
-  "split": Array [
-    Object {
-      "amount": 20,
-      "analytics": null,
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty account > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 15,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 15,
-      "analytics": null,
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty city > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 32,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 32,
-      "analytics": null,
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty country > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 30,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 30,
-      "analytics": null,
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty organization > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 34,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 34,
-      "analytics": null,
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty organization tag > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 33,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 33,
-      "analytics": null,
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty region > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 31,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 31,
-      "analytics": null,
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
+  "split": Array [],
 }
 `
 
@@ -355,54 +193,6 @@ Object {
   "split": Array [
     Object {
       "amount": 23,
-      "analytics": null,
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder organization > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 27,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 27,
-      "analytics": null,
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder organization tag > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 26,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 26,
       "analytics": null,
       "credit": "credit",
       "debit": "debit",

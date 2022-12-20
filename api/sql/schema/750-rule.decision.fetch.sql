@@ -234,15 +234,17 @@ BEGIN TRY
 
     DECLARE @fee TABLE(
         conditionId INT,
+        conditionName NVARCHAR(100),
         splitNameId INT,
         fee MONEY,
         tag VARCHAR(MAX)
     );
 
     -- calculate the operation fees based on the matched conditions (rules), and select these with highest priority
-    WITH split(conditionId, splitNameId, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
+    WITH split(conditionId, [name], splitNameId, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
         SELECT
             c.conditionId,
+            c.name,
             r.splitNameId,
             n.tag,
             r.minValue,
@@ -281,9 +283,10 @@ BEGIN TRY
             c.countMonthly >= r.startCountMonthly
     )
     INSERT INTO
-        @fee(conditionId, splitNameId, fee, tag)
+        @fee(conditionId, conditionName, splitNameId, fee, tag)
     SELECT
         s.conditionId,
+        s.name,
         s.splitNameId,
         CASE
             WHEN s.calcFee > s.maxFee THEN s.maxFee
@@ -299,11 +302,13 @@ BEGIN TRY
 
     DECLARE @settlementAmount MONEY
     DECLARE @rateId INT
+    DECLARE @rateName NVARCHAR(100)
     IF @targetCurrency IS NOT NULL
     BEGIN
-        WITH rate(conditionId, rateId, rate, rnk1, rnk2) AS (
+        WITH rate(conditionId, [name], rateId, rate, rnk1, rnk2) AS (
             SELECT
                 c.conditionId,
+                c.name,
                 r.rateId,
                 r.rate,
                 RANK() OVER (PARTITION BY r.rateId ORDER BY
@@ -335,6 +340,7 @@ BEGIN TRY
         )
         SELECT
             @rateId = rateId,
+            @rateName = [name],
             @settlementAmount = @amount * rate
         FROM
             rate r
@@ -347,6 +353,7 @@ BEGIN TRY
     SELECT
         @settlementAmount settlementAmount,
         @rateId rateId,
+        @rateName rateConditionName,
         CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), @scale), 2) acquirerFee,
         CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), @scale), 2) issuerFee,
         CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|processor|%' AND tag LIKE '%|fee|%'), @scale), 2) processorFee,
@@ -378,6 +385,7 @@ BEGIN TRY
     SELECT 'split' AS resultSetName
     SELECT
         a.conditionId,
+        a.conditionName,
         a.splitNameId,
         a.tag,
         CONVERT(VARCHAR, ROUND(CAST(CASE

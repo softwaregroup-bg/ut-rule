@@ -72,6 +72,7 @@ export const prepareRuleToSave = (rule) => {
     formattedRule.condition = [{
         conditionId,
         priority: channel.priority,
+        name: channel.name,
         operationStartDate: operation.startDate || null,
         operationEndDate: operation.endDate || null,
         sourceAccontId: null,
@@ -256,6 +257,7 @@ export const prepareRuleErrors = (rule, existErrors) => {
     let errors = fromJS(existErrors || defaultErrorState);
     const { destination, source, operation, channel, split, limit } = rule;
     channel && !channel.priority && (errors = errors.setIn(['channel', 'priority'], errorMessage.priorityRequired));
+    channel && !channel.name && (errors = errors.setIn(['channel', 'name'], errorMessage.nameRequired));
     channel && channel.properties && channel.properties.forEach((prop, idx) => {
         prop.value && !prop.name && (errors = errors.setIn(['channel', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
     });

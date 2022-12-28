@@ -249,9 +249,9 @@ BEGIN
 				   ,[description])
 			 VALUES
 				   ('waivedFeeP2P'
-				   ,2
+				   ,1
 				   ,'Waived fee P2P')
-			SELECT @waivedFeeP2P = 2
+			SELECT @waivedFeeP2P = 1
 		END
 
 		SELECT @transferTypeIdOnus = i.itemNameId 

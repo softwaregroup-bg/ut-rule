@@ -241,7 +241,7 @@ BEGIN
 		FROM core.configuration
 		WHERE [key] = 'waivedFeeP2P'
 
-		IF EXISTS (SELECT @waivedFeeP2P)
+		IF NOT EXISTS (SELECT @waivedFeeP2P)
 		BEGIN
 			INSERT INTO [core].[configuration]
 				   ([key]

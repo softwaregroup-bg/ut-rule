@@ -230,8 +230,75 @@ BEGIN
         s.rnk1 = 1 AND
         s.rnk2 = 1
 
-    SELECT 'amount' AS resultSetName, 1 single
-    SELECT
+	SELECT 'amount' AS resultSetName, 1 single
+	IF EXISTS (SELECT COUNT(*) FROM core.itemName WHERE itemNameId = @transferTypeId
+	AND (itemCode = 'p2p' OR itemCode = 'p2pForeignOut'))
+	BEGIN
+
+		DECLARE @transferTypeIdOnus int, @transferTypeIdOffus int, @waivedFeeP2P int
+
+		SELECT @waivedFeeP2P = CAST([value] AS INT)
+		FROM core.configuration
+		WHERE [key] = 'waivedFeeP2P'
+
+		IF EXISTS (SELECT @waivedFeeP2P)
+		BEGIN
+			INSERT INTO [core].[configuration]
+				   ([key]
+				   ,[value]
+				   ,[description])
+			 VALUES
+				   ('waivedFeeP2P'
+				   ,2
+				   ,'Waived fee P2P')
+			SELECT @waivedFeeP2P = 2
+		END
+
+		SELECT @transferTypeIdOnus = i.itemNameId 
+		FROM core.itemName i
+		LEFT JOIN core.itemType it ON i.itemTypeId = it.itemTypeId
+		WHERE i.itemCode = 'p2p' AND it.alias = 'operation'
+
+		SELECT @transferTypeIdOffus = i.itemNameId 
+		FROM core.itemName i
+		LEFT JOIN core.itemType it ON i.itemTypeId = it.itemTypeId
+		WHERE i.itemCode = 'p2pForeignOut' AND it.alias = 'operation'
+
+		IF (
+		SELECT COUNT(*)
+		  FROM [impl-cib-mwallet-dv-migration2].[cibTransfer].[transfer] T
+		  WHERE sourceAccount = '01005224268'
+		  AND [transferTypeId] IN (@transferTypeIdOnus, @transferTypeIdOffus)
+		  AND MONTH(transferDateTime) = MONTH(GETDATE())
+		 ) < @waivedFeeP2P
+		 BEGIN
+			SELECT
+			0 AS otherTax,
+			0 AS wth,
+			0 AS vat,
+			0 AS acquirerFee,
+			0 AS issuerFee,
+			0 AS commission,
+			@operationDate transferDateTime,
+			@transferTypeId transferTypeId
+		 END
+		 ELSE 
+		 BEGIN 
+			SELECT
+			(SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|otherTax|%') otherTax,
+			(SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|wth|%') wth,
+			(SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|vat|%') vat,
+			(SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|fee|%' AND tag NOT LIKE '%|issuer|%') acquirerFee,
+			(SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%') issuerFee,
+			(SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|commission|%' OR tag LIKE '%|agentCommission|%') commission,
+			@operationDate transferDateTime,
+			@transferTypeId transferTypeId
+		 END
+		
+	END
+	ELSE
+	BEGIN
+		SELECT
         (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|otherTax|%') otherTax,
         (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|wth|%') wth,
         (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|vat|%') vat,
@@ -240,4 +307,6 @@ BEGIN
         (SELECT ISNULL(SUM(fee), 0) FROM @fee WHERE tag LIKE '%|commission|%' OR tag LIKE '%|agentCommission|%') commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
+	END
+    
 END

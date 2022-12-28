@@ -235,24 +235,15 @@ BEGIN
 	AND (itemCode = 'p2p' OR itemCode = 'p2pForeignOut'))
 	BEGIN
 
-		DECLARE @transferTypeIdOnus int, @transferTypeIdOffus int, @waivedFeeP2P int
+		DECLARE @transferTypeIdOnus int, @transferTypeIdOffus int, @waivedFeeP2P int, @waivedFeeP2PLimit int
 
 		SELECT @waivedFeeP2P = CAST([value] AS INT)
 		FROM core.configuration
 		WHERE [key] = 'waivedFeeP2P'
 
-		IF NOT EXISTS (SELECT @waivedFeeP2P)
-		BEGIN
-			INSERT INTO [core].[configuration]
-				   ([key]
-				   ,[value]
-				   ,[description])
-			 VALUES
-				   ('waivedFeeP2P'
-				   ,0
-				   ,'Waived fee P2P')
-			SELECT @waivedFeeP2P = 0
-		END
+        SELECT @waivedFeeP2PLimit = CAST([value] AS INT)
+		FROM core.configuration
+		WHERE [key] = 'waivedFeeP2PLimit'
 
 		SELECT @transferTypeIdOnus = i.itemNameId 
 		FROM core.itemName i
@@ -264,13 +255,13 @@ BEGIN
 		LEFT JOIN core.itemType it ON i.itemTypeId = it.itemTypeId
 		WHERE i.itemCode = 'p2pForeignOut' AND it.alias = 'operation'
 
-		IF (
+		IF ((
 		SELECT COUNT(*)
 		  FROM [cibTransfer].[transfer] T
 		  WHERE sourceAccount = @sourceAccount
 		  AND [transferTypeId] IN (@transferTypeIdOnus, @transferTypeIdOffus)
 		  AND MONTH(transferDateTime) = MONTH(GETDATE())
-		 ) < @waivedFeeP2P
+		 ) < @waivedFeeP2P) AND (@amount <= @waivedFeeP2PLimit)
 		 BEGIN
 			SELECT
 			0 AS otherTax,

@@ -249,9 +249,9 @@ BEGIN
 				   ,[description])
 			 VALUES
 				   ('waivedFeeP2P'
-				   ,1
+				   ,0
 				   ,'Waived fee P2P')
-			SELECT @waivedFeeP2P = 1
+			SELECT @waivedFeeP2P = 0
 		END
 
 		SELECT @transferTypeIdOnus = i.itemNameId 
@@ -266,8 +266,8 @@ BEGIN
 
 		IF (
 		SELECT COUNT(*)
-		  FROM [impl-cib-mwallet-dv-migration2].[cibTransfer].[transfer] T
-		  WHERE sourceAccount = '01005224268'
+		  FROM [cibTransfer].[transfer] T
+		  WHERE sourceAccount = @sourceAccount
 		  AND [transferTypeId] IN (@transferTypeIdOnus, @transferTypeIdOffus)
 		  AND MONTH(transferDateTime) = MONTH(GETDATE())
 		 ) < @waivedFeeP2P

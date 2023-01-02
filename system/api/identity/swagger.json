@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "identity",
-        "version": "10.47.5"
+        "version": "10.47.8"
     },
     "paths": {
         "/rpc/identity/changePassword": {

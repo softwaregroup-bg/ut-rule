@@ -5,7 +5,7 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceAccount VARCHAR(100), -- source account number
     @sourceCardProductId BIGINT = NULL, -- product id of the card
     @destinationAccount VARCHAR(100), -- destination account number
-    @amount money, -- operation amount
+    @amount VARCHAR(21), -- operation amount
     @currency VARCHAR(3), -- operation currency
     @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
@@ -96,7 +96,7 @@ BEGIN
     -- if check credentials has been setup for the account and/or the account product, assign the value to variable. account is with higher priority
     SET @credentialsCheck = CASE WHEN COALESCE (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
 
-    SELECT @operationDate = ISNULL(@operationDate, GETDATE())
+    SELECT @operationDate = ISNULL(@operationDate, GETUTCDATE())
 
     INSERT INTO
         @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
@@ -179,7 +179,7 @@ BEGIN
         @operationDate = @operationDate,
         @sourceAccountId = @sourceAccountId,
         @destinationAccountId = @destinationAccountId,
-        @amount = @amount,
+        @amountString = @amount,
         @totals = @totals,
         @currency = @currency,
         @isSourceAmount = @isSourceAmount,

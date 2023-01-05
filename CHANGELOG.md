@@ -1,3 +1,68 @@
+## [12.1.6](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.5...v12.1.6) (2022-05-05)
+
+
+### Bug Fixes
+
+* **ECNT2-1263:** rounding ([#229](https://github.com/softwaregroup-bg/ut-rule/issues/229)) ([bb564a6](https://github.com/softwaregroup-bg/ut-rule/commit/bb564a605ae3eb516ce762875bc25a0e7b2f83d4))
+
+
+
+## [12.1.5](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.4...v12.1.5) (2022-05-03)
+
+
+
+## [12.1.4](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.3...v12.1.4) (2022-04-21)
+
+
+### Bug Fixes
+
+* **MSA-2182:** edit amount type rounding is not correct ([#228](https://github.com/softwaregroup-bg/ut-rule/issues/228)) ([90d18df](https://github.com/softwaregroup-bg/ut-rule/commit/90d18df241cd626b47e415f3582f8f2e0fa3404b))
+
+
+
+## [12.1.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.2...v12.1.3) (2022-04-06)
+
+
+### Bug Fixes
+
+* wallet to erp rule, #UTCORE-121 ([#227](https://github.com/softwaregroup-bg/ut-rule/issues/227)) ([487dc37](https://github.com/softwaregroup-bg/ut-rule/commit/487dc3768ab0b62e0c65494e1900842571ef8ab7)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
+## [12.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.1...v12.1.2) (2022-03-30)
+
+
+
+## [12.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.0...v12.1.1) (2022-03-13)
+
+
+
+# [12.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.2...v12.1.0) (2022-03-04)
+
+
+### Features
+
+* PS-261 - Support multiple selection for Channel organization input ([#226](https://github.com/softwaregroup-bg/ut-rule/issues/226)) ([e300e67](https://github.com/softwaregroup-bg/ut-rule/commit/e300e671d8cd12a12b024565b9164c5e37d9e2ae))
+
+
+
+## [12.0.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.1...v12.0.2) (2022-02-21)
+
+
+### Bug Fixes
+
+* add microservice config ([f8336df](https://github.com/softwaregroup-bg/ut-rule/commit/f8336dfd0323a49a88d9de5adee2cd0a89cfbca7))
+
+
+
+## [12.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.0...v12.0.1) (2022-02-21)
+
+
+
+# [12.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.0-timezone.1...v12.0.0) (2022-02-21)
+
+
+
 ## [11.5.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.5.0...v11.5.1) (2021-12-23)
 
 

@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.28.1"
+        "version": "10.29.1"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -5460,6 +5460,10 @@
                                                             "nullable": true,
                                                             "type": "string"
                                                         },
+                                                        "encryptedUdf": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
                                                         "expirationDate": {
                                                             "nullable": true,
                                                             "type": "string"
@@ -9353,6 +9357,10 @@
                                                             "nullable": true,
                                                             "type": "string"
                                                         },
+                                                        "encryptedUdf": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
                                                         "expirationDate": {
                                                             "nullable": true,
                                                             "type": "string"
@@ -11438,6 +11446,10 @@
                                                             "type": "number"
                                                         },
                                                         "documentTypeId": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
+                                                        "encryptedUdf": {
                                                             "nullable": true,
                                                             "type": "string"
                                                         },

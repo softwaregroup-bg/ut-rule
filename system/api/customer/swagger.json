@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.28.1"
+        "version": "10.29.1"
     },
     "paths": {
         "/rpc/customer/account/activity": {
@@ -5448,6 +5448,12 @@
                                                         "null"
                                                     ]
                                                 },
+                                                "encryptedUdf": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "expirationDate": {
                                                     "type": [
                                                         "string",
@@ -9467,6 +9473,12 @@
                                                         "null"
                                                     ]
                                                 },
+                                                "encryptedUdf": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "expirationDate": {
                                                     "type": [
                                                         "string",
@@ -11744,6 +11756,12 @@
                                                     ]
                                                 },
                                                 "documentTypeId": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "encryptedUdf": {
                                                     "type": [
                                                         "string",
                                                         "null"

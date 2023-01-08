@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.47.8"
+        "version": "10.47.12"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -14576,6 +14576,11 @@
                                                 "items": {
                                                     "additionalProperties": false,
                                                     "properties": {
+                                                        "accessActiveFrom": {
+                                                            "format": "date-time",
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
                                                         "accessDeniedFrom": {
                                                             "format": "date-time",
                                                             "nullable": true,
@@ -16341,6 +16346,11 @@
                                                     "items": {
                                                         "additionalProperties": false,
                                                         "properties": {
+                                                            "accessActiveFrom": {
+                                                                "format": "date-time",
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
                                                             "accessDeniedFrom": {
                                                                 "format": "date-time",
                                                                 "nullable": true,
@@ -18779,6 +18789,11 @@
                                                 "items": {
                                                     "additionalProperties": false,
                                                     "properties": {
+                                                        "accessActiveFrom": {
+                                                            "format": "date-time",
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
                                                         "accessDeniedFrom": {
                                                             "format": "date-time",
                                                             "nullable": true,
@@ -20590,6 +20605,11 @@
                                                     "items": {
                                                         "additionalProperties": false,
                                                         "properties": {
+                                                            "accessActiveFrom": {
+                                                                "format": "date-time",
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
                                                             "accessDeniedFrom": {
                                                                 "format": "date-time",
                                                                 "nullable": true,
@@ -21438,6 +21458,11 @@
                                                     "items": {
                                                         "additionalProperties": false,
                                                         "properties": {
+                                                            "accessActiveFrom": {
+                                                                "format": "date-time",
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
                                                             "accessDeniedFrom": {
                                                                 "format": "date-time",
                                                                 "nullable": true,
@@ -23497,6 +23522,11 @@
                                                     "items": {
                                                         "additionalProperties": false,
                                                         "properties": {
+                                                            "accessActiveFrom": {
+                                                                "format": "date-time",
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
                                                             "accessDeniedFrom": {
                                                                 "format": "date-time",
                                                                 "nullable": true,

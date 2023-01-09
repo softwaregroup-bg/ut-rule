@@ -8,7 +8,7 @@ require('ut-run').run({
         utRule: true,
         utRun: {
             types: {
-                dependencies: 'login,core',
+                dependencies: 'login,core,customer',
                 validation: 'utRule.validation',
                 error: 'utRule.error'
             }

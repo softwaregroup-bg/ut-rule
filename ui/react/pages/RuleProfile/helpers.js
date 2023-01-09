@@ -1,7 +1,7 @@
 import { errorMessage } from './validator';
 import { defaultErrorState } from './Tabs/defaultState';
 import { fromJS } from 'immutable';
-import { prepareRuleModel as prepareRule } from '../../../../common';
+import { prepareRuleModel as prepareRule } from '../../../common';
 
 export const tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
 
@@ -28,8 +28,10 @@ const factors = {
 
 const conditionItemFactor = {
     source: factors.sourceSpatial,
+    sourceCategory: factors.sourceCategory,
     channel: factors.channelSpatial,
     destination: factors.destinationSpatial,
+    destinationCategory: factors.destinationCategory,
     operation: factors.operationCategory
 };
 
@@ -70,6 +72,7 @@ export const prepareRuleToSave = (rule) => {
     formattedRule.condition = [{
         conditionId,
         priority: channel.priority,
+        name: channel.name,
         operationStartDate: operation.startDate || null,
         operationEndDate: operation.endDate || null,
         sourceAccontId: null,
@@ -105,19 +108,23 @@ export const prepareRuleToSave = (rule) => {
         const tab = rule[tabKey];
         tab && ['accountProduct', 'cities', 'countries', 'regions', 'operations'].forEach(function(kepProp) {
             const value = tab[kepProp];
+            let factor = conditionItemFactor[tabKey];
+            if (kepProp === 'accountProduct' && ['source', 'destination'].includes(tabKey)) {
+                factor = tabKey === 'source' ? conditionItemFactor.sourceCategory : conditionItemFactor.destinationCategory;
+            }
             if (value && value instanceof Array) {
                 value.forEach(function(ci) {
                     ci.key && formattedRule.conditionItem.push({
                         itemNameId: ci.key,
                         conditionId,
-                        factor: conditionItemFactor[tabKey]
+                        factor
                     });
                 });
             } else if (value && !(value instanceof Object)) {
                 formattedRule.conditionItem.push({
                     itemNameId: value,
                     conditionId,
-                    factor: conditionItemFactor[tabKey]
+                    factor
                 });
             }
         });
@@ -250,6 +257,7 @@ export const prepareRuleErrors = (rule, existErrors) => {
     let errors = fromJS(existErrors || defaultErrorState);
     const { destination, source, operation, channel, split, limit } = rule;
     channel && !channel.priority && (errors = errors.setIn(['channel', 'priority'], errorMessage.priorityRequired));
+    channel && !channel.name && (errors = errors.setIn(['channel', 'name'], errorMessage.nameRequired));
     channel && channel.properties && channel.properties.forEach((prop, idx) => {
         prop.value && !prop.name && (errors = errors.setIn(['channel', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
     });

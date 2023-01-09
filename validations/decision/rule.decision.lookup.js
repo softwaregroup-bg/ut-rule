@@ -8,15 +8,19 @@ module.exports = ({
         params: joi.object().keys({
             channelId: joi.number().integer().allow(null).default(null),
             operation: joi.string().required(),
+            operationDate: joi.date(),
             sourceAccount: joi.string().required(),
             destinationAccount: joi.string().required(),
-            amount: joi.string().length(21).required(),
+            amount: joi.string().max(21).required(),
             currency: joi.string().required(),
             isSourceAmount: joi.boolean().allow(0, 1, '0', '1'),
             sourceCardProductId: joi.number().integer().allow(null)
         }),
         result: joi.object().keys({
             amount: joi.object().keys({
+                rateId: joi.number().integer().allow(null),
+                rateConditionName: joi.string().allow(null),
+                settlementAmount: joi.number().allow(null),
                 acquirerFee: joi.number().allow(null),
                 issuerFee: joi.number().allow(null),
                 processorFee: joi.number().allow(null),
@@ -27,6 +31,7 @@ module.exports = ({
             split: joi.array().items(
                 joi.object().keys({
                     conditionId: joi.number().integer().required(),
+                    conditionName: joi.string().required(),
                     splitNameId: joi.number().integer().required(),
                     tag: joi.string().required().allow(null),
                     amount: joi.number().required(),

@@ -44,6 +44,7 @@ function prepareRuleModel(dbresult) {
         channel: {
             conditionId: condition.conditionId,
             priority: condition.priority,
+            name: condition.name,
             properties: [],
             countries: [],
             cities: [],

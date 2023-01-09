@@ -1,4 +1,24 @@
 declare namespace ruleTableTypes {}
+declare namespace rule_condition_add {
+  export type params = any;
+  export type result = any;
+}
+
+declare namespace rule_condition_edit {
+  export type params = any;
+  export type result = any;
+}
+
+declare namespace rule_condition_fetch {
+  export type params = any;
+  export type result = any;
+}
+
+declare namespace rule_condition_get {
+  export type params = any;
+  export type result = any;
+}
+
 declare namespace rule_decision_fetch {
   export interface params {
     /**
@@ -61,6 +81,7 @@ declare namespace rule_decision_lookup {
     destinationAccount: string;
     isSourceAmount?: 0 | 1 | '0' | '1';
     operation: string;
+    operationDate?: Date;
     sourceAccount: string;
     sourceCardProductId?: number | null;
   }
@@ -70,6 +91,9 @@ declare namespace rule_decision_lookup {
       commission?: number | null;
       issuerFee?: number | null;
       processorFee?: number | null;
+      rateConditionName?: string | null;
+      rateId?: number | null;
+      settlementAmount?: number | null;
       transferDateTime: Date;
       transferTypeId: string;
     };
@@ -77,11 +101,95 @@ declare namespace rule_decision_lookup {
       amount: number;
       analytics?: string | null;
       conditionId: number;
+      conditionName: string;
       credit: string;
       debit: string;
       description?: string | null;
       splitNameId: number;
       tag: string | null;
+    })[];
+  }
+}
+
+declare namespace rule_dropdown_list {
+  export interface params {}
+  export interface result {
+    'rule.accountProduct'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.cardProduct'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.channel'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.city'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.country'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.currency'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.customerType'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.kyc'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.operation'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.region'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
+    })[];
+    'rule.role'?: ({
+      alias?: string | null | '';
+      description?: string | null | '';
+      label: string;
+      parent?: number | string;
+      value: number | string;
     })[];
   }
 }
@@ -135,10 +243,20 @@ export interface ports<location = ''> {
 interface methods extends ports {}
 
 export interface handlers<location = ''> {
+  'rule.condition.add'?: ut.handler<rule_condition_add.params, rule_condition_add.result, location>,
+  ruleConditionAdd?: ut.handler<rule_condition_add.params, rule_condition_add.result, location>,
+  'rule.condition.edit'?: ut.handler<rule_condition_edit.params, rule_condition_edit.result, location>,
+  ruleConditionEdit?: ut.handler<rule_condition_edit.params, rule_condition_edit.result, location>,
+  'rule.condition.fetch'?: ut.handler<rule_condition_fetch.params, rule_condition_fetch.result, location>,
+  ruleConditionFetch?: ut.handler<rule_condition_fetch.params, rule_condition_fetch.result, location>,
+  'rule.condition.get'?: ut.handler<rule_condition_get.params, rule_condition_get.result, location>,
+  ruleConditionGet?: ut.handler<rule_condition_get.params, rule_condition_get.result, location>,
   'rule.decision.fetch'?: ut.handler<rule_decision_fetch.params, rule_decision_fetch.result, location>,
   ruleDecisionFetch?: ut.handler<rule_decision_fetch.params, rule_decision_fetch.result, location>,
   'rule.decision.lookup'?: ut.handler<rule_decision_lookup.params, rule_decision_lookup.result, location>,
   ruleDecisionLookup?: ut.handler<rule_decision_lookup.params, rule_decision_lookup.result, location>,
+  'rule.dropdown.list'?: ut.handler<rule_dropdown_list.params, rule_dropdown_list.result, location>,
+  ruleDropdownList?: ut.handler<rule_dropdown_list.params, rule_dropdown_list.result, location>,
   'rule.item.fetch'?: ut.handler<rule_item_fetch.params, rule_item_fetch.result, location>,
   ruleItemFetch?: ut.handler<rule_item_fetch.params, rule_item_fetch.result, location>,
   'rule.limitForUserByRole.get'?: ut.handler<rule_limitForUserByRole_get.params, rule_limitForUserByRole_get.result, location>,
@@ -158,6 +276,8 @@ export interface errors {
   'error.rule': ut.error,
   'error.rule.amount': ut.error,
   errorRuleAmount: ut.error,
+  'error.rule.duplicatedName': ut.error,
+  errorRuleDuplicatedName: ut.error,
   'error.rule.duplicatedPriority': ut.error,
   errorRuleDuplicatedPriority: ut.error,
   'error.rule.exceedDailyLimitAmount': ut.error,
@@ -212,10 +332,15 @@ interface methods extends login.handlers {}
 import core, {coreTableTypes} from 'ut-core/handlers'
 interface methods extends core.handlers {}
 
+import customer, {customerTableTypes} from 'ut-customer/handlers'
+interface methods extends customer.handlers {}
+
 export type libFactory = ut.libFactory<methods, errors>
 export type handlerFactory = ut.handlerFactory<methods, errors, handlers<'local'>>
 export type handlerSet = ut.handlerSet<methods, errors, handlers<'local'>>
+export type test = ut.test<methods & handlers>
+export type steps = ut.steps<methods & handlers>
 
-import portal from 'ut-portal/handlers'
+import portal from 'ut-portal'
 export type pageFactory = portal.pageFactory<methods, errors>
 export type pageSet = portal.pageSet<methods, errors>

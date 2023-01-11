@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.28.1"
+        "version": "10.29.4"
     },
     "paths": {
         "/rpc/customer/account/activity": {
@@ -5448,6 +5448,12 @@
                                                         "null"
                                                     ]
                                                 },
+                                                "encryptedUdf": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "expirationDate": {
                                                     "type": [
                                                         "string",
@@ -9467,6 +9473,12 @@
                                                         "null"
                                                     ]
                                                 },
+                                                "encryptedUdf": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "expirationDate": {
                                                     "type": [
                                                         "string",
@@ -11744,6 +11756,12 @@
                                                     ]
                                                 },
                                                 "documentTypeId": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "encryptedUdf": {
                                                     "type": [
                                                         "string",
                                                         "null"
@@ -14900,6 +14918,41 @@
                                             "type": "array"
                                         },
                                         "customer.customerType": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "alias": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "label": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "parent": {
+                                                        "type": "integer"
+                                                    },
+                                                    "value": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "customer.customerTypeAlias": {
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {

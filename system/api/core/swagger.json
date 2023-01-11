@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "core",
-        "version": "8.28.6"
+        "version": "8.28.8"
     },
     "paths": {
         "/rpc/core/actor/addResult": {
@@ -3219,7 +3219,10 @@
                                     "description": "Method parameters",
                                     "properties": {
                                         "alias": {
-                                            "type": "string"
+                                            "type": [
+                                                "string",
+                                                "null"
+                                            ]
                                         },
                                         "breadcrumbs": {
                                             "items": {},
@@ -3229,7 +3232,10 @@
                                             "type": "number"
                                         },
                                         "isActive": {
-                                            "type": "boolean"
+                                            "type": [
+                                                "boolean",
+                                                "null"
+                                            ]
                                         },
                                         "orderBy": {
                                             "additionalProperties": false,
@@ -4849,10 +4855,16 @@
                                             "type": "array"
                                         },
                                         "isEnabled": {
-                                            "type": "boolean"
+                                            "type": [
+                                                "boolean",
+                                                "null"
+                                            ]
                                         },
                                         "itemName": {
-                                            "type": "string"
+                                            "type": [
+                                                "string",
+                                                "null"
+                                            ]
                                         },
                                         "itemTypeId": {
                                             "type": "integer"
@@ -8879,10 +8891,16 @@
                                             ]
                                         },
                                         "itemTypeId": {
-                                            "type": "string"
+                                            "type": [
+                                                "string",
+                                                "null"
+                                            ]
                                         },
                                         "languageId": {
-                                            "type": "string"
+                                            "type": [
+                                                "string",
+                                                "null"
+                                            ]
                                         },
                                         "pageNumber": {
                                             "minimum": 1,

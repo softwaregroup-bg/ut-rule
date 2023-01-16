@@ -18,6 +18,41 @@ Provides standard fees, limits and commissions API.
 * dk - destination KYC
 * dt - destination type
 
+## Placeholders
+
+* channel.id
+* channel.id^X
+* channel.role
+* channel.role^X
+* channel.country
+* channel.region
+* channel.city
+
+* operation.id
+* operation.currency
+
+* source.owner.id
+* source.owner.id^X
+* source.country
+* source.region
+* source.city
+* source.account.product
+* source.card
+* source.account.id
+* source.account.number
+
+* destination.owner.id
+* destination.owner.id^X
+* destination.country
+* destination.region
+* destination.city
+* destination.account.product
+* destination.account.id
+* destination.account.number
+
+* agentOf.owner.id
+* agentOf.owner.id^X
+
 ## Condition
 
 ![condition](doc/condition.png)

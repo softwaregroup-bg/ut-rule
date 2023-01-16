@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.47.12"
+        "version": "10.47.17"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -11275,6 +11275,7 @@
                                             },
                                             "searchString": {
                                                 "maxLength": 100,
+                                                "nullable": true,
                                                 "type": "string"
                                             },
                                             "sortBy": {

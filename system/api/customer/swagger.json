@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.29.1"
+        "version": "10.29.5"
     },
     "paths": {
         "/rpc/customer/account/activity": {
@@ -14952,6 +14952,41 @@
                                             },
                                             "type": "array"
                                         },
+                                        "customer.customerTypeAlias": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "alias": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "label": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "parent": {
+                                                        "type": "integer"
+                                                    },
+                                                    "value": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
                                         "customer.education": {
                                             "items": {
                                                 "additionalProperties": false,
@@ -21499,7 +21534,10 @@
                                     "description": "Method parameters",
                                     "properties": {
                                         "businessUnitId": {
-                                            "type": "integer"
+                                            "type": [
+                                                "integer",
+                                                "null"
+                                            ]
                                         },
                                         "customerTypeId": {
                                             "type": [
@@ -21508,6 +21546,7 @@
                                             ]
                                         },
                                         "display": {
+                                            "maxLength": 10,
                                             "type": [
                                                 "string",
                                                 "null"
@@ -21553,9 +21592,6 @@
                                             "type": "object"
                                         }
                                     },
-                                    "required": [
-                                        "businessUnitId"
-                                    ],
                                     "type": "object"
                                 },
                                 "timeout": {

@@ -122,34 +122,29 @@ BEGIN TRY
     IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
         THROW 55555, 'rule.notExistingCityName', 1
 
-    IF EXISTS (SELECT * FROM @condition WHERE holderCardProduct IS NOT NULL OR counterpartyCardProduct IS NOT NULL)
-        AND OBJECT_ID('card.product', 'U') IS NULL
-    BEGIN
-        ;THROW 50000, 'rule.notPossibleToGetCardProduct', 1
-    END
-    ELSE IF (EXISTS (SELECT * FROM @condition WHERE holderCardProduct IS NOT NULL OR counterpartyCardProduct IS NOT NULL)
-        AND OBJECT_ID('card.product', 'U') IS NOT NULL
-    )
-    BEGIN
-        INSERT INTO @conditionItem(conditionName, factor, itemNameId)
-        SELECT r.name, 'sc', p.productId
-        FROM @condition c
-        JOIN @conditionTT r ON r.name = c.name
-        CROSS APPLY core.DelimitedSplit8K(c.holderCardProduct, ',') a
-        LEFT JOIN [card].product p ON p.name = LTRIM(RTRIM(a.value))
-        WHERE c.holderCardProduct IS NOT NULL
 
-        INSERT INTO @conditionItem(conditionName, factor, itemNameId)
-        SELECT r.name, 'dc', p.productId
-        FROM @condition c
-        JOIN @conditionTT r ON r.name = c.name
-        CROSS APPLY core.DelimitedSplit8K(c.counterpartyCardProduct, ',') a
-        LEFT JOIN [card].product p ON p.name = LTRIM(RTRIM(a.value))
-        WHERE c.counterpartyCardProduct IS NOT NULL
+    INSERT INTO @conditionItem(conditionName, factor, itemNameId)
+    SELECT r.name, 'sc', i.itemNameId
+    FROM @condition c
+    JOIN @conditionTT r ON r.name = c.name
+    CROSS APPLY core.DelimitedSplit8K(c.holderCardProduct, ',') a
+    LEFT JOIN [core].itemName i ON i.itemName = LTRIM(RTRIM(a.value))
+    LEFT JOIN [core].itemType t ON i.itemTypeId = t.itemTypeId
+    WHERE c.holderCardProduct IS NOT NULL
+        AND t.alias = 'cardProduct'
 
-        IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
-            THROW 55555, 'rule.notExistingCardProductName', 1
-    END
+    INSERT INTO @conditionItem(conditionName, factor, itemNameId)
+    SELECT r.name, 'dc', i.itemNameId
+    FROM @condition c
+    JOIN @conditionTT r ON r.name = c.name
+    CROSS APPLY core.DelimitedSplit8K(c.counterpartyCardProduct, ',') a
+    LEFT JOIN [core].itemName i ON i.itemName = LTRIM(RTRIM(a.value))
+    LEFT JOIN [core].itemType t ON i.itemTypeId = t.itemTypeId
+    WHERE c.counterpartyCardProduct IS NOT NULL
+        AND t.alias = 'cardProduct'
+
+    IF EXISTS (SELECT * FROM @conditionItem WHERE itemNameId IS NULL)
+        THROW 55555, 'rule.notExistingCardProductName', 1
 
     IF EXISTS (SELECT * FROM @condition WHERE holderAccountProduct IS NOT NULL OR counterpartyAccountProduct IS NOT NULL)
         AND OBJECT_ID('ledger.product', 'U') IS NULL

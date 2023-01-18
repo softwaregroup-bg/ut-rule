@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.47.5"
+        "version": "10.47.17"
     },
     "paths": {
         "/rpc/user/action/grant": {
@@ -10431,7 +10431,10 @@
                                         },
                                         "searchString": {
                                             "maxLength": 100,
-                                            "type": "string"
+                                            "type": [
+                                                "string",
+                                                "null"
+                                            ]
                                         },
                                         "sortBy": {
                                             "maxLength": 50,
@@ -13530,6 +13533,13 @@
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {
+                                                    "accessActiveFrom": {
+                                                        "format": "date-time",
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "accessDeniedFrom": {
                                                         "format": "date-time",
                                                         "type": [
@@ -15518,6 +15528,13 @@
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {
+                                                    "accessActiveFrom": {
+                                                        "format": "date-time",
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "accessDeniedFrom": {
                                                         "format": "date-time",
                                                         "type": [
@@ -17900,6 +17917,13 @@
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {
+                                                    "accessActiveFrom": {
+                                                        "format": "date-time",
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "accessDeniedFrom": {
                                                         "format": "date-time",
                                                         "type": [
@@ -19936,6 +19960,13 @@
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {
+                                                    "accessActiveFrom": {
+                                                        "format": "date-time",
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "accessDeniedFrom": {
                                                         "format": "date-time",
                                                         "type": [
@@ -20870,6 +20901,13 @@
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {
+                                                    "accessActiveFrom": {
+                                                        "format": "date-time",
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "accessDeniedFrom": {
                                                         "format": "date-time",
                                                         "type": [
@@ -23121,6 +23159,13 @@
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {
+                                                    "accessActiveFrom": {
+                                                        "format": "date-time",
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "accessDeniedFrom": {
                                                         "format": "date-time",
                                                         "type": [

@@ -124,7 +124,7 @@ module.exports = function test() {
                     params: {
                         condition: {
                             name: 'Rule ' + Date.now(),
-                            priority: 1230
+                            priority: 122300
                         }
                     }
                 }),
@@ -138,7 +138,7 @@ module.exports = function test() {
                     params: {
                         condition: {
                             name: ruleName,
-                            priority: 1230
+                            priority: 122300
                         }
                     }
                 }),
@@ -158,7 +158,7 @@ module.exports = function test() {
                     params: {
                         condition: {
                             name: ruleName,
-                            priority: 4560
+                            priority: 145600
                         }
                     },
                     error: function(error, assert) {
@@ -171,7 +171,7 @@ module.exports = function test() {
                     params: ({businessUnitId}) => ({
                         condition: {
                             name: ruleName,
-                            priority: 4560
+                            priority: 145600
                         },
                         conditionActor: [{
                             actorId: businessUnitId
@@ -196,7 +196,7 @@ module.exports = function test() {
                     }) => ({
                         condition: {
                             name: ruleName + 3,
-                            priority: 56566,
+                            priority: 565660,
                             operationStartDate: '2023-01-30T22:00:00.000Z'
                         },
                         channel: {
@@ -246,7 +246,7 @@ module.exports = function test() {
                     }) => ({
                         condition: {
                             name: ruleName + 4,
-                            priority: 51656,
+                            priority: 516560,
                             operationStartDate: '2023-01-30T22:00:00.000Z'
                         },
                         channel: {
@@ -282,7 +282,7 @@ module.exports = function test() {
                     }) => ({
                         condition: {
                             name: ruleName + 5,
-                            priority: 565656,
+                            priority: 5656560,
                             operationStartDate: '2023-01-30T22:00:00.000Z'
                         },
                         channel: {

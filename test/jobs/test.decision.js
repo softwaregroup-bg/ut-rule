@@ -47,7 +47,7 @@ module.exports = function test() {
                         assert.ok(validation[`${method}.result`], `${method} validation passed`);
                         this.regionName = result.items.find(
                             (region) => region.itemCode === 'Montana'
-                        );
+                        ).itemName;
                         this.regionId2 = result.items.find(
                             (region) => region.itemCode === 'Montana'
                         ).value;
@@ -82,7 +82,7 @@ module.exports = function test() {
                         assert.ok(validation[`${method}.result`], `${method} validation passed`);
                         this.cityName = result.items.find(
                             (city) => city.itemCode === 'Sandanski'
-                        );
+                        ).itemName;
                         this.cityId2 = result.items.find(
                             (city) => city.itemCode === 'Sandanski'
                         ).value;

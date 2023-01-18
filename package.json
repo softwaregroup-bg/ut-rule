@@ -9,7 +9,6 @@
     ]
   },
   "dependencies": {
-    "inquirer": "^9.1.4",
     "lodash.get": "4.4.2",
     "lodash.map": "4.6.0",
     "lodash.merge": "4.6.2",
@@ -44,6 +43,7 @@
     "ut-portal": "^9.4.63",
     "ut-portal-admin": "^7.15.0",
     "ut-run": "^10.70.27",
+    "inquirer": "^9.1.4",
     "ut-user": "^10.47.19"
   },
   "peerDependencies": {

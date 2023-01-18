@@ -8,7 +8,7 @@ condition:
   - {name: Test by operation, operation: 'Rule Deposit, Rule Transfer'}
   - {name: Test by channel country, channelCountry: 'Andorra, United Arab Emirates'}
   - {name: Test by channel region, channelRegion: 'Varna, Burgas, Rousse'}
-  - {name: Test by channel city, channelCity: 'Popovo, Aitos'}
+  - {name: Test by channel city, channelCity: 'Topolovgrad, Ivaylovgrad'}
   - {name: Test by channel organization tag, channelOrganizationTag: emv}
   - {name: Test by channel organization, channelOrganization: 'CARE, Greenpeace'}
   - {name: Test by holder country, holderCountry: 'Angola, Antarctica, Argentina'}
@@ -17,17 +17,17 @@ condition:
   - {name: Test by holder organization tag, holderOrganizationTag: 'tourism, vat=tourism'}
   - {name: Test by holder organization, holderOrganization: 'Mercy Corps, Nobel Foundation'}
   - {name: Test by holder type, holderCustomerType: 'corporate', operation: 'Rule Withdraw'}
-  - {name: Test by holder kyc, holderKyc: 'Level 2 - Individual - Bulgaria, Level 3 - Corporate - Bulgaria', operation: 'Rule Withdraw'}
+  - {name: Test by holder kyc, holderKyc: 'Level 2 - Individual - Bulgaria, Level 3 - Corporate - Bulgaria', operation: 'Rule Cash In'}
   - {name: Test by counterparty country, counterpartyCountry: Senegal}
   - {name: Test by counterparty region, counterpartyRegion: Yambol}
   - {name: Test by counterparty city, counterpartyCity: 'Ardino, Dzhebel'}
   - {name: Test by counterparty organization tag, counterpartyOrganizationTag: 'transport, exchange=currency, cash'}
   - {name: Test by counterparty organization, counterpartyOrganization: 'Oxfam, UNICEF'}
-  - {name: Test by counterparty type, counterpartyCustomerType: corporate, operation: 'Rule Withdraw'}
-  - {name: Test by counterparty kyc, counterpartyKyc: Level 0 - Individual - Bulgaria, operation: 'Rule Withdraw'}
+  - {name: Test by counterparty type, counterpartyCustomerType: corporate, operation: 'Rule Transfer OTP'}
+  - {name: Test by counterparty kyc, counterpartyKyc: Level 0 - Individual - Bulgaria, operation: 'Rule Topup'}
   - priority: 70
     operationStartDate: '2022-01-01T00:00:00Z'
-    operationEndDate: '2022-01-31T00:00:00Z'
+    operationEndDate: '2024-01-31T00:00:00Z'
     sourceAccountId: source
     destinationAccountId: destination
     name: Test Split Range
@@ -83,6 +83,18 @@ condition:
     holderCustomerType: individual, corporate
     counterpartyKyc: Level 2 - Individual - Bulgaria
     counterpartyCustomerType: corporate
+  - priority: 90
+    name: Rule Test Limits
+    operationStartDate: '2022-01-01T00:00:00Z'
+    operation: Rule Balance Enquiry
+  - priority: 99
+    name: Rule Test More Assignments
+    operationStartDate: '2022-01-01T00:00:00Z'
+    operation: Rule Wallet to Wallet
+  - priority: 97
+    name: Rule Test Split Analytic
+    operationStartDate: '2022-01-01T00:00:00Z'
+    operation: Rule Billpayment
 limit:
   - {
       conditionName: Test Split Range, currency: BGN,
@@ -90,6 +102,10 @@ limit:
       maxAmountDaily: 20000, maxCountDaily: 3,
       maxAmountWeekly: 100000, maxCountWeekly: 5,
       maxAmountMonthly: 200000, maxCountMonthly: 10}
+  - {
+      conditionName: Rule Test Limits, currency: BGN,
+      minAmount: 10, maxAmount: 1000,
+      maxAmountDaily: 2000, maxCountDaily: 3}
   - {
       conditionName: Test Split Range, currency: EUR,
       maxAmount: 5000, maxAmountDaily: 10000,
@@ -100,9 +116,6 @@ limit:
       conditionName: Test Split Range, currency: USD,
       maxCountDaily: 1, maxCountWeekly: 2, maxCountMonthly: 3}
 splitName: # defaults name: fee, tag: |fee|acquirer|
-  - {conditionName: Test by period}
-  - {conditionName: Test by start date}
-  - {conditionName: Test by end date}
   - {conditionName: Test by source account}
   - {conditionName: Test by destination account}
   - {conditionName: Test by operation tag}
@@ -131,10 +144,24 @@ splitName: # defaults name: fee, tag: |fee|acquirer|
   - {conditionName: Test Split Range, name: issuer, tag: "|issuer|"}
   - {conditionName: Test Split Analytic}
   - {conditionName: Test Split Analytic, name: pos, tag: "|pos|"}
+  - {conditionName: Rule Test Limits}
+  - {conditionName: Rule Test More Assignments, name: testFee}
+  - {conditionName: Rule Test More Assignments, name: base}
+  - {conditionName: Rule Test Split Analytic, name: testFee}
+  - {conditionName: Rule Test Split Analytic, name: base}
+  - {conditionName: Test by period, name: testFee}
+  - {conditionName: Test by period, name: base}
+  - {conditionName: Test by start date, name: testFee}
+  - {conditionName: Test by start date, name: base}
+  - {conditionName: Test by end date, name: testFee}
+  - {conditionName: Test by end date, name: base}
 splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0, startCount*: 0, isSourceAmount: 0
-  - {conditionName: Test by period, percent: 1.1}
-  - {conditionName: Test by start date, percent: 1.2}
-  - {conditionName: Test by end date, percent: 1.3}
+  - {conditionName: Test by period, splitName: testFee, percent: 1.1}
+  - {conditionName: Test by period, splitName: base, percent: 100}
+  - {conditionName: Test by start date, splitName: testFee, percent: 5}
+  - {conditionName: Test by start date, splitName: base, percent: 100}
+  - {conditionName: Test by end date, splitName: testFee, percent: 1.3}
+  - {conditionName: Test by end date, splitName: base, percent: 100}
   - {conditionName: Test by source account, percent: 1.4}
   - {conditionName: Test by destination account, percent: 1.5}
   - {conditionName: Test by operation tag, percent: 1.6}
@@ -158,7 +185,7 @@ splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0
   - {conditionName: Test by counterparty organization, percent: 3.4}
   - {conditionName: Test by counterparty type, percent: 3.5}
   - {conditionName: Test by counterparty kyc, percent: 3.6}
-  - {conditionName: Test Split Range, percent: 0.8}
+  - {conditionName: Test Split Range, percent: 0.8} 
   - {conditionName: Test Split Range, percent: 0.7, startAmount: 100 }
   - {conditionName: Test Split Range, percent: 0.6, startAmountDaily: 200}
   - {conditionName: Test Split Range, percent: 0.5, startCountDaily: 2}
@@ -169,10 +196,12 @@ splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0
   - {conditionName: Test Split Range, startAmountCurrency: BGN, splitName: pos}
   - {conditionName: Test Split Analytic, percent: 0.7, startAmount: 100}
   - {conditionName: Test Split Analytic, splitName: pos}
+  - {conditionName: Rule Test Limits, startAmountCurrency: BGN}
+  - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 10}
+  - {conditionName: Rule Test More Assignments, splitName: base, percent: 100}
+  - {conditionName: Rule Test Split Analytic, splitName: testFee, percent: 5}
+  - {conditionName: Rule Test Split Analytic, splitName: base, percent: 100}
 splitAssignment: # defaults splitName: fee, percent: 100, description: {splitName}
-  - {conditionName: Test by period}
-  - {conditionName: Test by start date}
-  - {conditionName: Test by end date}
   - {conditionName: Test by source account}
   - {conditionName: Test by destination account}
   - {conditionName: Test by operation tag}
@@ -200,7 +229,29 @@ splitAssignment: # defaults splitName: fee, percent: 100, description: {splitNam
   - {conditionName: Test Split Range, splitName: pos}
   - {conditionName: Test Split Analytic, minValue: 6.66, percent: 10.2, description: test}
   - {conditionName: Test Split Analytic, splitName: pos}
+  - {conditionName: Rule Test Limits, percent: 100}
+  - {conditionName: Rule Test More Assignments, splitName: base, percent: 100, description: descr}
+  - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 20, debit: '${source.account.number}', credit: BGN0000300028, description: testDescription}
+  - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 80, debit: '${source.account.number}', credit: BGN0000300029}
+  - {conditionName: Rule Test Split Analytic, splitName: testFee, percent: 100, description: descr}
+  - {conditionName: Rule Test Split Analytic, splitName: base, percent: 100, description: new}
+  - {conditionName: Test by period, splitName: testFee, percent: 100, description: descr}
+  - {conditionName: Test by period, splitName: base, percent: 100, description: new}
+  - {conditionName: Test by start date, splitName: testFee, percent: 100, description: descr}
+  - {conditionName: Test by start date, splitName: base, percent: 100, description: new}
+  - {conditionName: Test by end date, splitName: testFee, percent: 100, description: descr}
+  - {conditionName: Test by end date, splitName: base, percent: 100, description: new}
 splitAnalytic:
   - {conditionName: Test Split Range, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
+  - {conditionName: Rule Test Split Analytic, splitName: testFee, splitAssignmentDescription: descr, name: note, value: 'Destination: ${destination.owner.id}'}
+  - {conditionName: Rule Test Split Analytic, splitName: base, splitAssignmentDescription: new, name: note, value: '${destination.country}'}
+  - {conditionName: Test by period, splitName: testFee, splitAssignmentDescription: descr, name: note, value: 'Destination: ${destination.region}' }
+  - {conditionName: Test by period, splitName: base, splitAssignmentDescription: new, name: note, value: 'Destination: ${destination.account.id}'}
+  - {conditionName: Test by start date, splitName: testFee, splitAssignmentDescription: descr, name: note, value: 'Operation: ${operation.id}'}
+  - {conditionName: Test by start date, splitName: base, splitAssignmentDescription: new, name: note, value: 'Operation: ${operation.currency}'}
+  - {conditionName: Test by end date, splitName: testFee, splitAssignmentDescription: descr, name: note, value: 'Source: ${source.country}'}
+  - {conditionName: Test by end date, splitName: base, splitAssignmentDescription: new, name: note, value: 'Source: ${source.region}'}
+  - {conditionName: Rule Test More Assignments, splitName: testFee, splitAssignmentDescription: testDescription,  name: note, value: 'Owner: ${source.owner.id}'}
+  - {conditionName: Rule Test More Assignments, splitName: base, splitAssignmentDescription: descr,  name: note, value: 'Source: ${source.account.id}'}
   - {conditionName: Test Split Analytic, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
   - {conditionName: Test Split Analytic, splitName: pos, splitAssignmentDescription: test, name: note, value: 'PosTxn#: ${transfer.transferId}'}

@@ -2,7 +2,8 @@
 module.exports = function test() {
     return {
         decision: function(test, bus, run, ports, {
-            ruleDecisionSnapshot
+            ruleDecisionSnapshot,
+            userUtils: {pageSize}
         }) {
             return run(test, bus, [
                 'Generate admin user',
@@ -57,15 +58,15 @@ module.exports = function test() {
                     method: 'integration.vChannel.fetch',
                     params: {
                     },
-                    result: function(result, assert, {method, validation}) {
+                    result: function(result, assert) {
                         assert.ok(result.length > 0, 'return channels');
-                        this.countryId = result.find(
+                        this.countryId = result[0].find(
                             (country) => country.countryId !== null
                         ).channelId;
-                        this.regionId = result.find(
+                        this.regionId = result[0].find(
                             (region) => region.regionId !== null
                         ).channelId;
-                        this.cityId = result.find(
+                        this.cityId = result[0].find(
                             (city) => city.cityId !== null
                         ).channelId;
                     }
@@ -118,7 +119,7 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Holder city', sourceAccount: 'source-city'}),
                 ruleDecisionSnapshot({name: 'Holder city negative'}, ({cityName}) => ({sourceAccount: cityName.toString()})),
                 ruleDecisionSnapshot({name: 'Holder type', operation: 'Rule Withdraw'}),
-                // ruleDecisionSnapshot({name: 'Holder kyc', holderKyc: 'Level 2 - Individual - Bulgaria', operation: 'Rule Withdraw'}),
+                ruleDecisionSnapshot({name: 'Holder kyc', operation: 'Rule Cash In'}),
                 ruleDecisionSnapshot({name: 'Holder organization', sourceAccount: 'source-organization'}),
                 ruleDecisionSnapshot({name: 'Holder organization negative', sourceAccount: 'destination-organization'}),
                 ruleDecisionSnapshot({name: 'Holder organization tag', sourceAccount: 'source-organization-tag'}),
@@ -131,12 +132,55 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Counterparty region negative'}, ({regionName}) => ({destinationAccount: regionName.toString()})),
                 ruleDecisionSnapshot({name: 'Counterparty city', destinationAccount: 'destination-city'}),
                 ruleDecisionSnapshot({name: 'Counterparty city negative'}, ({cityName}) => ({destinationAccount: cityName.toString()})),
-                // ruleDecisionSnapshot({name: 'Counterparty type', counterpartyCustomerType: 'corporate'}),
-                // ruleDecisionSnapshot({name: 'Counterparty kyc', counterpartyKyc: 'Level 0 - Individual - Bulgaria', operation: 'Rule Withdraw'}),
+                ruleDecisionSnapshot({name: 'Counterparty type', operation: 'Rule Transfer OTP'}),
+                ruleDecisionSnapshot({name: 'Counterparty kyc', operation: 'Rule Topup'}),
                 ruleDecisionSnapshot({name: 'Counterparty organization', destinationAccount: 'destination-organization'}),
                 ruleDecisionSnapshot({name: 'Counterparty organization negative', destinationAccount: 'source-organization'}),
                 ruleDecisionSnapshot({name: 'Counterparty organization tag', destinationAccount: 'destination-organization-tag'}),
-                ruleDecisionSnapshot({name: 'Counterparty organization tag negative', destinationAccount: 'source-organization-tag'})
+                ruleDecisionSnapshot({name: 'Counterparty organization tag negative', destinationAccount: 'source-organization-tag'}),
+                ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount and bgn, must match', operation: 'Rule Balance Enquiry', amount: '999', currency: 'BGN'}),
+                ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount 10 and bgn, must match', operation: 'Rule Balance Enquiry', amount: '10', currency: 'BGN'}),
+                ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount with default currency, must not match', operation: 'Rule Balance Enquiry', amount: '999'}),
+                ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount with overridden currency, must not match', operation: 'Rule Balance Enquiry', amount: '999', currency: 'EUR'}),
+                ruleDecisionSnapshot({name: 'Test limits with only operation, must not match', operation: 'Rule Balance Enquiry'}),
+                ruleDecisionSnapshot({name: 'Test limits with only operation and BGN currency, must match', operation: 'Rule Balance Enquiry', currency: 'BGN'}),
+                ruleDecisionSnapshot({name: 'Test limits with only operation and EUR currency, must not match', operation: 'Rule Balance Enquiry', currency: 'EUR'}),
+                ruleDecisionSnapshot({name: 'Test limits when amount is below min but for another currency, must not match', operation: 'Rule Balance Enquiry', amount: '8'}),
+                ruleDecisionSnapshot({name: 'Test limits when amount is above max but for another currency, must not match', operation: 'Rule Balance Enquiry', amount: '1001'}),
+                ruleDecisionSnapshot({name: 'Test rule for assignments, must match', operation: 'Rule Wallet to Wallet'}),
+                ruleDecisionSnapshot({name: 'Test rule for assignments, must not match', operation: 'Rule Wallet to Wallet', currency: 'BGN'}),
+                ruleDecisionSnapshot({name: 'Test rule for split analytics', operation: 'Rule Billpayment'}),
+                ruleDecisionSnapshot({name: 'Test rule for split analytics, must not match', operation: 'Rule Billpayment', currency: 'EUR'}),
+                {
+                    name: 'Test rule for limits below min amount',
+                    method: 'rule.decision.lookup',
+                    params: {
+                        operation: 'Rule Balance Enquiry',
+                        amount: '8',
+                        currency: 'BGN',
+                        sourceAccount: 'current',
+                        operationDate: '2022-02-10T00:00:00Z',
+                        destinationAccount: 'current'
+                    },
+                    error: function(error, assert) {
+                        assert.equal(error.type, 'rule.exceedMinLimitAmount', 'Transaction amount is below minimum');
+                    }
+                },
+                {
+                    name: 'Test rule for limits above max amount',
+                    method: 'rule.decision.lookup',
+                    params: {
+                        operation: 'Rule Balance Enquiry',
+                        amount: '1001',
+                        currency: 'BGN',
+                        sourceAccount: 'current',
+                        operationDate: '2022-02-10T00:00:00Z',
+                        destinationAccount: 'current'
+                    },
+                    error: function(error, assert) {
+                        assert.equal(error.type, 'rule.exceedMaxLimitAmount', 'Transaction amount is above maximum');
+                    }
+                }
             ]);
         }
     };

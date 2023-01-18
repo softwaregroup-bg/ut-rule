@@ -5,6 +5,12 @@ list:
   - {itemType: accountProduct, itemCode: Rule Savings, itemName: Rule Savings}
   - {itemType: operation, itemCode: Rule Deposit, itemName: Rule Deposit}
   - {itemType: operation, itemCode: Rule Withdraw, itemName: Rule Withdraw}
+  - {itemType: operation, itemCode: Rule Cash In, itemName: Rule Cash In}
+  - {itemType: operation, itemCode: Rule Balance Enquiry, itemName: Rule Balance Enquiry}
+  - {itemType: operation, itemCode: Rule Wallet to Wallet, itemName: Rule Wallet to Wallet}
+  - {itemType: operation, itemCode: Rule Billpayment, itemName: Rule Billpayment}
+  - {itemType: operation, itemCode: Rule Transfer OTP, itemName: Rule Transfer OTP}
+  - {itemType: operation, itemCode: Rule Topup, itemName: Rule Topup}
   - {itemType: operation, itemCode: Rule Transfer, itemName: Rule Transfer}
   - {itemType: region, itemCode: Burgas, itemName: Burgas}
   - {itemType: region, itemCode: Dobrich, itemName: Dobrich}

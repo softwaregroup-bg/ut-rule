@@ -146,22 +146,22 @@ splitName: # defaults name: fee, tag: |fee|acquirer|
   - {conditionName: Test Split Analytic, name: pos, tag: "|pos|"}
   - {conditionName: Rule Test Limits}
   - {conditionName: Rule Test More Assignments, name: testFee}
-  - {conditionName: Rule Test More Assignments, name: base}
+  - {conditionName: Rule Test More Assignments, name: base, tag: "|issuer|"}
   - {conditionName: Rule Test Split Analytic, name: testFee}
-  - {conditionName: Rule Test Split Analytic, name: base}
+  - {conditionName: Rule Test Split Analytic, name: base, tag: "|issuer|"}
   - {conditionName: Test by period, name: testFee}
-  - {conditionName: Test by period, name: base}
+  - {conditionName: Test by period, name: base, tag: "|issuer|"}
   - {conditionName: Test by start date, name: testFee}
-  - {conditionName: Test by start date, name: base}
+  - {conditionName: Test by start date, name: base, tag: "|issuer|"}
   - {conditionName: Test by end date, name: testFee}
-  - {conditionName: Test by end date, name: base}
+  - {conditionName: Test by end date, name: base, tag: "|issuer|"}
 splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0, startCount*: 0, isSourceAmount: 0
   - {conditionName: Test by period, splitName: testFee, percent: 1.1}
-  - {conditionName: Test by period, splitName: base, percent: 100}
+  - {conditionName: Test by period, splitName: base, percent: 100, tag: "|issuer|"}
   - {conditionName: Test by start date, splitName: testFee, percent: 5}
-  - {conditionName: Test by start date, splitName: base, percent: 100}
+  - {conditionName: Test by start date, splitName: base, percent: 100, tag: "|issuer|"}
   - {conditionName: Test by end date, splitName: testFee, percent: 1.3}
-  - {conditionName: Test by end date, splitName: base, percent: 100}
+  - {conditionName: Test by end date, splitName: base, percent: 100, tag: "|issuer|"}
   - {conditionName: Test by source account, percent: 1.4}
   - {conditionName: Test by destination account, percent: 1.5}
   - {conditionName: Test by operation tag, percent: 1.6}
@@ -198,9 +198,9 @@ splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0
   - {conditionName: Test Split Analytic, splitName: pos}
   - {conditionName: Rule Test Limits, startAmountCurrency: BGN}
   - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 10}
-  - {conditionName: Rule Test More Assignments, splitName: base, percent: 100}
+  - {conditionName: Rule Test More Assignments, splitName: base, percent: 100, tag: "|issuer|"}
   - {conditionName: Rule Test Split Analytic, splitName: testFee, percent: 5}
-  - {conditionName: Rule Test Split Analytic, splitName: base, percent: 100}
+  - {conditionName: Rule Test Split Analytic, splitName: base, percent: 100, tag: "|issuer|"}
 splitAssignment: # defaults splitName: fee, percent: 100, description: {splitName}
   - {conditionName: Test by source account}
   - {conditionName: Test by destination account}
@@ -230,17 +230,17 @@ splitAssignment: # defaults splitName: fee, percent: 100, description: {splitNam
   - {conditionName: Test Split Analytic, minValue: 6.66, percent: 10.2, description: test}
   - {conditionName: Test Split Analytic, splitName: pos}
   - {conditionName: Rule Test Limits, percent: 100}
-  - {conditionName: Rule Test More Assignments, splitName: base, percent: 100, description: descr}
+  - {conditionName: Rule Test More Assignments, splitName: base, percent: 100, description: descr, tag: "|issuer|"}
   - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 20, debit: '${source.account.number}', credit: BGN0000300028, description: testDescription}
   - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 80, debit: '${source.account.number}', credit: BGN0000300029}
   - {conditionName: Rule Test Split Analytic, splitName: testFee, percent: 100, description: descr}
   - {conditionName: Rule Test Split Analytic, splitName: base, percent: 100, description: new}
   - {conditionName: Test by period, splitName: testFee, percent: 100, description: descr}
-  - {conditionName: Test by period, splitName: base, percent: 100, description: new}
+  - {conditionName: Test by period, splitName: base, percent: 100, description: new, tag: "|issuer|"}
   - {conditionName: Test by start date, splitName: testFee, percent: 100, description: descr}
-  - {conditionName: Test by start date, splitName: base, percent: 100, description: new}
+  - {conditionName: Test by start date, splitName: base, percent: 100, description: new, tag: "|issuer|"}
   - {conditionName: Test by end date, splitName: testFee, percent: 100, description: descr}
-  - {conditionName: Test by end date, splitName: base, percent: 100, description: new}
+  - {conditionName: Test by end date, splitName: base, percent: 100, description: new, tag: "|issuer|"}
 splitAnalytic:
   - {conditionName: Test Split Range, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
   - {conditionName: Rule Test Split Analytic, splitName: testFee, splitAssignmentDescription: descr, name: note, value: 'Destination: ${destination.owner.id}'}

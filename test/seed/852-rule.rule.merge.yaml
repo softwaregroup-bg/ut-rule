@@ -87,6 +87,10 @@ condition:
     name: Rule Test Limits
     operationStartDate: '2022-01-01T00:00:00Z'
     operation: Rule Balance Enquiry
+  - priority: 90
+    name: Rule Test Limits Two
+    operationStartDate: '2022-01-01T00:00:00Z'
+    operation: Rule Balance Enquiry
   - priority: 99
     name: Rule Test More Assignments
     operationStartDate: '2022-01-01T00:00:00Z'
@@ -105,6 +109,10 @@ limit:
   - {
       conditionName: Rule Test Limits, currency: BGN,
       minAmount: 10, maxAmount: 1000,
+      maxAmountDaily: 2000, maxCountDaily: 3}
+  - {
+      conditionName: Rule Test Limits Two, currency: BGN,
+      minAmount: 100, maxAmount: 1000,
       maxAmountDaily: 2000, maxCountDaily: 3}
   - {
       conditionName: Test Split Range, currency: EUR,
@@ -145,6 +153,7 @@ splitName: # defaults name: fee, tag: |fee|acquirer|
   - {conditionName: Test Split Analytic}
   - {conditionName: Test Split Analytic, name: pos, tag: "|pos|"}
   - {conditionName: Rule Test Limits}
+  - {conditionName: Rule Test Limits Two}
   - {conditionName: Rule Test More Assignments, name: testFee}
   - {conditionName: Rule Test More Assignments, name: base, tag: "|issuer|"}
   - {conditionName: Rule Test Split Analytic, name: testFee}
@@ -197,6 +206,7 @@ splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0
   - {conditionName: Test Split Analytic, percent: 0.7, startAmount: 100}
   - {conditionName: Test Split Analytic, splitName: pos}
   - {conditionName: Rule Test Limits, startAmountCurrency: BGN}
+  - {conditionName: Rule Test Limits Two, startAmountCurrency: BGN}
   - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 10}
   - {conditionName: Rule Test More Assignments, splitName: base, percent: 100, tag: "|issuer|"}
   - {conditionName: Rule Test Split Analytic, splitName: testFee, percent: 5}
@@ -230,6 +240,7 @@ splitAssignment: # defaults splitName: fee, percent: 100, description: {splitNam
   - {conditionName: Test Split Analytic, minValue: 6.66, percent: 10.2, description: test}
   - {conditionName: Test Split Analytic, splitName: pos}
   - {conditionName: Rule Test Limits, percent: 100}
+  - {conditionName: Rule Test Limits Two, percent: 100}
   - {conditionName: Rule Test More Assignments, splitName: base, percent: 100, description: descr, tag: "|issuer|"}
   - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 20, debit: '${source.account.number}', credit: BGN0000300028, description: testDescription}
   - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 80, debit: '${source.account.number}', credit: BGN0000300029}

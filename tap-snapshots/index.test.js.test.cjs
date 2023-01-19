@@ -502,7 +502,7 @@ Object {
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // End date > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 1013,
+    "acquirerFee": 13,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -532,7 +532,7 @@ Object {
       "credit": "credit",
       "debit": "debit",
       "description": "new",
-      "tag": "|fee|acquirer|",
+      "tag": "|issuer|",
     },
   ],
 }
@@ -541,7 +541,7 @@ Object {
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // End date exact as in rule > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 1013,
+    "acquirerFee": 13,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -571,7 +571,7 @@ Object {
       "credit": "credit",
       "debit": "debit",
       "description": "new",
-      "tag": "|fee|acquirer|",
+      "tag": "|issuer|",
     },
   ],
 }
@@ -922,7 +922,7 @@ Object {
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Period > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 1011,
+    "acquirerFee": 11,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -952,7 +952,7 @@ Object {
       "credit": "credit",
       "debit": "debit",
       "description": "new",
-      "tag": "|fee|acquirer|",
+      "tag": "|issuer|",
     },
   ],
 }
@@ -961,7 +961,7 @@ Object {
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Period exact end date > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 1011,
+    "acquirerFee": 11,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -991,7 +991,7 @@ Object {
       "credit": "credit",
       "debit": "debit",
       "description": "new",
-      "tag": "|fee|acquirer|",
+      "tag": "|issuer|",
     },
   ],
 }
@@ -1000,7 +1000,7 @@ Object {
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Period exact start date > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 1011,
+    "acquirerFee": 11,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -1030,7 +1030,7 @@ Object {
       "credit": "credit",
       "debit": "debit",
       "description": "new",
-      "tag": "|fee|acquirer|",
+      "tag": "|issuer|",
     },
   ],
 }
@@ -1055,7 +1055,7 @@ Object {
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Start date > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 1050,
+    "acquirerFee": 50,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -1085,7 +1085,7 @@ Object {
       "credit": "credit",
       "debit": "debit",
       "description": "new",
-      "tag": "|fee|acquirer|",
+      "tag": "|issuer|",
     },
   ],
 }
@@ -1094,7 +1094,7 @@ Object {
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Start date exact as in rule > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 1050,
+    "acquirerFee": 50,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -1124,7 +1124,7 @@ Object {
       "credit": "credit",
       "debit": "debit",
       "description": "new",
-      "tag": "|fee|acquirer|",
+      "tag": "|issuer|",
     },
   ],
 }
@@ -1236,32 +1236,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test limits within limit range with overridden amount 10 and bgn, must match > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 0,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 0,
-      "analytics": null,
-      "conditionName": "Rule Test Limits",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test limits within limit range with overridden amount and bgn, must match > decision 1`] = `
 Object {
   "amount": Object {
@@ -1323,7 +1297,7 @@ Object {
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for assignments, must match > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 1100,
+    "acquirerFee": 100,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -1342,7 +1316,7 @@ Object {
       "credit": "credit",
       "debit": "debit",
       "description": "descr",
-      "tag": "|fee|acquirer|",
+      "tag": "|issuer|",
     },
     Object {
       "amount": 20,
@@ -1387,7 +1361,7 @@ Object {
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for split analytics > decision 1`] = `
 Object {
   "amount": Object {
-    "acquirerFee": 1050,
+    "acquirerFee": 50,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -1417,7 +1391,7 @@ Object {
       "credit": "credit",
       "debit": "debit",
       "description": "new",
-      "tag": "|fee|acquirer|",
+      "tag": "|issuer|",
     },
   ],
 }

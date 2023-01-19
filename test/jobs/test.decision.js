@@ -139,7 +139,6 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Counterparty organization tag', destinationAccount: 'destination-organization-tag'}),
                 ruleDecisionSnapshot({name: 'Counterparty organization tag negative', destinationAccount: 'source-organization-tag'}),
                 ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount and bgn, must match', operation: 'Rule Balance Enquiry', amount: '999', currency: 'BGN'}),
-                //  ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount 10 and bgn, must match', operation: 'Rule Balance Enquiry', amount: '10', currency: 'BGN'}),
                 ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount with default currency, must not match', operation: 'Rule Balance Enquiry', amount: '999'}),
                 ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount with overridden currency, must not match', operation: 'Rule Balance Enquiry', amount: '999', currency: 'EUR'}),
                 ruleDecisionSnapshot({name: 'Test limits with only operation, must not match', operation: 'Rule Balance Enquiry'}),
@@ -151,13 +150,42 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Test rule for assignments, must not match', operation: 'Rule Wallet to Wallet', currency: 'BGN'}),
                 ruleDecisionSnapshot({name: 'Test rule for split analytics', operation: 'Rule Billpayment'}),
                 ruleDecisionSnapshot({name: 'Test rule for split analytics, must not match', operation: 'Rule Billpayment', currency: 'EUR'}),
-                ruleDecisionSnapshot({name: 'Test limits two limit range with overridden amount and bgn, must match to check which of the two rules', operation: 'Rule Balance Enquiry', amount: '30', currency: 'BGN'}),
                 {
                     name: 'Test rule for limits below min amount',
                     method: 'rule.decision.lookup',
                     params: {
                         operation: 'Rule Balance Enquiry',
                         amount: '8',
+                        currency: 'BGN',
+                        sourceAccount: 'current',
+                        operationDate: '2022-02-10T00:00:00Z',
+                        destinationAccount: 'current'
+                    },
+                    error: function(error, assert) {
+                        assert.equal(error.type, 'rule.exceedMinLimitAmount', 'Transaction amount is below minimum');
+                    }
+                },
+                {
+                    name: 'Test rule with different limits - limit for min amount',
+                    method: 'rule.decision.lookup',
+                    params: {
+                        operation: 'Rule Balance Enquiry',
+                        amount: '30',
+                        currency: 'BGN',
+                        sourceAccount: 'current',
+                        operationDate: '2022-02-10T00:00:00Z',
+                        destinationAccount: 'current'
+                    },
+                    error: function(error, assert) {
+                        assert.equal(error.type, 'rule.exceedMinLimitAmount', 'Transaction amount is below minimum');
+                    }
+                },
+                {
+                    name: 'Test rule for limits - limit for min amount - amount in range for one of the rules but out of the range for another',
+                    method: 'rule.decision.lookup',
+                    params: {
+                        operation: 'Rule Balance Enquiry',
+                        amount: '10',
                         currency: 'BGN',
                         sourceAccount: 'current',
                         operationDate: '2022-02-10T00:00:00Z',

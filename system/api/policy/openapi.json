@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "policy",
-        "version": "10.47.17"
+        "version": "10.47.21"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -823,7 +823,6 @@
                                                     "name": {
                                                         "maxLength": 30,
                                                         "minLength": 2,
-                                                        "nullable": true,
                                                         "type": "string"
                                                     },
                                                     "policyId": {
@@ -834,6 +833,9 @@
                                                         "type": "string"
                                                     }
                                                 },
+                                                "required": [
+                                                    "name"
+                                                ],
                                                 "type": "object"
                                             },
                                             "restrictionDate": {
@@ -2076,7 +2078,6 @@
                                                     "name": {
                                                         "maxLength": 30,
                                                         "minLength": 2,
-                                                        "nullable": true,
                                                         "type": "string"
                                                     },
                                                     "policyId": {
@@ -2086,6 +2087,9 @@
                                                         "type": "string"
                                                     }
                                                 },
+                                                "required": [
+                                                    "name"
+                                                ],
                                                 "type": "object"
                                             },
                                             "restrictionDate": {

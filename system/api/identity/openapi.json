@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "identity",
-        "version": "10.47.17"
+        "version": "10.47.21"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -1058,7 +1058,7 @@
                                                         },
                                                         "maritalStatusId": {
                                                             "nullable": true,
-                                                            "type": "string"
+                                                            "type": "number"
                                                         },
                                                         "middleName": {
                                                             "nullable": true,

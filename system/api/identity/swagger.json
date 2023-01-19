@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "identity",
-        "version": "10.47.17"
+        "version": "10.47.21"
     },
     "paths": {
         "/rpc/identity/changePassword": {
@@ -1059,7 +1059,7 @@
                                                 },
                                                 "maritalStatusId": {
                                                     "type": [
-                                                        "string",
+                                                        "number",
                                                         "null"
                                                     ]
                                                 },

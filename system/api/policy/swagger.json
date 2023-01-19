@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "policy",
-        "version": "10.47.17"
+        "version": "10.47.21"
     },
     "paths": {
         "/rpc/policy/ldapPolicy/get": {
@@ -916,10 +916,7 @@
                                                 "name": {
                                                     "maxLength": 30,
                                                     "minLength": 2,
-                                                    "type": [
-                                                        "string",
-                                                        "null"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 "policyId": {
                                                     "type": [
@@ -931,6 +928,9 @@
                                                     "type": "string"
                                                 }
                                             },
+                                            "required": [
+                                                "name"
+                                            ],
                                             "type": "object"
                                         },
                                         "restrictionDate": {
@@ -2320,10 +2320,7 @@
                                                 "name": {
                                                     "maxLength": 30,
                                                     "minLength": 2,
-                                                    "type": [
-                                                        "string",
-                                                        "null"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 "policyId": {
                                                     "type": "number"
@@ -2332,6 +2329,9 @@
                                                     "type": "string"
                                                 }
                                             },
+                                            "required": [
+                                                "name"
+                                            ],
                                             "type": "object"
                                         },
                                         "restrictionDate": {

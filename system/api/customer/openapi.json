@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.29.5"
+        "version": "10.29.8"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -14828,6 +14828,52 @@
                                                     },
                                                     "type": "array"
                                                 },
+                                                "customer.kycDocuments": {
+                                                    "items": {
+                                                        "additionalProperties": false,
+                                                        "properties": {
+                                                            "alias": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "label": {
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            },
+                                                            "parent": {
+                                                                "nullable": true,
+                                                                "oneOf": [
+                                                                    {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    {
+                                                                        "type": "string"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "value": {
+                                                                "oneOf": [
+                                                                    {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    {
+                                                                        "type": "string"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "label",
+                                                            "value"
+                                                        ],
+                                                        "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                },
                                                 "customer.levels": {
                                                     "items": {
                                                         "additionalProperties": false,
@@ -20094,6 +20140,21 @@
                                                 },
                                                 "type": "array"
                                             },
+                                            "kycConditionDocumentType": {
+                                                "items": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "itemNameId": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "itemNameId"
+                                                    ],
+                                                    "type": "object"
+                                                },
+                                                "type": "array"
+                                            },
                                             "noResultSet": {
                                                 "type": "boolean"
                                             }
@@ -20585,6 +20646,21 @@
                                                         "kycId",
                                                         "conditionId",
                                                         "attributeId"
+                                                    ],
+                                                    "type": "object"
+                                                },
+                                                "type": "array"
+                                            },
+                                            "kycConditionDocumentType": {
+                                                "items": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "itemNameId": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "itemNameId"
                                                     ],
                                                     "type": "object"
                                                 },
@@ -21408,6 +21484,21 @@
                                                         "required": [
                                                             "kycConditionAttributeId",
                                                             "conditionId"
+                                                        ],
+                                                        "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                },
+                                                "kycConditionDocumentType": {
+                                                    "items": {
+                                                        "additionalProperties": false,
+                                                        "properties": {
+                                                            "itemNameId": {
+                                                                "type": "integer"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "itemNameId"
                                                         ],
                                                         "type": "object"
                                                     },

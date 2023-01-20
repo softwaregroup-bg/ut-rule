@@ -161,6 +161,7 @@ BEGIN
         ('cs', 'channel.city', @channelCityId),
         --operation category
         ('oc', 'operation.id', @operationId),
+        ('oc', 'operation.code', @operation),
         --source spatial
         ('ss', 'source.country', @sourceCountryId),
         ('ss', 'source.region', @sourceRegionId),

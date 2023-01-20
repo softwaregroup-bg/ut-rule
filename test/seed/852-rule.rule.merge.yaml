@@ -27,7 +27,7 @@ condition:
   - {name: Test by counterparty kyc, counterpartyKyc: Level 0 - Individual - Bulgaria, operation: 'Rule Topup'}
   - priority: 70
     operationStartDate: '2022-01-01T00:00:00Z'
-    operationEndDate: '2024-01-31T00:00:00Z'
+    operationEndDate: '2122-01-31T00:00:00Z'
     sourceAccountId: source
     destinationAccountId: destination
     name: Test Split Range

@@ -10,7 +10,7 @@ BEGIN
             FROM
                 [rule].conditionActor ca
             JOIN
-                @actors a ON a.[factor] = ca.factor AND ca.actorId = a.value
+                @actors a ON a.[factor] = ca.factor AND CONVERT(NVARCHAR, ca.actorId) = a.value
             WHERE
                 ca.conditionId = @conditionId
         )

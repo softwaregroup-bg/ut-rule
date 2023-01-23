@@ -155,25 +155,26 @@ BEGIN
     INSERT INTO
         @operationProperties(factor, name, value)
     VALUES
-        --channel spatial
-        ('cs', 'channel.country', @channelCountryId),
-        ('cs', 'channel.region', @channelRegionId),
-        ('cs', 'channel.city', @channelCityId),
         --operation category
-        ('oc', 'operation.id', @operationId),
+        ('--', 'operation.code', CONVERT(NVARCHAR, @operation)),
+        ('oc', 'operation.id', CONVERT(NVARCHAR, @operationId)),
+        --channel spatial
+        ('cs', 'channel.country', CONVERT(NVARCHAR, @channelCountryId)),
+        ('cs', 'channel.region', CONVERT(NVARCHAR, @channelRegionId)),
+        ('cs', 'channel.city', CONVERT(NVARCHAR, @channelCityId)),
         --source spatial
-        ('ss', 'source.country', @sourceCountryId),
-        ('ss', 'source.region', @sourceRegionId),
-        ('ss', 'source.city', @sourceCityId),
+        ('ss', 'source.country', CONVERT(NVARCHAR, @sourceCountryId)),
+        ('ss', 'source.region', CONVERT(NVARCHAR, @sourceRegionId)),
+        ('ss', 'source.city', CONVERT(NVARCHAR, @sourceCityId)),
         --source category
-        ('sc', 'source.account.product', @sourceAccountProductId),
-        ('sc', 'source.card.product', @sourceCardProductId),
+        ('sc', 'source.account.product', CONVERT(NVARCHAR, @sourceAccountProductId)),
+        ('sc', 'source.card.product', CONVERT(NVARCHAR, @sourceCardProductId)),
         --destination spatial
-        ('ds', 'destination.country', @destinationCountryId),
-        ('ds', 'destination.region', @destinationRegionId),
-        ('ds', 'destination.city', @destinationCityId),
+        ('ds', 'destination.country', CONVERT(NVARCHAR, @destinationCountryId)),
+        ('ds', 'destination.region', CONVERT(NVARCHAR, @destinationRegionId)),
+        ('ds', 'destination.city', CONVERT(NVARCHAR, @destinationCityId)),
         --destination category
-        ('dc', 'destination.account.product', @destinationAccountProductId)
+        ('dc', 'destination.account.product', CONVERT(NVARCHAR, @destinationAccountProductId))
 
     IF OBJECT_ID(N'customer.customer') IS NOT NULL
     BEGIN

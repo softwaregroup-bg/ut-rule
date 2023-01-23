@@ -38,7 +38,7 @@ module.exports = ({
                     debit: joi.string().required(),
                     credit: joi.string().required(),
                     description: joi.string().allow(null),
-                    analytics: joi.string().allow(null)
+                    analytics: joi.object().allow(null)
                 })
             )
         })

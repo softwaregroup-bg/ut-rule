@@ -156,25 +156,25 @@ BEGIN
         @operationProperties(factor, name, value)
     VALUES
         --operation category
-        ('oc', 'operation.code', CAST(@operation AS NVARCHAR(200))),
-        ('oc', 'operation.id', CAST(@operationId AS NVARCHAR(200))),
+        ('--', 'operation.code', CONVERT(NVARCHAR, @operation)),
+        ('oc', 'operation.id', CONVERT(NVARCHAR, @operationId)),
         --channel spatial
-        ('cs', 'channel.country', CAST(@channelCountryId AS NVARCHAR(200))),
-        ('cs', 'channel.region', CAST(@channelRegionId AS NVARCHAR(200))),
-        ('cs', 'channel.city', CAST(@channelCityId AS NVARCHAR(200))),
+        ('cs', 'channel.country', CONVERT(NVARCHAR, @channelCountryId)),
+        ('cs', 'channel.region', CONVERT(NVARCHAR, @channelRegionId)),
+        ('cs', 'channel.city', CONVERT(NVARCHAR, @channelCityId)),
         --source spatial
-        ('ss', 'source.country', CAST(@sourceCountryId AS NVARCHAR(200))),
-        ('ss', 'source.region', CAST(@sourceRegionId AS NVARCHAR(200))),
-        ('ss', 'source.city', CAST(@sourceCityId AS NVARCHAR(200))),
+        ('ss', 'source.country', CONVERT(NVARCHAR, @sourceCountryId)),
+        ('ss', 'source.region', CONVERT(NVARCHAR, @sourceRegionId)),
+        ('ss', 'source.city', CONVERT(NVARCHAR, @sourceCityId)),
         --source category
-        ('sc', 'source.account.product', CAST(@sourceAccountProductId AS NVARCHAR(200))),
-        ('sc', 'source.card.product', CAST(@sourceCardProductId AS NVARCHAR(200))),
+        ('sc', 'source.account.product', CONVERT(NVARCHAR, @sourceAccountProductId)),
+        ('sc', 'source.card.product', CONVERT(NVARCHAR, @sourceCardProductId)),
         --destination spatial
-        ('ds', 'destination.country', CAST(@destinationCountryId AS NVARCHAR(200))),
-        ('ds', 'destination.region', CAST(@destinationRegionId AS NVARCHAR(200))),
-        ('ds', 'destination.city', CAST(@destinationCityId AS NVARCHAR(200))),
+        ('ds', 'destination.country', CONVERT(NVARCHAR, @destinationCountryId)),
+        ('ds', 'destination.region', CONVERT(NVARCHAR, @destinationRegionId)),
+        ('ds', 'destination.city', CONVERT(NVARCHAR, @destinationCityId)),
         --destination category
-        ('dc', 'destination.account.product', CAST(@destinationAccountProductId AS NVARCHAR(200)))
+        ('dc', 'destination.account.product', CONVERT(NVARCHAR, @destinationAccountProductId))
 
     IF OBJECT_ID(N'customer.customer') IS NOT NULL
     BEGIN

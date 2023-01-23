@@ -10,7 +10,7 @@ BEGIN
             FROM
                 [rule].conditionItem ci
             JOIN
-                @items a ON a.[factor] = ci.factor AND ci.itemNameId = a.value
+                @items a ON a.[factor] = ci.factor AND CONVERT(NVARCHAR, ci.itemNameId) = a.value
             WHERE
                 ci.conditionId = @conditionId
         )

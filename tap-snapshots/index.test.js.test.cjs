@@ -1068,7 +1068,7 @@ Object {
     Object {
       "amount": 50,
       "analytics": Object {
-        "note": "Operation: item:2387",
+        "note": "Operation: item:Rule Withdraw",
       },
       "conditionName": "Test by start date",
       "credit": "credit",
@@ -1107,7 +1107,7 @@ Object {
     Object {
       "amount": 50,
       "analytics": Object {
-        "note": "Operation: item:2387",
+        "note": "Operation: item:Rule Withdraw",
       },
       "conditionName": "Test by start date",
       "credit": "credit",

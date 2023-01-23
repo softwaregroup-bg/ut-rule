@@ -258,7 +258,7 @@ splitAnalytic:
   - {conditionName: Rule Test Split Analytic, splitName: base, splitAssignmentDescription: new, name: note, value: '${destination.country}'}
   - {conditionName: Test by period, splitName: testFee, splitAssignmentDescription: descr, name: note, value: 'Destination: ${destination.region}' }
   - {conditionName: Test by period, splitName: base, splitAssignmentDescription: new, name: note, value: 'Destination: ${destination.account.id}'}
-  - {conditionName: Test by start date, splitName: testFee, splitAssignmentDescription: descr, name: note, value: 'Operation: ${operation.id}'}
+  - {conditionName: Test by start date, splitName: testFee, splitAssignmentDescription: descr, name: note, value: 'Operation: ${operation.code}'}
   - {conditionName: Test by start date, splitName: base, splitAssignmentDescription: new, name: note, value: 'Operation: ${operation.currency}'}
   - {conditionName: Test by end date, splitName: testFee, splitAssignmentDescription: descr, name: note, value: 'Source: ${source.country}'}
   - {conditionName: Test by end date, splitName: base, splitAssignmentDescription: new, name: note, value: 'Source: ${source.region}'}

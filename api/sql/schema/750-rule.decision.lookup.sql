@@ -155,13 +155,13 @@ BEGIN
     INSERT INTO
         @operationProperties(factor, name, value)
     VALUES
+        --operation category
+        ('oc', 'operation.code', @operation),
+        ('oc', 'operation.id', @operationId),
         --channel spatial
         ('cs', 'channel.country', @channelCountryId),
         ('cs', 'channel.region', @channelRegionId),
         ('cs', 'channel.city', @channelCityId),
-        --operation category
-        ('oc', 'operation.id', @operationId),
-        ('oc', 'operation.code', @operation),
         --source spatial
         ('ss', 'source.country', @sourceCountryId),
         ('ss', 'source.region', @sourceRegionId),

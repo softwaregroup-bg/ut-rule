@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "core",
-        "version": "8.30.1"
+        "version": "8.30.3"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -2356,6 +2356,52 @@
                                             "additionalProperties": false,
                                             "properties": {
                                                 "core.country": {
+                                                    "items": {
+                                                        "additionalProperties": false,
+                                                        "properties": {
+                                                            "alias": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "label": {
+                                                                "minLength": 1,
+                                                                "type": "string"
+                                                            },
+                                                            "parent": {
+                                                                "nullable": true,
+                                                                "oneOf": [
+                                                                    {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    {
+                                                                        "type": "string"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "value": {
+                                                                "oneOf": [
+                                                                    {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    {
+                                                                        "type": "string"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "label",
+                                                            "value"
+                                                        ],
+                                                        "type": "object"
+                                                    },
+                                                    "type": "array"
+                                                },
+                                                "core.currency": {
                                                     "items": {
                                                         "additionalProperties": false,
                                                         "properties": {

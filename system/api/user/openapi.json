@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.47.21"
+        "version": "10.48.1"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -7955,8 +7955,26 @@
                                                 "type": "array"
                                             },
                                             "email": {
-                                                "description": "Required only for updating role emails.",
-                                                "items": {},
+                                                "items": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "actorId": {},
+                                                        "emailId": {},
+                                                        "emailTypeId": {
+                                                            "type": "string"
+                                                        },
+                                                        "emailUnapprovedId": {},
+                                                        "isPrimary": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "statusId": {},
+                                                        "value": {
+                                                            "format": "email",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
                                                 "type": "array"
                                             },
                                             "permissions": {
@@ -10174,8 +10192,26 @@
                                                 "type": "array"
                                             },
                                             "email": {
-                                                "description": "Required only for updating role emails.",
-                                                "items": {},
+                                                "items": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "actorId": {},
+                                                        "emailId": {},
+                                                        "emailTypeId": {
+                                                            "type": "string"
+                                                        },
+                                                        "emailUnapprovedId": {},
+                                                        "isPrimary": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "statusId": {},
+                                                        "value": {
+                                                            "format": "email",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
                                                 "type": "array"
                                             },
                                             "grantedRoles": {

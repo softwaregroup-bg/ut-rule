@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.29.8"
+        "version": "10.32.0"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -806,6 +806,10 @@
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
                                                             "city": {
                                                                 "nullable": true,
                                                                 "type": "string"
@@ -1488,6 +1492,10 @@
                                                                 "type": "number"
                                                             },
                                                             "addressZone4": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
+                                                            "addressZone5": {
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
@@ -2192,6 +2200,10 @@
                                                                 "type": "number"
                                                             },
                                                             "addressZone4": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
+                                                            "addressZone5": {
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
@@ -4562,6 +4574,18 @@
                                                                 }
                                                             ]
                                                         },
+                                                        "addressZone5": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "nullable": true,
+                                                                    "type": "number"
+                                                                },
+                                                                {
+                                                                    "nullable": true,
+                                                                    "type": "string"
+                                                                }
+                                                            ]
+                                                        },
                                                         "city": {
                                                             "nullable": true,
                                                             "type": "string"
@@ -5425,6 +5449,10 @@
                                                             "nullable": true,
                                                             "type": "string"
                                                         },
+                                                        "deleteReason": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
                                                         "departmentId": {
                                                             "oneOf": [
                                                                 {
@@ -5658,6 +5686,14 @@
                                                                 "type": "string"
                                                             },
                                                             "addressZone4Id": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5Id": {
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },
@@ -7031,6 +7067,10 @@
                                                             "nullable": true,
                                                             "type": "number"
                                                         },
+                                                        "addressZone5": {
+                                                            "nullable": true,
+                                                            "type": "number"
+                                                        },
                                                         "city": {
                                                             "nullable": true
                                                         },
@@ -7303,6 +7343,10 @@
                                                                 "type": "number"
                                                             },
                                                             "addressZone4": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
+                                                            "addressZone5": {
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
@@ -8243,6 +8287,18 @@
                                                             ]
                                                         },
                                                         "addressZone4": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "nullable": true,
+                                                                    "type": "number"
+                                                                },
+                                                                {
+                                                                    "nullable": true,
+                                                                    "type": "string"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "addressZone5": {
                                                             "oneOf": [
                                                                 {
                                                                     "nullable": true,
@@ -9322,6 +9378,10 @@
                                                             "nullable": true,
                                                             "type": "string"
                                                         },
+                                                        "deleteReason": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
                                                         "departmentId": {
                                                             "oneOf": [
                                                                 {
@@ -9555,6 +9615,14 @@
                                                                 "type": "string"
                                                             },
                                                             "addressZone4Id": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5Id": {
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },
@@ -11414,6 +11482,10 @@
                                                             "nullable": true,
                                                             "type": "string"
                                                         },
+                                                        "deleteReason": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
                                                         "departmentId": {
                                                             "oneOf": [
                                                                 {
@@ -11647,6 +11719,14 @@
                                                                 "type": "string"
                                                             },
                                                             "addressZone4Id": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5Id": {
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },
@@ -13773,6 +13853,10 @@
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
                                                             "city": {
                                                                 "nullable": true,
                                                                 "type": "string"
@@ -15607,6 +15691,10 @@
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
                                                             "city": {
                                                                 "nullable": true,
                                                                 "type": "string"
@@ -16248,6 +16336,10 @@
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
                                                             "city": {
                                                                 "nullable": true,
                                                                 "type": "string"
@@ -16885,6 +16977,10 @@
                                                                 "type": "number"
                                                             },
                                                             "addressZone4": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
+                                                            "addressZone5": {
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
@@ -17542,6 +17638,10 @@
                                                                 "type": "number"
                                                             },
                                                             "addressZone4": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
+                                                            "addressZone5": {
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
@@ -18363,6 +18463,10 @@
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
                                                             "city": {
                                                                 "nullable": true,
                                                                 "type": "string"
@@ -18932,6 +19036,10 @@
                                                         "nullable": true,
                                                         "type": "number"
                                                     },
+                                                    "addressZone5": {
+                                                        "nullable": true,
+                                                        "type": "number"
+                                                    },
                                                     "city": {
                                                         "nullable": true
                                                     },
@@ -19150,6 +19258,10 @@
                                                                 "type": "number"
                                                             },
                                                             "addressZone4": {
+                                                                "nullable": true,
+                                                                "type": "number"
+                                                            },
+                                                            "addressZone5": {
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
@@ -20232,11 +20344,11 @@
                                                             "itemNameId": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
+                                                                        "type": "integer"
                                                                     },
                                                                     {
-                                                                        "type": "integer"
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
                                                                     }
                                                                 ]
                                                             },
@@ -20246,11 +20358,11 @@
                                                             "organizationId": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
+                                                                        "type": "integer"
                                                                     },
                                                                     {
-                                                                        "type": "integer"
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
                                                                     }
                                                                 ]
                                                             },
@@ -20263,7 +20375,9 @@
                                                             "kycId",
                                                             "display",
                                                             "statusId",
-                                                            "customerTypeId"
+                                                            "customerTypeId",
+                                                            "organizationId",
+                                                            "itemNameId"
                                                         ],
                                                         "type": "object"
                                                     },
@@ -20657,10 +20771,14 @@
                                                     "properties": {
                                                         "itemNameId": {
                                                             "type": "integer"
+                                                        },
+                                                        "kycId": {
+                                                            "type": "integer"
                                                         }
                                                     },
                                                     "required": [
-                                                        "itemNameId"
+                                                        "itemNameId",
+                                                        "kycId"
                                                     ],
                                                     "type": "object"
                                                 },
@@ -20743,11 +20861,11 @@
                                                             "itemNameId": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
+                                                                        "type": "integer"
                                                                     },
                                                                     {
-                                                                        "type": "integer"
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
                                                                     }
                                                                 ]
                                                             },
@@ -20757,11 +20875,11 @@
                                                             "organizationId": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
+                                                                        "type": "integer"
                                                                     },
                                                                     {
-                                                                        "type": "integer"
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
                                                                     }
                                                                 ]
                                                             },
@@ -20774,7 +20892,9 @@
                                                             "kycId",
                                                             "display",
                                                             "statusId",
-                                                            "customerTypeId"
+                                                            "customerTypeId",
+                                                            "organizationId",
+                                                            "itemNameId"
                                                         ],
                                                         "type": "object"
                                                     },
@@ -20963,15 +21083,8 @@
                                                                 "type": "string"
                                                             },
                                                             "customerTypeId": {
-                                                                "oneOf": [
-                                                                    {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
-                                                                    },
-                                                                    {
-                                                                        "type": "integer"
-                                                                    }
-                                                                ]
+                                                                "minLength": 1,
+                                                                "type": "string"
                                                             },
                                                             "description": {
                                                                 "nullable": true,
@@ -20986,11 +21099,11 @@
                                                             "organizationId": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
+                                                                        "type": "integer"
                                                                     },
                                                                     {
-                                                                        "type": "integer"
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
                                                                     }
                                                                 ]
                                                             },
@@ -21004,7 +21117,9 @@
                                                         },
                                                         "required": [
                                                             "kycId",
+                                                            "customerTypeId",
                                                             "customerType",
+                                                            "organizationId",
                                                             "statusId"
                                                         ],
                                                         "type": "object"
@@ -21409,11 +21524,11 @@
                                                             "itemNameId": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
+                                                                        "type": "integer"
                                                                     },
                                                                     {
-                                                                        "type": "integer"
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
                                                                     }
                                                                 ]
                                                             },
@@ -21423,11 +21538,11 @@
                                                             "organizationId": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
+                                                                        "type": "integer"
                                                                     },
                                                                     {
-                                                                        "type": "integer"
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
                                                                     }
                                                                 ]
                                                             },
@@ -21457,11 +21572,11 @@
                                                             "attributeId": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
+                                                                        "type": "integer"
                                                                     },
                                                                     {
-                                                                        "type": "integer"
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
                                                                     }
                                                                 ]
                                                             },
@@ -21493,11 +21608,31 @@
                                                     "items": {
                                                         "additionalProperties": false,
                                                         "properties": {
+                                                            "itemCode": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
                                                             "itemNameId": {
+                                                                "oneOf": [
+                                                                    {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    {
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "itemNameTranslation": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "kycConditionDocumentTypeId": {
                                                                 "type": "integer"
                                                             }
                                                         },
                                                         "required": [
+                                                            "kycConditionDocumentTypeId",
                                                             "itemNameId"
                                                         ],
                                                         "type": "object"
@@ -21646,11 +21781,11 @@
                                                             "itemNameId": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
+                                                                        "type": "integer"
                                                                     },
                                                                     {
-                                                                        "type": "integer"
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
                                                                     }
                                                                 ]
                                                             },
@@ -21800,11 +21935,11 @@
                                                             "itemNameId": {
                                                                 "oneOf": [
                                                                     {
-                                                                        "minLength": 1,
-                                                                        "type": "string"
+                                                                        "type": "integer"
                                                                     },
                                                                     {
-                                                                        "type": "integer"
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
                                                                     }
                                                                 ]
                                                             },
@@ -21814,6 +21949,7 @@
                                                             }
                                                         },
                                                         "required": [
+                                                            "itemNameId",
                                                             "itemNameTranslation"
                                                         ],
                                                         "type": "object"
@@ -21976,6 +22112,10 @@
                                                             "addressZone4": {
                                                                 "nullable": true,
                                                                 "type": "string"
+                                                            },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "number"
                                                             },
                                                             "businessSector": {
                                                                 "nullable": true,
@@ -22877,6 +23017,10 @@
                                                             "nullable": true,
                                                             "type": "number"
                                                         },
+                                                        "addressZone5": {
+                                                            "nullable": true,
+                                                            "type": "number"
+                                                        },
                                                         "city": {
                                                             "nullable": true,
                                                             "type": "string"
@@ -23251,6 +23395,14 @@
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5Id": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
                                                             "city": {
                                                                 "nullable": true,
                                                                 "type": "string"
@@ -23352,6 +23504,14 @@
                                                                 "type": "string"
                                                             },
                                                             "addressZone4Id": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5Id": {
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },
@@ -24408,6 +24568,14 @@
                                                             "type": "string"
                                                         },
                                                         "addressZone4Id": {
+                                                            "nullable": true,
+                                                            "type": "integer"
+                                                        },
+                                                        "addressZone5": {
+                                                            "nullable": true,
+                                                            "type": "number"
+                                                        },
+                                                        "addressZone5Id": {
                                                             "nullable": true,
                                                             "type": "integer"
                                                         },
@@ -25637,6 +25805,14 @@
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5Id": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
                                                             "city": {
                                                                 "nullable": true,
                                                                 "type": "string"
@@ -25738,6 +25914,14 @@
                                                                 "type": "string"
                                                             },
                                                             "addressZone4Id": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "addressZone5Id": {
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },

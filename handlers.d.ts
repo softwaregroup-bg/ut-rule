@@ -99,7 +99,7 @@ declare namespace rule_decision_lookup {
     };
     split?: ({
       amount: number;
-      analytics?: string | null;
+      analytics?: object | null;
       conditionId: number;
       conditionName: string;
       credit: string;

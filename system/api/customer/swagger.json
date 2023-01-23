@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.29.8"
+        "version": "10.32.0"
     },
     "paths": {
         "/rpc/customer/account/activity": {
@@ -762,6 +762,12 @@
                                                         ]
                                                     },
                                                     "addressZone4": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
                                                         "type": [
                                                             "number",
                                                             "null"
@@ -1539,6 +1545,12 @@
                                                         ]
                                                     },
                                                     "addressZone4": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
                                                         "type": [
                                                             "number",
                                                             "null"
@@ -2335,6 +2347,12 @@
                                                         ]
                                                     },
                                                     "addressZone4": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
                                                         "type": [
                                                             "number",
                                                             "null"
@@ -4636,6 +4654,12 @@
                                                             "null"
                                                         ]
                                                     },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "city": {
                                                         "type": [
                                                             "string",
@@ -5412,6 +5436,12 @@
                                                         "null"
                                                     ]
                                                 },
+                                                "deleteReason": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "departmentId": {
                                                     "type": [
                                                         "number",
@@ -5701,6 +5731,18 @@
                                                         ]
                                                     },
                                                     "addressZone4Id": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5Id": {
                                                         "type": [
                                                             "string",
                                                             "null"
@@ -7160,6 +7202,12 @@
                                                             "null"
                                                         ]
                                                     },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "city": {},
                                                     "lat": {},
                                                     "lng": {},
@@ -7446,6 +7494,12 @@
                                                         ]
                                                     },
                                                     "addressZone4": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
                                                         "type": [
                                                             "number",
                                                             "null"
@@ -8394,6 +8448,12 @@
                                                         ]
                                                     },
                                                     "addressZone4": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
                                                         "type": [
                                                             "number",
                                                             "null"
@@ -9437,6 +9497,12 @@
                                                         "null"
                                                     ]
                                                 },
+                                                "deleteReason": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "departmentId": {
                                                     "type": [
                                                         "number",
@@ -9726,6 +9792,18 @@
                                                         ]
                                                     },
                                                     "addressZone4Id": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5Id": {
                                                         "type": [
                                                             "string",
                                                             "null"
@@ -11725,6 +11803,12 @@
                                                         "null"
                                                     ]
                                                 },
+                                                "deleteReason": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "departmentId": {
                                                     "type": [
                                                         "number",
@@ -12014,6 +12098,18 @@
                                                         ]
                                                     },
                                                     "addressZone4Id": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5Id": {
                                                         "type": [
                                                             "string",
                                                             "null"
@@ -14196,6 +14292,12 @@
                                                             "null"
                                                         ]
                                                     },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "city": {
                                                         "type": [
                                                             "string",
@@ -15920,6 +16022,12 @@
                                                             "null"
                                                         ]
                                                     },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "city": {
                                                         "type": [
                                                             "string",
@@ -16644,6 +16752,12 @@
                                                         ]
                                                     },
                                                     "addressZone4": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
                                                         "type": [
                                                             "number",
                                                             "null"
@@ -17374,6 +17488,12 @@
                                                         ]
                                                     },
                                                     "addressZone4": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
                                                         "type": [
                                                             "number",
                                                             "null"
@@ -18113,6 +18233,12 @@
                                                         ]
                                                     },
                                                     "addressZone4": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
                                                         "type": [
                                                             "number",
                                                             "null"
@@ -19018,6 +19144,12 @@
                                                             "null"
                                                         ]
                                                     },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "city": {
                                                         "type": [
                                                             "string",
@@ -19673,6 +19805,12 @@
                                                         "null"
                                                     ]
                                                 },
+                                                "addressZone5": {
+                                                    "type": [
+                                                        "number",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "city": {},
                                                 "lat": {},
                                                 "lng": {},
@@ -19897,6 +20035,12 @@
                                                         ]
                                                     },
                                                     "addressZone4": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
                                                         "type": [
                                                             "number",
                                                             "null"
@@ -21040,15 +21184,13 @@
                                                         "type": "string"
                                                     },
                                                     "itemNameId": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": "integer"
                                                     },
                                                     "kycId": {
                                                         "type": "integer"
                                                     },
                                                     "organizationId": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": "integer"
                                                     },
                                                     "statusId": {
                                                         "minLength": 1,
@@ -21059,7 +21201,9 @@
                                                     "kycId",
                                                     "display",
                                                     "statusId",
-                                                    "customerTypeId"
+                                                    "customerTypeId",
+                                                    "organizationId",
+                                                    "itemNameId"
                                                 ],
                                                 "type": "object"
                                             },
@@ -21426,10 +21570,14 @@
                                                 "properties": {
                                                     "itemNameId": {
                                                         "type": "integer"
+                                                    },
+                                                    "kycId": {
+                                                        "type": "integer"
                                                     }
                                                 },
                                                 "required": [
-                                                    "itemNameId"
+                                                    "itemNameId",
+                                                    "kycId"
                                                 ],
                                                 "type": "object"
                                             },
@@ -21515,15 +21663,13 @@
                                                         "type": "string"
                                                     },
                                                     "itemNameId": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": "integer"
                                                     },
                                                     "kycId": {
                                                         "type": "integer"
                                                     },
                                                     "organizationId": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": "integer"
                                                     },
                                                     "statusId": {
                                                         "minLength": 1,
@@ -21534,7 +21680,9 @@
                                                     "kycId",
                                                     "display",
                                                     "statusId",
-                                                    "customerTypeId"
+                                                    "customerTypeId",
+                                                    "organizationId",
+                                                    "itemNameId"
                                                 ],
                                                 "type": "object"
                                             },
@@ -21739,8 +21887,7 @@
                                                         "type": "integer"
                                                     },
                                                     "organizationId": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": "integer"
                                                     },
                                                     "organizationName": {
                                                         "type": "string"
@@ -21752,7 +21899,9 @@
                                                 },
                                                 "required": [
                                                     "kycId",
+                                                    "customerTypeId",
                                                     "customerType",
+                                                    "organizationId",
                                                     "statusId"
                                                 ],
                                                 "type": "object"
@@ -22143,15 +22292,13 @@
                                                         "type": "string"
                                                     },
                                                     "itemNameId": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": "integer"
                                                     },
                                                     "kycId": {
                                                         "type": "integer"
                                                     },
                                                     "organizationId": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": "integer"
                                                     },
                                                     "organizationName": {
                                                         "type": "string"
@@ -22177,8 +22324,7 @@
                                                 "additionalProperties": false,
                                                 "properties": {
                                                     "attributeId": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": "integer"
                                                     },
                                                     "conditionCheck": {
                                                         "type": "string"
@@ -22208,11 +22354,27 @@
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {
+                                                    "itemCode": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "itemNameId": {
+                                                        "type": "integer"
+                                                    },
+                                                    "itemNameTranslation": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "kycConditionDocumentTypeId": {
                                                         "type": "integer"
                                                     }
                                                 },
                                                 "required": [
+                                                    "kycConditionDocumentTypeId",
                                                     "itemNameId"
                                                 ],
                                                 "type": "object"
@@ -22351,8 +22513,7 @@
                                                 "additionalProperties": false,
                                                 "properties": {
                                                     "itemNameId": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": "integer"
                                                     },
                                                     "itemNameTranslation": {
                                                         "minLength": 1,
@@ -22490,8 +22651,7 @@
                                                 "additionalProperties": false,
                                                 "properties": {
                                                     "itemNameId": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": "integer"
                                                     },
                                                     "itemNameTranslation": {
                                                         "minLength": 1,
@@ -22499,6 +22659,7 @@
                                                     }
                                                 },
                                                 "required": [
+                                                    "itemNameId",
                                                     "itemNameTranslation"
                                                 ],
                                                 "type": "object"
@@ -22659,6 +22820,12 @@
                                                     "addressZone4": {
                                                         "type": [
                                                             "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "number",
                                                             "null"
                                                         ]
                                                     },
@@ -23567,6 +23734,12 @@
                                                             "null"
                                                         ]
                                                     },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "city": {
                                                         "type": [
                                                             "string",
@@ -24008,6 +24181,18 @@
                                                             "null"
                                                         ]
                                                     },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5Id": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "city": {
                                                         "type": [
                                                             "string",
@@ -24135,6 +24320,18 @@
                                                         ]
                                                     },
                                                     "addressZone4Id": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5Id": {
                                                         "type": [
                                                             "string",
                                                             "null"
@@ -25294,6 +25491,18 @@
                                                         ]
                                                     },
                                                     "addressZone4Id": {
+                                                        "type": [
+                                                            "integer",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "number",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5Id": {
                                                         "type": [
                                                             "integer",
                                                             "null"
@@ -26666,6 +26875,18 @@
                                                             "null"
                                                         ]
                                                     },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5Id": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "city": {
                                                         "type": [
                                                             "string",
@@ -26793,6 +27014,18 @@
                                                         ]
                                                     },
                                                     "addressZone4Id": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "addressZone5Id": {
                                                         "type": [
                                                             "string",
                                                             "null"

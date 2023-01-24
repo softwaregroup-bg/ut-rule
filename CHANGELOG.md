@@ -1,3 +1,12 @@
+## [12.5.8](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.7...v12.5.8) (2023-01-24)
+
+
+### Bug Fixes
+
+* turn off sqlTest for dev ([060d40e](https://github.com/softwaregroup-bg/ut-rule/commit/060d40e7d9525cf09e6174c8bf5dde6f65d48585))
+
+
+
 ## [12.5.7](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.6...v12.5.7) (2023-01-23)
 
 

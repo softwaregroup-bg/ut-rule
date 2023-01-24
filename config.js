@@ -14,7 +14,6 @@ const utc = {
 module.exports = () => ({
     // environments
     dev: {
-        sqlTest: true,
         sqlStandard: true
     },
     test,

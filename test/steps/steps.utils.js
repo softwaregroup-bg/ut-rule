@@ -27,7 +27,11 @@ module.exports = function steps({version, callSite}) {
             feeTag: '|fee|',
             acquirerFeeTag: '|acquirer|fee|',
             issuerFeeTag: '|issuer|fee|',
-            agentCommissionPendingTag: '|agent|commission|pending|'
+            agentCommissionPendingTag: '|agent|commission|pending|',
+            ruleExceedMinLimitAmount: 'rule.exceedMinLimitAmount',
+            ruleExceedMaxLimitAmount: 'rule.exceedMaxLimitAmount',
+            ruleExceedDailyLimitAmount: 'rule.exceedDailyLimitAmount',
+            ruleExceedDailyLimitCount: 'rule.exceedDailyLimitCount'
         }
     };
 };

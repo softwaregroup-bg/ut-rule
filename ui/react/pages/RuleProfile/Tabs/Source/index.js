@@ -134,6 +134,18 @@ class SourceTab extends Component {
                         label={fields.accountProduct.title || 'Account Product'}
                     />
                 </div>}
+                {fields.accountFeePolicy.visible && <div className={style.inputWrapper}>
+                    <MultiSelectDropdown
+                        boldLabel
+                        disabled={readonly}
+                        keyProp='accountFeePolicy'
+                        label={fields.accountFeePolicy.title || 'Account Fee Policy'}
+                        placeholder='Select Account Fee Policy'
+                        defaultSelected={fieldValues.cities}
+                        data={cities}
+                        onSelect={(field) => { changeInput(field); }}
+                    />
+                </div>}
             </div>
         );
     }

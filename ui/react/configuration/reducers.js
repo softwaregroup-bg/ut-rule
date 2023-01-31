@@ -14,6 +14,7 @@ const defaultUiState = {
             'supervisor',
             'cardProduct',
             'accountProduct',
+            'feePolicy',
             'account'
         ],
         itemCode: [

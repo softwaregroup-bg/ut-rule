@@ -19,6 +19,7 @@ const propTypes = {
     countries: PropTypes.array,
     regions: PropTypes.array,
     cities: PropTypes.array,
+    feePolicies: PropTypes.array,
     organizations: PropTypes.array,
     cardProducts: PropTypes.array,
     accountProducts: PropTypes.array,
@@ -32,7 +33,7 @@ const defaultProps = {
     countries: [],
     regions: [],
     cities: [],
-    cardProducts: [],
+    feePolicies: [],
     organizations: []
 };
 
@@ -52,6 +53,7 @@ class SourceTab extends Component {
             cardProducts,
             accountProducts,
             fieldValues,
+            feePolicies,
             sourceConfig: { fields }
         } = this.props;
         const readonly = !canEdit;
@@ -141,8 +143,8 @@ class SourceTab extends Component {
                         keyProp='accountFeePolicy'
                         label={fields.accountFeePolicy.title || 'Account Fee Policy'}
                         placeholder='Select Account Fee Policy'
-                        defaultSelected={fieldValues.cities}
-                        data={cities}
+                        defaultSelected={fieldValues.feePolicies}
+                        data={feePolicies}
                         onSelect={(field) => { changeInput(field); }}
                     />
                 </div>}
@@ -215,6 +217,7 @@ const mapStateToProps = (state, ownProps) => {
         countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
+        feePolicies: state.ruleProfileReducer.getIn(['nomenclatures', 'feePolicy']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
         cardProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'cardProduct']).toJS(),
         accountProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'accountProduct']).toJS(),

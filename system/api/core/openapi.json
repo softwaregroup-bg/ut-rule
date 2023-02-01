@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "core",
-        "version": "8.30.4"
+        "version": "8.30.5"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -8408,6 +8408,25 @@
                                                     "additionalProperties": true,
                                                     "properties": {},
                                                     "type": "object"
+                                                },
+                                                "currencies": {
+                                                    "items": {
+                                                        "additionalProperties": false,
+                                                        "properties": {
+                                                            "code": {
+                                                                "type": "string"
+                                                            },
+                                                            "currencyId": {
+                                                                "minimum": 1,
+                                                                "type": "number"
+                                                            },
+                                                            "scale": {
+                                                                "type": "number"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "type": "array"
                                                 },
                                                 "translations": {
                                                     "items": {

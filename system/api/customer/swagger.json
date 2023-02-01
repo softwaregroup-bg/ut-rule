@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.32.1"
+        "version": "10.32.17"
     },
     "paths": {
         "/rpc/customer/account/activity": {
@@ -6076,6 +6076,10 @@
                                             },
                                             "type": "array"
                                         },
+                                        "inactiveCards": {
+                                            "items": {},
+                                            "type": "array"
+                                        },
                                         "mno": {
                                             "additionalProperties": false,
                                             "properties": {
@@ -10137,6 +10141,10 @@
                                             },
                                             "type": "array"
                                         },
+                                        "inactiveCards": {
+                                            "items": {},
+                                            "type": "array"
+                                        },
                                         "mno": {
                                             "additionalProperties": false,
                                             "properties": {
@@ -12441,6 +12449,10 @@
                                                 },
                                                 "type": "object"
                                             },
+                                            "type": "array"
+                                        },
+                                        "inactiveCards": {
+                                            "items": {},
                                             "type": "array"
                                         },
                                         "mno": {
@@ -14984,6 +14996,41 @@
                                 "result": {
                                     "additionalProperties": false,
                                     "properties": {
+                                        "customer.addressType": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "alias": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "label": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "parent": {
+                                                        "type": "integer"
+                                                    },
+                                                    "value": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
                                         "customer.customerCategory": {
                                             "items": {
                                                 "additionalProperties": false,
@@ -15124,6 +15171,41 @@
                                             },
                                             "type": "array"
                                         },
+                                        "customer.emailType": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "alias": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "label": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "parent": {
+                                                        "type": "integer"
+                                                    },
+                                                    "value": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
                                         "customer.employerCategory": {
                                             "items": {
                                                 "additionalProperties": false,
@@ -15160,6 +15242,41 @@
                                             "type": "array"
                                         },
                                         "customer.employment": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "alias": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "label": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "parent": {
+                                                        "type": "integer"
+                                                    },
+                                                    "value": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "customer.gender": {
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {
@@ -15510,6 +15627,41 @@
                                             "type": "array"
                                         },
                                         "customer.organizationTree": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "alias": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "label": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "parent": {
+                                                        "type": "integer"
+                                                    },
+                                                    "value": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "label",
+                                                    "value"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "customer.phoneType": {
                                             "items": {
                                                 "additionalProperties": false,
                                                 "properties": {
@@ -21049,7 +21201,10 @@
                                                     "type": "integer"
                                                 },
                                                 "organizationId": {
-                                                    "type": "integer"
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ]
                                                 },
                                                 "statusId": {
                                                     "maxLength": 20,
@@ -21060,7 +21215,6 @@
                                                 "display",
                                                 "description",
                                                 "customerTypeId",
-                                                "organizationId",
                                                 "itemNameId"
                                             ],
                                             "type": "object"
@@ -21202,7 +21356,6 @@
                                                     "display",
                                                     "statusId",
                                                     "customerTypeId",
-                                                    "organizationId",
                                                     "itemNameId"
                                                 ],
                                                 "type": "object"
@@ -21681,7 +21834,6 @@
                                                     "display",
                                                     "statusId",
                                                     "customerTypeId",
-                                                    "organizationId",
                                                     "itemNameId"
                                                 ],
                                                 "type": "object"
@@ -21890,7 +22042,10 @@
                                                         "type": "integer"
                                                     },
                                                     "organizationName": {
-                                                        "type": "string"
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
                                                     },
                                                     "statusId": {
                                                         "minLength": 1,
@@ -21901,7 +22056,6 @@
                                                     "kycId",
                                                     "customerTypeId",
                                                     "customerType",
-                                                    "organizationId",
                                                     "statusId"
                                                 ],
                                                 "type": "object"
@@ -22109,16 +22263,17 @@
                                                         ]
                                                     },
                                                     "organizationName": {
-                                                        "minLength": 1,
-                                                        "type": "string"
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
                                                     }
                                                 },
                                                 "required": [
                                                     "kycId",
                                                     "description",
                                                     "display",
-                                                    "customerType",
-                                                    "organizationName"
+                                                    "customerType"
                                                 ],
                                                 "type": "object"
                                             },
@@ -22301,7 +22456,10 @@
                                                         "type": "integer"
                                                     },
                                                     "organizationName": {
-                                                        "type": "string"
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
                                                     },
                                                     "statusId": {
                                                         "minLength": 1,
@@ -22451,8 +22609,7 @@
                                         }
                                     },
                                     "required": [
-                                        "customerType",
-                                        "organizationId"
+                                        "customerType"
                                     ],
                                     "type": "object"
                                 },

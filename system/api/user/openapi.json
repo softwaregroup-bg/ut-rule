@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.48.2"
+        "version": "10.48.9"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -9301,10 +9301,15 @@
                                                 "type": "number"
                                             },
                                             "businessUnits": {
-                                                "items": {},
+                                                "items": {
+                                                    "type": "integer"
+                                                },
                                                 "type": "array"
                                             }
                                         },
+                                        "required": [
+                                            "businessUnits"
+                                        ],
                                         "type": "object"
                                     },
                                     "timeout": {
@@ -10201,8 +10206,18 @@
                                                             "type": "string"
                                                         },
                                                         "emailUnapprovedId": {},
+                                                        "frontEndRecordId": {
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
                                                         "isPrimary": {
                                                             "type": "boolean"
+                                                        },
+                                                        "oldValues": {
+                                                            "additionalProperties": true,
+                                                            "nullable": true,
+                                                            "properties": {},
+                                                            "type": "object"
                                                         },
                                                         "statusId": {},
                                                         "value": {

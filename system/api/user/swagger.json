@@ -2,7 +2,7 @@
     "info": {
         "description": "UT Microservice API",
         "title": "user",
-        "version": "10.48.2"
+        "version": "10.48.9"
     },
     "paths": {
         "/rpc/user/action/grant": {
@@ -8594,10 +8594,15 @@
                                             ]
                                         },
                                         "businessUnits": {
-                                            "items": {},
+                                            "items": {
+                                                "type": "integer"
+                                            },
                                             "type": "array"
                                         }
                                     },
+                                    "required": [
+                                        "businessUnits"
+                                    ],
                                     "type": "object"
                                 },
                                 "timeout": {
@@ -9374,8 +9379,22 @@
                                                         "type": "string"
                                                     },
                                                     "emailUnapprovedId": {},
+                                                    "frontEndRecordId": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
                                                     "isPrimary": {
                                                         "type": "boolean"
+                                                    },
+                                                    "oldValues": {
+                                                        "additionalProperties": true,
+                                                        "properties": {},
+                                                        "type": [
+                                                            "object",
+                                                            "null"
+                                                        ]
                                                     },
                                                     "statusId": {},
                                                     "value": {

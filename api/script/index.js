@@ -83,11 +83,13 @@ function conditionSend({
             .concat(source?.city?.map(itemNameId => ({itemNameId, factor: 'ss', type: 'city'})))
             .concat(source?.cardProduct?.map(itemNameId => ({itemNameId, factor: 'sc', type: 'cardProduct'})))
             .concat(source?.accountProduct?.map(itemNameId => ({itemNameId, factor: 'sc', type: 'accountProduct'})))
+            .concat(source?.accountFeePolicy?.map(itemNameId => ({itemNameId, factor: 'sp', type: 'feePolicy'})))
             .concat(destination?.country?.map(itemNameId => ({itemNameId, factor: 'ds', type: 'country'})))
             .concat(destination?.region?.map(itemNameId => ({itemNameId, factor: 'ds', type: 'region'})))
             .concat(destination?.city?.map(itemNameId => ({itemNameId, factor: 'ds', type: 'city'})))
             .concat(destination?.cardProduct?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'cardProduct'})))
             .concat(destination?.accountProduct?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'accountProduct'})))
+            .concat(destination?.accountFeePolicy?.map(itemNameId => ({itemNameId, factor: 'dp', type: 'feePolicy'})))
             .filter(Boolean)
             .map(setConditionId),
         split: {
@@ -150,7 +152,8 @@ function conditionReceive({
             accountProduct: get(conditionItem, 'sc', 'accountProduct', 'itemNameId'),
             country: get(conditionItem, 'ss', 'country', 'itemNameId'),
             region: get(conditionItem, 'ss', 'region', 'itemNameId'),
-            city: get(conditionItem, 'ss', 'city', 'itemNameId')
+            city: get(conditionItem, 'ss', 'city', 'itemNameId'),
+            accountFeePolicy: get(conditionItem, 'sp', 'feePolicy', 'itemNameId')
         },
         destination: {
             actor: get(conditionActor, 'do', 'organization', 'actorId'),
@@ -161,7 +164,8 @@ function conditionReceive({
             accountProduct: get(conditionItem, 'dc', 'accountProduct', 'itemNameId'),
             country: get(conditionItem, 'ds', 'country', 'itemNameId'),
             region: get(conditionItem, 'ds', 'region', 'itemNameId'),
-            city: get(conditionItem, 'ds', 'city', 'itemNameId')
+            city: get(conditionItem, 'ds', 'city', 'itemNameId'),
+            accountFeePolicy: get(conditionItem, 'dp', 'feePolicy', 'itemNameId')
         }
     };
 }
@@ -201,6 +205,7 @@ function conditionMap({
             source: []
                 .concat(conditionItem.map(describe(row.conditionId, 'sc', 'itemTypeName', 'itemName')))
                 .concat(conditionItem.map(describe(row.conditionId, 'ss', 'itemTypeName', 'itemName')))
+                .concat(conditionItem.map(describe(row.conditionId, 'sp', 'itemTypeName', 'itemName')))
                 .concat(conditionActor.map(describe(row.conditionId, 'so', 'type', 'organizationName')))
                 .concat(conditionProperty.map(describe(row.conditionId, 'sc', 'name', 'value')))
                 .concat(row.sourceAccountId && [['Account', row.sourceAccountId]])
@@ -208,6 +213,7 @@ function conditionMap({
             destination: []
                 .concat(conditionItem.map(describe(row.conditionId, 'dc', 'itemTypeName', 'itemName')))
                 .concat(conditionItem.map(describe(row.conditionId, 'ds', 'itemTypeName', 'itemName')))
+                .concat(conditionItem.map(describe(row.conditionId, 'dp', 'itemTypeName', 'itemName')))
                 .concat(conditionActor.map(describe(row.conditionId, 'do', 'type', 'organizationName')))
                 .concat(conditionProperty.map(describe(row.conditionId, 'dc', 'name', 'value')))
                 .concat(row.destinationAccountId && [['Account', row.destinationAccountId]])

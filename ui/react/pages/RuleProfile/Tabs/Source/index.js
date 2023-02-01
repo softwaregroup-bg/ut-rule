@@ -140,10 +140,10 @@ class SourceTab extends Component {
                     <MultiSelectDropdown
                         boldLabel
                         disabled={readonly}
-                        keyProp='accountFeePolicy'
+                        keyProp='accountFeePolicies'
                         label={fields.accountFeePolicy.title || 'Account Fee Policy'}
                         placeholder='Select Account Fee Policy'
-                        defaultSelected={fieldValues.accountFeePolicy}
+                        defaultSelected={fieldValues.accountFeePolicies}
                         data={feePolicies}
                         onSelect={(field) => { changeInput(field); }}
                     />

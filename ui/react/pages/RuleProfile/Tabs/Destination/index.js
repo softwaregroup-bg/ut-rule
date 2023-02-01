@@ -128,7 +128,7 @@ class DestinationTab extends Component {
                         keyProp='accountFeePolicy'
                         label={fields.accountFeePolicy.title || 'Account Fee Policy'}
                         placeholder='Select Account Fee Policy'
-                        defaultSelected={fieldValues.feePolicies}
+                        defaultSelected={fieldValues.accountFeePolicy}
                         data={feePolicies}
                         onSelect={(field) => { changeInput(field); }}
                     />

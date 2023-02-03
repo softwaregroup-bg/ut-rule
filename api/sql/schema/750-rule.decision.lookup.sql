@@ -12,6 +12,7 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
     @credentials INT = NULL, -- the passed credentials to validate operation success
+    @timeDifference INT = NULL, -- what is the difference (in minutes) with UTC, if it is not passed use server time
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
 BEGIN
@@ -101,14 +102,23 @@ BEGIN
 
     SELECT @operationDate = ISNULL(@operationDate, GETUTCDATE())
 
+     IF @timeDifference IS NULL
+        SET @timeDifference = DATEDIFF(MINUTE, GETDATE(), GETUTCDATE())
+
+    DECLARE @operationDateLocal DATETIME = DATEADD(MINUTE, @timeDifference, @operationDate)
+
+    DECLARE @dailyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(DAY, DATEDIFF(DAY, 0, @operationDateLocal), 0)) -- start of the day
+    DECLARE @weeklyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDateLocal - 1), 0)) --week starts on Mon
+    DECLARE @montlyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDateLocal), 0)) -- start of the month
+
     INSERT INTO
         @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
     SELECT -- totals by transfer type
         t.transferTypeId,
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN 1 ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate - 1), 0) THEN t.transferAmount ELSE 0 END), 0), --week starts on Mon
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate - 1), 0) THEN 1 ELSE 0 END), 0), --week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @dailyFrom THEN t.transferAmount ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @dailyFrom THEN 1 ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @weeklyFrom THEN t.transferAmount ELSE 0 END), 0), 
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @weeklyFrom THEN 1 ELSE 0 END), 0),
         ISNULL(SUM(t.transferAmount), 0),
         ISNULL(COUNT(t.transferAmount), 0)
     FROM
@@ -118,7 +128,7 @@ BEGIN
         t.sourceAccount = @sourceAccount AND
         t.transferCurrency = @currency AND
         t.transferDateTime < @operationDate AND -- look ony at earlier transfers
-        t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate), 0) --look back up to the start of month
+        t.transferDateTime >= @montlyFrom --look back up to the start of month
     GROUP BY
         t.transferTypeId
 

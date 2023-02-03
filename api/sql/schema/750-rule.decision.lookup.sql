@@ -102,7 +102,7 @@ BEGIN
 
     SELECT @operationDate = ISNULL(@operationDate, GETUTCDATE())
 
-     IF @timeDifference IS NULL
+    IF @timeDifference IS NULL
         SET @timeDifference = DATEDIFF(MINUTE, GETDATE(), GETUTCDATE())
 
     DECLARE @operationDateLocal DATETIME = DATEADD(MINUTE, @timeDifference, @operationDate)
@@ -117,7 +117,7 @@ BEGIN
         t.transferTypeId,
         ISNULL(SUM(CASE WHEN t.transferDateTime >= @dailyFrom THEN t.transferAmount ELSE 0 END), 0),
         ISNULL(SUM(CASE WHEN t.transferDateTime >= @dailyFrom THEN 1 ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= @weeklyFrom THEN t.transferAmount ELSE 0 END), 0), 
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @weeklyFrom THEN t.transferAmount ELSE 0 END), 0),
         ISNULL(SUM(CASE WHEN t.transferDateTime >= @weeklyFrom THEN 1 ELSE 0 END), 0),
         ISNULL(SUM(t.transferAmount), 0),
         ISNULL(COUNT(t.transferAmount), 0)

@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "core",
-        "version": "8.30.5"
+        "version": "8.31.0"
     },
     "paths": {
         "/rpc/core/actor/addResult": {

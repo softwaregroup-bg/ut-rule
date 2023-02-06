@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "customer",
-        "version": "10.32.18"
+        "version": "10.32.20"
     },
     "paths": {
         "/rpc/customer/account/activity": {

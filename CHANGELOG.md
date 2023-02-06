@@ -1,3 +1,12 @@
+## [12.5.11](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.10...v12.5.11) (2023-02-06)
+
+
+### Bug Fixes
+
+* make checks to the real start of the day,week, month, AZCELL-1762 ([#257](https://github.com/softwaregroup-bg/ut-rule/issues/257)) ([4f44263](https://github.com/softwaregroup-bg/ut-rule/commit/4f4426330ab4f6350cf9c3ad9e3610394b289910))
+
+
+
 ## [12.5.10](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.9...v12.5.10) (2023-02-02)
 
 

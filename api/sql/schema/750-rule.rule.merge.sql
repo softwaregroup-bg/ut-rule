@@ -1,6 +1,7 @@
 ALTER PROCEDURE [rule].[rule.merge]
     @condition [rule].conditionCustom READONLY,
     @limit [rule].limitCustom READONLY,
+    @rate [rule].rateCustom READONLY,
     @splitName [rule].splitNameCustom READONLY,
     @splitRange [rule].splitRangeCustom READONLY,
     @splitAssignment [rule].splitAssignmentCustom READONLY,
@@ -324,16 +325,44 @@ BEGIN TRY
         FROM @limit
         JOIN @rules ON ruleName = conditionName
 
+        INSERT INTO [rule].rate (
+            conditionId,
+            targetCurrency,
+            startAmount,
+            startAmountCurrency,
+            startAmountDaily,
+            startCountDaily,
+            startAmountWeekly,
+            startCountWeekly,
+            startAmountMonthly,
+            startCountMonthly,
+            rate
+        )
+        SELECT
+            ruleId,
+            targetCurrency,
+            ISNULL(startAmount, 0),
+            ISNULL(startAmountCurrency, 'USD'),
+            ISNULL(startAmountDaily, 0),
+            ISNULL(startCountDaily, 0),
+            ISNULL(startAmountWeekly, 0),
+            ISNULL(startCountWeekly, 0),
+            ISNULL(startAmountMonthly, 0),
+            ISNULL(startCountMonthly, 0),
+            rate
+        FROM @rate
+        JOIN @rules ON ruleName = conditionName
+
         MERGE INTO [rule].splitName AS t
         USING
         (
-            SELECT ruleId, ruleName, ISNULL(s.name, 'fee') name, ISNULL(s.tag, '|fee|acquirer|') tag
+            SELECT ruleId, ruleName, ISNULL(s.name, 'fee') name, ISNULL(s.tag, '|fee|acquirer|') tag, amountType
             FROM @splitName s
             JOIN @rules ON conditionName = ruleName
         ) AS s ON 1 = 0
         WHEN NOT MATCHED BY TARGET THEN
-            INSERT (conditionId, name, tag)
-            VALUES (s.ruleId, s.name, s.tag)
+            INSERT (conditionId, name, tag, amountType)
+            VALUES (s.ruleId, s.name, s.tag, amountType)
         OUTPUT INSERTED.splitNameId, INSERTED.name, s.ruleId, s.ruleName INTO @ruleSplitNames(splitId, splitNm, ruleId, ruleName);
 
         INSERT [rule].splitRange (

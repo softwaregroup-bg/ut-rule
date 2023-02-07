@@ -150,6 +150,8 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Test rule for assignments, must not match', operation: 'Rule Wallet to Wallet', currency: 'BGN'}),
                 ruleDecisionSnapshot({name: 'Test rule for split analytics', operation: 'Rule Billpayment'}),
                 ruleDecisionSnapshot({name: 'Test rule for split analytics, must not match', operation: 'Rule Billpayment', currency: 'EUR'}),
+                ruleDecisionSnapshot({name: 'Settlement', operation: 'Rule Settlement', settlementCurrency: 'EUR', settlementAmount: '990'}),
+                ruleDecisionSnapshot({name: 'Settlement with rate', operation: 'Rule Settlement', settlementCurrency: 'EUR'}),
                 {
                     name: 'Test rule for limits below min amount',
                     method: 'rule.decision.lookup',

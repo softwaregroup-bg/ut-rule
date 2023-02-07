@@ -6,8 +6,11 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceCardProductId BIGINT = NULL, -- product id of the card
     @destinationAccount VARCHAR(100), -- destination account number
     @amount VARCHAR(21), -- operation amount
+    @settlementAmount VARCHAR(21), -- operation amount
+    @accountAmount VARCHAR(21), -- operation amount
     @currency VARCHAR(3), -- operation currency
-    @targetCurrency VARCHAR(3) = NULL, -- currency after exchange
+    @settlementCurrency VARCHAR(3) = NULL, -- settlement currency
+    @accountCurrency VARCHAR(3) = NULL, -- source account currency
     @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
@@ -232,9 +235,12 @@ BEGIN
         @sourceAccountId = @sourceAccountId,
         @destinationAccountId = @destinationAccountId,
         @amountString = @amount,
+        @settlementAmountString = @settlementAmount,
+        @accountAmountString = @accountAmount,
         @totals = @totals,
         @currency = @currency,
-        @targetCurrency = @targetCurrency,
+        @settlementCurrency = @settlementCurrency,
+        @accountCurrency = @accountCurrency,
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
         @destinationAccount = @destinationAccount,

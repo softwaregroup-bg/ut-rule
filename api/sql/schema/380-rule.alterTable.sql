@@ -122,3 +122,8 @@ BEGIN
     ALTER TABLE [rule].[conditionProperty] DROP CONSTRAINT ccRuleConditionProperty_factor
     ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT ccRuleConditionProperty_factor1 CHECK (factor IN ('so', 'do', 'co', 'ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sk', 'st', 'dk', 'dt'))
 END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'amountType' AND OBJECT_ID = OBJECT_ID(N'rule.splitName') )
+BEGIN
+    ALTER TABLE [rule].[splitName] ADD [amountType] SMALLINT NULL
+END

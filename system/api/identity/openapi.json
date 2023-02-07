@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "identity",
-        "version": "10.48.10"
+        "version": "10.49.2"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -702,6 +702,20 @@
                                                         "statusId": {
                                                             "nullable": true,
                                                             "type": "string"
+                                                        },
+                                                        "udf": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "nullable": true,
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "additionalProperties": true,
+                                                                    "nullable": true,
+                                                                    "properties": {},
+                                                                    "type": "object"
+                                                                }
+                                                            ]
                                                         }
                                                     },
                                                     "type": "object"

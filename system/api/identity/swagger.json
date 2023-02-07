@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "identity",
-        "version": "10.48.10"
+        "version": "10.49.2"
     },
     "paths": {
         "/rpc/identity/changePassword": {
@@ -673,6 +673,12 @@
                                                     ]
                                                 },
                                                 "statusId": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "udf": {
                                                     "type": [
                                                         "string",
                                                         "null"

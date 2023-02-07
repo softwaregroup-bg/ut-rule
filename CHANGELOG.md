@@ -1,3 +1,7 @@
+## [12.5.12](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.11...v12.5.12) (2023-02-07)
+
+
+
 ## [12.5.11](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.10...v12.5.11) (2023-02-06)
 
 

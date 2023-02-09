@@ -79,8 +79,19 @@ module.exports = ({joi}) => ({
                             }
                         },
                         name: {},
+                        amountType: {
+                            title: 'Input Amount',
+                            widget: {
+                                type: 'select',
+                                options: [
+                                    {value: null, label: 'Account holder'},
+                                    {value: 1, label: 'Original'},
+                                    {value: 2, label: 'Settlement'}
+                                ]
+                            }
+                        },
                         tag: {
-                            title: '',
+                            title: 'Output Amount',
                             widget: {
                                 type: 'multiSelectPanel',
                                 itemClassName: 'col-2',
@@ -393,8 +404,14 @@ module.exports = ({joi}) => ({
         },
         splitTag: {
             className: 'lg:col-10',
-            label: 'Tags',
-            widgets: ['$.edit.splitName.tag']
+            label: 'Amount Types',
+            classes: {
+                default: {
+                    label: 'md:col-2',
+                    field: 'md:col-10'
+                }
+            },
+            widgets: ['$.edit.splitName.amountType', '$.edit.splitName.tag']
         },
         splitRange: {
             className: 'lg:col-10',

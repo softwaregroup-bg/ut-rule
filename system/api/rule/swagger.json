@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "12.5.11"
+        "version": "12.5.12"
     },
     "paths": {
         "/rpc/rule/condition/add": {
@@ -800,6 +800,13 @@
                                     "additionalProperties": false,
                                     "description": "Method parameters",
                                     "properties": {
+                                        "accountAmount": {
+                                            "maxLength": 21,
+                                            "type": "string"
+                                        },
+                                        "accountCurrency": {
+                                            "type": "string"
+                                        },
                                         "amount": {
                                             "maxLength": 21,
                                             "type": "string"
@@ -824,6 +831,13 @@
                                         },
                                         "operationDate": {
                                             "format": "date-time",
+                                            "type": "string"
+                                        },
+                                        "settlementAmount": {
+                                            "maxLength": 21,
+                                            "type": "string"
+                                        },
+                                        "settlementCurrency": {
                                             "type": "string"
                                         },
                                         "sourceAccount": {
@@ -900,45 +914,69 @@
                                         "amount": {
                                             "additionalProperties": false,
                                             "properties": {
-                                                "acquirerFee": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
-                                                    ]
-                                                },
-                                                "commission": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
-                                                    ]
-                                                },
-                                                "issuerFee": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
-                                                    ]
-                                                },
-                                                "processorFee": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
-                                                    ]
-                                                },
-                                                "rateConditionName": {
+                                                "accountAmount": {
+                                                    "maxLength": 21,
                                                     "type": [
                                                         "string",
                                                         "null"
                                                     ]
                                                 },
-                                                "rateId": {
+                                                "accountRateConditionName": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "accountRateId": {
                                                     "type": [
                                                         "integer",
                                                         "null"
                                                     ]
                                                 },
-                                                "settlementAmount": {
+                                                "acquirerFee": {
+                                                    "maxLength": 21,
                                                     "type": [
-                                                        "number",
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "commission": {
+                                                    "maxLength": 21,
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "issuerFee": {
+                                                    "maxLength": 21,
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "processorFee": {
+                                                    "maxLength": 21,
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "settlementAmount": {
+                                                    "maxLength": 21,
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "settlementRateConditionName": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "settlementRateId": {
+                                                    "type": [
+                                                        "integer",
                                                         "null"
                                                     ]
                                                 },
@@ -961,7 +999,8 @@
                                                 "additionalProperties": false,
                                                 "properties": {
                                                     "amount": {
-                                                        "type": "number"
+                                                        "maxLength": 21,
+                                                        "type": "string"
                                                     },
                                                     "analytics": {
                                                         "additionalProperties": true,
@@ -978,6 +1017,9 @@
                                                         "type": "string"
                                                     },
                                                     "credit": {
+                                                        "type": "string"
+                                                    },
+                                                    "currency": {
                                                         "type": "string"
                                                     },
                                                     "debit": {
@@ -1004,6 +1046,7 @@
                                                     "conditionName",
                                                     "splitNameId",
                                                     "tag",
+                                                    "currency",
                                                     "amount",
                                                     "debit",
                                                     "credit"

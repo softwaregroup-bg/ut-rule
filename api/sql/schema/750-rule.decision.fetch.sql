@@ -97,17 +97,26 @@ BEGIN TRY
     GROUP BY
         c.[priority], c.[name], c.conditionId
 
+    DECLARE @scale TINYINT = ISNULL((SELECT scale
+    FROM core.currency c
+        JOIN core.itemName it ON it.itemNameId = c.itemNameId
+    WHERE itemCode = @currency), 2)
+
     DECLARE @settlementAmount MONEY = TRY_CONVERT(MONEY, @settlementAmountString)
     DECLARE @settlementRateId INT
     DECLARE @settlementRateName NVARCHAR(100)
     SET @settlementCurrency = ISNULL(@settlementCurrency, @currency)
     IF @settlementCurrency = @currency AND @settlementAmount IS NULL SET @settlementAmount = @amount
+    DECLARE @settlementScale TINYINT = ISNULL((SELECT scale
+    FROM core.currency c
+        JOIN core.itemName it ON it.itemNameId = c.itemNameId
+    WHERE itemCode = @settlementCurrency), 2)
     IF @settlementCurrency <> @currency AND @settlementAmount IS NULL
     BEGIN
         SELECT
             @settlementRateId = rateId,
             @settlementRateName = [name],
-            @settlementAmount = @amount * rate
+            @settlementAmount = ROUND(@amount * rate, @settlementScale)
         FROM
             [rule].rateMatch(@matches, @settlementCurrency, @currency, @amount)
     END
@@ -115,22 +124,21 @@ BEGIN TRY
     DECLARE @accountAmount MONEY = TRY_CONVERT(MONEY, @accountAmountString)
     DECLARE @accountRateId INT
     DECLARE @accountRateName NVARCHAR(100)
-    SET @accountCurrency = ISNULL(@accountCurrency, @currency)
-    IF @accountCurrency = @currency AND @accountAmount IS NULL SET @accountAmount = @amount
-    IF @accountCurrency <> @currency AND @accountAmount IS NULL
+    SET @accountCurrency = ISNULL(@accountCurrency, @settlementCurrency)
+    IF @accountCurrency = @settlementCurrency AND @accountAmount IS NULL SET @accountAmount = @settlementAmount
+    DECLARE @accountScale TINYINT = ISNULL((SELECT scale
+    FROM core.currency c
+        JOIN core.itemName it ON it.itemNameId = c.itemNameId
+    WHERE itemCode = @accountCurrency), 2)
+    IF @accountCurrency <> @settlementCurrency AND @accountAmount IS NULL
     BEGIN
         SELECT
             @accountRateId = rateId,
             @accountRateName = [name],
-            @accountAmount = @amount * rate
+            @accountAmount = ROUND(@settlementAmount * rate, @accountScale)
         FROM
-            [rule].rateMatch(@matches, @accountCurrency, @currency, @amount)
+            [rule].rateMatch(@matches, @accountCurrency, @settlementCurrency, @amount)
     END
-
-    DECLARE @scale TINYINT = ISNULL((SELECT scale
-    FROM core.currency c
-        JOIN core.itemName it ON it.itemNameId = c.itemNameId
-    WHERE itemCode = @currency), 2)
 
     SELECT
         @minAmount = NULL,
@@ -260,17 +268,19 @@ BEGIN TRY
         conditionName NVARCHAR(100),
         splitNameId INT,
         currency VARCHAR(3),
+        amountType SMALLINT,
         fee MONEY,
         tag VARCHAR(MAX)
     );
 
     -- calculate the operation fees based on the matched conditions (rules), and select these with highest priority
-    WITH split(conditionId, [name], splitNameId, startAmountCurrency, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
+    WITH split(conditionId, [name], splitNameId, startAmountCurrency, amountType, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
         SELECT
             c.conditionId,
             c.name,
             r.splitNameId,
             r.startAmountCurrency,
+            n.amountType,
             n.tag,
             r.minValue,
             r.maxValue,
@@ -308,9 +318,17 @@ BEGIN TRY
         JOIN
             [rule].splitRange AS r ON r.splitNameId = n.splitNameId
         WHERE
-            CASE n.amountType WHEN 1 THEN @currency WHEN 2 THEN @settlementCurrency ELSE @accountCurrency END = r.startAmountCurrency AND
+            CASE n.amountType
+                WHEN 1 THEN @currency
+                WHEN 2 THEN @settlementCurrency
+                ELSE @accountCurrency
+            END = r.startAmountCurrency AND
             COALESCE(@isSourceAmount, 0) = r.isSourceAmount AND
-            CASE n.amountType WHEN 1 THEN @amount WHEN 2 THEN @settlementAmount ELSE @accountAmount END >= r.startAmount AND
+            CASE n.amountType
+                WHEN 1 THEN @amount
+                WHEN 2 THEN @settlementAmount
+                ELSE @accountAmount
+            END >= r.startAmount AND
             c.amountDaily >= r.startAmountDaily AND
             c.countDaily >= r.startCountDaily AND
             c.amountWeekly >= r.startAmountWeekly AND
@@ -319,17 +337,22 @@ BEGIN TRY
             c.countMonthly >= r.startCountMonthly
     )
     INSERT INTO
-        @fee(conditionId, conditionName, splitNameId, currency, fee, tag)
+        @fee(conditionId, conditionName, splitNameId, currency, amountType, fee, tag)
     SELECT
         s.conditionId,
         s.name,
         s.splitNameId,
         s.startAmountCurrency,
-        CASE
+        s.amountType,
+        ROUND(CASE
             WHEN s.calcFee > s.maxFee THEN s.maxFee
             WHEN s.calcFee < s.minFee THEN s.minFee
             ELSE s.calcFee
-        END fee,
+        END, CASE s.amountType
+            WHEN 1 THEN @scale
+            WHEN 2 THEN @settlementScale
+            ELSE @accountScale
+        END) fee,
         s.tag
     FROM
         split s
@@ -339,16 +362,16 @@ BEGIN TRY
 
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
-        @settlementAmount settlementAmount,
+        CONVERT(VARCHAR(21), @settlementAmount, 2) settlementAmount,
         @settlementRateId settlementRateId,
         @settlementRateName settlementRateConditionName,
-        @accountAmount accountAmount,
+        CONVERT(VARCHAR(21), @accountAmount, 2) accountAmount,
         @accountRateId accountRateId,
         @accountRateName accountRateConditionName,
-        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), @scale), 2) acquirerFee,
-        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), @scale), 2) issuerFee,
-        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|processor|%' AND tag LIKE '%|fee|%'), @scale), 2) processorFee,
-        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), @scale), 2) commission,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType = 1 AND tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), 2) acquirerFee,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType IS NULL AND tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), 2) issuerFee,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType = 1 AND tag LIKE '%|processor|%' AND tag LIKE '%|fee|%'), 2) processorFee,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType IS NULL AND tag LIKE '%|commission|%'), 2) commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
 
@@ -379,11 +402,16 @@ BEGIN TRY
         a.conditionName,
         a.splitNameId,
         a.tag,
+        a.currency,
         CONVERT(VARCHAR, ROUND(CAST(CASE
             WHEN assignment.[percent] * a.fee / 100 > assignment.maxValue THEN maxValue
             WHEN assignment.[percent] * a.fee / 100 < assignment.minValue THEN minValue
             ELSE assignment.[percent] * a.fee / 100
-        END AS MONEY), @scale), 2) amount,
+        END AS MONEY), CASE a.amountType
+            WHEN 1 THEN @scale
+            WHEN 2 THEN @settlementScale
+            ELSE @accountScale
+        END), 2) amount,
         ISNULL(d.accountNumber, assignment.debit) debit,
         ISNULL(c.accountNumber, assignment.credit) credit,
         assignment.description,

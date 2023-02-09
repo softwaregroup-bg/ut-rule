@@ -356,7 +356,7 @@ BEGIN TRY
         MERGE INTO [rule].splitName AS t
         USING
         (
-            SELECT ruleId, ruleName, ISNULL(s.name, 'fee') name, ISNULL(s.tag, '|fee|acquirer|') tag, amountType
+            SELECT ruleId, ruleName, ISNULL(s.name, 'fee') name, ISNULL(s.tag, '|fee|issuer|') tag, amountType
             FROM @splitName s
             JOIN @rules ON conditionName = ruleName
         ) AS s ON 1 = 0

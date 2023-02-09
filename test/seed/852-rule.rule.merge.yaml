@@ -165,7 +165,7 @@ splitName: # defaults name: fee, tag: |fee|acquirer|
   - {conditionName: Test by start date, name: base, tag: "|issuer|"}
   - {conditionName: Test by end date, name: testFee}
   - {conditionName: Test by end date, name: base, tag: "|issuer|"}
-  - {conditionName: Test settlement, name: base, tag: "|issuer|", amountType: 2}
+  - {conditionName: Test settlement, name: base, tag: "|issuer|"}
 splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0, startCount*: 0, isSourceAmount: 0
   - {conditionName: Test by period, splitName: testFee, percent: 1.1}
   - {conditionName: Test by period, splitName: base, percent: 100, tag: "|issuer|"}
@@ -213,7 +213,7 @@ splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0
   - {conditionName: Rule Test More Assignments, splitName: base, percent: 100, tag: "|issuer|"}
   - {conditionName: Rule Test Split Analytic, splitName: testFee, percent: 5}
   - {conditionName: Rule Test Split Analytic, splitName: base, percent: 100, tag: "|issuer|"}
-  - {conditionName: Test settlement, splitName: base, percent: 100, tag: "|issuer|", startAmountCurrency: EUR}
+  - {conditionName: Test settlement, splitName: base, percent: 100, tag: "|issuer|", startAmountCurrency: BGN}
 splitAssignment: # defaults splitName: fee, percent: 100, description: {splitName}
   - {conditionName: Test by source account}
   - {conditionName: Test by destination account}
@@ -255,7 +255,7 @@ splitAssignment: # defaults splitName: fee, percent: 100, description: {splitNam
   - {conditionName: Test by start date, splitName: base, percent: 100, description: new, tag: "|issuer|"}
   - {conditionName: Test by end date, splitName: testFee, percent: 100, description: descr}
   - {conditionName: Test by end date, splitName: base, percent: 100, description: new, tag: "|issuer|"}
-  - {conditionName: Test settlement, splitName: base, percent: 100, description: new, debit: blocked, credit: settlement , tag: "|issuer|"}
+  - {conditionName: Test settlement, splitName: base, percent: 100, description: new, debit: '${source.account.number}', credit: '${destination.account.number}' , tag: "|issuer|"}
 splitAnalytic:
   - {conditionName: Test Split Range, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
   - {conditionName: Rule Test Split Analytic, splitName: testFee, splitAssignmentDescription: descr, name: note, value: 'Destination: ${destination.owner.id}'}
@@ -272,3 +272,4 @@ splitAnalytic:
   - {conditionName: Test Split Analytic, splitName: pos, splitAssignmentDescription: test, name: note, value: 'PosTxn#: ${transfer.transferId}'}
 rate:
   - {conditionName: Test settlement, targetCurrency: EUR, rate: 0.995}
+  - {conditionName: Test settlement, targetCurrency: BGN, rate: 1.951, startAmountCurrency: EUR}

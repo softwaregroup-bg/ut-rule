@@ -2,10 +2,10 @@ CREATE TYPE [rule].[matches] AS TABLE(
     [priority] INT,
     [name] NVARCHAR(100),
     conditionId BIGINT,
-    amountDaily money,
+    amountDaily MONEY,
     countDaily BIGINT,
-    amountWeekly money,
+    amountWeekly MONEY,
     countWeekly BIGINT,
-    amountMonthly money,
+    amountMonthly MONEY,
     countMonthly BIGINT
 )

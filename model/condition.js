@@ -140,7 +140,8 @@ module.exports = ({joi}) => ({
                         'minValue',
                         'maxValue',
                         'percent',
-                        'percentBase'
+                        'percentBase',
+                        'isSourceAmount'
                     ]
                 },
                 items: {
@@ -162,7 +163,8 @@ module.exports = ({joi}) => ({
                         minValue: {widget: {type: 'currency'}},
                         maxValue: {widget: {type: 'currency'}},
                         percent: {type: 'number', widget: {minFractionDigits: 2}},
-                        percentBase: {type: 'number', widget: {type: 'currency'}}
+                        percentBase: {type: 'number', widget: {type: 'currency'}},
+                        isSourceAmount: {type: 'boolean'}
                     }
                 }
             },

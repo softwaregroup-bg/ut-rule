@@ -58,6 +58,7 @@ function conditionSend({
         ...params,
         conditionProperty: []
             .concat(operation?.tag?.split(' ').map(tag('oc')))
+            .concat(operation?.transferTag?.split(' ').map(tag('tp')))
             .concat(channel?.actorTag?.split(' ').map(tag('co')))
             .concat(source?.actorTag?.split(' ').map(tag('so')))
             .concat(destination?.actorTag?.split(' ').map(tag('do')))
@@ -131,7 +132,7 @@ function conditionReceive({
             tag: item.tag?.split('|').filter(Boolean) || []
         })),
         operation: {
-            tag: getTag(conditionProperty, 'op'),
+            tag: getTag(conditionProperty, 'oc'),
             type: get(conditionItem, 'oc', 'operation', 'itemNameId'),
             transferTag: getTag(conditionProperty, 'tp')
         },

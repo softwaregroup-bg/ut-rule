@@ -293,6 +293,9 @@ module.exports = ({joi}) => ({
                     },
                     tag: {
                         widget: {type: 'chips'}
+                    },
+                    transferTag: {
+                        widget: {type: 'chips'}
                     }
                 }
             },
@@ -448,6 +451,7 @@ module.exports = ({joi}) => ({
             widgets: [
                 'operation.type',
                 'operation.tag',
+                'operation.transferTag',
                 'condition.operationStartDate',
                 'condition.operationEndDate'
             ]

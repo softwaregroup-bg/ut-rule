@@ -138,6 +138,8 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Counterparty organization negative', destinationAccount: 'source-organization'}),
                 ruleDecisionSnapshot({name: 'Counterparty organization tag', destinationAccount: 'destination-organization-tag'}),
                 ruleDecisionSnapshot({name: 'Counterparty organization tag negative', destinationAccount: 'source-organization-tag'}),
+                ruleDecisionSnapshot({name: 'Transfer tag', transferProperties: [{factor: 'tp', name: 'transfer.merchantCategory', value: 7995}]}),
+                ruleDecisionSnapshot({name: 'One of transfer tags', transferProperties: [{factor: 'tp', name: 'transfer.merchantCountry', value: 100}]}),
                 ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount and bgn, must match', operation: 'Rule Balance Enquiry', amount: '999', currency: 'BGN'}),
                 ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount with default currency, must not match', operation: 'Rule Balance Enquiry', amount: '999'}),
                 ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount with overridden currency, must not match', operation: 'Rule Balance Enquiry', amount: '999', currency: 'EUR'}),

@@ -131,8 +131,9 @@ function conditionReceive({
             tag: item.tag?.split('|').filter(Boolean) || []
         })),
         operation: {
-            tag: getTag(conditionProperty, 'oc'),
-            type: get(conditionItem, 'oc', 'operation', 'itemNameId')
+            tag: getTag(conditionProperty, 'op'),
+            type: get(conditionItem, 'oc', 'operation', 'itemNameId'),
+            transferTag: getTag(conditionProperty, 'tp')
         },
         channel: {
             actor: get(conditionActor, 'co', 'organization', 'actorId'),
@@ -192,6 +193,7 @@ function conditionMap({
             ]
                 .concat(conditionItem.map(describe(row.conditionId, 'oc', 'itemTypeName', 'itemName')))
                 .concat(conditionProperty.map(describe(row.conditionId, 'oc', 'name', 'value')))
+                .concat(conditionProperty.map(describe(row.conditionId, 'tp', 'name', 'value')))
                 .filter(Boolean),
             channel: []
                 .concat(conditionItem.map(describe(row.conditionId, 'cs', 'itemTypeName', 'itemName')))

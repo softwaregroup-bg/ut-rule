@@ -36,5 +36,6 @@ CREATE TYPE [rule].conditionCustom AS TABLE (
     holderKyc VARCHAR(8000),
     holderCustomerType VARCHAR(8000),
     counterpartyKyc VARCHAR(8000),
-    counterpartyCustomerType VARCHAR(8000)
+    counterpartyCustomerType VARCHAR(8000),
+    transferTag VARCHAR(8000)
 )

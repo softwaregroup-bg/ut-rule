@@ -288,6 +288,22 @@ BEGIN TRY
         FOR itn IN ([1], [2])
     ) pivot_table
 
+    INSERT INTO @conditionProperty(conditionName, factor, name, value)
+    SELECT name, 'tp', [1], ISNULL([2], '1')
+    FROM
+    (
+        SELECT r.name, c.transferTag, a.ItemNumber, a2.ItemNumber AS itn, LTRIM(RTRIM(a2.Value)) AS v
+        FROM @condition c
+        JOIN @conditionTT r ON r.name = c.name
+        CROSS APPLY core.DelimitedSplit8K(c.transferTag, ',') a
+        CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.value)), '=') a2
+        WHERE c.transferTag IS NOT NULL
+    ) p
+    PIVOT
+    (
+        MAX(v)
+        FOR itn IN ([1], [2])
+    ) pivot_table
 
     DECLARE @rules TABLE (ruleId INT, ruleName NVARCHAR(100))
     DECLARE @ruleSplitNames TABLE (splitId INT, splitNm NVARCHAR(100), ruleId INT, ruleName NVARCHAR(100))

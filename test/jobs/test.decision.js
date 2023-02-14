@@ -151,12 +151,42 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Test rule for split analytics', operation: 'Rule Billpayment'}),
                 ruleDecisionSnapshot({name: 'Test rule for split analytics, must not match', operation: 'Rule Billpayment', currency: 'EUR'}),
                 {
-                    name: 'Test rule for limits below min amount',
+                    name: 'Test rule for limits daily above limit',
                     method: 'rule.decision.lookup',
                     params: {
-                        operation: 'Rule Balance Enquiry',
-                        amount: '8',
-                        currency: 'BGN',
+                        operation: 'Rule Ministatement',
+                        amount: '2100',
+                        currency: 'USD',
+                        sourceAccount: 'current',
+                        operationDate: '2022-02-10T00:00:00Z',
+                        destinationAccount: 'current'
+                    },
+                    error: function(error, assert) {
+                        assert.equal(error.type, 'rule.exceedDailyLimitAmount', 'Transaction amount is below minimum');
+                    }
+                },
+                {
+                    name: 'Test rule for limits weekly above limit',
+                    method: 'rule.decision.lookup',
+                    params: {
+                        operation: 'Rule Refund',
+                        amount: '3100',
+                        currency: 'USD',
+                        sourceAccount: 'current',
+                        operationDate: '2022-02-10T00:00:00Z',
+                        destinationAccount: 'current'
+                    },
+                    error: function(error, assert) {
+                        assert.equal(error.type, 'rule.exceedMinLimitAmount', 'Limit exceeded');
+                    }
+                },
+                {
+                    name: 'Test rule for limits monthly above limit',
+                    method: 'rule.decision.lookup',
+                    params: {
+                        operation: 'Rule Request Money',
+                        amount: '4100',
+                        currency: 'USD',
                         sourceAccount: 'current',
                         operationDate: '2022-02-10T00:00:00Z',
                         destinationAccount: 'current'
@@ -208,6 +238,21 @@ module.exports = function test() {
                     },
                     error: function(error, assert) {
                         assert.equal(error.type, 'rule.exceedMaxLimitAmount', 'Transaction amount is above maximum');
+                    }
+                },
+                {
+                    name: 'Test rule for limits below min amount',
+                    method: 'rule.decision.lookup',
+                    params: {
+                        operation: 'Rule Ministatement',
+                        amount: '8',
+                        currency: 'BGN',
+                        sourceAccount: 'current',
+                        operationDate: '2022-02-10T00:00:00Z',
+                        destinationAccount: 'current'
+                    },
+                    error: function(error, assert) {
+                        assert.equal(error.type, 'rule.exceedMinLimitAmount', 'Transaction amount is below minimum');
                     }
                 }
             ]);

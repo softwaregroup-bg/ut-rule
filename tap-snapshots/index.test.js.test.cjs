@@ -1294,6 +1294,84 @@ Object {
 }
 `
 
+exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for Limit Daily, must match > decision 1`] = `
+Object {
+  "amount": Object {
+    "acquirerFee": 0,
+    "commission": null,
+    "issuerFee": null,
+    "processorFee": null,
+    "rateConditionName": null,
+    "rateId": null,
+    "settlementAmount": null,
+    "transferDateTime": "2022-02-10T00:00:00.000Z",
+  },
+  "split": Array [
+    Object {
+      "amount": 0,
+      "analytics": null,
+      "conditionName": "Rule Test Limit Daily",
+      "credit": "credit",
+      "debit": "debit",
+      "description": "fee",
+      "tag": "|fee|acquirer|",
+    },
+  ],
+}
+`
+
+exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for Limit Monthly, must match > decision 1`] = `
+Object {
+  "amount": Object {
+    "acquirerFee": 0,
+    "commission": null,
+    "issuerFee": null,
+    "processorFee": null,
+    "rateConditionName": null,
+    "rateId": null,
+    "settlementAmount": null,
+    "transferDateTime": "2022-02-10T00:00:00.000Z",
+  },
+  "split": Array [
+    Object {
+      "amount": 0,
+      "analytics": null,
+      "conditionName": "Rule Test Limit Monthly",
+      "credit": "credit",
+      "debit": "debit",
+      "description": "fee",
+      "tag": "|fee|acquirer|",
+    },
+  ],
+}
+`
+
+exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for Limit Weekly, must match > decision 1`] = `
+Object {
+  "amount": Object {
+    "acquirerFee": 0,
+    "commission": null,
+    "issuerFee": null,
+    "processorFee": null,
+    "rateConditionName": null,
+    "rateId": null,
+    "settlementAmount": null,
+    "transferDateTime": "2022-02-10T00:00:00.000Z",
+  },
+  "split": Array [
+    Object {
+      "amount": 0,
+      "analytics": null,
+      "conditionName": "Rule Test Limit Weekly",
+      "credit": "credit",
+      "debit": "debit",
+      "description": "fee",
+      "tag": "|fee|acquirer|",
+    },
+  ],
+}
+`
+
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for assignments, must match > decision 1`] = `
 Object {
   "amount": Object {

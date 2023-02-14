@@ -99,17 +99,41 @@ condition:
     name: Rule Test Split Analytic
     operationStartDate: '2022-01-01T00:00:00Z'
     operation: Rule Billpayment
+  - priority: 96
+    name: Rule Test Limit Daily
+    operationStartDate: '2022-01-01T00:00:00Z'
+    operation:  Rule Ministatement
+  - priority: 95
+    name: Rule Test Limit Weekly
+    operationStartDate: '2022-01-01T00:00:00Z'
+    operation: Rule Refund
+  - priority: 94
+    name: Rule Test Limit Monthly
+    operationStartDate: '2022-01-01T00:00:00Z'
+    operation: Rule Request Money
+    
 limit:
   - {
       conditionName: Test Split Range, currency: BGN,
-      minAmount: 10, maxAmount: 10000,
-      maxAmountDaily: 20000, maxCountDaily: 3,
-      maxAmountWeekly: 100000, maxCountWeekly: 5,
-      maxAmountMonthly: 200000, maxCountMonthly: 10}
+      minAmount: 10, maxAmount: 10000
+     }
   - {
       conditionName: Rule Test Limits, currency: BGN,
       minAmount: 10, maxAmount: 1000,
       maxAmountDaily: 2000, maxCountDaily: 3}
+  - {
+      conditionName: Rule Test Limit Daily, currency: USD,
+      minAmount: 10,
+      maxAmountDaily: 2000, maxCountDaily: 2,
+      }
+  - {
+      conditionName: Rule Test Limit Weekly, currency: USD,
+      minAmount: 10,
+      maxCountWeekly: 5, maxAmountWeekly: 3000}
+  - {
+      conditionName: Rule Test Limit Monthly, currency: USD,
+      minAmount: 10, 
+      maxCountMonthly: 5, maxAmountMonthly: 4000}
   - {
       conditionName: Rule Test Limits Two, currency: BGN,
       minAmount: 100, maxAmount: 1000,
@@ -154,6 +178,9 @@ splitName: # defaults name: fee, tag: |fee|acquirer|
   - {conditionName: Test Split Analytic, name: pos, tag: "|pos|"}
   - {conditionName: Rule Test Limits}
   - {conditionName: Rule Test Limits Two}
+  - {conditionName: Rule Test Limit Daily}
+  - {conditionName: Rule Test Limit Weekly}
+  - {conditionName: Rule Test Limit Monthly}
   - {conditionName: Rule Test More Assignments, name: testFee}
   - {conditionName: Rule Test More Assignments, name: base, tag: "|issuer|"}
   - {conditionName: Rule Test Split Analytic, name: testFee}
@@ -207,6 +234,9 @@ splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0
   - {conditionName: Test Split Analytic, splitName: pos}
   - {conditionName: Rule Test Limits, startAmountCurrency: BGN}
   - {conditionName: Rule Test Limits Two, startAmountCurrency: BGN}
+  - {conditionName: Rule Test Limit Daily}
+  - {conditionName: Rule Test Limit Weekly}
+  - {conditionName: Rule Test Limit Monthly}
   - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 10}
   - {conditionName: Rule Test More Assignments, splitName: base, percent: 100, tag: "|issuer|"}
   - {conditionName: Rule Test Split Analytic, splitName: testFee, percent: 5}
@@ -241,6 +271,9 @@ splitAssignment: # defaults splitName: fee, percent: 100, description: {splitNam
   - {conditionName: Test Split Analytic, splitName: pos}
   - {conditionName: Rule Test Limits, percent: 100}
   - {conditionName: Rule Test Limits Two, percent: 100}
+  - {conditionName: Rule Test Limit Daily, percent: 100}
+  - {conditionName: Rule Test Limit Weekly, percent: 100}
+  - {conditionName: Rule Test Limit Monthly, percent: 100}
   - {conditionName: Rule Test More Assignments, splitName: base, percent: 100, description: descr, tag: "|issuer|"}
   - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 20, debit: '${source.account.number}', credit: BGN0000300028, description: testDescription}
   - {conditionName: Rule Test More Assignments, splitName: testFee, percent: 80, debit: '${source.account.number}', credit: BGN0000300029}

@@ -88,6 +88,11 @@ declare namespace rule_decision_lookup {
     settlementCurrency?: string;
     sourceAccount: string;
     sourceCardProductId?: number | null;
+    transferProperties?: ({
+      factor: string;
+      name: string;
+      value?: string | number;
+    })[];
   }
   export interface result {
     amount?: {

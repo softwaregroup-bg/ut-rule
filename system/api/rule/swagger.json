@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "12.5.12"
+        "version": "13.0.0-currencies.0"
     },
     "paths": {
         "/rpc/rule/condition/add": {
@@ -848,6 +848,31 @@
                                                 "integer",
                                                 "null"
                                             ]
+                                        },
+                                        "transferProperties": {
+                                            "items": {
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "factor": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    },
+                                                    "value": {
+                                                        "minLength": 1,
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "factor",
+                                                    "name"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
                                         }
                                     },
                                     "required": [

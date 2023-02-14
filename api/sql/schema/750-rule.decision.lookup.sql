@@ -16,7 +16,8 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
     @credentials INT = NULL, -- the passed credentials to validate operation success
     @timeDifference INT = NULL, -- what is the difference (in minutes) with UTC, if it is not passed use server time
-    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
+    @isTransactionValidate BIT = 0, -- flag showing if operation is only validated (1) or executed (0)
+    @transferProperties [rule].[properties] READONLY
 AS
 BEGIN
     DECLARE
@@ -226,6 +227,10 @@ BEGIN
             WHERE
                 c.actorId = @destinationOwnerId
     END
+
+    INSERT INTO @operationProperties(factor, name, value)
+    SELECT [factor], [name], [value]
+    FROM @transferProperties
 
     DELETE FROM @operationProperties WHERE value IS NULL
 

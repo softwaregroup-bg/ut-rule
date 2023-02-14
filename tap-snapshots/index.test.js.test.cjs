@@ -956,6 +956,34 @@ Object {
 }
 `
 
+exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // One of transfer tags > decision 1`] = `
+Object {
+  "amount": Object {
+    "accountAmount": "1000.0000",
+    "accountRateConditionName": null,
+    "acquirerFee": null,
+    "commission": null,
+    "issuerFee": "37.0000",
+    "processorFee": null,
+    "settlementAmount": "1000.0000",
+    "settlementRateConditionName": null,
+    "transferDateTime": "2022-02-10T00:00:00.000Z",
+  },
+  "split": Array [
+    Object {
+      "amount": "37.0000",
+      "analytics": null,
+      "conditionName": "Test by one of transfer tags",
+      "credit": "credit",
+      "currency": "USD",
+      "debit": "debit",
+      "description": "fee",
+      "tag": "|fee|issuer|",
+    },
+  ],
+}
+`
+
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Operation > decision 1`] = `
 Object {
   "amount": Object {
@@ -1545,5 +1573,33 @@ Object {
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [],
+}
+`
+
+exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Transfer tag > decision 1`] = `
+Object {
+  "amount": Object {
+    "accountAmount": "1000.0000",
+    "accountRateConditionName": null,
+    "acquirerFee": null,
+    "commission": null,
+    "issuerFee": "37.0000",
+    "processorFee": null,
+    "settlementAmount": "1000.0000",
+    "settlementRateConditionName": null,
+    "transferDateTime": "2022-02-10T00:00:00.000Z",
+  },
+  "split": Array [
+    Object {
+      "amount": "37.0000",
+      "analytics": null,
+      "conditionName": "Test by transfer tag",
+      "credit": "credit",
+      "currency": "USD",
+      "debit": "debit",
+      "description": "fee",
+      "tag": "|fee|issuer|",
+    },
+  ],
 }
 `

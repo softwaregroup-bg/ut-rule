@@ -1,7 +1,11 @@
 // @ts-check
 /** @type { import("ut-run").validationFactory } */
 module.exports = ({
-    joi
+    joi,
+    lib: {
+        stringRequired,
+        numberRequired
+    }
 }) => ({
     'rule.decision.lookup': () => ({
         description: 'Fetch applicable fee, limit and commission, based on passed properties of the transfer',
@@ -18,7 +22,12 @@ module.exports = ({
             settlementCurrency: joi.string(),
             accountCurrency: joi.string(),
             isSourceAmount: joi.boolean().allow(0, 1, '0', '1'),
-            sourceCardProductId: joi.number().integer().allow(null)
+            sourceCardProductId: joi.number().integer().allow(null),
+            transferProperties: joi.array().items(joi.object({
+                factor: stringRequired,
+                name: stringRequired,
+                value: [stringRequired, numberRequired]
+            }))
         }),
         result: joi.object().keys({
             amount: joi.object().keys({

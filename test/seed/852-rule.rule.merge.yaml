@@ -139,6 +139,14 @@ limit:
       minAmount: 100, maxAmount: 1000,
       maxAmountDaily: 2000, maxCountDaily: 3}
   - {
+      conditionName: Rule Test Limits, currency: BGN,
+      minAmount: 10, maxAmount: 1000,
+      maxAmountDaily: 2000, maxCountDaily: 3}
+  - {
+      conditionName: Rule Test Limits Two, currency: BGN,
+      minAmount: 100, maxAmount: 1000,
+      maxAmountDaily: 2000, maxCountDaily: 3}
+  - {
       conditionName: Test Split Range, currency: EUR,
       maxAmount: 5000, maxAmountDaily: 10000,
       maxCountDaily: 3, maxAmountWeekly: 60000,

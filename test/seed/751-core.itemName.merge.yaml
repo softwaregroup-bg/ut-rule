@@ -12,6 +12,7 @@ list:
   - {itemType: operation, itemCode: Rule Transfer OTP, itemName: Rule Transfer OTP}
   - {itemType: operation, itemCode: Rule Topup, itemName: Rule Topup}
   - {itemType: operation, itemCode: Rule Transfer, itemName: Rule Transfer}
+  - {itemType: operation, itemCode: Rule Settlement, itemName: Rule Settlement}
   - {itemType: operation, itemCode: Rule Ministatement, itemName: Rule Ministatement}
   - {itemType: operation, itemCode: Rule Refund, itemName: Rule Refund}
   - {itemType: operation, itemCode: Rule Request Money, itemName: Rule Request Money}

@@ -27,6 +27,7 @@ BEGIN
         @sourceCityId BIGINT,
         @sourceOwnerId BIGINT,
         @sourceAccountProductId BIGINT,
+        @sourceAccountFeePolicyId BIGINT,
         @sourceAccountId NVARCHAR(255),
         @sourceAccountCheckAmount MONEY,
         @sourceAccountCheckMask INT,
@@ -40,6 +41,7 @@ BEGIN
         @destinationCityId BIGINT,
         @destinationOwnerId BIGINT,
         @destinationAccountProductId BIGINT,
+        @destinationAccountFeePolicyId BIGINT,
         @destinationAccountId NVARCHAR(255),
 
         @totals [rule].totals
@@ -68,6 +70,7 @@ BEGIN
         @sourceCityId = cityId,
         @sourceOwnerId = ownerId,
         @sourceAccountProductId = accountProductId,
+        @sourceAccountFeePolicyId = feePolicyId,
         @sourceAccountId = accountId,
         @sourceAccountCheckAmount = accountCheckAmount,
         @sourceAccountCheckMask = accountCheckMask,
@@ -86,9 +89,9 @@ BEGIN
         @destinationCityId = cityId,
         @destinationOwnerId = ownerId,
         @destinationAccountProductId = accountProductId,
+        @destinationAccountFeePolicyId = feePolicyId,
         @destinationAccountId = accountId
-    FROM
-        [integration].[vAccount]
+    FROM [integration].[vAccount]
     WHERE
         (accountNumber = @destinationAccount OR @destinationAccount IS NULL) AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL) AND
@@ -169,12 +172,16 @@ BEGIN
         --source category
         ('sc', 'source.account.product', CONVERT(NVARCHAR, @sourceAccountProductId)),
         ('sc', 'source.card.product', CONVERT(NVARCHAR, @sourceCardProductId)),
+        --source account policy
+        ('sp', 'source.account.feePolicyId', CONVERT(NVARCHAR, @sourceAccountFeePolicyId)),
         --destination spatial
         ('ds', 'destination.country', CONVERT(NVARCHAR, @destinationCountryId)),
         ('ds', 'destination.region', CONVERT(NVARCHAR, @destinationRegionId)),
         ('ds', 'destination.city', CONVERT(NVARCHAR, @destinationCityId)),
         --destination category
-        ('dc', 'destination.account.product', CONVERT(NVARCHAR, @destinationAccountProductId))
+        ('dc', 'destination.account.product', CONVERT(NVARCHAR, @destinationAccountProductId)),
+        --source account policy
+        ('dp', 'destination.account.feePolicyId', CONVERT(NVARCHAR, @destinationAccountFeePolicyId))
 
     IF OBJECT_ID(N'customer.customer') IS NOT NULL
     BEGIN

@@ -1,3 +1,33 @@
+## [12.5.13](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.12...v12.5.13) (2023-02-10)
+
+
+### Bug Fixes
+
+* UTCORE-412, errors when non-empty ruleCondition history table ([#258](https://github.com/softwaregroup-bg/ut-rule/issues/258)) ([a57d8bf](https://github.com/softwaregroup-bg/ut-rule/commit/a57d8bf65546da2b538532daed81a6599610d03e))
+
+
+
+## [12.5.12](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.11...v12.5.12) (2023-02-07)
+
+
+
+## [12.5.11](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.10...v12.5.11) (2023-02-06)
+
+
+### Bug Fixes
+
+* make checks to the real start of the day,week, month, AZCELL-1762 ([#257](https://github.com/softwaregroup-bg/ut-rule/issues/257)) ([4f44263](https://github.com/softwaregroup-bg/ut-rule/commit/4f4426330ab4f6350cf9c3ad9e3610394b289910))
+
+
+
+## [12.5.10](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.9...v12.5.10) (2023-02-02)
+
+
+
+## [12.5.9](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.8...v12.5.9) (2023-02-01)
+
+
+
 ## [12.5.8](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.7...v12.5.8) (2023-01-24)
 
 

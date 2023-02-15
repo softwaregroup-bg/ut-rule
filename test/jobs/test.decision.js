@@ -150,6 +150,7 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Test rule for assignments, must not match', operation: 'Rule Wallet to Wallet', currency: 'BGN'}),
                 ruleDecisionSnapshot({name: 'Test rule for split analytics', operation: 'Rule Billpayment'}),
                 ruleDecisionSnapshot({name: 'Test rule for split analytics, must not match', operation: 'Rule Billpayment', currency: 'EUR'}),
+                ruleDecisionSnapshot({name: 'Test rule for settlement, must match', operation: 'Rule Settlement'}),
                 {
                     name: 'Test rule for limits daily above limit',
                     method: 'rule.decision.lookup',
@@ -162,7 +163,7 @@ module.exports = function test() {
                         destinationAccount: 'current'
                     },
                     error: function(error, assert) {
-                        assert.equal(error.type, 'rule.exceedDailyLimitAmount', 'Transaction amount is below minimum');
+                        assert.equal(error.type, 'rule.exceedDailyLimitAmount', 'Limit Exceeded');
                     }
                 },
                 {
@@ -177,7 +178,7 @@ module.exports = function test() {
                         destinationAccount: 'current'
                     },
                     error: function(error, assert) {
-                        assert.equal(error.type, 'rule.exceedMinLimitAmount', 'Limit exceeded');
+                        assert.equal(error.type, 'rule.exceedWeeklyLimitAmount', 'Limit exceeded');
                     }
                 },
                 {
@@ -192,7 +193,7 @@ module.exports = function test() {
                         destinationAccount: 'current'
                     },
                     error: function(error, assert) {
-                        assert.equal(error.type, 'rule.exceedMinLimitAmount', 'Transaction amount is below minimum');
+                        assert.equal(error.type, 'rule.exceedMonthlyLimitAmount', 'Limit Exceeded');
                     }
                 },
                 {
@@ -244,7 +245,7 @@ module.exports = function test() {
                     name: 'Test rule for limits below min amount',
                     method: 'rule.decision.lookup',
                     params: {
-                        operation: 'Rule Ministatement',
+                        operation: 'Rule Balance Enquiry',
                         amount: '8',
                         currency: 'BGN',
                         sourceAccount: 'current',

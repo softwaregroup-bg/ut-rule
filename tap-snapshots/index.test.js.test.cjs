@@ -47,22 +47,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Channel city negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Channel country > decision 1`] = `
 Object {
   "amount": Object {
@@ -86,22 +70,6 @@ Object {
       "tag": "|fee|acquirer|",
     },
   ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Channel country negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
 }
 `
 
@@ -163,22 +131,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Channel organization negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Channel organization tag > decision 1`] = `
 Object {
   "amount": Object {
@@ -202,22 +154,6 @@ Object {
       "tag": "|fee|acquirer|",
     },
   ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Channel organization tag negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
 }
 `
 
@@ -279,22 +215,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Channel region negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty account > decision 1`] = `
 Object {
   "amount": Object {
@@ -337,22 +257,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty account negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty city > decision 1`] = `
 Object {
   "amount": Object {
@@ -376,22 +280,6 @@ Object {
       "tag": "|fee|acquirer|",
     },
   ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty city negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
 }
 `
 
@@ -469,38 +357,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty country negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty kyc > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty organization > decision 1`] = `
 Object {
   "amount": Object {
@@ -543,22 +399,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty organization negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty organization tag > decision 1`] = `
 Object {
   "amount": Object {
@@ -582,22 +422,6 @@ Object {
       "tag": "|fee|acquirer|",
     },
   ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty organization tag negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
 }
 `
 
@@ -675,38 +499,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty region negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Counterparty type > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // End date > decision 1`] = `
 Object {
   "amount": Object {
@@ -725,60 +517,6 @@ Object {
       "analytics": Object {
         "note": "Source: item:0",
       },
-      "analytics": Object {
-        "note": "Source: item:0",
-      },
-      "conditionName": "Test by end date",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "descr",
-      "description": "descr",
-      "tag": "|fee|acquirer|",
-    },
-    Object {
-      "amount": 1000,
-      "analytics": Object {
-        "note": "Source: item:0",
-      },
-      "conditionName": "Test by end date",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "new",
-      "tag": "|issuer|",
-    },
-    Object {
-      "amount": 1000,
-      "analytics": Object {
-        "note": "Source: item:0",
-      },
-      "conditionName": "Test by end date",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "new",
-      "tag": "|issuer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // End date exact as in rule > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 13,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2021-12-01T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 13,
-      "analytics": Object {
-        "note": "Source: item:0",
-      },
       "conditionName": "Test by end date",
       "credit": "credit",
       "debit": "debit",
@@ -797,22 +535,6 @@ Object {
       "tag": "|issuer|",
     },
   ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // End date negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2021-12-01T00:00:01.000Z",
-  },
-  "split": Array [],
 }
 `
 
@@ -913,22 +635,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder account negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder city > decision 1`] = `
 Object {
   "amount": Object {
@@ -952,22 +658,6 @@ Object {
       "tag": "|fee|acquirer|",
     },
   ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder city negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
 }
 `
 
@@ -1045,38 +735,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder country negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder kyc > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder organization > decision 1`] = `
 Object {
   "amount": Object {
@@ -1100,22 +758,6 @@ Object {
       "tag": "|fee|acquirer|",
     },
   ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder organization negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
 }
 `
 
@@ -1177,22 +819,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder organization tag negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder region > decision 1`] = `
 Object {
   "amount": Object {
@@ -1216,38 +842,6 @@ Object {
       "tag": "|fee|acquirer|",
     },
   ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder region negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Holder type > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
 }
 `
 
@@ -1343,60 +937,6 @@ Object {
       "analytics": Object {
         "note": "Destination: item:0",
       },
-      "analytics": Object {
-        "note": "Destination: item:0",
-      },
-      "conditionName": "Test by period",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "descr",
-      "description": "descr",
-      "tag": "|fee|acquirer|",
-    },
-    Object {
-      "amount": 1000,
-      "analytics": Object {
-        "note": "Destination: account:current",
-      },
-      "conditionName": "Test by period",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "new",
-      "tag": "|issuer|",
-    },
-    Object {
-      "amount": 1000,
-      "analytics": Object {
-        "note": "Destination: account:current",
-      },
-      "conditionName": "Test by period",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "new",
-      "tag": "|issuer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Period exact end date > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 11,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-01T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 11,
-      "analytics": Object {
-        "note": "Destination: item:0",
-      },
       "conditionName": "Test by period",
       "credit": "credit",
       "debit": "debit",
@@ -1415,61 +955,6 @@ Object {
       "tag": "|issuer|",
     },
   ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Period exact start date > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 11,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-01-01T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 11,
-      "analytics": Object {
-        "note": "Destination: item:0",
-      },
-      "conditionName": "Test by period",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "descr",
-      "tag": "|fee|acquirer|",
-    },
-    Object {
-      "amount": 1000,
-      "analytics": Object {
-        "note": "Destination: account:current",
-      },
-      "conditionName": "Test by period",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "new",
-      "tag": "|issuer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Period negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2021-12-31T00:00:00.000Z",
-  },
-  "split": Array [],
 }
 `
 
@@ -1571,7 +1056,6 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "acquirerFee": 50,
-    "acquirerFee": 50,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
@@ -1586,135 +1070,7 @@ Object {
       "analytics": Object {
         "note": "Operation: item:Rule Withdraw",
       },
-      "amount": 50,
-      "analytics": Object {
-        "note": "Operation: item:Rule Withdraw",
-      },
       "conditionName": "Test by start date",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "descr",
-      "tag": "|fee|acquirer|",
-    },
-    Object {
-      "amount": 1000,
-      "analytics": Object {
-        "note": "Operation: USD",
-      },
-      "conditionName": "Test by start date",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "new",
-      "tag": "|issuer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Start date exact as in rule > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 50,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2122-03-01T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 50,
-      "analytics": Object {
-        "note": "Operation: item:Rule Withdraw",
-      },
-      "conditionName": "Test by start date",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "descr",
-      "tag": "|fee|acquirer|",
-    },
-    Object {
-      "amount": 1000,
-      "analytics": Object {
-        "note": "Operation: USD",
-      },
-      "conditionName": "Test by start date",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "new",
-      "tag": "|issuer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Start date negative > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2122-02-28T23:59:59.000Z",
-  },
-  "split": Array [],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test limits when amount is above max but for another currency, must not match > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test limits when amount is below min but for another currency, must not match > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": null,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test limits with only operation and BGN currency, must match > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 0,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 0,
-      "analytics": null,
-      "conditionName": "Rule Test Limits",
       "credit": "credit",
       "debit": "debit",
       "description": "descr",
@@ -1938,84 +1294,6 @@ Object {
 }
 `
 
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for Limit Daily, must match > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 0,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 0,
-      "analytics": null,
-      "conditionName": "Rule Test Limit Daily",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for Limit Monthly, must match > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 0,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 0,
-      "analytics": null,
-      "conditionName": "Rule Test Limit Monthly",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
-exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for Limit Weekly, must match > decision 1`] = `
-Object {
-  "amount": Object {
-    "acquirerFee": 0,
-    "commission": null,
-    "issuerFee": null,
-    "processorFee": null,
-    "rateConditionName": null,
-    "rateId": null,
-    "settlementAmount": null,
-    "transferDateTime": "2022-02-10T00:00:00.000Z",
-  },
-  "split": Array [
-    Object {
-      "amount": 0,
-      "analytics": null,
-      "conditionName": "Rule Test Limit Weekly",
-      "credit": "credit",
-      "debit": "debit",
-      "description": "fee",
-      "tag": "|fee|acquirer|",
-    },
-  ],
-}
-`
-
 exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for assignments, must match > decision 1`] = `
 Object {
   "amount": Object {
@@ -2077,6 +1355,32 @@ Object {
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
   "split": Array [],
+}
+`
+
+exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.lookup // Test rule for settlement, must match > decision 1`] = `
+Object {
+  "amount": Object {
+    "acquirerFee": null,
+    "commission": null,
+    "issuerFee": null,
+    "processorFee": null,
+    "rateConditionName": null,
+    "rateId": null,
+    "settlementAmount": null,
+    "transferDateTime": "2022-02-10T00:00:00.000Z",
+  },
+  "split": Array [
+    Object {
+      "amount": 1000,
+      "analytics": null,
+      "conditionName": "Test settlement",
+      "credit": "current",
+      "debit": "current",
+      "description": "new",
+      "tag": "|issuer|",
+    },
+  ],
 }
 `
 

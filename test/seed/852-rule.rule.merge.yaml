@@ -25,6 +25,8 @@ condition:
   - {name: Test by counterparty organization, counterpartyOrganization: 'Oxfam, UNICEF'}
   - {name: Test by counterparty type, counterpartyCustomerType: corporate, operation: 'Rule Transfer OTP'}
   - {name: Test by counterparty kyc, counterpartyKyc: Level 0 - Individual - Bulgaria, operation: 'Rule Topup'}
+  - {name: Test by transfer tag, transferTag: transfer.merchantCategory=7995}
+  - {name: Test by one of transfer tags, transferTag: transfer.merchantCountry=100, transfer.merchantCountry=040}
   - {name: Test settlement, operation: Rule Settlement}
   - priority: 70
     operationStartDate: '2022-01-01T00:00:00Z'
@@ -172,6 +174,8 @@ splitName: # defaults name: fee, tag: |fee|acquirer|
   - {conditionName: Test by counterparty organization}
   - {conditionName: Test by counterparty type}
   - {conditionName: Test by counterparty kyc}
+  - {conditionName: Test by transfer tag}
+  - {conditionName: Test by one of transfer tags}
   - {conditionName: Test Split Range}
   - {conditionName: Test Split Range, name: pos, tag: "|pos|"}
   - {conditionName: Test Split Range, name: issuer, tag: "|issuer|"}
@@ -223,6 +227,8 @@ splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0
   - {conditionName: Test by counterparty organization, percent: 3.4}
   - {conditionName: Test by counterparty type, percent: 3.5}
   - {conditionName: Test by counterparty kyc, percent: 3.6}
+  - {conditionName: Test by transfer tag, percent: 3.7}
+  - {conditionName: Test by one of transfer tags, percent: 3.7}
   - {conditionName: Test Split Range, percent: 0.8}
   - {conditionName: Test Split Range, percent: 0.7, startAmount: 100 }
   - {conditionName: Test Split Range, percent: 0.6, startAmountDaily: 200}
@@ -243,7 +249,7 @@ splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0
   - {conditionName: Rule Test More Assignments, splitName: base, percent: 100, tag: "|issuer|"}
   - {conditionName: Rule Test Split Analytic, splitName: testFee, percent: 5}
   - {conditionName: Rule Test Split Analytic, splitName: base, percent: 100, tag: "|issuer|"}
-  - {conditionName: Test settlement, splitName: base, percent: 100, tag: "|issuer|"}
+  - {conditionName: Test settlement, splitName: base, percent: 100, tag: "|issuer|", startAmountCurrency: BGN}
 splitAssignment: # defaults splitName: fee, percent: 100, description: {splitName}
   - {conditionName: Test by source account}
   - {conditionName: Test by destination account}
@@ -268,6 +274,8 @@ splitAssignment: # defaults splitName: fee, percent: 100, description: {splitNam
   - {conditionName: Test by counterparty organization}
   - {conditionName: Test by counterparty type}
   - {conditionName: Test by counterparty kyc}
+  - {conditionName: Test by transfer tag}
+  - {conditionName: Test by one of transfer tags}
   - {conditionName: Test Split Range, minValue: 5.55, percent: 10.1, description: test}
   - {conditionName: Test Split Range, splitName: pos}
   - {conditionName: Test Split Analytic, minValue: 6.66, percent: 10.2, description: test}
@@ -303,3 +311,6 @@ splitAnalytic:
   - {conditionName: Rule Test More Assignments, splitName: base, splitAssignmentDescription: descr,  name: note, value: 'Source: ${source.account.id}'}
   - {conditionName: Test Split Analytic, splitAssignmentDescription: test, name: note, value: 'Txn#: ${transfer.transferId}'}
   - {conditionName: Test Split Analytic, splitName: pos, splitAssignmentDescription: test, name: note, value: 'PosTxn#: ${transfer.transferId}'}
+rate:
+  - {conditionName: Test settlement, targetCurrency: EUR, rate: 0.995}
+  - {conditionName: Test settlement, targetCurrency: BGN, rate: 1.951, startAmountCurrency: EUR}

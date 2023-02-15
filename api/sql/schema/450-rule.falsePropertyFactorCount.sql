@@ -36,7 +36,7 @@ BEGIN
             JOIN
                 [rule].conditionProperty ct ON ct.name = p.name AND ct.value = p.value
             WHERE
-                p.factor IN ('sk', 'st', 'dk', 'dt') AND
+                p.factor IN ('sk', 'st', 'dk', 'dt', 'tp') AND
                 ct.conditionId = @conditionId
         )
     )

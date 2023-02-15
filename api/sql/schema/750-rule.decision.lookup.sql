@@ -6,14 +6,18 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceCardProductId BIGINT = NULL, -- product id of the card
     @destinationAccount VARCHAR(100), -- destination account number
     @amount VARCHAR(21), -- operation amount
+    @settlementAmount VARCHAR(21), -- operation amount
+    @accountAmount VARCHAR(21), -- operation amount
     @currency VARCHAR(3), -- operation currency
-    @targetCurrency VARCHAR(3) = NULL, -- currency after exchange
+    @settlementCurrency VARCHAR(3) = NULL, -- settlement currency
+    @accountCurrency VARCHAR(3) = NULL, -- source account currency
     @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
     @credentials INT = NULL, -- the passed credentials to validate operation success
     @timeDifference INT = NULL, -- what is the difference (in minutes) with UTC, if it is not passed use server time
-    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
+    @isTransactionValidate BIT = 0, -- flag showing if operation is only validated (1) or executed (0)
+    @transferProperties [rule].[properties] READONLY
 AS
 BEGIN
     DECLARE
@@ -224,6 +228,10 @@ BEGIN
                 c.actorId = @destinationOwnerId
     END
 
+    INSERT INTO @operationProperties(factor, name, value)
+    SELECT [factor], [name], [value]
+    FROM @transferProperties
+
     DELETE FROM @operationProperties WHERE value IS NULL
 
     EXEC [rule].[decision.fetch]
@@ -232,9 +240,12 @@ BEGIN
         @sourceAccountId = @sourceAccountId,
         @destinationAccountId = @destinationAccountId,
         @amountString = @amount,
+        @settlementAmountString = @settlementAmount,
+        @accountAmountString = @accountAmount,
         @totals = @totals,
         @currency = @currency,
-        @targetCurrency = @targetCurrency,
+        @settlementCurrency = @settlementCurrency,
+        @accountCurrency = @accountCurrency,
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
         @destinationAccount = @destinationAccount,

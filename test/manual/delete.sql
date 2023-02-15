@@ -1,3 +1,4 @@
+DELETE FROM [rule].[rate]
 DELETE FROM [rule].[splitRange]
 DELETE FROM [rule].[splitAnalytic]
 DELETE FROM [rule].[splitAssignment]

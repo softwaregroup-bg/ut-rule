@@ -17,6 +17,7 @@ Provides standard fees, limits and commissions API.
 * st - source type
 * dk - destination KYC
 * dt - destination type
+* tp - transfer property
 
 ## Placeholders
 
@@ -87,6 +88,7 @@ conditionProperty:
   - {conditionId: 1000, factor: dk, name: destination.kyc, value: 3}
   - {conditionId: 1000, factor: do, name: vat, value: tourism}
   - {conditionId: 1000, factor: dt, name: destination.customerType, value: 2}
+  - {conditionId: 1000, factor: tp, name: transfer.merchantCategory, value: 7995}
 conditionItem:
   - {conditionId: 1000, factor: cs, itemNameId: 7}
   - {conditionId: 1000, factor: cs, itemNameId: 241}

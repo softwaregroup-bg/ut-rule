@@ -67,7 +67,8 @@ BEGIN TRY
         @checkSuccess BIT,
         @limitCredentials INT,
         @limitMaxAmount MONEY,
-        @limitId INT
+        @limitId INT,
+        @conditionId INT
 
     --find all conditions(rules) that match based on the input information
     INSERT INTO
@@ -122,6 +123,7 @@ BEGIN TRY
     -- check if exists a condition limit that is violated
     SELECT TOP 1
         @limitId = l.limitId,
+        @conditionId = l.conditionId,
         @minAmount = l.minAmount,
         @maxAmount = l.maxAmount,
         @maxAmountDaily = l.maxAmountDaily,
@@ -199,8 +201,8 @@ BEGIN TRY
             @amount + @amountDaily AS accumulatedAmountDaily,
             @amount + @amountWeekly AS accumulatedAmountWeekly,
             @amount + @amountMonthly AS accumulatedAmountMonthly,
-            ISNULL (@credentialsCheck, @limitCredentials) AS [credentials]
-
+            ISNULL (@credentialsCheck, @limitCredentials) AS [credentials],
+            @conditionId AS conditionId
         IF ISNULL (@isTransactionValidate, 0) = 0 RETURN -- if only validation - proceed, else stop execution
     END
     ELSE -- if not exists a condition limit which is violated, check if credentials are correct. If not return error and result

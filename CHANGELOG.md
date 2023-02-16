@@ -1,3 +1,12 @@
+# [12.6.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.13...v12.6.0) (2023-02-16)
+
+
+### Features
+
+* **CBI-1192:** return conditionId in decision.fetch ([#263](https://github.com/softwaregroup-bg/ut-rule/issues/263)) ([5787437](https://github.com/softwaregroup-bg/ut-rule/commit/5787437acc77ef03e69f6543819dbee0ad4348d7))
+
+
+
 ## [12.5.13](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.12...v12.5.13) (2023-02-10)
 
 

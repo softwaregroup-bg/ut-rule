@@ -1168,7 +1168,18 @@ Object {
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
-  "split": Array [],
+  "split": Array [
+    Object {
+      "amount": "990.0000",
+      "analytics": null,
+      "conditionName": "Test settlement",
+      "credit": "current",
+      "currency": "EUR",
+      "debit": "current",
+      "description": "new",
+      "tag": "|issuer|",
+    },
+  ],
 }
 `
 
@@ -1185,7 +1196,18 @@ Object {
     "settlementRateConditionName": "Test settlement",
     "transferDateTime": "2022-02-10T00:00:00.000Z",
   },
-  "split": Array [],
+  "split": Array [
+    Object {
+      "amount": "995.0000",
+      "analytics": null,
+      "conditionName": "Test settlement",
+      "credit": "current",
+      "currency": "EUR",
+      "debit": "current",
+      "description": "new",
+      "tag": "|issuer|",
+    },
+  ],
 }
 `
 

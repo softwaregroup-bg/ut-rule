@@ -220,6 +220,8 @@ splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0
   - {conditionName: Rule Test Split Analytic, splitName: testFee, percent: 5}
   - {conditionName: Rule Test Split Analytic, splitName: base, percent: 100, tag: "|issuer|"}
   - {conditionName: Test settlement, splitName: base, percent: 100, tag: "|issuer|", startAmountCurrency: BGN}
+  - {conditionName: Test settlement, splitName: base, percent: 100, tag: "|issuer|", startAmountCurrency: EUR}
+  - {conditionName: Test settlement, splitName: base, percent: 100, tag: "|issuer|", startAmountCurrency: USD}
 splitAssignment: # defaults splitName: fee, percent: 100, description: {splitName}
   - {conditionName: Test by source account}
   - {conditionName: Test by destination account}

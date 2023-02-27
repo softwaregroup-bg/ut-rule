@@ -25,8 +25,8 @@ condition:
   - {name: Test by counterparty organization, counterpartyOrganization: 'Oxfam, UNICEF'}
   - {name: Test by counterparty type, counterpartyCustomerType: corporate, operation: 'Rule Transfer OTP'}
   - {name: Test by counterparty kyc, counterpartyKyc: Level 0 - Individual - Bulgaria, operation: 'Rule Topup'}
-  - {name: Test by transfer tag, transferTag: transfer.merchantCategory=7995}
-  - {name: Test by one of transfer tags, transferTag: transfer.merchantCountry=100, transfer.merchantCountry=040}
+  - {name: Test by transfer tag, transferTag: merchantCategory=7995}
+  - {name: Test by one of transfer tags, transferTag: merchantCountry=100, merchantCountry=040}
   - {name: Test settlement, operation: Rule Settlement}
   - priority: 70
     operationStartDate: '2022-01-01T00:00:00Z'

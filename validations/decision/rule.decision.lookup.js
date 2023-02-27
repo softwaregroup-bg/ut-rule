@@ -23,11 +23,7 @@ module.exports = ({
             accountCurrency: joi.string(),
             isSourceAmount: joi.boolean().allow(0, 1, '0', '1'),
             sourceCardProductId: joi.number().integer().allow(null),
-            transferProperties: joi.array().items(joi.object({
-                factor: stringRequired,
-                name: stringRequired,
-                value: [stringRequired, numberRequired]
-            }))
+            transferProperties: joi.object()
         }),
         result: joi.object().keys({
             amount: joi.object().keys({

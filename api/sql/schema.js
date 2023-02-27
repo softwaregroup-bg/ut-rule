@@ -10,7 +10,7 @@ module.exports = function sql({config}) {
         }],
         'rule.decision.lookup.request.send': params => params.transferProperties ? ({
             ...params,
-            transferProperties: Object.fromEntries(params.transferProperties).map(
+            transferProperties: Object.entries(params.transferProperties).map(
                 ([name, value]) => ({name, value, factor: 'tp'})
             )
         }) : params,

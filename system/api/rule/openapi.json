@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.0.0-currencies.2"
+        "version": "13.0.0-currencies.3"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -835,36 +835,9 @@
                                                 "type": "integer"
                                             },
                                             "transferProperties": {
-                                                "items": {
-                                                    "additionalProperties": false,
-                                                    "properties": {
-                                                        "factor": {
-                                                            "minLength": 1,
-                                                            "type": "string"
-                                                        },
-                                                        "name": {
-                                                            "minLength": 1,
-                                                            "type": "string"
-                                                        },
-                                                        "value": {
-                                                            "oneOf": [
-                                                                {
-                                                                    "minLength": 1,
-                                                                    "type": "string"
-                                                                },
-                                                                {
-                                                                    "type": "number"
-                                                                }
-                                                            ]
-                                                        }
-                                                    },
-                                                    "required": [
-                                                        "factor",
-                                                        "name"
-                                                    ],
-                                                    "type": "object"
-                                                },
-                                                "type": "array"
+                                                "additionalProperties": true,
+                                                "properties": {},
+                                                "type": "object"
                                             }
                                         },
                                         "required": [

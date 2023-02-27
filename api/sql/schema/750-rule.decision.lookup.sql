@@ -229,7 +229,7 @@ BEGIN
     END
 
     INSERT INTO @operationProperties(factor, name, value)
-    SELECT [factor], [name], [value]
+    SELECT [factor], 'transfer.' + [name], [value]
     FROM @transferProperties
 
     DELETE FROM @operationProperties WHERE value IS NULL

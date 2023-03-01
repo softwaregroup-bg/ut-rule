@@ -26,7 +26,7 @@ BEGIN
             JOIN
                 [rule].conditionProperty ct ON ct.name = t.name AND ct.value = t.value
             WHERE
-                p.factor IN ('ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sp', 'dp') AND
+                p.factor IN ('ss', 'ds', 'cs', 'oc', 'sc', 'dc') AND
                 ct.conditionId = @conditionId
             UNION ALL
             SELECT

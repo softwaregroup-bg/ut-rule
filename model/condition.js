@@ -79,8 +79,19 @@ module.exports = ({joi}) => ({
                             }
                         },
                         name: {},
+                        amountType: {
+                            title: 'Input Amount',
+                            widget: {
+                                type: 'select',
+                                options: [
+                                    {value: null, label: 'Account holder'},
+                                    {value: 1, label: 'Original'},
+                                    {value: 2, label: 'Settlement'}
+                                ]
+                            }
+                        },
                         tag: {
-                            title: '',
+                            title: 'Output Amount',
                             widget: {
                                 type: 'multiSelectPanel',
                                 itemClassName: 'col-2',
@@ -129,7 +140,8 @@ module.exports = ({joi}) => ({
                         'minValue',
                         'maxValue',
                         'percent',
-                        'percentBase'
+                        'percentBase',
+                        'isSourceAmount'
                     ]
                 },
                 items: {
@@ -151,7 +163,8 @@ module.exports = ({joi}) => ({
                         minValue: {widget: {type: 'currency'}},
                         maxValue: {widget: {type: 'currency'}},
                         percent: {type: 'number', widget: {minFractionDigits: 2}},
-                        percentBase: {type: 'number', widget: {type: 'currency'}}
+                        percentBase: {type: 'number', widget: {type: 'currency'}},
+                        isSourceAmount: {type: 'boolean'}
                     }
                 }
             },
@@ -282,6 +295,9 @@ module.exports = ({joi}) => ({
                     },
                     tag: {
                         widget: {type: 'chips'}
+                    },
+                    transferTag: {
+                        widget: {type: 'chips'}
                     }
                 }
             },
@@ -393,8 +409,14 @@ module.exports = ({joi}) => ({
         },
         splitTag: {
             className: 'lg:col-10',
-            label: 'Tags',
-            widgets: ['$.edit.splitName.tag']
+            label: 'Amount Types',
+            classes: {
+                default: {
+                    label: 'md:col-2',
+                    field: 'md:col-10'
+                }
+            },
+            widgets: ['$.edit.splitName.amountType', '$.edit.splitName.tag']
         },
         splitRange: {
             className: 'lg:col-10',
@@ -431,6 +453,7 @@ module.exports = ({joi}) => ({
             widgets: [
                 'operation.type',
                 'operation.tag',
+                'operation.transferTag',
                 'condition.operationStartDate',
                 'condition.operationEndDate'
             ]

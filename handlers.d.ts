@@ -75,6 +75,8 @@ declare namespace rule_decision_fetch {
 
 declare namespace rule_decision_lookup {
   export interface params {
+    accountAmount?: string;
+    accountCurrency?: string;
     amount: string;
     channelId?: number | null;
     currency: string;
@@ -82,27 +84,34 @@ declare namespace rule_decision_lookup {
     isSourceAmount?: 0 | 1 | '0' | '1';
     operation: string;
     operationDate?: Date;
+    settlementAmount?: string;
+    settlementCurrency?: string;
     sourceAccount: string;
     sourceCardProductId?: number | null;
+    transferProperties?: object;
   }
   export interface result {
     amount?: {
-      acquirerFee?: number | null;
-      commission?: number | null;
-      issuerFee?: number | null;
-      processorFee?: number | null;
-      rateConditionName?: string | null;
-      rateId?: number | null;
-      settlementAmount?: number | null;
+      accountAmount?: string | null;
+      accountRateConditionName?: string | null;
+      accountRateId?: number | null;
+      acquirerFee?: string | null;
+      commission?: string | null;
+      issuerFee?: string | null;
+      processorFee?: string | null;
+      settlementAmount?: string | null;
+      settlementRateConditionName?: string | null;
+      settlementRateId?: number | null;
       transferDateTime: Date;
       transferTypeId: string;
     };
     split?: ({
-      amount: number;
+      amount: string;
       analytics?: object | null;
       conditionId: number;
       conditionName: string;
       credit: string;
+      currency: string;
       debit: string;
       description?: string | null;
       splitNameId: number;

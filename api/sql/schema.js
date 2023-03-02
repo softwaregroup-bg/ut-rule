@@ -8,6 +8,12 @@ module.exports = function sql({config}) {
             linkSP: true,
             config
         }],
+        'rule.decision.lookup.request.send': params => params.transferProperties ? ({
+            ...params,
+            transferProperties: Object.entries(params.transferProperties).map(
+                ([name, value]) => ({name, value, factor: 'tp'})
+            )
+        }) : params,
         'rule.decision.lookup.response.receive': result => {
             if (result && Array.isArray(result.split)) {
                 result.split.forEach(split => {

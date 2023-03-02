@@ -3,6 +3,7 @@ ALTER FUNCTION [rule].assignment(
     @map [core].[map] READONLY
 ) RETURNS TABLE AS RETURN (
     SELECT
+        [splitAssignmentId],
         [description],
         [percent],
         [minValue],

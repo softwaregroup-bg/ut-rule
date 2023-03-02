@@ -38,6 +38,16 @@ BEGIN
             WHERE
                 p.factor IN ('sk', 'st', 'dk', 'dt') AND
                 ct.conditionId = @conditionId
+            UNION ALL
+            SELECT
+                p.factor
+            FROM
+                @properties p
+            JOIN
+                [rule].conditionProperty ct ON ct.name = SUBSTRING(p.name, 10, 200) AND ct.value = p.value
+            WHERE
+                p.factor = 'tp' AND
+                ct.conditionId = @conditionId
         )
     )
 END

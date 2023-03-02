@@ -51,6 +51,8 @@ module.exports = function steps({version, callSite}) {
             result(result, assert) {
                 assert.comment('conditionId: ' + result.split?.[0]?.conditionId);
                 delete result?.amount?.transferTypeId;
+                delete result?.amount?.accountRateId;
+                delete result?.amount?.settlementRateId;
                 result.split?.forEach(split => {
                     delete split?.conditionId;
                     delete split?.splitNameId;

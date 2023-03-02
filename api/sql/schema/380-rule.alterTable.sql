@@ -147,5 +147,5 @@ END
 IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionItem_factor')
 BEGIN
     ALTER TABLE [rule].[conditionItem] DROP CONSTRAINT [ccRuleConditionItem_factor]
-    ALTER TABLE [rule].[conditionItem] ADD CONSTRAINT ccRuleConditionItem_factor1 CHECK (factor IN ('dc', 'sc', 'oc', 'cs', 'ds', 'ss', 'sp', 'dp'))
+    ALTER TABLE [rule].[conditionItem] ADD CONSTRAINT ccRuleConditionItem_factor CHECK (factor IN ('dc', 'sc', 'oc', 'cs', 'ds', 'ss', 'sp', 'dp'))
 END

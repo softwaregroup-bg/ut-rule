@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.0.0-currencies.4"
+        "version": "13.0.0-currencies.5"
     },
     "openapi": "3.0.0",
     "paths": {

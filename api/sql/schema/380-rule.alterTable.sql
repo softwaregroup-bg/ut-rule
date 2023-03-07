@@ -56,6 +56,27 @@ END
 IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'name' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
 BEGIN
     ALTER TABLE [rule].[condition] ADD [name] NVARCHAR(100)
+
+    IF EXISTS (SELECT * FROM sys.objects WHERE Object_ID = OBJECT_ID(N'externalHistory.ruleConditionHistory') AND TYPE = 'SN')
+    BEGIN
+        DECLARE @historyDB SYSNAME = (SELECT DB_NAME(DB_ID(PARSENAME(base_object_name, 3))) FROM sys.synonyms WHERE name = 'ruleConditionHistory')
+        DECLARE @alter_history_table NVARCHAR(MAX) = 'IF NOT EXISTS (SELECT *
+                FROM [{DBNAME}].sys.columns c
+                JOIN [{DBNAME}].sys.tables t ON c.object_id = t.object_id
+                JOIN [{DBNAME}].sys.schemas s ON t.schema_id = s.schema_id
+                WHERE s.name = ''history''
+                    AND t.name = ''ruleConditionHistory''
+                    AND c.name = ''name''
+            ) BEGIN
+        '
+        SET @alter_history_table += ' ALTER TABLE [{DBNAME}].[history].[ruleConditionHistory] ADD [name] NVARCHAR(100)'
+        SET @alter_history_table += ' END'
+        SET @alter_history_table = REPLACE(@alter_history_table, '{DBNAME}', @historyDB)
+        EXEC(@alter_history_table)
+        SET @alter_history_table = ' UPDATE [{DBNAME}].[history].[ruleConditionHistory] SET [name] = ''Rule '' + CAST(conditionId AS VARCHAR(20)) WHERE [name] IS NULL'
+        SET @alter_history_table = REPLACE(@alter_history_table, '{DBNAME}', @historyDB)
+        EXEC(@alter_history_table)
+    END
 END
 
 IF NOT EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleConditionName' )
@@ -132,4 +153,10 @@ END
 IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'amountType' AND OBJECT_ID = OBJECT_ID(N'rule.splitName') )
 BEGIN
     ALTER TABLE [rule].[splitName] ADD [amountType] SMALLINT NULL
+END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionItem_factor')
+BEGIN
+    ALTER TABLE [rule].[conditionItem] DROP CONSTRAINT [ccRuleConditionItem_factor]
+    ALTER TABLE [rule].[conditionItem] ADD CONSTRAINT ccRuleConditionItem_factor1 CHECK (factor IN ('dc', 'sc', 'oc', 'cs', 'ds', 'ss', 'sp', 'dp'))
 END

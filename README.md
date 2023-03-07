@@ -17,6 +17,8 @@ Provides standard fees, limits and commissions API.
 * st - source type
 * dk - destination KYC
 * dt - destination type
+* sp - source Account Fee Policy
+* dp - destination Account Fee Policy
 * tp - transfer property
 
 ## Placeholders

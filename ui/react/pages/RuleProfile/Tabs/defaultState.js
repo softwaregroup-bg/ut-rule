@@ -78,6 +78,7 @@ export const defaultTabState = {
         organization: '',
         role: null,
         properties: [],
+        accountFeePolicies: [],
         accountProduct: null
     },
     limit: [],
@@ -94,6 +95,7 @@ export const defaultTabState = {
         organization: '',
         role: null,
         cardProducts: [],
+        accountFeePolicies: [],
         accountProduct: null,
         properties: []
     },

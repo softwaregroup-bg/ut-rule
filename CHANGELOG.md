@@ -1,3 +1,12 @@
+## [12.5.13](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.12...v12.5.13) (2023-02-10)
+
+
+### Bug Fixes
+
+* UTCORE-412, errors when non-empty ruleCondition history table ([#258](https://github.com/softwaregroup-bg/ut-rule/issues/258)) ([a57d8bf](https://github.com/softwaregroup-bg/ut-rule/commit/a57d8bf65546da2b538532daed81a6599610d03e))
+
+
+
 ## [12.5.12](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.11...v12.5.12) (2023-02-07)
 
 

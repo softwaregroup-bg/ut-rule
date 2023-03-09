@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.0.0-currencies.5"
+        "version": "13.0.0-currencies.6"
     },
     "paths": {
         "/rpc/rule/condition/add": {

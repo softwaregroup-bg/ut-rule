@@ -4,6 +4,7 @@ ALTER PROCEDURE [rule].[rule.edit]
     @conditionItem [rule].conditionItemTT READONLY,
     @conditionProperty [rule].conditionPropertyTT READONLY,
     @limit [rule].limitTT READONLY,
+    @rate [rule].rateTT READONLY,
     @split XML,
     @meta core.metaDataTT READONLY -- information for the logged user
 AS
@@ -97,6 +98,27 @@ BEGIN TRY
             INSERT (conditionId, currency, minAmount, maxAmount, maxAmountDaily, maxCountDaily, maxAmountWeekly, maxCountWeekly, maxAmountMonthly, maxCountMonthly, [credentials], [priority])
             VALUES (@conditionId, l1.currency, l1.minAmount, l1.maxAmount, l1.maxAmountDaily, l1.maxCountDaily, l1.maxAmountWeekly, l1.maxCountWeekly, l1.maxAmountMonthly, l1.maxCountMonthly, l1.[credentials], l1.[priority])
         WHEN NOT MATCHED BY SOURCE AND l.conditionId = @conditionId THEN
+            DELETE;
+
+        MERGE INTO [rule].rate r
+        USING @rate r1 ON r.[rateId] = r1.rateId
+        WHEN MATCHED THEN
+            UPDATE SET
+                conditionId = r1.conditionId,
+                targetCurrency = r1.targetCurrency,
+                startAmount = r1.startAmount,
+                startAmountCurrency = r1.startAmountCurrency,
+                startAmountDaily = r1.startAmountDaily,
+                startCountDaily = r1.startCountDaily,
+                startAmountWeekly = r1.startAmountWeekly,
+                startCountWeekly = r1.startCountWeekly,
+                startAmountMonthly = r1.startAmountMonthly,
+                startCountMonthly = r1.startCountMonthly,
+                rate = r1.rate
+        WHEN NOT MATCHED BY TARGET THEN
+            INSERT (conditionId, targetCurrency, startAmount, startAmountCurrency, startAmountDaily, startCountDaily, startAmountWeekly, startCountWeekly, startAmountMonthly, startCountMonthly, rate)
+            VALUES (@conditionId, r1.targetCurrency, r1.startAmount, r1.startAmountCurrency, r1.startAmountDaily, r1.startCountDaily, r1.startAmountWeekly, r1.startCountWeekly, r1.startAmountMonthly, r1.startCountMonthly, r1.rate)
+        WHEN NOT MATCHED BY SOURCE AND r.conditionId = @conditionId THEN
             DELETE;
 
         DELETE x

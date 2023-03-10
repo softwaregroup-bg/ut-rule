@@ -4,6 +4,7 @@ ALTER PROCEDURE [rule].[rule.add]
     @conditionItem [rule].conditionItemTT READONLY,
     @conditionProperty [rule].conditionPropertyTT READONLY,
     @limit [rule].limitTT READONLY,
+    @rate [rule].rateTT READONLY,
     @split XML,
     @meta core.metaDataTT READONLY -- information for the logged user
 AS
@@ -124,6 +125,32 @@ BEGIN TRY
             [credentials],
             [priority]
         FROM @limit
+
+        INSERT INTO [rule].rate (
+            conditionId,
+            targetCurrency,
+            startAmount,
+            startAmountCurrency,
+            startAmountDaily,
+            startCountDaily,
+            startAmountWeekly,
+            startCountWeekly,
+            startAmountMonthly,
+            startCountMonthly,
+            rate
+        )
+        SELECT @conditionId,
+            targetCurrency,
+            startAmount,
+            startAmountCurrency,
+            startAmountDaily,
+            startCountDaily,
+            startAmountWeekly,
+            startCountWeekly,
+            startAmountMonthly,
+            startCountMonthly,
+            rate
+        FROM @rate
 
         MERGE INTO [rule].splitName
         USING @split.nodes('/data/rows/splitName') AS records(r)

@@ -143,3 +143,10 @@ BEGIN
     ALTER TABLE [rule].[conditionProperty] DROP CONSTRAINT ccRuleConditionProperty_factor
     ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT ccRuleConditionProperty_factor1 CHECK (factor IN ('so', 'do', 'co', 'ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sk', 'st', 'dk', 'dt'))
 END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionItem_factor')
+AND NOT EXISTS (SELECT 1 FROM sys.check_constraints WHERE name = 'ccRuleConditionItem_factor' AND definition LIKE '%''tp''%')
+BEGIN
+    ALTER TABLE [rule].[conditionItem] DROP CONSTRAINT ccRuleConditionItem_factor
+    ALTER TABLE [rule].[conditionItem] ADD CONSTRAINT ccRuleConditionItem_factor CHECK (factor IN ('ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'tp'))
+END

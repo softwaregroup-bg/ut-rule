@@ -68,7 +68,7 @@ BEGIN
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
-        ca.*, a.actorType AS [type], co.organizationName
+        ca.conditionId, ca.factor, ca.actorId, a.actorType AS [type], co.organizationName
     FROM
         [rule].conditionActor ca
     JOIN
@@ -79,7 +79,7 @@ BEGIN
 
     SELECT 'conditionItem' AS resultSetName
     SELECT
-        c.*, t.alias AS [type], t.name AS itemTypeName, i.itemName
+        c.conditionId, c.factor, c.itemNameId, t.alias AS [type], t.name AS itemTypeName, i.itemName
     FROM
         [rule].conditionItem c
     JOIN
@@ -91,7 +91,7 @@ BEGIN
 
     SELECT 'conditionProperty' AS resultSetName
     SELECT
-        cp.*
+        cp.[conditionId], cp.[factor], cp.[name], cp.[value]
     FROM
         [rule].conditionProperty cp
     JOIN
@@ -99,7 +99,7 @@ BEGIN
 
     SELECT 'splitName' AS resultSetName
     SELECT
-        sn.*
+        sn.splitNameId, sn.conditionId, sn.name, sn.tag
     FROM
         [rule].splitName sn
     JOIN
@@ -107,7 +107,9 @@ BEGIN
 
     SELECT 'splitRange' AS resultSetName
     SELECT
-        sr.*
+        sr.[splitRangeId], sr.[splitNameId], sr.[startAmount], sr.[startAmountCurrency], sr.[startAmountDaily], sr.[startCountDaily],
+        sr.[startAmountWeekly], sr.[startCountWeekly], sr.[startAmountMonthly], sr.[startCountMonthly], sr.[isSourceAmount], sr.[minValue],
+        sr.[maxValue], sr.[percent], sr.[percentBase]
     FROM
         [rule].splitRange sr
     JOIN
@@ -126,7 +128,7 @@ BEGIN
 
     SELECT 'splitAssignment' AS resultSetName
     SELECT
-        sa.*
+        sa.[splitAssignmentId], sa.[splitNameId], sa.[debit], sa.[credit], sa.[minValue], sa.[maxValue], sa.[percent], sa.[description]
     FROM
         [rule].splitAssignment sa
     JOIN
@@ -136,7 +138,8 @@ BEGIN
 
     SELECT 'limit' AS resultSetName
     SELECT
-        l.*
+        l.[limitId], l.[conditionId], l.[currency], l.[minAmount], l.[maxAmount], l.[maxAmountDaily], l.[maxCountDaily], l.[maxAmountWeekly],
+        l.[maxCountWeekly], l.[maxAmountMonthly], l.[maxCountMonthly], l.[credentials], l.[priority]
     FROM
         [rule].limit l
     JOIN
@@ -144,7 +147,7 @@ BEGIN
 
     SELECT 'splitAnalytic' AS resultSetName
     SELECT
-        san.*
+        san.[splitAnalyticId], san.[splitAssignmentId], san.[name], san.[value]
     FROM
         [rule].splitAnalytic san
     JOIN

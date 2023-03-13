@@ -13,7 +13,8 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
     @credentials INT = NULL, -- the passed credentials to validate operation success
     @timeDifference INT = NULL, -- what is the difference (in minutes) with UTC, if it is not passed use server time
-    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
+    @isTransactionValidate BIT = 0, -- flag showing if operation is only validated (1) or executed (0)
+    @transactionPurposeId BIGINT -- transaction purpose
 AS
 BEGIN
     DECLARE
@@ -184,7 +185,9 @@ BEGIN
         ('ds', 'destination.region', CONVERT(NVARCHAR, @destinationRegionId)),
         ('ds', 'destination.city', CONVERT(NVARCHAR, @destinationCityId)),
         --destination category
-        ('dc', 'destination.account.product', CONVERT(NVARCHAR, @destinationAccountProductId))
+        ('dc', 'destination.account.product', CONVERT(NVARCHAR, @destinationAccountProductId)),
+        --transaction purpose
+        ('tp', 'transaction.purpose', CONVERT(NVARCHAR, @transactionPurposeId))
 
     IF OBJECT_ID(N'customer.customer') IS NOT NULL
     BEGIN

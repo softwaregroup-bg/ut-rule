@@ -75,6 +75,7 @@ function conditionSend({
             .map(setConditionId),
         conditionItem: []
             .concat(operation?.type?.map(itemNameId => ({itemNameId, factor: 'oc', type: 'operation'})))
+            .concat(operation?.purpose?.map(itemNameId => ({itemNameId, factor: 'tp', type: 'transaction'})))
             .concat(channel?.country?.map(itemNameId => ({itemNameId, factor: 'cs', type: 'country'})))
             .concat(channel?.region?.map(itemNameId => ({itemNameId, factor: 'cs', type: 'region'})))
             .concat(channel?.city?.map(itemNameId => ({itemNameId, factor: 'cs', type: 'city'})))
@@ -132,7 +133,8 @@ function conditionReceive({
         })),
         operation: {
             tag: getTag(conditionProperty, 'oc'),
-            type: get(conditionItem, 'oc', 'operation', 'itemNameId')
+            type: get(conditionItem, 'oc', 'operation', 'itemNameId'),
+            purpose: get(conditionItem, 'tp', 'purpose', 'itemNameId')
         },
         channel: {
             actor: get(conditionActor, 'co', 'organization', 'actorId'),

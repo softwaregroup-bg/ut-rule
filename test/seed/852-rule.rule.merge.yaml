@@ -27,6 +27,8 @@ condition:
   - {name: Test by counterparty kyc, counterpartyKyc: Level 0 - Individual - Bulgaria, operation: 'Rule Topup'}
   - {name: Test by transfer tag, transferTag: merchantCategory=7995}
   - {name: Test by one of transfer tags, transferTag: merchantCountry=100, merchantCountry=040}
+  - {name: Test by combination of transfer tags, transferTag: merchantCountry=040, merchantCategory=0743}
+  - {name: Test by combination of transfer tags \#2, transferTag: merchantCountry=068, merchantCategory=0743}
   - {name: Test settlement, operation: Rule Settlement}
   - priority: 70
     operationStartDate: '2022-01-01T00:00:00Z'
@@ -176,6 +178,8 @@ splitName: # defaults name: fee, tag: |fee|acquirer|
   - {conditionName: Test by counterparty kyc}
   - {conditionName: Test by transfer tag}
   - {conditionName: Test by one of transfer tags}
+  - {conditionName: Test by combination of transfer tags}
+  - {conditionName: Test by combination of transfer tags \#2}
   - {conditionName: Test Split Range}
   - {conditionName: Test Split Range, name: pos, tag: "|pos|"}
   - {conditionName: Test Split Range, name: issuer, tag: "|issuer|"}
@@ -229,6 +233,8 @@ splitRange: # defaults splitName: fee, startAmountCurrency: USD, startAmount*: 0
   - {conditionName: Test by counterparty kyc, percent: 3.6}
   - {conditionName: Test by transfer tag, percent: 3.7}
   - {conditionName: Test by one of transfer tags, percent: 3.7}
+  - {conditionName: Test by combination of transfer tags, percent: 3.7}
+  - {conditionName: Test by combination of transfer tags \#2, percent: 3.7}
   - {conditionName: Test Split Range, percent: 0.8}
   - {conditionName: Test Split Range, percent: 0.7, startAmount: 100 }
   - {conditionName: Test Split Range, percent: 0.6, startAmountDaily: 200}
@@ -278,6 +284,8 @@ splitAssignment: # defaults splitName: fee, percent: 100, description: {splitNam
   - {conditionName: Test by counterparty kyc}
   - {conditionName: Test by transfer tag}
   - {conditionName: Test by one of transfer tags}
+  - {conditionName: Test by combination of transfer tags}
+  - {conditionName: Test by combination of transfer tags \#2}
   - {conditionName: Test Split Range, minValue: 5.55, percent: 10.1, description: test}
   - {conditionName: Test Split Range, splitName: pos}
   - {conditionName: Test Split Analytic, minValue: 6.66, percent: 10.2, description: test}

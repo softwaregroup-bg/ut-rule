@@ -4,7 +4,8 @@ ALTER FUNCTION [rule].falsePropertyFactorCount(
 ) RETURNS BIGINT AS
 BEGIN
     RETURN (
-        SELECT COUNT(*) FROM [rule].conditionProperty WHERE conditionId = @conditionId AND factor NOT IN (
+        SELECT COUNT(*) FROM [rule].conditionProperty WHERE conditionId = @conditionId
+            AND CASE factor WHEN 'tp' THEN factor + name ELSE factor END NOT IN (
             SELECT
                 p.factor
             FROM
@@ -40,7 +41,7 @@ BEGIN
                 ct.conditionId = @conditionId
             UNION ALL
             SELECT
-                p.factor
+                p.factor + SUBSTRING(p.name, 10, 200)
             FROM
                 @properties p
             JOIN

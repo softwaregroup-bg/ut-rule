@@ -414,14 +414,18 @@ BEGIN TRY
             WHEN 2 THEN @settlementScale
             ELSE @accountScale
         END), 2) amount,
-        assignment.debit,
-        assignment.credit,
+        ISNULL(d.accountNumber, assignment.debit) debit,
+        ISNULL(c.accountNumber, assignment.credit) credit,
         assignment.description,
         assignment.analytics
     FROM
         @fee a
     CROSS APPLY
         [rule].assignment(a.splitNameId, @map) assignment
+    LEFT JOIN
+        integration.vAssignment d ON CAST(d.accountId AS VARCHAR(100)) = assignment.debit
+    LEFT JOIN
+        integration.vAssignment c ON CAST(c.accountId AS VARCHAR(100)) = assignment.credit
     ORDER BY
         a.splitNameId, assignment.splitAssignmentId
 END TRY

@@ -104,7 +104,6 @@ BEGIN TRY
         USING @rate r1 ON r.[rateId] = r1.rateId
         WHEN MATCHED THEN
             UPDATE SET
-                conditionId = r1.conditionId,
                 targetCurrency = r1.targetCurrency,
                 startAmount = r1.startAmount,
                 startAmountCurrency = r1.startAmountCurrency,

@@ -48,6 +48,7 @@ module.exports = ({
                     tag: joi.string().required().allow(null),
                     currency: joi.string().required(),
                     amount: joi.string().max(21).required(),
+                    quantity: joi.string().max(21),
                     debit: joi.string().required(),
                     credit: joi.string().required(),
                     description: joi.string().allow(null),

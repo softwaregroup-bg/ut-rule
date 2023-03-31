@@ -114,6 +114,7 @@ declare namespace rule_decision_lookup {
       currency: string;
       debit: string;
       description?: string | null;
+      quantity?: string | null;
       splitNameId: number;
       tag: string | null;
     })[];

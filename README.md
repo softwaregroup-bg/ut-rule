@@ -34,6 +34,13 @@ Provides standard fees, limits and commissions API.
 * operation.id
 * operation.currency
 
+* transfer.amount
+* transfer.settlementAmount
+* transfer.accountAmount
+* transfer.currencyId
+* transfer.settlementCurrencyId
+* transfer.accountCurrencyId
+
 * source.owner.id
 * source.owner.id^X
 * source.country

@@ -98,20 +98,24 @@ BEGIN TRY
     GROUP BY
         c.[priority], c.[name], c.conditionId
 
-    DECLARE @scale TINYINT = ISNULL((SELECT scale
+    DECLARE @scale TINYINT = 2, @currencyId INT
+    SELECT @scale = scale, @currencyId = currencyId
     FROM core.currency c
-        JOIN core.itemName it ON it.itemNameId = c.itemNameId
-    WHERE itemCode = @currency), 2)
+    JOIN core.itemName it ON it.itemNameId = c.itemNameId
+    WHERE itemCode = @currency
 
     DECLARE @settlementAmount MONEY = TRY_CONVERT(MONEY, @settlementAmountString)
     DECLARE @settlementRateId INT
     DECLARE @settlementRateName NVARCHAR(100)
     SET @settlementCurrency = ISNULL(@settlementCurrency, @currency)
     IF @settlementCurrency = @currency AND @settlementAmount IS NULL SET @settlementAmount = @amount
-    DECLARE @settlementScale TINYINT = ISNULL((SELECT scale
+
+    DECLARE @settlementScale TINYINT = 2, @settlementCurrencyId INT
+    SELECT @settlementScale = scale, @settlementCurrencyId = currencyId
     FROM core.currency c
-        JOIN core.itemName it ON it.itemNameId = c.itemNameId
-    WHERE itemCode = @settlementCurrency), 2)
+    JOIN core.itemName it ON it.itemNameId = c.itemNameId
+    WHERE itemCode = @settlementCurrency
+
     IF @settlementCurrency <> @currency AND @settlementAmount IS NULL
     BEGIN
         SELECT
@@ -127,10 +131,13 @@ BEGIN TRY
     DECLARE @accountRateName NVARCHAR(100)
     SET @accountCurrency = ISNULL(@accountCurrency, @settlementCurrency)
     IF @accountCurrency = @settlementCurrency AND @accountAmount IS NULL SET @accountAmount = @settlementAmount
-    DECLARE @accountScale TINYINT = ISNULL((SELECT scale
+
+    DECLARE @accountScale TINYINT = 2, @accountCurrencyId INT
+    SELECT @accountScale = scale, @accountCurrencyId = currencyId
     FROM core.currency c
-        JOIN core.itemName it ON it.itemNameId = c.itemNameId
-    WHERE itemCode = @accountCurrency), 2)
+    JOIN core.itemName it ON it.itemNameId = c.itemNameId
+    WHERE itemCode = @accountCurrency
+
     IF @accountCurrency <> @settlementCurrency AND @accountAmount IS NULL
     BEGIN
         SELECT
@@ -391,6 +398,12 @@ BEGIN TRY
         @map([key], [value])
     VALUES -- note that ${} is replaced by SQL port
         ('$' + '{operation.currency}', CAST(@currency AS VARCHAR(100))),
+        ('$' + '{transfer.amount}', CONVERT(VARCHAR(100), @amount, 2)),
+        ('$' + '{transfer.settlementAmount}', CONVERT(VARCHAR(100), @settlementAmount, 2)),
+        ('$' + '{transfer.accountAmount}', CONVERT(VARCHAR(100), @accountAmount, 2)),
+        ('$' + '{transfer.currencyId}', CAST(@currencyId AS VARCHAR(100))),
+        ('$' + '{transfer.settlementCurrencyId}', CAST(@settlementCurrencyId AS VARCHAR(100))),
+        ('$' + '{transfer.accountCurrencyId}', CAST(@accountCurrencyId AS VARCHAR(100))),
         ('$' + '{source.account.id}', 'account:' + CAST(@sourceAccountId AS VARCHAR(100))),
         ('$' + '{source.account.number}', CAST(@sourceAccount AS VARCHAR(100))),
         ('$' + '{destination.account.id}', 'account:' + CAST(@destinationAccountId AS VARCHAR(100))),
@@ -414,6 +427,7 @@ BEGIN TRY
             WHEN 2 THEN @settlementScale
             ELSE @accountScale
         END), 2) amount,
+        assignment.quantity quantity,
         ISNULL(d.accountNumber, assignment.debit) debit,
         ISNULL(c.accountNumber, assignment.credit) credit,
         assignment.description,

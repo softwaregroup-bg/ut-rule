@@ -157,7 +157,20 @@ BEGIN TRY
         ON 1 = 0
         WHEN NOT MATCHED THEN
         INSERT (conditionId, name, tag) VALUES (@conditionId, r.value('(name)[1]', 'NVARCHAR(50)'), r.value('(tag)[1]', 'NVARCHAR(max)'))
-        OUTPUT INSERTED.* INTO @splitName;
+        OUTPUT
+            INSERTED.splitNameId,
+            INSERTED.conditionId,
+            INSERTED.name,
+            INSERTED.tag,
+            INSERTED.amountType
+        INTO
+            @splitName(
+                INSERTED.splitNameId,
+                INSERTED.conditionId,
+                INSERTED.name,
+                INSERTED.tag,
+                INSERTED.amountType
+            );
 
         MERGE INTO [rule].splitRange
         USING (
@@ -237,7 +250,28 @@ BEGIN TRY
         WHEN NOT MATCHED THEN
         INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
         VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
-        OUTPUT INSERTED.* INTO @splitAssignment;
+        OUTPUT
+            INSERTED.splitAssignmentId,
+            INSERTED.splitNameId,
+            INSERTED.debit,
+            INSERTED.credit,
+            INSERTED.quantity,
+            INSERTED.minValue,
+            INSERTED.maxValue,
+            INSERTED.[percent],
+            INSERTED.description
+        INTO
+            @splitAssignment(
+                splitAssignmentId,
+                splitNameId,
+                debit,
+                credit,
+                quantity,
+                minValue,
+                maxValue,
+                [percent],
+                description
+            );
 
 
         MERGE INTO [rule].splitAnalytic

@@ -165,11 +165,11 @@ BEGIN TRY
             INSERTED.amountType
         INTO
             @splitName(
-                INSERTED.splitNameId,
-                INSERTED.conditionId,
-                INSERTED.name,
-                INSERTED.tag,
-                INSERTED.amountType
+                splitNameId,
+                conditionId,
+                name,
+                tag,
+                amountType
             );
 
         MERGE INTO [rule].splitRange

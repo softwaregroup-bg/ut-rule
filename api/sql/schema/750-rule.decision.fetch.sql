@@ -372,14 +372,17 @@ BEGIN TRY
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
         CONVERT(VARCHAR(21), @settlementAmount, 2) settlementAmount,
+        @settlementCurrency settlementCurrency,
         @settlementRateId settlementRateId,
         @settlementRateName settlementRateConditionName,
         CONVERT(VARCHAR(21), @accountAmount, 2) accountAmount,
+        @accountCurrency accountCurrency,
         @accountRateId accountRateId,
         @accountRateName accountRateConditionName,
         CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType = 1 AND tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), 2) acquirerFee,
         CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType IS NULL AND tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), 2) issuerFee,
         CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType = 1 AND tag LIKE '%|processor|%' AND tag LIKE '%|fee|%'), 2) processorFee,
+        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType IS NULL AND tag LIKE '%|fee|%'), 2) transferFee,
         CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType IS NULL AND tag LIKE '%|commission|%'), 2) commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId

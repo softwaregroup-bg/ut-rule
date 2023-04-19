@@ -138,6 +138,10 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Counterparty organization negative', destinationAccount: 'source-organization'}),
                 ruleDecisionSnapshot({name: 'Counterparty organization tag', destinationAccount: 'destination-organization-tag'}),
                 ruleDecisionSnapshot({name: 'Counterparty organization tag negative', destinationAccount: 'source-organization-tag'}),
+                ruleDecisionSnapshot({name: 'Transfer tag', transferProperties: {merchantCategory: 7995}}),
+                ruleDecisionSnapshot({name: 'One of transfer tags', transferProperties: {merchantCountry: 100}}),
+                ruleDecisionSnapshot({name: 'Combination of transfer tags', transferProperties: {merchantCountry: '040', merchantCategory: '0743'}}),
+                ruleDecisionSnapshot({name: 'Combination of transfer tags #2', transferProperties: {merchantCountry: '068', merchantCategory: '0743'}}),
                 ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount and bgn, must match', operation: 'Rule Balance Enquiry', amount: '999', currency: 'BGN'}),
                 ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount with default currency, must not match', operation: 'Rule Balance Enquiry', amount: '999'}),
                 ruleDecisionSnapshot({name: 'Test limits within limit range with overridden amount with overridden currency, must not match', operation: 'Rule Balance Enquiry', amount: '999', currency: 'EUR'}),
@@ -150,19 +154,51 @@ module.exports = function test() {
                 ruleDecisionSnapshot({name: 'Test rule for assignments, must not match', operation: 'Rule Wallet to Wallet', currency: 'BGN'}),
                 ruleDecisionSnapshot({name: 'Test rule for split analytics', operation: 'Rule Billpayment'}),
                 ruleDecisionSnapshot({name: 'Test rule for split analytics, must not match', operation: 'Rule Billpayment', currency: 'EUR'}),
+                ruleDecisionSnapshot({name: 'Settlement', operation: 'Rule Settlement', settlementCurrency: 'EUR', settlementAmount: '990'}),
+                ruleDecisionSnapshot({name: 'Settlement with rate', operation: 'Rule Settlement', settlementCurrency: 'EUR'}),
                 {
-                    name: 'Test rule for limits below min amount',
+                    name: 'Test rule for limits daily above limit',
                     method: 'rule.decision.lookup',
                     params: {
-                        operation: 'Rule Balance Enquiry',
-                        amount: '8',
-                        currency: 'BGN',
+                        operation: 'Rule Ministatement',
+                        amount: '2100',
+                        currency: 'USD',
                         sourceAccount: 'current',
                         operationDate: '2022-02-10T00:00:00Z',
                         destinationAccount: 'current'
                     },
                     error: function(error, assert) {
-                        assert.equal(error.type, 'rule.exceedMinLimitAmount', 'Transaction amount is below minimum');
+                        assert.equal(error.type, 'rule.exceedDailyLimitAmount', 'Limit Exceeded');
+                    }
+                },
+                {
+                    name: 'Test rule for limits weekly above limit',
+                    method: 'rule.decision.lookup',
+                    params: {
+                        operation: 'Rule Refund',
+                        amount: '3100',
+                        currency: 'USD',
+                        sourceAccount: 'current',
+                        operationDate: '2022-02-10T00:00:00Z',
+                        destinationAccount: 'current'
+                    },
+                    error: function(error, assert) {
+                        assert.equal(error.type, 'rule.exceedWeeklyLimitAmount', 'Limit exceeded');
+                    }
+                },
+                {
+                    name: 'Test rule for limits monthly above limit',
+                    method: 'rule.decision.lookup',
+                    params: {
+                        operation: 'Rule Request Money',
+                        amount: '4100',
+                        currency: 'USD',
+                        sourceAccount: 'current',
+                        operationDate: '2022-02-10T00:00:00Z',
+                        destinationAccount: 'current'
+                    },
+                    error: function(error, assert) {
+                        assert.equal(error.type, 'rule.exceedMonthlyLimitAmount', 'Limit Exceeded');
                     }
                 },
                 {
@@ -208,6 +244,21 @@ module.exports = function test() {
                     },
                     error: function(error, assert) {
                         assert.equal(error.type, 'rule.exceedMaxLimitAmount', 'Transaction amount is above maximum');
+                    }
+                },
+                {
+                    name: 'Test rule for limits below min amount',
+                    method: 'rule.decision.lookup',
+                    params: {
+                        operation: 'Rule Balance Enquiry',
+                        amount: '8',
+                        currency: 'BGN',
+                        sourceAccount: 'current',
+                        operationDate: '2022-02-10T00:00:00Z',
+                        destinationAccount: 'current'
+                    },
+                    error: function(error, assert) {
+                        assert.equal(error.type, 'rule.exceedMinLimitAmount', 'Transaction amount is below minimum');
                     }
                 }
             ]);

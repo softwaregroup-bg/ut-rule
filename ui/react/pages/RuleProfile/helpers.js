@@ -19,20 +19,24 @@ const factors = {
     destinationOrganization: 'do',
     channelOrganization: 'co',
     sourceSpatial: 'ss',
+    sourcePolicy: 'sp',
     destinationSpatial: 'ds',
     channelSpatial: 'cs',
     operationCategory: 'oc',
     sourceCategory: 'sc',
-    destinationCategory: 'dc'
+    destinationCategory: 'dc',
+    destinationPolicy: 'dp'
 };
 
 const conditionItemFactor = {
     source: factors.sourceSpatial,
     sourceCategory: factors.sourceCategory,
+    sourcePolicy: factors.sourcePolicy,
     channel: factors.channelSpatial,
     destination: factors.destinationSpatial,
     destinationCategory: factors.destinationCategory,
-    operation: factors.operationCategory
+    operation: factors.operationCategory,
+    destinationPolicy: factors.destinationPolicy
 };
 
 const conditionActorFactor = {
@@ -106,12 +110,15 @@ export const prepareRuleToSave = (rule) => {
 
     ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
         const tab = rule[tabKey];
-        tab && ['accountProduct', 'cities', 'countries', 'regions', 'operations'].forEach(function(kepProp) {
+        tab && ['accountProduct', 'cities', 'countries', 'regions', 'operations', 'accountFeePolicies'].forEach(function(kepProp) {
             const value = tab[kepProp];
             let factor = conditionItemFactor[tabKey];
-            if (kepProp === 'accountProduct' && ['source', 'destination'].includes(tabKey)) {
-                factor = tabKey === 'source' ? conditionItemFactor.sourceCategory : conditionItemFactor.destinationCategory;
+
+            if (['source', 'destination'].includes(tabKey)) {
+                if (kepProp === 'accountProduct') factor = tabKey === 'source' ? conditionItemFactor.sourceCategory : conditionItemFactor.destinationCategory;
+                else if (kepProp === 'accountFeePolicies') factor = tabKey === 'source' ? conditionItemFactor.sourcePolicy : conditionItemFactor.destinationPolicy;
             }
+
             if (value && value instanceof Array) {
                 value.forEach(function(ci) {
                     ci.key && formattedRule.conditionItem.push({

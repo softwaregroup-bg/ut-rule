@@ -1,6 +1,7 @@
 ALTER PROCEDURE [rule].[rule.merge]
     @condition [rule].conditionCustom READONLY,
     @limit [rule].limitCustom READONLY,
+    @rate [rule].rateCustom READONLY,
     @splitName [rule].splitNameCustom READONLY,
     @splitRange [rule].splitRangeCustom READONLY,
     @splitAssignment [rule].splitAssignmentCustom READONLY,
@@ -287,6 +288,22 @@ BEGIN TRY
         FOR itn IN ([1], [2])
     ) pivot_table
 
+    INSERT INTO @conditionProperty(conditionName, factor, name, value)
+    SELECT name, 'tp', [1], ISNULL([2], '1')
+    FROM
+    (
+        SELECT r.name, c.transferTag, a.ItemNumber, a2.ItemNumber AS itn, LTRIM(RTRIM(a2.Value)) AS v
+        FROM @condition c
+        JOIN @conditionTT r ON r.name = c.name
+        CROSS APPLY core.DelimitedSplit8K(c.transferTag, ',') a
+        CROSS APPLY core.DelimitedSplit8K(LTRIM(RTRIM(a.value)), '=') a2
+        WHERE c.transferTag IS NOT NULL
+    ) p
+    PIVOT
+    (
+        MAX(v)
+        FOR itn IN ([1], [2])
+    ) pivot_table
 
     DECLARE @rules TABLE (ruleId INT, ruleName NVARCHAR(100))
     DECLARE @ruleSplitNames TABLE (splitId INT, splitNm NVARCHAR(100), ruleId INT, ruleName NVARCHAR(100))
@@ -324,16 +341,44 @@ BEGIN TRY
         FROM @limit
         JOIN @rules ON ruleName = conditionName
 
+        INSERT INTO [rule].rate (
+            conditionId,
+            targetCurrency,
+            startAmount,
+            startAmountCurrency,
+            startAmountDaily,
+            startCountDaily,
+            startAmountWeekly,
+            startCountWeekly,
+            startAmountMonthly,
+            startCountMonthly,
+            rate
+        )
+        SELECT
+            ruleId,
+            targetCurrency,
+            ISNULL(startAmount, 0),
+            ISNULL(startAmountCurrency, 'USD'),
+            ISNULL(startAmountDaily, 0),
+            ISNULL(startCountDaily, 0),
+            ISNULL(startAmountWeekly, 0),
+            ISNULL(startCountWeekly, 0),
+            ISNULL(startAmountMonthly, 0),
+            ISNULL(startCountMonthly, 0),
+            rate
+        FROM @rate
+        JOIN @rules ON ruleName = conditionName
+
         MERGE INTO [rule].splitName AS t
         USING
         (
-            SELECT ruleId, ruleName, ISNULL(s.name, 'fee') name, ISNULL(s.tag, '|fee|acquirer|') tag
+            SELECT ruleId, ruleName, ISNULL(s.name, 'fee') name, ISNULL(s.tag, '|fee|issuer|') tag, amountType
             FROM @splitName s
             JOIN @rules ON conditionName = ruleName
         ) AS s ON 1 = 0
         WHEN NOT MATCHED BY TARGET THEN
-            INSERT (conditionId, name, tag)
-            VALUES (s.ruleId, s.name, s.tag)
+            INSERT (conditionId, name, tag, amountType)
+            VALUES (s.ruleId, s.name, s.tag, amountType)
         OUTPUT INSERTED.splitNameId, INSERTED.name, s.ruleId, s.ruleName INTO @ruleSplitNames(splitId, splitNm, ruleId, ruleName);
 
         INSERT [rule].splitRange (
@@ -370,8 +415,8 @@ BEGIN TRY
         FROM @splitRange r
         JOIN @ruleSplitNames n ON n.splitNm = ISNULL(r.splitName, 'fee') AND n.ruleName = r.conditionName
 
-        INSERT [rule].splitAssignment (splitNameId, debit, credit, minValue, maxValue, [percent], description)
-        SELECT n.splitId, ISNULL(r.debit, 'debit'), ISNULL(r.credit, 'credit'), r.minValue, r.maxValue, ISNULL(r.[percent], 100), COALESCE(r.description, r.splitName, 'fee')
+        INSERT [rule].splitAssignment (splitNameId, debit, credit, quantity, minValue, maxValue, [percent], description)
+        SELECT n.splitId, ISNULL(r.debit, 'debit'), ISNULL(r.credit, 'credit'), r.quantity, r.minValue, r.maxValue, ISNULL(r.[percent], 100), COALESCE(r.description, r.splitName, 'fee')
         FROM @splitAssignment r
         JOIN @ruleSplitNames n ON n.splitNm = ISNULL(r.splitName, 'fee') AND n.ruleName = r.conditionName
 

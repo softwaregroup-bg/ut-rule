@@ -14,6 +14,7 @@ const defaultUiState = {
             'supervisor',
             'cardProduct',
             'accountProduct',
+            'feePolicy',
             'account'
         ],
         itemCode: [
@@ -135,6 +136,10 @@ const defaultUiState = {
                     accountProduct: {
                         visible: true,
                         title: 'Account Product'
+                    },
+                    accountFeePolicy: {
+                        visible: true,
+                        title: 'Account Fee Policy'
                     }
                 }
             },
@@ -161,6 +166,10 @@ const defaultUiState = {
                     accountProduct: {
                         visible: true,
                         title: 'Account Product'
+                    },
+                    accountFeePolicy: {
+                        visible: true,
+                        title: 'Account Fee Policy'
                     }
                 }
             },

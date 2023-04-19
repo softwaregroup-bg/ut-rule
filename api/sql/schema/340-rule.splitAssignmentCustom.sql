@@ -3,6 +3,7 @@ CREATE TYPE [rule].[splitAssignmentCustom] AS TABLE(
     conditionName NVARCHAR(100),
     debit VARCHAR(50),
     credit VARCHAR(50),
+    quantity VARCHAR(50),
     minValue MONEY,
     maxValue MONEY,
     [percent] DECIMAL(9, 2),

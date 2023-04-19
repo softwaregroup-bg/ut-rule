@@ -79,13 +79,13 @@ BEGIN
         </data>'
 
         EXEC [rule].[rule.add]
-            @condition,
-            @conditionActor,
-            @conditionItem,
-            @conditionProperty,
-            @limit,
-            @split,
-            @meta
+            @condition = @condition,
+            @conditionActor = @conditionActor,
+            @conditionItem = @conditionItem,
+            @conditionProperty = @conditionProperty,
+            @limit = @limit,
+            @split = @split,
+            @meta = @meta
     END
 
     DELETE FROM @condition
@@ -127,13 +127,13 @@ BEGIN
         </data>'
 
         EXEC [rule].[rule.add]
-            @condition,
-            @conditionActor,
-            @conditionItem,
-            @conditionProperty,
-            @limit,
-            @split,
-            @meta
+            @condition = @condition,
+            @conditionActor = @conditionActor,
+            @conditionItem = @conditionItem,
+            @conditionProperty = @conditionProperty,
+            @limit = @limit,
+            @split = @split,
+            @meta = @meta
     END
 
     DELETE FROM @condition
@@ -175,13 +175,13 @@ BEGIN
         </data>'
 
         EXEC [rule].[rule.add]
-            @condition,
-            @conditionActor,
-            @conditionItem,
-            @conditionProperty,
-            @limit,
-            @split,
-            @meta
+            @condition = @condition,
+            @conditionActor = @conditionActor,
+            @conditionItem = @conditionItem,
+            @conditionProperty = @conditionProperty,
+            @limit = @limit,
+            @split = @split,
+            @meta = @meta
     END
 
     DELETE FROM @condition
@@ -224,12 +224,12 @@ BEGIN
         </data>'
 
         EXEC [rule].[rule.add]
-            @condition,
-            @conditionActor,
-            @conditionItem,
-            @conditionProperty,
-            @limit,
-            @split,
-            @meta
+            @condition = @condition,
+            @conditionActor = @conditionActor,
+            @conditionItem = @conditionItem,
+            @conditionProperty = @conditionProperty,
+            @limit = @limit,
+            @split = @split,
+            @meta = @meta
     END
 END

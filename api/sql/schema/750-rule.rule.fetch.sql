@@ -142,6 +142,14 @@ BEGIN
     JOIN
         #RuleConditions rct ON rct.conditionId = l.conditionId
 
+    SELECT 'rate' AS resultSetName
+    SELECT
+        r.*
+    FROM
+        [rule].rate r
+    JOIN
+        #RuleConditions rct ON rct.conditionId = r.conditionId
+
     SELECT 'splitAnalytic' AS resultSetName
     SELECT
         san.*

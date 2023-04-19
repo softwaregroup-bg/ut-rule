@@ -160,9 +160,9 @@ export default class Grid extends React.Component {
                 case 'operation':
                     return this.renderGridColumn(value, ['oc'], row, 'operation');
                 case 'source':
-                    return this.renderGridColumn(value, ['ss', 'sc', 'so'], row, 'source');
+                    return this.renderGridColumn(value, ['ss', 'sc', 'so', 'sp'], row, 'source');
                 case 'destination':
-                    return this.renderGridColumn(value, ['ds', 'dc', 'do'], row, 'destination');
+                    return this.renderGridColumn(value, ['ds', 'dc', 'do', 'dp'], row, 'destination');
                 case 'limit':
                     return this.renderGridColumn(value, ['limit'], row, 'limit');
                 case 'split':

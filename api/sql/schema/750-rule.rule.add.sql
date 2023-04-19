@@ -4,6 +4,7 @@ ALTER PROCEDURE [rule].[rule.add]
     @conditionItem [rule].conditionItemTT READONLY,
     @conditionProperty [rule].conditionPropertyTT READONLY,
     @limit [rule].limitTT READONLY,
+    @rate [rule].rateTT READONLY,
     @split XML,
     @meta core.metaDataTT READONLY -- information for the logged user
 AS
@@ -125,12 +126,51 @@ BEGIN TRY
             [priority]
         FROM @limit
 
+        INSERT INTO [rule].rate (
+            conditionId,
+            targetCurrency,
+            startAmount,
+            startAmountCurrency,
+            startAmountDaily,
+            startCountDaily,
+            startAmountWeekly,
+            startCountWeekly,
+            startAmountMonthly,
+            startCountMonthly,
+            rate
+        )
+        SELECT @conditionId,
+            targetCurrency,
+            startAmount,
+            startAmountCurrency,
+            startAmountDaily,
+            startCountDaily,
+            startAmountWeekly,
+            startCountWeekly,
+            startAmountMonthly,
+            startCountMonthly,
+            rate
+        FROM @rate
+
         MERGE INTO [rule].splitName
         USING @split.nodes('/data/rows/splitName') AS records(r)
         ON 1 = 0
         WHEN NOT MATCHED THEN
         INSERT (conditionId, name, tag) VALUES (@conditionId, r.value('(name)[1]', 'NVARCHAR(50)'), r.value('(tag)[1]', 'NVARCHAR(max)'))
-        OUTPUT INSERTED.* INTO @splitName;
+        OUTPUT
+            INSERTED.splitNameId,
+            INSERTED.conditionId,
+            INSERTED.name,
+            INSERTED.tag,
+            INSERTED.amountType
+        INTO
+            @splitName(
+                splitNameId,
+                conditionId,
+                name,
+                tag,
+                amountType
+            );
 
         MERGE INTO [rule].splitRange
         USING (
@@ -210,7 +250,28 @@ BEGIN TRY
         WHEN NOT MATCHED THEN
         INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
         VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
-        OUTPUT INSERTED.* INTO @splitAssignment;
+        OUTPUT
+            INSERTED.splitAssignmentId,
+            INSERTED.splitNameId,
+            INSERTED.debit,
+            INSERTED.credit,
+            INSERTED.quantity,
+            INSERTED.minValue,
+            INSERTED.maxValue,
+            INSERTED.[percent],
+            INSERTED.description
+        INTO
+            @splitAssignment(
+                splitAssignmentId,
+                splitNameId,
+                debit,
+                credit,
+                quantity,
+                minValue,
+                maxValue,
+                [percent],
+                description
+            );
 
 
         MERGE INTO [rule].splitAnalytic

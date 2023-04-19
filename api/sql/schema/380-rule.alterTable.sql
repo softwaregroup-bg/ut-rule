@@ -141,5 +141,27 @@ END
 IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionProperty_factor')
 BEGIN
     ALTER TABLE [rule].[conditionProperty] DROP CONSTRAINT ccRuleConditionProperty_factor
-    ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT ccRuleConditionProperty_factor1 CHECK (factor IN ('so', 'do', 'co', 'ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sk', 'st', 'dk', 'dt'))
+    ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT ccRuleConditionProperty_factor2 CHECK (factor IN ('so', 'do', 'co', 'ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sk', 'st', 'dk', 'dt', 'tp'))
+END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionProperty_factor1')
+BEGIN
+    ALTER TABLE [rule].[conditionProperty] DROP CONSTRAINT ccRuleConditionProperty_factor1
+    ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT ccRuleConditionProperty_factor2 CHECK (factor IN ('so', 'do', 'co', 'ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sk', 'st', 'dk', 'dt', 'tp'))
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'amountType' AND OBJECT_ID = OBJECT_ID(N'rule.splitName') )
+BEGIN
+    ALTER TABLE [rule].[splitName] ADD [amountType] SMALLINT NULL
+END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionItem_factor')
+BEGIN
+    ALTER TABLE [rule].[conditionItem] DROP CONSTRAINT [ccRuleConditionItem_factor]
+    ALTER TABLE [rule].[conditionItem] ADD CONSTRAINT ccRuleConditionItem_factor1 CHECK (factor IN ('dc', 'sc', 'oc', 'cs', 'ds', 'ss', 'sp', 'dp'))
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'quantity' AND OBJECT_ID = OBJECT_ID(N'rule.splitAssignment') )
+BEGIN
+    ALTER TABLE [rule].[splitAssignment] ADD [quantity] VARCHAR(50) NULL
 END

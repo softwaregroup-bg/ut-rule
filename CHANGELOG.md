@@ -1,3 +1,4 @@
+
 # [12.6.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.13...v12.6.0) (2023-02-16)
 
 

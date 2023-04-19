@@ -19,6 +19,7 @@ const propTypes = {
     countries: PropTypes.array,
     regions: PropTypes.array,
     cities: PropTypes.array,
+    feePolicies: PropTypes.array,
     organizations: PropTypes.array,
     accountProducts: PropTypes.array,
     fieldValues: PropTypes.object,
@@ -31,6 +32,7 @@ const defaultProps = {
     countries: [],
     regions: [],
     cities: [],
+    feePolicies: [],
     organizations: []
 };
 
@@ -49,6 +51,7 @@ class DestinationTab extends Component {
             organizations,
             accountProducts,
             fieldValues,
+            feePolicies,
             destinationConfig: { fields }
         } = this.props;
         const changeInput = (field, value) => {
@@ -116,6 +119,18 @@ class DestinationTab extends Component {
                         placeholder='Select Account Product'
                         onSelect={(field) => { changeInput(field); }}
                         label={fields.accountProduct.title || 'Account Product'}
+                    />
+                </div>}
+                {fields.accountFeePolicy.visible && <div className={style.inputWrapper}>
+                    <MultiSelectDropdown
+                        boldLabel
+                        disabled={readonly}
+                        keyProp='accountFeePolicies'
+                        label={fields.accountFeePolicy.title || 'Account Fee Policy'}
+                        placeholder='Select Account Fee Policy'
+                        defaultSelected={fieldValues.accountFeePolicies}
+                        data={feePolicies}
+                        onSelect={(field) => { changeInput(field); }}
                     />
                 </div>}
             </div>
@@ -187,6 +202,7 @@ const mapStateToProps = (state, ownProps) => {
         countries: state.ruleProfileReducer.getIn(['nomenclatures', 'country']).toJS(),
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
+        feePolicies: state.ruleProfileReducer.getIn(['nomenclatures', 'feePolicy']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
         accountProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'accountProduct']).toJS(),

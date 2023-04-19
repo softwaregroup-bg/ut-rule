@@ -6,14 +6,18 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceCardProductId BIGINT = NULL, -- product id of the card
     @destinationAccount VARCHAR(100), -- destination account number
     @amount VARCHAR(21), -- operation amount
+    @settlementAmount VARCHAR(21), -- operation amount
+    @accountAmount VARCHAR(21), -- operation amount
     @currency VARCHAR(3), -- operation currency
-    @targetCurrency VARCHAR(3) = NULL, -- currency after exchange
+    @settlementCurrency VARCHAR(3) = NULL, -- settlement currency
+    @accountCurrency VARCHAR(3) = NULL, -- source account currency
     @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
     @credentials INT = NULL, -- the passed credentials to validate operation success
     @timeDifference INT = NULL, -- what is the difference (in minutes) with UTC, if it is not passed use server time
-    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
+    @isTransactionValidate BIT = 0, -- flag showing if operation is only validated (1) or executed (0)
+    @transferProperties [rule].[properties] READONLY
 AS
 BEGIN
     DECLARE
@@ -28,6 +32,7 @@ BEGIN
         @sourceCityId BIGINT,
         @sourceOwnerId BIGINT,
         @sourceAccountProductId BIGINT,
+        @sourceAccountFeePolicyId BIGINT,
         @sourceAccountId NVARCHAR(255),
         @sourceAccountCheckAmount MONEY,
         @sourceAccountCheckMask INT,
@@ -41,6 +46,7 @@ BEGIN
         @destinationCityId BIGINT,
         @destinationOwnerId BIGINT,
         @destinationAccountProductId BIGINT,
+        @destinationAccountFeePolicyId BIGINT,
         @destinationAccountId NVARCHAR(255),
 
         @totals [rule].totals
@@ -69,6 +75,7 @@ BEGIN
         @sourceCityId = cityId,
         @sourceOwnerId = ownerId,
         @sourceAccountProductId = accountProductId,
+        @sourceAccountFeePolicyId = feePolicyId,
         @sourceAccountId = accountId,
         @sourceAccountCheckAmount = accountCheckAmount,
         @sourceAccountCheckMask = accountCheckMask,
@@ -87,9 +94,9 @@ BEGIN
         @destinationCityId = cityId,
         @destinationOwnerId = ownerId,
         @destinationAccountProductId = accountProductId,
+        @destinationAccountFeePolicyId = feePolicyId,
         @destinationAccountId = accountId
-    FROM
-        [integration].[vAccount]
+    FROM [integration].[vAccount]
     WHERE
         (accountNumber = @destinationAccount OR @destinationAccount IS NULL) AND
         (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL) AND
@@ -179,12 +186,16 @@ BEGIN
         --source category
         ('sc', 'source.account.product', CONVERT(NVARCHAR, @sourceAccountProductId)),
         ('sc', 'source.card.product', CONVERT(NVARCHAR, @sourceCardProductId)),
+        --source account policy
+        ('sp', 'source.account.feePolicyId', CONVERT(NVARCHAR, @sourceAccountFeePolicyId)),
         --destination spatial
         ('ds', 'destination.country', CONVERT(NVARCHAR, @destinationCountryId)),
         ('ds', 'destination.region', CONVERT(NVARCHAR, @destinationRegionId)),
         ('ds', 'destination.city', CONVERT(NVARCHAR, @destinationCityId)),
         --destination category
-        ('dc', 'destination.account.product', CONVERT(NVARCHAR, @destinationAccountProductId))
+        ('dc', 'destination.account.product', CONVERT(NVARCHAR, @destinationAccountProductId)),
+        --source account policy
+        ('dp', 'destination.account.feePolicyId', CONVERT(NVARCHAR, @destinationAccountFeePolicyId))
 
     IF OBJECT_ID(N'customer.customer') IS NOT NULL
     BEGIN
@@ -224,6 +235,10 @@ BEGIN
                 c.actorId = @destinationOwnerId
     END
 
+    INSERT INTO @operationProperties(factor, name, value)
+    SELECT [factor], 'transfer.' + [name], [value]
+    FROM @transferProperties
+
     DELETE FROM @operationProperties WHERE value IS NULL
 
     EXEC [rule].[decision.fetch]
@@ -232,9 +247,12 @@ BEGIN
         @sourceAccountId = @sourceAccountId,
         @destinationAccountId = @destinationAccountId,
         @amountString = @amount,
+        @settlementAmountString = @settlementAmount,
+        @accountAmountString = @accountAmount,
         @totals = @totals,
         @currency = @currency,
-        @targetCurrency = @targetCurrency,
+        @settlementCurrency = @settlementCurrency,
+        @accountCurrency = @accountCurrency,
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
         @destinationAccount = @destinationAccount,

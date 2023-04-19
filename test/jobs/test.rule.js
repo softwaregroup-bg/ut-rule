@@ -124,6 +124,7 @@ module.exports = function test() {
                     params: {
                         condition: {
                             name: 'Rule ' + Date.now(),
+                            operationEndDate: '2023-01-01T00:00:00.000Z',
                             priority: 122300
                         }
                     }
@@ -138,6 +139,7 @@ module.exports = function test() {
                     params: {
                         condition: {
                             name: ruleName,
+                            operationEndDate: '2023-01-01T00:00:00.000Z',
                             priority: 122300
                         }
                     }

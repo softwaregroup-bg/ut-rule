@@ -1,3 +1,7 @@
+# [13.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.0.0-currencies.15...v13.0.0) (2023-04-19)
+
+
+
 
 # [12.6.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.13...v12.6.0) (2023-02-16)
 

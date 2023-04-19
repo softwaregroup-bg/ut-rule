@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "13.0.0-currencies.15",
+  "version": "13.0.0",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {

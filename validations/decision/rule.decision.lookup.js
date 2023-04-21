@@ -41,7 +41,8 @@ module.exports = ({
                 transferFee: joi.string().max(21).allow(null),
                 commission: joi.string().max(21).allow(null),
                 transferDateTime: joi.date().required(),
-                transferTypeId: joi.string().required()
+                transferTypeId: joi.string().required(),
+                cashback: joi.string().max(21).allow(null)
             }),
             split: joi.array().items(
                 joi.object().keys({

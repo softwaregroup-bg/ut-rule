@@ -385,7 +385,6 @@ BEGIN TRY
         CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType IS NULL AND tag LIKE '%|fee|%'), 2) transferFee,
         CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType IS NULL AND tag LIKE '%|commission|%'), 2) commission,
         CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType IS NULL AND tag LIKE '%|cashback|%'), 2) cashback,
-        CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType IS NULL AND tag LIKE '%|fee|%'), 2) transferFee,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
 

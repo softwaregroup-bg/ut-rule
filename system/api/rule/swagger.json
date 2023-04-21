@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.0.0-currencies.11"
+        "version": "13.0.0-currencies.15"
     },
     "paths": {
         "/rpc/rule/condition/add": {
@@ -926,6 +926,9 @@
                                                         "null"
                                                     ]
                                                 },
+                                                "accountCurrency": {
+                                                    "type": "string"
+                                                },
                                                 "accountRateConditionName": {
                                                     "type": [
                                                         "string",
@@ -973,6 +976,9 @@
                                                         "null"
                                                     ]
                                                 },
+                                                "settlementCurrency": {
+                                                    "type": "string"
+                                                },
                                                 "settlementRateConditionName": {
                                                     "type": [
                                                         "string",
@@ -988,6 +994,13 @@
                                                 "transferDateTime": {
                                                     "format": "date-time",
                                                     "type": "string"
+                                                },
+                                                "transferFee": {
+                                                    "maxLength": 21,
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
                                                 },
                                                 "transferTypeId": {
                                                     "type": "string"
@@ -1031,6 +1044,13 @@
                                                         "type": "string"
                                                     },
                                                     "description": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "quantity": {
+                                                        "maxLength": 21,
                                                         "type": [
                                                             "string",
                                                             "null"

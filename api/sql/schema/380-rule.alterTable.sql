@@ -160,3 +160,8 @@ BEGIN
     ALTER TABLE [rule].[conditionItem] DROP CONSTRAINT [ccRuleConditionItem_factor]
     ALTER TABLE [rule].[conditionItem] ADD CONSTRAINT ccRuleConditionItem_factor1 CHECK (factor IN ('dc', 'sc', 'oc', 'cs', 'ds', 'ss', 'sp', 'dp'))
 END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'quantity' AND OBJECT_ID = OBJECT_ID(N'rule.splitAssignment') )
+BEGIN
+    ALTER TABLE [rule].[splitAssignment] ADD [quantity] VARCHAR(50) NULL
+END

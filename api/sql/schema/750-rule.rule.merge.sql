@@ -415,8 +415,8 @@ BEGIN TRY
         FROM @splitRange r
         JOIN @ruleSplitNames n ON n.splitNm = ISNULL(r.splitName, 'fee') AND n.ruleName = r.conditionName
 
-        INSERT [rule].splitAssignment (splitNameId, debit, credit, minValue, maxValue, [percent], description)
-        SELECT n.splitId, ISNULL(r.debit, 'debit'), ISNULL(r.credit, 'credit'), r.minValue, r.maxValue, ISNULL(r.[percent], 100), COALESCE(r.description, r.splitName, 'fee')
+        INSERT [rule].splitAssignment (splitNameId, debit, credit, quantity, minValue, maxValue, [percent], description)
+        SELECT n.splitId, ISNULL(r.debit, 'debit'), ISNULL(r.credit, 'credit'), r.quantity, r.minValue, r.maxValue, ISNULL(r.[percent], 100), COALESCE(r.description, r.splitName, 'fee')
         FROM @splitAssignment r
         JOIN @ruleSplitNames n ON n.splitNm = ISNULL(r.splitName, 'fee') AND n.ruleName = r.conditionName
 

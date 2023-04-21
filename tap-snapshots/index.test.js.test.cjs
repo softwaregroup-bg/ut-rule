@@ -9,14 +9,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "21.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "21.0000",
   },
   "split": Array [
     Object {
@@ -27,6 +30,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -37,14 +41,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -54,14 +61,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "19.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "19.0000",
   },
   "split": Array [
     Object {
@@ -72,6 +82,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -82,14 +93,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -99,14 +113,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "22.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "22.0000",
   },
   "split": Array [
     Object {
@@ -117,6 +134,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -127,14 +145,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -144,14 +165,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "18.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "18.0000",
   },
   "split": Array [
     Object {
@@ -162,6 +186,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -172,14 +197,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -189,14 +217,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "20.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "20.0000",
   },
   "split": Array [
     Object {
@@ -207,6 +238,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -217,14 +249,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -234,14 +269,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "37.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "37.0000",
   },
   "split": Array [
     Object {
@@ -252,6 +290,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -262,14 +301,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "37.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "37.0000",
   },
   "split": Array [
     Object {
@@ -280,6 +322,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -290,14 +333,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "15.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "15.0000",
   },
   "split": Array [
     Object {
@@ -308,6 +354,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -318,14 +365,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -335,14 +385,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "32.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "32.0000",
   },
   "split": Array [
     Object {
@@ -353,6 +406,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -363,14 +417,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -380,14 +437,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "30.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "30.0000",
   },
   "split": Array [
     Object {
@@ -398,6 +458,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -408,14 +469,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -425,14 +489,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -442,14 +509,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "34.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "34.0000",
   },
   "split": Array [
     Object {
@@ -460,6 +530,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -470,14 +541,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -487,14 +561,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "33.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "33.0000",
   },
   "split": Array [
     Object {
@@ -505,6 +582,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -515,14 +593,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -532,14 +613,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "31.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "31.0000",
   },
   "split": Array [
     Object {
@@ -550,6 +634,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -560,14 +645,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -577,14 +665,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -594,14 +685,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "13.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2021-11-10T00:00:00.000Z",
+    "transferFee": "13.0000",
   },
   "split": Array [
     Object {
@@ -614,6 +708,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "descr",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
     Object {
@@ -626,6 +721,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "new",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -636,14 +732,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "13.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2021-12-01T00:00:00.000Z",
+    "transferFee": "13.0000",
   },
   "split": Array [
     Object {
@@ -656,6 +755,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "descr",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
     Object {
@@ -668,6 +768,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "new",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -678,14 +779,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2021-12-01T00:00:01.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -695,14 +799,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "14.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "14.0000",
   },
   "split": Array [
     Object {
@@ -713,6 +820,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -723,14 +831,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -740,14 +851,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "25.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "25.0000",
   },
   "split": Array [
     Object {
@@ -758,6 +872,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -768,14 +883,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -785,14 +903,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "23.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "23.0000",
   },
   "split": Array [
     Object {
@@ -803,6 +924,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -813,14 +935,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -830,14 +955,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -847,14 +975,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "27.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "27.0000",
   },
   "split": Array [
     Object {
@@ -865,6 +996,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -875,14 +1007,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -892,14 +1027,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "26.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "26.0000",
   },
   "split": Array [
     Object {
@@ -910,6 +1048,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -920,14 +1059,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -937,14 +1079,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "24.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "24.0000",
   },
   "split": Array [
     Object {
@@ -955,6 +1100,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -965,14 +1111,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -982,14 +1131,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -999,14 +1151,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1016,14 +1171,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "37.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "37.0000",
   },
   "split": Array [
     Object {
@@ -1034,6 +1192,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -1044,14 +1203,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "17.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "17.0000",
   },
   "split": Array [
     Object {
@@ -1062,6 +1224,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -1072,14 +1235,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "11.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-01-10T00:00:00.000Z",
+    "transferFee": "11.0000",
   },
   "split": Array [
     Object {
@@ -1092,6 +1258,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "descr",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
     Object {
@@ -1104,6 +1271,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "new",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -1114,14 +1282,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "11.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-01T00:00:00.000Z",
+    "transferFee": "11.0000",
   },
   "split": Array [
     Object {
@@ -1134,6 +1305,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "descr",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
     Object {
@@ -1146,6 +1318,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "new",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -1156,14 +1329,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "11.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-01-01T00:00:00.000Z",
+    "transferFee": "11.0000",
   },
   "split": Array [
     Object {
@@ -1176,6 +1352,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "descr",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
     Object {
@@ -1188,6 +1365,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "new",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -1198,14 +1376,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2021-12-31T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1215,14 +1396,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "990.0000",
+    "accountCurrency": "EUR",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "990.0000",
+    "settlementCurrency": "EUR",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [
     Object {
@@ -1233,6 +1417,7 @@ Object {
       "currency": "EUR",
       "debit": "current",
       "description": "new",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -1243,14 +1428,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "995.0000",
+    "accountCurrency": "EUR",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "995.0000",
+    "settlementCurrency": "EUR",
     "settlementRateConditionName": "Test settlement",
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [
     Object {
@@ -1261,6 +1449,7 @@ Object {
       "currency": "EUR",
       "debit": "current",
       "description": "new",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -1271,14 +1460,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "50.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2122-03-10T00:00:00.000Z",
+    "transferFee": "50.0000",
   },
   "split": Array [
     Object {
@@ -1291,6 +1483,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "descr",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
     Object {
@@ -1303,6 +1496,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "new",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -1313,14 +1507,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "50.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2122-03-01T00:00:00.000Z",
+    "transferFee": "50.0000",
   },
   "split": Array [
     Object {
@@ -1333,6 +1530,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "descr",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
     Object {
@@ -1345,6 +1543,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "new",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -1355,14 +1554,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2122-02-28T23:59:59.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1372,14 +1574,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1001.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1001.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1389,14 +1594,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "8.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "8.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1406,14 +1614,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "BGN",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "0.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "BGN",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "0.0000",
   },
   "split": Array [
     Object {
@@ -1424,6 +1635,7 @@ Object {
       "currency": "BGN",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -1434,14 +1646,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "EUR",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "EUR",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1451,14 +1666,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1468,14 +1686,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "999.0000",
+    "accountCurrency": "BGN",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "0.0000",
     "processorFee": null,
     "settlementAmount": "999.0000",
+    "settlementCurrency": "BGN",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "0.0000",
   },
   "split": Array [
     Object {
@@ -1486,6 +1707,7 @@ Object {
       "currency": "BGN",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],
@@ -1496,14 +1718,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "999.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "999.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1513,14 +1738,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "999.0000",
+    "accountCurrency": "EUR",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "999.0000",
+    "settlementCurrency": "EUR",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1530,14 +1758,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "100.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "100.0000",
   },
   "split": Array [
     Object {
@@ -1550,6 +1781,7 @@ Object {
       "currency": "USD",
       "debit": "current",
       "description": "testDescription",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
     Object {
@@ -1560,6 +1792,7 @@ Object {
       "currency": "USD",
       "debit": "current",
       "description": "testFee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
     Object {
@@ -1572,6 +1805,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "descr",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -1582,14 +1816,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "BGN",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "BGN",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1599,14 +1836,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "50.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "50.0000",
   },
   "split": Array [
     Object {
@@ -1619,6 +1859,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "descr",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
     Object {
@@ -1631,6 +1872,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "new",
+      "quantity": null,
       "tag": "|issuer|",
     },
   ],
@@ -1641,14 +1883,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "EUR",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "EUR",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": null,
   },
   "split": Array [],
 }
@@ -1658,14 +1903,17 @@ exports[`index.test.js TAP jobs utRule.test.decision server tests rule.decision.
 Object {
   "amount": Object {
     "accountAmount": "1000.0000",
+    "accountCurrency": "USD",
     "accountRateConditionName": null,
     "acquirerFee": null,
     "commission": null,
     "issuerFee": "37.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
+    "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
+    "transferFee": "37.0000",
   },
   "split": Array [
     Object {
@@ -1676,6 +1924,7 @@ Object {
       "currency": "USD",
       "debit": "debit",
       "description": "fee",
+      "quantity": null,
       "tag": "|fee|issuer|",
     },
   ],

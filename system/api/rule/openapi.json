@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.0.0-currencies.11"
+        "version": "13.0.0-currencies.15"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -906,6 +906,9 @@
                                                             "nullable": true,
                                                             "type": "string"
                                                         },
+                                                        "accountCurrency": {
+                                                            "type": "string"
+                                                        },
                                                         "accountRateConditionName": {
                                                             "nullable": true,
                                                             "type": "string"
@@ -939,6 +942,9 @@
                                                             "nullable": true,
                                                             "type": "string"
                                                         },
+                                                        "settlementCurrency": {
+                                                            "type": "string"
+                                                        },
                                                         "settlementRateConditionName": {
                                                             "nullable": true,
                                                             "type": "string"
@@ -949,6 +955,11 @@
                                                         },
                                                         "transferDateTime": {
                                                             "format": "date-time",
+                                                            "type": "string"
+                                                        },
+                                                        "transferFee": {
+                                                            "maxLength": 21,
+                                                            "nullable": true,
                                                             "type": "string"
                                                         },
                                                         "transferTypeId": {
@@ -991,6 +1002,11 @@
                                                                 "type": "string"
                                                             },
                                                             "description": {
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
+                                                            "quantity": {
+                                                                "maxLength": 21,
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },

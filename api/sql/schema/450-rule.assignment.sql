@@ -10,6 +10,7 @@ ALTER FUNCTION [rule].assignment(
         [maxValue],
         core.mapReplace(debit, @map) debit,
         core.mapReplace(credit, @map) credit,
+        core.mapReplace(quantity, @map) quantity,
         (SELECT [name],
             core.mapReplace([value], @map) AS [value]
         FROM

@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.0.0-currencies.15"
+        "version": "13.0.0"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -918,6 +918,11 @@
                                                             "type": "integer"
                                                         },
                                                         "acquirerFee": {
+                                                            "maxLength": 21,
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
+                                                        "cashback": {
                                                             "maxLength": 21,
                                                             "nullable": true,
                                                             "type": "string"

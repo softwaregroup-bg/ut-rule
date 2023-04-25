@@ -97,6 +97,7 @@ declare namespace rule_decision_lookup {
       accountRateConditionName?: string | null;
       accountRateId?: number | null;
       acquirerFee?: string | null;
+      cashback?: string | null;
       commission?: string | null;
       issuerFee?: string | null;
       processorFee?: string | null;

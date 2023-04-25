@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.0.0-currencies.15"
+        "version": "13.0.0"
     },
     "paths": {
         "/rpc/rule/condition/add": {
@@ -942,6 +942,13 @@
                                                     ]
                                                 },
                                                 "acquirerFee": {
+                                                    "maxLength": 21,
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "cashback": {
                                                     "maxLength": 21,
                                                     "type": [
                                                         "string",

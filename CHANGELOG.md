@@ -1,3 +1,17 @@
+# [13.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.0.0...v13.1.0) (2023-04-25)
+
+
+### Bug Fixes
+
+* add validation to rule.decision.lookup,#AAA-0000 ([db36407](https://github.com/softwaregroup-bg/ut-rule/commit/db36407de4985a66abea804b5a3b18d3b4eeae80)), closes [#AAA-0000](https://github.com/softwaregroup-bg/ut-rule/issues/AAA-0000)
+
+
+### Features
+
+* add tag for new functionality cashbak,#ECNT2-4397 ([492c142](https://github.com/softwaregroup-bg/ut-rule/commit/492c1421ec770214e913ffc91c7882b69ad2ef3f)), closes [#ECNT2-4397](https://github.com/softwaregroup-bg/ut-rule/issues/ECNT2-4397)
+
+
+
 # [13.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.0.0-currencies.15...v13.0.0) (2023-04-19)
 
 

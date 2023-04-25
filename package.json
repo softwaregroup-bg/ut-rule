@@ -29,7 +29,7 @@
     "ut-browser": "^7.7.4",
     "ut-cache": "^6.0.1",
     "ut-core": "^8.28.0",
-    "ut-customer": "^10.25.3",
+    "ut-customer": "^11.0.0",
     "ut-db": "^10.0.0",
     "ut-dispatch-db": "^1.5.0",
     "ut-document": "^9.12.1",

@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "13.1.0",
+  "version": "13.1.1",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {

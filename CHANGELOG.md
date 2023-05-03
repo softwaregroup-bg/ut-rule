@@ -1,3 +1,12 @@
+## [13.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.1...v13.1.2) (2023-05-03)
+
+
+### Bug Fixes
+
+* match condition property factor ([33ed482](https://github.com/softwaregroup-bg/ut-rule/commit/33ed482c2b8243e7d68b93385d086f36e9d073e5))
+
+
+
 ## [13.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.0...v13.1.1) (2023-04-25)
 
 

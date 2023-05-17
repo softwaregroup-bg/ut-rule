@@ -138,7 +138,7 @@ BEGIN TRY
             (
                 SELECT ct.factor, ct.name, SUM(IIF(p.factor IS NULL, 0, 1)) AS cntFactor
                 FROM [rule].conditionProperty ct
-                LEFT JOIN @operationPropertiesExtended p ON p.factor = ct.factor
+                LEFT JOIN @operationPropertiesExtended p ON p.factor = ct.factor AND ct.name = p.name
                 LEFT JOIN core.actorProperty t ON t.actorId = p.valueBigint AND ct.name = t.name AND ct.value = t.value
                 WHERE ct.conditionId = c.conditionId AND ct.factor IN ('so', 'do', 'co')
                 GROUP BY ct.factor, ct.name
@@ -150,7 +150,7 @@ BEGIN TRY
             (
                 SELECT ct.factor, ct.name, SUM(IIF(p.factor IS NULL, 0, 1)) AS cntFactor
                 FROM [rule].conditionProperty ct
-                LEFT JOIN @operationPropertiesExtended p ON p.factor = ct.factor
+                LEFT JOIN @operationPropertiesExtended p ON p.factor = ct.factor AND ct.name = p.name
                 LEFT JOIN core.itemProperty t ON t.itemNameId = p.valueBigint AND ct.name = t.name AND ct.value = t.value
                 WHERE ct.conditionId = c.conditionId AND ct.factor IN ('ss', 'ds', 'cs', 'oc', 'sc', 'dc')
                 GROUP BY ct.factor, ct.name

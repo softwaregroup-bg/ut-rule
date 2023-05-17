@@ -19,6 +19,7 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
 BEGIN TRY
+    DECLARE @currencyCode NVARCHAR(200) = @currency
     DECLARE @amount MONEY = TRY_CONVERT(MONEY, @amountString)
     IF @amount IS NULL RAISERROR('rule.amount', 16, 1)
     DECLARE @transferTypeId BIGINT
@@ -58,6 +59,18 @@ BEGIN TRY
         @limitId INT,
         @conditionId INT
 
+    DECLARE @operationPropertiesExtended TABLE(
+        [factor] [char](2) NULL,
+        [name] [nvarchar](50) NULL,
+        [value] [nvarchar](200) NULL,
+        [valueBigint] BIGINT,
+        nameExtract nvarchar(50)
+    )
+
+    INSERT INTO @operationPropertiesExtended(factor, name, [value], valueBigint, nameExtract)
+    SELECT factor, name, [value], TRY_CONVERT(BIGINT, value), SUBSTRING(name, 10, 200)
+    FROM @operationProperties
+
     --find all conditions(rules) that match based on the input information
     INSERT INTO
         @matches(
@@ -90,9 +103,82 @@ BEGIN TRY
         c.isDeleted = 0 AND
         (c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
         (c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
-        [rule].falseActorFactorCount(c.conditionId, @operationProperties) = 0 AND
-        [rule].falseItemFactorCount(c.conditionId, @operationProperties) = 0 AND
-        [rule].falsePropertyFactorCount(c.conditionId, @operationProperties) = 0 AND
+        -- [rule].falseActorFactorCount(c.conditionId, @operationProperties) = 0 AND
+        -- [rule].falseItemFactorCount(c.conditionId, @operationProperties) = 0 AND
+        -- [rule].falsePropertyFactorCount(c.conditionId, @operationProperties) = 0 AND
+        NOT EXISTS
+        (
+            SELECT factor, cntFactor
+            FROM
+            (
+                SELECT ca.factor, SUM(IIF(a.factor IS NULL, 0, 1)) AS cntFactor
+                FROM [rule].conditionActor ca
+                LEFT JOIN @operationPropertiesExtended a ON a.[factor] = ca.factor AND ca.actorId = a.valueBigint
+                WHERE ca.conditionId = c.conditionId
+                GROUP BY ca.factor
+            ) ca
+            WHERE ca.cntFactor = 0
+        ) AND
+        NOT EXISTS
+        (
+            SELECT factor, cntFactor
+            FROM
+            (
+                SELECT ci.factor, SUM(IIF(a.factor IS NULL, 0, 1)) AS cntFactor
+                FROM [rule].conditionItem ci
+                LEFT JOIN @operationPropertiesExtended a ON a.[factor] = ci.factor AND ci.itemNameId = a.valueBigint
+                WHERE ci.conditionId = c.conditionId
+                GROUP BY ci.factor
+            ) ci
+            WHERE cntFactor = 0
+        ) AND
+        NOT EXISTS (
+            SELECT ct.factor, ct.name, cntFactor
+            FROM
+            (
+                SELECT ct.factor, ct.name, SUM(IIF(p.factor IS NULL, 0, 1)) AS cntFactor
+                FROM [rule].conditionProperty ct
+                LEFT JOIN @operationPropertiesExtended p ON p.factor = ct.factor
+                LEFT JOIN core.actorProperty t ON t.actorId = p.valueBigint AND ct.name = t.name AND ct.value = t.value
+                WHERE ct.conditionId = c.conditionId AND ct.factor IN ('so', 'do', 'co')
+                GROUP BY ct.factor, ct.name
+            ) ct
+            WHERE cntFactor = 0
+            UNION ALL
+            SELECT ct.factor, ct.name, cntFactor
+            FROM
+            (
+                SELECT ct.factor, ct.name, SUM(IIF(p.factor IS NULL, 0, 1)) AS cntFactor
+                FROM [rule].conditionProperty ct
+                LEFT JOIN @operationPropertiesExtended p ON p.factor = ct.factor
+                LEFT JOIN core.itemProperty t ON t.itemNameId = p.valueBigint AND ct.name = t.name AND ct.value = t.value
+                WHERE ct.conditionId = c.conditionId AND ct.factor IN ('ss', 'ds', 'cs', 'oc', 'sc', 'dc')
+                GROUP BY ct.factor, ct.name
+            ) ct
+            WHERE cntFactor = 0
+            UNION ALL
+            SELECT ct.factor, ct.name, cntFactor
+            FROM
+            (
+                SELECT ct.factor, ct.name, SUM(IIF(p.factor IS NULL, 0, 1)) AS cntFactor
+                FROM [rule].conditionProperty ct
+                LEFT JOIN @operationPropertiesExtended p ON ct.name = p.name AND ct.value = p.value AND p.factor = ct.factor
+                WHERE ct.conditionId = c.conditionId AND ct.factor IN ('sk', 'st', 'dk', 'dt')
+                GROUP BY ct.factor, ct.name
+            ) ct
+            WHERE cntFactor = 0
+            UNION ALL
+            SELECT ct.factor, ct.name, cntFactor
+            FROM
+            (
+                SELECT ct.factor, ct.name, SUM(IIF(p.factor IS NULL, 0, 1)) AS cntFactor
+                FROM [rule].conditionProperty ct
+                LEFT JOIN @operationPropertiesExtended p ON ct.name = nameExtract AND ct.value = p.value AND p.factor = ct.factor
+                WHERE ct.conditionId = c.conditionId AND ct.factor = 'tp'
+                GROUP BY ct.factor, ct.name
+            ) ct
+            WHERE cntFactor = 0
+        ) AND
         (c.sourceAccountId IS NULL OR @sourceAccountId = c.sourceAccountId) AND
         (c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)
     GROUP BY
@@ -102,7 +188,7 @@ BEGIN TRY
     SELECT @scale = scale, @currencyId = currencyId
     FROM core.currency c
     JOIN core.itemName it ON it.itemNameId = c.itemNameId
-    WHERE itemCode = @currency
+    WHERE itemCode = @currencyCode
 
     DECLARE @settlementAmount MONEY = TRY_CONVERT(MONEY, @settlementAmountString)
     DECLARE @settlementRateId INT
@@ -430,22 +516,15 @@ BEGIN TRY
             WHEN 1 THEN @scale
             WHEN 2 THEN @settlementScale
             ELSE @accountScale
-        END), 2) amount,
-        assignment.quantity quantity,
-        ISNULL(d.accountNumber, assignment.debit) debit,
-        ISNULL(c.accountNumber, assignment.credit) credit,
+        END), 2) AS amount,
+        assignment.quantity AS quantity,
+        assignment.debit AS debit,
+        assignment.credit AS credit,
         assignment.description,
         assignment.analytics
-    FROM
-        @fee a
-    CROSS APPLY
-        [rule].assignment(a.splitNameId, @map) assignment
-    LEFT JOIN
-        integration.vAssignment d ON CAST(d.accountId AS VARCHAR(100)) = assignment.debit
-    LEFT JOIN
-        integration.vAssignment c ON CAST(c.accountId AS VARCHAR(100)) = assignment.credit
-    ORDER BY
-        a.splitNameId, assignment.splitAssignmentId
+    FROM @fee a
+    CROSS APPLY [rule].assignment(a.splitNameId, @map) assignment
+    ORDER BY a.splitNameId, assignment.splitAssignmentId
 END TRY
 BEGIN CATCH
     IF @@trancount > 0

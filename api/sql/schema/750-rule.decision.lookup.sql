@@ -1,10 +1,10 @@
 ALTER PROCEDURE [rule].[decision.lookup]
     @channelId BIGINT, -- the id of the channel triggering transaction
-    @operation VARCHAR(100), -- the operation name
+    @operation NVARCHAR(200), -- the operation name
     @operationDate datetime, -- the date when operation is triggered
-    @sourceAccount VARCHAR(100), -- source account number
+    @sourceAccount VARCHAR(50), -- source account number
     @sourceCardProductId BIGINT = NULL, -- product id of the card
-    @destinationAccount VARCHAR(100), -- destination account number
+    @destinationAccount VARCHAR(50), -- destination account number
     @amount VARCHAR(21), -- operation amount
     @settlementAmount VARCHAR(21), -- operation amount
     @accountAmount VARCHAR(21), -- operation amount
@@ -69,38 +69,61 @@ BEGIN
     WHERE
         itemCode = @operation
 
-    SELECT
-        @sourceCountryId = countryId,
-        @sourceRegionId = regionId,
-        @sourceCityId = cityId,
-        @sourceOwnerId = ownerId,
-        @sourceAccountProductId = accountProductId,
-        @sourceAccountFeePolicyId = feePolicyId,
-        @sourceAccountId = accountId,
-        @sourceAccountCheckAmount = accountCheckAmount,
-        @sourceAccountCheckMask = accountCheckMask,
-        @sourceProductCheckAmount = productCheckAmount,
-        @sourceProductCheckMask = productCheckMask
-    FROM
-        [integration].[vAccount]
-    WHERE
-        (accountNumber = @sourceAccount OR @sourceAccount IS NULL) AND
-        (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL) AND
-        (@sourceAccountOwnerId IS NOT NULL OR @sourceAccount IS NOT NULL)
+    IF @sourceAccount IS NOT NULL
+        SELECT
+            @sourceCountryId = countryId,
+            @sourceRegionId = regionId,
+            @sourceCityId = cityId,
+            @sourceOwnerId = ownerId,
+            @sourceAccountProductId = accountProductId,
+            @sourceAccountFeePolicyId = feePolicyId,
+            @sourceAccountId = accountId,
+            @sourceAccountCheckAmount = accountCheckAmount,
+            @sourceAccountCheckMask = accountCheckMask,
+            @sourceProductCheckAmount = productCheckAmount,
+            @sourceProductCheckMask = productCheckMask
+        FROM [integration].[vAccount]
+        WHERE accountNumber = @sourceAccount AND
+            (@sourceAccountOwnerId IS NULL OR ownerId = @sourceAccountOwnerId)
+    ELSE IF @sourceAccountOwnerId IS NOT NULL
+        SELECT
+            @sourceCountryId = countryId,
+            @sourceRegionId = regionId,
+            @sourceCityId = cityId,
+            @sourceOwnerId = ownerId,
+            @sourceAccountProductId = accountProductId,
+            @sourceAccountFeePolicyId = feePolicyId,
+            @sourceAccountId = accountId,
+            @sourceAccountCheckAmount = accountCheckAmount,
+            @sourceAccountCheckMask = accountCheckMask,
+            @sourceProductCheckAmount = productCheckAmount,
+            @sourceProductCheckMask = productCheckMask
+        FROM [integration].[vAccount]
+        WHERE ownerId = @sourceAccountOwnerId
 
-    SELECT
-        @destinationCountryId = countryId,
-        @destinationRegionId = regionId,
-        @destinationCityId = cityId,
-        @destinationOwnerId = ownerId,
-        @destinationAccountProductId = accountProductId,
-        @destinationAccountFeePolicyId = feePolicyId,
-        @destinationAccountId = accountId
-    FROM [integration].[vAccount]
-    WHERE
-        (accountNumber = @destinationAccount OR @destinationAccount IS NULL) AND
-        (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL) AND
-        (@destinationAccountOwnerId IS NOT NULL OR @destinationAccount IS NOT NULL)
+    IF @destinationAccount IS NOT NULL
+        SELECT
+            @destinationCountryId = countryId,
+            @destinationRegionId = regionId,
+            @destinationCityId = cityId,
+            @destinationOwnerId = ownerId,
+            @destinationAccountProductId = accountProductId,
+            @destinationAccountFeePolicyId = feePolicyId,
+            @destinationAccountId = accountId
+        FROM [integration].[vAccount]
+        WHERE accountNumber = @destinationAccount AND
+            (@destinationAccountOwnerId IS NULL OR ownerId = @destinationAccountOwnerId)
+    ELSE IF @destinationAccountOwnerId IS NOT NULL
+        SELECT
+            @destinationCountryId = countryId,
+            @destinationRegionId = regionId,
+            @destinationCityId = cityId,
+            @destinationOwnerId = ownerId,
+            @destinationAccountProductId = accountProductId,
+            @destinationAccountFeePolicyId = feePolicyId,
+            @destinationAccountId = accountId
+        FROM [integration].[vAccount]
+        WHERE ownerId = @destinationAccountOwnerId
 
     -- if check amount has been setup for the account and/or the account product, assign the value to variable. account is with higher priority
     SET @maxAmountParam = CASE WHEN COALESCE (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckAmount, @sourceProductCheckAmount) END
@@ -152,19 +175,23 @@ BEGIN
         core.actorGraph(g.actorId, 'role', 'subject') r
     WHERE
         g.actorId <> r.actorId
-    UNION SELECT
+    UNION ALL
+    SELECT
         'so', 'source.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@sourceOwnerId, 'memberOf', 'subject') g
-    UNION SELECT
+    UNION ALL
+    SELECT
         'do', 'destination.owner.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@destinationOwnerId, 'memberOf', 'subject') g
-    UNION SELECT
+    UNION ALL
+    SELECT
         'co', 'channel.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@channelId, 'memberOf', 'subject') g
-    UNION SELECT
+    UNION ALL
+    SELECT
         'co', 'agentOf.id' + CASE WHEN g.level > 0 THEN '^' + CAST(g.level AS VARCHAR(10)) ELSE '' END, g.actorId
     FROM
         core.actorGraph(@channelId, 'agentOf', 'subject') g
@@ -208,7 +235,8 @@ BEGIN
                 customer.customer c
             WHERE
                 c.actorId = @sourceOwnerId
-            UNION ALL SELECT
+            UNION ALL
+            SELECT
                 'st', 'source.customerType', ct.customerTypeNumber
             FROM
                 customer.customer c
@@ -225,7 +253,8 @@ BEGIN
                 customer.customer c
             WHERE
                 c.actorId = @destinationOwnerId
-            UNION ALL SELECT
+            UNION ALL
+            SELECT
                 'dt', 'destination.customerType', ct.customerTypeNumber
             FROM
                 customer.customer c

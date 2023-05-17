@@ -176,27 +176,15 @@ Object {
     "acquirerFee": null,
     "cashback": null,
     "commission": null,
-    "issuerFee": "18.0000",
+    "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
-    "transferFee": "18.0000",
+    "transferFee": null,
   },
-  "split": Array [
-    Object {
-      "amount": "18.0000",
-      "analytics": null,
-      "conditionName": "Test by channel organization tag",
-      "credit": "credit",
-      "currency": "USD",
-      "debit": "debit",
-      "description": "fee",
-      "quantity": null,
-      "tag": "|fee|issuer|",
-    },
-  ],
+  "split": Array [],
 }
 `
 
@@ -587,27 +575,15 @@ Object {
     "acquirerFee": null,
     "cashback": null,
     "commission": null,
-    "issuerFee": "33.0000",
+    "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
-    "transferFee": "33.0000",
+    "transferFee": null,
   },
-  "split": Array [
-    Object {
-      "amount": "33.0000",
-      "analytics": null,
-      "conditionName": "Test by counterparty organization tag",
-      "credit": "credit",
-      "currency": "USD",
-      "debit": "debit",
-      "description": "fee",
-      "quantity": null,
-      "tag": "|fee|issuer|",
-    },
-  ],
+  "split": Array [],
 }
 `
 
@@ -1070,27 +1046,15 @@ Object {
     "acquirerFee": null,
     "cashback": null,
     "commission": null,
-    "issuerFee": "26.0000",
+    "issuerFee": null,
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
-    "transferFee": "26.0000",
+    "transferFee": null,
   },
-  "split": Array [
-    Object {
-      "amount": "26.0000",
-      "analytics": null,
-      "conditionName": "Test by holder organization tag",
-      "credit": "credit",
-      "currency": "USD",
-      "debit": "debit",
-      "description": "fee",
-      "quantity": null,
-      "tag": "|fee|issuer|",
-    },
-  ],
+  "split": Array [],
 }
 `
 

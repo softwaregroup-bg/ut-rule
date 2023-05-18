@@ -5,8 +5,9 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceAccount VARCHAR(100), -- source account number
     @sourceCardProductId BIGINT = NULL, -- product id of the card
     @destinationAccount VARCHAR(100), -- destination account number
-    @amount money, -- operation amount
+    @amount VARCHAR(21), -- operation amount
     @currency VARCHAR(3), -- operation currency
+    @targetCurrency VARCHAR(3) = NULL, -- currency after exchange
     @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
@@ -75,8 +76,9 @@ BEGIN
     FROM
         [integration].[vAccount]
     WHERE
-        accountNumber = @sourceAccount AND
-        (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL)
+        (accountNumber = @sourceAccount OR @sourceAccount IS NULL) AND
+        (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL) AND
+        (@sourceAccountOwnerId IS NOT NULL OR @sourceAccount IS NOT NULL)
 
     SELECT
         @destinationCountryId = countryId,
@@ -88,15 +90,16 @@ BEGIN
     FROM
         [integration].[vAccount]
     WHERE
-        accountNumber = @destinationAccount AND
-        (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
+        (accountNumber = @destinationAccount OR @destinationAccount IS NULL) AND
+        (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL) AND
+        (@destinationAccountOwnerId IS NOT NULL OR @destinationAccount IS NOT NULL)
 
     -- if check amount has been setup for the account and/or the account product, assign the value to variable. account is with higher priority
     SET @maxAmountParam = CASE WHEN COALESCE (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckAmount, @sourceProductCheckAmount) END
     -- if check credentials has been setup for the account and/or the account product, assign the value to variable. account is with higher priority
     SET @credentialsCheck = CASE WHEN COALESCE (@sourceAccountCheckMask, @sourceProductCheckMask, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckMask, @sourceProductCheckMask) END
 
-    SELECT @operationDate = ISNULL(@operationDate, GETDATE())
+    SELECT @operationDate = ISNULL(@operationDate, GETUTCDATE())
 
     INSERT INTO
         @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
@@ -172,6 +175,44 @@ BEGIN
         --destination category
         ('dc', 'destination.account.product', @destinationAccountProductId)
 
+    IF OBJECT_ID(N'customer.customer') IS NOT NULL
+    BEGIN
+        IF @sourceOwnerId IS NOT NULL
+            INSERT INTO
+                @operationProperties(factor, name, value)
+            SELECT
+                'sk', 'source.kyc', c.kycId
+            FROM
+                customer.customer c
+            WHERE
+                c.actorId = @sourceOwnerId
+            UNION ALL SELECT
+                'st', 'source.customerType', ct.customerTypeNumber
+            FROM
+                customer.customer c
+            LEFT JOIN
+                customer.customerType ct ON ct.customerTypeId = c.customerTypeId
+            WHERE
+                c.actorId = @sourceOwnerId
+        IF @destinationOwnerId IS NOT NULL
+            INSERT INTO
+                @operationProperties(factor, name, value)
+            SELECT
+                'dk', 'destination.kyc', c.kycId
+            FROM
+                customer.customer c
+            WHERE
+                c.actorId = @destinationOwnerId
+            UNION ALL SELECT
+                'dt', 'destination.customerType', ct.customerTypeNumber
+            FROM
+                customer.customer c
+            LEFT JOIN
+                customer.customerType ct ON ct.customerTypeId = c.customerTypeId
+            WHERE
+                c.actorId = @destinationOwnerId
+    END
+
     DELETE FROM @operationProperties WHERE value IS NULL
 
     EXEC [rule].[decision.fetch]
@@ -179,9 +220,10 @@ BEGIN
         @operationDate = @operationDate,
         @sourceAccountId = @sourceAccountId,
         @destinationAccountId = @destinationAccountId,
-        @amount = @amount,
+        @amountString = @amount,
         @totals = @totals,
         @currency = @currency,
+        @targetCurrency = @targetCurrency,
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
         @destinationAccount = @destinationAccount,

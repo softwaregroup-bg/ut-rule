@@ -1,0 +1,27 @@
+list:
+  - {itemType: cardProduct, itemCode: Rule Debit, itemName: Rule Debit}
+  - {itemType: cardProduct, itemCode: Rule Credit, itemName: Rule Credit}
+  - {itemType: accountProduct, itemCode: Rule Current, itemName: Rule Current}
+  - {itemType: accountProduct, itemCode: Rule Savings, itemName: Rule Savings}
+  - {itemType: operation, itemCode: Rule Deposit, itemName: Rule Deposit}
+  - {itemType: operation, itemCode: Rule Withdraw, itemName: Rule Withdraw}
+  - {itemType: operation, itemCode: Rule Transfer, itemName: Rule Transfer}
+  - {itemType: region, itemCode: Burgas, itemName: Burgas}
+  - {itemType: region, itemCode: Dobrich, itemName: Dobrich}
+  - {itemType: region, itemCode: Montana, itemName: Montana}
+  - {itemType: region, itemCode: Pleven, itemName: Pleven}
+  - {itemType: region, itemCode: Razgrad, itemName: Razgrad}
+  - {itemType: region, itemCode: Rousse, itemName: Rousse}
+  - {itemType: region, itemCode: Sliven, itemName: Sliven}
+  - {itemType: region, itemCode: Sofia City, itemName: Sofia City}
+  - {itemType: region, itemCode: Varna, itemName: Varna}
+  - {itemType: region, itemCode: Yambol, itemName: Yambol}
+  - {itemType: city, itemCode: Topolovgrad, itemName: Topolovgrad}
+  - {itemType: city, itemCode: Ivaylovgrad, itemName: Ivaylovgrad}
+  - {itemType: city, itemCode: Merichleri, itemName: Merichleri}
+  - {itemType: city, itemCode: Ardino, itemName: Ardino}
+  - {itemType: city, itemCode: Dzhebel, itemName: Dzhebel}
+  - {itemType: city, itemCode: Sarnitsa, itemName: Sarnitsa}
+  - {itemType: city, itemCode: Kaspichan, itemName: Kaspichan}
+  - {itemType: city, itemCode: Sandanski, itemName: Sandanski}
+  - {itemType: city, itemCode: Madan, itemName: Madan}

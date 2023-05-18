@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { fromJS } from 'immutable';
 import MultiSelectDropdown from 'ut-front-react/components/Input/MultiSelectDropdown';
 import TitledContentBox from 'ut-front-react/components/TitledContentBox';
-import Dropdown from 'ut-front-react/components/Input/Dropdown';
 import Input from 'ut-front-react/components/Input';
 import Property from '../../../../components/Property';
 import style from '../style.css';
@@ -66,6 +65,30 @@ class ChannelTab extends Component {
         );
     }
 
+    renderName() {
+        const {
+            fieldValues,
+            errors,
+            mode
+        } = this.props;
+        const changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
+        };
+        return (
+            <div className={style.inputWrapper}>
+                <Input
+                    label='Name'
+                    keyProp='name'
+                    readonly={mode !== 'create'}
+                    value={fieldValues.name}
+                    validators={validations.name}
+                    isValid={!errors.get('name')} errorMessage={errors.get('name')}
+                    onChange={(field) => changeInput(field)}
+                />
+            </div>
+        );
+    }
+
     renderFields() {
         const {
             canEdit,
@@ -120,7 +143,7 @@ class ChannelTab extends Component {
                     />
                 </div>}
                 {fields.organization.visible && <div className={style.inputWrapper}>
-                    <Dropdown
+                    <MultiSelectDropdown
                         disabled={readonly}
                         canSelectPlaceholder
                         keyProp='organization'
@@ -160,6 +183,14 @@ class ChannelTab extends Component {
                             wrapperClassName
                         >
                             {this.renderPriority()}
+                        </TitledContentBox>
+                    </div>
+                    <div className={style.innerContentBoxWrapper}>
+                        <TitledContentBox
+                            title='Name'
+                            wrapperClassName
+                        >
+                            {this.renderName()}
                         </TitledContentBox>
                     </div>
                     <div className={style.innerContentBoxWrapper}>

@@ -33,7 +33,7 @@ export default (state = defaultState, action) => {
                     conditionProperty: action.result.conditionProperty,
                     formatedGridData: getFormattedGridDataColumns(action.result, formattedRules),
                     pagination: {...state.pagination, ...(action.result.pagination && action.result.pagination[0])},
-                    showDeleted: showDeleted
+                    showDeleted
                 });
             }
             default:
@@ -174,7 +174,7 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
 
         result[actor.conditionId][actor.factor].push({
             name: actor.type,
-            value: actor.actorId
+            value: actor.type === 'organization' ? actor.organizationName : actor.actorId
         });
     });
     Object.keys(formattedRules).forEach((conditionId) => {
@@ -252,8 +252,8 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
                             const name = `${getPaddedStringWithSpaces(`Amount >= ${range.startAmount}`, amountCharacters)}`.split('');
                             const value = `${getPaddedStringWithSpaces(range.percent ? `${range.percent}%;` : '', maxPercentageCharacters)} ${getPaddedStringWithSpaces(range.minValue ? `min: ${range.minValue};` : '', minAmountCharacters)} ${getPaddedStringWithSpaces(range.maxValue ? `max: ${range.maxValue};` : '', maxAmountCharacters)} ${getPaddedStringWithSpaces(range.percentBase ? `base: ${range.percentBase};` : '', basePercentageCharacters)}`.trim().split('');
                             result[conditionId].split.push({
-                                name: name,
-                                value: value
+                                name,
+                                value
                             });
                         }
                         result[conditionId].split.push({

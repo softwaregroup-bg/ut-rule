@@ -3,9 +3,10 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @operationDate DATETIME, -- the date when operation is triggered
     @sourceAccountId NVARCHAR(255), -- source account id
     @destinationAccountId NVARCHAR(255), -- destination account id
-    @amount MONEY, -- operation amount
+    @amountString VARCHAR(21), -- operation amount
     @totals [rule].totals READONLY, -- totals by transfer type (amountDaily, countDaily, amountWeekly ... etc.)
-    @currency VARCHAR(3), -- operation currenc
+    @currency VARCHAR(3), -- operation currency
+    @targetCurrency VARCHAR(3), -- currency after exchange
     @isSourceAmount BIT,
     @sourceAccount VARCHAR(100), -- source account number
     @destinationAccount VARCHAR(100), -- destination account number
@@ -14,7 +15,14 @@ ALTER PROCEDURE [rule].[decision.fetch]
     @credentials INT = NULL, -- the passed credentials to validate operation success
     @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
 AS
-BEGIN
+BEGIN TRY
+
+    DECLARE @scale TINYINT = ISNULL((SELECT scale
+    FROM core.currency c
+        JOIN core.itemName it ON it.itemNameId = c.itemNameId
+    WHERE itemCode = @currency), 2)
+    DECLARE @amount MONEY = TRY_CONVERT(MONEY, @amountString)
+    IF @amount IS NULL RAISERROR('rule.amount', 16, 1)
     DECLARE @transferTypeId BIGINT
     SELECT
         @transferTypeId = CAST(value AS BIGINT)
@@ -25,6 +33,7 @@ BEGIN
 
     DECLARE @matches TABLE (
         [priority] INT,
+        [name] NVARCHAR(100),
         conditionId BIGINT,
         amountDaily money,
         countDaily BIGINT,
@@ -34,7 +43,7 @@ BEGIN
         countMonthly BIGINT
     )
 
-    SET @operationDate = ISNULL(@operationDate, GETDATE())
+    SET @operationDate = ISNULL(@operationDate, GETUTCDATE())
 
     DECLARE
         @calcCommission MONEY,
@@ -64,6 +73,7 @@ BEGIN
     INSERT INTO
         @matches(
             [priority],
+            [name],
             conditionId,
             amountDaily,
             countDaily,
@@ -73,6 +83,7 @@ BEGIN
             countMonthly)
     SELECT
         c.[priority],
+        c.[name],
         c.conditionId,
         ISNULL(SUM(t.amountDaily), 0),
         ISNULL(SUM(t.countDaily), 0),
@@ -88,15 +99,15 @@ BEGIN
         @totals t ON t.transferTypeId = ISNULL(co.transferTypeId, @transferTypeId)
     WHERE
         c.isDeleted = 0 AND
-        (@operationDate IS NULL OR c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
-        (@operationDate IS NULL OR c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
+        (c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
+        (c.operationEndDate IS NULL OR (@operationDate <= c.operationEndDate)) AND
         [rule].falseActorFactorCount(c.conditionId, @operationProperties) = 0 AND
         [rule].falseItemFactorCount(c.conditionId, @operationProperties) = 0 AND
         [rule].falsePropertyFactorCount(c.conditionId, @operationProperties) = 0 AND
-        (@sourceAccountId IS NULL OR c.sourceAccountId IS NULL OR @sourceAccountId = c.sourceAccountId) AND
-        (@destinationAccountId IS NULL OR c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)
+        (c.sourceAccountId IS NULL OR @sourceAccountId = c.sourceAccountId) AND
+        (c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)
     GROUP BY
-        c.[priority], c.conditionId
+        c.[priority], c.[name], c.conditionId
 
     SELECT
         @minAmount = NULL,
@@ -147,6 +158,7 @@ BEGIN
         )
     ORDER BY
         c.[priority],
+        c.[name],
         l.[priority]
 
     IF @limitId IS NOT NULL -- if exists a condition limit which is violated, identify the exact violation and return error with result
@@ -222,15 +234,17 @@ BEGIN
 
     DECLARE @fee TABLE(
         conditionId INT,
+        conditionName NVARCHAR(100),
         splitNameId INT,
         fee MONEY,
         tag VARCHAR(MAX)
     );
 
     -- calculate the operation fees based on the matched conditions (rules), and select these with highest priority
-    WITH split(conditionId, splitNameId, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
+    WITH split(conditionId, [name], splitNameId, tag, minFee, maxFee, calcFee, rnk1, rnk2) AS (
         SELECT
             c.conditionId,
+            c.name,
             r.splitNameId,
             n.tag,
             r.minValue,
@@ -241,6 +255,7 @@ BEGIN
             END / 100,
             RANK() OVER (PARTITION BY n.splitNameId ORDER BY
                 c.priority,
+                c.name,
                 r.startCountMonthly DESC,
                 r.startAmountMonthly DESC,
                 r.startCountWeekly DESC,
@@ -249,7 +264,7 @@ BEGIN
                 r.startAmountDaily DESC,
                 r.startAmount DESC,
                 r.splitRangeId),
-            RANK() OVER (ORDER BY c.priority, c.conditionId)
+            RANK() OVER (ORDER BY c.priority, c.name, c.conditionId)
         FROM
             @matches AS c
         JOIN
@@ -268,9 +283,10 @@ BEGIN
             c.countMonthly >= r.startCountMonthly
     )
     INSERT INTO
-        @fee(conditionId, splitNameId, fee, tag)
+        @fee(conditionId, conditionName, splitNameId, fee, tag)
     SELECT
         s.conditionId,
+        s.name,
         s.splitNameId,
         CASE
             WHEN s.calcFee > s.maxFee THEN s.maxFee
@@ -284,12 +300,64 @@ BEGIN
         s.rnk1 = 1 AND
         s.rnk2 = 1
 
+    DECLARE @settlementAmount MONEY
+    DECLARE @rateId INT
+    DECLARE @rateName NVARCHAR(100)
+    IF @targetCurrency IS NOT NULL
+    BEGIN
+        WITH rate(conditionId, [name], rateId, rate, rnk1, rnk2) AS (
+            SELECT
+                c.conditionId,
+                c.name,
+                r.rateId,
+                r.rate,
+                RANK() OVER (PARTITION BY r.rateId ORDER BY
+                    c.priority,
+                    c.name,
+                    r.startCountMonthly DESC,
+                    r.startAmountMonthly DESC,
+                    r.startCountWeekly DESC,
+                    r.startAmountWeekly DESC,
+                    r.startCountDaily DESC,
+                    r.startAmountDaily DESC,
+                    r.startAmount DESC,
+                    r.rateId),
+                RANK() OVER (ORDER BY c.priority, c.name, c.conditionId)
+            FROM
+                @matches AS c
+            JOIN
+                [rule].rate AS r ON r.conditionId = c.conditionId
+            WHERE
+                @targetCurrency = r.targetCurrency AND
+                @currency = r.startAmountCurrency AND
+                @amount >= r.startAmount AND
+                c.amountDaily >= r.startAmountDaily AND
+                c.countDaily >= r.startCountDaily AND
+                c.amountWeekly >= r.startAmountWeekly AND
+                c.countWeekly >= r.startCountWeekly AND
+                c.amountMonthly >= r.startAmountMonthly AND
+                c.countMonthly >= r.startCountMonthly
+        )
+        SELECT
+            @rateId = rateId,
+            @rateName = [name],
+            @settlementAmount = @amount * rate
+        FROM
+            rate r
+        WHERE
+            r.rnk1 = 1 AND
+            r.rnk2 = 1
+    END
+
     SELECT 'amount' AS resultSetName, 1 single
     SELECT
-        (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%') acquirerFee,
-        (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%') issuerFee,
-        NULL processorFee, -- @TODO calc processor fee
-        (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%') commission,
+        @settlementAmount settlementAmount,
+        @rateId rateId,
+        @rateName rateConditionName,
+        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), @scale), 2) acquirerFee,
+        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|issuer|%' AND tag LIKE '%|fee|%'), @scale), 2) issuerFee,
+        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|processor|%' AND tag LIKE '%|fee|%'), @scale), 2) processorFee,
+        CONVERT(VARCHAR(21), ROUND((SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE tag LIKE '%|commission|%'), @scale), 2) commission,
         @operationDate transferDateTime,
         @transferTypeId transferTypeId
 
@@ -317,13 +385,14 @@ BEGIN
     SELECT 'split' AS resultSetName
     SELECT
         a.conditionId,
+        a.conditionName,
         a.splitNameId,
         a.tag,
-        CONVERT(VARCHAR, CAST(CASE
+        CONVERT(VARCHAR, ROUND(CAST(CASE
             WHEN assignment.[percent] * a.fee / 100 > assignment.maxValue THEN maxValue
             WHEN assignment.[percent] * a.fee / 100 < assignment.minValue THEN minValue
             ELSE assignment.[percent] * a.fee / 100
-        END AS MONEY), 2) amount,
+        END AS MONEY), @scale), 2) amount,
         ISNULL(d.accountNumber, assignment.debit) debit,
         ISNULL(c.accountNumber, assignment.credit) credit,
         assignment.description,
@@ -336,4 +405,10 @@ BEGIN
         integration.vAssignment d ON CAST(d.accountId AS VARCHAR(100)) = assignment.debit
     LEFT JOIN
         integration.vAssignment c ON CAST(c.accountId AS VARCHAR(100)) = assignment.credit
-END
+END TRY
+BEGIN CATCH
+    IF @@trancount > 0
+        ROLLBACK TRANSACTION
+    EXEC [core].[error]
+    RETURN 55555
+END CATCH

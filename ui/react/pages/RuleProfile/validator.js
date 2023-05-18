@@ -6,6 +6,7 @@ const splitCumulativeAmountOrder = ['dailyAmount', 'weeklyAmount', 'monthlyAmoun
 const splitCumulativeCountOrder = ['dailyCount', 'weeklyCount', 'monthlyCount'];
 export const errorMessage = {
     priorityRequired: 'Priority is required',
+    nameRequired: 'Name is required',
     propertyNameRequired: 'Property name is required',
     propertyNameUnique: 'Property name should be unique with channel, operation, source and destination properties',
     currencyRequired: 'Currency is required',
@@ -42,6 +43,10 @@ export const validations = {
         {type: textValidations.isRequired, errorMessage: errorMessage.priorityRequired},
         {type: textValidations.numberOnly, errorMessage: 'Priority should be a number'},
         {type: textValidations.regex, value: /^[1-9][0-9]{0,9}$/, errorMessage: 'Priority should be between 1 and 9999999999'}
+    ],
+    name: [
+        {type: textValidations.isRequired, errorMessage: errorMessage.nameRequired}// ,
+        // {type: textValidations.regex, value: /[^A-Za-z0-9]+/, errorMessage: 'Name should be string'}
     ],
     count: [
         {type: textValidations.numberOnly, errorMessage: 'Please enter a valid number'}

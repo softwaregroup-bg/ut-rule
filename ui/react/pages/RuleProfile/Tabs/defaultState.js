@@ -63,10 +63,11 @@ export const defaultTabState = {
     activeTab: 0,
     channel: {
         priority: '',
+        name: '',
         countries: [],
         regions: [],
         cities: [],
-        organization: '',
+        organization: [],
         role: null,
         properties: []
     },

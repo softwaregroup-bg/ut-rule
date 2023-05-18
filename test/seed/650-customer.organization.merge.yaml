@@ -1,0 +1,20 @@
+organization:
+  - {organizationName: CARE, code: CARE}
+  - {organizationName: Greenpeace, code: Greenpeace}
+  - {organizationName: Mercy Corps, code: Mercy}
+  - {organizationName: Nobel Foundation, code: Nobel}
+  - {organizationName: Oxfam, code: Oxfam}
+  - {organizationName: UNICEF, code: UNICEF}
+  - {organizationName: Wikimedia Foundation, code: Wikimedia}
+  - {organizationName: Tripadvisor, code: Tripadvisor}
+  - {organizationName: Mastercard, code: Mastercard}
+  - {organizationName: DHL, code: DHL}
+parent:
+  - {subjectName: Greenpeace, objectName: '${organizationName}'}
+  - {subjectName: Tripadvisor, objectName: '${organizationName}'}
+  - {subjectName: Mastercard, objectName: '${organizationName}'}
+  - {subjectName: DHL, objectName: '${organizationName}'}
+properties:
+  - {customerName: Tripadvisor, propertyName: tourism, propertyValue: 1}
+  - {customerName: Mastercard, propertyName: emv, propertyValue: 1}
+  - {customerName: DHL, propertyName: transport, propertyValue: 1}

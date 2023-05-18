@@ -14,17 +14,23 @@ DECLARE @splitAssignment [rule].splitAssignmentTT
 DECLARE @conditionId INT = (SELECT conditionId FROM @condition)
 
 BEGIN TRY
+    -- checks if the user has a right to make the operation
+    DECLARE @actionID VARCHAR(100) = OBJECT_SCHEMA_NAME(@@PROCID) + '.' + OBJECT_NAME(@@PROCID), @return INT = 0
+    EXEC @return = [user].[permission.check] @actionId = @actionID, @objectId = NULL, @meta = @meta
+    IF @return != 0
+    BEGIN
+        RETURN 55555
+    END
 
     IF EXISTS
         (
-            SELECT [priority]
+            SELECT [name]
             FROM [rule].condition
-            WHERE [priority] = (SELECT [priority] FROM @condition)
+            WHERE [name] = (SELECT [name] FROM @condition)
             AND conditionId != @conditionId
-            AND isDeleted = 0
         )
         BEGIN
-            RAISERROR ('rule.duplicatedPriority', 16, 1)
+            RAISERROR ('rule.duplicatedName', 16, 1)
         END
 
     SET @conditionId = (SELECT conditionId FROM @condition)
@@ -37,7 +43,10 @@ BEGIN TRY
             operationEndDate = DATEADD(ms, -3, DATEADD(dd, 1, DATEADD(dd, DATEDIFF(dd, 0, c1.operationEndDate), 0))), -- the last time on this date - 23:59:59.997
             sourceAccountId = c1.sourceAccountId,
             destinationAccountId = c1.destinationAccountId,
-            updatedOn = GETDATE(),
+            [name] = c1.[name],
+            [description] = c1.[description],
+            notes = c1.notes,
+            updatedOn = GETUTCDATE(),
             updatedBy = @userId
         FROM [rule].condition c
         JOIN @condition c1 ON c.conditionId = c1.conditionId
@@ -62,10 +71,7 @@ BEGIN TRY
 
         MERGE INTO [rule].conditionProperty cp
         USING @conditionProperty cp1
-            ON cp.conditionId = cp1.conditionId AND cp.factor = cp1.factor AND cp.name = cp1.name
-        WHEN MATCHED THEN
-            UPDATE
-            SET value = cp1.value
+            ON cp.conditionId = cp1.conditionId AND cp.factor = cp1.factor AND cp.name = cp1.name AND cp.value = cp1.value
         WHEN NOT MATCHED BY TARGET THEN
             INSERT (conditionId, factor, name, value)
             VALUES (@conditionId, cp1.factor, cp1.name, cp1.value)
@@ -258,7 +264,7 @@ BEGIN TRY
         AND ISNULL(records.x.value('(splitAssignmentId)[1]', 'BIGINT'), 0) <> 0
         UNION ALL
         SELECT DISTINCT -- exist splitAnalytic & exist splitAssignment
-            splitAssignment.x.query('*').value('(splitAnalyticId)[1]', 'BIGINT')	AS [splitAnalyticId],
+            splitAssignment.x.query('*').value('(splitAnalyticId)[1]', 'BIGINT') AS [splitAnalyticId],
             records.x.value('(splitAssignmentId)[1]', 'BIGINT') AS [splitAssignmentId],
             splitAssignment.x.query('*').value('(name)[1]', 'NVARCHAR(50)') AS [name],
             splitAssignment.x.query('*').value('(value)[1]', 'NVARCHAR(150)') AS [value]
@@ -288,7 +294,7 @@ BEGIN TRY
         SELECT
             @conditionId [key],
             c.priority rulePriority,
-            GETDATE() editDateTime
+            GETUTCDATE() editDateTime
         FROM
             @condition c
         FOR XML RAW

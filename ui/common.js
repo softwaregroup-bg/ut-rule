@@ -44,10 +44,12 @@ function prepareRuleModel(dbresult) {
         channel: {
             conditionId: condition.conditionId,
             priority: condition.priority,
+            name: condition.name,
             properties: [],
             countries: [],
             cities: [],
-            regions: []
+            regions: [],
+            organization: []
         },
         destination: {
             properties: [],
@@ -74,8 +76,15 @@ function prepareRuleModel(dbresult) {
         }
     };
     (dbresult.conditionActor || []).forEach((ca) => {
-        const des = rule[propMap[ca.factor]];
-        des && (des[ca.type] = parseInt(ca.actorId));
+        if (['organization'].indexOf(ca.type) > -1) {
+            const des = rule[propMap[ca.factor]];
+            des && des[ca.type] && des[ca.type].push({
+                key: parseInt(ca.actorId),
+                name: ca.organizationName
+            });
+        } else {
+            rule[propMap[ca.factor]] && (rule[propMap[ca.factor]][ca.type] = parseInt(ca.actorId));
+        }
     });
     // condition item
     (dbresult.conditionItem || []).forEach((item) => {

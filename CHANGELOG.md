@@ -1,3 +1,189 @@
+## [12.5.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.2...v12.5.3) (2023-01-02)
+
+
+
+## [12.5.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.1...v12.5.2) (2022-12-22)
+
+
+
+## [12.5.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.0...v12.5.1) (2022-12-20)
+
+
+
+# [12.5.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.5...v12.5.0) (2022-12-19)
+
+
+### Features
+
+* kyc and customerType conditions ([49d46e0](https://github.com/softwaregroup-bg/ut-rule/commit/49d46e086e2bf8bb279b44f73acbcf7dc6b1976b))
+
+
+
+## [12.4.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.2...v12.4.3) (2022-11-16)
+
+
+
+## [12.4.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.1...v12.4.2) (2022-11-14)
+
+
+
+## [12.4.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.0...v12.4.1) (2022-11-10)
+
+
+
+# [12.4.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.3...v12.4.0) (2022-11-10)
+
+
+### Features
+
+* CBI-366 ([#243](https://github.com/softwaregroup-bg/ut-rule/issues/243)) ([c650ba9](https://github.com/softwaregroup-bg/ut-rule/commit/c650ba9a5edd8f386445402de69dd3b89d02c8a6))
+
+
+
+## [12.3.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.2...v12.3.3) (2022-11-08)
+
+
+
+## [12.3.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.1...v12.3.2) (2022-11-04)
+
+
+### Bug Fixes
+
+* rule.condition save/load ([ad3d6ba](https://github.com/softwaregroup-bg/ut-rule/commit/ad3d6ba64edef987646af7655945b8791e18dae4))
+
+
+
+## [12.3.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.0...v12.3.1) (2022-11-03)
+
+
+
+# [12.3.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.3...v12.3.0) (2022-11-02)
+
+
+### Features
+
+* rule condition ui #UTCORE-121 ([aa91548](https://github.com/softwaregroup-bg/ut-rule/commit/aa9154833cbf81c48d8f046a7a2902260bca8bca)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
+## [12.2.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.2...v12.2.3) (2022-11-01)
+
+
+### Bug Fixes
+
+* hide 'see more' action BPS-229 ([#242](https://github.com/softwaregroup-bg/ut-rule/issues/242)) ([d17e86f](https://github.com/softwaregroup-bg/ut-rule/commit/d17e86f1283a807890b666912c534385288110d5))
+
+
+
+## [12.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.1...v12.2.2) (2022-10-24)
+
+
+
+## [12.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.0...v12.2.1) (2022-09-07)
+
+
+### Bug Fixes
+
+* renamed account ([#239](https://github.com/softwaregroup-bg/ut-rule/issues/239)) ([53ca795](https://github.com/softwaregroup-bg/ut-rule/commit/53ca795e9662488848ad9270729626e4b2d9ab8a))
+
+
+
+# [12.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.9...v12.2.0) (2022-08-24)
+
+
+### Features
+
+* bill payment test data ([#238](https://github.com/softwaregroup-bg/ut-rule/issues/238)) ([439fa4e](https://github.com/softwaregroup-bg/ut-rule/commit/439fa4ec9c4965e965da5b1fbf8d36a3e3fc1649))
+
+
+
+## [12.1.9](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.8...v12.1.9) (2022-08-01)
+
+
+
+## [12.1.8](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.7...v12.1.8) (2022-06-01)
+
+
+### Bug Fixes
+
+* hide table titles #UTCORE-121 ([0b67ca9](https://github.com/softwaregroup-bg/ut-rule/commit/0b67ca9b9868a8e8c018ed18cc286ef09d5a84a5)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
+## [12.1.7](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.6...v12.1.7) (2022-05-25)
+
+
+### Bug Fixes
+
+* Run ERP seed if only exist. BPS-57 ([#230](https://github.com/softwaregroup-bg/ut-rule/issues/230)) ([9011c28](https://github.com/softwaregroup-bg/ut-rule/commit/9011c28893bf3cc8678733ab13eb35f7bd6bb460))
+
+
+
+## [12.1.6](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.5...v12.1.6) (2022-05-05)
+
+
+### Bug Fixes
+
+* **ECNT2-1263:** rounding ([#229](https://github.com/softwaregroup-bg/ut-rule/issues/229)) ([bb564a6](https://github.com/softwaregroup-bg/ut-rule/commit/bb564a605ae3eb516ce762875bc25a0e7b2f83d4))
+
+
+
+## [12.1.5](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.4...v12.1.5) (2022-05-03)
+
+
+
+## [12.1.4](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.3...v12.1.4) (2022-04-21)
+
+
+### Bug Fixes
+
+* **MSA-2182:** edit amount type rounding is not correct ([#228](https://github.com/softwaregroup-bg/ut-rule/issues/228)) ([90d18df](https://github.com/softwaregroup-bg/ut-rule/commit/90d18df241cd626b47e415f3582f8f2e0fa3404b))
+
+
+
+## [12.1.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.2...v12.1.3) (2022-04-06)
+
+
+### Bug Fixes
+
+* wallet to erp rule, #UTCORE-121 ([#227](https://github.com/softwaregroup-bg/ut-rule/issues/227)) ([487dc37](https://github.com/softwaregroup-bg/ut-rule/commit/487dc3768ab0b62e0c65494e1900842571ef8ab7)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
+## [12.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.1...v12.1.2) (2022-03-30)
+
+
+
+## [12.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.0...v12.1.1) (2022-03-13)
+
+
+
+# [12.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.2...v12.1.0) (2022-03-04)
+
+
+### Features
+
+* PS-261 - Support multiple selection for Channel organization input ([#226](https://github.com/softwaregroup-bg/ut-rule/issues/226)) ([e300e67](https://github.com/softwaregroup-bg/ut-rule/commit/e300e671d8cd12a12b024565b9164c5e37d9e2ae))
+
+
+
+## [12.0.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.1...v12.0.2) (2022-02-21)
+
+
+### Bug Fixes
+
+* add microservice config ([f8336df](https://github.com/softwaregroup-bg/ut-rule/commit/f8336dfd0323a49a88d9de5adee2cd0a89cfbca7))
+
+
+
+## [12.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.0...v12.0.1) (2022-02-21)
+
+
+
+# [12.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.0-timezone.1...v12.0.0) (2022-02-21)
+
+
+
 ## [11.5.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.5.0...v11.5.1) (2021-12-23)
 
 

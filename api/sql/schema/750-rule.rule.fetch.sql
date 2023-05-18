@@ -1,6 +1,7 @@
 ALTER PROCEDURE [rule].[rule.fetch]
     @conditionId INT = NULL,
     @operationCode NVARCHAR(200) = NULL, -- used for filtering, the code of the operation for which the rules are defined
+    @name NVARCHAR(100) = NULL, -- filter by rule name
     @pageSize INT = 25, -- how many rows will be returned per page
     @pageNumber INT = 1, -- which page number to display,
     @meta core.metaDataTT READONLY -- information for the logged user
@@ -27,19 +28,23 @@ BEGIN
         operationStartDate DATETIME,
         sourceAccountId NVARCHAR(255),
         destinationAccountId NVARCHAR(255),
+        [name] NVARCHAR(100),
+        [description] NVARCHAR(100),
+        notes NVARCHAR(1000),
         createdOn DATETIME,
         updatedOn DATETIME,
         rowNum INT,
         recordsTotal INT)
 
-    INSERT INTO #RuleConditions(conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, createdOn, updatedOn, rowNum, recordsTotal)
-    SELECT rc.conditionId, rc.[priority],
-        rc.operationEndDate, rc.operationStartDate,
-        rc.sourceAccountId, rc.destinationAccountId, rc.createdOn, rc.updatedOn,
+    INSERT INTO #RuleConditions(conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId,
+        destinationAccountId, [name], [description], notes, createdOn, updatedOn, rowNum, recordsTotal)
+    SELECT rc.conditionId, rc.[priority], rc.operationEndDate, rc.operationStartDate,
+        rc.sourceAccountId, rc.destinationAccountId, rc.[name], rc.[description], rc.notes, rc.createdOn, rc.updatedOn,
         ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
         COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
     FROM [rule].condition rc
     WHERE (@conditionId IS NULL OR rc.conditionId = @conditionId )
+        AND (@name IS NULL OR rc.[name] LIKE '%' + @name + '%')
         AND rc.isDeleted = 0
         AND (@operationId IS NULL
             OR EXISTS(SELECT * FROM [rule].conditionItem ri WHERE ri.conditionId = rc.conditionId AND ri.factor = 'oc' AND ri.itemNameId = @operationId))
@@ -57,6 +62,9 @@ BEGIN
         rct.[operationStartDate],
         rct.[sourceAccountId],
         rct.[destinationAccountId],
+        rct.[name],
+        rct.[description],
+        rct.[notes],
         rct.[createdOn],
         rct.[updatedOn]
     FROM #RuleConditions rct
@@ -64,13 +72,14 @@ BEGIN
 
     SELECT 'conditionActor' AS resultSetName
     SELECT
-        ca.*, a.actorType AS [type]
+        ca.*, a.actorType AS [type], co.organizationName
     FROM
         [rule].conditionActor ca
     JOIN
         #RuleConditions rct ON rct.conditionId = ca.conditionId
     JOIN
         core.actor a ON a.actorId = ca.actorId
+    LEFT JOIN [customer].[organization] co ON co.actorId = ca.actorId
 
     SELECT 'conditionItem' AS resultSetName
     SELECT
@@ -109,6 +118,15 @@ BEGIN
         [rule].splitName sn ON sn.splitNameId = sr.splitNameId
     JOIN
         #RuleConditions rct ON rct.conditionId = sn.conditionId
+    ORDER BY
+        sr.startCountMonthly DESC,
+        sr.startAmountMonthly DESC,
+        sr.startCountWeekly DESC,
+        sr.startAmountWeekly DESC,
+        sr.startCountDaily DESC,
+        sr.startAmountDaily DESC,
+        sr.startAmount DESC,
+        sr.splitRangeId
 
     SELECT 'splitAssignment' AS resultSetName
     SELECT

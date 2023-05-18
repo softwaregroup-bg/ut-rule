@@ -1,7 +1,9 @@
 module.exports = () => ({
     // environments
-    storybook: {
-        browser: true,
+    common: {
+        browser: true
+    },
+    mock: {
         backend: {
             mock: true
         }

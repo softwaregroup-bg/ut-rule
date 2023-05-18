@@ -3,10 +3,11 @@ const path = require('path');
 module.exports = function sql({config}) {
     return {
         namespace: 'db/rule',
-        schema: [
-            {path: path.join(__dirname, 'schema'), linkSP: true, config},
-            {path: path.join(__dirname, 'schema/seeds')}
-        ],
+        schema: [{
+            path: path.join(__dirname, 'schema'),
+            linkSP: true,
+            config
+        }],
         'rule.decision.lookup.response.receive': result => {
             if (result && Array.isArray(result.split)) {
                 result.split.forEach(split => {

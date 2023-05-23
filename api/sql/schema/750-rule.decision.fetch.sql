@@ -20,7 +20,10 @@ ALTER PROCEDURE [rule].[decision.fetch]
 AS
 BEGIN TRY
     DECLARE @currencyCode NVARCHAR(200) = @currency
+    DECLARE @settlementCurrencyCode NVARCHAR(200) = @settlementCurrency
+    DECLARE @accountCurrencyCode NVARCHAR(200) = @accountCurrency
     DECLARE @amount MONEY = TRY_CONVERT(MONEY, @amountString)
+
     IF @amount IS NULL RAISERROR('rule.amount', 16, 1)
     DECLARE @transferTypeId BIGINT
     SELECT
@@ -138,8 +141,8 @@ BEGIN TRY
             (
                 SELECT ct.factor, ct.name, SUM(IIF(p.factor IS NULL, 0, 1)) AS cntFactor
                 FROM [rule].conditionProperty ct
-                LEFT JOIN @operationPropertiesExtended p ON p.factor = ct.factor AND ct.name = p.name
-                LEFT JOIN core.actorProperty t ON t.actorId = p.valueBigint AND ct.name = t.name AND ct.value = t.value
+                LEFT JOIN core.actorProperty t ON ct.name = t.name AND ct.value = t.value
+                LEFT JOIN @operationPropertiesExtended p ON t.actorId = p.valueBigint AND p.factor = ct.factor
                 WHERE ct.conditionId = c.conditionId AND ct.factor IN ('so', 'do', 'co')
                 GROUP BY ct.factor, ct.name
             ) ct
@@ -150,8 +153,8 @@ BEGIN TRY
             (
                 SELECT ct.factor, ct.name, SUM(IIF(p.factor IS NULL, 0, 1)) AS cntFactor
                 FROM [rule].conditionProperty ct
-                LEFT JOIN @operationPropertiesExtended p ON p.factor = ct.factor AND ct.name = p.name
-                LEFT JOIN core.itemProperty t ON t.itemNameId = p.valueBigint AND ct.name = t.name AND ct.value = t.value
+                LEFT JOIN core.itemProperty t ON ct.name = t.name AND ct.value = t.value
+                LEFT JOIN @operationPropertiesExtended p ON t.itemNameId = p.valueBigint AND p.factor = ct.factor
                 WHERE ct.conditionId = c.conditionId AND ct.factor IN ('ss', 'ds', 'cs', 'oc', 'sc', 'dc')
                 GROUP BY ct.factor, ct.name
             ) ct
@@ -200,7 +203,7 @@ BEGIN TRY
     SELECT @settlementScale = scale, @settlementCurrencyId = currencyId
     FROM core.currency c
     JOIN core.itemName it ON it.itemNameId = c.itemNameId
-    WHERE itemCode = @settlementCurrency
+    WHERE itemCode = @settlementCurrencyCode
 
     IF @settlementCurrency <> @currency AND @settlementAmount IS NULL
     BEGIN
@@ -222,7 +225,7 @@ BEGIN TRY
     SELECT @accountScale = scale, @accountCurrencyId = currencyId
     FROM core.currency c
     JOIN core.itemName it ON it.itemNameId = c.itemNameId
-    WHERE itemCode = @accountCurrency
+    WHERE itemCode = @accountCurrencyCode
 
     IF @accountCurrency <> @settlementCurrency AND @accountAmount IS NULL
     BEGIN

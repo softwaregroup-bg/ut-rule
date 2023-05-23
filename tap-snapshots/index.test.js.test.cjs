@@ -176,15 +176,27 @@ Object {
     "acquirerFee": null,
     "cashback": null,
     "commission": null,
-    "issuerFee": null,
+    "issuerFee": "18.0000",
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
-    "transferFee": null,
+    "transferFee": "18.0000",
   },
-  "split": Array [],
+  "split": Array [
+    Object {
+      "amount": "18.0000",
+      "analytics": null,
+      "conditionName": "Test by channel organization tag",
+      "credit": "credit",
+      "currency": "USD",
+      "debit": "debit",
+      "description": "fee",
+      "quantity": null,
+      "tag": "|fee|issuer|",
+    },
+  ],
 }
 `
 

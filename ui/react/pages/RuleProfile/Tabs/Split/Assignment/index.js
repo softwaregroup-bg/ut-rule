@@ -4,7 +4,6 @@ import Input from 'ut-front-react/components/Input';
 import {validations} from '../../../validator';
 import style from '../../style.css';
 import { fromJS } from 'immutable';
-import { formatValue, reverseFormatter } from '../../../helpers';
 
 export const Assignment = (props) => {
     const {
@@ -84,11 +83,8 @@ export const Assignment = (props) => {
                             validators={validations.amount}
                             isValid={!errors.getIn([idx, 'minAmount'])}
                             errorMessage={errors.getIn([idx, 'minAmount'])}
-                            onChange={(field) => { changeInput(index, reverseFormatter(field)); }}
+                            onChange={(field) => { changeInput(index, field); }}
                             value={prop.minAmount}
-                            renderText={(value) => {
-                                return formatValue(value);
-                            }}
                         />
                     </td>
                     <td>
@@ -98,11 +94,8 @@ export const Assignment = (props) => {
                             validators={validations.amount}
                             isValid={!errors.getIn([idx, 'maxAmount'])}
                             errorMessage={errors.getIn([idx, 'maxAmount'])}
-                            onChange={(field) => { changeInput(index, reverseFormatter(field)); }}
+                            onChange={(field) => { changeInput(index, field); }}
                             value={prop.maxAmount}
-                            renderText={(value) => {
-                                return formatValue(value);
-                            }}
                         />
                     </td>
                     <td className={style.deleteCol}>

@@ -1,2 +1,2 @@
-const tap = require('tap');
-tap.pass('no tests');
+// const tap = require('tap');
+// tap.pass('no tests');

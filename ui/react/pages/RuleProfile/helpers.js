@@ -49,7 +49,7 @@ const conditionPropertyFactor = {
 export const formatNomenclatures = (items) => {
     const formattedPayload = {};
     // default object properties
-    ['accountProduct', 'cardProduct', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization']
+    ['accountProduct', 'cardProduct', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization', 'agentRole']
         .forEach((objName) => (formattedPayload[objName] = []));
     items.map(item => {
         if (!formattedPayload[item.type]) {
@@ -72,13 +72,13 @@ export const prepareRuleToSave = (rule) => {
         priority: channel.priority,
         operationStartDate: operation.startDate || null,
         operationEndDate: operation.endDate || null,
-        sourceAccontId: null,
+        sourceAccountId: null,
         destinationAccountId: null
     }];
     formattedRule.conditionActor = [];
     ['channel', 'source', 'destination'].forEach(function(keyProp) {
         const value = rule[keyProp];
-        ['organization', 'role'].forEach((type) => {
+        ['organization', 'role', 'agentRole'].forEach((type) => {
             if (value[type] && value[type] instanceof Array) {
                 value[type].forEach(function(ci) {
                     ci.key && formattedRule.conditionActor.push({
@@ -380,34 +380,4 @@ export const flatten = function(ob) {
         }
     }
     return result;
-};
-
-export const formatValue = (value, sep) => {
-    if (value && !isNaN(value)) {
-        const formatter = new Intl.NumberFormat('en-US', {style: 'decimal'});
-        value = `${value}`.replace(/,/g, '');
-        if (value.indexOf('.') !== -1) {
-            const grp = value.split('.');
-            if (grp[1].length > 0) {
-                grp[0] = formatter.format(grp[0]);
-                grp[1] = formatter.format(grp[1]);
-                return grp.join('.');
-            } else {
-                return formatter.format(value) + '.';
-            }
-        } else {
-            value = formatter.format(value);
-            return value;
-        }
-    }
-    return value;
-};
-
-export const reverseFormatter = (obj) => {
-    if (obj.value) {
-        const value = isNaN(obj.value) ? obj.value : obj.value.replace(/,/g, '');
-        obj.value = value;
-        return obj;
-    }
-    return obj;
 };

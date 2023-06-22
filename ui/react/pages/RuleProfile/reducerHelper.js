@@ -3,6 +3,7 @@ import { formatNomenclatures, prepareRuleModel } from './helpers';
 import { fromJS } from 'immutable';
 import { getLink } from 'ut-front-react/routerHelper';
 import { defaultTabState, emptyLimit, emptySplit, emptyAssignment, emptyRange, defaultErrorState, emptyCumulative } from './Tabs/defaultState';
+import { confirmDialogObj } from './reducer';
 const __placeholder__ = '__placeholder__';
 
 export function changeRuleProfile(state, action, options) {
@@ -13,6 +14,30 @@ export function changeRuleProfile(state, action, options) {
     }
     return state;
 }
+
+export function getSingleRule(state, action, options) {
+    if (action.methodRequestState === methodRequestState.FINISHED) {
+        const id = action.params.conditionId;
+        // console.log('id-action.result:', id, action.result)
+        return state
+            .setIn(['approve', id, 'localData'], fromJS(action.result));
+    }
+    return state;
+}
+
+export const changeConfirmDialogValue = (state, action, options) => {
+    return state
+        .setIn(['common', 'confirmDialog', 'value'], action.params.value.value)
+        .setIn(['common', 'confirmDialog', 'canSubmit'], action.params.value.canSubmit);
+};
+
+export const closeConfirmDialog = (state, action, options) => {
+    return state.setIn(['common', 'confirmDialog'], fromJS(confirmDialogObj));
+};
+
+export const openConfirmDialog = (state, action, options) => {
+    return state.setIn(['common', 'confirmDialog'], fromJS(action.params.config));
+};
 
 export function fetchNomenclatures(state, action, options) {
     if (action.methodRequestState === methodRequestState.FINISHED) {
@@ -35,6 +60,8 @@ export function saveRule(state, action, options) {
 export function getRule(state, action, options) {
     const { mode, id } = options;
     if (action.methodRequestState === methodRequestState.FINISHED && !action.error) {
+        // console.log('id-action.result:', id, action.result, prepareRuleModel(action.result));
+        // debugger;
         return state.setIn([mode, id], fromJS(prepareRuleModel(action.result)))
             .setIn(['rules', id], action.result);
     }
@@ -91,7 +118,8 @@ export function changeActiveTab(state, action, options) {
 }
 // error update
 export function updateRuleErrors(state, action, options) {
-    const { mode, id } = options;
+    const mode = options.mode || state.getIn(['activeTab', 'mode']);
+    const id = options.id || state.getIn(['activeTab', 'id']);
     return state.setIn([mode, id, 'errors'], fromJS(action.params.errors));
 }
 // common tab actions

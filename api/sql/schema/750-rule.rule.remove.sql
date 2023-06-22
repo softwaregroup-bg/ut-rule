@@ -5,13 +5,6 @@ AS
 DECLARE @userId BIGINT = (SELECT [auth.actorId] FROM @meta)
 BEGIN TRY
 
-    DECLARE @actionID VARCHAR(100) = OBJECT_SCHEMA_NAME(@@PROCID) + '.' + OBJECT_NAME(@@PROCID), @return INT = 0
-    EXEC @return = [user].[permission.check] @actionId = @actionID, @objectId = NULL, @meta = @meta
-    IF @return != 0
-    BEGIN
-        RETURN 55555
-    END
-
     BEGIN TRANSACTION
         DELETE x
         FROM
@@ -73,8 +66,10 @@ BEGIN TRY
 
         UPDATE x
         SET isDeleted = 1,
+        isEnabled = 0,
         updatedOn = GETUTCDATE(),
-        updatedBy = @userId
+        updatedBy = @userId,
+        [status] = 'Deleted'
         FROM
             [rule].condition x
         JOIN

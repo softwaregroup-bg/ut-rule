@@ -8,7 +8,7 @@ const removeEmpty = (obj) => {
     return obj;
 };
 
-export const updatePagination = (params) => ({type: actionTypes.updatePagination, params});
+export const updatePagination = (params) => ({ type: actionTypes.updatePagination, params });
 
 export function fetchRules(params, showDeleted) {
     return {
@@ -394,3 +394,11 @@ export function toggleRuleOption(key, value) {
         }
     };
 };
+
+export function lockUnlockRule(params) {
+    return {
+        type: actionTypes.lockUnlockRule,
+        method: 'rule.rule.lock',
+        params
+    };
+}

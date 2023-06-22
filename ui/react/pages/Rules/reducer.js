@@ -2,10 +2,11 @@ import * as actionTypes from './actionTypes';
 import map from 'lodash.map';
 import { getLink } from 'ut-front-react/routerHelper';
 import { fromJS } from 'immutable';
-import { formatValue } from '../RuleProfile/helpers';
+import { APPROVE_RULE, REJECT_RULE, DISCARD_RULE } from '../../pages/RuleProfile/actionTypes';
 
 const defaultState = {
-    showDeleted: false
+    showDeleted: false,
+    requiresFetch: false
 };
 const maxPercentageCharacters = 5;
 const amountCharacters = 14;
@@ -16,13 +17,19 @@ const basePercentageCharacters = 10;
 export default (state = defaultState, action) => {
     if (action.result && action.methodRequestState === 'finished') {
         switch (action.type) {
+            case REJECT_RULE:
+                return {...state, requiresFetch: true};
+            case APPROVE_RULE:
+                return {...state, requiresFetch: true};
+            case DISCARD_RULE:
+                return {...state, requiresFetch: true};
             case actionTypes.fetchNomenclatures:
                 return Object.assign({}, state, {
                     fetchNomenclatures: formatNomenclatures(action.result.items)
                 });
             case actionTypes.fetchRules: {
                 const showDeleted = state.showDeleted;
-                const formattedRules = (formatRules(action.result));
+                const formattedRules = formatRules(action.result);
                 map(formattedRules, (rule) => {
                     rule.url = showDeleted ? getLink('ut-history:deleted', {objectId: rule.condition[0].conditionId, objectName: 'rule'}) : getLink('ut-rule:edit', {id: rule.condition[0].conditionId});
                     return rule;
@@ -37,6 +44,8 @@ export default (state = defaultState, action) => {
                     showDeleted
                 });
             }
+            case actionTypes.lockUnlockRule:
+                return state;
             default:
                 break;
         }
@@ -103,7 +112,9 @@ const formatRules = function(data) {
         if (data[prop] && data[prop].length) {
             data[prop].forEach(function(record) {
                 mappedData = splitNameConditionMap[record.splitNameId];
-                result[mappedData.conditionId].split[mappedData.index][prop].push(record);
+                if (mappedData?.conditionId) {
+                    result[mappedData.conditionId].split[mappedData.index][prop].push(record);
+                };
             });
         }
     });
@@ -137,6 +148,7 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
     //         }]
     //     }
     // };
+
     fromJS(formattedRules).toJS();
     const result = {};
     fetchedData.conditionItem && fetchedData.conditionItem.forEach((item) => {
@@ -174,8 +186,8 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
         }
 
         result[actor.conditionId][actor.factor].push({
-            name: actor.type,
-            value: actor.type === 'organization' ? actor.name : actor.actorId
+            name: actor.type === 'agentRole' ? 'agentType' : actor.type,
+            value: ['organization', 'role', 'agentRole', 'agentType'].includes(actor.type) ? actor.actorName : actor.actorId
         });
     });
     Object.keys(formattedRules).forEach((conditionId) => {
@@ -198,25 +210,25 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
                 if (limit.maxAmount && limit.minAmount) {
                     result[conditionId].limit.push({
                         name: 'Transaction',
-                        value: (formatValue(limit.maxAmount) ? 'max ' + formatValue(limit.maxAmount) + ' ' : '') + (formatValue(limit.minAmount) ? 'min ' + formatValue(limit.minAmount) + ' ' : '')
+                        value: (limit.maxAmount ? 'max ' + limit.maxAmount + ' ' : '') + (limit.minAmount ? 'min ' + limit.minAmount + ' ' : '')
                     });
                 }
                 if (limit.maxAmountDaily && limit.maxCountDaily) {
                     result[conditionId].limit.push({
                         name: 'Daily',
-                        value: (formatValue(limit.maxAmountDaily) ? 'max ' + formatValue(limit.maxAmountDaily) + ' ' : '') + (formatValue(limit.maxCountDaily) ? 'count ' + formatValue(limit.maxCountDaily) + ' ' : '')
+                        value: (limit.maxAmountDaily ? 'max ' + limit.maxAmountDaily + ' ' : '') + (limit.maxCountDaily ? 'count ' + limit.maxCountDaily + ' ' : '')
                     });
                 }
                 if (limit.maxAmountWeekly && limit.maxCountWeekly) {
                     result[conditionId].limit.push({
                         name: 'Weekly',
-                        value: (formatValue(limit.maxAmountWeekly) ? 'max ' + formatValue(limit.maxAmountWeekly) + ' ' : '') + (formatValue(limit.maxCountWeekly) ? 'count ' + formatValue(limit.maxCountWeekly) + ' ' : '')
+                        value: (limit.maxAmountWeekly ? 'max ' + limit.maxAmountWeekly + ' ' : '') + (limit.maxCountWeekly ? 'count ' + limit.maxCountWeekly + ' ' : '')
                     });
                 }
                 if (limit.maxAmountMonthly && limit.maxCountMonthly) {
                     result[conditionId].limit.push({
                         name: 'Monthly',
-                        value: (formatValue(limit.maxAmountMonthly) ? 'max ' + formatValue(limit.maxAmountMonthly) + ' ' : '') + (formatValue(limit.maxCountMonthly) ? 'count ' + formatValue(limit.maxCountMonthly) + ' ' : '')
+                        value: (limit.maxAmountMonthly ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (limit.maxCountMonthly ? 'count ' + limit.maxCountMonthly + ' ' : '')
                     });
                 }
             });

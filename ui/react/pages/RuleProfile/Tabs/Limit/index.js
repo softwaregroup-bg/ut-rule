@@ -10,7 +10,6 @@ import style from '../style.css';
 import * as actions from '../../actions';
 import {validations, externalValidate, errorMessage} from '../../validator';
 import { fromJS } from 'immutable';
-import { formatValue, reverseFormatter } from '../../helpers';
 const destinationProp = 'limit';
 const defaultProps = {
     currencies: [],
@@ -80,10 +79,7 @@ export const Limits = (props) => {
                             validators={validations.amount}
                             isValid={!errors.getIn([index, 'txMin'])}
                             errorMessage={errors.getIn([index, 'txMin'])}
-                            onChange={(field) => setLimitField(index, reverseFormatter(field))}
-                            renderText={(value) => {
-                                return formatValue(value);
-                            }}
+                            onChange={(field) => setLimitField(index, field)}
                         />
                     </td>
                     <td>
@@ -94,10 +90,7 @@ export const Limits = (props) => {
                             validators={validations.amount}
                             isValid={!errors.getIn([index, 'txMax'])}
                             errorMessage={errors.getIn([index, 'txMax'])}
-                            onChange={(field) => setLimitField(index, reverseFormatter(field))}
-                            renderText={(value) => {
-                                return formatValue(value);
-                            }}
+                            onChange={(field) => setLimitField(index, field)}
                         />
                     </td>
                     <td>
@@ -108,10 +101,7 @@ export const Limits = (props) => {
                             validators={validations.amount}
                             isValid={!errors.getIn([index, 'dailyMaxAmount'])}
                             errorMessage={errors.getIn([index, 'dailyMaxAmount'])}
-                            onChange={(field) => setLimitField(index, reverseFormatter(field))}
-                            renderText={(value) => {
-                                return formatValue(value);
-                            }}
+                            onChange={(field) => setLimitField(index, field)}
                         />
                     </td>
                     <td>
@@ -133,10 +123,7 @@ export const Limits = (props) => {
                             isValid={!errors.getIn([index, 'weeklyMaxAmount'])}
                             errorMessage={errors.getIn([index, 'weeklyMaxAmount'])}
                             value={limit.weeklyMaxAmount}
-                            onChange={(field) => setLimitField(index, reverseFormatter(field))}
-                            renderText={(value) => {
-                                return formatValue(value);
-                            }}
+                            onChange={(field) => setLimitField(index, field)}
                         />
                     </td>
                     <td>
@@ -158,10 +145,7 @@ export const Limits = (props) => {
                             validators={validations.amount}
                             isValid={!errors.getIn([index, 'monthlyMaxAmount'])}
                             errorMessage={errors.getIn([index, 'monthlyMaxAmount'])}
-                            onChange={(field) => setLimitField(index, reverseFormatter(field))}
-                            renderText={(value) => {
-                                return formatValue(value);
-                            }}
+                            onChange={(field) => setLimitField(index, field)}
                         />
                     </td>
                     <td>

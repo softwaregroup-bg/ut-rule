@@ -1,13 +1,23 @@
 const splitTags = [
     {key: 'commission', name: 'Commission'},
-    {key: 'fee', name: 'Fee'},
-    {key: 'levy', name: 'Government Levy'}
+    {key: 'fee', name: 'Fee'}
+    // {key: 'acquirer', name: 'Acquirer'},
+    // {key: 'issuer', name: 'Issuer'},
+    // {key: 'realtime', name: 'Realtime posting'},
+    // {key: 'pending', name: 'Authorization required'},
+    // {key: 'agent', name: 'Agent'},
+    // {key: 'atm', name: 'ATM'},
+    // {key: 'pos', name: 'POS'},
+    // {key: 'ped', name: 'PED'},
+    // {key: 'vendor', name: 'Vendor'},
+    // {key: 'merchant', name: 'Merchant'}
 ];
 
 const propMap = {
     country: 'countries',
     region: 'regions',
     city: 'cities',
+    agentRole: 'agentRole',
     operation: 'operations',
     cardProduct: 'cardProducts',
     so: 'source',
@@ -39,22 +49,21 @@ function prepareRuleModel(dbresult) {
             countries: [],
             cities: [],
             regions: [],
-            organization: []
+            organization: [],
+            agentRole: []
         },
         destination: {
             properties: [],
             countries: [],
             cities: [],
-            regions: [],
-            organization: []
+            regions: []
         },
         source: {
             properties: [],
             countries: [],
             cities: [],
             regions: [],
-            cardProducts: [],
-            organization: []
+            cardProducts: []
         },
         split: {
             splits: []
@@ -68,11 +77,11 @@ function prepareRuleModel(dbresult) {
         }
     };
     (dbresult.conditionActor || []).forEach((ca) => {
-        if (['organization'].indexOf(ca.type) > -1) {
-            const des = rule[propMap[ca.factor]];
+        const des = rule[propMap[ca.factor]];
+        if (['organization', 'agentRole', 'role'].indexOf(ca.type) > -1) {
             des && des[ca.type] && des[ca.type].push({
                 key: parseInt(ca.actorId),
-                name: ca.organizationName || ca.name
+                name: ca.actorName
             });
         } else {
             rule[propMap[ca.factor]] && (rule[propMap[ca.factor]][ca.type] = parseInt(ca.actorId));

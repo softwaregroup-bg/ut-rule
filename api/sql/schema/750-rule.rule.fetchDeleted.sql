@@ -29,7 +29,9 @@ BEGIN
         sourceAccountId NVARCHAR(255),
         destinationAccountId NVARCHAR(255),
         rowNum INT,
-        recordsTotal INT)
+        recordsTotal INT,
+        [status] VARCHAR(20),
+        isEnabled INT)
 
         ;WITH CTE AS (
         SELECT
@@ -40,13 +42,15 @@ BEGIN
             rc.sourceAccountId,
             rc.destinationAccountId,
             ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
-            COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
+            COUNT(*) OVER(PARTITION BY 1) AS recordsTotal,
+            rc.status,
+            rc.isEnabled
         FROM
             [rule].condition rc
         WHERE
             (@conditionId IS NULL OR rc.conditionId = @conditionId ) AND rc.isDeleted = 1 )
 
-    INSERT INTO #DeletedRuleConditions( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal)
+    INSERT INTO #DeletedRuleConditions( conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal, status, isEnabled)
     SELECT
         conditionId,
         [priority],
@@ -55,7 +59,9 @@ BEGIN
         sourceAccountId,
         destinationAccountId,
         rowNum,
-        recordsTotal
+        recordsTotal,
+        status,
+        isEnabled
     FROM CTE
     WHERE (rowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
 
@@ -67,7 +73,9 @@ BEGIN
         rct.[operationEndDate],
         rct.[operationStartDate],
         rct.[sourceAccountId],
-        rct.[destinationAccountId]
+        rct.[destinationAccountId],
+        rct.status,
+        rct.isEnabled
     FROM #DeletedRuleConditions rct
 
     SELECT 'pagination' AS resultSetName

@@ -14,12 +14,13 @@ const defaultUiState = {
             'supervisor',
             'cardProduct',
             'accountProduct',
-            'account'
+            'account',
+            'agentRole'
         ],
         itemCode: [
             'currency'
         ],
-        agentRole: [],
+        agentRole: [''],
         accountAlias: [],
         organization: [''],
         role: [],
@@ -59,6 +60,14 @@ const defaultUiState = {
                     visible: true,
                     title: 'Split'
                 },
+                status: {
+                    visible: true,
+                    title: 'Status'
+                },
+                lock: {
+                    visible: true,
+                    title: 'Lock'
+                },
                 expansion: {
                     visible: true,
                     title: 'Expansion'
@@ -81,12 +90,16 @@ const defaultUiState = {
                         title: 'Region'
                     },
                     city: {
-                        visible: false,
+                        visible: true,
                         title: 'City'
                     },
                     organization: {
                         visible: true,
                         title: 'Organization'
+                    },
+                    agentRole: {
+                        visible: true,
+                        title: 'Agent Type'
                     }
                 }
             },
@@ -121,19 +134,19 @@ const defaultUiState = {
                         title: 'Region'
                     },
                     city: {
-                        visible: false,
+                        visible: true,
                         title: 'City'
                     },
                     organization: {
                         visible: true,
-                        title: 'Business Unit'
+                        title: 'Organization'
                     },
                     cardProduct: {
-                        visible: false,
+                        visible: true,
                         title: 'Product'
                     },
                     accountProduct: {
-                        visible: false,
+                        visible: true,
                         title: 'Account Product'
                     }
                 }
@@ -151,15 +164,15 @@ const defaultUiState = {
                         title: 'Region'
                     },
                     city: {
-                        visible: false,
+                        visible: true,
                         title: 'City'
                     },
                     organization: {
                         visible: true,
-                        title: 'Business Unit'
+                        title: 'Organization'
                     },
                     accountProduct: {
-                        visible: false,
+                        visible: true,
                         title: 'Account Product'
                     }
                 }

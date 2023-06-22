@@ -266,6 +266,8 @@ RuleEdit.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
     const tabState = state.ruleProfileReducer.getIn([mode, ownProps.match.params.id]);
+    // console.log('tabState ? tabState.toJS(): ',tabState && tabState.toJS());
+    // debugger;
     return {
         activeTab: state.tabMenu.active,
         config: state.ruleProfileReducer.get('config').toJS(),

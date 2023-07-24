@@ -105,7 +105,7 @@ export function changeInput(state, action, options) {
         return state.setIn([mode, id, 'errors', action.destinationProp].concat(key.split(',')), errorMessage);
     } else {
         // clearLinkedErrors
-        [...(clearLinkedErrors || []), key].map((dkey) => {
+        [...(clearLinkedErrors || []), key].forEach(dkey => {
             state = state.deleteIn([mode, id, 'errors', action.destinationProp].concat(dkey.split(',')));
         });
         return state;

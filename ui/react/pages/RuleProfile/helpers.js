@@ -374,7 +374,7 @@ export const isEqual = (x, y) => {
 export const getRuleErrorCount = (errors) => {
     const flattenObj = flatten(errors);
     const errorCount = {};
-    tabs.map((tab) => {
+    tabs.forEach(tab => {
         errorCount[tab] = Object.keys(flattenObj).filter((fkey) => flattenObj[fkey] && fkey.startsWith(tab)).length;
     });
     return errorCount;

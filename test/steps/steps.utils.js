@@ -38,7 +38,6 @@ module.exports = function steps({version, callSite}) {
             feeToOtherTaxPercent: 15,
             successfulTransactionsCount: 0,
             walletToWallet: 'walletToWallet',
-            usdCurrency: 'USD',
             conditionTypePerson: 'person'
         }
     };

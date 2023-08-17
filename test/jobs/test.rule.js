@@ -1,4 +1,4 @@
-// /** @type { import("../../handlers").test } */
+/** @type { import("../../handlers").test } */
 module.exports = function test() {
     return {
         rule: function(test, bus, run, ports, {
@@ -9,7 +9,7 @@ module.exports = function test() {
             ruleUtils: {
                 sourceAccountNumber, destinationAccountNumber, operationCategory, sourceCategory, channelOrganization,
                 acquirerFeeTag, destinationCategory, acquirerTag, transactionFeePercent, transactionFee,
-                successfulTransactionsCount, conditionTypePerson, usdCurrency
+                successfulTransactionsCount, conditionTypePerson
             }
         }) {
             const ruleName = 'autoRule' + generateRandomNumber();
@@ -337,7 +337,7 @@ module.exports = function test() {
                     result: function(result, assert, {method, validation}) {
                         assert.ok(validation[`${method}.result`], `${method} validation passed`);
                         assert.ok(result.condition.length > 0, 'return rule condition > 0');
-                        assert.ok(result.condition.find(item => item.name === ruleName + 'W2W'));
+                        assert.ok(result.condition.find(item => item.name === ruleName + 'W2W'), 'return added rule');
                     }
                 },
                 {
@@ -476,8 +476,8 @@ module.exports = function test() {
                     result: function(result, assert, {method, validation}) {
                         assert.ok(validation[`${method}.result`], `${method} validation passed`);
                         assert.ok(result.condition.length > 0, 'return rule condition > 0');
-                        assert.ok(result.condition.find(item => item.name === ruleName + 'W2W'));
-                        assert.ok(result.limit.find(item => item.conditionId === this['add rule for wallet to wallet'].condition[0].conditionId));
+                        assert.ok(result.condition.find(item => item.name === ruleName + 'W2W'), 'return edited rule');
+                        assert.ok(result.limit.find(item => item.conditionId === this['add rule for wallet to wallet'].condition[0].conditionId), 'return added limit ti the rule');
                     }
                 },
                 {
@@ -502,8 +502,8 @@ module.exports = function test() {
                     result: function(result, assert, {method, validation}) {
                         assert.ok(validation[`${method}.result`], `${method} validation passed`);
                         assert.ok(result.condition.length > 0, 'return rule condition > 0');
-                        assert.notOk(result.condition.find(item => item.name === ruleName + 'W2W'));
-                        assert.notOk(result.limit.find(item => item.conditionId === this['add rule for wallet to wallet'].condition[0].conditionId));
+                        assert.notOk(result.condition.find(item => item.name === ruleName + 'W2W'), 'return the rule is not shown after deletion');
+                        assert.notOk(result.limit.find(item => item.conditionId === this['add rule for wallet to wallet'].condition[0].conditionId), 'return the rule is not shown after deletion');
                     }
                 },
                 {
@@ -513,7 +513,7 @@ module.exports = function test() {
                     result: function(result, assert, {method, validation}) {
                         assert.ok(validation[`${method}.result`], `${method} validation passed`);
                         assert.ok(result, 'result is returned');
-                        assert.ok(result.condition.find(item => item.conditionId === this['add rule for wallet to wallet'].condition[0].conditionId));
+                        assert.ok(result.condition.find(item => item.conditionId === this['add rule for wallet to wallet'].condition[0].conditionId), 'return deleted rule');
                     }
                 },
                 {

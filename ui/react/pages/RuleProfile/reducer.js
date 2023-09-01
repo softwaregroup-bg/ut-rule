@@ -1,9 +1,32 @@
-import { fromJS } from 'immutable';
+import immutable, { fromJS } from 'immutable';
 import * as actionTypes from './actionTypes';
 import * as reducerHelper from './reducerHelper';
 import { REMOVE_TAB } from 'ut-front-react/containers/TabMenu/actionTypes';
 import { removeRules as DELETE_RULE } from '../Rules/actionTypes';
-const defaultState = {
+
+export const localDataObj = {
+    condition: {},
+    conditionActor: [],
+    conditionProperty: [],
+    conditionItem: [],
+    limit: [],
+    splitName: [],
+    splitAssignment: [],
+    splitAnalytic: [],
+    splitRange: []
+};
+
+export const confirmDialogObj = {
+    isOpen: false,
+    title: '',
+    value: '',
+    message: '',
+    showInput: false,
+    buttons: [],
+    canSubmit: true
+};
+
+export const defaultState = {
     nomenclatures: {
         accountProduct: [],
         cardProduct: [],
@@ -13,7 +36,8 @@ const defaultState = {
         operation: [],
         region: [],
         currency: [],
-        organization: []
+        organization: [],
+        agentRole: []
     },
     config: {
         nomenclaturesFetched: false,
@@ -21,12 +45,30 @@ const defaultState = {
         mode: null,
         id: null
     },
-    rules: {}
+    rules: {},
+    remoteData: {},
+    localData: localDataObj,
+    errors: fromJS({}),
+    common: {
+        confirmDialog: confirmDialogObj
+    }
 };
 
 export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
     const options = state.get('config').toJS();
     switch (action.type) {
+        case actionTypes.CLOSE_CONFIRM_DIALOG:
+            return reducerHelper.closeConfirmDialog(state, action, options);
+        case actionTypes.UPDATE_USER_ERRORS:
+            return reducerHelper.updateRuleErrors(state, action, options);
+        case actionTypes.CHANGE_CONFIRM_DIALOG_VALUE:
+            return reducerHelper.changeConfirmDialogValue(state, action, options);
+        case actionTypes.OPEN_CONFIRM_DIALOG:
+            return reducerHelper.openConfirmDialog(state, action, options);
+        case actionTypes.SET_ACTIVE_TAB:
+            return state.set('activeTab', immutable.fromJS(action.params));
+        case actionTypes.GET_SINGLE_RULE:
+            return reducerHelper.getSingleRule(state, action, options);
         case actionTypes.CHANGE_RULE_PROFILE:
             return reducerHelper.changeRuleProfile(state, action, options);
         case actionTypes.FETCH_NOMENCLATURES:
@@ -34,7 +76,10 @@ export const ruleProfileReducer = (state = fromJS(defaultState), action) => {
         case actionTypes.EDIT_RULE:
         case actionTypes.CREATE_RULE:
             return reducerHelper.saveRule(state, action, options);
+        case actionTypes.APPROVE_RULE:
+            return state;
         case actionTypes.GET_RULE:
+        case actionTypes.REJECT_RULE:
             return reducerHelper.getRule(state, action, options);
         case actionTypes.RESET_RULE_STATE:
             return reducerHelper.resetRuleProfile(state, action, options);

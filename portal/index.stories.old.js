@@ -52,6 +52,17 @@ const page = app({
         splitAnalytic: [],
         pagination: []
     }),
+    'rule.rule.addUnapproved': () => ({
+        condition: [],
+        conditionActor: [],
+        conditionItem: [],
+        conditionProperty: [],
+        splitName: [],
+        splitRange: [],
+        splitAssignment: [],
+        limit: [],
+        splitAnalytic: []
+    }),
     'rule.rule.fetchDeleted': () => ({
         condition: [],
         pagination: []

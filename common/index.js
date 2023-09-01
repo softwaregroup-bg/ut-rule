@@ -1,22 +1,23 @@
 const splitTags = [
-    {key: 'acquirer', name: 'Acquirer'},
-    {key: 'issuer', name: 'Issuer'},
     {key: 'commission', name: 'Commission'},
-    {key: 'realtime', name: 'Realtime posting'},
-    {key: 'pending', name: 'Authorization required'},
-    {key: 'agent', name: 'Agent'},
-    {key: 'fee', name: 'Fee'},
-    {key: 'atm', name: 'ATM'},
-    {key: 'pos', name: 'POS'},
-    {key: 'ped', name: 'PED'},
-    {key: 'vendor', name: 'Vendor'},
-    {key: 'merchant', name: 'Merchant'}
+    {key: 'fee', name: 'Fee'}
+    // {key: 'acquirer', name: 'Acquirer'},
+    // {key: 'issuer', name: 'Issuer'},
+    // {key: 'realtime', name: 'Realtime posting'},
+    // {key: 'pending', name: 'Authorization required'},
+    // {key: 'agent', name: 'Agent'},
+    // {key: 'atm', name: 'ATM'},
+    // {key: 'pos', name: 'POS'},
+    // {key: 'ped', name: 'PED'},
+    // {key: 'vendor', name: 'Vendor'},
+    // {key: 'merchant', name: 'Merchant'}
 ];
 
 const propMap = {
     country: 'countries',
     region: 'regions',
     city: 'cities',
+    agentRole: 'agentRole',
     operation: 'operations',
     cardProduct: 'cardProducts',
     so: 'source',
@@ -47,7 +48,9 @@ function prepareRuleModel(dbresult) {
             properties: [],
             countries: [],
             cities: [],
-            regions: []
+            regions: [],
+            organization: [],
+            agentRole: []
         },
         destination: {
             properties: [],
@@ -75,7 +78,14 @@ function prepareRuleModel(dbresult) {
     };
     (dbresult.conditionActor || []).forEach((ca) => {
         const des = rule[propMap[ca.factor]];
-        des && (des[ca.type] = parseInt(ca.actorId));
+        if (['organization', 'agentRole', 'role'].indexOf(ca.type) > -1) {
+            des && des[ca.type] && des[ca.type].push({
+                key: parseInt(ca.actorId),
+                name: ca.actorName
+            });
+        } else {
+            rule[propMap[ca.factor]] && (rule[propMap[ca.factor]][ca.type] = parseInt(ca.actorId));
+        }
     });
     // condition item
     (dbresult.conditionItem || []).forEach((item) => {

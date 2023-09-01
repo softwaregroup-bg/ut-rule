@@ -49,7 +49,7 @@ const conditionPropertyFactor = {
 export const formatNomenclatures = (items) => {
     const formattedPayload = {};
     // default object properties
-    ['accountProduct', 'cardProduct', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization']
+    ['accountProduct', 'cardProduct', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization', 'agentRole']
         .forEach((objName) => (formattedPayload[objName] = []));
     items.map(item => {
         if (!formattedPayload[item.type]) {
@@ -72,20 +72,30 @@ export const prepareRuleToSave = (rule) => {
         priority: channel.priority,
         operationStartDate: operation.startDate || null,
         operationEndDate: operation.endDate || null,
-        sourceAccontId: null,
+        sourceAccountId: null,
         destinationAccountId: null
     }];
     formattedRule.conditionActor = [];
     ['channel', 'source', 'destination'].forEach(function(keyProp) {
         const value = rule[keyProp];
-        ['organization', 'role'].forEach((type) => {
-            value[type] && formattedRule.conditionActor.push(
-                {
-                    actorId: value[type],
-                    conditionId,
-                    factor: conditionActorFactor[keyProp]
-                }
-            );
+        ['organization', 'role', 'agentRole'].forEach((type) => {
+            if (value[type] && value[type] instanceof Array) {
+                value[type].forEach(function(ci) {
+                    ci.key && formattedRule.conditionActor.push({
+                        actorId: ci.key,
+                        conditionId,
+                        factor: conditionActorFactor[keyProp]
+                    });
+                });
+            } else {
+                value[type] && formattedRule.conditionActor.push(
+                    {
+                        actorId: value[type],
+                        conditionId,
+                        factor: conditionActorFactor[keyProp]
+                    }
+                );
+            }
         });
     });
 

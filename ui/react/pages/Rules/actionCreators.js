@@ -8,7 +8,7 @@ const removeEmpty = (obj) => {
     return obj;
 };
 
-export const updatePagination = (params) => ({type: actionTypes.updatePagination, params});
+export const updatePagination = (params) => ({ type: actionTypes.updatePagination, params });
 
 export function fetchRules(params, showDeleted) {
     return {
@@ -65,7 +65,7 @@ export function editRule(params) {
         const conditionId = paramsCondition.conditionId;
 
         const condition = [{
-            conditionId: conditionId,
+            conditionId,
             priority: paramsCondition.priority,
             operationStartDate: paramsCondition.operationStartDate,
             operationEndDate: paramsCondition.operationEndDate,
@@ -86,7 +86,7 @@ export function editRule(params) {
         for (const key in conditionActionFields) {
             if (paramsCondition[key]) {
                 conditionActor.push({
-                    conditionId: conditionId,
+                    conditionId,
                     factor: conditionActionFields[key],
                     actorId: paramsCondition[key]
                 });
@@ -111,7 +111,7 @@ export function editRule(params) {
             if (paramsCondition[key]) {
                 paramsCondition[key].forEach(value => {
                     conditionItem.push({
-                        conditionId: conditionId,
+                        conditionId,
                         factor: conditionItemFields[key],
                         itemNameId: value.key
                     });
@@ -121,7 +121,7 @@ export function editRule(params) {
 
         if (paramsCondition.destinationAccountProductId) {
             conditionItem.push({
-                conditionId: conditionId,
+                conditionId,
                 factor: 'ds',
                 itemNameId: paramsCondition.destinationAccountProductId
             });
@@ -129,7 +129,7 @@ export function editRule(params) {
 
         if (paramsCondition.sourceAccountProductId) {
             conditionItem.push({
-                conditionId: conditionId,
+                conditionId,
                 factor: 'ss',
                 itemNameId: paramsCondition.sourceAccountProductId
             });
@@ -137,7 +137,7 @@ export function editRule(params) {
 
         if (paramsCondition.sourceCardProductId) {
             conditionItem.push({
-                conditionId: conditionId,
+                conditionId,
                 factor: 'sc',
                 itemNameId: paramsCondition.sourceCardProductId
             });
@@ -147,7 +147,7 @@ export function editRule(params) {
 
         params.channelProperties.forEach((property) => {
             conditionProperty.push({
-                conditionId: conditionId,
+                conditionId,
                 factor: 'co',
                 name: property.name,
                 value: property.value
@@ -156,7 +156,7 @@ export function editRule(params) {
 
         params.destinationProperties.forEach((property) => {
             conditionProperty.push({
-                conditionId: conditionId,
+                conditionId,
                 factor: 'do',
                 name: property.name,
                 value: property.value
@@ -165,7 +165,7 @@ export function editRule(params) {
 
         params.operationProperties.forEach((property) => {
             conditionProperty.push({
-                conditionId: conditionId,
+                conditionId,
                 factor: 'oc',
                 name: property.name,
                 value: property.value
@@ -174,7 +174,7 @@ export function editRule(params) {
 
         params.sourceProperties.forEach((property) => {
             conditionProperty.push({
-                conditionId: conditionId,
+                conditionId,
                 factor: 'so',
                 name: property.name,
                 value: property.value
@@ -375,7 +375,7 @@ export function fetchNomenclatures(params) {
     return {
         type: actionTypes.fetchNomenclatures,
         method: 'rule.item.fetch',
-        params: params
+        params
     };
 };
 
@@ -394,3 +394,11 @@ export function toggleRuleOption(key, value) {
         }
     };
 };
+
+export function lockUnlockRule(params) {
+    return {
+        type: actionTypes.lockUnlockRule,
+        method: 'rule.rule.lock',
+        params
+    };
+}

@@ -23,6 +23,7 @@ module.exports = ({joi}) => ({
                 }
             },
             conditionActor: {
+                title: '',
                 widget: {
                     type: 'table',
                     widgets: ['factor', 'type', 'actor']
@@ -36,6 +37,7 @@ module.exports = ({joi}) => ({
                 }
             },
             conditionItem: {
+                title: '',
                 widget: {
                     type: 'table',
                     widgets: ['factor', 'type', 'itemNameId']
@@ -49,6 +51,7 @@ module.exports = ({joi}) => ({
                 }
             },
             splitName: {
+                title: '',
                 widget: {
                     type: 'table',
                     selectionMode: 'single',
@@ -62,6 +65,7 @@ module.exports = ({joi}) => ({
                 }
             },
             splitRange: {
+                title: '',
                 widget: {
                     type: 'table',
                     selectionMode: 'single',
@@ -98,6 +102,7 @@ module.exports = ({joi}) => ({
                 }
             },
             splitAssignment: {
+                title: '',
                 widget: {
                     type: 'table',
                     selectionMode: 'single',

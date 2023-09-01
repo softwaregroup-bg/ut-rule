@@ -7,6 +7,7 @@ module.exports = ({
         description: 'Fetch applicable fee, limit and commission, based on passed properties of the transfer',
         params: joi.object().keys({
             channelId: joi.number().integer().allow(null).default(null),
+            operationDate: joi.date().iso(),
             operation: joi.string().required(),
             sourceAccount: joi.string().required(),
             destinationAccount: joi.string().required(),

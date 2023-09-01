@@ -8,7 +8,10 @@ const wrapper = {
         return this.bus.importMethod('core.itemCode.fetch')(msg, $meta);
     },
     agentRole: function(msg, $meta) {
-        return this.bus.importMethod('db/integration.agentRole.fetch')(msg, $meta);
+        return this.bus.importMethod('agent.agentType.fetch')({filterBy: {isEnabled: 1, statusId: 'approved'}}, $meta).then(result => {
+            const agentTypes = result?.agentType || [];
+            return {items: !agentTypes.length ? [] : agentTypes.map(v => ({ type: 'agentRole', value: v.actorId, display: v.name }))};
+        });
     },
     accountAlias: function(msg, $meta) {
         return this.bus.importMethod('db/integration.alias.list')(msg, $meta);
@@ -18,13 +21,13 @@ const wrapper = {
             const organizations = result.organization.filter((obj, position, arr) => {
                 return arr.map(mapObj => mapObj.id).indexOf(obj.id) === position;
             });
-            return {items: organizations.map(v => ({ type: 'organization', value: v.id, display: v.title }))};
+            return {items: !organizations.length ? [] : organizations.map(v => ({ type: 'organization', value: v.id, display: v.title }))};
         });
     },
     role: function(msg, $meta) {
         return this.bus.importMethod('user.role.fetch')(msg, $meta).then(result => {
-            const role = result.role;
-            return {items: role.map(v => ({ type: 'role', value: v.actorId, display: v.name }))};
+            const role = result.role || [];
+            return {items: !role.length ? [] : role.map(v => ({ type: 'role', value: v.actorId, display: v.name }))};
         });
     }
 };

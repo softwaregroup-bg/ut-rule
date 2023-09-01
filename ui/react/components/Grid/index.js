@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {fromJS} from 'immutable';
-import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
+import { fromJS } from 'immutable';
+import { SimpleGrid } from 'ut-front-react/components/SimpleGrid';
 import { updateGridColumnStorage, prepareGridFields } from 'ut-front-react/components/GridMenu/helpers';
 import Text from 'ut-front-react/components/Text';
 
 import style from './style.css';
 import { Link } from 'react-router-dom';
+
 const propInStorage = 'rule_grid_fields';
 
 export default class Grid extends React.Component {
@@ -22,13 +23,17 @@ export default class Grid extends React.Component {
     state = {
         expandedGridColumns: [],
         columns: this.props.columns,
-        fields: prepareGridFields(propInStorage, [
-            {title: this.props.columns.priority.title, name: 'priority'},
-            {title: this.props.columns.channel.title, name: 'channel'},
-            {title: this.props.columns.operation.title, name: 'operation'},
-            {title: this.props.columns.source.title, name: 'source'},
-            {title: this.props.columns.destination.title, name: 'destination'},
-            {title: this.props.columns.limit.title, name: 'limit'},
+        fields: this.prepareFields()
+    };
+
+    prepareFields() {
+        const fields = prepareGridFields(propInStorage, [
+            { title: this.props.columns.priority.title, name: 'priority' },
+            { title: this.props.columns.channel.title, name: 'channel' },
+            { title: this.props.columns.operation.title, name: 'operation' },
+            { title: this.props.columns.source.title, name: 'source' },
+            { title: this.props.columns.destination.title, name: 'destination' },
+            { title: this.props.columns.limit.title, name: 'limit' },
             {
                 title: 'Expansion',
                 name: 'expansion'
@@ -36,8 +41,19 @@ export default class Grid extends React.Component {
         ].map(f => {
             f.key = f.name;
             return f;
-        }))
-    };
+        }));
+
+        const findStatus = fields.filter(item => item.name === 'status');
+        if (findStatus.length === 0) {
+            fields.splice(5, 0, { title: this.props.columns.status.title, name: 'status' }); // insert column to the 3rd position
+        }
+
+        const findLock = fields.filter(item => item.name === 'isEnabled');
+        if (findLock.length === 0) {
+            fields.splice(6, 0, { title: this.props.columns.lock.title, name: 'isEnabled' }); // insert column to the 6th position
+        }
+        return fields;
+    }
 
     handleGridExpansion = (id) => {
         const expandedGridColumns = this.state.expandedGridColumns;
@@ -47,11 +63,12 @@ export default class Grid extends React.Component {
         } else {
             expandedGridColumns.push(id);
         }
-        this.setState({expandedGridColumns});
+        this.setState({ expandedGridColumns });
     };
 
     renderGridColumn = (condition, keysToInclude, row, column) => {
         const result = [];
+
         for (const keyToInclude of keysToInclude) {
             if (Array.isArray(condition[keyToInclude])) {
                 for (const index in condition[keyToInclude]) {
@@ -84,13 +101,35 @@ export default class Grid extends React.Component {
                 </div>
             );
         }
+        // if (row.status && column === 'status') {
+        //     result.push(
+        //         <div key={result.length}>
+        //             {row.status}
+        //         </div>
+        //     );
+        // }
+        // if (column === 'status') {
+        //     result.push(
+        //         <div key={result.length}>
+        //             {row.isEnabled ? 'Unlocked' : 'Locked'}
+        //         </div>
+        //     );
+        // }
         if (row.priority && column === 'priority') {
-            result.push(
-                <div key={result.length}>
-                    <Link to={row.url}>{row.priority}</Link>
-                </div>
-            );
-        }
+            if (row.status === 'approved' && row.isEnabled) {
+                result.push(
+                    <div key={result.length}>
+                        <Link to={row.url}>{row.priority}</Link>
+                    </div>
+                );
+            } else {
+                result.push(
+                    <div key={result.length}>
+                        <b>{row.priority}</b>
+                    </div>
+                );
+            }
+        };
         return (
             <div>
                 {result}
@@ -100,7 +139,7 @@ export default class Grid extends React.Component {
 
     updateColumns = (columns) => {
         this.setState({
-            columns: columns
+            columns
         });
     };
 
@@ -120,7 +159,7 @@ export default class Grid extends React.Component {
             });
             col.visible = col.visible === false ? !0 : !1;
             updateGridColumnStorage(propInStorage, col);
-            this.setState({fields: newFields});
+            this.setState({ fields: newFields });
         }
     };
 
@@ -134,6 +173,8 @@ export default class Grid extends React.Component {
                 destinationAccountId: condition.destinationAccountId,
                 operationEndDate: condition.operationEndDate,
                 operationStartDate: condition.operationStartDate,
+                status: condition.status,
+                isEnabled: condition.isEnabled ? 'Unlocked' : 'Locked',
                 priority: columns.priority.visible && condition.priority,
                 channel: columns.channel.visible && this.props.formatedGridData[conditionId],
                 operation: columns.operation.visible && this.props.formatedGridData[conditionId],

@@ -17,7 +17,7 @@ import style from './style.css';
 import * as actionCreators from './actionCreators';
 
 class Main extends React.Component {
-    static displayName = 'Main'
+    static displayName = 'Main';
 
     static propTypes = {
         rules: PropTypes.object,
@@ -28,11 +28,11 @@ class Main extends React.Component {
         uiConfig: PropTypes.object,
         pagination: PropTypes.object,
         showDeleted: PropTypes.bool
-    }
+    };
 
     static contextTypes = {
         checkPermission: PropTypes.func.isRequired
-    }
+    };
 
     constructor(props, context) {
         super(props, context);
@@ -40,20 +40,23 @@ class Main extends React.Component {
             selectedConditions: {},
             canEdit: false,
             canDelete: false,
-            uiConfig: props.uiConfig.toJS()
+            uiConfig: props.uiConfig.toJS(),
+            selectedData: {}
         };
 
         this.handleCheckboxSelect = this.handleCheckboxSelect.bind(this);
         this.handleHeaderCheckboxSelect = this.handleHeaderCheckboxSelect.bind(this);
         this.showConfirm = this.showConfirm.bind(this);
         this.removeRules = this.removeRules.bind(this);
+        this.showRuleLockConfirm = this.showRuleLockConfirm.bind(this);
+        this.lockRule = this.lockRule.bind(this);
     }
 
     fetchData(props) {
-        const {pageSize, pageNumber} = props.pagination;
+        const { pageSize, pageNumber } = props.pagination;
         const showDeleted = props.showDeleted;
 
-        this.props.actions.fetchRules({pageSize, pageNumber}, showDeleted);
+        this.props.actions.fetchRules({ pageSize, pageNumber }, showDeleted);
         this.props.actions.fetchNomenclatures(this.state.uiConfig.nomenclatures);
     }
 
@@ -72,7 +75,8 @@ class Main extends React.Component {
             selectedConditions: {},
             canEdit: false,
             canDelete: false,
-            uiConfig: this.props.uiConfig.toJS()
+            uiConfig: this.props.uiConfig.toJS(),
+            selectedData: {}
         };
     }
 
@@ -92,9 +96,10 @@ class Main extends React.Component {
         }
         const count = Object.keys(selectedConditions).length;
         this.setState({
-            selectedConditions: selectedConditions,
+            selectedConditions,
             canEdit: count === 1,
-            canDelete: count > 0
+            canDelete: count > 0,
+            selectedData: !isSelected ? data : {}
         });
         return !isSelected;
     }
@@ -114,6 +119,20 @@ class Main extends React.Component {
         }));
     }
 
+    lockRule() {
+        const id = Object.keys(this.state.selectedConditions)[0];
+        const selectedData = this.state.selectedData;
+        const isEnabled = (selectedData.isEnabled === 'Unlocked' || selectedData.isEnabled === 1);
+        this.props.actions.lockUnlockRule({ conditionId: id, isEnabled: Number(Boolean(!isEnabled)) }).then(() => {
+            this.refresh();
+            this.fetchData(this.props);
+        });
+    }
+
+    showRuleLockConfirm() {
+        this.refs.showRuleLockDialog && this.refs.showRuleLockDialog.open();
+    }
+
     refresh() {
         this.setState(this.getInitialState(), () => this.props.actions.reset());
     }
@@ -125,7 +144,7 @@ class Main extends React.Component {
     getHeaderButtons() {
         const buttons = [];
         this.context.checkPermission('rule.rule.add') &&
-            buttons.push({text: 'Create Rule', href: getLink('ut-rule:create'), styleType: 'primaryLight'});
+            buttons.push({ text: 'Create Rule', href: getLink('ut-rule:create'), styleType: 'primaryLight' });
         return buttons;
     }
 
@@ -137,21 +156,31 @@ class Main extends React.Component {
         const uiConfig = this.state.uiConfig;
         const columns = uiConfig.main.grid.columns;
         const id = Object.keys(this.state.selectedConditions)[0];
+        const selectedStatus = this.state.selectedData.status || '';
+        const selectedData = this.state.selectedData;
+        const isLocked = this.state.selectedData.isEnabled === 'Locked' || this.state.selectedData.isEnabled === 1;
         const showDeleted = this.props.showDeleted;
+        // console.log('dataaaa: ', isLocked, selectedStatus, selectedData, showDeleted)
+        // debugger;
         const content = [
             <GridToolBox key='toolbox' contentWrapClassName={style.actionWrap} cssStandard opened title=''>
-                {this.context.checkPermission('rule.rule.edit') && !showDeleted &&
-                (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
-                {this.context.checkPermission('rule.rule.remove') && !showDeleted &&
-                (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
+                {this.context.checkPermission('rule.rule.edit') && !showDeleted && id && selectedStatus === 'approved' && !isLocked && !showDeleted &&
+                    (<Button label='Edit' href={getLink('ut-rule:edit', { id })} disabled={!this.state.canEdit} className='defaultBtn' />)}
+                {this.context.checkPermission('rule.rule.remove') && !showDeleted && id && selectedStatus === 'approved' && !showDeleted &&
+                    (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
+                {this.context.checkPermission('rule.rule.lock') && id && (selectedStatus === 'approved') && !showDeleted &&
+                    (<Button label={isLocked ? 'Unlock' : 'Lock'} className='defaultBtn' onClick={this.showRuleLockConfirm} />)}
+                {this.context.checkPermission('rule.rule.approve') && (selectedStatus !== 'approved') && id && !showDeleted &&
+                    (<Button label='View Details' href={getLink('ut-rule:validate', { id })} disabled={!(selectedStatus !== 'approved')} className='defaultBtn' />)}
                 {this.context.checkPermission('rule.rule.fetchDeleted') &&
-                (<Button
-                    className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
-                    onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label='Show Deleted'
-                />)}
+                    (<Button
+                        className={showDeleted ? [style.buttonToggle, style.buttonLarge] : style.buttonLarge}
+                        onClick={() => { this.props.actions.toggleRuleOption('showDeleted', !showDeleted); }} styleType={showDeleted ? 'primaryLight' : 'secondaryLight'} label='Show Deleted'
+                    />)}
             </GridToolBox>,
             <Grid
                 key='grid'
+                multiSelect
                 ref='grid'
                 refresh={this.refresh}
                 data={this.props.rules}
@@ -171,7 +200,7 @@ class Main extends React.Component {
             />
         ];
         const resizibleContainerCols = [
-            {type: resizibleTypes.CONTENT, id: 'cardReasonContent', minWidth: 1200, child: content}
+            { type: resizibleTypes.CONTENT, id: 'cardReasonContent', minWidth: 1200, child: content }
         ];
         return (
             <div>
@@ -184,14 +213,21 @@ class Main extends React.Component {
                     title='Warning'
                     message={
                         'You are about to delete ' +
-                    (
-                        Object.keys(this.state.selectedConditions).length === 1
-                            ? '1 rule'
-                            : Object.keys(this.state.selectedConditions).length + ' rules'
-                    ) +
-                    '. Would you like to proceed?'
+                        (
+                            Object.keys(this.state.selectedConditions).length === 1
+                                ? '1 rule'
+                                : Object.keys(this.state.selectedConditions).length + ' rules'
+                        ) +
+                        '. Would you like to proceed?'
                     }
                     onSubmit={this.removeRules}
+                />
+                <ConfirmDialog
+                    ref='showRuleLockDialog'
+                    submitLabel='Yes'
+                    title='Warning'
+                    message={`You are about to ${selectedData.isEnabled ? 'unlock' : 'lock'} rule. Would you like to proceed?`}
+                    onSubmit={this.lockRule}
                 />
             </div>
         );

@@ -10,14 +10,19 @@ AS
 DECLARE @userId BIGINT = (SELECT [auth.actorId] FROM @meta)
 DECLARE @splitName [rule].splitNameTT,
     @splitAssignment [rule].splitAssignmentTT,
-    @conditionId INT
+    @conditionId INT,
+    @priority NVARCHAR(10) = (SELECT [priority] FROM @condition),
+    @conditionUnapprovedTT [rule].conditionUnapprovedTT,
+    @conditionActorUnapprovedTT [rule].conditionActorUnapprovedTT,
+    @conditionItemUnapprovedTT [rule].conditionItemUnapprovedTT,
+    @conditionPropertyUnapprovedTT [rule].conditionPropertyUnapprovedTT,
+    @limitUnapprovedTT [rule].limitUnapprovedTT
 BEGIN TRY
-
     IF EXISTS
         (
             SELECT [priority]
             FROM [rule].condition
-            WHERE [priority] = (SELECT [priority] FROM @condition)
+            WHERE [priority] = @priority
                 AND isDeleted = 0
         )
         BEGIN
@@ -25,210 +30,316 @@ BEGIN TRY
         END
 
     BEGIN TRANSACTION
-
-        INSERT INTO [rule].condition (
-            [priority],
-            operationStartDate,
-            operationEndDate,
-            sourceAccountId,
-            destinationAccountId,
-            createdOn,
-            createdBy
+        DECLARE @DisableRuleMC TINYINT = (SELECT [value] FROM core.configuration WHERE [key] = 'DisableRuleM/C')
+        IF @DisableRuleMC IS NOT NULL AND @DisableRuleMC = '0'
+        BEGIN
+            INSERT INTO @conditionUnapprovedTT (
+                [priority],
+                operationStartDate,
+                operationEndDate,
+                sourceAccountId,
+                destinationAccountId,
+                createdOn,
+                createdBy
             )
-        SELECT
-            [priority],
-            operationStartDate,
-            operationEndDate,
-            sourceAccountId,
-            destinationAccountId,
-            GETDATE(),
-            ISNULL(createdBy, @userId)
-        FROM @condition;
+            SELECT
+                [priority],
+                operationStartDate,
+                operationEndDate,
+                sourceAccountId,
+                destinationAccountId,
+                createdOn,
+                createdBy
+            FROM @condition
 
-        SET @conditionId = SCOPE_IDENTITY()
+            INSERT INTO @conditionActorUnapprovedTT (
+                conditionId,
+                factor,
+                actorId
+            )
+            SELECT
+                @conditionId,
+                factor,
+                actorId
+            FROM @conditionActor
 
-        INSERT INTO [rule].conditionActor
-        (
-            conditionId,
-            factor,
-            actorId
-        )
-        SELECT
-            @conditionId,
-            factor,
-            actorId
-        FROM @conditionActor
+            INSERT INTO @conditionItemUnapprovedTT (
+                conditionId,
+                factor,
+                itemNameId
+            )
+            SELECT
+                @conditionId,
+                factor,
+                itemNameId
+            FROM @conditionItem
 
-        INSERT INTO [rule].conditionItem
-        (
-            conditionId,
-            factor,
-            itemNameId
-        )
-        SELECT
-            @conditionId,
-            factor,
-            itemNameId
-        FROM @conditionItem
+            INSERT INTO @conditionPropertyUnapprovedTT (
+                conditionId,
+                factor,
+                name,
+                value
+            )
+            SELECT
+                @conditionId,
+                factor,
+                name,
+                value
+            FROM @conditionProperty
 
-        INSERT INTO [rule].conditionProperty
-        (
-            conditionId,
-            factor,
-            name,
-            value
-        )
-        SELECT
-            @conditionId,
-            factor,
-            name,
-            value
-        FROM @conditionProperty
+            INSERT INTO @limitUnapprovedTT (
+                conditionId,
+                currency,
+                minAmount,
+                maxAmount,
+                maxAmountDaily,
+                maxCountDaily,
+                maxAmountWeekly,
+                maxCountWeekly,
+                maxAmountMonthly,
+                maxCountMonthly,
+                [credentials],
+                [priority]
+            )
+            SELECT conditionId,
+                [currency],
+                [minAmount],
+                [maxAmount],
+                [maxAmountDaily],
+                [maxCountDaily],
+                [maxAmountWeekly],
+                [maxCountWeekly],
+                [maxAmountMonthly],
+                [maxCountMonthly],
+                [credentials],
+                [priority]
+            FROM @limit
 
-        INSERT INTO [rule].limit (
-            conditionId,
-            currency,
-            minAmount,
-            maxAmount,
-            maxAmountDaily,
-            maxCountDaily,
-            maxAmountWeekly,
-            maxCountWeekly,
-            maxAmountMonthly,
-            maxCountMonthly,
-            [credentials],
-            [priority]
-        )
-        SELECT @conditionId,
-            [currency],
-            [minAmount],
-            [maxAmount],
-            [maxAmountDaily],
-            [maxCountDaily],
-            [maxAmountWeekly],
-            [maxCountWeekly],
-            [maxAmountMonthly],
-            [maxCountMonthly],
-            [credentials],
-            [priority]
-        FROM @limit
+            EXEC [rule].[rule.addUnapproved] -- adds a new rule unapproved
+                @condition = @conditionUnapprovedTT,
+                @conditionActor = @conditionActorUnapprovedTT,
+                @conditionItem = @conditionItemUnapprovedTT,
+                @conditionProperty = @conditionPropertyUnapprovedTT,
+                @limit = @limitUnapprovedTT,
+                @split = @split,
+                @meta = @meta
+        END
+        ELSE -- default behavior, rule does not go through checker processes
+        BEGIN
+            INSERT INTO [rule].condition (
+                [priority],
+                operationStartDate,
+                operationEndDate,
+                sourceAccountId,
+                destinationAccountId,
+                createdOn,
+                createdBy
+            )
+            SELECT
+                [priority],
+                operationStartDate,
+                operationEndDate,
+                sourceAccountId,
+                destinationAccountId,
+                GETUTCDATE(),
+                ISNULL(createdBy, @userId)
+            FROM @condition;
 
-        MERGE INTO [rule].splitName
-        USING @split.nodes('/data/rows/splitName') AS records(r)
-        ON 1 = 0
-        WHEN NOT MATCHED THEN
-        INSERT (conditionId, name, tag) VALUES (@conditionId, r.value('(name)[1]', 'NVARCHAR(50)'), r.value('(tag)[1]', 'NVARCHAR(max)'))
-        OUTPUT INSERTED.* INTO @splitName;
+            SET @conditionId = SCOPE_IDENTITY()
 
-        MERGE INTO [rule].splitRange
-        USING (
-        SELECT
-            sn.splitNameId AS splitNameId,
-            splitRange.x.value('(startAmount)[1]', 'money') AS startAmount,
-            splitRange.x.value('(startAmountCurrency)[1]', 'VARCHAR(3)') AS startAmountCurrency,
-            ISNULL(splitRange.x.value('(./startAmountDaily/text())[1]', 'money'), 0) AS startAmountDaily,
-            ISNULL(splitRange.x.value('(./startCountDaily/text())[1]', 'BIGINT'), 0) AS startCountDaily,
-            ISNULL(splitRange.x.value('(./startAmountWeekly/text())[1]', 'money'), 0) AS startAmountWeekly,
-            ISNULL(splitRange.x.value('(./startCountWeekly/text())[1]', 'BIGINT'), 0) AS startCountWeekly,
-            ISNULL(splitRange.x.value('(./startAmountMonthly/text())[1]', 'money'), 0) AS startAmountMonthly,
-            ISNULL(splitRange.x.value('(./startCountMonthly/text())[1]', 'BIGINT'), 0) AS startCountMonthly,
-            ISNULL(splitRange.x.value('(isSourceAmount)[1]', 'BIT'), 1) AS isSourceAmount,
-            splitRange.x.value('(minValue)[1]', 'money') AS minValue,
-            splitRange.x.value('(maxValue)[1]', 'money') AS maxValue,
-            splitRange.x.value('(percent)[1]', 'money') AS [percent],
-            splitRange.x.value('(percentBase)[1]', 'money') AS percentBase
-        FROM
-            @split.nodes('/data/rows/splitRange') AS splitRange(x)
-        JOIN
-            @splitName sn
-        ON
-            splitRange.x.value('(../splitName/name)[1]', 'NVARCHAR(50)') = sn.name
-        ) AS r
-        ON 1 = 0
-        WHEN NOT MATCHED THEN
-        INSERT (
-            splitNameId,
-            startAmount,
-            startAmountCurrency,
-            startAmountDaily,
-            startCountDaily,
-            startAmountWeekly,
-            startCountWeekly,
-            startAmountMonthly,
-            startCountMonthly,
-            isSourceAmount,
-            minValue,
-            maxValue,
-            [percent],
-            percentBase)
-        VALUES (
-            r.splitNameId,
-            r.startAmount,
-            r.startAmountCurrency,
-            r.startAmountDaily,
-            r.startCountDaily,
-            r.startAmountWeekly,
-            r.startCountWeekly,
-            r.startAmountMonthly,
-            r.startCountMonthly,
-            r.isSourceAmount,
-            r.minValue,
-            r.maxValue,
-            r.[percent],
-            r.percentBase);
+            INSERT INTO [rule].conditionActor (
+                conditionId,
+                factor,
+                actorId
+            )
+            SELECT
+                @conditionId,
+                factor,
+                actorId
+            FROM @conditionActor
 
-        MERGE INTO [rule].splitAssignment
-        USING (
-        SELECT
-            sn.splitNameId AS splitNameId,
-            splitAssignment.x.value('(debit)[1]', 'VARCHAR(50)') AS debit,
-            splitAssignment.x.value('(credit)[1]', 'VARCHAR(50)') AS credit,
-            splitAssignment.x.value('(minValue)[1]', 'money') AS minValue,
-            splitAssignment.x.value('(maxValue)[1]', 'money') AS maxValue,
-            splitAssignment.x.value('(percent)[1]', 'decimal') AS [percent],
-            splitAssignment.x.value('(description)[1]', 'VARCHAR(50)') AS description
-        FROM
-            @split.nodes('/data/rows/splitAssignment') AS splitAssignment(x)
-        JOIN
-            @splitName sn
-        ON
-            splitAssignment.x.value('(../splitName/name)[1]', 'NVARCHAR(50)') = sn.name
-        ) AS r
-        ON 1 = 0
-        WHEN NOT MATCHED THEN
-        INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
-        VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
-        OUTPUT INSERTED.* INTO @splitAssignment;
+            INSERT INTO [rule].conditionItem (
+                conditionId,
+                factor,
+                itemNameId
+            )
+            SELECT
+                @conditionId,
+                factor,
+                itemNameId
+            FROM @conditionItem
+
+            INSERT INTO [rule].conditionProperty (
+                conditionId,
+                factor,
+                name,
+                value
+            )
+            SELECT
+                @conditionId,
+                factor,
+                name,
+                value
+            FROM @conditionProperty
+
+            INSERT INTO [rule].limit (
+                conditionId,
+                currency,
+                minAmount,
+                maxAmount,
+                maxAmountDaily,
+                maxCountDaily,
+                maxAmountWeekly,
+                maxCountWeekly,
+                maxAmountMonthly,
+                maxCountMonthly,
+                [credentials],
+                [priority]
+            )
+            SELECT @conditionId,
+                [currency],
+                [minAmount],
+                [maxAmount],
+                [maxAmountDaily],
+                [maxCountDaily],
+                [maxAmountWeekly],
+                [maxCountWeekly],
+                [maxAmountMonthly],
+                [maxCountMonthly],
+                [credentials],
+                [priority]
+            FROM @limit
+
+            MERGE INTO [rule].splitName
+            USING @split.nodes('/data/rows/splitName') AS records(r)
+            ON 1 = 0
+            WHEN NOT MATCHED THEN
+            INSERT (conditionId, name, tag) VALUES (@conditionId, r.value('(name)[1]', 'NVARCHAR(50)'), r.value('(tag)[1]', 'NVARCHAR(max)'))
+            OUTPUT INSERTED.* INTO @splitName;
+
+            MERGE INTO [rule].splitRange
+            USING (
+            SELECT
+                sn.splitNameId AS splitNameId,
+                splitRange.x.value('(startAmount)[1]', 'money') AS startAmount,
+                splitRange.x.value('(startAmountCurrency)[1]', 'VARCHAR(3)') AS startAmountCurrency,
+                ISNULL(splitRange.x.value('(./startAmountDaily/text())[1]', 'money'), 0) AS startAmountDaily,
+                ISNULL(splitRange.x.value('(./startCountDaily/text())[1]', 'BIGINT'), 0) AS startCountDaily,
+                ISNULL(splitRange.x.value('(./startAmountWeekly/text())[1]', 'money'), 0) AS startAmountWeekly,
+                ISNULL(splitRange.x.value('(./startCountWeekly/text())[1]', 'BIGINT'), 0) AS startCountWeekly,
+                ISNULL(splitRange.x.value('(./startAmountMonthly/text())[1]', 'money'), 0) AS startAmountMonthly,
+                ISNULL(splitRange.x.value('(./startCountMonthly/text())[1]', 'BIGINT'), 0) AS startCountMonthly,
+                ISNULL(splitRange.x.value('(isSourceAmount)[1]', 'BIT'), 1) AS isSourceAmount,
+                splitRange.x.value('(minValue)[1]', 'money') AS minValue,
+                splitRange.x.value('(maxValue)[1]', 'money') AS maxValue,
+                splitRange.x.value('(percent)[1]', 'money') AS [percent],
+                splitRange.x.value('(percentBase)[1]', 'money') AS percentBase
+            FROM
+                @split.nodes('/data/rows/splitRange') AS splitRange(x)
+            JOIN
+                @splitName sn
+            ON
+                splitRange.x.value('(../splitName/name)[1]', 'NVARCHAR(50)') = sn.name
+            ) AS r
+            ON 1 = 0
+            WHEN NOT MATCHED THEN
+            INSERT (
+                splitNameId,
+                startAmount,
+                startAmountCurrency,
+                startAmountDaily,
+                startCountDaily,
+                startAmountWeekly,
+                startCountWeekly,
+                startAmountMonthly,
+                startCountMonthly,
+                isSourceAmount,
+                minValue,
+                maxValue,
+                [percent],
+                percentBase)
+            VALUES (
+                r.splitNameId,
+                r.startAmount,
+                r.startAmountCurrency,
+                r.startAmountDaily,
+                r.startCountDaily,
+                r.startAmountWeekly,
+                r.startCountWeekly,
+                r.startAmountMonthly,
+                r.startCountMonthly,
+                r.isSourceAmount,
+                r.minValue,
+                r.maxValue,
+                r.[percent],
+                r.percentBase);
+
+            MERGE INTO [rule].splitAssignment
+            USING (
+            SELECT
+                sn.splitNameId AS splitNameId,
+                splitAssignment.x.value('(debit)[1]', 'VARCHAR(50)') AS debit,
+                splitAssignment.x.value('(credit)[1]', 'VARCHAR(50)') AS credit,
+                splitAssignment.x.value('(minValue)[1]', 'money') AS minValue,
+                splitAssignment.x.value('(maxValue)[1]', 'money') AS maxValue,
+                splitAssignment.x.value('(percent)[1]', 'money') AS [percent],
+                splitAssignment.x.value('(description)[1]', 'VARCHAR(50)') AS description
+            FROM
+                @split.nodes('/data/rows/splitAssignment') AS splitAssignment(x)
+            JOIN
+                @splitName sn
+            ON
+                splitAssignment.x.value('(../splitName/name)[1]', 'NVARCHAR(50)') = sn.name
+            ) AS r
+            ON 1 = 0
+            WHEN NOT MATCHED THEN
+            INSERT (splitNameId, debit, credit, minValue, maxValue, [percent], description)
+            VALUES (r.splitNameId, r.debit, r.credit, r.minValue, r.maxValue, r.[percent], r.description)
+            OUTPUT INSERTED.* INTO @splitAssignment;
 
 
-        MERGE INTO [rule].splitAnalytic
-        USING (
-        SELECT
-            sn.splitAssignmentId AS splitAssignmentId,
-            records.x.value('(name)[1]', 'NVARCHAR(50)') AS [name],
-            records.x.value('(value)[1]', 'NVARCHAR(150)') AS [value]
-        FROM
-            @split.nodes('/data/rows/splitAssignment/splitAnalytic') records(x)
-        JOIN
-            @splitAssignment sn
-        ON
-            records.x.value('(../debit)[1]', 'NVARCHAR(50)') = sn.debit
-            AND records.x.value('(../credit)[1]', 'NVARCHAR(50)') = sn.credit
-            AND records.x.value('(../description)[1]', 'NVARCHAR(50)') = sn.[description]
+            MERGE INTO [rule].splitAnalytic
+            USING (
+            SELECT
+                sn.splitAssignmentId AS splitAssignmentId,
+                records.x.value('(name)[1]', 'NVARCHAR(50)') AS [name],
+                records.x.value('(value)[1]', 'NVARCHAR(150)') AS [value]
+            FROM
+                @split.nodes('/data/rows/splitAssignment/splitAnalytic') records(x)
+            JOIN
+                @splitAssignment sn
+            ON
+                records.x.value('(../debit)[1]', 'NVARCHAR(50)') = sn.debit
+                AND records.x.value('(../credit)[1]', 'NVARCHAR(50)') = sn.credit
+                AND records.x.value('(../description)[1]', 'NVARCHAR(50)') = sn.[description]
 
-        ) AS r (splitAssignmentId, [name], [value])
-        ON 1 = 0
-        WHEN NOT MATCHED THEN
-        INSERT (splitAssignmentId, [name], [value])
-        VALUES (r.splitAssignmentId, r.[name], r.[value]);
+            ) AS r (splitAssignmentId, [name], [value])
+            ON 1 = 0
+            WHEN NOT MATCHED THEN
+            INSERT (splitAssignmentId, [name], [value])
+            VALUES (r.splitAssignmentId, r.[name], r.[value]);
 
+            DECLARE @outcome XML = (
+                SELECT
+                    @conditionId [key],
+                    c.priority rulePriority,
+                    GETUTCDATE() creationDateTime
+                FROM
+                    @condition c
+                FOR XML RAW
+            )
+
+            EXEC core.outcome @proc = @@PROCID, @outcome = @outcome, @meta = @meta
+
+            EXEC [rule].[rule.fetch] @conditionId = @conditionId
+        END
     COMMIT TRANSACTION
-
+    /*
     DECLARE @outcome XML = (
         SELECT
             @conditionId [key],
             c.priority rulePriority,
-            GETDATE() creationDateTime
+            GETUTCDATE() creationDateTime
         FROM
             @condition c
         FOR XML RAW
@@ -237,6 +348,7 @@ BEGIN TRY
     EXEC core.outcome @proc = @@PROCID, @outcome = @outcome, @meta = @meta
 
     EXEC [rule].[rule.fetch] @conditionId = @conditionId
+    */
 END TRY
 BEGIN CATCH
     IF @@TRANCOUNT > 0

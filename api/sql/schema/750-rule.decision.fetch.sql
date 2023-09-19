@@ -474,8 +474,8 @@ BEGIN TRY
     SELECT TOP 1 c.conditionId, c.name, c.decision
     FROM @matches m
     JOIN [rule].condition c ON c.conditionId = m.conditionId
-    WHERE conditionId = @fpConditionId
-    ORDER BY c.priority, c.name
+    WHERE m.amountType = 0
+    ORDER BY m.priority, m.name
 END TRY
 BEGIN CATCH
     IF @@trancount > 0

@@ -188,3 +188,28 @@ BEGIN
         EXEC(@alter_history_table1)
     END
 END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleLimitConditionCurrencyPriority' )
+BEGIN
+    ALTER TABLE [rule].[limit] DROP CONSTRAINT ukRuleLimitConditionCurrencyPriority
+END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleLimitConditionCurrencyCredentials' )
+BEGIN
+    ALTER TABLE [rule].[limit] DROP CONSTRAINT ukRuleLimitConditionCurrencyCredentials
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'amountType' AND Object_ID = OBJECT_ID(N'rule.limit') )
+BEGIN
+    ALTER TABLE [rule].[limit] ADD amountType SMALLINT NULL
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleLimitConditionAmountCurrencyPriority' )
+BEGIN
+    ALTER TABLE [rule].[limit] ADD CONSTRAINT ukRuleLimitConditionAmountCurrencyPriority UNIQUE (conditionId, amountType, currency, [priority])
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleLimitConditionAmountCurrencyCredentials' )
+BEGIN
+    ALTER TABLE [rule].[limit] ADD CONSTRAINT ukRuleLimitConditionAmountCurrencyCredentials UNIQUE (conditionId, amountType, currency, [credentials])
+END

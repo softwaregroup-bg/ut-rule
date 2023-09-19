@@ -27,10 +27,12 @@ module.exports = ({
         }),
         result: joi.object().keys({
             amount: joi.object().keys({
+                settlementRate: joi.number().allow(null),
                 settlementRateId: joi.number().integer().allow(null),
                 settlementRateConditionName: joi.string().allow(null),
                 settlementAmount: joi.string().max(21).allow(null),
                 settlementCurrency: joi.string(),
+                accountRate: joi.number().allow(null),
                 accountRateId: joi.number().integer().allow(null),
                 accountRateConditionName: joi.string().allow(null),
                 accountAmount: joi.string().max(21).allow(null),

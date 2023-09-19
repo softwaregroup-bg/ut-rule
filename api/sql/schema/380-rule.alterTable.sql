@@ -165,3 +165,26 @@ IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'quantity' AND OBJECT_ID 
 BEGIN
     ALTER TABLE [rule].[splitAssignment] ADD [quantity] VARCHAR(50) NULL
 END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'decision' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
+BEGIN
+    ALTER TABLE [rule].[condition] ADD [decision] XML
+
+    IF EXISTS (SELECT * FROM sys.objects WHERE Object_ID = OBJECT_ID(N'externalHistory.ruleConditionHistory') AND TYPE = 'SN')
+    BEGIN
+        DECLARE @historyDB1 SYSNAME = (SELECT DB_NAME(DB_ID(PARSENAME(base_object_name, 3))) FROM sys.synonyms WHERE name = 'ruleConditionHistory')
+        DECLARE @alter_history_table1 NVARCHAR(MAX) = 'IF NOT EXISTS (SELECT *
+                FROM [{DBNAME}].sys.columns c
+                JOIN [{DBNAME}].sys.tables t ON c.object_id = t.object_id
+                JOIN [{DBNAME}].sys.schemas s ON t.schema_id = s.schema_id
+                WHERE s.name = ''history''
+                    AND t.name = ''ruleConditionHistory''
+                    AND c.name = ''decision''
+            ) BEGIN
+        '
+        SET @alter_history_table1 += ' ALTER TABLE [{DBNAME}].[history].[ruleConditionHistory] ADD [decision] XML'
+        SET @alter_history_table1 += ' END'
+        SET @alter_history_table1 = REPLACE(@alter_history_table1, '{DBNAME}', @historyDB1)
+        EXEC(@alter_history_table1)
+    END
+END

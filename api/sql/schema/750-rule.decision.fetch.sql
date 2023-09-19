@@ -38,6 +38,7 @@ BEGIN TRY
         @minCommission MONEY,
         @maxCommission MONEY,
         @idCommission BIGINT,
+        @amountType SMALLINT,
         @minAmount MONEY,
         @maxAmount MONEY,
         @amountDaily MONEY,
@@ -64,6 +65,8 @@ BEGIN TRY
             [priority],
             [name],
             conditionId,
+            currency,
+            amountType,
             amountDaily,
             countDaily,
             amountWeekly,
@@ -74,6 +77,8 @@ BEGIN TRY
         c.[priority],
         c.[name],
         c.conditionId,
+        types.currency,
+        ISNULL(types.amountType, 0),
         ISNULL(SUM(t.amountDaily), 0),
         ISNULL(SUM(t.countDaily), 0),
         ISNULL(SUM(t.amountWeekly), 0),
@@ -84,8 +89,15 @@ BEGIN TRY
         [rule].condition c
     LEFT JOIN
         [rule].vConditionOperation co ON co.conditionId = c.conditionId
+    CROSS JOIN (VALUES
+        (1, @currency),
+        (2, COALESCE(@settlementCurrency, @currency)),
+        (NULL, COALESCE(@accountCurrency, @settlementCurrency, @currency))
+    ) types(amountType, currency)
     LEFT JOIN
         @totals t ON t.transferTypeId = ISNULL(co.transferTypeId, @transferTypeId)
+        AND t.amountType = types.amountType
+        AND t.currency = types.currency
     WHERE
         c.isDeleted = 0 AND
         (c.operationStartDate IS NULL OR (@operationDate >= c.operationStartDate)) AND
@@ -96,7 +108,7 @@ BEGIN TRY
         (c.sourceAccountId IS NULL OR @sourceAccountId = c.sourceAccountId) AND
         (c.destinationAccountId IS NULL OR @destinationAccountId = c.destinationAccountId)
     GROUP BY
-        c.[priority], c.[name], c.conditionId
+        c.[priority], c.[name], c.conditionId, types.currency, types.amountType
 
     DECLARE @scale TINYINT = 2, @currencyId INT
     SELECT @scale = scale, @currencyId = currencyId
@@ -106,6 +118,7 @@ BEGIN TRY
 
     DECLARE @settlementAmount MONEY = TRY_CONVERT(MONEY, @settlementAmountString)
     DECLARE @settlementRateId INT
+    DECLARE @settlementRate DECIMAL(28, 14)
     DECLARE @settlementRateName NVARCHAR(100)
     SET @settlementCurrency = ISNULL(@settlementCurrency, @currency)
     IF @settlementCurrency = @currency AND @settlementAmount IS NULL SET @settlementAmount = @amount
@@ -120,13 +133,15 @@ BEGIN TRY
     BEGIN
         SELECT
             @settlementRateId = rateId,
+            @settlementRate = rate,
             @settlementRateName = [name],
             @settlementAmount = ROUND(@amount * rate, @settlementScale)
         FROM
-            [rule].rateMatch(@matches, @settlementCurrency, @currency, @amount)
+            [rule].rateMatch(@matches, @settlementCurrency, @currency, @amount, 0)
     END
 
     DECLARE @accountAmount MONEY = TRY_CONVERT(MONEY, @accountAmountString)
+    DECLARE @accountRate DECIMAL(28, 14)
     DECLARE @accountRateId INT
     DECLARE @accountRateName NVARCHAR(100)
     SET @accountCurrency = ISNULL(@accountCurrency, @settlementCurrency)
@@ -141,14 +156,16 @@ BEGIN TRY
     IF @accountCurrency <> @settlementCurrency AND @accountAmount IS NULL
     BEGIN
         SELECT
+            @accountRate = rate,
             @accountRateId = rateId,
             @accountRateName = [name],
             @accountAmount = ROUND(@settlementAmount * rate, @accountScale)
         FROM
-            [rule].rateMatch(@matches, @accountCurrency, @settlementCurrency, @amount)
+            [rule].rateMatch(@matches, @accountCurrency, @settlementCurrency, @amount, 2)
     END
 
     SELECT
+        @amountType = NULL,
         @minAmount = NULL,
         @maxAmount = NULL,
         @maxAmountDaily = NULL,
@@ -162,6 +179,7 @@ BEGIN TRY
     SELECT TOP 1
         @limitId = l.limitId,
         @conditionId = l.conditionId,
+        @amountType = l.amountType,
         @minAmount = l.minAmount,
         @maxAmount = l.maxAmount,
         @maxAmountDaily = l.maxAmountDaily,
@@ -180,9 +198,9 @@ BEGIN TRY
     FROM
         @matches AS c
     JOIN
-        [rule].limit AS l ON l.conditionId = c.conditionId
+        [rule].limit AS l ON l.conditionId = c.conditionId AND ISNULL(l.amountType, 0) = c.amountType AND l.currency = c.currency
     WHERE
-        l.currency = @currency AND (--violation of condition limits
+        (--violation of condition limits
             @accountAmount < l.minAmount OR
             @accountAmount > l.maxAmount OR
             @accountAmount + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
@@ -221,6 +239,7 @@ BEGIN TRY
         SELECT
             'ut-error' resultSetName,
             @error type,
+            @amountType AS amountType,
             @minAmount AS minAmount,
             ISNULL (@maxAmountParam, @maxAmount) AS maxAmount,
             @maxAmountDaily AS maxAmountDaily,
@@ -338,6 +357,8 @@ BEGIN TRY
                 WHEN 2 THEN @settlementAmount
                 ELSE @accountAmount
             END >= r.startAmount AND
+            c.currency = r.startAmountCurrency AND
+            c.amountType = ISNULL(n.amountType, 0) AND
             c.amountDaily >= r.startAmountDaily AND
             c.countDaily >= r.startCountDaily AND
             c.amountWeekly >= r.startAmountWeekly AND
@@ -373,10 +394,12 @@ BEGIN TRY
     SELECT
         CONVERT(VARCHAR(21), @settlementAmount, 2) settlementAmount,
         @settlementCurrency settlementCurrency,
+        @settlementRate settlementRate,
         @settlementRateId settlementRateId,
         @settlementRateName settlementRateConditionName,
         CONVERT(VARCHAR(21), @accountAmount, 2) accountAmount,
         @accountCurrency accountCurrency,
+        @accountRate accountRate,
         @accountRateId accountRateId,
         @accountRateName accountRateConditionName,
         CONVERT(VARCHAR(21), (SELECT SUM(ISNULL(fee, 0)) FROM @fee WHERE amountType = 1 AND tag LIKE '%|acquirer|%' AND tag LIKE '%|fee|%'), 2) acquirerFee,
@@ -446,6 +469,13 @@ BEGIN TRY
         integration.vAssignment c ON CAST(c.accountId AS VARCHAR(100)) = assignment.credit
     ORDER BY
         a.splitNameId, assignment.splitAssignmentId
+
+    SELECT 'decision' AS resultSetName, 1 single
+    SELECT TOP 1 c.conditionId, c.name, c.decision
+    FROM @matches m
+    JOIN [rule].condition c ON c.conditionId = m.conditionId
+    WHERE conditionId = @fpConditionId
+    ORDER BY c.priority, c.name
 END TRY
 BEGIN CATCH
     IF @@trancount > 0

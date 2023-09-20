@@ -61,8 +61,8 @@ module.exports = ({
                     analytics: joi.object().allow(null)
                 })
             ),
-            decision: joi.object(),
-            rule: joi.object()
+            decision: joi.object().allow(null),
+            rule: joi.object().allow(null)
         })
     })
 });

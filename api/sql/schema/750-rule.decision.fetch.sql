@@ -201,11 +201,11 @@ BEGIN TRY
         [rule].limit AS l ON l.conditionId = c.conditionId AND ISNULL(l.amountType, 0) = c.amountType AND l.currency = c.currency
     WHERE
         (--violation of condition limits
-            @accountAmount < l.minAmount OR
-            @accountAmount > l.maxAmount OR
-            @accountAmount + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
-            @accountAmount + ISNULL(c.amountWeekly, 0) > l.maxAmountWeekly OR
-            @accountAmount + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
+            CASE l.amountType WHEN 1 THEN @amount WHEN 2 THEN @settlementAmount ELSE @accountAmount END < l.minAmount OR
+            CASE l.amountType WHEN 1 THEN @amount WHEN 2 THEN @settlementAmount ELSE @accountAmount END > l.maxAmount OR
+            CASE l.amountType WHEN 1 THEN @amount WHEN 2 THEN @settlementAmount ELSE @accountAmount END + ISNULL(c.amountDaily, 0) > l.maxAmountDaily OR
+            CASE l.amountType WHEN 1 THEN @amount WHEN 2 THEN @settlementAmount ELSE @accountAmount END + ISNULL(c.amountWeekly, 0) > l.maxAmountWeekly OR
+            CASE l.amountType WHEN 1 THEN @amount WHEN 2 THEN @settlementAmount ELSE @accountAmount END + ISNULL(c.amountMonthly, 0) > l.maxAmountMonthly OR
             ISNULL(c.countDaily, 0) >= l.maxCountDaily OR
             ISNULL(c.countWeekly, 0) >= l.maxCountWeekly OR
             ISNULL(c.countMonthly, 0) >= l.maxCountMonthly
@@ -222,15 +222,16 @@ BEGIN TRY
     IF @limitId IS NOT NULL -- if exists a condition limit which is violated, identify the exact violation and return error with result
     BEGIN
         DECLARE @type VARCHAR (20) = CASE WHEN ISNULL(@limitCredentials, 0) = 0 THEN 'rule.exceed' ELSE 'rule.unauthorized' END
+        DECLARE @limitAmount MONEY = CASE @amountType WHEN 1 THEN @amount WHEN 2 THEN @settlementAmount ELSE @accountAmount END
         DECLARE @error VARCHAR (50) = CASE
-            WHEN @accountAmount > @maxAmount THEN @type + 'MaxLimitAmount'
-            WHEN @accountAmount < @minAmount THEN @type + 'MinLimitAmount'
+            WHEN @limitAmount > @maxAmount THEN @type + 'MaxLimitAmount'
+            WHEN @limitAmount < @minAmount THEN @type + 'MinLimitAmount'
             WHEN @amountDaily >= @maxAmountDaily THEN 'rule.reachedDailyLimitAmount'
             WHEN @amountWeekly >= @maxAmountWeekly THEN 'rule.reachedWeeklyLimitAmount'
             WHEN @amountMonthly >= @maxAmountMonthly THEN 'rule.reachedMonthlyLimitAmount'
-            WHEN @accountAmount + @amountDaily > @maxAmountDaily THEN @type + 'DailyLimitAmount'
-            WHEN @accountAmount + @amountWeekly > @maxAmountWeekly THEN @type + 'WeeklyLimitAmount'
-            WHEN @accountAmount + @amountMonthly > @maxAmountMonthly THEN @type + 'MonthlyLimitAmount'
+            WHEN @limitAmount + @amountDaily > @maxAmountDaily THEN @type + 'DailyLimitAmount'
+            WHEN @limitAmount + @amountWeekly > @maxAmountWeekly THEN @type + 'WeeklyLimitAmount'
+            WHEN @limitAmount + @amountMonthly > @maxAmountMonthly THEN @type + 'MonthlyLimitAmount'
             WHEN @countDaily >= @maxCountDaily THEN @type + 'DailyLimitCount'
             WHEN @countWeekly >= @maxCountWeekly THEN @type + 'WeeklyLimitCount'
             WHEN @countMonthly >= @maxCountMonthly THEN @type + 'MonthlyLimitCount'

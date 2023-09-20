@@ -94,6 +94,7 @@ declare namespace rule_decision_lookup {
     amount?: {
       accountAmount?: string | null;
       accountCurrency?: string;
+      accountRate?: number | null;
       accountRateConditionName?: string | null;
       accountRateId?: number | null;
       acquirerFee?: string | null;
@@ -103,12 +104,15 @@ declare namespace rule_decision_lookup {
       processorFee?: string | null;
       settlementAmount?: string | null;
       settlementCurrency?: string;
+      settlementRate?: number | null;
       settlementRateConditionName?: string | null;
       settlementRateId?: number | null;
       transferDateTime: Date;
       transferFee?: string | null;
       transferTypeId: string;
     };
+    decision?: object | null;
+    rule?: object | null;
     split?: ({
       amount: string;
       analytics?: object | null;

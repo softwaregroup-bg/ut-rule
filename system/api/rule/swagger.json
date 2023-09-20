@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.1.3"
+        "version": "13.1.4"
     },
     "paths": {
         "/rpc/rule/condition/add": {
@@ -929,6 +929,12 @@
                                                 "accountCurrency": {
                                                     "type": "string"
                                                 },
+                                                "accountRate": {
+                                                    "type": [
+                                                        "number",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "accountRateConditionName": {
                                                     "type": [
                                                         "string",
@@ -986,6 +992,12 @@
                                                 "settlementCurrency": {
                                                     "type": "string"
                                                 },
+                                                "settlementRate": {
+                                                    "type": [
+                                                        "number",
+                                                        "null"
+                                                    ]
+                                                },
                                                 "settlementRateConditionName": {
                                                     "type": [
                                                         "string",
@@ -1018,6 +1030,22 @@
                                                 "transferTypeId"
                                             ],
                                             "type": "object"
+                                        },
+                                        "decision": {
+                                            "additionalProperties": true,
+                                            "properties": {},
+                                            "type": [
+                                                "object",
+                                                "null"
+                                            ]
+                                        },
+                                        "rule": {
+                                            "additionalProperties": true,
+                                            "properties": {},
+                                            "type": [
+                                                "object",
+                                                "null"
+                                            ]
                                         },
                                         "split": {
                                             "items": {

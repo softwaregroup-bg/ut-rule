@@ -124,7 +124,7 @@ module.exports = function test() {
                     params: {
                         condition: {
                             name: 'Rule ' + Date.now(),
-                            operationEndDate: '2023-01-01T00:00:00.000Z',
+                            operationEndDate: '2020-01-01T00:00:00.000Z',
                             priority: 122300
                         }
                     }
@@ -139,7 +139,7 @@ module.exports = function test() {
                     params: {
                         condition: {
                             name: ruleName,
-                            operationEndDate: '2023-01-01T00:00:00.000Z',
+                            operationEndDate: '2020-01-01T00:00:00.000Z',
                             priority: 122300
                         }
                     }
@@ -199,7 +199,7 @@ module.exports = function test() {
                         condition: {
                             name: ruleName + 3,
                             priority: 565660,
-                            operationStartDate: '2023-01-30T22:00:00.000Z'
+                            operationStartDate: '2123-01-30T22:00:00.000Z'
                         },
                         channel: {
                             country: countryId,
@@ -249,7 +249,7 @@ module.exports = function test() {
                         condition: {
                             name: ruleName + 4,
                             priority: 516560,
-                            operationStartDate: '2023-01-30T22:00:00.000Z'
+                            operationStartDate: '2123-01-30T22:00:00.000Z'
                         },
                         channel: {
                             country: countryId,
@@ -285,7 +285,7 @@ module.exports = function test() {
                         condition: {
                             name: ruleName + 5,
                             priority: 5656560,
-                            operationStartDate: '2023-01-30T22:00:00.000Z'
+                            operationStartDate: '2123-01-30T22:00:00.000Z'
                         },
                         channel: {
                             country: countryId,

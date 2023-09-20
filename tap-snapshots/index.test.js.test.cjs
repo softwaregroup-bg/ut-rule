@@ -10,6 +10,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -18,9 +19,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "21.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by channel city",
   },
   "split": Array [
     Object {
@@ -43,6 +49,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -51,10 +58,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -64,6 +73,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -72,9 +82,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "19.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by channel country",
   },
   "split": Array [
     Object {
@@ -97,6 +112,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -105,10 +121,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -118,6 +136,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -126,9 +145,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "22.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by channel organization",
   },
   "split": Array [
     Object {
@@ -151,6 +175,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -159,10 +184,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -172,6 +199,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -180,9 +208,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "18.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by channel organization tag",
   },
   "split": Array [
     Object {
@@ -205,6 +238,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -213,10 +247,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -226,6 +262,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -234,9 +271,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "20.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by channel region",
   },
   "split": Array [
     Object {
@@ -259,6 +301,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -267,10 +310,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -280,6 +325,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -288,9 +334,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "37.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by combination of transfer tags \\\\#2",
   },
   "split": Array [
     Object {
@@ -313,6 +364,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -321,9 +373,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "37.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by combination of transfer tags",
   },
   "split": Array [
     Object {
@@ -346,6 +403,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -354,9 +412,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "15.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by destination account",
   },
   "split": Array [
     Object {
@@ -379,6 +442,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -387,10 +451,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -400,6 +466,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -408,9 +475,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "32.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by counterparty city",
   },
   "split": Array [
     Object {
@@ -433,6 +505,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -441,10 +514,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -454,6 +529,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -462,9 +538,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "30.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by counterparty country",
   },
   "split": Array [
     Object {
@@ -487,6 +568,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -495,10 +577,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -508,6 +592,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -516,10 +601,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -529,6 +616,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -537,9 +625,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "34.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by counterparty organization",
   },
   "split": Array [
     Object {
@@ -562,6 +655,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -570,10 +664,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -583,6 +679,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -591,9 +688,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "33.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by counterparty organization tag",
   },
   "split": Array [
     Object {
@@ -616,6 +718,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -624,10 +727,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -637,6 +742,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -645,9 +751,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "31.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by counterparty region",
   },
   "split": Array [
     Object {
@@ -670,6 +781,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -678,10 +790,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -691,6 +805,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -699,10 +814,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -712,6 +829,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -720,9 +838,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2021-11-10T00:00:00.000Z",
     "transferFee": "13.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by end date",
   },
   "split": Array [
     Object {
@@ -760,6 +883,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -768,9 +892,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2021-12-01T00:00:00.000Z",
     "transferFee": "13.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by end date",
   },
   "split": Array [
     Object {
@@ -808,6 +937,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -816,10 +946,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2021-12-01T00:00:01.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -829,6 +961,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -837,9 +970,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "14.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by source account",
   },
   "split": Array [
     Object {
@@ -862,6 +1000,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -870,10 +1009,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -883,6 +1024,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -891,9 +1033,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "25.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by holder city",
   },
   "split": Array [
     Object {
@@ -916,6 +1063,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -924,10 +1072,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -937,6 +1087,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -945,9 +1096,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "23.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by holder country",
   },
   "split": Array [
     Object {
@@ -970,6 +1126,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -978,10 +1135,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -991,6 +1150,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -999,10 +1159,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -1012,6 +1174,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1020,9 +1183,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "27.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by holder organization",
   },
   "split": Array [
     Object {
@@ -1045,6 +1213,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1053,10 +1222,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -1066,6 +1237,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1074,9 +1246,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "26.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by holder organization tag",
   },
   "split": Array [
     Object {
@@ -1099,6 +1276,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1107,10 +1285,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -1120,6 +1300,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1128,9 +1309,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "24.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by holder region",
   },
   "split": Array [
     Object {
@@ -1153,6 +1339,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1161,10 +1348,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -1174,6 +1363,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1182,10 +1372,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -1195,6 +1387,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1203,10 +1396,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -1216,6 +1411,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1224,9 +1420,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "37.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by one of transfer tags",
   },
   "split": Array [
     Object {
@@ -1249,6 +1450,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1257,9 +1459,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "17.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by operation",
   },
   "split": Array [
     Object {
@@ -1282,6 +1489,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1290,9 +1498,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-01-10T00:00:00.000Z",
     "transferFee": "11.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by period",
   },
   "split": Array [
     Object {
@@ -1330,6 +1543,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1338,9 +1552,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-01T00:00:00.000Z",
     "transferFee": "11.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by period",
   },
   "split": Array [
     Object {
@@ -1378,6 +1597,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1386,9 +1606,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-01-01T00:00:00.000Z",
     "transferFee": "11.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by period",
   },
   "split": Array [
     Object {
@@ -1426,6 +1651,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1434,10 +1660,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2021-12-31T00:00:00.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -1447,6 +1675,7 @@ Object {
   "amount": Object {
     "accountAmount": "990.0000",
     "accountCurrency": "EUR",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1455,9 +1684,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "990.0000",
     "settlementCurrency": "EUR",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test settlement",
   },
   "split": Array [
     Object {
@@ -1480,6 +1714,7 @@ Object {
   "amount": Object {
     "accountAmount": "995.0000",
     "accountCurrency": "EUR",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1488,9 +1723,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "995.0000",
     "settlementCurrency": "EUR",
+    "settlementRate": 0.995,
     "settlementRateConditionName": "Test settlement",
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test settlement",
   },
   "split": Array [
     Object {
@@ -1513,6 +1753,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1521,9 +1762,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2122-03-10T00:00:00.000Z",
     "transferFee": "50.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by start date",
   },
   "split": Array [
     Object {
@@ -1561,6 +1807,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1569,9 +1816,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2122-03-01T00:00:00.000Z",
     "transferFee": "50.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by start date",
   },
   "split": Array [
     Object {
@@ -1609,6 +1861,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1617,10 +1870,12 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2122-02-28T23:59:59.000Z",
     "transferFee": null,
   },
+  "decision": null,
   "split": Array [],
 }
 `
@@ -1630,6 +1885,7 @@ Object {
   "amount": Object {
     "accountAmount": "1001.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1638,9 +1894,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1001.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test Limits",
   },
   "split": Array [],
 }
@@ -1651,6 +1912,7 @@ Object {
   "amount": Object {
     "accountAmount": "8.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1659,9 +1921,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "8.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test Limits",
   },
   "split": Array [],
 }
@@ -1672,6 +1939,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "BGN",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1680,9 +1948,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "BGN",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "0.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test Limits",
   },
   "split": Array [
     Object {
@@ -1705,6 +1978,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "EUR",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1713,9 +1987,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "EUR",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test Limits",
   },
   "split": Array [],
 }
@@ -1726,6 +2005,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1734,9 +2014,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test Limits",
   },
   "split": Array [],
 }
@@ -1747,6 +2032,7 @@ Object {
   "amount": Object {
     "accountAmount": "999.0000",
     "accountCurrency": "BGN",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1755,9 +2041,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "999.0000",
     "settlementCurrency": "BGN",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "0.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test Limits",
   },
   "split": Array [
     Object {
@@ -1780,6 +2071,7 @@ Object {
   "amount": Object {
     "accountAmount": "999.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1788,9 +2080,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "999.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test Limits",
   },
   "split": Array [],
 }
@@ -1801,6 +2098,7 @@ Object {
   "amount": Object {
     "accountAmount": "999.0000",
     "accountCurrency": "EUR",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1809,9 +2107,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "999.0000",
     "settlementCurrency": "EUR",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test Limits",
   },
   "split": Array [],
 }
@@ -1822,6 +2125,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1830,9 +2134,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "100.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test More Assignments",
   },
   "split": Array [
     Object {
@@ -1881,6 +2190,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "BGN",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1889,9 +2199,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "BGN",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test More Assignments",
   },
   "split": Array [],
 }
@@ -1902,6 +2217,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1910,9 +2226,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "50.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test Split Analytic",
   },
   "split": Array [
     Object {
@@ -1950,6 +2271,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "EUR",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1958,9 +2280,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "EUR",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": null,
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Rule Test Split Analytic",
   },
   "split": Array [],
 }
@@ -1971,6 +2298,7 @@ Object {
   "amount": Object {
     "accountAmount": "1000.0000",
     "accountCurrency": "USD",
+    "accountRate": null,
     "accountRateConditionName": null,
     "acquirerFee": null,
     "cashback": null,
@@ -1979,9 +2307,14 @@ Object {
     "processorFee": null,
     "settlementAmount": "1000.0000",
     "settlementCurrency": "USD",
+    "settlementRate": null,
     "settlementRateConditionName": null,
     "transferDateTime": "2022-02-10T00:00:00.000Z",
     "transferFee": "37.0000",
+  },
+  "decision": Object {
+    "decision": null,
+    "name": "Test by transfer tag",
   },
   "split": Array [
     Object {

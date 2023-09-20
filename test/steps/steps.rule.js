@@ -53,6 +53,7 @@ module.exports = function steps({version, callSite}) {
                 delete result?.amount?.transferTypeId;
                 delete result?.amount?.accountRateId;
                 delete result?.amount?.settlementRateId;
+                delete result?.decision?.conditionId;
                 result.split?.forEach(split => {
                     delete split?.conditionId;
                     delete split?.splitNameId;

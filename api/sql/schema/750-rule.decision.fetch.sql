@@ -78,7 +78,7 @@ BEGIN TRY
         c.[name],
         c.conditionId,
         types.currency,
-        ISNULL(types.amountType, 0),
+        types.amountType,
         ISNULL(SUM(t.amountDaily), 0),
         ISNULL(SUM(t.countDaily), 0),
         ISNULL(SUM(t.amountWeekly), 0),
@@ -92,7 +92,7 @@ BEGIN TRY
     CROSS JOIN (VALUES
         (1, @currency),
         (2, COALESCE(@settlementCurrency, @currency)),
-        (NULL, COALESCE(@accountCurrency, @settlementCurrency, @currency))
+        (0, COALESCE(@accountCurrency, @settlementCurrency, @currency))
     ) types(amountType, currency)
     LEFT JOIN
         @totals t ON t.transferTypeId = ISNULL(co.transferTypeId, @transferTypeId)
@@ -137,7 +137,7 @@ BEGIN TRY
             @settlementRateName = [name],
             @settlementAmount = ROUND(@amount * rate, @settlementScale)
         FROM
-            [rule].rateMatch(@matches, @settlementCurrency, @currency, @amount, 0)
+            [rule].rateMatch(@matches, @settlementCurrency, @currency, @amount, 1)
     END
 
     DECLARE @accountAmount MONEY = TRY_CONVERT(MONEY, @accountAmountString)
@@ -161,7 +161,7 @@ BEGIN TRY
             @accountRateName = [name],
             @accountAmount = ROUND(@settlementAmount * rate, @accountScale)
         FROM
-            [rule].rateMatch(@matches, @accountCurrency, @settlementCurrency, @amount, 2)
+            [rule].rateMatch(@matches, @accountCurrency, @settlementCurrency, @settlementAmount, 2)
     END
 
     SELECT
@@ -346,11 +346,6 @@ BEGIN TRY
         JOIN
             [rule].splitRange AS r ON r.splitNameId = n.splitNameId
         WHERE
-            CASE n.amountType
-                WHEN 1 THEN @currency
-                WHEN 2 THEN @settlementCurrency
-                ELSE @accountCurrency
-            END = r.startAmountCurrency AND
             COALESCE(@isSourceAmount, 0) = r.isSourceAmount AND
             CASE n.amountType
                 WHEN 1 THEN @amount

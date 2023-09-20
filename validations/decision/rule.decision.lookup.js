@@ -60,7 +60,9 @@ module.exports = ({
                     description: joi.string().allow(null),
                     analytics: joi.object().allow(null)
                 })
-            )
+            ),
+            decision: joi.object(),
+            rule: joi.object()
         })
     })
 });

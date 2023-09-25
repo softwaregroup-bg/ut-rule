@@ -116,11 +116,42 @@ BEGIN
 
     DECLARE @dailyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(DAY, DATEDIFF(DAY, 0, @operationDateLocal), 0)) -- start of the day
     DECLARE @weeklyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDateLocal - 1), 0)) --week starts on Mon
-    DECLARE @montlyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDateLocal), 0)) -- start of the month
+    DECLARE @monthlyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDateLocal), 0)) -- start of the month
 
+    ;WITH t(currency, amountType, transferTypeId, transferDateTime, transferAmount) AS (
+        SELECT
+            types.currency,
+            types.type,
+            t.transferTypeId,
+            transferDateTime,
+            CASE types.type
+                WHEN 1 THEN t.transferAmount
+                WHEN 2 THEN t.settlementAmount
+                ELSE t.accountAmount
+            END
+        FROM [integration].[vTransfer] t
+        JOIN (VALUES
+            (1, @currency),
+            (2, COALESCE(@settlementCurrency, @currency)),
+            (0, COALESCE(@accountCurrency, @settlementCurrency, @currency))
+        ) types(type, currency)
+        ON
+            types.currency = CASE types.type
+                WHEN 1 THEN t.transferCurrency
+                WHEN 2 THEN COALESCE(t.settlementAmountCurrency, t.transferCurrency)
+                ELSE COALESCE(t.accountAmountCurrency, t.settlementAmountCurrency, t.transferCurrency)
+            END
+        WHERE
+            t.success = 1 AND
+            t.sourceAccount = @sourceAccount AND
+            t.transferDateTime < @operationDate AND -- look ony at earlier transfers
+            t.transferDateTime >= @monthlyFrom --look back up to the start of month
+    )
     INSERT INTO
-        @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
+        @totals(currency, amountType, transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
     SELECT -- totals by transfer type
+        t.currency,
+        t.amountType,
         t.transferTypeId,
         ISNULL(SUM(CASE WHEN t.transferDateTime >= @dailyFrom THEN t.transferAmount ELSE 0 END), 0),
         ISNULL(SUM(CASE WHEN t.transferDateTime >= @dailyFrom THEN 1 ELSE 0 END), 0),
@@ -129,14 +160,10 @@ BEGIN
         ISNULL(SUM(t.transferAmount), 0),
         ISNULL(COUNT(t.transferAmount), 0)
     FROM
-        [integration].[vTransfer] t
-    WHERE
-        t.success = 1 AND
-        t.sourceAccount = @sourceAccount AND
-        t.transferCurrency = @currency AND
-        t.transferDateTime < @operationDate AND -- look ony at earlier transfers
-        t.transferDateTime >= @montlyFrom --look back up to the start of month
+        t
     GROUP BY
+        t.currency,
+        t.amountType,
         t.transferTypeId
 
     DECLARE

@@ -27,10 +27,12 @@ module.exports = ({
         }),
         result: joi.object().keys({
             amount: joi.object().keys({
+                settlementRate: joi.number().allow(null),
                 settlementRateId: joi.number().integer().allow(null),
                 settlementRateConditionName: joi.string().allow(null),
                 settlementAmount: joi.string().max(21).allow(null),
                 settlementCurrency: joi.string(),
+                accountRate: joi.number().allow(null),
                 accountRateId: joi.number().integer().allow(null),
                 accountRateConditionName: joi.string().allow(null),
                 accountAmount: joi.string().max(21).allow(null),
@@ -58,7 +60,9 @@ module.exports = ({
                     description: joi.string().allow(null),
                     analytics: joi.object().allow(null)
                 })
-            )
+            ),
+            decision: joi.object().allow(null),
+            rule: joi.object().allow(null)
         })
     })
 });

@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.1.3"
+        "version": "13.2.0-decision.0"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -909,6 +909,10 @@
                                                         "accountCurrency": {
                                                             "type": "string"
                                                         },
+                                                        "accountRate": {
+                                                            "nullable": true,
+                                                            "type": "number"
+                                                        },
                                                         "accountRateConditionName": {
                                                             "nullable": true,
                                                             "type": "string"
@@ -950,6 +954,10 @@
                                                         "settlementCurrency": {
                                                             "type": "string"
                                                         },
+                                                        "settlementRate": {
+                                                            "nullable": true,
+                                                            "type": "number"
+                                                        },
                                                         "settlementRateConditionName": {
                                                             "nullable": true,
                                                             "type": "string"
@@ -975,6 +983,18 @@
                                                         "transferDateTime",
                                                         "transferTypeId"
                                                     ],
+                                                    "type": "object"
+                                                },
+                                                "decision": {
+                                                    "additionalProperties": true,
+                                                    "nullable": true,
+                                                    "properties": {},
+                                                    "type": "object"
+                                                },
+                                                "rule": {
+                                                    "additionalProperties": true,
+                                                    "nullable": true,
+                                                    "properties": {},
                                                     "type": "object"
                                                 },
                                                 "split": {

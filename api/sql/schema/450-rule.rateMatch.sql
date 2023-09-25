@@ -2,7 +2,8 @@ ALTER FUNCTION [rule].rateMatch(
     @matches [rule].matches READONLY,
     @targetCurrency VARCHAR(3),
     @currency VARCHAR(3),
-    @amount MONEY
+    @amount MONEY,
+    @amountType SMALLINT
 ) RETURNS TABLE AS RETURN (
     SELECT
         rateId,
@@ -33,6 +34,8 @@ ALTER FUNCTION [rule].rateMatch(
         @targetCurrency = r.targetCurrency AND
         @currency = r.startAmountCurrency AND
         @amount >= r.startAmount AND
+        c.currency = @currency AND
+        c.amountType = @amountType AND
         c.amountDaily >= r.startAmountDaily AND
         c.countDaily >= r.startCountDaily AND
         c.amountWeekly >= r.startAmountWeekly AND

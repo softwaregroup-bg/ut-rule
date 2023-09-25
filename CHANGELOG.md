@@ -1,3 +1,17 @@
+# [13.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.4...v13.2.0) (2023-09-25)
+
+
+### Bug Fixes
+
+* rule action names ([89c2d01](https://github.com/softwaregroup-bg/ut-rule/commit/89c2d01bc26101ae111326ae5e1e4fb6b4126cf8))
+
+
+### Features
+
+* return decision ([#272](https://github.com/softwaregroup-bg/ut-rule/issues/272)) ([d987809](https://github.com/softwaregroup-bg/ut-rule/commit/d987809b42d298be338eecdc43cf5ee1d2ca0451))
+
+
+
 ## [13.1.4](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.3...v13.1.4) (2023-07-25)
 
 

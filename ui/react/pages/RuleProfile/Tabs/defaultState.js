@@ -95,6 +95,7 @@ export const defaultTabState = {
         organization: '',
         role: null,
         cardProducts: [],
+        cardTypes: [],
         accountFeePolicies: [],
         accountProduct: null,
         properties: []

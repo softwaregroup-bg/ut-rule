@@ -13,6 +13,7 @@ const defaultUiState = {
             'operation',
             'supervisor',
             'cardProduct',
+            'cardType',
             'accountProduct',
             'feePolicy',
             'account'
@@ -132,6 +133,10 @@ const defaultUiState = {
                     cardProduct: {
                         visible: true,
                         title: 'Product'
+                    },
+                    cardType: {
+                        visible: true,
+                        title: 'Type'
                     },
                     accountProduct: {
                         visible: true,

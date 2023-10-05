@@ -55,7 +55,7 @@ const conditionPropertyFactor = {
 export const formatNomenclatures = (items) => {
     const formattedPayload = {};
     // default object properties
-    ['accountProduct', 'cardProduct', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization']
+    ['accountProduct', 'cardProduct', 'cardType', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization']
         .forEach((objName) => (formattedPayload[objName] = []));
     items.map(item => {
         if (!formattedPayload[item.type]) {
@@ -142,6 +142,17 @@ export const prepareRuleToSave = (rule) => {
         cardProducts.forEach(cp => {
             formattedRule.conditionItem.push({
                 itemNameId: cp.key,
+                conditionId,
+                factor: factors.sourceCategory
+            });
+        });
+    }
+
+    const cardTypes = rule && rule.source && rule.source.cardTypes;
+    if (cardTypes && cardTypes.length) {
+        cardTypes.forEach(ct => {
+            formattedRule.conditionItem.push({
+                itemNameId: ct.key,
                 conditionId,
                 factor: factors.sourceCategory
             });

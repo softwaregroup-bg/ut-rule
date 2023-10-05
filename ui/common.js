@@ -96,7 +96,7 @@ function prepareRuleModel(dbresult) {
     });
     // condition item
     (dbresult.conditionItem || []).forEach((item) => {
-        if (['operation', 'country', 'city', 'region', 'cardProduct', 'cardType','feePolicy'].indexOf(item.type) > -1) {
+        if (['operation', 'country', 'city', 'region', 'cardProduct', 'cardType', 'feePolicy'].indexOf(item.type) > -1) {
             const obj = rule[propMap[item.factor]] && rule[propMap[item.factor]][propMap[item.type]];
             obj && obj.push({
                 key: item.itemNameId,

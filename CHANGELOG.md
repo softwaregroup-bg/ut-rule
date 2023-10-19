@@ -1,3 +1,12 @@
+## [13.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.0...v13.2.1) (2023-10-19)
+
+
+### Bug Fixes
+
+* do not mix cjs and esm ([7e44700](https://github.com/softwaregroup-bg/ut-rule/commit/7e447001596d149ff99e37188c9f312f73ef0f17))
+
+
+
 # [13.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.4...v13.2.0) (2023-09-25)
 
 

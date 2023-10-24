@@ -52,6 +52,8 @@ class DestinationTab extends Component {
             accountProducts,
             fieldValues,
             feePolicies,
+            cardTypes,
+            cardProducts,
             destinationConfig: { fields }
         } = this.props;
         const changeInput = (field, value) => {
@@ -107,6 +109,32 @@ class DestinationTab extends Component {
                         placeholder='Select Organization'
                         onSelect={(field) => { changeInput(field); }}
                         label={fields.organization.title || 'Organization'}
+                    />
+                </div>}
+                {fields.cardProduct.visible && <div className={style.inputWrapper}>
+                    <MultiSelectDropdown
+                        boldLabel
+                        disabled={readonly}
+                        canSelectPlaceholder
+                        keyProp='cardProducts'
+                        data={cardProducts}
+                        defaultSelected={fieldValues.cardProducts}
+                        placeholder='Select Product'
+                        onSelect={(field) => { changeInput(field); }}
+                        label={fields.cardProduct.title || 'Product'}
+                    />
+                </div>}
+                {fields.cardType.visible && <div className={style.inputWrapper}>
+                    <MultiSelectDropdown
+                        boldLabel
+                        disabled={readonly}
+                        canSelectPlaceholder
+                        keyProp='cardTypes'
+                        data={cardTypes}
+                        defaultSelected={fieldValues.cardTypes}
+                        placeholder='Select Type'
+                        onSelect={(field) => { changeInput(field); }}
+                        label={fields.cardType.title || 'Type'}
                     />
                 </div>}
                 {fields.accountProduct.visible && <div className={style.inputWrapper}>
@@ -204,6 +232,8 @@ const mapStateToProps = (state, ownProps) => {
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         feePolicies: state.ruleProfileReducer.getIn(['nomenclatures', 'feePolicy']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
+        cardProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'cardProduct']).toJS(),
+        cardTypes: state.ruleProfileReducer.getIn(['nomenclatures', 'cardType']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
         accountProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'accountProduct']).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),

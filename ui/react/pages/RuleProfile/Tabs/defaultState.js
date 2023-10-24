@@ -77,6 +77,8 @@ export const defaultTabState = {
         cities: [],
         organization: '',
         role: null,
+        cardProducts: [],
+        cardTypes: [],
         properties: [],
         accountFeePolicies: [],
         accountProduct: null

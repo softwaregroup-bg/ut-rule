@@ -83,11 +83,11 @@ export const prepareRuleToSave = (rule) => {
         destinationAccountId: null
     }];
     formattedRule.conditionActor = [];
-    ['channel', 'source', 'destination'].forEach(function(keyProp) {
+    ['channel', 'source', 'destination'].forEach(function (keyProp) {
         const value = rule[keyProp];
         ['organization', 'role'].forEach((type) => {
             if (value[type] && value[type] instanceof Array) {
-                value[type].forEach(function(ci) {
+                value[type].forEach(function (ci) {
                     ci.key && formattedRule.conditionActor.push({
                         actorId: ci.key,
                         conditionId,
@@ -108,9 +108,9 @@ export const prepareRuleToSave = (rule) => {
 
     formattedRule.conditionItem = [];
 
-    ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
+    ['channel', 'destination', 'source', 'operation'].forEach(function (tabKey) {
         const tab = rule[tabKey];
-        tab && ['accountProduct', 'cities', 'countries', 'regions', 'operations', 'accountFeePolicies'].forEach(function(kepProp) {
+        tab && ['accountProduct', 'cities', 'countries', 'regions', 'operations', 'accountFeePolicies'].forEach(function (kepProp) {
             const value = tab[kepProp];
             let factor = conditionItemFactor[tabKey];
 
@@ -120,7 +120,7 @@ export const prepareRuleToSave = (rule) => {
             }
 
             if (value && value instanceof Array) {
-                value.forEach(function(ci) {
+                value.forEach(function (ci) {
                     ci.key && formattedRule.conditionItem.push({
                         itemNameId: ci.key,
                         conditionId,
@@ -137,35 +137,43 @@ export const prepareRuleToSave = (rule) => {
         });
     });
 
-    const cardProducts = rule && rule.source && rule.source.cardProducts;
-    if (cardProducts && cardProducts.length) {
-        cardProducts.forEach(cp => {
+    const pushItems = (items, factor) => {
+        items.forEach(cp => {
             formattedRule.conditionItem.push({
                 itemNameId: cp.key,
                 conditionId,
-                factor: factors.sourceCategory
+                factor: factors[factor]
             });
         });
     }
 
-    const cardTypes = rule && rule.source && rule.source.cardTypes;
-    if (cardTypes && cardTypes.length) {
-        cardTypes.forEach(ct => {
-            formattedRule.conditionItem.push({
-                itemNameId: ct.key,
-                conditionId,
-                factor: factors.sourceCategory
-            });
-        });
-    }
+    debugger;
+    // const cardProducts = rule && rule.source && rule.source.cardProducts;
+
+    rule?.source?.cardProducts?.length && pushItems(rule?.source?.cardProducts, 'sourceCategory')
+    rule?.source?.cardTypes?.length && pushItems(rule?.source?.cardTypes, 'sourceCategory')
+    rule?.destination?.cardProducts?.length && pushItems(rule?.destination?.cardProducts, 'destinationCategory')
+    rule?.destination?.cardTypes?.length && pushItems(rule?.destination?.cardTypes, 'destinationCategory')
+
+
+    // const cardTypes = rule && rule.source && rule.source.cardTypes;
+    // if (cardTypes && cardTypes.length) {
+    //     cardTypes.forEach(ct => {
+    //         formattedRule.conditionItem.push({
+    //             itemNameId: ct.key,
+    //             conditionId,
+    //             factor: factors.sourceCategory
+    //         });
+    //     });
+    // }
 
     formattedRule.conditionProperty = [];
 
-    ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
+    ['channel', 'destination', 'source', 'operation'].forEach(function (tabKey) {
         const tab = rule[tabKey];
         if (tab) {
             const value = tab.properties;
-            value && value.forEach(function(prop) {
+            value && value.forEach(function (prop) {
                 prop.name && formattedRule.conditionProperty.push({
                     conditionId,
                     factor: conditionPropertyFactor[tabKey],
@@ -193,7 +201,7 @@ export const prepareRuleToSave = (rule) => {
         });
     });
 
-    formattedRule.split = {data: {rows: []}};
+    formattedRule.split = { data: { rows: [] } };
     split.splits.forEach(split => {
         if (!split.name) return;
         const formattedSplit = {};
@@ -251,6 +259,7 @@ export const prepareRuleToSave = (rule) => {
 };
 
 export const prepareRuleModel = (result) => {
+    debugger;
     const rule = prepareRule(result) || {};
     const errState = fromJS(defaultErrorState).toJS();
     errState.split.splits = [];
@@ -304,12 +313,12 @@ export const prepareRuleErrors = (rule, existErrors) => {
                     (errors = errors.setIn(['split', 'splits', idx, 'assignments', assidx, 'credit'], errorMessage.creditRequired));
             });
             // cumulative
-            split.cumulatives.forEach(function(cumulative, cidx) {
+            split.cumulatives.forEach(function (cumulative, cidx) {
                 cumulative && !cumulative.currency && !isEmptyValuesOnly(cumulative) &&
-                (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'currency'], errorMessage.currencyRequired));
+                    (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'currency'], errorMessage.currencyRequired));
 
                 // ranges
-                cumulative && cumulative.ranges && cumulative.ranges.forEach(function(range, ridx) {
+                cumulative && cumulative.ranges && cumulative.ranges.forEach(function (range, ridx) {
                     if (ridx === 0) {
                         cumulative.currency && !range.startAmount &&
                             (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'ranges', ridx, 'startAmount'], errorMessage.startAmountRequired));
@@ -326,7 +335,7 @@ export const prepareRuleErrors = (rule, existErrors) => {
 
 export const getRuleProperties = (rule = {}) => {
     let properties = [];
-    ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
+    ['channel', 'destination', 'source', 'operation'].forEach(function (tabKey) {
         const tab = rule[tabKey];
         if (tab) {
             const value = tab.properties;
@@ -391,7 +400,7 @@ export const getRuleErrorCount = (errors) => {
     return errorCount;
 };
 
-export const flatten = function(ob) {
+export const flatten = function (ob) {
     const result = {};
     for (const i in ob) {
         if (!Object.prototype.hasOwnProperty.call(ob, i)) continue;

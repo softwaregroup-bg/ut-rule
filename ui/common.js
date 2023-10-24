@@ -61,6 +61,8 @@ function prepareRuleModel(dbresult) {
             countries: [],
             cities: [],
             regions: [],
+            cardProducts: [],
+            cardTypes: [],
             accountFeePolicies: []
         },
         source: {

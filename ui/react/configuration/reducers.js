@@ -168,6 +168,14 @@ const defaultUiState = {
                         visible: true,
                         title: 'Organization'
                     },
+                    cardProduct: {
+                        visible: true,
+                        title: 'Product'
+                    },
+                    cardType: {
+                        visible: true,
+                        title: 'Type'
+                    },
                     accountProduct: {
                         visible: true,
                         title: 'Account Product'

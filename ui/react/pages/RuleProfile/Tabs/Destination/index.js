@@ -24,7 +24,9 @@ const propTypes = {
     accountProducts: PropTypes.array,
     fieldValues: PropTypes.object,
     errors: PropTypes.object, // immutable
-    destinationConfig: PropTypes.object.isRequired
+    destinationConfig: PropTypes.object.isRequired,
+    cardProducts: PropTypes.object,
+    cardTypes: PropTypes.object
 };
 
 const defaultProps = {

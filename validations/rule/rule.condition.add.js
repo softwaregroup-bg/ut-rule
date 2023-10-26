@@ -1,10 +1,13 @@
 // @ts-check
 /** @type { import("ut-run").validationFactory } */
 module.exports = ({
-    joi
+    joi,
+    lib: {
+        condition
+    }
 }) => ({
     'rule.condition.add': () => ({
-        params: joi.any(),
-        result: joi.any()
+        params: condition,
+        result: condition
     })
 });

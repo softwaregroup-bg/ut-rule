@@ -116,6 +116,7 @@ function conditionReceive({
     conditionActor,
     conditionProperty,
     splitName,
+    condition,
     ...response
 }) {
     function get(list, factor, type, key) {
@@ -129,6 +130,7 @@ function conditionReceive({
     }
     return {
         ...response,
+        condition: condition?.[0],
         splitName: splitName.map(item => ({
             ...item,
             tag: item.tag?.split('|').filter(Boolean) || []

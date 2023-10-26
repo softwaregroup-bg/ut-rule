@@ -2,7 +2,7 @@
     "rule":"ut-rule error",
     "rule.generic": "Rule generic",
     "rule.amount": "Invalid amount",
-    "rule.ruleNotExists": "Rule does not exists",
+    "rule.ruleNotExists": "Rule does not exist",
     "rule.exceedMaxLimitAmount": "Transaction amount is above maximum",
     "rule.exceedMinLimitAmount": "Transaction amount is below minimum",
     "rule.reachedDailyLimitAmount": "Daily amount limit reached",

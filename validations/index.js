@@ -6,6 +6,7 @@ module.exports = function validation() {
         require('./decision/rule.decision.fetch'),
         require('./decision/rule.decision.lookup'),
         require('./item/rule.item.fetch'),
+        require('./rule/condition'),
         require('./rule/rule.condition.add'),
         require('./rule/rule.condition.edit'),
         require('./rule/rule.condition.fetch'),

@@ -28,8 +28,8 @@ module.exports = function steps({version, callSite}) {
             name,
             params,
             result(result, assert) {
-                assert.comment('conditionId: ' + result.condition[0].conditionId);
-                assert.ok(result.condition[0].conditionId, 'return conditionId');
+                assert.comment('conditionId: ' + result.condition.conditionId);
+                assert.ok(result.condition.conditionId, 'return conditionId');
             }
         }),
         'steps.rule.decision.snapshot': ({name, ...params}, callback) => ({

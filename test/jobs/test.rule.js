@@ -131,7 +131,7 @@ module.exports = function test() {
                 }),
                 ruleConditionGet({
                     name: 'get Rule 1',
-                    params: ({rule1: {condition: {conditionId}}}) => ({conditionId})
+                    params: ({rule1: {condition: [{conditionId}]}}) => ({conditionId})
                 }),
                 // same priority different name
                 ruleRuleAdd({
@@ -146,7 +146,7 @@ module.exports = function test() {
                 }),
                 ruleConditionGet({
                     name: 'get Rule 2',
-                    params: ({'rule 2': {condition: {conditionId}}}) => ({conditionId})
+                    params: ({'rule 2': {condition: [{conditionId}]}}) => ({conditionId})
                 }),
                 ruleConditionFetch({
                     name: 'fetch rule 2',
@@ -234,7 +234,7 @@ module.exports = function test() {
                 }),
                 ruleConditionGet({
                     name: 'get Rule 3',
-                    params: ({'rule 3 success general fields': {condition: {conditionId}}}) => ({conditionId})
+                    params: ({'rule 3 success general fields': {condition: [{conditionId}]}}) => ({conditionId})
                 }),
                 ruleRuleAdd({
                     name: 'rule 4 success with limits',
@@ -270,7 +270,7 @@ module.exports = function test() {
                 }),
                 ruleConditionGet({
                     name: 'get rule 4',
-                    params: ({'rule 4 success with limits': {condition: {conditionId}}}) => ({conditionId})
+                    params: ({'rule 4 success with limits': {condition: [{conditionId}]}}) => ({conditionId})
                 }),
                 ruleRuleAdd({
                     name: 'rule 5 success with assignment',
@@ -320,7 +320,7 @@ module.exports = function test() {
                 }),
                 ruleConditionGet({
                     name: 'get Rule 5',
-                    params: ({'rule 5 success with assignment': {condition: {conditionId}}}) => ({conditionId})
+                    params: ({'rule 5 success with assignment': {condition: [{conditionId}]}}) => ({conditionId})
                 })
             ]);
         }

@@ -1,3 +1,12 @@
+## [13.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.1...v13.2.2) (2023-10-27)
+
+
+### Bug Fixes
+
+* condition validations ([ca69ab9](https://github.com/softwaregroup-bg/ut-rule/commit/ca69ab991568efbe00cb884ae489cb14656e3314))
+
+
+
 ## [13.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.0...v13.2.1) (2023-10-19)
 
 

@@ -1,12 +1,544 @@
 declare namespace ruleTableTypes {}
 declare namespace rule_condition_add {
-  export type params = any;
-  export type result = any;
+  export interface params {
+    /**
+     * Unknown Property
+     */
+    [x: string]: unknown;
+    channel?: {
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    condition?: {
+      conditionId?: number | string;
+      decision?: object | null;
+      description?: string | null;
+      destinationAccountId?: string | null;
+      name: string;
+      notes?: string | null;
+      operationEndDate?: Date | null;
+      operationStartDate?: Date | null;
+      priority?: number | null;
+      sourceAccountId?: string | null;
+    };
+    destination?: {
+      accountFeePolicy?: (number | string)[] | null;
+      accountProduct?: (number | string)[] | null;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      cardProduct?: (number | string)[] | null;
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      customerType?: (number | string)[] | null;
+      kyc?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    limit?: ({
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      amountType?: any | null | 1 | 2;
+      conditionId?: number | string;
+      credentials?: number | null;
+      currency: string;
+      limitId?: number | string;
+      maxAmount?: number | null;
+      maxAmountDaily?: number | null;
+      maxAmountMonthly?: number | null;
+      maxAmountWeekly?: number | null;
+      maxCountDaily?: number | string;
+      maxCountMonthly?: number | string;
+      maxCountWeekly?: number | string;
+      minAmount?: number | null;
+      priority?: number | null;
+    })[];
+    operation?: {
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      tag?: string | null | '';
+      transferTag?: string | null | '';
+      type?: any[] | null;
+    };
+    rate?: ({
+      conditionId?: number | string;
+      rate: number;
+      rateId?: number | string;
+      startAmount?: number | null;
+      startAmountCurrency: string;
+      startAmountDaily?: number | null;
+      startAmountMonthly?: number | null;
+      startAmountWeekly?: number | null;
+      startCountDaily?: number | string;
+      startCountMonthly?: number | string;
+      startCountWeekly?: number | string;
+      targetCurrency: string;
+    })[];
+    source?: {
+      accountFeePolicy?: (number | string)[] | null;
+      accountProduct?: (number | string)[] | null;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      cardProduct?: (number | string)[] | null;
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      customerType?: (number | string)[] | null;
+      kyc?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    splitAnalytic?: ({
+      name?: string | null;
+      splitAssignmentId: number;
+      value?: string | null;
+    })[];
+    splitAssignment?: ({
+      credit: string;
+      debit: string;
+      description: string;
+      maxValue?: number | null;
+      minValue?: number | null;
+      percent?: number | null;
+      splitAssignmentId: number;
+      splitNameId: number;
+    })[];
+    splitName?: ({
+      amountType?: any | null | 1 | 2;
+      name: string;
+      splitNameId: number;
+      tag?: string[];
+    })[];
+    splitRange?: ({
+      isSourceAmount?: true | false | 0 | 1 | '0' | '1' | null;
+      maxValue?: number | null;
+      minValue?: number | null;
+      percent?: number | null;
+      percentBase?: number | null;
+      splitNameId: number;
+      splitRangeId: number;
+      startAmount: number;
+      startAmountCurrency: string;
+      startAmountDaily: number;
+      startAmountMonthly: number;
+      startAmountWeekly: number;
+      startCountDaily: number | string;
+      startCountMonthly: number | string;
+      startCountWeekly: number | string;
+    })[];
+  }
+  export interface result {
+    /**
+     * Unknown Property
+     */
+    [x: string]: unknown;
+    channel?: {
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    condition?: {
+      conditionId?: number | string;
+      decision?: object | null;
+      description?: string | null;
+      destinationAccountId?: string | null;
+      name: string;
+      notes?: string | null;
+      operationEndDate?: Date | null;
+      operationStartDate?: Date | null;
+      priority?: number | null;
+      sourceAccountId?: string | null;
+    };
+    destination?: {
+      accountFeePolicy?: (number | string)[] | null;
+      accountProduct?: (number | string)[] | null;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      cardProduct?: (number | string)[] | null;
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      customerType?: (number | string)[] | null;
+      kyc?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    limit?: ({
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      amountType?: any | null | 1 | 2;
+      conditionId?: number | string;
+      credentials?: number | null;
+      currency: string;
+      limitId?: number | string;
+      maxAmount?: number | null;
+      maxAmountDaily?: number | null;
+      maxAmountMonthly?: number | null;
+      maxAmountWeekly?: number | null;
+      maxCountDaily?: number | string;
+      maxCountMonthly?: number | string;
+      maxCountWeekly?: number | string;
+      minAmount?: number | null;
+      priority?: number | null;
+    })[];
+    operation?: {
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      tag?: string | null | '';
+      transferTag?: string | null | '';
+      type?: any[] | null;
+    };
+    rate?: ({
+      conditionId?: number | string;
+      rate: number;
+      rateId?: number | string;
+      startAmount?: number | null;
+      startAmountCurrency: string;
+      startAmountDaily?: number | null;
+      startAmountMonthly?: number | null;
+      startAmountWeekly?: number | null;
+      startCountDaily?: number | string;
+      startCountMonthly?: number | string;
+      startCountWeekly?: number | string;
+      targetCurrency: string;
+    })[];
+    source?: {
+      accountFeePolicy?: (number | string)[] | null;
+      accountProduct?: (number | string)[] | null;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      cardProduct?: (number | string)[] | null;
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      customerType?: (number | string)[] | null;
+      kyc?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    splitAnalytic?: ({
+      name?: string | null;
+      splitAssignmentId: number;
+      value?: string | null;
+    })[];
+    splitAssignment?: ({
+      credit: string;
+      debit: string;
+      description: string;
+      maxValue?: number | null;
+      minValue?: number | null;
+      percent?: number | null;
+      splitAssignmentId: number;
+      splitNameId: number;
+    })[];
+    splitName?: ({
+      amountType?: any | null | 1 | 2;
+      name: string;
+      splitNameId: number;
+      tag?: string[];
+    })[];
+    splitRange?: ({
+      isSourceAmount?: true | false | 0 | 1 | '0' | '1' | null;
+      maxValue?: number | null;
+      minValue?: number | null;
+      percent?: number | null;
+      percentBase?: number | null;
+      splitNameId: number;
+      splitRangeId: number;
+      startAmount: number;
+      startAmountCurrency: string;
+      startAmountDaily: number;
+      startAmountMonthly: number;
+      startAmountWeekly: number;
+      startCountDaily: number | string;
+      startCountMonthly: number | string;
+      startCountWeekly: number | string;
+    })[];
+  }
 }
 
 declare namespace rule_condition_edit {
-  export type params = any;
-  export type result = any;
+  export interface params {
+    /**
+     * Unknown Property
+     */
+    [x: string]: unknown;
+    channel?: {
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    condition?: {
+      conditionId?: number | string;
+      decision?: object | null;
+      description?: string | null;
+      destinationAccountId?: string | null;
+      name: string;
+      notes?: string | null;
+      operationEndDate?: Date | null;
+      operationStartDate?: Date | null;
+      priority?: number | null;
+      sourceAccountId?: string | null;
+    };
+    destination?: {
+      accountFeePolicy?: (number | string)[] | null;
+      accountProduct?: (number | string)[] | null;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      cardProduct?: (number | string)[] | null;
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      customerType?: (number | string)[] | null;
+      kyc?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    limit?: ({
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      amountType?: any | null | 1 | 2;
+      conditionId?: number | string;
+      credentials?: number | null;
+      currency: string;
+      limitId?: number | string;
+      maxAmount?: number | null;
+      maxAmountDaily?: number | null;
+      maxAmountMonthly?: number | null;
+      maxAmountWeekly?: number | null;
+      maxCountDaily?: number | string;
+      maxCountMonthly?: number | string;
+      maxCountWeekly?: number | string;
+      minAmount?: number | null;
+      priority?: number | null;
+    })[];
+    operation?: {
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      tag?: string | null | '';
+      transferTag?: string | null | '';
+      type?: any[] | null;
+    };
+    rate?: ({
+      conditionId?: number | string;
+      rate: number;
+      rateId?: number | string;
+      startAmount?: number | null;
+      startAmountCurrency: string;
+      startAmountDaily?: number | null;
+      startAmountMonthly?: number | null;
+      startAmountWeekly?: number | null;
+      startCountDaily?: number | string;
+      startCountMonthly?: number | string;
+      startCountWeekly?: number | string;
+      targetCurrency: string;
+    })[];
+    source?: {
+      accountFeePolicy?: (number | string)[] | null;
+      accountProduct?: (number | string)[] | null;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      cardProduct?: (number | string)[] | null;
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      customerType?: (number | string)[] | null;
+      kyc?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    splitAnalytic?: ({
+      name?: string | null;
+      splitAssignmentId: number;
+      value?: string | null;
+    })[];
+    splitAssignment?: ({
+      credit: string;
+      debit: string;
+      description: string;
+      maxValue?: number | null;
+      minValue?: number | null;
+      percent?: number | null;
+      splitAssignmentId: number;
+      splitNameId: number;
+    })[];
+    splitName?: ({
+      amountType?: any | null | 1 | 2;
+      name: string;
+      splitNameId: number;
+      tag?: string[];
+    })[];
+    splitRange?: ({
+      isSourceAmount?: true | false | 0 | 1 | '0' | '1' | null;
+      maxValue?: number | null;
+      minValue?: number | null;
+      percent?: number | null;
+      percentBase?: number | null;
+      splitNameId: number;
+      splitRangeId: number;
+      startAmount: number;
+      startAmountCurrency: string;
+      startAmountDaily: number;
+      startAmountMonthly: number;
+      startAmountWeekly: number;
+      startCountDaily: number | string;
+      startCountMonthly: number | string;
+      startCountWeekly: number | string;
+    })[];
+  }
+  export interface result {
+    /**
+     * Unknown Property
+     */
+    [x: string]: unknown;
+    channel?: {
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    condition?: {
+      conditionId?: number | string;
+      decision?: object | null;
+      description?: string | null;
+      destinationAccountId?: string | null;
+      name: string;
+      notes?: string | null;
+      operationEndDate?: Date | null;
+      operationStartDate?: Date | null;
+      priority?: number | null;
+      sourceAccountId?: string | null;
+    };
+    destination?: {
+      accountFeePolicy?: (number | string)[] | null;
+      accountProduct?: (number | string)[] | null;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      cardProduct?: (number | string)[] | null;
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      customerType?: (number | string)[] | null;
+      kyc?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    limit?: ({
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      amountType?: any | null | 1 | 2;
+      conditionId?: number | string;
+      credentials?: number | null;
+      currency: string;
+      limitId?: number | string;
+      maxAmount?: number | null;
+      maxAmountDaily?: number | null;
+      maxAmountMonthly?: number | null;
+      maxAmountWeekly?: number | null;
+      maxCountDaily?: number | string;
+      maxCountMonthly?: number | string;
+      maxCountWeekly?: number | string;
+      minAmount?: number | null;
+      priority?: number | null;
+    })[];
+    operation?: {
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      tag?: string | null | '';
+      transferTag?: string | null | '';
+      type?: any[] | null;
+    };
+    rate?: ({
+      conditionId?: number | string;
+      rate: number;
+      rateId?: number | string;
+      startAmount?: number | null;
+      startAmountCurrency: string;
+      startAmountDaily?: number | null;
+      startAmountMonthly?: number | null;
+      startAmountWeekly?: number | null;
+      startCountDaily?: number | string;
+      startCountMonthly?: number | string;
+      startCountWeekly?: number | string;
+      targetCurrency: string;
+    })[];
+    source?: {
+      accountFeePolicy?: (number | string)[] | null;
+      accountProduct?: (number | string)[] | null;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      cardProduct?: (number | string)[] | null;
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      customerType?: (number | string)[] | null;
+      kyc?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    splitAnalytic?: ({
+      name?: string | null;
+      splitAssignmentId: number;
+      value?: string | null;
+    })[];
+    splitAssignment?: ({
+      credit: string;
+      debit: string;
+      description: string;
+      maxValue?: number | null;
+      minValue?: number | null;
+      percent?: number | null;
+      splitAssignmentId: number;
+      splitNameId: number;
+    })[];
+    splitName?: ({
+      amountType?: any | null | 1 | 2;
+      name: string;
+      splitNameId: number;
+      tag?: string[];
+    })[];
+    splitRange?: ({
+      isSourceAmount?: true | false | 0 | 1 | '0' | '1' | null;
+      maxValue?: number | null;
+      minValue?: number | null;
+      percent?: number | null;
+      percentBase?: number | null;
+      splitNameId: number;
+      splitRangeId: number;
+      startAmount: number;
+      startAmountCurrency: string;
+      startAmountDaily: number;
+      startAmountMonthly: number;
+      startAmountWeekly: number;
+      startCountDaily: number | string;
+      startCountMonthly: number | string;
+      startCountWeekly: number | string;
+    })[];
+  }
 }
 
 declare namespace rule_condition_fetch {
@@ -15,8 +547,143 @@ declare namespace rule_condition_fetch {
 }
 
 declare namespace rule_condition_get {
-  export type params = any;
-  export type result = any;
+  export interface params {
+    conditionId: number | string;
+  }
+  export interface result {
+    /**
+     * Unknown Property
+     */
+    [x: string]: unknown;
+    channel?: {
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    condition?: {
+      conditionId?: number | string;
+      decision?: object | null;
+      description?: string | null;
+      destinationAccountId?: string | null;
+      name: string;
+      notes?: string | null;
+      operationEndDate?: Date | null;
+      operationStartDate?: Date | null;
+      priority?: number | null;
+      sourceAccountId?: string | null;
+    };
+    destination?: {
+      accountFeePolicy?: (number | string)[] | null;
+      accountProduct?: (number | string)[] | null;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      cardProduct?: (number | string)[] | null;
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      customerType?: (number | string)[] | null;
+      kyc?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    limit?: ({
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      amountType?: any | null | 1 | 2;
+      conditionId?: number | string;
+      credentials?: number | null;
+      currency: string;
+      limitId?: number | string;
+      maxAmount?: number | null;
+      maxAmountDaily?: number | null;
+      maxAmountMonthly?: number | null;
+      maxAmountWeekly?: number | null;
+      maxCountDaily?: number | string;
+      maxCountMonthly?: number | string;
+      maxCountWeekly?: number | string;
+      minAmount?: number | null;
+      priority?: number | null;
+    })[];
+    operation?: {
+      /**
+       * Unknown Property
+       */
+      [x: string]: unknown;
+      tag?: string | null | '';
+      transferTag?: string | null | '';
+      type?: any[] | null;
+    };
+    rate?: ({
+      conditionId?: number | string;
+      rate: number;
+      rateId?: number | string;
+      startAmount?: number | null;
+      startAmountCurrency: string;
+      startAmountDaily?: number | null;
+      startAmountMonthly?: number | null;
+      startAmountWeekly?: number | null;
+      startCountDaily?: number | string;
+      startCountMonthly?: number | string;
+      startCountWeekly?: number | string;
+      targetCurrency: string;
+    })[];
+    source?: {
+      accountFeePolicy?: (number | string)[] | null;
+      accountProduct?: (number | string)[] | null;
+      actor?: (number | string)[] | null;
+      actorTag?: string | null | '';
+      cardProduct?: (number | string)[] | null;
+      city?: (number | string)[] | null;
+      country?: (number | string)[] | null;
+      customerType?: (number | string)[] | null;
+      kyc?: (number | string)[] | null;
+      region?: (number | string)[] | null;
+    };
+    splitAnalytic?: ({
+      name?: string | null;
+      splitAssignmentId: number;
+      value?: string | null;
+    })[];
+    splitAssignment?: ({
+      credit: string;
+      debit: string;
+      description: string;
+      maxValue?: number | null;
+      minValue?: number | null;
+      percent?: number | null;
+      splitAssignmentId: number;
+      splitNameId: number;
+    })[];
+    splitName?: ({
+      amountType?: any | null | 1 | 2;
+      name: string;
+      splitNameId: number;
+      tag?: string[];
+    })[];
+    splitRange?: ({
+      isSourceAmount?: true | false | 0 | 1 | '0' | '1' | null;
+      maxValue?: number | null;
+      minValue?: number | null;
+      percent?: number | null;
+      percentBase?: number | null;
+      splitNameId: number;
+      splitRangeId: number;
+      startAmount: number;
+      startAmountCurrency: string;
+      startAmountDaily: number;
+      startAmountMonthly: number;
+      startAmountWeekly: number;
+      startCountDaily: number | string;
+      startCountMonthly: number | string;
+      startCountWeekly: number | string;
+    })[];
+  }
 }
 
 declare namespace rule_decision_fetch {

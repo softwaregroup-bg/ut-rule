@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "12.5.13",
+  "version": "12.5.14-azcell.0",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {

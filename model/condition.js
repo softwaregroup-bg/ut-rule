@@ -96,7 +96,8 @@ module.exports = ({joi}) => ({
                                     {value: 'pos', label: 'POS'},
                                     {value: 'ped', label: 'PED'},
                                     {value: 'vendor', label: 'Vendor'},
-                                    {value: 'merchant', label: 'Merchant'}
+                                    {value: 'merchant', label: 'Merchant'},
+                                    {value: 'excessAmountFee', label: 'Excess amount fee'}
                                 ]
                             }
                         }

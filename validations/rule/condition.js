@@ -68,6 +68,7 @@ module.exports = ({
             city: bigintArray
         }),
         splitName: joi.array().items(joi.object({
+            conditionId: bigintRequired,
             splitNameId: integerRequired,
             name: stringRequired.max(50),
             amountType: joi.allow(null, 1, 2),
@@ -79,6 +80,7 @@ module.exports = ({
             description: stringRequired.max(50),
             debit: stringRequired.max(50),
             credit: stringRequired.max(50),
+            quantity: stringNull.max(50),
             minValue: numberNull,
             maxValue: numberNull,
             percent: numberNull
@@ -101,6 +103,7 @@ module.exports = ({
             isSourceAmount: boolNull
         })),
         splitAnalytic: joi.array().items(joi.object({
+            splitAnalyticId: integerRequired,
             splitAssignmentId: integerRequired,
             name: stringNull.max(50),
             value: stringNull.max(100)

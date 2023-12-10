@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.2.1"
+        "version": "13.2.2"
     },
     "openapi": "3.0.0",
     "paths": {
@@ -715,6 +715,9 @@
                                                             "nullable": true,
                                                             "type": "string"
                                                         },
+                                                        "splitAnalyticId": {
+                                                            "type": "integer"
+                                                        },
                                                         "splitAssignmentId": {
                                                             "type": "integer"
                                                         },
@@ -725,6 +728,7 @@
                                                         }
                                                     },
                                                     "required": [
+                                                        "splitAnalyticId",
                                                         "splitAssignmentId"
                                                     ],
                                                     "type": "object"
@@ -762,6 +766,11 @@
                                                             "nullable": true,
                                                             "type": "number"
                                                         },
+                                                        "quantity": {
+                                                            "maxLength": 50,
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
                                                         "splitAssignmentId": {
                                                             "type": "integer"
                                                         },
@@ -787,6 +796,17 @@
                                                         "amountType": {
                                                             "nullable": true
                                                         },
+                                                        "conditionId": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "integer"
+                                                                },
+                                                                {
+                                                                    "pattern": "^[0-9]{1,19}$",
+                                                                    "type": "string"
+                                                                }
+                                                            ]
+                                                        },
                                                         "name": {
                                                             "maxLength": 50,
                                                             "minLength": 1,
@@ -803,6 +823,7 @@
                                                         }
                                                     },
                                                     "required": [
+                                                        "conditionId",
                                                         "splitNameId",
                                                         "name"
                                                     ],
@@ -1622,6 +1643,9 @@
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },
+                                                            "splitAnalyticId": {
+                                                                "type": "integer"
+                                                            },
                                                             "splitAssignmentId": {
                                                                 "type": "integer"
                                                             },
@@ -1632,6 +1656,7 @@
                                                             }
                                                         },
                                                         "required": [
+                                                            "splitAnalyticId",
                                                             "splitAssignmentId"
                                                         ],
                                                         "type": "object"
@@ -1669,6 +1694,11 @@
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
+                                                            "quantity": {
+                                                                "maxLength": 50,
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
                                                             "splitAssignmentId": {
                                                                 "type": "integer"
                                                             },
@@ -1694,6 +1724,17 @@
                                                             "amountType": {
                                                                 "nullable": true
                                                             },
+                                                            "conditionId": {
+                                                                "oneOf": [
+                                                                    {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    {
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
+                                                                    }
+                                                                ]
+                                                            },
                                                             "name": {
                                                                 "maxLength": 50,
                                                                 "minLength": 1,
@@ -1710,6 +1751,7 @@
                                                             }
                                                         },
                                                         "required": [
+                                                            "conditionId",
                                                             "splitNameId",
                                                             "name"
                                                         ],
@@ -2546,6 +2588,9 @@
                                                             "nullable": true,
                                                             "type": "string"
                                                         },
+                                                        "splitAnalyticId": {
+                                                            "type": "integer"
+                                                        },
                                                         "splitAssignmentId": {
                                                             "type": "integer"
                                                         },
@@ -2556,6 +2601,7 @@
                                                         }
                                                     },
                                                     "required": [
+                                                        "splitAnalyticId",
                                                         "splitAssignmentId"
                                                     ],
                                                     "type": "object"
@@ -2593,6 +2639,11 @@
                                                             "nullable": true,
                                                             "type": "number"
                                                         },
+                                                        "quantity": {
+                                                            "maxLength": 50,
+                                                            "nullable": true,
+                                                            "type": "string"
+                                                        },
                                                         "splitAssignmentId": {
                                                             "type": "integer"
                                                         },
@@ -2618,6 +2669,17 @@
                                                         "amountType": {
                                                             "nullable": true
                                                         },
+                                                        "conditionId": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "integer"
+                                                                },
+                                                                {
+                                                                    "pattern": "^[0-9]{1,19}$",
+                                                                    "type": "string"
+                                                                }
+                                                            ]
+                                                        },
                                                         "name": {
                                                             "maxLength": 50,
                                                             "minLength": 1,
@@ -2634,6 +2696,7 @@
                                                         }
                                                     },
                                                     "required": [
+                                                        "conditionId",
                                                         "splitNameId",
                                                         "name"
                                                     ],
@@ -3453,6 +3516,9 @@
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },
+                                                            "splitAnalyticId": {
+                                                                "type": "integer"
+                                                            },
                                                             "splitAssignmentId": {
                                                                 "type": "integer"
                                                             },
@@ -3463,6 +3529,7 @@
                                                             }
                                                         },
                                                         "required": [
+                                                            "splitAnalyticId",
                                                             "splitAssignmentId"
                                                         ],
                                                         "type": "object"
@@ -3500,6 +3567,11 @@
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
+                                                            "quantity": {
+                                                                "maxLength": 50,
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
                                                             "splitAssignmentId": {
                                                                 "type": "integer"
                                                             },
@@ -3525,6 +3597,17 @@
                                                             "amountType": {
                                                                 "nullable": true
                                                             },
+                                                            "conditionId": {
+                                                                "oneOf": [
+                                                                    {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    {
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
+                                                                    }
+                                                                ]
+                                                            },
                                                             "name": {
                                                                 "maxLength": 50,
                                                                 "minLength": 1,
@@ -3541,6 +3624,7 @@
                                                             }
                                                         },
                                                         "required": [
+                                                            "conditionId",
                                                             "splitNameId",
                                                             "name"
                                                         ],
@@ -4555,6 +4639,9 @@
                                                                 "nullable": true,
                                                                 "type": "string"
                                                             },
+                                                            "splitAnalyticId": {
+                                                                "type": "integer"
+                                                            },
                                                             "splitAssignmentId": {
                                                                 "type": "integer"
                                                             },
@@ -4565,6 +4652,7 @@
                                                             }
                                                         },
                                                         "required": [
+                                                            "splitAnalyticId",
                                                             "splitAssignmentId"
                                                         ],
                                                         "type": "object"
@@ -4602,6 +4690,11 @@
                                                                 "nullable": true,
                                                                 "type": "number"
                                                             },
+                                                            "quantity": {
+                                                                "maxLength": 50,
+                                                                "nullable": true,
+                                                                "type": "string"
+                                                            },
                                                             "splitAssignmentId": {
                                                                 "type": "integer"
                                                             },
@@ -4627,6 +4720,17 @@
                                                             "amountType": {
                                                                 "nullable": true
                                                             },
+                                                            "conditionId": {
+                                                                "oneOf": [
+                                                                    {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    {
+                                                                        "pattern": "^[0-9]{1,19}$",
+                                                                        "type": "string"
+                                                                    }
+                                                                ]
+                                                            },
                                                             "name": {
                                                                 "maxLength": 50,
                                                                 "minLength": 1,
@@ -4643,6 +4747,7 @@
                                                             }
                                                         },
                                                         "required": [
+                                                            "conditionId",
                                                             "splitNameId",
                                                             "name"
                                                         ],

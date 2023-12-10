@@ -97,6 +97,7 @@ declare namespace rule_condition_add {
     };
     splitAnalytic?: ({
       name?: string | null;
+      splitAnalyticId: number;
       splitAssignmentId: number;
       value?: string | null;
     })[];
@@ -107,11 +108,13 @@ declare namespace rule_condition_add {
       maxValue?: number | null;
       minValue?: number | null;
       percent?: number | null;
+      quantity?: string | null;
       splitAssignmentId: number;
       splitNameId: number;
     })[];
     splitName?: ({
       amountType?: any | null | 1 | 2;
+      conditionId: number | string;
       name: string;
       splitNameId: number;
       tag?: string[];
@@ -231,6 +234,7 @@ declare namespace rule_condition_add {
     };
     splitAnalytic?: ({
       name?: string | null;
+      splitAnalyticId: number;
       splitAssignmentId: number;
       value?: string | null;
     })[];
@@ -241,11 +245,13 @@ declare namespace rule_condition_add {
       maxValue?: number | null;
       minValue?: number | null;
       percent?: number | null;
+      quantity?: string | null;
       splitAssignmentId: number;
       splitNameId: number;
     })[];
     splitName?: ({
       amountType?: any | null | 1 | 2;
+      conditionId: number | string;
       name: string;
       splitNameId: number;
       tag?: string[];
@@ -368,6 +374,7 @@ declare namespace rule_condition_edit {
     };
     splitAnalytic?: ({
       name?: string | null;
+      splitAnalyticId: number;
       splitAssignmentId: number;
       value?: string | null;
     })[];
@@ -378,11 +385,13 @@ declare namespace rule_condition_edit {
       maxValue?: number | null;
       minValue?: number | null;
       percent?: number | null;
+      quantity?: string | null;
       splitAssignmentId: number;
       splitNameId: number;
     })[];
     splitName?: ({
       amountType?: any | null | 1 | 2;
+      conditionId: number | string;
       name: string;
       splitNameId: number;
       tag?: string[];
@@ -502,6 +511,7 @@ declare namespace rule_condition_edit {
     };
     splitAnalytic?: ({
       name?: string | null;
+      splitAnalyticId: number;
       splitAssignmentId: number;
       value?: string | null;
     })[];
@@ -512,11 +522,13 @@ declare namespace rule_condition_edit {
       maxValue?: number | null;
       minValue?: number | null;
       percent?: number | null;
+      quantity?: string | null;
       splitAssignmentId: number;
       splitNameId: number;
     })[];
     splitName?: ({
       amountType?: any | null | 1 | 2;
+      conditionId: number | string;
       name: string;
       splitNameId: number;
       tag?: string[];
@@ -647,6 +659,7 @@ declare namespace rule_condition_get {
     };
     splitAnalytic?: ({
       name?: string | null;
+      splitAnalyticId: number;
       splitAssignmentId: number;
       value?: string | null;
     })[];
@@ -657,11 +670,13 @@ declare namespace rule_condition_get {
       maxValue?: number | null;
       minValue?: number | null;
       percent?: number | null;
+      quantity?: string | null;
       splitAssignmentId: number;
       splitNameId: number;
     })[];
     splitName?: ({
       amountType?: any | null | 1 | 2;
+      conditionId: number | string;
       name: string;
       splitNameId: number;
       tag?: string[];

@@ -112,7 +112,7 @@ BEGIN
     IF @timeDifference IS NULL
         SET @timeDifference = DATEDIFF(MINUTE, GETDATE(), GETUTCDATE())
 
-    DECLARE @operationDateLocal DATETIME = DATEADD(MINUTE, @timeDifference, @operationDate)
+    DECLARE @operationDateLocal DATETIME = DATEADD(MINUTE, -@timeDifference, @operationDate)
 
     DECLARE @dailyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(DAY, DATEDIFF(DAY, 0, @operationDateLocal), 0)) -- start of the day
     DECLARE @weeklyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDateLocal - 1), 0)) --week starts on Mon

@@ -1,3 +1,12 @@
+## [13.2.4](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.3...v13.2.4) (2023-12-11)
+
+
+### Bug Fixes
+
+* correctly calc op date in local tz ([#275](https://github.com/softwaregroup-bg/ut-rule/issues/275)) ([cf7d035](https://github.com/softwaregroup-bg/ut-rule/commit/cf7d0358d932c7431d07edfada81582964a2a171))
+
+
+
 ## [13.2.3](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.2...v13.2.3) (2023-12-10)
 
 

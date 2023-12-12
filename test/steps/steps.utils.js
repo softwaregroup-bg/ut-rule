@@ -31,7 +31,14 @@ module.exports = function steps({version, callSite}) {
             ruleExceedMinLimitAmount: 'rule.exceedMinLimitAmount',
             ruleExceedMaxLimitAmount: 'rule.exceedMaxLimitAmount',
             ruleExceedDailyLimitAmount: 'rule.exceedDailyLimitAmount',
-            ruleExceedDailyLimitCount: 'rule.exceedDailyLimitCount'
+            ruleExceedDailyLimitCount: 'rule.exceedDailyLimitCount',
+            transactionFeePercent: 100,
+            transactionFee: 10.50,
+            feeToVatPercent: 10,
+            feeToOtherTaxPercent: 15,
+            successfulTransactionsCount: 0,
+            walletToWallet: 'walletToWallet',
+            conditionTypePerson: 'person'
         }
     };
 };

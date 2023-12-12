@@ -2,15 +2,15 @@
 module.exports = function test() {
     return {
         rule: function(test, bus, run, ports, {
-            ruleRuleAdd,
-            ruleConditionGet,
-            ruleConditionFetch,
-            customerOrganizationApprove,
-            customerOrganizationGetByDepth,
-            coreUtils: {generateRandomNumber},
+            ruleRuleAdd, ruleConditionGet, ruleConditionFetch, customerOrganizationApprove, customerOrganizationGetByDepth,
+            coreUtils: {generateRandomNumber, operation},
             userUtils: {adminFirstName},
             customerUtils: {getByDepthOrganization, orgName},
-            ruleUtils: {sourceAccountNumber, destinationAccountNumber}
+            ruleUtils: {
+                sourceAccountNumber, destinationAccountNumber, operationCategory, sourceCategory, channelOrganization,
+                acquirerFeeTag, destinationCategory, acquirerTag, transactionFeePercent, transactionFee,
+                successfulTransactionsCount, conditionTypePerson
+            }
         }) {
             const ruleName = 'autoRule' + generateRandomNumber();
             let organizationDepthArray;
@@ -154,6 +154,368 @@ module.exports = function test() {
                         name: ruleName
                     }
                 }),
+                {
+                    name: 'fetch rule',
+                    method: 'rule.rule.fetch',
+                    params: {},
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.ok(result.condition.length > 0, 'return rule condition > 0');
+                        const priorities = [];
+                        result.condition.map(rule => {
+                            priorities.push(rule.priority);
+                        });
+                        this.priority = Math.min.apply(null, priorities);
+                    }
+                },
+                {
+                    method: 'core.itemTranslation.fetch',
+                    name: 'fetch operations',
+                    params: () => {
+                        return {
+                            itemTypeName: operation
+                        };
+                    },
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        const operationWalletToWallet = result.itemTranslationFetch.find(item => item.itemCode === 'Rule Wallet to Wallet');
+                        this.operationIdWalletToWallet = operationWalletToWallet.itemNameId;
+                        this.operationCodeWalletToWallet = operationWalletToWallet.itemCode;
+                        this.operationNameWalletToWallet = operationWalletToWallet.itemName;
+                    }
+                },
+                {
+                    name: 'fetch rule item',
+                    method: 'rule.item.fetch',
+                    params: {},
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.ok(result, 'return result');
+                    }
+                },
+                {
+                    name: 'fetch limit for user by role',
+                    method: 'rule.limitForUserByRole.get',
+                    params: ({
+                        'get admin details': {person: {actorId}}
+                    }) => {
+                        return {
+                            userId: actorId
+                        };
+                    },
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.ok(result, 'return result');
+                    }
+                },
+                {
+                    name: 'fetch currencies',
+                    method: 'core.currency.fetch',
+                    params: {},
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.ok(result.currency[0].currencyId, 'return currency id');
+                    }
+                },
+                {
+                    method: 'rule.rule.add',
+                    name: 'add rule for wallet to wallet',
+                    params: ({
+                        priority, operationIdWalletToWallet,
+                        'get admin details': {person: {actorId}},
+                        'fetch currencies': {currency: [{currency}]}
+                    }) => {
+                        return {
+                            condition: {
+                                priority: priority - 1, // mandatory
+                                name: ruleName + 'W2W'
+                            },
+                            conditionItem: [{
+                                factor: operationCategory, // operation.id
+                                itemNameId: operationIdWalletToWallet
+                            }, {
+                                factor: sourceCategory, // source.account.product
+                                itemNameId: operationIdWalletToWallet
+                            },
+                            {
+                                factor: destinationCategory, // destination.account.product
+                                itemNameId: operationIdWalletToWallet
+                            }],
+                            conditionActor: [{
+                                factor: channelOrganization, // role
+                                actorId
+                            }],
+                            split: {
+                                data: {
+                                    rows: [{
+                                        splitName: {
+                                            name: 'Wallet to wallet',
+                                            tag: acquirerTag
+                                        },
+                                        splitRange: [{
+                                            isSourceAmount: 0,
+                                            startAmount: 0,
+                                            startAmountCurrency: currency,
+                                            percent: transactionFeePercent
+                                        }],
+                                        splitAssignment: [{
+                                            debit: sourceAccountNumber,
+                                            credit: destinationAccountNumber,
+                                            description: 'Agent amount - Transfer',
+                                            percent: transactionFeePercent
+                                        }]
+                                    }, {
+                                        splitName: {
+                                            name: 'Transfer fee',
+                                            tag: acquirerFeeTag
+                                        },
+                                        splitRange: [{
+                                            isSourceAmount: 0,
+                                            startAmount: 0,
+                                            startAmountCurrency: currency,
+                                            minValue: transactionFee
+                                        }]
+                                    }]
+                                }
+                            }
+                        };
+                    },
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.comment('conditionId: ' + result.condition[0].conditionId);
+                        assert.hasStrict(result, {
+                            condition: [{
+                                priority: this.priority - 1, // mandatory
+                                name: ruleName + 'W2W'
+                            }],
+                            conditionActor: [{
+                                factor: channelOrganization, // role
+                                actorId: this['get admin details'].person.actorId.toString(),
+                                type: conditionTypePerson
+                            }],
+                            conditionItem: [
+                                {
+                                    factor: destinationCategory, // destination.account.product
+                                    itemNameId: this.operationIdWalletToWallet.toString()
+                                }, {
+                                    factor: operationCategory, // operation.id
+                                    itemNameId: this.operationIdWalletToWallet.toString()
+                                }, {
+                                    factor: sourceCategory, // source.account.product
+                                    itemNameId: this.operationIdWalletToWallet.toString()
+                                }],
+                            splitAssignment: [{
+                                debit: sourceAccountNumber,
+                                credit: destinationAccountNumber,
+                                description: 'Agent amount - Transfer',
+                                percent: transactionFeePercent
+                            }],
+                            splitName: [
+                                {
+                                    name: 'Transfer fee',
+                                    tag: acquirerFeeTag
+                                },
+                                {
+                                    name: 'Wallet to wallet',
+                                    tag: acquirerTag
+                                }],
+                            splitRange: [{
+                                startAmountCurrency: this['fetch currencies'].currency[0].currency,
+                                percent: transactionFeePercent
+                            },
+                            {
+                                startAmountCurrency: this['fetch currencies'].currency[0].currency,
+                                minValue: transactionFee
+                            }]
+                        });
+                    }
+                },
+                {
+                    name: 'fetch rule',
+                    method: 'rule.rule.fetch',
+                    params: {},
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.ok(result.condition.length > 0, 'return rule condition > 0');
+                        assert.ok(result.condition.find(item => item.name === ruleName + 'W2W'), 'return added rule');
+                    }
+                },
+                {
+                    method: 'rule.rule.edit',
+                    name: 'edit rule - add maxCountDaily limit',
+                    params: ({
+                        'add rule for wallet to wallet': {condition: [{conditionId}]},
+                        'get admin details': {person: {actorId}},
+                        'fetch currencies': {currency: [{currency}]},
+                        priority,
+                        operationIdWalletToWallet
+                    }) => {
+                        return {
+                            condition: {
+                                conditionId,
+                                priority: priority - 1,
+                                name: ruleName + 'W2W'
+                            },
+                            conditionItem: [{
+                                conditionId,
+                                factor: operationCategory, // operation.id
+                                itemNameId: operationIdWalletToWallet
+                            }, {
+                                conditionId,
+                                factor: sourceCategory, // source.account.product
+                                itemNameId: operationIdWalletToWallet
+                            }, {
+                                conditionId,
+                                factor: destinationCategory, // destination.account.product
+                                itemNameId: operationIdWalletToWallet
+                            }],
+                            conditionActor: [{
+                                conditionId,
+                                factor: channelOrganization, // role
+                                actorId
+                            }],
+                            limit: [{
+                                conditionId,
+                                currency,
+                                maxCountDaily: successfulTransactionsCount + 1
+                            }],
+                            split: {
+                                data: {
+                                    rows: [{
+                                        splitName: {
+                                            name: 'Wallet to wallet',
+                                            tag: acquirerTag
+                                        },
+                                        splitRange: [{
+                                            isSourceAmount: 0,
+                                            startAmount: 0,
+                                            startAmountCurrency: currency,
+                                            percent: transactionFeePercent
+                                        }],
+                                        splitAssignment: [{
+                                            debit: sourceAccountNumber,
+                                            credit: destinationAccountNumber,
+                                            description: 'Agent amount - Transfer',
+                                            percent: transactionFeePercent
+                                        }]
+                                    }, {
+                                        splitName: {
+                                            name: 'Transfer fee',
+                                            tag: acquirerFeeTag
+                                        },
+                                        splitRange: [{
+                                            isSourceAmount: 0,
+                                            startAmount: 0,
+                                            startAmountCurrency: currency,
+                                            minValue: transactionFee
+                                        }]
+                                    }]
+                                }
+                            }
+                        };
+                    },
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.equal(result.limit[0].maxCountDaily, (successfulTransactionsCount + 1).toString(), 'return correct maxCountDaily limit');
+                        assert.hasStrict(result, {
+                            condition: [{
+                                priority: this.priority - 1, // mandatory
+                                name: ruleName + 'W2W'
+                            }],
+                            conditionActor: [{
+                                factor: channelOrganization, // role
+                                actorId: this['get admin details'].person.actorId.toString(),
+                                type: conditionTypePerson
+                            }],
+                            conditionItem: [
+                                {
+                                    factor: destinationCategory, // destination.account.product
+                                    itemNameId: this.operationIdWalletToWallet.toString()
+                                }, {
+                                    factor: operationCategory, // operation.id
+                                    itemNameId: this.operationIdWalletToWallet.toString()
+                                }, {
+                                    factor: sourceCategory, // source.account.product
+                                    itemNameId: this.operationIdWalletToWallet.toString()
+                                }],
+                            splitAssignment: [{
+                                debit: sourceAccountNumber,
+                                credit: destinationAccountNumber,
+                                description: 'Agent amount - Transfer',
+                                percent: transactionFeePercent
+                            }],
+                            splitName: [
+                                {
+                                    name: 'Transfer fee',
+                                    tag: acquirerFeeTag
+                                },
+                                {
+                                    name: 'Wallet to wallet',
+                                    tag: acquirerTag
+                                }],
+                            splitRange: [{
+                                startAmountCurrency: this['fetch currencies'].currency[0].currency,
+                                percent: transactionFeePercent
+                            },
+                            {
+                                startAmountCurrency: this['fetch currencies'].currency[0].currency,
+                                minValue: transactionFee
+                            }],
+                            limit: [{
+                                conditionId: this['add rule for wallet to wallet'].condition[0].conditionId,
+                                currency: this['fetch currencies'].currency[0].currency,
+                                maxCountDaily: (successfulTransactionsCount + 1).toString()
+                            }]
+                        });
+                    }
+                },
+                {
+                    name: 'fetch rule',
+                    method: 'rule.rule.fetch',
+                    params: {},
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.ok(result.condition.length > 0, 'return rule condition > 0');
+                        assert.ok(result.condition.find(item => item.name === ruleName + 'W2W'), 'return edited rule');
+                        assert.ok(result.limit.find(item => item.conditionId === this['add rule for wallet to wallet'].condition[0].conditionId), 'return added limit ti the rule');
+                    }
+                },
+                {
+                    method: 'rule.rule.remove',
+                    name: 'remove rule for wallet to wallet',
+                    params: ({
+                        'add rule for wallet to wallet': {condition: [{conditionId}]}
+                    }) => {
+                        return {
+                            conditionId
+                        };
+                    },
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.ok(result, 'result is returned');
+                    }
+                },
+                {
+                    name: 'fetch rule',
+                    method: 'rule.rule.fetch',
+                    params: {},
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.ok(result.condition.length > 0, 'return rule condition > 0');
+                        assert.notOk(result.condition.find(item => item.name === ruleName + 'W2W'), 'return the rule is not shown after deletion');
+                        assert.notOk(result.limit.find(item => item.conditionId === this['add rule for wallet to wallet'].condition[0].conditionId), 'return the rule is not shown after deletion');
+                    }
+                },
+                {
+                    method: 'rule.rule.fetchDeleted',
+                    name: 'fetch removed rules',
+                    params: {},
+                    result: function(result, assert, {method, validation}) {
+                        assert.ok(validation[`${method}.result`], `${method} validation passed`);
+                        assert.ok(result, 'result is returned');
+                        assert.ok(result.condition.find(item => item.conditionId === this['add rule for wallet to wallet'].condition[0].conditionId), 'return deleted rule');
+                    }
+                },
                 {
                     name: 'rule 2 to be duplicated - expected error',
                     method: 'rule.rule.add',

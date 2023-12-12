@@ -18,6 +18,7 @@ module.exports = ({
             'rule.city': dropdownItems,
             'rule.accountProduct': dropdownItems,
             'rule.cardProduct': dropdownItems,
+            'rule.cardType': dropdownItems,
             'rule.channel': dropdownItems,
             'rule.role': dropdownItems,
             'rule.kyc': dropdownItems,

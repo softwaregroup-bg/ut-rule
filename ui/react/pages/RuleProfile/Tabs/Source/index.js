@@ -22,6 +22,7 @@ const propTypes = {
     feePolicies: PropTypes.array,
     organizations: PropTypes.array,
     cardProducts: PropTypes.array,
+    cardTypes: PropTypes.array,
     accountProducts: PropTypes.array,
     fieldValues: PropTypes.object,
     errors: PropTypes.object, // immutable
@@ -51,6 +52,7 @@ class SourceTab extends Component {
             cities,
             organizations,
             cardProducts,
+            cardTypes,
             accountProducts,
             fieldValues,
             feePolicies,
@@ -122,6 +124,19 @@ class SourceTab extends Component {
                         placeholder='Select Product'
                         onSelect={(field) => { changeInput(field); }}
                         label={fields.cardProduct.title || 'Product'}
+                    />
+                </div>}
+                {fields.cardType.visible && <div className={style.inputWrapper}>
+                    <MultiSelectDropdown
+                        boldLabel
+                        disabled={readonly}
+                        canSelectPlaceholder
+                        keyProp='cardTypes'
+                        data={cardTypes}
+                        defaultSelected={fieldValues.cardTypes}
+                        placeholder='Select Type'
+                        onSelect={(field) => { changeInput(field); }}
+                        label={fields.cardType.title || 'Type'}
                     />
                 </div>}
                 {fields.accountProduct.visible && <div className={style.inputWrapper}>
@@ -220,6 +235,7 @@ const mapStateToProps = (state, ownProps) => {
         feePolicies: state.ruleProfileReducer.getIn(['nomenclatures', 'feePolicy']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
         cardProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'cardProduct']).toJS(),
+        cardTypes: state.ruleProfileReducer.getIn(['nomenclatures', 'cardType']).toJS(),
         accountProducts: state.ruleProfileReducer.getIn(['nomenclatures', 'accountProduct']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),

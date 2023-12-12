@@ -393,6 +393,9 @@ module.exports = ({joi}) => ({
                     cardProduct: {
                         widget: {type: 'multiSelect', dropdown: 'rule.cardProduct'}
                     },
+                    cardType: {
+                        widget: {type: 'multiSelect', dropdown: 'rule.cardType'}
+                    },
                     country: {
                         widget: {type: 'multiSelect', dropdown: 'rule.country'}
                     },
@@ -429,6 +432,9 @@ module.exports = ({joi}) => ({
                     },
                     cardProduct: {
                         widget: {type: 'multiSelect', dropdown: 'rule.cardProduct'}
+                    },
+                    cardType: {
+                        widget: {type: 'multiSelect', dropdown: 'rule.cardType'}
                     },
                     country: {
                         widget: {type: 'multiSelect', dropdown: 'rule.country'}
@@ -536,6 +542,7 @@ module.exports = ({joi}) => ({
                 'source.customerType',
                 'source.kyc',
                 'source.cardProduct',
+                'source.cardType',
                 'source.accountProduct',
                 'condition.sourceAccountId'
             ]
@@ -552,6 +559,7 @@ module.exports = ({joi}) => ({
                 'destination.customerType',
                 'destination.kyc',
                 'destination.cardProduct',
+                'destination.cardType',
                 'destination.accountProduct',
                 'condition.destinationAccountId'
             ]

@@ -19,7 +19,7 @@ BEGIN TRY
             c.destinationAccountId, c.createdOn, c.createdBy, 'pending', isEnabled, 1
             FROM [rule].condition c
             WHERE c.conditionId = @condition;
-        SET IDENTITY_INSERT [rule].[conditionUnapproved] OFF
+            SET IDENTITY_INSERT [rule].[conditionUnapproved] OFF
 
 
             INSERT INTO [rule].conditionActorUnapproved (conditionId, factor, actorId)
@@ -47,12 +47,14 @@ BEGIN TRY
             WHERE conditionId = @condition;
 
 
+            SET IDENTITY_INSERT [rule].splitNameUnapproved ON
 
-
-            INSERT INTO [rule].splitNameUnapproved (conditionId, [name], tag)
-            SELECT conditionId, [name], tag
+            INSERT INTO [rule].splitNameUnapproved (splitNameId, conditionId, [name], tag)
+            SELECT splitNameId, conditionId, [name], tag
             FROM [rule].splitName
             WHERE conditionId = @condition
+
+            SET IDENTITY_INSERT [rule].splitNameUnapproved OFF
 
             INSERT INTO [rule].splitRangeUnapproved(
                 splitNameId,

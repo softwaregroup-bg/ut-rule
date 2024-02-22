@@ -55,13 +55,12 @@ declare namespace rule_decision_fetch {
 
 declare namespace rule_decision_lookup {
   export interface params {
-    amount: number;
+    amount: string;
     channelId?: number | null;
     currency: string;
     destinationAccount: string;
     isSourceAmount?: 0 | 1 | '0' | '1';
     operation: string;
-    operationDate?: Date;
     sourceAccount: string;
     sourceCardProductId?: number | null;
   }
@@ -109,25 +108,6 @@ declare namespace rule_rule_add {
   export type result = any;
 }
 
-declare namespace rule_rule_addUnapproved {
-  export type params = any;
-  export type result = any;
-}
-
-declare namespace rule_rule_approve {
-  export interface params {
-    conditionId: string;
-  }
-  export type result = any;
-}
-
-declare namespace rule_rule_discard {
-  export interface params {
-    conditionId: number;
-  }
-  export type result = any;
-}
-
 declare namespace rule_rule_edit {
   export type params = any;
   export type result = any;
@@ -140,24 +120,6 @@ declare namespace rule_rule_fetch {
 
 declare namespace rule_rule_fetchDeleted {
   export type params = any;
-  export type result = any;
-}
-
-declare namespace rule_rule_get {
-  export type params = any;
-  export type result = any;
-}
-
-declare namespace rule_rule_lock {
-  export type params = any;
-  export type result = any;
-}
-
-declare namespace rule_rule_reject {
-  export interface params {
-    conditionId: string;
-    rejectReason: string;
-  }
   export type result = any;
 }
 
@@ -182,24 +144,12 @@ export interface handlers<location = ''> {
   'rule.limitForUserByRole.get'?: ut.handler<rule_limitForUserByRole_get.params, rule_limitForUserByRole_get.result, location>,
   'rule.rule.add'?: ut.handler<rule_rule_add.params, rule_rule_add.result, location>,
   ruleRuleAdd?: ut.handler<rule_rule_add.params, rule_rule_add.result, location>,
-  'rule.rule.addUnapproved'?: ut.handler<rule_rule_addUnapproved.params, rule_rule_addUnapproved.result, location>,
-  ruleRuleAddUnapproved?: ut.handler<rule_rule_addUnapproved.params, rule_rule_addUnapproved.result, location>,
-  'rule.rule.approve'?: ut.handler<rule_rule_approve.params, rule_rule_approve.result, location>,
-  ruleRuleApprove?: ut.handler<rule_rule_approve.params, rule_rule_approve.result, location>,
-  'rule.rule.discard'?: ut.handler<rule_rule_discard.params, rule_rule_discard.result, location>,
-  ruleRuleDiscard?: ut.handler<rule_rule_discard.params, rule_rule_discard.result, location>,
   'rule.rule.edit'?: ut.handler<rule_rule_edit.params, rule_rule_edit.result, location>,
   ruleRuleEdit?: ut.handler<rule_rule_edit.params, rule_rule_edit.result, location>,
   'rule.rule.fetch'?: ut.handler<rule_rule_fetch.params, rule_rule_fetch.result, location>,
   ruleRuleFetch?: ut.handler<rule_rule_fetch.params, rule_rule_fetch.result, location>,
   'rule.rule.fetchDeleted'?: ut.handler<rule_rule_fetchDeleted.params, rule_rule_fetchDeleted.result, location>,
   ruleRuleFetchDeleted?: ut.handler<rule_rule_fetchDeleted.params, rule_rule_fetchDeleted.result, location>,
-  'rule.rule.get'?: ut.handler<rule_rule_get.params, rule_rule_get.result, location>,
-  ruleRuleGet?: ut.handler<rule_rule_get.params, rule_rule_get.result, location>,
-  'rule.rule.lock'?: ut.handler<rule_rule_lock.params, rule_rule_lock.result, location>,
-  ruleRuleLock?: ut.handler<rule_rule_lock.params, rule_rule_lock.result, location>,
-  'rule.rule.reject'?: ut.handler<rule_rule_reject.params, rule_rule_reject.result, location>,
-  ruleRuleReject?: ut.handler<rule_rule_reject.params, rule_rule_reject.result, location>,
   'rule.rule.remove'?: ut.handler<rule_rule_remove.params, rule_rule_remove.result, location>,
   ruleRuleRemove?: ut.handler<rule_rule_remove.params, rule_rule_remove.result, location>
 }
@@ -265,9 +215,7 @@ interface methods extends core.handlers {}
 export type libFactory = ut.libFactory<methods, errors>
 export type handlerFactory = ut.handlerFactory<methods, errors, handlers<'local'>>
 export type handlerSet = ut.handlerSet<methods, errors, handlers<'local'>>
-export type test = ut.test<methods & handlers>
-export type steps = ut.steps<methods & handlers>
 
-import portal from 'ut-portal'
+import portal from 'ut-portal/handlers'
 export type pageFactory = portal.pageFactory<methods, errors>
 export type pageSet = portal.pageSet<methods, errors>

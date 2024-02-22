@@ -81,16 +81,16 @@ BEGIN TRY
         FROM [rule].[conditionUnapproved] x
         JOIN @conditionId c ON c.value = x.conditionId
 
-        UPDATE x
-        SET isDeleted = 1,
-        isEnabled = 0,
-        updatedOn = GETUTCDATE(),
-        updatedBy = @userId,
-        [status] = 'Deleted'
-        FROM
-            [rule].condition x
-        JOIN
-            @conditionId item ON x.conditionId = item.value
+        -- UPDATE x
+        -- SET isDeleted = 1,
+        -- isEnabled = 0,
+        -- updatedOn = GETUTCDATE(),
+        -- updatedBy = @userId,
+        -- [status] = 'Deleted'
+        -- FROM
+        --     [rule].condition x
+        -- JOIN
+        --     @conditionId item ON x.conditionId = item.value
 
         DECLARE @outcome XML = (
         SELECT

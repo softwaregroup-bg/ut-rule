@@ -68,6 +68,21 @@ BEGIN
     ALTER TABLE [rule].[conditionUnapproved] ADD [isEnabled] BIT NOT NULL DEFAULT(1)
 END
 
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'name' AND Object_ID = OBJECT_ID(N'rule.conditionUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[conditionUnapproved] ADD [name] NVARCHAR(100)
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'notes' AND Object_ID = OBJECT_ID(N'rule.conditionUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[conditionUnapproved] ADD [notes] NVARCHAR(100)
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'description' AND Object_ID = OBJECT_ID(N'rule.conditionUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[conditionUnapproved] ADD [description] NVARCHAR(100)
+END
+
 IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'status' AND Object_ID = OBJECT_ID(N'rule.splitRangeUnapproved'))
 BEGIN
     ALTER TABLE [rule].[splitRangeUnapproved] ADD [status] VARCHAR(20) NULL DEFAULT('pending')

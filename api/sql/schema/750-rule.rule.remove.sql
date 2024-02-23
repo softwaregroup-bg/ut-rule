@@ -13,10 +13,10 @@ BEGIN TRY
             SET IDENTITY_INSERT [rule].[conditionUnapproved] ON -- allow conditionId to be inserted in the conditionunapproved table
 
             INSERT INTO [rule].conditionUnapproved (conditionId, [priority], operationStartDate, operationEndDate, sourceAccountId,
-            destinationAccountId, createdOn, createdBy, [status], isEnabled, isDeleted
+            destinationAccountId, [name], [description], notes, createdOn, createdBy, [status], isEnabled, isDeleted
             )
             SELECT conditionId, c.[priority], c.operationStartDate, c.operationEndDate, c.sourceAccountId,
-            c.destinationAccountId, c.createdOn, c.createdBy, 'pending', isEnabled, 1
+            c.destinationAccountId, c.[name], c.[description], c.notes, c.createdOn, c.createdBy, 'pending', isEnabled, 1
             FROM [rule].condition c
             WHERE c.conditionId = @condition;
             SET IDENTITY_INSERT [rule].[conditionUnapproved] OFF

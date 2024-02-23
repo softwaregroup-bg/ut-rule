@@ -25,7 +25,7 @@ BEGIN
 
     SELECT 'condition' AS resultSetName, 1 single
     SELECT c.[conditionId], c.[priority], c.[operationEndDate],
-        c.[operationStartDate], c.[sourceAccountId], c.[destinationAccountId],
+        c.[operationStartDate], c.[sourceAccountId], c.[destinationAccountId], c.[name], c.[description], c.notes,
         NULL AS rejectReason, CASE WHEN co.status IS NULL THEN 'approved' ELSE co.status END AS [status],
         c.[isEnabled], CASE WHEN co.conditionId IS NULL THEN 1 ELSE 0 END AS [isNew]
     FROM [rule].condition c
@@ -34,7 +34,7 @@ BEGIN
 
     SELECT 'conditionUnapproved' AS resultSetName, 1 single
     SELECT c.[conditionId], c.[priority], c.[operationEndDate],
-        c.[operationStartDate], c.[sourceAccountId], c.[destinationAccountId],
+        c.[operationStartDate], c.[sourceAccountId], c.[destinationAccountId], c.[name], c.[description], c.notes,
         c.[rejectReason], CASE WHEN c.isDeleted = 1 THEN 'Deleted' ELSE c.status END [status], c.[isEnabled],
         CASE WHEN co.conditionId IS NULL THEN 1 ELSE 0 END AS [isNew]
     FROM [rule].conditionUnapproved c

@@ -47,6 +47,9 @@ BEGIN TRY
                 operationEndDate,
                 sourceAccountId,
                 destinationAccountId,
+                [name],
+                [description],
+                notes,
                 createdOn,
                 createdBy
             )
@@ -56,6 +59,9 @@ BEGIN TRY
                 operationEndDate,
                 sourceAccountId,
                 destinationAccountId,
+                [name],
+                [description],
+                notes,
                 createdOn,
                 createdBy
             FROM @condition
@@ -140,6 +146,9 @@ BEGIN TRY
                 operationEndDate,
                 sourceAccountId,
                 destinationAccountId,
+                [name],
+                [description],
+                notes,
                 createdOn,
                 createdBy
             )
@@ -149,6 +158,9 @@ BEGIN TRY
                 operationEndDate,
                 sourceAccountId,
                 destinationAccountId,
+                [name],
+                [description],
+                notes,
                 GETUTCDATE(),
                 ISNULL(createdBy, @userId)
             FROM @condition;
@@ -223,7 +235,20 @@ BEGIN TRY
             ON 1 = 0
             WHEN NOT MATCHED THEN
             INSERT (conditionId, name, tag) VALUES (@conditionId, r.value('(name)[1]', 'NVARCHAR(50)'), r.value('(tag)[1]', 'NVARCHAR(max)'))
-            OUTPUT INSERTED.* INTO @splitName;
+            OUTPUT
+                INSERTED.splitNameId,
+                INSERTED.conditionId,
+                INSERTED.name,
+                INSERTED.tag,
+                INSERTED.amountType
+            INTO
+                @splitName(
+                    splitNameId,
+                    conditionId,
+                    name,
+                    tag,
+                    amountType
+                );
 
             MERGE INTO [rule].splitRange
             USING (

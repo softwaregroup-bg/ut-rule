@@ -1,6 +1,7 @@
 CREATE TABLE [rule].[limitUnapproved] (
     limitId INT IDENTITY(1000, 1) NOT NULL,
     conditionId INT NOT NULL,
+    amountType SMALLINT,
     currency VARCHAR(3) NOT NULL,
     minAmount MONEY,
     maxAmount MONEY,

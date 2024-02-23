@@ -56,6 +56,9 @@ BEGIN
         rc.operationStartDate,
         rc.sourceAccountId,
         rc.destinationAccountId,
+        rc.[name],
+        rc.[description],
+        rc.notes,
         rc.status,
         rc.isEnabled,
         ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
@@ -63,11 +66,11 @@ BEGIN
         FROM
         (
             SELECT c.conditionId, CASE WHEN cu.status IS NULL THEN 'approved' ELSE cu.status END AS [status],
-            c.[priority], c.operationStartDate, c.operationEndDate, c.sourceAccountId, c.destinationAccountId, c.[isDeleted], ISNULL(c.isEnabled, cu.isEnabled) AS isEnabled
+            c.[priority], c.operationStartDate, c.operationEndDate, c.sourceAccountId, c.destinationAccountId, c.name, c.description, c.notes, c.[isDeleted], ISNULL(c.isEnabled, cu.isEnabled) AS isEnabled
             FROM [rule].condition c
             LEFT JOIN [rule].conditionUnapproved cu ON cu.conditionId = c.conditionId
             UNION ALL
-            SELECT cu.conditionId, cu.status, cu.[priority], cu.operationStartDate, cu.operationEndDate, cu.sourceAccountId, cu.destinationAccountId, cu.isDeleted, cu.isEnabled
+            SELECT cu.conditionId, cu.status, cu.[priority], cu.operationStartDate, cu.operationEndDate, cu.sourceAccountId, cu.destinationAccountId, cu.name, cu.description, cu.notes, cu.isDeleted, cu.isEnabled
             FROM [rule].conditionUnapproved cu
             LEFT JOIN [rule].condition c ON c.conditionId = cu.conditionId
             WHERE c.conditionId IS NULL
@@ -75,7 +78,7 @@ BEGIN
         WHERE (@conditionId IS NULL OR rc.conditionId = @conditionId ) AND rc.isDeleted = 0
     )
 
-    INSERT INTO #RuleConditions (conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, rowNum, recordsTotal, status, isEnabled)
+    INSERT INTO #RuleConditions (conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, name, description, notes, rowNum, recordsTotal, status, isEnabled)
     SELECT
         conditionId,
         [priority],
@@ -83,6 +86,9 @@ BEGIN
         operationStartDate,
         sourceAccountId,
         destinationAccountId,
+        name,
+        description,
+        notes,
         rowNum,
         recordsTotal,
         status,
@@ -100,7 +106,9 @@ BEGIN
         rct.[destinationAccountId],
         rct.[name],
         rct.[description],
-        rct.[notes]
+        rct.[notes],
+        rct.status,
+        rct.isEnabled
     FROM #RuleConditions rct
 
     SELECT 'conditionActor' AS resultSetName

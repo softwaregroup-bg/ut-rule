@@ -59,10 +59,10 @@ BEGIN TRY
                 ON cu.conditionId = c.conditionId
             WHEN NOT MATCHED BY TARGET THEN
             INSERT (conditionId, [priority], operationStartDate, operationEndDate, sourceAccountId,
-            destinationAccountId, createdOn, createdBy, status, isEnabled
+            destinationAccountId, name, description, notes, createdOn, createdBy, status, isEnabled
             )
             VALUES (@conditionId, c.[priority], c.operationStartDate, c.operationEndDate, c.sourceAccountId,
-            c.destinationAccountId, c.createdOn, c.createdBy, 'pending', c.isEnabled
+            c.destinationAccountId, c.name, c.description, c.notes, c.createdOn, c.createdBy, 'pending', c.isEnabled
             );
             SET IDENTITY_INSERT [rule].[conditionUnapproved] OFF
 
@@ -320,6 +320,9 @@ BEGIN TRY
                 operationEndDate = DATEADD(ms, -3, DATEADD(dd, 1, DATEADD(dd, DATEDIFF(dd, 0, c1.operationEndDate), 0))), -- the last time on this date - 23:59:59.997
                 sourceAccountId = c1.sourceAccountId,
                 destinationAccountId = c1.destinationAccountId,
+                name = c1.[name],
+                description = c1.[description],
+                notes = c1.notes,
                 updatedOn = GETUTCDATE(),
                 updatedBy = @userId
             FROM [rule].condition c

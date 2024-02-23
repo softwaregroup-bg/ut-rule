@@ -6,6 +6,10 @@ CREATE TABLE [rule].[conditionUnapproved] (
     sourceAccountId NVARCHAR(255),
     destinationAccountId NVARCHAR(255),
     isEnabled BIT NOT NULL DEFAULT(1), -- a flag to show if the rule is enabled or locked
+    [name] NVARCHAR(100) NOT NULL,
+    [description] NVARCHAR(100),
+    notes NVARCHAR(1000),
+    decision XML,
     isDeleted BIT NOT NULL DEFAULT(0), -- a flag to show if the rule is deleted, e.g. 1 - Deleted
     createdBy BIGINT NULL, -- id of the actor
     createdOn DATETIME2 (0) NULL, -- date of the rule created

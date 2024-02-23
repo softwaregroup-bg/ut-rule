@@ -14,6 +14,23 @@ DECLARE @splitName [rule].splitNameUnapprovedTT,
 BEGIN TRY
 
     IF EXISTS
+        (
+            SELECT [name]
+            FROM [rule].condition
+            WHERE [name] = (SELECT [name] FROM @condition)
+        )
+        OR
+        EXISTS
+        (
+            SELECT [name]
+            FROM [rule].conditionUnapproved
+            WHERE [name] = (SELECT [name] FROM @condition)
+        )
+        BEGIN
+            RAISERROR ('rule.duplicatedName', 16, 1)
+        END
+
+    IF EXISTS
     (
         SELECT [priority]
         FROM [rule].condition
@@ -39,6 +56,9 @@ BEGIN TRY
             operationEndDate,
             sourceAccountId,
             destinationAccountId,
+            [name],
+            [description],
+            notes,
             createdOn,
             createdBy,
             [status],
@@ -50,6 +70,9 @@ BEGIN TRY
             operationEndDate,
             sourceAccountId,
             destinationAccountId,
+            [name],
+            [description],
+            notes,
             GETDATE(),
             ISNULL(createdBy, @userId),
             'new',
@@ -139,7 +162,20 @@ BEGIN TRY
         ON 1 = 0
         WHEN NOT MATCHED THEN
         INSERT (conditionId, name, tag, [status]) VALUES (@conditionId, r.value('(name)[1]', 'NVARCHAR(50)'), r.value('(tag)[1]', 'NVARCHAR(max)'), 'new')
-        OUTPUT INSERTED.* INTO @splitName;
+        OUTPUT
+            INSERTED.splitNameId,
+            INSERTED.conditionId,
+            INSERTED.name,
+            INSERTED.tag,
+            INSERTED.amountType
+        INTO
+            @splitName(
+                splitNameId,
+                conditionId,
+                name,
+                tag,
+                amountType
+            );
 
         MERGE INTO [rule].splitRangeUnapproved
         USING (

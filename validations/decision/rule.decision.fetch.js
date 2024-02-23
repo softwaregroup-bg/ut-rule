@@ -4,7 +4,7 @@ module.exports = ({
     joi
 }) => ({
     'rule.decision.fetch': () => ({
-        description: 'Fetch applicable fee, limit and commission, based on passed properties of the transfer',
+        description: 'Fetch applicable fees, limits and commissions, based on passed properties of the transfer',
         params: joi.object().keys({
             channelCountryId: joi.number().integer().allow(null).default(null),
             channelRegionId: joi.number().integer().allow(null).default(null),

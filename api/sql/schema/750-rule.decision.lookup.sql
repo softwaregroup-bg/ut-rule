@@ -6,12 +6,18 @@ ALTER PROCEDURE [rule].[decision.lookup]
     @sourceCardProductId BIGINT = NULL, -- product id of the card
     @destinationAccount VARCHAR(100), -- destination account number
     @amount VARCHAR(21), -- operation amount
+    @settlementAmount VARCHAR(21), -- operation amount
+    @accountAmount VARCHAR(21), -- operation amount
     @currency VARCHAR(3), -- operation currency
+    @settlementCurrency VARCHAR(3) = NULL, -- settlement currency
+    @accountCurrency VARCHAR(3) = NULL, -- source account currency
     @isSourceAmount BIT = 0,
     @sourceAccountOwnerId BIGINT = NULL, -- the source account owner id
     @destinationAccountOwnerId BIGINT = NULL, -- the destination account owner id
     @credentials INT = NULL, -- the passed credentials to validate operation success
-    @isTransactionValidate BIT = 0 -- flag showing if operation is only validated (1) or executed (0)
+    @timeDifference INT = NULL, -- what is the difference (in minutes) with UTC, if it is not passed use server time
+    @isTransactionValidate BIT = 0, -- flag showing if operation is only validated (1) or executed (0)
+    @transferProperties [rule].[properties] READONLY
 AS
 BEGIN
     DECLARE
@@ -26,6 +32,7 @@ BEGIN
         @sourceCityId BIGINT,
         @sourceOwnerId BIGINT,
         @sourceAccountProductId BIGINT,
+        @sourceAccountFeePolicyId BIGINT,
         @sourceAccountId NVARCHAR(255),
         @sourceAccountCheckAmount MONEY,
         @sourceAccountCheckMask INT,
@@ -39,6 +46,7 @@ BEGIN
         @destinationCityId BIGINT,
         @destinationOwnerId BIGINT,
         @destinationAccountProductId BIGINT,
+        @destinationAccountFeePolicyId BIGINT,
         @destinationAccountId NVARCHAR(255),
 
         @totals [rule].totals
@@ -67,6 +75,7 @@ BEGIN
         @sourceCityId = cityId,
         @sourceOwnerId = ownerId,
         @sourceAccountProductId = accountProductId,
+        @sourceAccountFeePolicyId = feePolicyId,
         @sourceAccountId = accountId,
         @sourceAccountCheckAmount = accountCheckAmount,
         @sourceAccountCheckMask = accountCheckMask,
@@ -75,8 +84,9 @@ BEGIN
     FROM
         [integration].[vAccount]
     WHERE
-        accountNumber = @sourceAccount AND
-        (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL)
+        (accountNumber = @sourceAccount OR @sourceAccount IS NULL) AND
+        (ownerId = @sourceAccountOwnerId OR @sourceAccountOwnerId IS NULL) AND
+        (@sourceAccountOwnerId IS NOT NULL OR @sourceAccount IS NOT NULL)
 
     SELECT
         @destinationCountryId = countryId,
@@ -84,12 +94,13 @@ BEGIN
         @destinationCityId = cityId,
         @destinationOwnerId = ownerId,
         @destinationAccountProductId = accountProductId,
+        @destinationAccountFeePolicyId = feePolicyId,
         @destinationAccountId = accountId
-    FROM
-        [integration].[vAccount]
+    FROM [integration].[vAccount]
     WHERE
-        accountNumber = @destinationAccount AND
-        (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL)
+        (accountNumber = @destinationAccount OR @destinationAccount IS NULL) AND
+        (ownerId = @destinationAccountOwnerId OR @destinationAccountOwnerId IS NULL) AND
+        (@destinationAccountOwnerId IS NOT NULL OR @destinationAccount IS NOT NULL)
 
     -- if check amount has been setup for the account and/or the account product, assign the value to variable. account is with higher priority
     SET @maxAmountParam = CASE WHEN COALESCE (@sourceAccountCheckAmount, @sourceProductCheckAmount, 0) = 0 THEN NULL ELSE ISNULL (@sourceAccountCheckAmount, @sourceProductCheckAmount) END
@@ -98,25 +109,61 @@ BEGIN
 
     SELECT @operationDate = ISNULL(@operationDate, GETUTCDATE())
 
+    IF @timeDifference IS NULL
+        SET @timeDifference = DATEDIFF(MINUTE, GETDATE(), GETUTCDATE())
+
+    DECLARE @operationDateLocal DATETIME = DATEADD(MINUTE, -@timeDifference, @operationDate)
+
+    DECLARE @dailyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(DAY, DATEDIFF(DAY, 0, @operationDateLocal), 0)) -- start of the day
+    DECLARE @weeklyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDateLocal - 1), 0)) --week starts on Mon
+    DECLARE @monthlyFrom DATETIME = DATEADD(MINUTE, @timeDifference, DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDateLocal), 0)) -- start of the month
+
+    ;WITH t(currency, amountType, transferTypeId, transferDateTime, transferAmount) AS (
+        SELECT
+            types.currency,
+            types.type,
+            t.transferTypeId,
+            transferDateTime,
+            CASE types.type
+                WHEN 1 THEN t.transferAmount
+                WHEN 2 THEN t.settlementAmount
+                ELSE t.accountAmount
+            END
+        FROM [integration].[vTransfer] t
+        JOIN (VALUES
+            (1, @currency),
+            (2, COALESCE(@settlementCurrency, @currency)),
+            (0, COALESCE(@accountCurrency, @settlementCurrency, @currency))
+        ) types(type, currency)
+        ON
+            types.currency = CASE types.type
+                WHEN 1 THEN t.transferCurrency
+                WHEN 2 THEN COALESCE(t.settlementAmountCurrency, t.transferCurrency)
+                ELSE COALESCE(t.accountAmountCurrency, t.settlementAmountCurrency, t.transferCurrency)
+            END
+        WHERE
+            t.success = 1 AND
+            t.sourceAccount = @sourceAccount AND
+            t.transferDateTime < @operationDate AND -- look ony at earlier transfers
+            t.transferDateTime >= @monthlyFrom --look back up to the start of month
+    )
     INSERT INTO
-        @totals(transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
+        @totals(currency, amountType, transferTypeId, amountDaily, countDaily, amountWeekly, countWeekly, amountMonthly, countMonthly)
     SELECT -- totals by transfer type
+        t.currency,
+        t.amountType,
         t.transferTypeId,
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN t.transferAmount ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(DAY, DATEDIFF(DAY, 0, @operationDate), 0) THEN 1 ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate - 1), 0) THEN t.transferAmount ELSE 0 END), 0), --week starts on Mon
-        ISNULL(SUM(CASE WHEN t.transferDateTime >= DATEADD(WEEK, DATEDIFF(WEEK, 0, @operationDate - 1), 0) THEN 1 ELSE 0 END), 0), --week starts on Mon
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @dailyFrom THEN t.transferAmount ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @dailyFrom THEN 1 ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @weeklyFrom THEN t.transferAmount ELSE 0 END), 0),
+        ISNULL(SUM(CASE WHEN t.transferDateTime >= @weeklyFrom THEN 1 ELSE 0 END), 0),
         ISNULL(SUM(t.transferAmount), 0),
         ISNULL(COUNT(t.transferAmount), 0)
     FROM
-        [integration].[vTransfer] t
-    WHERE
-        t.success = 1 AND
-        t.sourceAccount = @sourceAccount AND
-        t.transferCurrency = @currency AND
-        t.transferDateTime < @operationDate AND -- look ony at earlier transfers
-        t.transferDateTime >= DATEADD(MONTH, DATEDIFF(MONTH, 0, @operationDate), 0) --look back up to the start of month
+        t
     GROUP BY
+        t.currency,
+        t.amountType,
         t.transferTypeId
 
     DECLARE
@@ -152,25 +199,72 @@ BEGIN
     INSERT INTO
         @operationProperties(factor, name, value)
     VALUES
-        --channel spatial
-        ('cs', 'channel.country', @channelCountryId),
-        ('cs', 'channel.region', @channelRegionId),
-        ('cs', 'channel.city', @channelCityId),
         --operation category
-        ('oc', 'operation.id', @operationId),
+        ('--', 'operation.code', CONVERT(NVARCHAR, @operation)),
+        ('oc', 'operation.id', CONVERT(NVARCHAR, @operationId)),
+        --channel spatial
+        ('cs', 'channel.country', CONVERT(NVARCHAR, @channelCountryId)),
+        ('cs', 'channel.region', CONVERT(NVARCHAR, @channelRegionId)),
+        ('cs', 'channel.city', CONVERT(NVARCHAR, @channelCityId)),
         --source spatial
-        ('ss', 'source.country', @sourceCountryId),
-        ('ss', 'source.region', @sourceRegionId),
-        ('ss', 'source.city', @sourceCityId),
+        ('ss', 'source.country', CONVERT(NVARCHAR, @sourceCountryId)),
+        ('ss', 'source.region', CONVERT(NVARCHAR, @sourceRegionId)),
+        ('ss', 'source.city', CONVERT(NVARCHAR, @sourceCityId)),
         --source category
-        ('sc', 'source.account.product', @sourceAccountProductId),
-        ('sc', 'source.card.product', @sourceCardProductId),
+        ('sc', 'source.account.product', CONVERT(NVARCHAR, @sourceAccountProductId)),
+        ('sc', 'source.card.product', CONVERT(NVARCHAR, @sourceCardProductId)),
+        --source account policy
+        ('sp', 'source.account.feePolicyId', CONVERT(NVARCHAR, @sourceAccountFeePolicyId)),
         --destination spatial
-        ('ds', 'destination.country', @destinationCountryId),
-        ('ds', 'destination.region', @destinationRegionId),
-        ('ds', 'destination.city', @destinationCityId),
+        ('ds', 'destination.country', CONVERT(NVARCHAR, @destinationCountryId)),
+        ('ds', 'destination.region', CONVERT(NVARCHAR, @destinationRegionId)),
+        ('ds', 'destination.city', CONVERT(NVARCHAR, @destinationCityId)),
         --destination category
-        ('dc', 'destination.account.product', @destinationAccountProductId)
+        ('dc', 'destination.account.product', CONVERT(NVARCHAR, @destinationAccountProductId)),
+        --source account policy
+        ('dp', 'destination.account.feePolicyId', CONVERT(NVARCHAR, @destinationAccountFeePolicyId))
+
+    IF OBJECT_ID(N'customer.customer') IS NOT NULL
+    BEGIN
+        IF @sourceOwnerId IS NOT NULL
+            INSERT INTO
+                @operationProperties(factor, name, value)
+            SELECT
+                'sk', 'source.kyc', c.kycId
+            FROM
+                customer.customer c
+            WHERE
+                c.actorId = @sourceOwnerId
+            UNION ALL SELECT
+                'st', 'source.customerType', ct.customerTypeNumber
+            FROM
+                customer.customer c
+            LEFT JOIN
+                customer.customerType ct ON ct.customerTypeId = c.customerTypeId
+            WHERE
+                c.actorId = @sourceOwnerId
+        IF @destinationOwnerId IS NOT NULL
+            INSERT INTO
+                @operationProperties(factor, name, value)
+            SELECT
+                'dk', 'destination.kyc', c.kycId
+            FROM
+                customer.customer c
+            WHERE
+                c.actorId = @destinationOwnerId
+            UNION ALL SELECT
+                'dt', 'destination.customerType', ct.customerTypeNumber
+            FROM
+                customer.customer c
+            LEFT JOIN
+                customer.customerType ct ON ct.customerTypeId = c.customerTypeId
+            WHERE
+                c.actorId = @destinationOwnerId
+    END
+
+    INSERT INTO @operationProperties(factor, name, value)
+    SELECT [factor], 'transfer.' + [name], [value]
+    FROM @transferProperties
 
     DELETE FROM @operationProperties WHERE value IS NULL
 
@@ -180,8 +274,12 @@ BEGIN
         @sourceAccountId = @sourceAccountId,
         @destinationAccountId = @destinationAccountId,
         @amountString = @amount,
+        @settlementAmountString = @settlementAmount,
+        @accountAmountString = @accountAmount,
         @totals = @totals,
         @currency = @currency,
+        @settlementCurrency = @settlementCurrency,
+        @accountCurrency = @accountCurrency,
         @isSourceAmount = @isSourceAmount,
         @sourceAccount = @sourceAccount,
         @destinationAccount = @destinationAccount,

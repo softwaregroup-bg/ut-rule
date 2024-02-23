@@ -63,6 +63,7 @@ export const defaultTabState = {
     activeTab: 0,
     channel: {
         priority: '',
+        name: '',
         countries: [],
         regions: [],
         cities: [],
@@ -77,6 +78,7 @@ export const defaultTabState = {
         organization: '',
         role: null,
         properties: [],
+        accountFeePolicies: [],
         accountProduct: null
     },
     limit: [],
@@ -93,6 +95,7 @@ export const defaultTabState = {
         organization: '',
         role: null,
         cardProducts: [],
+        accountFeePolicies: [],
         accountProduct: null,
         properties: []
     },

@@ -1,6 +1,7 @@
 CREATE TABLE [rule].[limit] (
     limitId INT IDENTITY(1000, 1) NOT NULL,
     conditionId INT NOT NULL,
+    amountType SMALLINT,
     currency VARCHAR(3) NOT NULL,
     minAmount MONEY,
     maxAmount MONEY,
@@ -13,7 +14,7 @@ CREATE TABLE [rule].[limit] (
     [credentials] INT,
     [priority] SMALLINT,
     CONSTRAINT [pkRuleLimit] PRIMARY KEY CLUSTERED (limitId ASC),
-    CONSTRAINT ukRuleLimitConditionCurrencyPriority UNIQUE (conditionId, currency, [priority]),
-    CONSTRAINT ukRuleLimitConditionCurrencyCredentials UNIQUE (conditionId, currency, [credentials]),
+    CONSTRAINT ukRuleLimitConditionAmountCurrencyPriority UNIQUE (conditionId, amountType, currency, [priority]),
+    CONSTRAINT ukRuleLimitConditionAmountCurrencyCredentials UNIQUE (conditionId, amountType, currency, [credentials]),
     CONSTRAINT [fkRuleLimit_condition] FOREIGN KEY (conditionId) REFERENCES [rule].[condition](conditionId)
 )

@@ -1,3 +1,343 @@
+## [13.2.4](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.3...v13.2.4) (2023-12-11)
+
+
+### Bug Fixes
+
+* correctly calc op date in local tz ([#275](https://github.com/softwaregroup-bg/ut-rule/issues/275)) ([cf7d035](https://github.com/softwaregroup-bg/ut-rule/commit/cf7d0358d932c7431d07edfada81582964a2a171))
+
+
+
+## [13.2.3](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.2...v13.2.3) (2023-12-10)
+
+
+### Bug Fixes
+
+* condition validations ([fc8ade2](https://github.com/softwaregroup-bg/ut-rule/commit/fc8ade2aa10aecc1a8a4e174e6218229ce7ba452))
+
+
+
+## [13.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.1...v13.2.2) (2023-10-27)
+
+
+### Bug Fixes
+
+* condition validations ([ca69ab9](https://github.com/softwaregroup-bg/ut-rule/commit/ca69ab991568efbe00cb884ae489cb14656e3314))
+
+
+
+## [13.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.0...v13.2.1) (2023-10-19)
+
+
+### Bug Fixes
+
+* do not mix cjs and esm ([7e44700](https://github.com/softwaregroup-bg/ut-rule/commit/7e447001596d149ff99e37188c9f312f73ef0f17))
+
+
+
+# [13.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.4...v13.2.0) (2023-09-25)
+
+
+### Bug Fixes
+
+* rule action names ([89c2d01](https://github.com/softwaregroup-bg/ut-rule/commit/89c2d01bc26101ae111326ae5e1e4fb6b4126cf8))
+
+
+### Features
+
+* return decision ([#272](https://github.com/softwaregroup-bg/ut-rule/issues/272)) ([d987809](https://github.com/softwaregroup-bg/ut-rule/commit/d987809b42d298be338eecdc43cf5ee1d2ca0451))
+
+
+
+## [13.1.4](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.3...v13.1.4) (2023-07-25)
+
+
+
+## [13.1.3](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.2...v13.1.3) (2023-06-12)
+
+
+
+## [13.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.1...v13.1.2) (2023-05-03)
+
+
+### Bug Fixes
+
+* match condition property factor ([33ed482](https://github.com/softwaregroup-bg/ut-rule/commit/33ed482c2b8243e7d68b93385d086f36e9d073e5))
+
+
+
+## [13.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.0...v13.1.1) (2023-04-25)
+
+
+
+# [13.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.0.0...v13.1.0) (2023-04-25)
+
+
+### Bug Fixes
+
+* add validation to rule.decision.lookup,#AAA-0000 ([db36407](https://github.com/softwaregroup-bg/ut-rule/commit/db36407de4985a66abea804b5a3b18d3b4eeae80)), closes [#AAA-0000](https://github.com/softwaregroup-bg/ut-rule/issues/AAA-0000)
+
+
+### Features
+
+* add tag for new functionality cashbak,#ECNT2-4397 ([492c142](https://github.com/softwaregroup-bg/ut-rule/commit/492c1421ec770214e913ffc91c7882b69ad2ef3f)), closes [#ECNT2-4397](https://github.com/softwaregroup-bg/ut-rule/issues/ECNT2-4397)
+
+
+
+# [13.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.0.0-currencies.15...v13.0.0) (2023-04-19)
+
+
+
+
+# [12.6.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.13...v12.6.0) (2023-02-16)
+
+
+### Features
+
+* **CBI-1192:** return conditionId in decision.fetch ([#263](https://github.com/softwaregroup-bg/ut-rule/issues/263)) ([5787437](https://github.com/softwaregroup-bg/ut-rule/commit/5787437acc77ef03e69f6543819dbee0ad4348d7))
+
+
+
+## [12.5.13](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.12...v12.5.13) (2023-02-10)
+
+
+### Bug Fixes
+
+* UTCORE-412, errors when non-empty ruleCondition history table ([#258](https://github.com/softwaregroup-bg/ut-rule/issues/258)) ([a57d8bf](https://github.com/softwaregroup-bg/ut-rule/commit/a57d8bf65546da2b538532daed81a6599610d03e))
+
+
+
+## [12.5.12](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.11...v12.5.12) (2023-02-07)
+
+
+
+## [12.5.11](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.10...v12.5.11) (2023-02-06)
+
+
+### Bug Fixes
+
+* make checks to the real start of the day,week, month, AZCELL-1762 ([#257](https://github.com/softwaregroup-bg/ut-rule/issues/257)) ([4f44263](https://github.com/softwaregroup-bg/ut-rule/commit/4f4426330ab4f6350cf9c3ad9e3610394b289910))
+
+
+
+## [12.5.10](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.9...v12.5.10) (2023-02-02)
+
+
+
+## [12.5.9](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.8...v12.5.9) (2023-02-01)
+
+
+
+## [12.5.8](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.7...v12.5.8) (2023-01-24)
+
+
+### Bug Fixes
+
+* turn off sqlTest for dev ([060d40e](https://github.com/softwaregroup-bg/ut-rule/commit/060d40e7d9525cf09e6174c8bf5dde6f65d48585))
+
+
+
+## [12.5.7](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.6...v12.5.7) (2023-01-23)
+
+
+
+## [12.5.6](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.5...v12.5.6) (2023-01-18)
+
+
+
+## [12.5.5](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.4...v12.5.5) (2023-01-16)
+
+
+
+## [12.5.4](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.3...v12.5.4) (2023-01-08)
+
+
+
+## [12.5.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.2...v12.5.3) (2023-01-02)
+
+
+
+## [12.5.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.1...v12.5.2) (2022-12-22)
+
+
+
+## [12.5.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.0...v12.5.1) (2022-12-20)
+
+
+
+# [12.5.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.5...v12.5.0) (2022-12-19)
+
+
+### Features
+
+* kyc and customerType conditions ([49d46e0](https://github.com/softwaregroup-bg/ut-rule/commit/49d46e086e2bf8bb279b44f73acbcf7dc6b1976b))
+
+
+
+## [12.4.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.2...v12.4.3) (2022-11-16)
+
+
+
+## [12.4.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.1...v12.4.2) (2022-11-14)
+
+
+
+## [12.4.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.4.0...v12.4.1) (2022-11-10)
+
+
+
+# [12.4.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.3...v12.4.0) (2022-11-10)
+
+
+### Features
+
+* CBI-366 ([#243](https://github.com/softwaregroup-bg/ut-rule/issues/243)) ([c650ba9](https://github.com/softwaregroup-bg/ut-rule/commit/c650ba9a5edd8f386445402de69dd3b89d02c8a6))
+
+
+
+## [12.3.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.2...v12.3.3) (2022-11-08)
+
+
+
+## [12.3.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.1...v12.3.2) (2022-11-04)
+
+
+### Bug Fixes
+
+* rule.condition save/load ([ad3d6ba](https://github.com/softwaregroup-bg/ut-rule/commit/ad3d6ba64edef987646af7655945b8791e18dae4))
+
+
+
+## [12.3.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.3.0...v12.3.1) (2022-11-03)
+
+
+
+# [12.3.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.3...v12.3.0) (2022-11-02)
+
+
+### Features
+
+* rule condition ui #UTCORE-121 ([aa91548](https://github.com/softwaregroup-bg/ut-rule/commit/aa9154833cbf81c48d8f046a7a2902260bca8bca)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
+## [12.2.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.2...v12.2.3) (2022-11-01)
+
+
+### Bug Fixes
+
+* hide 'see more' action BPS-229 ([#242](https://github.com/softwaregroup-bg/ut-rule/issues/242)) ([d17e86f](https://github.com/softwaregroup-bg/ut-rule/commit/d17e86f1283a807890b666912c534385288110d5))
+
+
+
+## [12.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.1...v12.2.2) (2022-10-24)
+
+
+
+## [12.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.2.0...v12.2.1) (2022-09-07)
+
+
+### Bug Fixes
+
+* renamed account ([#239](https://github.com/softwaregroup-bg/ut-rule/issues/239)) ([53ca795](https://github.com/softwaregroup-bg/ut-rule/commit/53ca795e9662488848ad9270729626e4b2d9ab8a))
+
+
+
+# [12.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.9...v12.2.0) (2022-08-24)
+
+
+### Features
+
+* bill payment test data ([#238](https://github.com/softwaregroup-bg/ut-rule/issues/238)) ([439fa4e](https://github.com/softwaregroup-bg/ut-rule/commit/439fa4ec9c4965e965da5b1fbf8d36a3e3fc1649))
+
+
+
+## [12.1.9](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.8...v12.1.9) (2022-08-01)
+
+
+
+## [12.1.8](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.7...v12.1.8) (2022-06-01)
+
+
+### Bug Fixes
+
+* hide table titles #UTCORE-121 ([0b67ca9](https://github.com/softwaregroup-bg/ut-rule/commit/0b67ca9b9868a8e8c018ed18cc286ef09d5a84a5)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
+## [12.1.7](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.6...v12.1.7) (2022-05-25)
+
+
+### Bug Fixes
+
+* Run ERP seed if only exist. BPS-57 ([#230](https://github.com/softwaregroup-bg/ut-rule/issues/230)) ([9011c28](https://github.com/softwaregroup-bg/ut-rule/commit/9011c28893bf3cc8678733ab13eb35f7bd6bb460))
+
+
+
+## [12.1.6](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.5...v12.1.6) (2022-05-05)
+
+
+### Bug Fixes
+
+* **ECNT2-1263:** rounding ([#229](https://github.com/softwaregroup-bg/ut-rule/issues/229)) ([bb564a6](https://github.com/softwaregroup-bg/ut-rule/commit/bb564a605ae3eb516ce762875bc25a0e7b2f83d4))
+
+
+
+## [12.1.5](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.4...v12.1.5) (2022-05-03)
+
+
+
+## [12.1.4](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.3...v12.1.4) (2022-04-21)
+
+
+### Bug Fixes
+
+* **MSA-2182:** edit amount type rounding is not correct ([#228](https://github.com/softwaregroup-bg/ut-rule/issues/228)) ([90d18df](https://github.com/softwaregroup-bg/ut-rule/commit/90d18df241cd626b47e415f3582f8f2e0fa3404b))
+
+
+
+## [12.1.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.2...v12.1.3) (2022-04-06)
+
+
+### Bug Fixes
+
+* wallet to erp rule, #UTCORE-121 ([#227](https://github.com/softwaregroup-bg/ut-rule/issues/227)) ([487dc37](https://github.com/softwaregroup-bg/ut-rule/commit/487dc3768ab0b62e0c65494e1900842571ef8ab7)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-rule/issues/UTCORE-121)
+
+
+
+## [12.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.1...v12.1.2) (2022-03-30)
+
+
+
+## [12.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.1.0...v12.1.1) (2022-03-13)
+
+
+
+# [12.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.2...v12.1.0) (2022-03-04)
+
+
+### Features
+
+* PS-261 - Support multiple selection for Channel organization input ([#226](https://github.com/softwaregroup-bg/ut-rule/issues/226)) ([e300e67](https://github.com/softwaregroup-bg/ut-rule/commit/e300e671d8cd12a12b024565b9164c5e37d9e2ae))
+
+
+
+## [12.0.2](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.1...v12.0.2) (2022-02-21)
+
+
+### Bug Fixes
+
+* add microservice config ([f8336df](https://github.com/softwaregroup-bg/ut-rule/commit/f8336dfd0323a49a88d9de5adee2cd0a89cfbca7))
+
+
+
+## [12.0.1](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.0...v12.0.1) (2022-02-21)
+
+
+
+# [12.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.0.0-timezone.1...v12.0.0) (2022-02-21)
+
+
+
 ## [11.5.1](https://github.com/softwaregroup-bg/ut-rule/compare/v11.5.0...v11.5.1) (2021-12-23)
 
 

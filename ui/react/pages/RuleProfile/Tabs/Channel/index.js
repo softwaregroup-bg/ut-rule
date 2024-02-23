@@ -67,6 +67,30 @@ class ChannelTab extends Component {
         );
     }
 
+    renderName() {
+        const {
+            fieldValues,
+            errors,
+            mode
+        } = this.props;
+        const changeInput = (field) => {
+            this.props.actions.changeInput(field, destinationProp);
+        };
+        return (
+            <div className={style.inputWrapper}>
+                <Input
+                    label='Name'
+                    keyProp='name'
+                    readonly={mode !== 'create'}
+                    value={fieldValues.name}
+                    validators={validations.name}
+                    isValid={!errors.get('name')} errorMessage={errors.get('name')}
+                    onChange={(field) => changeInput(field)}
+                />
+            </div>
+        );
+    }
+
     renderFields() {
         const {
             canEdit,
@@ -176,6 +200,14 @@ class ChannelTab extends Component {
                             wrapperClassName
                         >
                             {this.renderPriority()}
+                        </TitledContentBox>
+                    </div>
+                    <div className={style.innerContentBoxWrapper}>
+                        <TitledContentBox
+                            title='Name'
+                            wrapperClassName
+                        >
+                            {this.renderName()}
                         </TitledContentBox>
                     </div>
                     <div className={style.innerContentBoxWrapper}>

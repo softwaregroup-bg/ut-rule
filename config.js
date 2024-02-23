@@ -56,12 +56,18 @@ module.exports = () => ({
         adapter: true
     },
     microservice: {
+        sqlTest: true,
         sql: {
             utc: true
         },
         adapter: true,
         orchestrator: true,
         gateway: true
+    },
+    api: {
+        sql: {
+            utc: true
+        }
     },
     validation: ({joi}) => joi.object({
         adapter: joi.boolean(),
@@ -73,6 +79,12 @@ module.exports = () => ({
             exclude: joi.any(),
             clearing: joi.boolean()
         }).required().messages(utc),
+        sqlUnitTest: [
+            joi.boolean(),
+            joi.object({
+                exclude: joi.any()
+            })
+        ],
         sqlTest: [
             joi.boolean(),
             joi.object({

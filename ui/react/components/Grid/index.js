@@ -201,9 +201,9 @@ export default class Grid extends React.Component {
                 case 'operation':
                     return this.renderGridColumn(value, ['oc'], row, 'operation');
                 case 'source':
-                    return this.renderGridColumn(value, ['ss', 'sc', 'so'], row, 'source');
+                    return this.renderGridColumn(value, ['ss', 'sc', 'so', 'sp'], row, 'source');
                 case 'destination':
-                    return this.renderGridColumn(value, ['ds', 'dc', 'do'], row, 'destination');
+                    return this.renderGridColumn(value, ['ds', 'dc', 'do', 'dp'], row, 'destination');
                 case 'limit':
                     return this.renderGridColumn(value, ['limit'], row, 'limit');
                 case 'split':
@@ -211,8 +211,20 @@ export default class Grid extends React.Component {
                 case 'priority':
                     return this.renderGridColumn(value, ['priority'], row, 'priority');
                 case 'expansion': {
-                    const expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
-                    return <a onClick={(e) => { e.preventDefault(); this.handleGridExpansion(row.priority); }}>{expansionText}</a>;
+                    let showText;
+                    Object.values(row?.channel).every(data => {
+                        if (data.length >= 10) {
+                            showText = true;
+                            return false;
+                        }
+                        return true;
+                    });
+                    if (showText) {
+                        const expansionText = this.state.expandedGridColumns.some(v => v === row.priority) ? 'See less...' : 'See more...';
+                        return <a onClick={(e) => { e.preventDefault(); this.handleGridExpansion(row.priority); }}>{expansionText}</a>;
+                    } else {
+                        return '';
+                    }
                 }
                 default:
                     return value;

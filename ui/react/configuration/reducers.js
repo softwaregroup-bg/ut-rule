@@ -15,7 +15,8 @@ const defaultUiState = {
             'cardProduct',
             'accountProduct',
             'account',
-            'agentRole'
+            'agentRole',
+            'feePolicy'
         ],
         itemCode: [
             'currency'
@@ -148,6 +149,10 @@ const defaultUiState = {
                     accountProduct: {
                         visible: true,
                         title: 'Account Product'
+                    },
+                    accountFeePolicy: {
+                        visible: true,
+                        title: 'Account Fee Policy'
                     }
                 }
             },
@@ -174,6 +179,10 @@ const defaultUiState = {
                     accountProduct: {
                         visible: true,
                         title: 'Account Product'
+                    },
+                    accountFeePolicy: {
+                        visible: true,
+                        title: 'Account Fee Policy'
                     }
                 }
             },

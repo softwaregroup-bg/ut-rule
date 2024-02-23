@@ -1,7 +1,7 @@
 import { errorMessage } from './validator';
 import { defaultErrorState } from './Tabs/defaultState';
 import { fromJS } from 'immutable';
-import { prepareRuleModel as prepareRule } from '../../../../common';
+import { prepareRuleModel as prepareRule } from '../../../common';
 
 export const tabs = ['channel', 'operation', 'source', 'destination', 'limit', 'split'];
 
@@ -19,18 +19,24 @@ const factors = {
     destinationOrganization: 'do',
     channelOrganization: 'co',
     sourceSpatial: 'ss',
+    sourcePolicy: 'sp',
     destinationSpatial: 'ds',
     channelSpatial: 'cs',
     operationCategory: 'oc',
     sourceCategory: 'sc',
-    destinationCategory: 'dc'
+    destinationCategory: 'dc',
+    destinationPolicy: 'dp'
 };
 
 const conditionItemFactor = {
     source: factors.sourceSpatial,
+    sourceCategory: factors.sourceCategory,
+    sourcePolicy: factors.sourcePolicy,
     channel: factors.channelSpatial,
     destination: factors.destinationSpatial,
-    operation: factors.operationCategory
+    destinationCategory: factors.destinationCategory,
+    operation: factors.operationCategory,
+    destinationPolicy: factors.destinationPolicy
 };
 
 const conditionActorFactor = {
@@ -70,6 +76,7 @@ export const prepareRuleToSave = (rule) => {
     formattedRule.condition = [{
         conditionId,
         priority: channel.priority,
+        name: channel.name,
         operationStartDate: operation.startDate || null,
         operationEndDate: operation.endDate || null,
         sourceAccountId: null,
@@ -103,21 +110,28 @@ export const prepareRuleToSave = (rule) => {
 
     ['channel', 'destination', 'source', 'operation'].forEach(function(tabKey) {
         const tab = rule[tabKey];
-        tab && ['accountProduct', 'cities', 'countries', 'regions', 'operations'].forEach(function(kepProp) {
+        tab && ['accountProduct', 'cities', 'countries', 'regions', 'operations', 'accountFeePolicies'].forEach(function(kepProp) {
             const value = tab[kepProp];
+            let factor = conditionItemFactor[tabKey];
+
+            if (['source', 'destination'].includes(tabKey)) {
+                if (kepProp === 'accountProduct') factor = tabKey === 'source' ? conditionItemFactor.sourceCategory : conditionItemFactor.destinationCategory;
+                else if (kepProp === 'accountFeePolicies') factor = tabKey === 'source' ? conditionItemFactor.sourcePolicy : conditionItemFactor.destinationPolicy;
+            }
+
             if (value && value instanceof Array) {
                 value.forEach(function(ci) {
                     ci.key && formattedRule.conditionItem.push({
                         itemNameId: ci.key,
                         conditionId,
-                        factor: conditionItemFactor[tabKey]
+                        factor
                     });
                 });
             } else if (value && !(value instanceof Object)) {
                 formattedRule.conditionItem.push({
                     itemNameId: value,
                     conditionId,
-                    factor: conditionItemFactor[tabKey]
+                    factor
                 });
             }
         });
@@ -250,6 +264,7 @@ export const prepareRuleErrors = (rule, existErrors) => {
     let errors = fromJS(existErrors || defaultErrorState);
     const { destination, source, operation, channel, split, limit } = rule;
     channel && !channel.priority && (errors = errors.setIn(['channel', 'priority'], errorMessage.priorityRequired));
+    channel && !channel.name && (errors = errors.setIn(['channel', 'name'], errorMessage.nameRequired));
     channel && channel.properties && channel.properties.forEach((prop, idx) => {
         prop.value && !prop.name && (errors = errors.setIn(['channel', 'properties', idx, 'name'], errorMessage.propertyNameRequired));
     });
@@ -359,7 +374,7 @@ export const isEqual = (x, y) => {
 export const getRuleErrorCount = (errors) => {
     const flattenObj = flatten(errors);
     const errorCount = {};
-    tabs.map((tab) => {
+    tabs.forEach(tab => {
         errorCount[tab] = Object.keys(flattenObj).filter((fkey) => flattenObj[fkey] && fkey.startsWith(tab)).length;
     });
     return errorCount;

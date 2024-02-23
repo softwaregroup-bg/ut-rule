@@ -1,8 +1,10 @@
 ALTER PROCEDURE [rule].[rule.fetch]
     @conditionId INT = NULL,
-    @pageSize INT = 25,
-    @pageNumber INT = 1,
-    @meta core.metaDataTT READONLY
+    @operationCode NVARCHAR(200) = NULL, -- used for filtering, the code of the operation for which the rules are defined
+    @name NVARCHAR(100) = NULL, -- filter by rule name
+    @pageSize INT = 25, -- how many rows will be returned per page
+    @pageNumber INT = 1, -- which page number to display,
+    @meta core.metaDataTT READONLY -- information for the logged user
 AS
 DECLARE @userId BIGINT = (SELECT [auth.actorId]
 FROM @meta)
@@ -39,6 +41,9 @@ BEGIN
         operationStartDate DATETIME,
         sourceAccountId NVARCHAR(255),
         destinationAccountId NVARCHAR(255),
+        [name] NVARCHAR(100),
+        [description] NVARCHAR(100),
+        notes NVARCHAR(1000),
         rowNum INT,
         status VARCHAR(20),
         recordsTotal INT,
@@ -93,8 +98,9 @@ BEGIN
         rct.[operationStartDate],
         rct.[sourceAccountId],
         rct.[destinationAccountId],
-        rct.status,
-        rct.isEnabled
+        rct.[name],
+        rct.[description],
+        rct.[notes]
     FROM #RuleConditions rct
 
     SELECT 'conditionActor' AS resultSetName
@@ -201,6 +207,14 @@ BEGIN
     ) l
     JOIN #RuleConditions rct ON rct.conditionId = l.conditionId
     WHERE @conditionId IS NULL OR l.conditionId = @conditionId
+
+    SELECT 'rate' AS resultSetName
+    SELECT
+        r.*
+    FROM
+        [rule].rate r
+    JOIN
+        #RuleConditions rct ON rct.conditionId = r.conditionId
 
     SELECT 'splitAnalytic' AS resultSetName
     SELECT san.* FROM (

@@ -1,9 +1,9 @@
-module.exports = () => ({
+export default () => ({
     // environments
     common: {
         browser: true
     },
-    storybook: {
+    mock: {
         backend: {
             mock: true
         }

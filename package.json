@@ -1,10 +1,6 @@
 {
   "name": "ut-rule",
-<<<<<<< HEAD
   "version": "13.2.4-paasv2.0",
-=======
-  "version": "12.2.0-paasv2.1",
->>>>>>> 6e35a4586f786fc1fee81edca92c03fc70c38e2f
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {

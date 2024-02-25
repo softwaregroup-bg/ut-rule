@@ -30,23 +30,23 @@ BEGIN TRY
             RAISERROR ('rule.duplicatedName', 16, 1)
         END
 
-    IF EXISTS
-    (
-        SELECT [priority]
-        FROM [rule].condition
-        WHERE [priority] = (SELECT [priority] FROM @condition)
-            AND isDeleted = 0
-    )
-    OR
-    EXISTS
-    (
-        SELECT [priority]
-        FROM [rule].conditionUnapproved
-        WHERE [priority] = (SELECT [priority] FROM @condition)
-    )
-    BEGIN
-        RAISERROR ('rule.duplicatedPriority', 16, 1)
-    END
+    -- IF EXISTS
+    -- (
+    --     SELECT [priority]
+    --     FROM [rule].condition
+    --     WHERE [priority] = (SELECT [priority] FROM @condition)
+    --         AND isDeleted = 0
+    -- )
+    -- OR
+    -- EXISTS
+    -- (
+    --     SELECT [priority]
+    --     FROM [rule].conditionUnapproved
+    --     WHERE [priority] = (SELECT [priority] FROM @condition)
+    -- )
+    -- BEGIN
+    --     RAISERROR ('rule.duplicatedPriority', 16, 1)
+    -- END
 
     BEGIN TRANSACTION
 

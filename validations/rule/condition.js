@@ -29,7 +29,10 @@ module.exports = ({
             operationStartDate: dateNull,
             sourceAccountId: stringNull.max(255),
             destinationAccountId: stringNull.max(255),
-            decision: joi.object().allow(null)
+            decision: joi.object().allow(null),
+            status: stringNull.max(100),
+            isEnabled: boolNull
+
         }),
         channel: joi.object({
             country: bigintArray,

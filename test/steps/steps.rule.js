@@ -8,8 +8,9 @@ module.exports = function steps({version, callSite}) {
             name,
             params,
             result(result, assert) {
-                assert.comment('conditionId: ' + result.condition[0].conditionId);
-                assert.ok(result.condition[0].conditionId, 'return conditionId');
+                const conditionId = result.condition?.[0]?.conditionId || result.conditionUnapproved?.[0]?.conditionId;
+                assert.comment('conditionId: ' + conditionId);
+                assert.ok(conditionId, 'return conditionId');
             }
         }),
         'steps.rule.condition.fetch': ({name, params}) => ({
@@ -18,8 +19,9 @@ module.exports = function steps({version, callSite}) {
             name,
             params,
             result(result, assert) {
-                assert.comment('conditionId: ' + result.condition[0].conditionId);
-                assert.ok(result.condition[0].conditionId, 'return conditionId');
+                const conditionId = result.condition?.[0]?.conditionId || result.conditionUnapproved?.[0]?.conditionId;
+                assert.comment('conditionId: ' + conditionId);
+                assert.ok(conditionId, 'return conditionId');
             }
         }),
         'steps.rule.condition.get': ({name, params}) => ({
@@ -28,8 +30,9 @@ module.exports = function steps({version, callSite}) {
             name,
             params,
             result(result, assert) {
-                assert.comment('conditionId: ' + result.condition.conditionId);
-                assert.ok(result.condition.conditionId, 'return conditionId');
+                const conditionId = result.condition?.conditionId || result.conditionUnapproved?.conditionId;
+                assert.comment('conditionId: ' + conditionId);
+                assert.ok(conditionId, 'return conditionId');
             }
         }),
         'steps.rule.decision.snapshot': ({name, ...params}, callback) => ({

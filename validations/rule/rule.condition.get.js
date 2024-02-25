@@ -12,5 +12,6 @@ module.exports = ({
             conditionId: bigintRequired
         }),
         result: condition
+
     })
 });

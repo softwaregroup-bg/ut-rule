@@ -44,7 +44,8 @@
     "ut-portal-admin": "^7.15.0",
     "ut-run": "^10.76.2",
     "ut-telemetry": "^7.2.5",
-    "ut-user": "^10.47.19"
+    "ut-user": "^10.47.19",
+    "ut-agent": "^7.4.18"
   },
   "peerDependencies": {
     "classnames": "^2.2.6",

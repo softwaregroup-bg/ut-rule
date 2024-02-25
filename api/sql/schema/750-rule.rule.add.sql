@@ -351,37 +351,23 @@ BEGIN TRY
             WHEN NOT MATCHED THEN
             INSERT (splitAssignmentId, [name], [value])
             VALUES (r.splitAssignmentId, r.[name], r.[value]);
-
-            DECLARE @outcome XML = (
-                SELECT
-                    @conditionId [key],
-                    c.priority rulePriority,
-                    GETUTCDATE() creationDateTime
-                FROM
-                    @condition c
-                FOR XML RAW
-            )
-
-            EXEC core.outcome @proc = @@PROCID, @outcome = @outcome, @meta = @meta
-
-            EXEC [rule].[rule.fetch] @conditionId = @conditionId
         END
+
+        DECLARE @outcome XML = (
+            SELECT
+                @conditionId [key],
+                c.priority rulePriority,
+                GETUTCDATE() creationDateTime
+            FROM
+                @condition c
+            FOR XML RAW
+        )
+
+        EXEC core.outcome @proc = @@PROCID, @outcome = @outcome, @meta = @meta
+
+        EXEC [rule].[rule.fetch] @conditionId = @conditionId
+
     COMMIT TRANSACTION
-    /*
-    DECLARE @outcome XML = (
-        SELECT
-            @conditionId [key],
-            c.priority rulePriority,
-            GETUTCDATE() creationDateTime
-        FROM
-            @condition c
-        FOR XML RAW
-    )
-
-    EXEC core.outcome @proc = @@PROCID, @outcome = @outcome, @meta = @meta
-
-    EXEC [rule].[rule.fetch] @conditionId = @conditionId
-    */
 END TRY
 BEGIN CATCH
     IF @@TRANCOUNT > 0

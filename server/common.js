@@ -24,5 +24,6 @@ module.exports = {
     utCore: true,
     utCustomer: true,
     utDocument: true,
-    utUser: true
+    utUser: true,
+    utAgent: true
 };

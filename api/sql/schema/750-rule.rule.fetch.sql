@@ -13,12 +13,12 @@ DECLARE @endRow INT = @startRow + @pageSize - 1
 
 BEGIN
     -- checks if the user has a right to get user
-    DECLARE @actionID VARCHAR(100) = OBJECT_SCHEMA_NAME(@@PROCID) + '.' + OBJECT_NAME(@@PROCID), @return INT = 0
-    EXEC @return = [user].[permission.check] @actionId = @actionID, @objectId = NULL, @meta = @meta
-    IF @return != 0
-    BEGIN
-        RETURN 55555
-    END
+    -- DECLARE @actionID VARCHAR(100) = OBJECT_SCHEMA_NAME(@@PROCID) + '.' + OBJECT_NAME(@@PROCID), @return INT = 0
+    -- EXEC @return = [user].[permission.check] @actionId = @actionID, @objectId = NULL, @meta = @meta
+    -- IF @return != 0
+    -- BEGIN
+    --     RETURN 55555
+    -- END
 
     -- IF @conditionId IS NOT NULL AND NOT EXISTS (SELECT conditionId
     --     FROM [rule].[condition]

@@ -1,6 +1,6 @@
 {
   "name": "ut-rule",
-  "version": "13.2.4-paasv2.0",
+  "version": "13.2.4-paasv2.1",
   "main": "index.js",
   "browser": "browser.js",
   "pkg": {

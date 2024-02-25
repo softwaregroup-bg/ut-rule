@@ -21,12 +21,14 @@ declare namespace rule_condition_add {
       decision?: object | null;
       description?: string | null;
       destinationAccountId?: string | null;
+      isEnabled?: true | false | 0 | 1 | '0' | '1' | null;
       name: string;
       notes?: string | null;
       operationEndDate?: Date | null;
       operationStartDate?: Date | null;
       priority?: number | null;
       sourceAccountId?: string | null;
+      status?: string | null;
     };
     destination?: {
       accountFeePolicy?: (number | string)[] | null;
@@ -158,12 +160,14 @@ declare namespace rule_condition_add {
       decision?: object | null;
       description?: string | null;
       destinationAccountId?: string | null;
+      isEnabled?: true | false | 0 | 1 | '0' | '1' | null;
       name: string;
       notes?: string | null;
       operationEndDate?: Date | null;
       operationStartDate?: Date | null;
       priority?: number | null;
       sourceAccountId?: string | null;
+      status?: string | null;
     };
     destination?: {
       accountFeePolicy?: (number | string)[] | null;
@@ -298,12 +302,14 @@ declare namespace rule_condition_edit {
       decision?: object | null;
       description?: string | null;
       destinationAccountId?: string | null;
+      isEnabled?: true | false | 0 | 1 | '0' | '1' | null;
       name: string;
       notes?: string | null;
       operationEndDate?: Date | null;
       operationStartDate?: Date | null;
       priority?: number | null;
       sourceAccountId?: string | null;
+      status?: string | null;
     };
     destination?: {
       accountFeePolicy?: (number | string)[] | null;
@@ -435,12 +441,14 @@ declare namespace rule_condition_edit {
       decision?: object | null;
       description?: string | null;
       destinationAccountId?: string | null;
+      isEnabled?: true | false | 0 | 1 | '0' | '1' | null;
       name: string;
       notes?: string | null;
       operationEndDate?: Date | null;
       operationStartDate?: Date | null;
       priority?: number | null;
       sourceAccountId?: string | null;
+      status?: string | null;
     };
     destination?: {
       accountFeePolicy?: (number | string)[] | null;
@@ -583,12 +591,14 @@ declare namespace rule_condition_get {
       decision?: object | null;
       description?: string | null;
       destinationAccountId?: string | null;
+      isEnabled?: true | false | 0 | 1 | '0' | '1' | null;
       name: string;
       notes?: string | null;
       operationEndDate?: Date | null;
       operationStartDate?: Date | null;
       priority?: number | null;
       sourceAccountId?: string | null;
+      status?: string | null;
     };
     destination?: {
       accountFeePolicy?: (number | string)[] | null;

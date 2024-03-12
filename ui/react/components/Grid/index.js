@@ -22,8 +22,9 @@ export default class Grid extends React.Component {
     state = {
         expandedGridColumns: [],
         columns: this.props.columns,
-        fields: prepareGridFields(propInStorage, [
+        fields: [
             {title: this.props.columns.priority.title, name: 'priority'},
+            {title: this.props.columns.name.title, name: 'name'},
             {title: this.props.columns.channel.title, name: 'channel'},
             {title: this.props.columns.operation.title, name: 'operation'},
             {title: this.props.columns.source.title, name: 'source'},
@@ -36,7 +37,7 @@ export default class Grid extends React.Component {
         ].map(f => {
             f.key = f.name;
             return f;
-        }))
+        })
     };
 
     handleGridExpansion = (id) => {
@@ -133,6 +134,7 @@ export default class Grid extends React.Component {
                 id: conditionId,
                 destinationAccountId: condition.destinationAccountId,
                 operationEndDate: condition.operationEndDate,
+                name: condition.name,
                 operationStartDate: condition.operationStartDate,
                 priority: columns.priority.visible && condition.priority,
                 channel: columns.channel.visible && this.props.formatedGridData[conditionId],

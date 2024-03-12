@@ -42,6 +42,7 @@ BEGIN
         COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
     FROM [rule].condition rc
     WHERE (@conditionId IS NULL OR rc.conditionId = @conditionId )
+        AND visible = 1
         AND (@name IS NULL OR rc.[name] LIKE '%' + @name + '%')
         AND rc.isDeleted = 0
         AND (@operationId IS NULL

@@ -143,3 +143,8 @@ BEGIN
     ALTER TABLE [rule].[conditionProperty] DROP CONSTRAINT ccRuleConditionProperty_factor
     ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT ccRuleConditionProperty_factor1 CHECK (factor IN ('so', 'do', 'co', 'ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sk', 'st', 'dk', 'dt'))
 END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'visible' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
+BEGIN
+    ALTER TABLE [rule].[condition] ADD [visible] BIT NOT NULL DEFAULT(1)
+END

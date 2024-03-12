@@ -35,8 +35,12 @@ const defaultUiState = {
                     visible: true,
                     title: 'Priority'
                 },
-                channel: {
+                name: {
                     visible: true,
+                    title: 'Name'
+                },
+                channel: {
+                    visible: false,
                     title: 'Channel'
                 },
                 operation: {
@@ -44,11 +48,11 @@ const defaultUiState = {
                     title: 'Operation'
                 },
                 source: {
-                    visible: true,
+                    visible: false,
                     title: 'Source'
                 },
                 destination: {
-                    visible: true,
+                    visible: false,
                     title: 'Destination'
                 },
                 limit: {
@@ -60,7 +64,7 @@ const defaultUiState = {
                     title: 'Split'
                 },
                 expansion: {
-                    visible: true,
+                    visible: false,
                     title: 'Expansion'
                 }
             }

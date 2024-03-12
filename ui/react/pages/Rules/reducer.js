@@ -200,19 +200,19 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
                         value: (limit.maxAmount ? 'max ' + limit.maxAmount + ' ' : '') + (limit.minAmount ? 'min ' + limit.minAmount + ' ' : '')
                     });
                 }
-                if (limit.maxAmountDaily && limit.maxCountDaily) {
+                if (limit.maxAmountDaily || limit.maxCountDaily) {
                     result[conditionId].limit.push({
                         name: 'Daily',
                         value: (limit.maxAmountDaily ? 'max ' + limit.maxAmountDaily + ' ' : '') + (limit.maxCountDaily ? 'count ' + limit.maxCountDaily + ' ' : '')
                     });
                 }
-                if (limit.maxAmountWeekly && limit.maxCountWeekly) {
+                if (limit.maxAmountWeekly || limit.maxCountWeekly) {
                     result[conditionId].limit.push({
                         name: 'Weekly',
                         value: (limit.maxAmountWeekly ? 'max ' + limit.maxAmountWeekly + ' ' : '') + (limit.maxCountWeekly ? 'count ' + limit.maxCountWeekly + ' ' : '')
                     });
                 }
-                if (limit.maxAmountMonthly && limit.maxCountMonthly) {
+                if (limit.maxAmountMonthly || limit.maxCountMonthly) {
                     result[conditionId].limit.push({
                         name: 'Monthly',
                         value: (limit.maxAmountMonthly ? 'max ' + limit.maxAmountMonthly + ' ' : '') + (limit.maxCountMonthly ? 'count ' + limit.maxCountMonthly + ' ' : '')

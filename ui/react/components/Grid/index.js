@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {fromJS} from 'immutable';
 import {SimpleGrid} from 'ut-front-react/components/SimpleGrid';
-import { updateGridColumnStorage, prepareGridFields } from 'ut-front-react/components/GridMenu/helpers';
+import { updateGridColumnStorage } from 'ut-front-react/components/GridMenu/helpers';
 import Text from 'ut-front-react/components/Text';
 
 import style from './style.css';

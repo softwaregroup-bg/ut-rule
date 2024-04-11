@@ -99,7 +99,14 @@ function prepareRuleModel(dbresult) {
                 key: parseInt(ca.actorId),
                 name: ca.organizationName
             });
-        } else {
+        } else if (['agentRole'].indexOf(ca.type) > -1) {
+            const des = rule[propMap[ca.factor]];
+            des && des[ca.type] && des[ca.type].push({
+                key: parseInt(ca.actorId),
+                name: ca.actorName
+            });
+        }
+        else {
             rule[propMap[ca.factor]] && (rule[propMap[ca.factor]][ca.type] = parseInt(ca.actorId));
         }
     });

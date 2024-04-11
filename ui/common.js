@@ -105,8 +105,7 @@ function prepareRuleModel(dbresult) {
                 key: parseInt(ca.actorId),
                 name: ca.actorName
             });
-        }
-        else {
+        } else {
             rule[propMap[ca.factor]] && (rule[propMap[ca.factor]][ca.type] = parseInt(ca.actorId));
         }
     });

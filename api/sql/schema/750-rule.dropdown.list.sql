@@ -45,6 +45,11 @@ SELECT [value], [label], [parent]
 FROM core.item(@languageId, 'cardProduct')
 ORDER BY ISNULL(itemOrder, 99999), 2
 
+SELECT 'rule.cardType' AS resultSetName
+SELECT [value], [label], [parent]
+FROM core.item(@languageId, 'cardType')
+ORDER BY ISNULL(itemOrder, 99999), 2
+
 SELECT 'rule.channel' AS resultSetName
 SELECT [value], [label], [parent]
 FROM core.item(@languageId, 'channel')

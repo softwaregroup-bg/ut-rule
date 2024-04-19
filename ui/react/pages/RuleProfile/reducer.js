@@ -7,6 +7,7 @@ const defaultState = {
     nomenclatures: {
         accountProduct: [],
         cardProduct: [],
+        cardType: [],
         channel: [],
         city: [],
         country: [],

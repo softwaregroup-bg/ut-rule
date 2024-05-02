@@ -70,6 +70,7 @@ function prepareRuleModel(dbresult) {
             properties: [],
             countries: [],
             cities: [],
+            organization: null,
             regions: [],
             accountFeePolicies: []
         },
@@ -78,6 +79,7 @@ function prepareRuleModel(dbresult) {
             countries: [],
             cities: [],
             regions: [],
+            organization: null,
             cardProducts: [],
             accountFeePolicies: []
         },
@@ -95,10 +97,14 @@ function prepareRuleModel(dbresult) {
     (dbresult.conditionActor || []).forEach((ca) => {
         if (['organization'].indexOf(ca.type) > -1) {
             const des = rule[propMap[ca.factor]];
-            des && des[ca.type] && des[ca.type].push({
-                key: parseInt(ca.actorId),
-                name: ca.organizationName
-            });
+            if (Array.isArray(des.organization)) {
+                des && des[ca.type] && des[ca.type].push({
+                    key: parseInt(ca.actorId),
+                    name: ca.organizationName
+                });
+            } else {
+                des.organization = parseInt(ca.actorId);
+            }
         } else if (['agentRole'].indexOf(ca.type) > -1) {
             const des = rule[propMap[ca.factor]];
             des && des[ca.type] && des[ca.type].push({

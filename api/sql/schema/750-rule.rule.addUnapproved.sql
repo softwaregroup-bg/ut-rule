@@ -167,14 +167,16 @@ BEGIN TRY
             INSERTED.conditionId,
             INSERTED.name,
             INSERTED.tag,
-            INSERTED.amountType
+            INSERTED.amountType,
+            INSERTED.status
         INTO
             @splitName(
-                splitNameId,
-                conditionId,
-                name,
-                tag,
-                amountType
+            splitNameId,
+            conditionId,
+            name,
+            tag,
+            amountType,
+            [status]
             );
 
         MERGE INTO [rule].splitRangeUnapproved

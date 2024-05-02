@@ -250,20 +250,40 @@ class RuleApprove extends Component {
         if (isDeleted || isRejected) {
             newValues = currentValues;
         }
-        if (currentValues.getIn(['condition', 'isEnabled'])) {
+        if (currentValues.getIn(['condition', 'isEnabled']) && !newValues.getIn(['condition', 'isEnabled'])) {
+            newValues = currentValues.set('condition', newValues.get('condition'));
+        }
+
+        if (!currentValues.getIn(['condition', 'isEnabled'])) {
             newValues = currentValues.set('condition', newValues.get('condition'));
         }
 
         const options = { isNew, isDeleted };
-        // console.log('currentValues, newValues, options:', currentValues && currentValues.toJS(), newValues && newValues.toJS(), options);
-        // debugger;
-        return immutable.fromJS([
-            mapGeneralInfoData(currentValues, newValues, options),
-            operationInfoData(currentValues, newValues, options),
-            sourceInfoData(currentValues, newValues, options),
-            destinationInfoData(currentValues, newValues, options),
-            ...splitCheckers.map(item => splitInfoData(currentValues, newValues, options, item.title, item.key))
-        ]).filter(result => result);
+        const listChecker = [mapGeneralInfoData(currentValues, newValues, options), sourceInfoData(currentValues, newValues, options), destinationInfoData(currentValues, newValues, options), ...splitCheckers.map(item => splitInfoData(currentValues, newValues, options, item.title, item.key))
+        ].concat(this.prepareOperationInfoData(currentValues, newValues, options));
+
+        return immutable.fromJS(listChecker).filter(result => result);
+        // return immutable.fromJS([
+        //     mapGeneralInfoData(currentValues, newValues, options),
+        //     operationInfoData(currentValues, newValues, options),
+        //     sourceInfoData(currentValues, newValues, options),
+        //     destinationInfoData(currentValues, newValues, options),
+        //     ...splitCheckers.map(item => splitInfoData(currentValues, newValues, options, item.title, item.key))
+        // ]).filter(result => result);
+    }
+
+    prepareOperationInfoData(currentValues, newValues, options) {
+        const checkerValues = [];
+        const currentOperationInfo = currentValues.get('conditionItem').filter(item => item.get('factor') === 'oc');
+        const newOperationInfo = newValues.get('conditionItem')?.filter(item => item.get('factor') === 'oc');
+        // const parseNewOperationInfo = JSON.parse(JSON.stringify(newOperationInfo));
+        // const filterNewOperationInfo = parseNewOperationInfo.find(operation => operation.factor === "oc");
+        for (let i = 0; i < newOperationInfo?.size || 0; i++) {
+            const value1 = currentOperationInfo.get(i);
+            const value2 = newOperationInfo.get(i);
+            checkerValues.push(operationInfoData(value1, value2, options));
+        }
+        return checkerValues;
     }
 
     render() {
@@ -388,8 +408,6 @@ const mapStateToProps = (state, ownProps) => {
         splitAnalytic: tab.getIn(['localData', 'splitAnalyticUnapproved']),
         splitRange: tab.getIn(['localData', 'splitRangeUnapproved'])
     });
-    // console.log('tab:', newValues && newValues.toJS(), tab && tab.getIn(['localData', 'condition']), tab && tab.getIn(['localData', 'conditionUnapproved']));
-    // debugger
     return {
         id: ownProps.match.params.id,
         currentValues,

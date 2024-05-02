@@ -27,12 +27,12 @@ BEGIN TRY
 
     IF @isEnabled = 1
     BEGIN
-        UPDATE c
-        SET isEnabled = @isEnabled,
-            updatedBy = @userId,
-            updatedOn = SYSDATETIME()
-        FROM [rule].condition c
-        WHERE c.conditionId = @conditionId
+        SET IDENTITY_INSERT [rule].[conditionUnapproved] ON
+        INSERT INTO [rule].[conditionUnapproved] (conditionId, priority, status, operationStartDate, operationEndDate, sourceAccountId, [name], [description], notes, isDeleted, createdBy, updatedBy, isEnabled)
+        SELECT cu.conditionId, cu.priority, 'pending', cu.operationStartDate, cu.operationEndDate, cu.sourceAccountId, [name], [description], notes, 0, @userId, @userId, @isEnabled
+        FROM [rule].[condition] cu
+        WHERE cu.conditionId = @conditionId
+        SET IDENTITY_INSERT [rule].[conditionUnapproved] OFF
     END
     ELSE
     BEGIN

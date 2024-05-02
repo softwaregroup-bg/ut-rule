@@ -11,7 +11,10 @@ export function capitalizeFirstLetter(str) {
 
 export function formatDate(dateString) {
     if (dateString === undefined) {
-        return undefined;
+        return 'Not Set';
+    }
+    if (dateString === null) {
+        return 'Not Set';
     }
     const date = new Date(dateString);
     return date.toUTCString();
@@ -83,7 +86,15 @@ const generalInfoMapper = (values) => {
         },
         {
             key: 'Lock',
-            value: values.getIn(['condition', 'isEnabled']) ? 'Locked' : 'Unlocked'
+            value: values.getIn(['condition', 'isEnabled']) ? 'Unlocked' : 'Locked'
+        },
+        {
+            key: 'Operation Start Date',
+            value: formatDate(values.getIn(['condition', 'operationStartDate']))
+        },
+        {
+            key: 'Operation End Date',
+            value: formatDate(values.getIn(['condition', 'operationEndDate']))
         },
         ...parseConditionItemData(values.get('conditionItem'), 'cs'),
         ...parseConditionPropertyData(values.get('conditionProperty'), 'co'),
@@ -99,16 +110,24 @@ export function mapGeneralInfoData(currentValues, newValues, options) {
 
 const operationItemDataMapper = (values) => {
     return immutable.fromJS([
-        ...parseConditionItemData(values.get('conditionItem'), 'oc'),
         {
-            key: 'Operation Start Date',
-            value: formatDate(values.getIn(['condition', 'operationStartDate']))
+            key: 'Operation Name',
+            value: values?.get('itemName') || 'Not Set'
         },
         {
-            key: 'Operation End Date',
-            value: formatDate(values.getIn(['condition', 'operationEndDate']))
-        },
-        ...parseConditionPropertyData(values.get('conditionProperty'), 'oc')
+            key: 'Operation Type',
+            value: values?.get('itemTypeName') || 'Not Set'
+        }
+        // ...parseConditionItemData(values.get('conditionItem'), 'oc'),
+        // {
+        //     key: 'Operation Start Date',
+        //     value: formatDate(values.getIn(['condition', 'operationStartDate']))
+        // },
+        // {
+        //     key: 'Operation End Date',
+        //     value: formatDate(values.getIn(['condition', 'operationEndDate']))
+        // },
+        // ...parseConditionPropertyData(values.get('conditionProperty'), 'oc')
         // ...cnditionItemStatusParser(values.get('conditionItem'), 'oc'),
     ].filter(item => item.value !== undefined));
 };
@@ -122,9 +141,9 @@ export function operationInfoData(currentValues, newValues, options) {
 const sourceDataMapper = (values) => {
     return immutable.fromJS([
         ...parseConditionItemData(values.get('conditionItem'), 'ss'),
-        ...parseConditionItemData(values.get('conditionItem'), 'sc'),
         ...parseConditionPropertyData(values.get('conditionProperty'), 'so'),
-        ...parseConditionActorData(values.get('conditionActor'), 'so')
+        ...parseConditionActorData(values.get('conditionActor'), 'so'),
+        ...parseConditionItemData(values.get('conditionItem'), 'sc')
     ].filter(item => item.value !== undefined));
 };
 

@@ -27,12 +27,39 @@ BEGIN TRY
         RAISERROR ('rule.ruleNotExists', 16, 1)
     END
 
+    DECLARE @result INT;
+
+    SELECT
+        @result = CASE
+        WHEN EXISTS (
+            SELECT 1
+            FROM [rule].[conditionUnapproved]
+            WHERE conditionId = @conditionId AND isEnabled = 1
+        )
+        AND EXISTS (
+            SELECT 1
+            FROM [rule].[condition]
+            WHERE conditionId = @conditionId AND isEnabled = 0
+        ) THEN 1 -- Both conditions are true
+        ELSE 0 -- At least one condition is false
+        END;
+
     BEGIN TRANSACTION
 
         IF EXISTS(SELECT 1 FROM [rule].[conditionUnapproved] WHERE conditionId = @conditionId AND isEnabled = 0)
             BEGIN
                 UPDATE c
                 SET isEnabled = 0,
+                updatedBy = @userId,
+                updatedOn = SYSDATETIME()
+                FROM [rule].condition c
+                WHERE c.conditionId = @conditionId
+                DELETE FROM [rule].conditionUnapproved WHERE conditionId = @conditionId
+            END
+        ELSE IF @result = 1
+        BEGIN
+            UPDATE c
+                SET isEnabled = 1,
                 updatedBy = @userId,
                 updatedOn = SYSDATETIME()
                 FROM [rule].condition c

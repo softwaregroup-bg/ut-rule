@@ -59,7 +59,7 @@ BEGIN
     LEFT JOIN agent.agentType agt ON agt.actorId = r.actorId
     --JOIN core.actor a ON a.actorId = cca.actorId
     --LEFT JOIN customer.organization org ON org.actorId = cca.actorId
-    LEFT JOIN [rule].conditionActorUnapproved cau ON cau.conditionId = cca.conditionId
+    LEFT JOIN [rule].conditionActorUnapproved cau ON cau.conditionId = cca.conditionId AND cau.factor = cca.factor AND cau.actorId = cca.actorId
     WHERE cca.conditionId = @conditionId
 
     SELECT 'conditionActorUnapproved' AS resultSetName
@@ -87,7 +87,7 @@ BEGIN
     FROM [rule].conditionItem AS c
     JOIN core.itemName i ON i.itemNameId = c.itemNameId
     JOIN core.itemType t ON t.itemTypeId = i.itemTypeId
-    LEFT JOIN [rule].conditionItemUnapproved ciu ON ciu.conditionId = c.conditionId
+    LEFT JOIN [rule].conditionItemUnapproved ciu ON ciu.conditionId = c.conditionId AND ciu.factor = c.factor AND ciu.itemNameId = c.itemNameId
     WHERE c.conditionId = @conditionId
 
     SELECT 'conditionItemUnapproved' AS resultSetName

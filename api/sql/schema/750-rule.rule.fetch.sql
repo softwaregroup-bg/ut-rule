@@ -47,9 +47,7 @@ BEGIN
         rowNum INT,
         status VARCHAR(20),
         recordsTotal INT,
-        isEnabled INT,
-        createdOn DATETIME,
-        updatedOn DATETIME
+        isEnabled INT
     );
     WITH CTE AS (
         SELECT rc.conditionId,
@@ -63,42 +61,16 @@ BEGIN
         rc.notes,
         rc.status,
         rc.isEnabled,
-        rc.createdOn,
-        rc.updatedOn,
         ROW_NUMBER() OVER(ORDER BY rc.[priority] ASC) AS rowNum,
         COUNT(*) OVER(PARTITION BY 1) AS recordsTotal
         FROM
         (
-            SELECT c.conditionId,
-            CASE WHEN cu.status IS NULL THEN 'approved' ELSE cu.status END AS [status],
-            c.[priority],
-            c.operationStartDate,
-            c.operationEndDate,
-            c.sourceAccountId,
-            c.destinationAccountId,
-            c.name,
-            c.description,
-            c.notes,
-            c.[isDeleted], ISNULL(c.isEnabled, cu.isEnabled) AS isEnabled,
-            c.createdOn,
-            c.updatedOn
+            SELECT c.conditionId, CASE WHEN cu.status IS NULL THEN 'approved' ELSE cu.status END AS [status],
+            c.[priority], c.operationStartDate, c.operationEndDate, c.sourceAccountId, c.destinationAccountId, c.name, c.description, c.notes, c.[isDeleted], ISNULL(c.isEnabled, cu.isEnabled) AS isEnabled
             FROM [rule].condition c
             LEFT JOIN [rule].conditionUnapproved cu ON cu.conditionId = c.conditionId
             UNION ALL
-            SELECT cu.conditionId,
-            cu.status,
-            cu.[priority],
-            cu.operationStartDate,
-            cu.operationEndDate,
-            cu.sourceAccountId,
-            cu.destinationAccountId,
-            cu.name,
-            cu.description,
-            cu.notes,
-            cu.isDeleted,
-            cu.isEnabled,
-            cu.createdOn,
-            cu.updatedOn
+            SELECT cu.conditionId, cu.status, cu.[priority], cu.operationStartDate, cu.operationEndDate, cu.sourceAccountId, cu.destinationAccountId, cu.name, cu.description, cu.notes, cu.isDeleted, cu.isEnabled
             FROM [rule].conditionUnapproved cu
             LEFT JOIN [rule].condition c ON c.conditionId = cu.conditionId
             WHERE c.conditionId IS NULL
@@ -106,7 +78,7 @@ BEGIN
         WHERE (@conditionId IS NULL OR rc.conditionId = @conditionId ) AND rc.isDeleted = 0
     )
 
-    INSERT INTO #RuleConditions (conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, name, description, notes, rowNum, recordsTotal, status, isEnabled, updatedOn, createdOn)
+    INSERT INTO #RuleConditions (conditionId, [priority], operationEndDate, operationStartDate, sourceAccountId, destinationAccountId, name, description, notes, rowNum, recordsTotal, status, isEnabled)
     SELECT
         conditionId,
         [priority],
@@ -120,9 +92,7 @@ BEGIN
         rowNum,
         recordsTotal,
         status,
-        isEnabled,
-        createdOn,
-        updatedOn
+        isEnabled
     FROM CTE
     WHERE (rowNum BETWEEN @startRow AND @endRow) OR (@startRow >= recordsTotal AND RowNum > recordsTotal - (recordsTotal % @pageSize))
 
@@ -138,9 +108,7 @@ BEGIN
         rct.[description],
         rct.[notes],
         rct.status,
-        rct.isEnabled,
-        rct.[createdOn],
-        rct.[updatedOn]
+        rct.isEnabled
     FROM #RuleConditions rct
 
     SELECT 'conditionActor' AS resultSetName

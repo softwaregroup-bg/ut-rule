@@ -34,9 +34,10 @@ export default class Grid extends React.Component {
             { title: this.props.columns.source.title, name: 'source' },
             { title: this.props.columns.destination.title, name: 'destination' },
             { title: this.props.columns.limit.title, name: 'limit' },
-            { title: this.props.columns.createdOn.title, name: 'createdOn' },
-            { title: this.props.columns.updatedOn.title, name: 'updatedOn' },
-            { title: 'Expansion',  name: 'expansion' }
+            {
+                title: 'Expansion',
+                name: 'expansion'
+            }
         ].map(f => {
             f.key = f.name;
             return f;
@@ -128,21 +129,7 @@ export default class Grid extends React.Component {
                     </div>
                 );
             }
-        }
-        if (row.priority && column === 'createdOn') {
-            result.push(
-                <div key={result.length}>
-                    {row.createdOn}
-                </div>
-            );
-        }
-        if (row.priority && column === 'updatedOn') {
-            result.push(
-                <div key={result.length}>
-                    {row.updatedOn}
-                </div>
-            );
-        }
+        };
         return (
             <div>
                 {result}
@@ -195,8 +182,6 @@ export default class Grid extends React.Component {
                 destination: columns.destination.visible && this.props.formatedGridData[conditionId],
                 limit: columns.limit.visible && this.props.formatedGridData[conditionId],
                 split: columns.split.visible && this.props.formatedGridData[conditionId],
-                createdOn: columns.createdOn.visible && condition.createdOn,
-                updatedOn: columns.updatedOn.visible && condition.updatedOn,
                 expansion: 'Not Empty',
                 url: record.url
             };
@@ -225,10 +210,6 @@ export default class Grid extends React.Component {
                     return this.renderGridColumn(value, ['split'], row, 'split');
                 case 'priority':
                     return this.renderGridColumn(value, ['priority'], row, 'priority');
-                case 'createdOn':
-                    return this.renderGridColumn(value, ['createdOn'], row, 'createdOn');
-                case 'updatedOn':
-                    return this.renderGridColumn(value, ['updatedOn'], row, 'updatedOn');
                 case 'expansion': {
                     let showText;
                     Object.values(row?.channel).every(data => {

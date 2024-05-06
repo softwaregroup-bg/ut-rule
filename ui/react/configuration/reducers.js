@@ -61,14 +61,6 @@ const defaultUiState = {
                     visible: true,
                     title: 'Split'
                 },
-                createdOn: {
-                    visible: true,
-                    title: 'Creation Date'
-                },
-                updatedOn: {
-                    visible: true,
-                    title: 'Last Modification Date'
-                },
                 status: {
                     visible: true,
                     title: 'Status'

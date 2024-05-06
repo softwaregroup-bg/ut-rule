@@ -2,8 +2,8 @@
     "info": {
         "contact": {},
         "description": "UT Microservice API",
-        "title": "policy",
-        "version": "10.47.16"
+        "title": "rule",
+        "version": "13.2.3"
     },
     "paths": {
         "/rpc/rule/condition/add": {
@@ -668,21 +668,8 @@
                                                             "number",
                                                             "null"
                                                         ]
-                                                    }
-                                                },
-                                                "required": [
-                                                    "channelId"
-                                                ],
-                                                "type": "object"
-                                            },
-                                            "minItems": 1,
-                                            "type": "array"
-                                        },
-                                        "function": {
-                                            "items": {
-                                                "additionalProperties": false,
-                                                "properties": {
-                                                    "allowedAttempts": {
+                                                    },
+                                                    "percentBase": {
                                                         "type": [
                                                             "number",
                                                             "null"
@@ -734,7 +721,6 @@
                                                 ],
                                                 "type": "object"
                                             },
-                                            "minItems": 1,
                                             "type": "array"
                                         }
                                     },
@@ -1126,90 +1112,9 @@
                                                             "null"
                                                         ]
                                                     },
-                                                    "termOrder": {
-                                                        "type": "number"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            },
-                                            "minItems": 1,
-                                            "type": "array"
-                                        }
-                                    },
-                                    "required": [
-                                        "factor",
-                                        "function",
-                                        "term"
-                                    ],
-                                    "type": "object"
-                                },
-                                "timeout": {
-                                    "description": "Timeout in milliseconds",
-                                    "example": null,
-                                    "type": [
-                                        "number",
-                                        "null"
-                                    ]
-                                }
-                            },
-                            "required": [
-                                "jsonrpc",
-                                "method"
-                            ],
-                            "type": "object"
-                        }
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "additionalProperties": false,
-                            "properties": {
-                                "id": {
-                                    "description": "Unique identifier of the request",
-                                    "example": "1",
-                                    "maxLength": 36,
-                                    "minLength": 1,
-                                    "type": "string"
-                                },
-                                "jsonrpc": {
-                                    "description": "Version of the JSON-RPC protocol",
-                                    "enum": [
-                                        "2.0"
-                                    ],
-                                    "example": "2.0",
-                                    "type": "string"
-                                },
-                                "method": {
-                                    "description": "Name of the method",
-                                    "enum": [
-                                        "policy.policy.add"
-                                    ],
-                                    "example": "policy.policy.add",
-                                    "type": "string"
-                                },
-                                "result": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "credentials": {
-                                            "items": {
-                                                "additionalProperties": false,
-                                                "properties": {
-                                                    "allowChange": {
-                                                        "type": [
-                                                            "boolean",
-                                                            "null"
-                                                        ]
-                                                    },
-                                                    "allowReset": {
-                                                        "type": [
-                                                            "boolean",
-                                                            "null"
-                                                        ]
+                                                    "startAmountCurrency": {
+                                                        "minLength": 1,
+                                                        "type": "string"
                                                     },
                                                     "startAmountDaily": {
                                                         "type": [

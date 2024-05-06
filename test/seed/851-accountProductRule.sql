@@ -79,19 +79,19 @@ BEGIN
         </data>'
 
         EXEC [rule].[rule.add]
-            @condition,
-            @conditionActor,
-            @conditionItem,
-            @conditionProperty,
-            @limit,
-            @split,
-            @meta
+            @condition = @condition,
+            @conditionActor = @conditionActor,
+            @conditionItem = @conditionItem,
+            @conditionProperty = @conditionProperty,
+            @limit = @limit,
+            @split = @split,
+            @meta = @meta
     END
 
     DELETE FROM @condition
     DELETE FROM @conditionItem
 
-    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE name = 'Test wallet push transfers')
+    IF NOT EXISTS (SELECT * FROM [rule].condition WHERE name = 'Test wallet push transfers') AND @erpItemNameId IS NOT NULL
     BEGIN
         INSERT INTO @condition ([name], [priority], operationStartDate, operationEndDate, sourceAccountId, destinationAccountId)
         VALUES ('Test wallet push transfers', 11, NULL, NULL, NULL, NULL)
@@ -101,6 +101,8 @@ BEGIN
         FROM core.itemName cin
         JOIN core.itemType cit ON cit.itemTypeId = cin.itemTypeId
         WHERE cit.alias = 'operation' AND itemCode IN ('refund')
+        UNION ALL
+        SELECT 'sc', @erpItemNameId
         UNION ALL
         SELECT 'dc', @selfRegistrationItemNameId
 
@@ -116,7 +118,7 @@ BEGIN
                     <isSourceAmount>0</isSourceAmount>
                 </splitRange>
                 <splitAssignment>
-                    <debit>$' + '{source.account.number}</debit>
+                    <debit>$' + '{source.account.number}' + @erpSuffix + N'</debit>
                     <credit>$' + '{destination.account.number}' + @selfRegistrationSuffix + N'</credit>
                     <percent>100</percent>
                     <description>wallet push transfers</description>
@@ -125,13 +127,13 @@ BEGIN
         </data>'
 
         EXEC [rule].[rule.add]
-            @condition,
-            @conditionActor,
-            @conditionItem,
-            @conditionProperty,
-            @limit,
-            @split,
-            @meta
+            @condition = @condition,
+            @conditionActor = @conditionActor,
+            @conditionItem = @conditionItem,
+            @conditionProperty = @conditionProperty,
+            @limit = @limit,
+            @split = @split,
+            @meta = @meta
     END
 
     DELETE FROM @condition
@@ -173,13 +175,13 @@ BEGIN
         </data>'
 
         EXEC [rule].[rule.add]
-            @condition,
-            @conditionActor,
-            @conditionItem,
-            @conditionProperty,
-            @limit,
-            @split,
-            @meta
+            @condition = @condition,
+            @conditionActor = @conditionActor,
+            @conditionItem = @conditionItem,
+            @conditionProperty = @conditionProperty,
+            @limit = @limit,
+            @split = @split,
+            @meta = @meta
     END
 
     DELETE FROM @condition
@@ -222,12 +224,12 @@ BEGIN
         </data>'
 
         EXEC [rule].[rule.add]
-            @condition,
-            @conditionActor,
-            @conditionItem,
-            @conditionProperty,
-            @limit,
-            @split,
-            @meta
+            @condition = @condition,
+            @conditionActor = @conditionActor,
+            @conditionItem = @conditionItem,
+            @conditionProperty = @conditionProperty,
+            @limit = @limit,
+            @split = @split,
+            @meta = @meta
     END
 END

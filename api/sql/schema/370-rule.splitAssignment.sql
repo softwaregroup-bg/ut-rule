@@ -3,6 +3,7 @@ CREATE TABLE [rule].[splitAssignment] (
     splitNameId INT NOT NULL,
     debit VARCHAR(50) NOT NULL,
     credit VARCHAR(50) NOT NULL,
+    quantity VARCHAR(50) NULL,
     minValue MONEY,
     maxValue MONEY,
     [percent] DECIMAL(9, 2),

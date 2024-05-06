@@ -14,12 +14,14 @@ const defaultUiState = {
             'supervisor',
             'cardProduct',
             'accountProduct',
-            'account'
+            'account',
+            'agentRole',
+            'feePolicy'
         ],
         itemCode: [
             'currency'
         ],
-        agentRole: [],
+        agentRole: [''],
         accountAlias: [],
         organization: [''],
         role: [],
@@ -67,6 +69,14 @@ const defaultUiState = {
                     visible: true,
                     title: 'Last Modification Date'
                 },
+                status: {
+                    visible: true,
+                    title: 'Status'
+                },
+                lock: {
+                    visible: true,
+                    title: 'Lock'
+                },
                 expansion: {
                     visible: true,
                     title: 'Expansion'
@@ -95,6 +105,10 @@ const defaultUiState = {
                     organization: {
                         visible: true,
                         title: 'Organization'
+                    },
+                    agentRole: {
+                        visible: true,
+                        title: 'Agent Type'
                     }
                 }
             },
@@ -143,6 +157,10 @@ const defaultUiState = {
                     accountProduct: {
                         visible: true,
                         title: 'Account Product'
+                    },
+                    accountFeePolicy: {
+                        visible: true,
+                        title: 'Account Fee Policy'
                     }
                 }
             },
@@ -169,6 +187,10 @@ const defaultUiState = {
                     accountProduct: {
                         visible: true,
                         title: 'Account Product'
+                    },
+                    accountFeePolicy: {
+                        visible: true,
+                        title: 'Account Fee Policy'
                     }
                 }
             },

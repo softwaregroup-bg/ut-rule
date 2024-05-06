@@ -1,9 +1,10 @@
 import component from './component';
 import backend from './backend';
+import config from './config';
 
 export default () => function utRule() {
     return {
-        config: require('./config'),
+        config,
         browser: () => [
             backend,
             ...component

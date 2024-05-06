@@ -1,4 +1,4 @@
-import { Rules, RuleCreate, RuleEdit } from './pages';
+import { Rules, RuleCreate, RuleEdit, RuleApprove } from './pages';
 import React from 'react';
 import {
     Route,
@@ -19,5 +19,6 @@ export default hot(module)(() =>
         <Route exact path={getLink('ut-rule:rules')} component={Rules} />
         <Route exact path={getLink('ut-rule:create')} component={RuleCreate} />
         <Route exact path={getLink('ut-rule:edit')} component={RuleEdit} />
+        <Route exact path={getLink('ut-rule:validate')} component={RuleApprove} />
     </Switch>
 );

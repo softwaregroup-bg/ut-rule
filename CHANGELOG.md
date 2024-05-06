@@ -1,3 +1,157 @@
+## [13.2.4](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.3...v13.2.4) (2023-12-11)
+
+
+### Bug Fixes
+
+* correctly calc op date in local tz ([#275](https://github.com/softwaregroup-bg/ut-rule/issues/275)) ([cf7d035](https://github.com/softwaregroup-bg/ut-rule/commit/cf7d0358d932c7431d07edfada81582964a2a171))
+
+
+
+## [13.2.3](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.2...v13.2.3) (2023-12-10)
+
+
+### Bug Fixes
+
+* condition validations ([fc8ade2](https://github.com/softwaregroup-bg/ut-rule/commit/fc8ade2aa10aecc1a8a4e174e6218229ce7ba452))
+
+
+
+## [13.2.2](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.1...v13.2.2) (2023-10-27)
+
+
+### Bug Fixes
+
+* condition validations ([ca69ab9](https://github.com/softwaregroup-bg/ut-rule/commit/ca69ab991568efbe00cb884ae489cb14656e3314))
+
+
+
+## [13.2.1](https://github.com/softwaregroup-bg/ut-rule/compare/v13.2.0...v13.2.1) (2023-10-19)
+
+
+### Bug Fixes
+
+* do not mix cjs and esm ([7e44700](https://github.com/softwaregroup-bg/ut-rule/commit/7e447001596d149ff99e37188c9f312f73ef0f17))
+
+
+
+# [13.2.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.4...v13.2.0) (2023-09-25)
+
+
+### Bug Fixes
+
+* rule action names ([89c2d01](https://github.com/softwaregroup-bg/ut-rule/commit/89c2d01bc26101ae111326ae5e1e4fb6b4126cf8))
+
+
+### Features
+
+* return decision ([#272](https://github.com/softwaregroup-bg/ut-rule/issues/272)) ([d987809](https://github.com/softwaregroup-bg/ut-rule/commit/d987809b42d298be338eecdc43cf5ee1d2ca0451))
+
+
+
+## [13.1.4](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.3...v13.1.4) (2023-07-25)
+
+
+
+## [13.1.3](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.2...v13.1.3) (2023-06-12)
+
+
+
+## [13.1.2](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.1...v13.1.2) (2023-05-03)
+
+
+### Bug Fixes
+
+* match condition property factor ([33ed482](https://github.com/softwaregroup-bg/ut-rule/commit/33ed482c2b8243e7d68b93385d086f36e9d073e5))
+
+
+
+## [13.1.1](https://github.com/softwaregroup-bg/ut-rule/compare/v13.1.0...v13.1.1) (2023-04-25)
+
+
+
+# [13.1.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.0.0...v13.1.0) (2023-04-25)
+
+
+### Bug Fixes
+
+* add validation to rule.decision.lookup,#AAA-0000 ([db36407](https://github.com/softwaregroup-bg/ut-rule/commit/db36407de4985a66abea804b5a3b18d3b4eeae80)), closes [#AAA-0000](https://github.com/softwaregroup-bg/ut-rule/issues/AAA-0000)
+
+
+### Features
+
+* add tag for new functionality cashbak,#ECNT2-4397 ([492c142](https://github.com/softwaregroup-bg/ut-rule/commit/492c1421ec770214e913ffc91c7882b69ad2ef3f)), closes [#ECNT2-4397](https://github.com/softwaregroup-bg/ut-rule/issues/ECNT2-4397)
+
+
+
+# [13.0.0](https://github.com/softwaregroup-bg/ut-rule/compare/v13.0.0-currencies.15...v13.0.0) (2023-04-19)
+
+
+
+
+# [12.6.0](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.13...v12.6.0) (2023-02-16)
+
+
+### Features
+
+* **CBI-1192:** return conditionId in decision.fetch ([#263](https://github.com/softwaregroup-bg/ut-rule/issues/263)) ([5787437](https://github.com/softwaregroup-bg/ut-rule/commit/5787437acc77ef03e69f6543819dbee0ad4348d7))
+
+
+
+## [12.5.13](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.12...v12.5.13) (2023-02-10)
+
+
+### Bug Fixes
+
+* UTCORE-412, errors when non-empty ruleCondition history table ([#258](https://github.com/softwaregroup-bg/ut-rule/issues/258)) ([a57d8bf](https://github.com/softwaregroup-bg/ut-rule/commit/a57d8bf65546da2b538532daed81a6599610d03e))
+
+
+
+## [12.5.12](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.11...v12.5.12) (2023-02-07)
+
+
+
+## [12.5.11](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.10...v12.5.11) (2023-02-06)
+
+
+### Bug Fixes
+
+* make checks to the real start of the day,week, month, AZCELL-1762 ([#257](https://github.com/softwaregroup-bg/ut-rule/issues/257)) ([4f44263](https://github.com/softwaregroup-bg/ut-rule/commit/4f4426330ab4f6350cf9c3ad9e3610394b289910))
+
+
+
+## [12.5.10](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.9...v12.5.10) (2023-02-02)
+
+
+
+## [12.5.9](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.8...v12.5.9) (2023-02-01)
+
+
+
+## [12.5.8](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.7...v12.5.8) (2023-01-24)
+
+
+### Bug Fixes
+
+* turn off sqlTest for dev ([060d40e](https://github.com/softwaregroup-bg/ut-rule/commit/060d40e7d9525cf09e6174c8bf5dde6f65d48585))
+
+
+
+## [12.5.7](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.6...v12.5.7) (2023-01-23)
+
+
+
+## [12.5.6](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.5...v12.5.6) (2023-01-18)
+
+
+
+## [12.5.5](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.4...v12.5.5) (2023-01-16)
+
+
+
+## [12.5.4](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.3...v12.5.4) (2023-01-08)
+
+
+
 ## [12.5.3](https://github.com/softwaregroup-bg/ut-rule/compare/v12.5.2...v12.5.3) (2023-01-02)
 
 

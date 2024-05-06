@@ -19,6 +19,7 @@ SELECT
     '' accountCheckMask,
     '' productCheckAmount,
     '' productCheckMask,
+    NULL feePolicyId,
     'rule' AS issuerId,
     -- integration test columns
     1 AS methodOfOperationId,
@@ -55,6 +56,7 @@ SELECT
     '' accountCheckMask,
     '' productCheckAmount,
     '' productCheckMask,
+    NULL feePolicyId,
     'rule' AS issuerId,
     1 AS methodOfOperationId,
     'current' atmType,
@@ -90,6 +92,7 @@ SELECT
     '' accountCheckMask,
     '' productCheckAmount,
     '' productCheckMask,
+    NULL feePolicyId,
     'rule' AS issuerId,
     1 AS methodOfOperationId,
     'current' atmType,

@@ -1,7 +1,16 @@
 const splitTags = [
-    {key: 'acquirer', name: 'Acquirer'},
-    {key: 'issuer', name: 'Issuer'},
     {key: 'commission', name: 'Commission'},
+    {key: 'fee', name: 'Fee'},
+    // {key: 'acquirer', name: 'Acquirer'},
+    // {key: 'issuer', name: 'Issuer'},
+    // {key: 'realtime', name: 'Realtime posting'},
+    // {key: 'pending', name: 'Authorization required'},
+    // {key: 'agent', name: 'Agent'},
+    // {key: 'atm', name: 'ATM'},
+    // {key: 'pos', name: 'POS'},
+    // {key: 'ped', name: 'PED'},
+    // {key: 'vendor', name: 'Vendor'},
+    // {key: 'merchant', name: 'Merchant'}
     {key: 'realtime', name: 'Realtime posting'},
     {key: 'pending', name: 'Authorization required'},
     {key: 'agent', name: 'Agent'},
@@ -10,15 +19,18 @@ const splitTags = [
     {key: 'pos', name: 'POS'},
     {key: 'ped', name: 'PED'},
     {key: 'vendor', name: 'Vendor'},
-    {key: 'merchant', name: 'Merchant'}
+    {key: 'merchant', name: 'Merchant'},
+    {key: 'cashback', name: 'Cash back'}
 ];
 
 const propMap = {
     country: 'countries',
     region: 'regions',
     city: 'cities',
+    agentRole: 'agentRole',
     operation: 'operations',
     cardProduct: 'cardProducts',
+    feePolicy: 'accountFeePolicies',
     so: 'source',
     do: 'destination',
     co: 'channel',
@@ -27,7 +39,9 @@ const propMap = {
     cs: 'channel',
     oc: 'operation',
     sc: 'source',
-    dc: 'destination'
+    dc: 'destination',
+    sp: 'source',
+    dp: 'destination'
 };
 
 const stringify = (value) => {
@@ -49,20 +63,23 @@ function prepareRuleModel(dbresult) {
             countries: [],
             cities: [],
             regions: [],
-            organization: []
+            organization: [],
+            agentRole: []
         },
         destination: {
             properties: [],
             countries: [],
             cities: [],
-            regions: []
+            regions: [],
+            accountFeePolicies: []
         },
         source: {
             properties: [],
             countries: [],
             cities: [],
             regions: [],
-            cardProducts: []
+            cardProducts: [],
+            accountFeePolicies: []
         },
         split: {
             splits: []
@@ -82,13 +99,19 @@ function prepareRuleModel(dbresult) {
                 key: parseInt(ca.actorId),
                 name: ca.organizationName
             });
+        } else if (['agentRole'].indexOf(ca.type) > -1) {
+            const des = rule[propMap[ca.factor]];
+            des && des[ca.type] && des[ca.type].push({
+                key: parseInt(ca.actorId),
+                name: ca.actorName
+            });
         } else {
             rule[propMap[ca.factor]] && (rule[propMap[ca.factor]][ca.type] = parseInt(ca.actorId));
         }
     });
     // condition item
     (dbresult.conditionItem || []).forEach((item) => {
-        if (['operation', 'country', 'city', 'region', 'cardProduct'].indexOf(item.type) > -1) {
+        if (['operation', 'country', 'city', 'region', 'cardProduct', 'feePolicy'].indexOf(item.type) > -1) {
             const obj = rule[propMap[item.factor]] && rule[propMap[item.factor]][propMap[item.type]];
             obj && obj.push({
                 key: item.itemNameId,

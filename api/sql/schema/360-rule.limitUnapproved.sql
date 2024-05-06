@@ -1,0 +1,21 @@
+CREATE TABLE [rule].[limitUnapproved] (
+    limitId INT IDENTITY(1000, 1) NOT NULL,
+    conditionId INT NOT NULL,
+    amountType SMALLINT,
+    currency VARCHAR(3) NOT NULL,
+    minAmount MONEY,
+    maxAmount MONEY,
+    maxAmountDaily MONEY,
+    maxCountDaily BIGINT,
+    maxAmountWeekly MONEY,
+    maxCountWeekly BIGINT,
+    maxAmountMonthly MONEY,
+    maxCountMonthly BIGINT,
+    [credentials] INT,
+    [priority] SMALLINT,
+    [status] VARCHAR(20) NULL DEFAULT('pending'),
+    CONSTRAINT [pkRuleLimitUnapproved] PRIMARY KEY CLUSTERED (limitId ASC),
+    CONSTRAINT ukRuleLimitUnapprovedConditionCurrencyPriority UNIQUE (conditionId, currency, [priority]),
+    CONSTRAINT ukRuleLimitUnapprovedConditionCurrencyCredentials UNIQUE (conditionId, currency, [credentials]),
+    CONSTRAINT [fkRuleLimitUnapproved_condition] FOREIGN KEY (conditionId) REFERENCES [rule].[conditionUnapproved](conditionId)
+)

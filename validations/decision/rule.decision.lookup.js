@@ -1,7 +1,11 @@
 // @ts-check
 /** @type { import("ut-run").validationFactory } */
 module.exports = ({
-    joi
+    joi,
+    lib: {
+        stringRequired,
+        numberRequired
+    }
 }) => ({
     'rule.decision.lookup': () => ({
         description: 'Fetch applicable fee, limit and commission, based on passed properties of the transfer',
@@ -12,21 +16,35 @@ module.exports = ({
             sourceAccount: joi.string().required(),
             destinationAccount: joi.string().required(),
             amount: joi.string().max(21).required(),
+            settlementAmount: joi.string().max(21),
+            accountAmount: joi.string().max(21),
             currency: joi.string().required(),
+            settlementCurrency: joi.string(),
+            accountCurrency: joi.string(),
             isSourceAmount: joi.boolean().allow(0, 1, '0', '1'),
-            sourceCardProductId: joi.number().integer().allow(null)
+            sourceCardProductId: joi.number().integer().allow(null),
+            transferProperties: joi.object()
         }),
         result: joi.object().keys({
             amount: joi.object().keys({
-                rateId: joi.number().integer().allow(null),
-                rateConditionName: joi.string().allow(null),
-                settlementAmount: joi.number().allow(null),
-                acquirerFee: joi.number().allow(null),
-                issuerFee: joi.number().allow(null),
-                processorFee: joi.number().allow(null),
-                commission: joi.number().allow(null),
+                settlementRate: joi.number().allow(null),
+                settlementRateId: joi.number().integer().allow(null),
+                settlementRateConditionName: joi.string().allow(null),
+                settlementAmount: joi.string().max(21).allow(null),
+                settlementCurrency: joi.string(),
+                accountRate: joi.number().allow(null),
+                accountRateId: joi.number().integer().allow(null),
+                accountRateConditionName: joi.string().allow(null),
+                accountAmount: joi.string().max(21).allow(null),
+                accountCurrency: joi.string(),
+                acquirerFee: joi.string().max(21).allow(null),
+                issuerFee: joi.string().max(21).allow(null),
+                processorFee: joi.string().max(21).allow(null),
+                transferFee: joi.string().max(21).allow(null),
+                commission: joi.string().max(21).allow(null),
                 transferDateTime: joi.date().required(),
-                transferTypeId: joi.string().required()
+                transferTypeId: joi.string().required(),
+                cashback: joi.string().max(21).allow(null)
             }),
             split: joi.array().items(
                 joi.object().keys({
@@ -34,13 +52,17 @@ module.exports = ({
                     conditionName: joi.string().required(),
                     splitNameId: joi.number().integer().required(),
                     tag: joi.string().required().allow(null),
-                    amount: joi.number().required(),
+                    currency: joi.string().required(),
+                    amount: joi.string().max(21).required(),
+                    quantity: joi.string().max(21).allow(null),
                     debit: joi.string().required(),
                     credit: joi.string().required(),
                     description: joi.string().allow(null),
-                    analytics: joi.string().allow(null)
+                    analytics: joi.object().allow(null)
                 })
-            )
+            ),
+            decision: joi.object().allow(null),
+            rule: joi.object().allow(null)
         })
     })
 });

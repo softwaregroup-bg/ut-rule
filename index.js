@@ -20,6 +20,7 @@ module.exports = require('ut-run').microservice(module, require, () => function 
             require('./validations')
         ],
         test: () => [
+            require('./test/validations'),
             ...require('./test/jobs'),
             ...require('./test/steps')
         ]

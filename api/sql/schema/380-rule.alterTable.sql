@@ -53,6 +53,87 @@ BEGIN
     ALTER TABLE [rule].[condition] DROP CONSTRAINT ukRuleCondtitionPriority
 END
 
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'status' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
+BEGIN
+    ALTER TABLE [rule].[condition] ADD [status] VARCHAR(20) NULL DEFAULT('pending')
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'isEnabled' AND Object_ID = OBJECT_ID(N'rule.condition'))
+BEGIN
+    ALTER TABLE [rule].[condition] ADD [isEnabled] BIT NOT NULL DEFAULT(1)
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'isEnabled' AND Object_ID = OBJECT_ID(N'rule.conditionUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[conditionUnapproved] ADD [isEnabled] BIT NOT NULL DEFAULT(1)
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'name' AND Object_ID = OBJECT_ID(N'rule.conditionUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[conditionUnapproved] ADD [name] NVARCHAR(100)
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'notes' AND Object_ID = OBJECT_ID(N'rule.conditionUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[conditionUnapproved] ADD [notes] NVARCHAR(100)
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'description' AND Object_ID = OBJECT_ID(N'rule.conditionUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[conditionUnapproved] ADD [description] NVARCHAR(100)
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'status' AND Object_ID = OBJECT_ID(N'rule.splitRangeUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[splitRangeUnapproved] ADD [status] VARCHAR(20) NULL DEFAULT('pending')
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'status' AND Object_ID = OBJECT_ID(N'rule.splitAssignmentUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[splitAssignmentUnapproved] ADD [status] VARCHAR(20) NULL DEFAULT('pending')
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'status' AND Object_ID = OBJECT_ID(N'rule.limitUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[limitUnapproved] ADD [status] VARCHAR(20) NULL DEFAULT('pending')
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'status' AND Object_ID = OBJECT_ID(N'rule.splitAnalyticUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[splitAnalyticUnapproved] ADD [status] VARCHAR(20) NULL DEFAULT('pending')
+END
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE NAME = N'status' AND Object_ID = OBJECT_ID(N'rule.splitNameUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[splitNameUnapproved] ADD [status] VARCHAR(20) NULL DEFAULT('pending')
+END
+
+IF EXISTS(SELECT * FROM sys.columns WHERE NAME = N'debit' AND Object_ID = OBJECT_ID(N'rule.splitAssignment'))
+BEGIN
+    ALTER TABLE [rule].[splitAssignment] ALTER COLUMN [debit] VARCHAR(50) NULL
+END
+
+IF EXISTS(SELECT * FROM sys.columns WHERE NAME = N'credit' AND Object_ID = OBJECT_ID(N'rule.splitAssignment'))
+BEGIN
+    ALTER TABLE [rule].[splitAssignment] ALTER COLUMN [credit] VARCHAR(50) NULL
+END
+
+IF EXISTS(SELECT * FROM sys.columns WHERE NAME = N'debit' AND Object_ID = OBJECT_ID(N'rule.splitAssignmentUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[splitAssignmentUnapproved] ALTER COLUMN [debit] VARCHAR(50) NULL
+END
+
+IF EXISTS(SELECT * FROM sys.columns WHERE NAME = N'credit' AND Object_ID = OBJECT_ID(N'rule.splitAssignmentUnapproved'))
+BEGIN
+    ALTER TABLE [rule].[splitAssignmentUnapproved] ALTER COLUMN [credit] VARCHAR(50) NULL
+END
+
+-- ALTER TABLE [${utHistory.db.connection.database}].[history].[ruleSplitassignmentHistory] ALTER COLUMN [debit] VARCHAR(50) NULL
+-- ALTER TABLE [${utHistory.db.connection.database}].[history].[ruleSplitassignmentHistory] ALTER COLUMN [credit] VARCHAR(50) NULL
+-- ALTER TABLE [${utHistory.db.connection.database}].[history].[ruleConditionHistory] ADD [isEnabled] BIT NOT NULL DEFAULT(1)
+-- ALTER TABLE [${utHistory.db.connection.database}].[history].[ruleConditionunapprovedHistory] ADD [isEnabled] BIT NOT NULL DEFAULT(1)
+-- ALTER TABLE [${utHistory.db.connection.database}].[history].[ruleSplitassignmentunapprovedHistory] ALTER COLUMN [debit] VARCHAR(50) NULL
+-- ALTER TABLE [${utHistory.db.connection.database}].[history].[ruleSplitassignmentunapprovedHistory] ALTER COLUMN [credit] VARCHAR(50) NULL
 IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'name' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
 BEGIN
     ALTER TABLE [rule].[condition] ADD [name] NVARCHAR(100)
@@ -141,5 +222,75 @@ END
 IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionProperty_factor')
 BEGIN
     ALTER TABLE [rule].[conditionProperty] DROP CONSTRAINT ccRuleConditionProperty_factor
-    ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT ccRuleConditionProperty_factor1 CHECK (factor IN ('so', 'do', 'co', 'ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sk', 'st', 'dk', 'dt'))
+    ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT ccRuleConditionProperty_factor2 CHECK (factor IN ('so', 'do', 'co', 'ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sk', 'st', 'dk', 'dt', 'tp'))
+END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionProperty_factor1')
+BEGIN
+    ALTER TABLE [rule].[conditionProperty] DROP CONSTRAINT ccRuleConditionProperty_factor1
+    ALTER TABLE [rule].[conditionProperty] ADD CONSTRAINT ccRuleConditionProperty_factor2 CHECK (factor IN ('so', 'do', 'co', 'ss', 'ds', 'cs', 'oc', 'sc', 'dc', 'sk', 'st', 'dk', 'dt', 'tp'))
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'amountType' AND OBJECT_ID = OBJECT_ID(N'rule.splitName') )
+BEGIN
+    ALTER TABLE [rule].[splitName] ADD [amountType] SMALLINT NULL
+END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ccRuleConditionItem_factor')
+BEGIN
+    ALTER TABLE [rule].[conditionItem] DROP CONSTRAINT [ccRuleConditionItem_factor]
+    ALTER TABLE [rule].[conditionItem] ADD CONSTRAINT ccRuleConditionItem_factor1 CHECK (factor IN ('dc', 'sc', 'oc', 'cs', 'ds', 'ss', 'sp', 'dp'))
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'quantity' AND OBJECT_ID = OBJECT_ID(N'rule.splitAssignment') )
+BEGIN
+    ALTER TABLE [rule].[splitAssignment] ADD [quantity] VARCHAR(50) NULL
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'decision' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
+BEGIN
+    ALTER TABLE [rule].[condition] ADD [decision] XML
+
+    IF EXISTS (SELECT * FROM sys.objects WHERE Object_ID = OBJECT_ID(N'externalHistory.ruleConditionHistory') AND TYPE = 'SN')
+    BEGIN
+        DECLARE @historyDB1 SYSNAME = (SELECT DB_NAME(DB_ID(PARSENAME(base_object_name, 3))) FROM sys.synonyms WHERE name = 'ruleConditionHistory')
+        DECLARE @alter_history_table1 NVARCHAR(MAX) = 'IF NOT EXISTS (SELECT *
+                FROM [{DBNAME}].sys.columns c
+                JOIN [{DBNAME}].sys.tables t ON c.object_id = t.object_id
+                JOIN [{DBNAME}].sys.schemas s ON t.schema_id = s.schema_id
+                WHERE s.name = ''history''
+                    AND t.name = ''ruleConditionHistory''
+                    AND c.name = ''decision''
+            ) BEGIN
+        '
+        SET @alter_history_table1 += ' ALTER TABLE [{DBNAME}].[history].[ruleConditionHistory] ADD [decision] XML'
+        SET @alter_history_table1 += ' END'
+        SET @alter_history_table1 = REPLACE(@alter_history_table1, '{DBNAME}', @historyDB1)
+        EXEC(@alter_history_table1)
+    END
+END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleLimitConditionCurrencyPriority' )
+BEGIN
+    ALTER TABLE [rule].[limit] DROP CONSTRAINT ukRuleLimitConditionCurrencyPriority
+END
+
+IF EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleLimitConditionCurrencyCredentials' )
+BEGIN
+    ALTER TABLE [rule].[limit] DROP CONSTRAINT ukRuleLimitConditionCurrencyCredentials
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'amountType' AND Object_ID = OBJECT_ID(N'rule.limit') )
+BEGIN
+    ALTER TABLE [rule].[limit] ADD amountType SMALLINT NULL
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleLimitConditionAmountCurrencyPriority' )
+BEGIN
+    ALTER TABLE [rule].[limit] ADD CONSTRAINT ukRuleLimitConditionAmountCurrencyPriority UNIQUE (conditionId, amountType, currency, [priority])
+END
+
+IF NOT EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleLimitConditionAmountCurrencyCredentials' )
+BEGIN
+    ALTER TABLE [rule].[limit] ADD CONSTRAINT ukRuleLimitConditionAmountCurrencyCredentials UNIQUE (conditionId, amountType, currency, [credentials])
 END

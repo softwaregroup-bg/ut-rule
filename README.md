@@ -17,6 +17,51 @@ Provides standard fees, limits and commissions API.
 * st - source type
 * dk - destination KYC
 * dt - destination type
+* sp - source Account Fee Policy
+* dp - destination Account Fee Policy
+* tp - transfer property
+
+## Placeholders
+
+* channel.id
+* channel.id^X
+* channel.role
+* channel.role^X
+* channel.country
+* channel.region
+* channel.city
+
+* operation.id
+* operation.currency
+
+* transfer.amount
+* transfer.settlementAmount
+* transfer.accountAmount
+* transfer.currencyId
+* transfer.settlementCurrencyId
+* transfer.accountCurrencyId
+
+* source.owner.id
+* source.owner.id^X
+* source.country
+* source.region
+* source.city
+* source.account.product
+* source.card
+* source.account.id
+* source.account.number
+
+* destination.owner.id
+* destination.owner.id^X
+* destination.country
+* destination.region
+* destination.city
+* destination.account.product
+* destination.account.id
+* destination.account.number
+
+* agentOf.owner.id
+* agentOf.owner.id^X
 
 ## Condition
 
@@ -52,6 +97,7 @@ conditionProperty:
   - {conditionId: 1000, factor: dk, name: destination.kyc, value: 3}
   - {conditionId: 1000, factor: do, name: vat, value: tourism}
   - {conditionId: 1000, factor: dt, name: destination.customerType, value: 2}
+  - {conditionId: 1000, factor: tp, name: transfer.merchantCategory, value: 7995}
 conditionItem:
   - {conditionId: 1000, factor: cs, itemNameId: 7}
   - {conditionId: 1000, factor: cs, itemNameId: 241}

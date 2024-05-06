@@ -1,5 +1,6 @@
 module.exports = [
     'ut-cache',
+    'ut-telemetry',
     'ut-db',
     'ut-portal',
     'ut-browser',
@@ -8,6 +9,7 @@ module.exports = [
     'ut-customer',
     'ut-user',
     'ut-login',
+    'ut-agent',
     '..'
 ].map(item => [{
     main: require.resolve(item),

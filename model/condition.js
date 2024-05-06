@@ -81,8 +81,19 @@ module.exports = ({joi}) => ({
                             }
                         },
                         name: {},
+                        amountType: {
+                            title: 'Input Amount',
+                            widget: {
+                                type: 'select',
+                                options: [
+                                    {value: null, label: 'Account holder'},
+                                    {value: 1, label: 'Original'},
+                                    {value: 2, label: 'Settlement'}
+                                ]
+                            }
+                        },
                         tag: {
-                            title: '',
+                            title: 'Output Amount',
                             widget: {
                                 type: 'multiSelectPanel',
                                 itemClassName: 'col-2',
@@ -98,7 +109,8 @@ module.exports = ({joi}) => ({
                                     {value: 'pos', label: 'POS'},
                                     {value: 'ped', label: 'PED'},
                                     {value: 'vendor', label: 'Vendor'},
-                                    {value: 'merchant', label: 'Merchant'}
+                                    {value: 'merchant', label: 'Merchant'},
+                                    {value: 'cashback', label: 'Cash back'}
                                 ]
                             }
                         }
@@ -131,7 +143,8 @@ module.exports = ({joi}) => ({
                         'minValue',
                         'maxValue',
                         'percent',
-                        'percentBase'
+                        'percentBase',
+                        'isSourceAmount'
                     ]
                 },
                 items: {
@@ -142,19 +155,32 @@ module.exports = ({joi}) => ({
                             }
                         },
                         splitNameId: {},
-                        startAmountCurrency: {},
-                        startAmount: {widget: {type: 'currency'}},
-                        startAmountDaily: {widget: {type: 'currency'}},
-                        startAmountMonthly: {widget: {type: 'currency'}},
-                        startAmountWeekly: {widget: {type: 'currency'}},
-                        startCountDaily: {type: 'integer'},
-                        startCountMonthly: {type: 'integer'},
-                        startCountWeekly: {type: 'integer'},
+                        startAmountCurrency: {title: 'Currency', widget: {type: 'dropdown', dropdown: 'core.currencyCode'}},
+                        startAmount: {default: 0, widget: {type: 'currency'}},
+                        startAmountDaily: {default: 0, widget: {type: 'currency'}},
+                        startAmountMonthly: {default: 0, widget: {type: 'currency'}},
+                        startAmountWeekly: {default: 0, widget: {type: 'currency'}},
+                        startCountDaily: {default: 0, type: 'integer'},
+                        startCountMonthly: {default: 0, type: 'integer'},
+                        startCountWeekly: {default: 0, type: 'integer'},
                         minValue: {widget: {type: 'currency'}},
                         maxValue: {widget: {type: 'currency'}},
                         percent: {type: 'number', widget: {minFractionDigits: 2}},
-                        percentBase: {type: 'number', widget: {type: 'currency'}}
-                    }
+                        percentBase: {type: 'number', widget: {type: 'currency'}},
+                        isSourceAmount: {type: 'boolean'}
+                    },
+                    required: [
+                        'startAmountCurrency',
+                        'startAmount',
+                        'startAmountDaily',
+                        'startAmountMonthly',
+                        'startAmountWeekly',
+                        'startCountDaily',
+                        'startCountMonthly',
+                        'startCountWeekly',
+                        'targetCurrency',
+                        'rate'
+                    ]
                 }
             },
             splitAssignment: {
@@ -253,6 +279,59 @@ module.exports = ({joi}) => ({
                     }
                 }
             },
+            rate: {
+                title: '',
+                widget: {
+                    type: 'table',
+                    selectionMode: 'single',
+                    master: {conditionId: 'conditionId'},
+                    parent: 'condition',
+                    hidden: [
+                        'conditionId',
+                        'rateId'
+                    ],
+                    widgets: [
+                        'startAmountCurrency',
+                        'startAmount',
+                        'startAmountDaily',
+                        'startCountDaily',
+                        'startAmountWeekly',
+                        'startCountWeekly',
+                        'startAmountMonthly',
+                        'startCountMonthly',
+                        'targetCurrency',
+                        'rate'
+                    ]
+                },
+                items: {
+                    properties: {
+                        rateId: {},
+                        conditionId: {},
+                        startAmountCurrency: {title: 'Currency', widget: {type: 'dropdown', dropdown: 'core.currencyCode'}},
+                        startAmount: {default: 0, widget: {type: 'currency'}},
+                        startAmountDaily: {default: 0, widget: {type: 'currency'}},
+                        startAmountMonthly: {default: 0, widget: {type: 'currency'}},
+                        startAmountWeekly: {default: 0, widget: {type: 'currency'}},
+                        startCountDaily: {default: 0, type: 'integer'},
+                        startCountMonthly: {default: 0, type: 'integer'},
+                        startCountWeekly: {default: 0, type: 'integer'},
+                        targetCurrency: {widget: {type: 'dropdown', dropdown: 'core.currencyCode'}},
+                        rate: {widget: {type: 'number', maxFractionDigits: 14}}
+                    },
+                    required: [
+                        'startAmountCurrency',
+                        'startAmount',
+                        'startAmountDaily',
+                        'startAmountMonthly',
+                        'startAmountWeekly',
+                        'startCountDaily',
+                        'startCountMonthly',
+                        'startCountWeekly',
+                        'targetCurrency',
+                        'rate'
+                    ]
+                }
+            },
             channel: {
                 properties: {
                     country: {
@@ -283,6 +362,9 @@ module.exports = ({joi}) => ({
                         widget: {type: 'multiSelect', dropdown: 'rule.operation'}
                     },
                     tag: {
+                        widget: {type: 'chips'}
+                    },
+                    transferTag: {
                         widget: {type: 'chips'}
                     }
                 }
@@ -395,8 +477,14 @@ module.exports = ({joi}) => ({
         },
         splitTag: {
             className: 'lg:col-10',
-            label: 'Tags',
-            widgets: ['$.edit.splitName.tag']
+            label: 'Amount Types',
+            classes: {
+                default: {
+                    label: 'md:col-2',
+                    field: 'md:col-10'
+                }
+            },
+            widgets: ['$.edit.splitName.amountType', '$.edit.splitName.tag']
         },
         splitRange: {
             className: 'lg:col-10',
@@ -433,6 +521,7 @@ module.exports = ({joi}) => ({
             widgets: [
                 'operation.type',
                 'operation.tag',
+                'operation.transferTag',
                 'condition.operationStartDate',
                 'condition.operationEndDate'
             ]
@@ -473,6 +562,11 @@ module.exports = ({joi}) => ({
             className: 'lg:col-12',
             label: '',
             widgets: ['limit']
+        },
+        rate: {
+            className: 'lg:col-12',
+            label: '',
+            widgets: ['rate']
         }
     },
     layouts: {
@@ -491,6 +585,10 @@ module.exports = ({joi}) => ({
                 id: 'limit',
                 label: 'Limits',
                 widgets: ['limit']
+            }, {
+                id: 'rate',
+                label: 'Currency Rates',
+                widgets: ['rate']
             }, {
                 id: 'assignment',
                 label: 'Assignments',

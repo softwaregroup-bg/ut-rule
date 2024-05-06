@@ -2,9 +2,11 @@ import * as actionTypes from './actionTypes';
 import map from 'lodash.map';
 import { getLink } from 'ut-front-react/routerHelper';
 import { fromJS } from 'immutable';
+import { APPROVE_RULE, REJECT_RULE, DISCARD_RULE } from '../../pages/RuleProfile/actionTypes';
 
 const defaultState = {
-    showDeleted: false
+    showDeleted: false,
+    requiresFetch: false
 };
 const maxPercentageCharacters = 5;
 const amountCharacters = 14;
@@ -15,13 +17,19 @@ const basePercentageCharacters = 10;
 export default (state = defaultState, action) => {
     if (action.result && action.methodRequestState === 'finished') {
         switch (action.type) {
+            case REJECT_RULE:
+                return {...state, requiresFetch: true};
+            case APPROVE_RULE:
+                return {...state, requiresFetch: true};
+            case DISCARD_RULE:
+                return {...state, requiresFetch: true};
             case actionTypes.fetchNomenclatures:
                 return Object.assign({}, state, {
                     fetchNomenclatures: formatNomenclatures(action.result.items)
                 });
             case actionTypes.fetchRules: {
                 const showDeleted = state.showDeleted;
-                const formattedRules = (formatRules(action.result));
+                const formattedRules = formatRules(action.result);
                 map(formattedRules, (rule) => {
                     rule.url = showDeleted ? getLink('ut-history:deleted', {objectId: rule.condition[0].conditionId, objectName: 'rule'}) : getLink('ut-rule:edit', {id: rule.condition[0].conditionId});
                     return rule;
@@ -36,6 +44,8 @@ export default (state = defaultState, action) => {
                     showDeleted
                 });
             }
+            case actionTypes.lockUnlockRule:
+                return state;
             default:
                 break;
         }
@@ -102,7 +112,9 @@ const formatRules = function(data) {
         if (data[prop] && data[prop].length) {
             data[prop].forEach(function(record) {
                 mappedData = splitNameConditionMap[record.splitNameId];
-                result[mappedData.conditionId].split[mappedData.index][prop].push(record);
+                if (mappedData?.conditionId) {
+                    result[mappedData.conditionId].split[mappedData.index][prop].push(record);
+                };
             });
         }
     });
@@ -136,6 +148,7 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
     //         }]
     //     }
     // };
+
     fromJS(formattedRules).toJS();
     const result = {};
     fetchedData.conditionItem && fetchedData.conditionItem.forEach((item) => {
@@ -173,8 +186,8 @@ const getFormattedGridDataColumns = function(fetchedData, formattedRules) {
         }
 
         result[actor.conditionId][actor.factor].push({
-            name: actor.type,
-            value: actor.type === 'organization' ? actor.organizationName : actor.actorId
+            name: actor.type === 'agentRole' ? 'agentType' : actor.type,
+            value: ['organization', 'role', 'agentRole', 'agentType'].includes(actor.type) ? actor.actorName : actor.actorId
         });
     });
     Object.keys(formattedRules).forEach((conditionId) => {

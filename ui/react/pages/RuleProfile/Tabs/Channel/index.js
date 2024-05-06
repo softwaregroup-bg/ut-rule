@@ -22,6 +22,7 @@ const propTypes = {
     regions: PropTypes.array,
     cities: PropTypes.array,
     organizations: PropTypes.array,
+    agentRoles: PropTypes.array,
     fieldValues: PropTypes.object,
     errors: PropTypes.object, // immutable
     channelConfig: PropTypes.object.isRequired
@@ -32,7 +33,8 @@ const defaultProps = {
     countries: [],
     regions: [],
     cities: [],
-    organizations: []
+    organizations: [],
+    agentRoles: []
 };
 
 class ChannelTab extends Component {
@@ -96,6 +98,7 @@ class ChannelTab extends Component {
             regions,
             cities,
             organizations,
+            agentRoles,
             fieldValues,
             channelConfig: { fields }
         } = this.props;
@@ -103,7 +106,7 @@ class ChannelTab extends Component {
             this.props.actions.changeInput(field, destinationProp);
         };
         const readonly = !canEdit;
-
+        // console.log('fieldValues-fields: ',fieldValues, fields)
         return (
             <div>
                 {fields.country.visible && <div className={style.inputWrapper}>
@@ -144,6 +147,7 @@ class ChannelTab extends Component {
                 </div>}
                 {fields.organization.visible && <div className={style.inputWrapper}>
                     <MultiSelectDropdown
+                        boldLabel
                         disabled={readonly}
                         canSelectPlaceholder
                         keyProp='organization'
@@ -152,6 +156,19 @@ class ChannelTab extends Component {
                         placeholder='Select Organization'
                         onSelect={(field) => { changeInput(field); }}
                         label={fields.organization.title || 'Organization'}
+                    />
+                </div>}
+                {fields.agentRole.visible && <div className={style.inputWrapper}>
+                    <MultiSelectDropdown
+                        boldLabel
+                        disabled={readonly}
+                        canSelectPlaceholder
+                        keyProp='agentRole'
+                        data={agentRoles}
+                        defaultSelected={fieldValues.agentRole}
+                        placeholder='Select Agent Type'
+                        onSelect={(field) => { changeInput(field); }}
+                        label={fields.agentRole.title || 'Agent Type'}
                     />
                 </div>}
             </div>
@@ -236,6 +253,7 @@ ChannelTab.defaultProps = defaultProps;
 const mapStateToProps = (state, ownProps) => {
     const { mode, id } = state.ruleProfileReducer.get('config').toJS();
     const immutableRule = state.ruleProfileReducer.getIn([mode, id]);
+
     return {
         mode,
         canEdit: ownProps.canEdit,
@@ -244,6 +262,7 @@ const mapStateToProps = (state, ownProps) => {
         regions: state.ruleProfileReducer.getIn(['nomenclatures', 'region']).toJS(),
         cities: state.ruleProfileReducer.getIn(['nomenclatures', 'city']).toJS(),
         organizations: state.ruleProfileReducer.getIn(['nomenclatures', 'organization']).toJS(),
+        agentRoles: state.ruleProfileReducer.getIn(['nomenclatures', 'agentRole']).toJS(),
         fieldValues: state.ruleProfileReducer.getIn([mode, id, destinationProp], fromJS({})).toJS(),
         errors: state.ruleProfileReducer.getIn([mode, id, 'errors', destinationProp]) || fromJS({}),
         channelConfig: state.uiConfig.getIn(['profile', 'tabs', 'channel']).toJS()

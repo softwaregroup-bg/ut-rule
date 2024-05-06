@@ -1,10 +1,17 @@
 // @ts-check
 /** @type { import("ut-run").validationFactory } */
 module.exports = ({
-    joi
+    joi,
+    lib: {
+        bigintRequired,
+        condition
+    }
 }) => ({
     'rule.condition.get': () => ({
-        params: joi.any(),
-        result: joi.any()
+        params: joi.object({
+            conditionId: bigintRequired
+        }),
+        result: condition
+
     })
 });

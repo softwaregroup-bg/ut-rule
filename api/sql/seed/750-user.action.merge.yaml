@@ -1,16 +1,23 @@
 category:
   - name: rule
 action:
-  - {category: rule, action: 'rule.decision.fetch', description: 'rule.decision.fetch'}
-  - {category: rule, action: 'rule.decision.lookup', description: 'rule decision lookup'}
-  - {category: rule, action: 'rule.item.fetch', description: 'rule item fetch'}
+  - {category: rule, action: 'rule.decision.fetch', description: 'Apply rule'}
+  - {category: rule, action: 'rule.decision.lookup', description: 'Check rule'}
+  - {category: rule, action: 'rule.item.fetch', description: 'Rule dropdowns'}
   - {category: rule, action: 'rule.operation.lookup', description: 'rule.operation.lookup'}
-  - {category: rule, action: 'rule.rule.add', description: 'rule add'}
-  - {category: rule, action: 'rule.rule.edit', description: 'rule edit'}
-  - {category: rule, action: 'rule.rule.fetch', description: 'rule fetch'}
-  - {category: rule, action: 'rule.rule.fetchDeleted', description: 'deleted rule fetch'}
+  - {category: rule, action: 'rule.rule.add', description: 'Add rule'}
+  - {category: rule, action: 'rule.rule.edit', description: 'Edit rule'}
+  - {category: rule, action: 'rule.rule.fetch', description: 'List rule'}
+  - {category: rule, action: 'rule.rule.fetchDeleted', description: 'List deleted rule'}
   - {category: rule, action: 'rule.rule.nav', description: 'Access to Rule tab'}
-  - {category: rule, action: 'rule.rule.remove', description: 'rule remove'}
+  - {category: rule, action: 'rule.rule.remove', description: 'Delete rule'}
+  - {category: rule, action: 'rule.rule.delete', description: 'rule delete'}
+  - {category: rule, action: 'rule.rule.lock', description: 'rule remove'}
+  - {category: rule, action: 'rule.rule.get', description: 'rule get'}
+  - {category: rule, action: 'rule.rule.discard', description: 'rule discard'}
+  - {category: rule, action: 'rule.rule.reject', description: 'rule reject'}
+  - {category: rule, action: 'rule.rule.approve', description: 'rule approve'}
+  - {category: rule, action: 'agent.agentType.fetch', description: 'fetch agentTypes for rule'}
 field:
   - {code: rule, name: Rule Management}
 role:
@@ -18,19 +25,25 @@ role:
   - {field: rule, role: Delete Rule}
   - {field: rule, role: Edit Rule}
   - {field: rule, role: List Rules}
+  - {field: rule, role: View Rule}
+  - {field: rule, role: Authorize Rule Changes (Approve/Reject)}
+  - {field: rule, role: Lock / Unlock Rule}
 roleAction:
   - {role: Create Rule, action: 'rule.item.fetch'}
   - {role: Create Rule, action: 'rule.rule.add'}
   - {role: Create Rule, action: 'rule.rule.fetch'}
   - {role: Create Rule, action: 'rule.rule.nav'}
+  - {role: Create Rule, action: 'agent.agentType.fetch'}
   - {role: Delete Rule, action: 'rule.item.fetch'}
   - {role: Delete Rule, action: 'rule.rule.fetch'}
   - {role: Delete Rule, action: 'rule.rule.nav'}
   - {role: Delete Rule, action: 'rule.rule.remove'}
   - {role: Edit Rule, action: 'rule.item.fetch'}
   - {role: Edit Rule, action: 'rule.rule.edit'}
+  - {role: Edit Rule, action: 'rule.rule.get'}
   - {role: Edit Rule, action: 'rule.rule.fetch'}
   - {role: Edit Rule, action: 'rule.rule.nav'}
+  - {role: Edit Rule, action: 'agent.agentType.fetch'}
   - {role: KYC Activate/Deactivate, action: 'rule.rule.nav'}
   - {role: KYC Add, action: 'rule.rule.nav'}
   - {role: KYC Delete, action: 'rule.rule.nav'}
@@ -40,7 +53,26 @@ roleAction:
   - {role: List Rules, action: 'rule.item.fetch'}
   - {role: List Rules, action: 'rule.rule.fetch'}
   - {role: List Rules, action: 'rule.rule.nav'}
+  - {role: List Rules, action: 'agent.agentType.fetch'}
   - {role: MobileClient, action: 'rule.decision.lookup'}
   - {role: Rule History Log, action: 'rule.item.fetch'}
   - {role: Rule History Log, action: 'rule.rule.fetch'}
   - {role: View Deleted Items, action: 'rule.rule.fetchDeleted'}
+  - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.item.fetch'}
+  - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.get'}
+  - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.approve'}
+  - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.reject'}
+  - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.discard'}
+  - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.fetch'}
+  - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.delete'}
+  - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.nav'}
+  - {role: Authorize Rule Changes (Approve/Reject), action: 'agent.agentType.fetch'}
+  - {role: View Rule, action: 'rule.item.fetch'}
+  - {role: View Rule, action: 'rule.rule.fetch'}
+  - {role: View Rule, action: 'rule.rule.nav'}
+  - {role: View Rule, action: 'agent.agentType.fetch'}
+  - {role: Lock / Unlock Rule, action: 'rule.item.fetch'}
+  - {role: Lock / Unlock Rule, action: 'rule.rule.lock'}
+  - {role: Lock / Unlock Rule, action: 'rule.rule.fetch'}
+  - {role: Lock / Unlock Rule, action: 'rule.rule.nav'}
+  - {role: Lock / Unlock Rule, action: 'agent.agentType.fetch'}

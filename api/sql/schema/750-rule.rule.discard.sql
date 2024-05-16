@@ -63,7 +63,7 @@ BEGIN TRY
 
 
     -- handle limit
-    DELETE FROM [rule].limit
+    DELETE FROM [rule].limitUnapproved
     WHERE conditionId = @conditionId
 
 

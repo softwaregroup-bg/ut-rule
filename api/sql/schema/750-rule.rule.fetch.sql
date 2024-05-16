@@ -140,7 +140,7 @@ BEGIN
         FROM [rule].conditionItem ci
         UNION
         SELECT ciu.conditionId, ciu.factor, ciu.itemNameId
-        FROM [rule].conditionItemUnapproved ciu
+        FROM [rule].conditionItemUnapproved ciu WHERE ciu.status <> 'pending'
     ) c
     JOIN #RuleConditions rct ON rct.conditionId = c.conditionId
     JOIN core.itemName i ON i.itemNameId = c.itemNameId
@@ -211,7 +211,7 @@ BEGIN
         SELECT limitId, conditionId, currency, minAmount, maxAmount, maxAmountDaily,
             maxCountDaily, maxAmountWeekly, maxCountWeekly, maxAmountMonthly,
             maxCountMonthly, [credentials], [priority]
-        FROM [rule].limitUnapproved
+        FROM [rule].limitUnapproved rl WHERE rl.status <> 'pending'
     ) l
     JOIN #RuleConditions rct ON rct.conditionId = l.conditionId
     WHERE @conditionId IS NULL OR l.conditionId = @conditionId

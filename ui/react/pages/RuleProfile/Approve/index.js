@@ -279,8 +279,8 @@ class RuleApprove extends Component {
         // const parseNewOperationInfo = JSON.parse(JSON.stringify(newOperationInfo));
         // const filterNewOperationInfo = parseNewOperationInfo.find(operation => operation.factor === "oc");
         for (let i = 0; i < newOperationInfo?.size || 0; i++) {
-            const value1 = currentOperationInfo.get(i);
             const value2 = newOperationInfo.get(i);
+            const value1 = currentOperationInfo.get(i);
             checkerValues.push(operationInfoData(value1, value2, options));
         }
         return checkerValues;

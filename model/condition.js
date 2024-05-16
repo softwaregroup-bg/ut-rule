@@ -22,8 +22,10 @@ module.exports = ({joi}) => ({
                     operation: {widget: {type: 'json', keyValue: true, fieldClass: 'justify-content-start'}},
                     source: {widget: {type: 'json', keyValue: true, fieldClass: 'justify-content-start'}},
                     destination: {widget: {type: 'json', keyValue: true, fieldClass: 'justify-content-start'}},
-                    sourceAccountId: {title: 'Account'},
-                    destinationAccountId: {title: 'Account'}
+                    sourceAccountId: {title: 'Source Account'},
+                    destinationAccountId: {title: 'Destination Account'},
+                    createdOn: {title: 'Creation Date'},
+                    updatedOn: {title: 'Last Modification Date'}
                 },
                 required: ['priority']
             },

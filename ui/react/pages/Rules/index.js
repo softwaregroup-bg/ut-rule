@@ -170,7 +170,7 @@ class Main extends React.Component {
                     (<Button label='Delete' disabled={!this.state.canDelete} className='defaultBtn' onClick={this.showConfirm} />)}
                 {this.context.checkPermission('rule.rule.lock') && id && (selectedStatus === 'approved') && !showDeleted &&
                     (<Button label={isLocked ? 'Unlock' : 'Lock'} className='defaultBtn' onClick={this.showRuleLockConfirm} />)}
-                {this.context.checkPermission('rule.rule.approve') && (selectedStatus !== 'approved') && id && !showDeleted &&
+                {(this.context.checkPermission('rule.rule.approve') || this.context.checkPermission('rule.rule.edit')) && (selectedStatus !== 'approved') && id && !showDeleted &&
                     (<Button label='View Details' href={getLink('ut-rule:validate', { id })} disabled={!(selectedStatus !== 'approved')} className='defaultBtn' />)}
                 {this.context.checkPermission('rule.rule.fetchDeleted') &&
                     (<Button

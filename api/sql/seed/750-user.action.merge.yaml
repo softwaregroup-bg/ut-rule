@@ -34,6 +34,7 @@ roleAction:
   - {role: Create Rule, action: 'rule.rule.fetch'}
   - {role: Create Rule, action: 'rule.rule.nav'}
   - {role: Create Rule, action: 'agent.agentType.fetch'}
+  - {role: Create Rule, action: 'rule.rule.discard'}
   - {role: Delete Rule, action: 'rule.item.fetch'}
   - {role: Delete Rule, action: 'rule.rule.fetch'}
   - {role: Delete Rule, action: 'rule.rule.nav'}
@@ -44,6 +45,7 @@ roleAction:
   - {role: Edit Rule, action: 'rule.rule.fetch'}
   - {role: Edit Rule, action: 'rule.rule.nav'}
   - {role: Edit Rule, action: 'agent.agentType.fetch'}
+  - {role: Edit Rule, action: 'rule.rule.discard'}
   - {role: KYC Activate/Deactivate, action: 'rule.rule.nav'}
   - {role: KYC Add, action: 'rule.rule.nav'}
   - {role: KYC Delete, action: 'rule.rule.nav'}
@@ -62,7 +64,6 @@ roleAction:
   - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.get'}
   - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.approve'}
   - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.reject'}
-  - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.discard'}
   - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.fetch'}
   - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.delete'}
   - {role: Authorize Rule Changes (Approve/Reject), action: 'rule.rule.nav'}
@@ -76,3 +77,4 @@ roleAction:
   - {role: Lock / Unlock Rule, action: 'rule.rule.fetch'}
   - {role: Lock / Unlock Rule, action: 'rule.rule.nav'}
   - {role: Lock / Unlock Rule, action: 'agent.agentType.fetch'}
+  - {role: Lock / Unlock Rule, action: 'rule.rule.discard'}

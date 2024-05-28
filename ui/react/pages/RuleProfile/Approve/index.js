@@ -106,7 +106,7 @@ class RuleApprove extends Component {
         const { fetchRules } = this.props;
         const { canApprove } = this.permissions;
         if (canApprove) {
-            this.props.approveRule({ conditionId }).then(()=> fetchRules());
+            this.props.approveRule({ conditionId }).then(() => fetchRules());
             this.props.removeTab(this.props.activeTab.pathname);
             this.props.closeConfirmDialog();
         }

@@ -106,7 +106,7 @@ class RuleApprove extends Component {
         const { fetchRules } = this.props;
         const { canApprove } = this.permissions;
         if (canApprove) {
-            this.props.approveRule({ conditionId }).then(res => fetchRules());
+            this.props.approveRule({ conditionId }).then(()=> fetchRules());
             this.props.removeTab(this.props.activeTab.pathname);
             this.props.closeConfirmDialog();
         }
@@ -115,11 +115,12 @@ class RuleApprove extends Component {
     handleRejection() {
         const cd = this.props.confirmDialog.toJS();
         const conditionId = this.props.match.params.id;
+        const { fetchRules } = this.props;
         const { canReject } = this.permissions;
         if (canReject) {
-            this.props.rejectRuleChanges(conditionId, cd.value);
-            this.props.closeConfirmDialog();
+            this.props.rejectRuleChanges(conditionId, cd.value).then(() => fetchRules());
             this.props.removeTab(this.props.activeTab.pathname);
+            this.props.closeConfirmDialog();
         }
     }
 
@@ -129,9 +130,10 @@ class RuleApprove extends Component {
 
     handleDiscard(conditionId) {
         const { canDiscard } = this.permissions;
+        const { fetchRules } = this.props;
         if (canDiscard) {
             return () => {
-                this.props.discardRuleChanges(conditionId);
+                this.props.discardRuleChanges(conditionId).then(() => fetchRules());
                 this.props.closeConfirmDialog();
                 this.props.removeTab(this.props.activeTab.pathname);
             };

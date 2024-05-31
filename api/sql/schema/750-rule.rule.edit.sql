@@ -57,6 +57,20 @@ BEGIN TRY
             MERGE INTO [rule].conditionUnapproved cu
             USING @condition c
                 ON cu.conditionId = c.conditionId
+            WHEN MATCHED THEN
+                UPDATE
+                SET status = 'pending',
+                    [priority] = c.priority,
+                    operationStartDate = c.operationStartDate,
+                    operationEndDate = c.operationEndDate,
+                    sourceAccountId  = c.sourceAccountId,
+                    destinationAccountId = c.destinationAccountId,
+                    name = c.name,
+                    description = c.description,
+                    notes = c.notes,
+                    createdOn = c.createdOn,
+                    createdBy = c.createdBy,
+                    isEnabled = c.isEnabled
             WHEN NOT MATCHED BY TARGET THEN
             INSERT (conditionId, [priority], operationStartDate, operationEndDate, sourceAccountId,
             destinationAccountId, name, description, notes, createdOn, createdBy, status, isEnabled

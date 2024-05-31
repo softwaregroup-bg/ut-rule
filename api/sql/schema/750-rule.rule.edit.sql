@@ -63,7 +63,7 @@ BEGIN TRY
                     [priority] = c.priority,
                     operationStartDate = c.operationStartDate,
                     operationEndDate = c.operationEndDate,
-                    sourceAccountId  = c.sourceAccountId,
+                    sourceAccountId = c.sourceAccountId,
                     destinationAccountId = c.destinationAccountId,
                     name = c.name,
                     description = c.description,

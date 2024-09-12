@@ -419,7 +419,11 @@ module.exports = function test() {
                     result: function(result, assert, {method, validation}) {
                         assert.ok(validation[`${method}.result`], `${method} validation passed`);
                         assert.equal(result.limit[0].maxCountDaily, (successfulTransactionsCount + 1).toString(), 'return correct maxCountDaily limit');
-                        assert.hasStrict(result, {
+                        assert.hasStrict({
+                            ...result,
+                            // fix array sorting
+                            splitName: result.splitName.sort((a, b) => ~~(a.name > b.name) || -1)
+                        }, {
                             condition: [{
                                 priority: this.priority - 1, // mandatory
                                 name: ruleName + 'W2W'

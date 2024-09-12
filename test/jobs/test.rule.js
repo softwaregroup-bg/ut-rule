@@ -173,15 +173,17 @@ module.exports = function test() {
                     name: 'fetch operations',
                     params: () => {
                         return {
-                            itemTypeName: operation
+                            itemTypeName: operation,
+                            itemName: 'Rule Wallet to Wallet'
                         };
                     },
                     result: function(result, assert, {method, validation}) {
                         assert.ok(validation[`${method}.result`], `${method} validation passed`);
-                        const operationWalletToWallet = result.itemTranslationFetch.find(item => item.itemCode === 'Rule Wallet to Wallet');
-                        this.operationIdWalletToWallet = operationWalletToWallet.itemNameId;
-                        this.operationCodeWalletToWallet = operationWalletToWallet.itemCode;
-                        this.operationNameWalletToWallet = operationWalletToWallet.itemName;
+                        const [{itemNameId, itemCode, itemName} = {}] = result.itemTranslationFetch;
+                        assert.equal(itemCode, 'Rule Wallet to Wallet', 'Rule Wallet to Wallet item successfully fetched');
+                        this.operationIdWalletToWallet = itemNameId;
+                        this.operationCodeWalletToWallet = itemCode;
+                        this.operationNameWalletToWallet = itemName;
                     }
                 },
                 {

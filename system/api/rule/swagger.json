@@ -3,7 +3,7 @@
         "contact": {},
         "description": "UT Microservice API",
         "title": "rule",
-        "version": "13.2.6"
+        "version": "13.2.7"
     },
     "paths": {
         "/rpc/rule/condition/add": {

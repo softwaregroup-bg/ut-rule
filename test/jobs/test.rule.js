@@ -285,7 +285,11 @@ module.exports = function test() {
                     result: function(result, assert, {method, validation}) {
                         assert.ok(validation[`${method}.result`], `${method} validation passed`);
                         assert.comment('conditionId: ' + result.condition[0].conditionId);
-                        assert.hasStrict(result, {
+                        assert.hasStrict({
+                            ...result,
+                            // fix array sorting
+                            splitName: result.splitName.sort((a, b) => ~~(a.name > b.name) || -1)
+                        }, {
                             condition: [{
                                 priority: this.priority - 1, // mandatory
                                 name: ruleName + 'W2W'

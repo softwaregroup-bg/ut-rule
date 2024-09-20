@@ -83,12 +83,14 @@ function conditionSend({
             .concat(source?.region?.map(itemNameId => ({itemNameId, factor: 'ss', type: 'region'})))
             .concat(source?.city?.map(itemNameId => ({itemNameId, factor: 'ss', type: 'city'})))
             .concat(source?.cardProduct?.map(itemNameId => ({itemNameId, factor: 'sc', type: 'cardProduct'})))
+            .concat(source?.cardType?.map(itemNameId => ({itemNameId, factor: 'sc', type: 'cardType'})))
             .concat(source?.accountProduct?.map(itemNameId => ({itemNameId, factor: 'sc', type: 'accountProduct'})))
             .concat(source?.accountFeePolicy?.map(itemNameId => ({itemNameId, factor: 'sp', type: 'feePolicy'})))
             .concat(destination?.country?.map(itemNameId => ({itemNameId, factor: 'ds', type: 'country'})))
             .concat(destination?.region?.map(itemNameId => ({itemNameId, factor: 'ds', type: 'region'})))
             .concat(destination?.city?.map(itemNameId => ({itemNameId, factor: 'ds', type: 'city'})))
             .concat(destination?.cardProduct?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'cardProduct'})))
+            .concat(destination?.cardType?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'cardType'})))
             .concat(destination?.accountProduct?.map(itemNameId => ({itemNameId, factor: 'dc', type: 'accountProduct'})))
             .concat(destination?.accountFeePolicy?.map(itemNameId => ({itemNameId, factor: 'dp', type: 'feePolicy'})))
             .filter(Boolean)
@@ -153,6 +155,7 @@ function conditionReceive({
             kyc: getProp(conditionProperty, 'sk', 'source.kyc'),
             customerType: getProp(conditionProperty, 'st', 'source.customerType'),
             cardProduct: get(conditionItem, 'sc', 'cardProduct', 'itemNameId'),
+            cardType: get(conditionItem, 'sc', 'cardType', 'itemNameId'),
             accountProduct: get(conditionItem, 'sc', 'accountProduct', 'itemNameId'),
             country: get(conditionItem, 'ss', 'country', 'itemNameId'),
             region: get(conditionItem, 'ss', 'region', 'itemNameId'),
@@ -165,6 +168,7 @@ function conditionReceive({
             kyc: getProp(conditionProperty, 'dk', 'destination.kyc'),
             customerType: getProp(conditionProperty, 'dt', 'destination.customerType'),
             cardProduct: get(conditionItem, 'dc', 'cardProduct', 'itemNameId'),
+            cardType: get(conditionItem, 'dc', 'cardType', 'itemNameId'),
             accountProduct: get(conditionItem, 'dc', 'accountProduct', 'itemNameId'),
             country: get(conditionItem, 'ds', 'country', 'itemNameId'),
             region: get(conditionItem, 'ds', 'region', 'itemNameId'),

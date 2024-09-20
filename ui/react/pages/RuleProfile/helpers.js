@@ -55,7 +55,7 @@ const conditionPropertyFactor = {
 export const formatNomenclatures = (items) => {
     const formattedPayload = {};
     // default object properties
-    ['accountProduct', 'cardProduct', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization']
+    ['accountProduct', 'cardProduct', 'cardType', 'channel', 'city', 'country', 'operation', 'region', 'currency', 'organization']
         .forEach((objName) => (formattedPayload[objName] = []));
     items.map(item => {
         if (!formattedPayload[item.type]) {
@@ -137,16 +137,20 @@ export const prepareRuleToSave = (rule) => {
         });
     });
 
-    const cardProducts = rule && rule.source && rule.source.cardProducts;
-    if (cardProducts && cardProducts.length) {
-        cardProducts.forEach(cp => {
+    const pushItems = (items, factor) => {
+        items.forEach(cp => {
             formattedRule.conditionItem.push({
                 itemNameId: cp.key,
                 conditionId,
-                factor: factors.sourceCategory
+                factor: factors[factor]
             });
         });
-    }
+    };
+
+    rule?.source?.cardProducts?.length && pushItems(rule?.source?.cardProducts, 'sourceCategory');
+    rule?.source?.cardTypes?.length && pushItems(rule?.source?.cardTypes, 'sourceCategory');
+    rule?.destination?.cardProducts?.length && pushItems(rule?.destination?.cardProducts, 'destinationCategory');
+    rule?.destination?.cardTypes?.length && pushItems(rule?.destination?.cardTypes, 'destinationCategory');
 
     formattedRule.conditionProperty = [];
 
@@ -182,7 +186,7 @@ export const prepareRuleToSave = (rule) => {
         });
     });
 
-    formattedRule.split = {data: {rows: []}};
+    formattedRule.split = { data: { rows: [] } };
     split.splits.forEach(split => {
         if (!split.name) return;
         const formattedSplit = {};
@@ -295,7 +299,7 @@ export const prepareRuleErrors = (rule, existErrors) => {
             // cumulative
             split.cumulatives.forEach(function(cumulative, cidx) {
                 cumulative && !cumulative.currency && !isEmptyValuesOnly(cumulative) &&
-                (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'currency'], errorMessage.currencyRequired));
+                    (errors = errors.setIn(['split', 'splits', idx, 'cumulatives', cidx, 'currency'], errorMessage.currencyRequired));
 
                 // ranges
                 cumulative && cumulative.ranges && cumulative.ranges.forEach(function(range, ridx) {

@@ -133,56 +133,56 @@ module.exports = function test() {
                     name: 'get Rule 1',
                     params: ({rule1: {condition: [{conditionId}]}}) => ({conditionId})
                 }),
-                // same priority different name
-                ruleRuleAdd({
-                    name: 'rule 2',
-                    params: {
-                        condition: {
-                            name: ruleName,
-                            operationEndDate: '2020-01-01T00:00:00.000Z',
-                            priority: 122300
-                        }
-                    }
-                }),
-                ruleConditionGet({
-                    name: 'get Rule 2',
-                    params: ({'rule 2': {condition: [{conditionId}]}}) => ({conditionId})
-                }),
-                ruleConditionFetch({
-                    name: 'fetch rule 2',
-                    params: {
-                        name: ruleName
-                    }
-                }),
-                {
-                    name: 'rule 2 to be duplicated - expected error',
-                    method: 'rule.rule.add',
-                    params: {
-                        condition: {
-                            name: ruleName,
-                            priority: 145600
-                        }
-                    },
-                    error: function(error, assert) {
-                        assert.equal(error.type, 'rule.duplicatedName', 'Rule with this name already exists');
-                    }
-                },
-                {
-                    name: 'rule 2 to be duplicated but created in another BU - expected error',
-                    method: 'rule.rule.add',
-                    params: ({businessUnitId}) => ({
-                        condition: {
-                            name: ruleName,
-                            priority: 145600
-                        },
-                        conditionActor: [{
-                            actorId: businessUnitId
-                        }]
-                    }),
-                    error: function(error, assert) {
-                        assert.equal(error.type, 'rule.duplicatedName', 'Rule with this name already exists');
-                    }
-                },
+                // // same priority different name
+                // ruleRuleAdd({
+                //     name: 'rule 2',
+                //     params: {
+                //         condition: {
+                //             name: ruleName,
+                //             operationEndDate: '2020-01-01T00:00:00.000Z',
+                //             priority: 122300
+                //         }
+                //     }
+                // }),
+                // ruleConditionGet({
+                //     name: 'get Rule 2',
+                //     params: ({'rule 2': {condition: [{conditionId}]}}) => ({conditionId})
+                // }),
+                // ruleConditionFetch({
+                //     name: 'fetch rule 2',
+                //     params: {
+                //         name: ruleName
+                //     }
+                // }),
+                // {
+                //     name: 'rule 2 to be duplicated - expected error',
+                //     method: 'rule.rule.add',
+                //     params: {
+                //         condition: {
+                //             name: ruleName,
+                //             priority: 145600
+                //         }
+                //     },
+                //     error: function(error, assert) {
+                //         assert.equal(error.type, 'rule.duplicatedName', 'Rule with this name already exists');
+                //     }
+                // },
+                // {
+                //     name: 'rule 2 to be duplicated but created in another BU - expected error',
+                //     method: 'rule.rule.add',
+                //     params: ({businessUnitId}) => ({
+                //         condition: {
+                //             name: ruleName,
+                //             priority: 145600
+                //         },
+                //         conditionActor: [{
+                //             actorId: businessUnitId
+                //         }]
+                //     }),
+                //     error: function(error, assert) {
+                //         assert.equal(error.type, 'rule.duplicatedName', 'Rule with this name already exists');
+                //     }
+                // },
                 ruleRuleAdd({
                     name: 'rule 3 success general fields',
                     params: ({

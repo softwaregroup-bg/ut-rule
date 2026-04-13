@@ -112,7 +112,7 @@
     color: #595959;
 }
 .labelWrap {
-    width: 30%;
+    width: 30% !important;
 }
 .outerWrap .labelWrap {
     width: 25%;

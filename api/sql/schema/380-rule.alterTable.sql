@@ -160,12 +160,49 @@ BEGIN
     END
 END
 
-IF NOT EXISTS( SELECT 1 FROM sys.objects WHERE Name = N'ukRuleConditionName' )
+-- Check if isDeleted already part of the index/constraint
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes i
+    JOIN sys.index_columns ic
+        ON i.object_id = ic.object_id
+        AND i.index_id = ic.index_id
+    JOIN sys.columns c
+        ON ic.object_id = c.object_id
+        AND ic.column_id = c.column_id
+    WHERE i.name = 'ukRuleConditionName'
+        AND OBJECT_NAME(i.object_id) = 'condition'
+        AND c.name = 'isDeleted'
+)
 BEGIN
-    DECLARE @updateName NVARCHAR(MAX) = 'UPDATE [rule].[condition] SET [name] = ''Rule '' + CAST(conditionId AS VARCHAR(20)) WHERE [name] IS NULL'
-    EXEC(@updateName)
-    ALTER TABLE [rule].[condition] ALTER COLUMN [name] NVARCHAR(100) NOT NULL
-    ALTER TABLE [rule].[condition] ADD CONSTRAINT [ukRuleConditionName] UNIQUE ([name])
+
+    -- Drop UNIQUE constraint if exists
+    IF EXISTS (
+        SELECT 1
+        FROM sys.key_constraints
+        WHERE name = 'ukRuleConditionName'
+        AND parent_object_id = OBJECT_ID('rule.condition')
+    )
+    BEGIN
+        ALTER TABLE [rule].[condition]
+        DROP CONSTRAINT ukRuleConditionName;
+    END
+
+    -- Drop index if exists (only if it was manually created)
+    IF EXISTS (
+        SELECT 1
+        FROM sys.indexes
+        WHERE name = 'ukRuleConditionName'
+        AND object_id = OBJECT_ID('rule.condition')
+    )
+    BEGIN
+        DROP INDEX ukRuleConditionName ON [rule].[condition];
+    END
+
+    -- Recreate unique index including isDeleted
+    CREATE UNIQUE INDEX ukRuleConditionName
+    ON [rule].[condition] ([name], isDeleted);
+
 END
 
 IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'description' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )

@@ -34,19 +34,19 @@ BEGIN TRY
         WHEN EXISTS (
             SELECT 1
             FROM [rule].[conditionUnapproved]
-            WHERE conditionId = @conditionId AND isEnabled = 1
+            WHERE conditionId = @conditionId AND isEnabled = 1 AND isDeleted = 0
         )
         AND EXISTS (
             SELECT 1
             FROM [rule].[condition]
-            WHERE conditionId = @conditionId AND isEnabled = 0
+            WHERE conditionId = @conditionId AND isEnabled = 0 AND isDeleted = 0
         ) THEN 1 -- Both conditions are true
         ELSE 0 -- At least one condition is false
         END;
 
     BEGIN TRANSACTION
 
-        IF EXISTS(SELECT 1 FROM [rule].[conditionUnapproved] WHERE conditionId = @conditionId AND isEnabled = 0)
+        IF EXISTS(SELECT 1 FROM [rule].[conditionUnapproved] WHERE conditionId = @conditionId AND isEnabled = 0 AND isDeleted = 0)
             BEGIN
                 UPDATE c
                 SET isEnabled = 0,

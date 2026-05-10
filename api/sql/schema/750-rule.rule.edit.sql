@@ -29,7 +29,8 @@ BEGIN TRY
             SELECT [name]
             FROM [rule].condition
             WHERE [name] = (SELECT [name] FROM @condition)
-            AND conditionId != @conditionId
+                AND isDeleted = 0
+                AND conditionId != @conditionId
         )
         BEGIN
             RAISERROR ('rule.duplicatedName', 16, 1)

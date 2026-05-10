@@ -17,5 +17,5 @@ CREATE TABLE [rule].[condition] (
     updatedOn DATETIME2 (0) NULL, --  date of the rule updated
     [status] VARCHAR(20) NULL DEFAULT('pending'),
     CONSTRAINT [pkRuleCondition] PRIMARY KEY CLUSTERED ([conditionId] ASC),
-    CONSTRAINT [ukRuleConditionName] UNIQUE ([name])
+    CONSTRAINT [ukRuleConditionName] UNIQUE ([name], [isDeleted])
 )

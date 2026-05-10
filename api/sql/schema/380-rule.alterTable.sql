@@ -173,33 +173,36 @@ IF NOT EXISTS (
     WHERE i.name = 'ukRuleConditionName'
         AND OBJECT_NAME(i.object_id) = 'condition'
         AND c.name = 'isDeleted'
-    )
+)
 BEGIN
-    -- If it is an index
-    IF EXISTS (
-        SELECT 1
-        FROM sys.indexes
-        WHERE name = 'ukRuleConditionName'
-            AND object_id = OBJECT_ID('rule.condition')
-    )
-    BEGIN
-        DROP INDEX ukRuleConditionName ON [rule].[condition];
-    END
 
-    -- If it is a constraint
+    -- Drop UNIQUE constraint if exists
     IF EXISTS (
         SELECT 1
         FROM sys.key_constraints
         WHERE name = 'ukRuleConditionName'
+        AND parent_object_id = OBJECT_ID('rule.condition')
     )
     BEGIN
         ALTER TABLE [rule].[condition]
         DROP CONSTRAINT ukRuleConditionName;
     END
 
-    -- Recreate with isDeleted
+    -- Drop index if exists (only if it was manually created)
+    IF EXISTS (
+        SELECT 1
+        FROM sys.indexes
+        WHERE name = 'ukRuleConditionName'
+        AND object_id = OBJECT_ID('rule.condition')
+    )
+    BEGIN
+        DROP INDEX ukRuleConditionName ON [rule].[condition];
+    END
+
+    -- Recreate unique index including isDeleted
     CREATE UNIQUE INDEX ukRuleConditionName
-    ON [rule].[condition]([name], isDeleted);
+    ON [rule].[condition] ([name], isDeleted);
+
 END
 
 IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE Name = N'description' AND OBJECT_ID = OBJECT_ID(N'rule.condition') )
